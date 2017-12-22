@@ -466,9 +466,9 @@ public class GameManager : MonoBehaviour
         SaveGame.UpdateFromRound(reset: true);
         SaveGame.Save();
 
-        CanvasIntro.gameObject.SetActive(false);
-        CanvasGame.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(true);
+        CanvasIntro.gameObject.SetActive(false);
+
         GameState = State.Dead;
     }
 

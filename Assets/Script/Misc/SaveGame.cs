@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum GameCounter {
@@ -101,6 +102,12 @@ public static class SaveGame
     {
         RoundScore = 0;
         RoundKills = 0;
+    }
+
+    public static IEnumerator SaveCo()
+    {
+        Save();
+        yield break;
     }
 
     public static void Save()
