@@ -1,0 +1,34 @@
+﻿Shotgun damage +10%
+Shotgun bullets +1
+Shotgun Push +10%
+Shotgun Cooldown -10%
+
+Ignite-Corpse-Gun - will explode after a few sec.
+
+
+Sniper only hits what is in crosshair. Head or body shot. Mark enemy or crosshair with color. Good for
+Slow moving enemies casting spells.
+(Sniper: Stop moving and laser sight will extend outwards. Range is limited to this.
+Moving mouse makes it wobble a bit, so stay still. Sniper damage greatly increased.
+Rightclick to push away enemies/bullets?)
+
+Shotgun more damage up close. Try: Two quick shots, then reload. Right click fire both.
+
+Corpses are revived if left alone too long?
+ 
+Walls takes A LOT more effort. KISS KISS KISS – prototype gameplay first.
+With basic walls countless levels can be made. Flowfield (combined with LoS?) should be pretty cheap? Just update a bit every frame.
+Walls makes drawing much harder. Corpse-sucking-black-hole-bomb can fix this.
+
+Possible unlocks: KISS. Save for V2.
+Different maps could be done with just different tiles/colors and enemies.
+Unlock music. Select music or random when playing. Default random.
+
+https://www.assetstore.unity3d.com/en/#!/content/29304
+https://www.assetstore.unity3d.com/en/#!/content/40252
+https://www.assetstore.unity3d.com/en/#!/content/27080
+https://www.assetstore.unity3d.com/en/#!/content/28729
+
+Weapons:
+https://www.assetstore.unity3d.com/en/#!/content/53117 
+
