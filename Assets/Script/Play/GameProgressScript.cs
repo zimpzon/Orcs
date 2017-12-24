@@ -108,6 +108,18 @@ public class GameProgressScript : MonoBehaviour
         Instance = this;
     }
 
+    public void EnemyExplosion(GameObject prefab, Vector3 pos, int count, float force)
+    {
+        for (int i = 0; i < count; ++i)
+        {
+            var spawn = GameObject.Instantiate<GameObject>(prefab);
+            spawn.transform.position = pos;
+            var actor = spawn.GetComponent<ActorBase>();
+            actor.AddForce(Random.insideUnitCircle.normalized * force);
+        }
+    }
+
+
     IEnumerator DeedWhiteWalkers()
     {
         while (true)
@@ -127,7 +139,7 @@ public class GameProgressScript : MonoBehaviour
     {
         while (true)
         {
-            int amount = 3 + (SaveGame.RoundScore / 8);
+            int amount = 5 + (SaveGame.RoundScore / 5);
             if (Random.value < 0.1f)
                 amount += 2;
 
@@ -135,7 +147,7 @@ public class GameProgressScript : MonoBehaviour
             PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
 
             yield return PositionUtility.SpawnGroup(SkellieWalkerPrefab, amount, 0.1f, !inside, dir);
-            float delay = 4 + Random.value;
+            float delay = 6 + Random.value;
             yield return new WaitForSeconds(delay);
         }
     }
@@ -147,15 +159,13 @@ public class GameProgressScript : MonoBehaviour
             while (SaveGame.RoundScore < 5)
                 yield return null;
 
-            const float WarnDelay = 1.0f;
+            const float WarnDelay = 0.5f;
 
             // Warn player
-            GameManager.Instance.TextGameWarning.enabled = true;
             AudioManager.Instance.PlayClip(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.ChargerWarning);
             yield return new WaitForSeconds(WarnDelay);
-            GameManager.Instance.TextGameWarning.enabled = false;
 
-            int amount = 4 + (SaveGame.RoundScore / 15);
+            int amount = 1 + (SaveGame.RoundScore / 15);
             if (Random.value < 0.1f)
                 amount += 1;
 
@@ -164,37 +174,17 @@ public class GameProgressScript : MonoBehaviour
             yield return PositionUtility.SpawnGroup(SkellieChargerPrefab, amount, 0.1f, true, dir);
 
             // Wait semi-random after spawning
-            float delay = 10 + Random.value;
+            float delay = 12 + Random.value * 2;
             yield return new WaitForSeconds(delay);
         }
     }
-
-    //IEnumerator Chargers()
-    //{
-    //    while (true)
-    //    {
-    //        //while (SaveGame.RoundScore < 10)
-    //        //    yield return null;
-
-    //        int amount = 1 + (SaveGame.RoundScore / 8);
-    //        if (Random.value < 0.1f)
-    //            amount += 1;
-
-    //        bool inside = Random.value < 0.5f || SaveGame.RoundScore == 1;
-    //        PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
-
-    //        yield return PositionUtility.SpawnGroup(SkellieChargerPrefab, amount, 0.1f, !inside, dir);
-    //        float delay = 4 + Random.value;
-    //        yield return new WaitForSeconds(delay);
-    //    }
-    //}
 
     IEnumerator BigWalkers()
     {
         while (true)
         {
             int amount = 1 + Random.Range(0, 2);
-            amount += SaveGame.RoundScore / 10;
+            amount += SaveGame.RoundScore / 15;
 
             float delay = SaveGame.RoundScore == 1 ? 5 + Random.value * 3 : 20 + Random.value + amount;
             yield return new WaitForSeconds(delay);

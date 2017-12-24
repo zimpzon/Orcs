@@ -14,7 +14,7 @@ public class SkellieCharger : ActorBase
     protected override void PreAwake()
     {
         Speed = 1.5f * GameMode.MoveSpeedModifier;
-        Hp = 200 * GameMode.HitpointModifier;
+        Hp = 50 * GameMode.HitpointModifier;
         mass_ = 1.0f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.SmallCharger;
     }
@@ -42,8 +42,8 @@ public class SkellieCharger : ActorBase
             const float MinDistToCharge = 3.0f;
             if (isFullyReady_ && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
             {
-                target_ = GameManager.Instance.PlayerTrans.position;
-                chargeSpeed_ = Speed * 4;
+                target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(Random.insideUnitCircle * 2);
+                chargeSpeed_ = Speed * 5;
                 if (chargeSpeed_ > 8.0f)
                     chargeSpeed_ = 8.0f;
 

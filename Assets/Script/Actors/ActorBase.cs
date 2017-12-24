@@ -54,7 +54,6 @@ public class ActorBase : MonoBehaviour
     protected bool isLivingBomb_;
     float livingBombDamage_;
     float livingBombEnd_;
-
     protected bool isSpawning_ = true;
     protected bool isFullyReady_ = false;
 
@@ -167,6 +166,10 @@ public class ActorBase : MonoBehaviour
 
     public void Update()
     {
+        force_ *= 1.0f - (30.0f * Time.deltaTime);
+        position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
+        transform_.position = position_;
+
         if (isSpawning_)
             return;
 
@@ -175,20 +178,16 @@ public class ActorBase : MonoBehaviour
         UpdateLivingBomb();
         CheckFullyReady();
 
-        position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
         position_.z = 0;
 
         if (isFullyReady_)
             position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
-
-        transform_.position = position_;
 
         bool dead = Hp <= 0.0f;
         if (!dead)
             animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, currentAnimations_);
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
-        force_ *= 1.0f - (30.0f * Time.deltaTime);
 
         const float RegenTime = 1.0f;
         slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + Time.deltaTime / RegenTime);
@@ -259,14 +258,16 @@ public class ActorBase : MonoBehaviour
 
     IEnumerator SpawnAnimCo()
     {
-        Vector3 basePos = transform_.position;
-        Vector3 pos = basePos;
-        Vector3 cloudPos = pos + Vector3.down * 0.25f;
+        isSpawning_ = true;
         float endTime = Time.time + 1.0f;
         material_.SetColor(flashColorParamId_, new Color(0.3f, 0.3f, 0.3f));
         float flashAmount = 1.0f;
         while (Time.time < endTime)
         {
+            Vector3 basePos = transform_.position;
+            Vector3 pos = basePos;
+            Vector3 cloudPos = pos + Vector3.down * 0.25f;
+
             material_.SetFloat(flashParamId_, flashAmount);
             flashAmount += Time.deltaTime * 1.0f;
             GameManager.Instance.MakeFlash(pos, 2.0f);
@@ -275,7 +276,6 @@ public class ActorBase : MonoBehaviour
         }
 
         material_.SetFloat(flashParamId_, 0.0f);
-        transform_.position = pos;
         isSpawning_ = false;
     }
 

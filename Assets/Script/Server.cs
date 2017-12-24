@@ -9,7 +9,7 @@ public class Server : MonoBehaviour
 {
     public static Server Instance;
 
-    public string TitleId = "5388"; // 272 - W..T..H..!!!
+//    public string TitleId = "272"; // 272 - W..T..H..!!! // 5388
     public object LastResult; // Simple and effective.
 
     // Debug switches --->
@@ -26,13 +26,13 @@ public class Server : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        PlayFabSettings.TitleId = TitleId;
+  //      PlayFabSettings.TitleId = TitleId;
     }
 
     void DoCustomLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
     {
         LoginWithCustomIDRequest request = new LoginWithCustomIDRequest();
-        request.TitleId = TitleId;
+        request.TitleId = PlayFabSettings.TitleId;
         request.CustomId = SaveGame.Members.UserId;
         request.CreateAccount = true;
 
@@ -42,7 +42,7 @@ public class Server : MonoBehaviour
     void DoAndroidLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
     {
         LoginWithAndroidDeviceIDRequest request = new LoginWithAndroidDeviceIDRequest();
-        request.TitleId = TitleId;
+        request.TitleId = PlayFabSettings.TitleId;
         request.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
         request.OS = SystemInfo.operatingSystem;
         request.AndroidDevice = SystemInfo.deviceModel;

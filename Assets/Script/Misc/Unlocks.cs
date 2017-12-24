@@ -198,11 +198,25 @@ namespace Assets.Script
 
         public static WeaponType PickRandomWeaponFromlist(List<WeaponType> list, WeaponType notThis)
         {
+            WeaponType orThis = WeaponType.None;
+
+            // Don't go from unarmed to paintball or vice versa. It is frustrating.
+            switch(notThis)
+            {
+                case WeaponType.Unarmed: orThis = WeaponType.Paintball; break;
+                case WeaponType.Paintball: orThis = WeaponType.Unarmed; break;
+            }
+
             for (int i = 0; i < 100; ++i)
             {
                 int idx = UnityEngine.Random.Range(0, list.Count);
                 WeaponType rndWeapon = list[idx];
-                if (rndWeapon != notThis && WeaponIsUnlocked(rndWeapon))
+
+                // Make Paintball more rare
+                if (rndWeapon == WeaponType.Paintball && Random.value < 0.5f)
+                    continue;
+
+                if (rndWeapon != notThis && rndWeapon != orThis && WeaponIsUnlocked(rndWeapon))
                     return rndWeapon;
             }
             // Failed to find a new one. Have to return notThis.

@@ -52,7 +52,7 @@ public class SkellieCaster : ActorBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsPlayer;
 
-        basic.Speed = 5.0f;
+        basic.Speed = 4.0f;
         basic.Damage = 35.0f;
         basic.MaxDistance = 15.0f;
         basic.Radius = 0.3f;
@@ -82,12 +82,12 @@ public class SkellieCaster : ActorBase
         ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
         ep.startColor = new Color32(255, 255, 255, 255);
         ep.position = position_;
-        ep.startSize = 0.75f;
-        ep.startLifetime = 2.0f;
-        for (int i = 0; i < Mathf.RoundToInt(10 * GameMode.ExplosionModifier); ++i)
+        ep.startSize = 0.5f;
+        ep.startLifetime = 0.5f;
+        for (int i = 0; i < Mathf.RoundToInt(15 * GameMode.ExplosionModifier); ++i)
         {
             Vector2 rndDir = Random.insideUnitCircle.normalized;
-            ep.velocity = rndDir * 1.5f;
+            ep.velocity = rndDir * 2.5f;
             GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
         }
     }
@@ -106,10 +106,10 @@ public class SkellieCaster : ActorBase
             const float MinDistToShoot = 4.0f;
             if (isFullyReady_ && Time.time > nextShoot && distanceToPlayer > MinDistToShoot)
             {
-                int projectileCount = 3 + SaveGame.RoundScore / 20;
+                int projectileCount = 5 + SaveGame.RoundScore / 15;
                 projectileCount = Mathf.RoundToInt(projectileCount * GameMode.FireCountModifier);
-                if (projectileCount > 8)
-                    projectileCount = 8;
+                if (projectileCount > 12)
+                    projectileCount = 12;
                 if (projectileCount < 1)
                     projectileCount = 1;
 

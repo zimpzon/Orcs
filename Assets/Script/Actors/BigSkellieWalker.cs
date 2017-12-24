@@ -34,17 +34,10 @@ public class BigSkellieWalker : ActorBase
     protected override void OnDeath()
     {
         GameManager.Instance.MakePoof(position_, 4, 2.0f);
-        ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
-        ep.startColor = new Color32(255, 255, 255, 255);
-        ep.position = position_;
-        ep.startSize = 0.75f;
-        ep.startLifetime = 2.0f;
-        for (int i = 0; i < Mathf.RoundToInt(10 * GameMode.ExplosionModifier); ++i)
-        {
-            Vector2 rndDir = Random.insideUnitCircle.normalized * 1.5f;
-            ep.velocity = rndDir;
-            GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
-        }
+        if (Random.value < 0.5f)
+            GameProgressScript.Instance.EnemyExplosion(GameProgressScript.Instance.SkellieWalkerPrefab, transform_.position, 3, 3.0f);
+        else
+            GameProgressScript.Instance.EnemyExplosion(GameProgressScript.Instance.SkellieCasterPrefab, transform_.position, 1, 3.0f);
     }
 
     protected override void PreUpdate()

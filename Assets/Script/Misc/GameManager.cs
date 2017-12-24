@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public Text TextNewUnlock;
     public Text TextRoundEndUnlocks;
     public Text TextDeedScore;
-    public Text TextGameWarning;
+    public Text TextUser;
     public TextMeshProUGUI TextHeroUnlock;
     public TextMeshProUGUI TextHeroName;
     public TextMeshProUGUI TextColWepNames;
@@ -118,6 +118,11 @@ public class GameManager : MonoBehaviour
 
     float roundStartTime_;
     int roundStartBestScore_;
+
+    public void OnKongregateLogin()
+    {
+        TextUser.text = KongregateApi.Instance.UserName;
+    }
 
     public void SelectHero(HeroEnum heroType, bool save = false)
     {
@@ -265,7 +270,6 @@ public class GameManager : MonoBehaviour
         if (GameMode >= GameModeEnum.LastSelectable)
             GameMode = GameModeEnum.Nursery;
 
-        SetGameModeText(GameMode);
         SetCurrentGameModeData(GameMode);
     }
 
@@ -284,6 +288,7 @@ public class GameManager : MonoBehaviour
         }
         LatestGameModeData = CurrentGameModeData;
 
+        SetGameModeText(GameMode);
         Floor.material.color = CurrentGameModeData.BackgroundTint;
         UpdateButtonStates();
     }
@@ -390,6 +395,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdateStat(string name, int value)
+    {
+        StartCoroutine(Server.Instance.UpdateStat(name, value));
+
+        if (KongregateApi.Instance.LoggedIn)
+        {
+            Application.ExternalCall("kongregate.stats.submit", name, value);
+        }
+    }
+
     public void ShowGameOver()
     {
         if (GameState == State.Dead)
@@ -397,7 +412,6 @@ public class GameManager : MonoBehaviour
 
         bool wasDeed = CurrentDeedData.Deed != DeedEnum.None;
 
-        TextGameWarning.enabled = false;
         TextFloatingWeapon.Clear();
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
@@ -405,12 +419,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Server.Instance.UpdateStat("Kills", SaveGame.RoundKills));
         switch (CurrentGameModeData.GameMode)
         {
-            case GameModeEnum.Nursery: StartCoroutine(Server.Instance.UpdateStat("ScoreNursery", SaveGame.RoundScore)); break;
-            case GameModeEnum.Earth: StartCoroutine(Server.Instance.UpdateStat("ScoreEarth", SaveGame.RoundScore)); break;
-            case GameModeEnum.Wind: StartCoroutine(Server.Instance.UpdateStat("ScoreWind", SaveGame.RoundScore)); break;
-            case GameModeEnum.Fire: StartCoroutine(Server.Instance.UpdateStat("ScoreFire", SaveGame.RoundScore)); break;
-            case GameModeEnum.Storm: StartCoroutine(Server.Instance.UpdateStat("ScoreStorm", SaveGame.RoundScore)); break;
-            case GameModeEnum.Harmony: StartCoroutine(Server.Instance.UpdateStat("ScoreHarmony", SaveGame.RoundScore)); break;
+            case GameModeEnum.Nursery: UpdateStat("ScoreNursery", SaveGame.RoundScore); break;
+            case GameModeEnum.Storm: UpdateStat("ScoreStorm", SaveGame.RoundScore); break;
             default: break;
         }
 
@@ -490,7 +500,6 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Intro)
             return;
 
-        TextGameWarning.enabled = false;
         PanelGameMode.SetActive(false);
         PanelUnlocks.SetActive(false);
         PanelDeeds.SetActive(false);
