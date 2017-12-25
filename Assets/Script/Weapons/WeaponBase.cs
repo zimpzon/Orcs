@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum WeaponType { None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, Rambo, Last };
+public enum WeaponType { None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, Rambo, Sword1, Last };
 
 public abstract class WeaponBase
 {
@@ -22,6 +22,7 @@ public abstract class WeaponBase
             case WeaponType.Sniper: return "Sniper";
             case WeaponType.Machinegun: return "Machinegun";
             case WeaponType.Grenade: return "Grenade";
+            case WeaponType.Sword1: return "Knightsaber";
             default: return wepType.ToString();
         }
     }
@@ -39,6 +40,7 @@ public abstract class WeaponBase
     static WeaponMachinegun Machinegun;
     static WeaponGrenade Grenade;
     static WeaponUnarmed Unarmed;
+    static WeaponSword Sword;
 
     public WeaponType Type;
     public Vector3 Scale;
@@ -256,6 +258,17 @@ public abstract class WeaponBase
                     Horn.FireAudio = AudioManager.Instance.AudioData.OrcHorn;
                 }
                 return Horn;
+
+            case WeaponType.Sword1:
+                if (Sword == null)
+                {
+                    Sword = new WeaponSword();
+                    Sword.Type = WeaponType.Sword1;
+                    Sword.Cd = 0.3f;
+                    Sword.FireAudio = AudioManager.Instance.AudioData.SaberSwing;
+                    Sword.MoveSpeedModifier = 0.0f;
+                }
+                return Sword;
 
             //case WeaponType.Flamethrower:
             //    if (Flamethrower == null)

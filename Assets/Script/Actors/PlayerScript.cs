@@ -1,12 +1,11 @@
 ﻿using Assets.Script;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
-    Vector3 lookAt_;
+    [System.NonSerialized] public Vector3 LookAt;
     Vector3 lookDir_;
     Vector3 moveVec_;
     bool isMoving_;
@@ -32,8 +31,9 @@ public class PlayerScript : MonoBehaviour
     SpriteRenderer weaponRenderer_;
     Transform weaponTransform_;
 
-    [System.NonSerialized]
-    public WeaponBase Weapon;
+    [System.NonSerialized] public WeaponBase Weapon;
+    public Transform MeleeWeapon;
+    SpriteRenderer meleeRenderer_;
 
     Transform laserTransform_;
     SpriteRenderer laserRenderer_;
@@ -60,6 +60,8 @@ public class PlayerScript : MonoBehaviour
         grenadeScript_ = Grenade.GetComponent<GrenadeScript>();
         basePos_ = trans_.position;
 
+        meleeRenderer_ = MeleeWeapon.GetComponentInChildren<SpriteRenderer>();
+
         weaponTransform_ = trans_.Find("Weapon").GetComponent<Transform>();
         weaponRenderer_ = weaponTransform_.gameObject.GetComponent<SpriteRenderer>();
 
@@ -84,8 +86,40 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
     }
 
+    public void SwingMelee()
+    {
+        StartCoroutine(SwingMeleeCo());
+    }
+
+    public IEnumerator SwingMeleeCo()
+    {
+        int flipX = LookAt.x < trans_.position.x ? -1 : 1;
+        MeleeWeapon.gameObject.SetActive(true);
+        float degreeStart = 90 * flipX;
+        float degreeEnd = -180 * flipX;
+        float degrees = degreeStart;
+
+        while (true)
+        {
+            if (flipX == 1.0f && degrees < degreeEnd)
+                break;
+
+            if (flipX == -1.0f && degrees > degreeEnd)
+                break;
+
+            MeleeWeapon.rotation = Quaternion.Euler(0.0f, 0.0f, degrees);
+            degrees -= 1500 * flipX * Time.deltaTime;
+            yield return null;
+        }
+
+        MeleeWeapon.gameObject.SetActive(false);
+
+        yield break;
+    }
+
     public void ResetAll()
     {
+        MeleeWeapon.gameObject.SetActive(false);
         shadowRenderer_.enabled = true;
         moveSpeedModifier_ = 1.0f;
         isDead_ = false;
@@ -95,7 +129,7 @@ public class PlayerScript : MonoBehaviour
         SetPlayerPos(basePos_);
         laserRenderer_.enabled = false;
         grenadeScript_.Hide();
-        lookAt_ = lookAt_.x < 0.0f ? Vector3.left : Vector3.right;
+        LookAt = LookAt.x < 0.0f ? Vector3.left : Vector3.right;
         SetWeapon(WeaponType.None);
     }
 
@@ -168,7 +202,7 @@ public class PlayerScript : MonoBehaviour
 
                 if (Weapon.Type == WeaponType.Grenade)
                 {
-                    grenadeScript_.Throw(trans_.position, lookAt_);
+                    grenadeScript_.Throw(trans_.position, LookAt);
                 }
             }
 
@@ -190,7 +224,7 @@ public class PlayerScript : MonoBehaviour
             return;
 
         Vector3 muzzlePoint = Weapon.GetMuzzlePoint(weaponTransform_);
-        Vector3 muzzleLook = (lookAt_ - muzzlePoint);
+        Vector3 muzzleLook = (LookAt - muzzlePoint);
 
         // If closer than the muzzle use player position instead. Prevents insane oscillation.
         float lookLen2 = muzzleLook.sqrMagnitude;
@@ -198,7 +232,7 @@ public class PlayerScript : MonoBehaviour
         if (lookLen2 <= 1.0f)
         {
             tooCloseForLaser = true;
-            muzzleLook = lookAt_ - trans_.position;
+            muzzleLook = LookAt - trans_.position;
             lookLen2 = muzzleLook.sqrMagnitude;
             if (lookLen2 < 0.1f)
             {
@@ -300,7 +334,7 @@ public class PlayerScript : MonoBehaviour
         {
             GameManager.SetDebugOutput("Cheat enabled", Time.time);
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                SetWeapon(WeaponType.Unarmed);
+                SetWeapon(WeaponType.Sword1);
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
                 SetWeapon(WeaponType.Horn);
@@ -343,10 +377,10 @@ public class PlayerScript : MonoBehaviour
 
         isMoving_ = moveVec_ != Vector3.zero;
 
-        lookAt_ = GameManager.Instance.CrosshairWorldPosition;
-        lookDir_ = (lookAt_ - trans_.position).normalized;
+        LookAt = GameManager.Instance.CrosshairWorldPosition;
+        lookDir_ = (LookAt - trans_.position).normalized;
 
-        flipX_ = lookAt_.x < trans_.position.x ? -playerScale_ : playerScale_;
+        flipX_ = LookAt.x < trans_.position.x ? -playerScale_ : playerScale_;
         Vector3 scale = trans_.localScale;
         scale.x = flipX_;
         trans_.localScale = scale;

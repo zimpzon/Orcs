@@ -75,6 +75,10 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public Action<Basic, ActorBase, float, Vector3> CustomCollisionResponse;
     }
 
+    [NonSerialized] public Vector3 DeflectSource;
+    [NonSerialized] public bool DoDeflect;
+    [NonSerialized] public float DeflectRadius;
+
     public static ProjectileManager Instance;
 
     ReusableObject<Basic> projectileCache_;
@@ -186,12 +190,27 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             removeListBasic_.Add(p);
                     }
                 }
+                else if (p.Type == ProjectileType.HarmsPlayer && DoDeflect)
+                {
+                    Vector3 dir = p.Position - DeflectSource;
+                    float distance = dir.magnitude;
+                    dir.Normalize();
+                    if (distance <= DeflectRadius)
+                    {
+                        p.Direction = Vector3.Reflect(p.Direction, dir) * 3;
+                        float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                        p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+                        p.Type = ProjectileType.HarmsEnemies;
+                    }
+                }
 
                 Vector3 perpendicular = new Vector3(-p.Direction.y, p.Direction.x, 0).normalized;
                 p.SpriteInfo.Transform.position = p.Position + (Mathf.Sin(Time.time * 10) * p.SwayFactor * perpendicular);
                 p.DistanceTraveled += frameSpeed;
             }
         }
+
+        DoDeflect = false;
 
         for (int i = 0; i < removeListBasic_.Count; ++i)
         {

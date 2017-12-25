@@ -533,7 +533,6 @@ public class GameManager : MonoBehaviour
         {
             SetCurrentGameModeData(LatestGameModeData.GameMode);
             CurrentDeedData = new DeedData();
-            GameModeData.UpdateWithDeedData(CurrentGameModeData, CurrentDeedData);
             GameState = State.Intro;
             MusicManagerScript.Instance.PlayIntroMusic();
         }
@@ -819,6 +818,8 @@ public class GameManager : MonoBehaviour
     {
         FlyingBlood.transform.position = pos;
         int rangeFrom = Mathf.RoundToInt(10 * amount);
+        if (rangeFrom > 8)
+            rangeFrom = 8;
         FlyingBlood.Emit(UnityEngine.Random.Range(rangeFrom, rangeFrom + 5));
 
         BloodDrops.transform.position = pos;

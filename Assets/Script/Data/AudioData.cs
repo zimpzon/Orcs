@@ -23,4 +23,6 @@ public class AudioData : ScriptableObject
     public AudioClip UnarmedBlast;
     public AudioClip Victory;
     public AudioClip ChargerWarning;
+    public AudioClip SaberSwing;
+    public AudioClip SaberHit;
 }

@@ -50,9 +50,10 @@ namespace Assets.Script
         public static List<WeaponUnlockInfo> WeaponUnlockInfo = new List<WeaponUnlockInfo>
         {
             new WeaponUnlockInfo { Type = WeaponType.Sniper, Counter = GameCounter.Score_Any_Sum, Requirement = 20 },
-            new WeaponUnlockInfo { Type = WeaponType.ShotgunSlug, Counter = GameCounter.Score_Any_Sum, Requirement = 100 },
+            new WeaponUnlockInfo { Type = WeaponType.Sword1, Counter = GameCounter.Score_Any_Sum, Requirement = 100 },
             new WeaponUnlockInfo { Type = WeaponType.Horn, Counter = GameCounter.Score_Any_Sum, Requirement = 200 },
-            new WeaponUnlockInfo { Type = WeaponType.Paintball, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
+            new WeaponUnlockInfo { Type = WeaponType.ShotgunSlug, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
+            new WeaponUnlockInfo { Type = WeaponType.Paintball, Counter = GameCounter.Score_Any_Sum, Requirement = 400 },
             new WeaponUnlockInfo { Type = WeaponType.Staff, Counter = GameCounter.Max_Score_Earth, Requirement = 15 },
             new WeaponUnlockInfo { Type = WeaponType.SuperShotgun, Counter = GameCounter.Max_Score_Wind, Requirement = 15 },
             new WeaponUnlockInfo { Type = WeaponType.SawedShotgun, Counter = GameCounter.Score_Fire_Sum, Requirement = 15 },
