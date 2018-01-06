@@ -224,7 +224,10 @@ public class ActorBase : MonoBehaviour
         if (Hp <= 0.0f)
             return;
 
-        amount *= Unlocks.DamageModifier;
+        // Sandbox mode is with default damage
+        float damageModifier = GameManager.Instance.CurrentDeedData.Deed == DeedEnum.Sandbox ? 1.0f : Unlocks.DamageModifier;
+        amount *= damageModifier;
+
         Hp -= amount;
         GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
 
@@ -309,7 +312,7 @@ public class ActorBase : MonoBehaviour
             yield return null;
         }
 
-        const float ExplodeRadius = 2.0f;
+        const float ExplodeRadius = 3.0f;
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.LivingBombExplode);
         GameManager.Instance.MakeCircle(transform_.position, ExplodeRadius);
         GameManager.Instance.MakePoof(transform_.position, 2, ExplodeRadius * 0.2f);

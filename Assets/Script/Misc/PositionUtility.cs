@@ -7,34 +7,76 @@ class CoResult<T>
     public T Value = default(T);
 }
 
-static class PositionUtility
+public static class PositionUtility
 {
-    public enum SpawnDirection { Top, Bottom, Left, Right, TopOrBottom, LeftOrRight, Any, Last };
+    public enum SpawnDirection { Top, Bottom, Left, Right, TopOrBottom, LeftOrRight, Inside, Any };
     public enum GroupFormation { Circle, Line };
+
+    public static SpawnDirection GetRandomDirOutside()
+    {
+        return (SpawnDirection)Random.Range(0, (int)SpawnDirection.Inside); // TODO PEE: Not pretty. Pick one BEFORE .Inside.
+    }
+
+    public static SpawnDirection GetRandomDirAny()
+    {
+        return (SpawnDirection)Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
+    }
 
     public static Vector3 GetPointInsideArena(float maxOffsetX, float maxOffsetY)
     {
-        float x = Random.Range(-0.45f, 0.45f) * maxOffsetX;
-        float y = Random.Range(-0.45f, 0.45f) * maxOffsetY;
-        Rect scr = AspectUtility.screenRelativeRect;
-        Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+        Vector3 point = Vector3.zero;
+        for (int i = 0; i < 5; ++i)
+        {
+            float x = Random.Range(-0.4f, 0.4f) * maxOffsetX;
+            float y = Random.Range(-0.4f, 0.4f) * maxOffsetY;
+            Rect scr = AspectUtility.screenRelativeRect;
+            point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+            bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
+            if (notOnTopOfPlayer)
+                break;
+        }
         return point;
     }
 
     public static Vector3 GetPointInsideScreen(float maxOffsetX, float maxOffsetY)
     {
-        float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
-        float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
-        Rect scr = AspectUtility.screenRelativeRect;
-        Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+        Vector3 point = Vector3.zero;
+        for (int i = 0; i < 5; ++i)
+        {
+            float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
+            float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
+            Rect scr = AspectUtility.screenRelativeRect;
+            point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+            bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
+            if (notOnTopOfPlayer)
+                break;
+        }
         return point;
     }
+
+    //public static Vector3 GetPointInsideArena(float maxOffsetX, float maxOffsetY)
+    //{
+    //    float x = Random.Range(-0.45f, 0.45f) * maxOffsetX;
+    //    float y = Random.Range(-0.45f, 0.45f) * maxOffsetY;
+    //    Rect scr = AspectUtility.screenRelativeRect;
+    //    Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+    //    return point;
+    //}
+
+    //public static Vector3 GetPointInsideScreen(float maxOffsetX, float maxOffsetY)
+    //{
+    //    float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
+    //    float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
+    //    Rect scr = AspectUtility.screenRelativeRect;
+    //    Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+    //    return point;
+    //}
 
     public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter)
     {
         if (dir == SpawnDirection.Any)
         {
-            dir = (SpawnDirection)Random.Range(0, 6); // All but any
+            dir = GetRandomDirAny();
         }
 
         if (dir == SpawnDirection.LeftOrRight)
@@ -51,8 +93,8 @@ static class PositionUtility
         float rnd = Random.Range(-1.0f, 1.0f) * maxDistFromCenter;
         switch (dir)
         {
-            case SpawnDirection.Top:     x = 0.5f + rnd; y = 0.0f; offsetY = -offset; break;
-            case SpawnDirection.Bottom:  x = 0.5f + rnd; y = 1.0f; offsetY =  offset; break;
+            case SpawnDirection.Top:     x = 0.5f + rnd; y = 1.0f; offsetY =  offset; break;
+            case SpawnDirection.Bottom:  x = 0.5f + rnd; y = 0.0f; offsetY = -offset; break;
             case SpawnDirection.Left:    x = 0.0f; y = 0.5f + rnd; offsetX = -offset; break;
             case SpawnDirection.Right:   x = 1.0f; y = 0.5f + rnd; offsetX =  offset; break;
         }

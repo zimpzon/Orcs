@@ -14,6 +14,8 @@ public class GameProgressScript : MonoBehaviour
     public Text TextDeedTitle;
     public Text TextScore;
     public Text TextDeedScore;
+    public Text TextSandboxCreator;
+    public Text TextSandboxWeapons;
 
     public GameObject SkellieWalkerPrefab;
     public GameObject SkellieChargerPrefab;
@@ -22,10 +24,12 @@ public class GameProgressScript : MonoBehaviour
 
     bool isRunning_;
     DeedData currentDeed_;
+    SandboxData currentSandbox_;
 
     public void Begin()
     {
         currentDeed_ = GameManager.Instance.CurrentDeedData;
+        currentSandbox_ = GameManager.Instance.CurrentSandboxData;
         isRunning_ = true;
         StartCoroutine(StartWave(0));
     }
@@ -43,10 +47,26 @@ public class GameProgressScript : MonoBehaviour
         TextScore.enabled = !isDeed;
         TextDeedTitle.enabled = isDeed;
 
+        TextSandboxCreator.enabled = false;
+        TextSandboxWeapons.enabled = false;
+
         if (isDeed)
         {
-            TextHowTo.text = string.Format(currentDeed_.Req, currentDeed_.KillReq);
+            TextHowTo.text = string.Format(currentDeed_.Req, currentDeed_.UpdatedKillReq);
             TextDeedTitle.text = currentDeed_.Title;
+            if (currentDeed_.Deed == DeedEnum.Sandbox)
+            {
+                TextSandboxCreator.text = string.Format("By {0}", currentSandbox_.creator_name);
+                TextSandboxCreator.enabled = true;
+                bool hasRightClickWeapon = (WeaponType)currentSandbox_.weapon_right_click != WeaponType.None;
+                if (hasRightClickWeapon)
+                {
+                    TextSandboxWeapons.text = string.Format("Left Mouse: {0}\nRight Mouse: {1}",
+                        WeaponBase.WeaponDisplayName((WeaponType)currentSandbox_.weapon_left_click),
+                        WeaponBase.WeaponDisplayName((WeaponType)currentSandbox_.weapon_right_click));
+                    TextSandboxWeapons.enabled = true;
+                }
+            }
         }
         else
         {
@@ -66,8 +86,17 @@ public class GameProgressScript : MonoBehaviour
         TextControls.enabled = false;
         TextHowTo.enabled = false;
         TextDeedTitle.enabled = false;
+        TextSandboxCreator.enabled = false;
+        TextSandboxWeapons.enabled = false;
 
-        if (currentDeed_.EnabledSpawns.Count == 0)
+        if (currentDeed_.Deed == DeedEnum.Sandbox)
+        {
+            foreach(var w in currentSandbox_.Waves)
+            {
+                StartCoroutine(SandboxWave(w));
+            }
+        }
+        else if (currentDeed_.EnabledSpawns.Count == 0)
         {
             StartCoroutine(Walkers());
             StartCoroutine(Chargers());
@@ -103,6 +132,21 @@ public class GameProgressScript : MonoBehaviour
         }
     }
 
+    IEnumerator SandboxWave(Wave wave)
+    {
+        yield return new WaitForSeconds(wave.start_time);
+        GameObject enemyPrefab;
+        switch ((ActorTypeEnum)wave.enemy_type)
+        {
+            case ActorTypeEnum.SmallWalker: enemyPrefab = SkellieWalkerPrefab; break;
+            case ActorTypeEnum.LargeWalker: enemyPrefab = BigSkellieWalkerPrefab; break;
+            case ActorTypeEnum.Caster: enemyPrefab = SkellieCasterPrefab; break;
+            case ActorTypeEnum.SmallCharger: enemyPrefab = SkellieChargerPrefab; break;
+            default: enemyPrefab = SkellieWalkerPrefab; break;
+        }
+        yield return PositionUtility.SpawnGroup(enemyPrefab, wave.count, wave.interval, wave.where != PositionUtility.SpawnDirection.Inside, wave.where);
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -110,6 +154,13 @@ public class GameProgressScript : MonoBehaviour
 
     public void EnemyExplosion(GameObject prefab, Vector3 pos, int count, float force)
     {
+        if (currentDeed_.Deed == DeedEnum.Sandbox)
+        {
+            // Not pretty... but we have to add these newly spawned enemies to the total count of the sandbox
+            currentDeed_.UpdatedKillReq += count;
+            TextHowTo.text = string.Format(currentDeed_.Req, currentDeed_.UpdatedKillReq);
+        }
+
         for (int i = 0; i < count; ++i)
         {
             var spawn = GameObject.Instantiate<GameObject>(prefab);
@@ -144,7 +195,7 @@ public class GameProgressScript : MonoBehaviour
                 amount += 2;
 
             bool inside = Random.value < 0.5f || SaveGame.RoundScore == 1;
-            PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
+            PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
             yield return PositionUtility.SpawnGroup(SkellieWalkerPrefab, amount, 0.1f, !inside, dir);
             float delay = 6 + Random.value;
@@ -169,7 +220,7 @@ public class GameProgressScript : MonoBehaviour
             if (Random.value < 0.1f)
                 amount += 1;
 
-            PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
+            PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
             yield return PositionUtility.SpawnGroup(SkellieChargerPrefab, amount, 0.1f, true, dir);
 
@@ -190,7 +241,7 @@ public class GameProgressScript : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
             bool inside = Random.value < 0.2f;
-            PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
+            PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
             yield return PositionUtility.SpawnGroup(BigSkellieWalkerPrefab, amount, 0.1f, !inside, dir);
         }
     }
@@ -211,7 +262,7 @@ public class GameProgressScript : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
             bool inside = Random.value < 0.05f;
-            PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
+            PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
             yield return PositionUtility.SpawnGroup(SkellieCasterPrefab, amount, 0.1f, !inside, dir);
         }
     }
@@ -246,7 +297,7 @@ public class GameProgressScript : MonoBehaviour
                 amount += 2;
 
             bool inside = Random.value < 0.5f || SaveGame.RoundScore == 1;
-            PositionUtility.SpawnDirection dir = (PositionUtility.SpawnDirection)Random.Range(0, (int)PositionUtility.SpawnDirection.Last);
+            PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
             yield return PositionUtility.SpawnGroup(SkellieWalkerPrefab, amount, 0.1f, !inside, dir);
             float delay = 4 + Random.value;

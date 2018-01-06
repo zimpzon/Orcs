@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 
-public enum WeaponType { None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, Rambo, Sword1, Last };
+public enum WeaponType { None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, Rambo, Sword1, Mine, Last };
+
+public class WeaponNone : WeaponBase
+{
+    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0.0f; }
+}
 
 public abstract class WeaponBase
 {
@@ -23,10 +28,12 @@ public abstract class WeaponBase
             case WeaponType.Machinegun: return "Machinegun";
             case WeaponType.Grenade: return "Grenade";
             case WeaponType.Sword1: return "Knightsaber";
+            case WeaponType.Mine: return "Mines";
             default: return wepType.ToString();
         }
     }
 
+    static WeaponNone None = new WeaponNone();
     static WeaponHorn Horn;
     static WeaponStaff Staff;
     static WeaponStaff2 Staff2;
@@ -41,6 +48,7 @@ public abstract class WeaponBase
     static WeaponGrenade Grenade;
     static WeaponUnarmed Unarmed;
     static WeaponSword Sword;
+    static WeaponMine Mine;
 
     public WeaponType Type;
     public Vector3 Scale;
@@ -74,9 +82,8 @@ public abstract class WeaponBase
         //  Select weapon, ctrl+shift+p to pause
         switch (type)
         {
-            // Bad code. Remember:
-            //  .Type
-            //  return correct name
+            case WeaponType.None:
+                return None;
 
             case WeaponType.Shotgun:
                 if (Shotgun == null)
@@ -237,6 +244,16 @@ public abstract class WeaponBase
                     Grenade.FireAudio = AudioManager.Instance.AudioData.PlayerThrowBomb;
                 }
                 return Grenade;
+
+            case WeaponType.Mine:
+                if (Mine == null)
+                {
+                    Mine = new WeaponMine();
+                    Mine.Type = WeaponType.Mine;
+                    Mine.Cd = 0.3f;
+                    Mine.FireAudio = AudioManager.Instance.AudioData.PlayerThrowBomb;
+                }
+                return Mine;
 
             case WeaponType.Unarmed:
                 if (Unarmed == null)

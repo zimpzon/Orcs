@@ -43,6 +43,7 @@ public class SkellieCharger : ActorBase
             if (isFullyReady_ && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
             {
                 target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(Random.insideUnitCircle * 2);
+                target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
                 chargeSpeed_ = Speed * 5;
                 if (chargeSpeed_ > 8.0f)
                     chargeSpeed_ = 8.0f;

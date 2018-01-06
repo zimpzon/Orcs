@@ -7,7 +7,7 @@ public class WeaponMachinegun : WeaponBase
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
         lastFire_ = Time.time;
-        recoil = 0.1f;
+        recoil = 0.05f;
         Color color = new Color(0.8f, 0.6f, 0.1f);
 
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
@@ -29,7 +29,7 @@ public class WeaponMachinegun : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 10.0f + Random.value * 2;
-        basic.Damage = 45.0f;
+        basic.Damage = 65.0f;
         basic.MaxDistance = 12.0f;
         basic.Radius = 0.3f;
 

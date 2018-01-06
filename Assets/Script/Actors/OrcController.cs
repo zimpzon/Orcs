@@ -19,7 +19,7 @@ public class OrcController : MonoBehaviour
     bool chasePlayer_ = false;
     Vector3 target_;
 
-    const float ChaseSpeed = 5.0f;
+    const float ChaseSpeed = 7.0f;
     const float NervousMinDistance = 4.0f;
 
     void Start()

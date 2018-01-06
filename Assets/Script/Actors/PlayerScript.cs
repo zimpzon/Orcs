@@ -22,6 +22,8 @@ public class PlayerScript : MonoBehaviour
     public bool RoundComplete;
 
     public Text OverheadText;
+
+    public GameObject MineProto;
     public Transform Grenade;
     GrenadeScript grenadeScript_;
 
@@ -31,6 +33,8 @@ public class PlayerScript : MonoBehaviour
     SpriteRenderer weaponRenderer_;
     Transform weaponTransform_;
 
+    WeaponType WeaponTypeLeft;
+    WeaponType WeaponTypeRight;
     [System.NonSerialized] public WeaponBase Weapon;
     public Transform MeleeWeapon;
     SpriteRenderer meleeRenderer_;
@@ -133,7 +137,7 @@ public class PlayerScript : MonoBehaviour
         SetWeapon(WeaponType.None);
     }
 
-    string getHolyWord()
+    string GetHolyWord()
     {
         var words = GameManager.Instance.SelectedHero.Talk;
         int idx = 0;
@@ -156,19 +160,19 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(Think());
     }
 
-    public void SetWeapon(WeaponType type)
+    public void SetWeaponTypes(WeaponType left, WeaponType right)
     {
-        if (type == WeaponType.None)
-        {
-            Weapon = null;
-            weaponRenderer_.sprite = null;
-        }
-        else
-        {
-            Weapon = WeaponBase.GetWeapon(type);
-            weaponTransform_.localScale = Weapon.Scale;
-            weaponRenderer_.sprite = Weapon.Sprite;
-        }
+        WeaponTypeLeft = left;
+        WeaponTypeRight = right;
+
+        SetWeapon(WeaponTypeLeft);
+    }
+
+    void SetWeapon(WeaponType type)
+    {
+        Weapon = WeaponBase.GetWeapon(type);
+        weaponTransform_.localScale = Weapon.Scale;
+        weaponRenderer_.sprite = Weapon.Sprite;
     }
 
     IEnumerator Think()
@@ -182,14 +186,31 @@ public class PlayerScript : MonoBehaviour
                 continue;
             }
 
-            bool fire = Input.GetMouseButton(0);
-            if (Weapon != null && !fire && wasFireDown)
+            bool leftDown = Input.GetMouseButton(0);
+            bool rightDown = Input.GetMouseButton(1);
+            bool bothDown = leftDown && rightDown;
+            bool doFire = false;
+
+            if (!bothDown)
             {
+                // First show the correct weapon if not already shown
+                if (leftDown && Weapon.Type != WeaponTypeLeft && WeaponTypeLeft != WeaponType.None)
+                    SetWeapon(WeaponTypeLeft);
+
+                if (rightDown && Weapon.Type != WeaponTypeRight && WeaponTypeRight != WeaponType.None)
+                    SetWeapon(WeaponTypeRight);
+
+                doFire = leftDown || rightDown;
+            }
+
+            if (!doFire && wasFireDown)
+            {
+                // Stop firing
                 isShooting_ = false;
                 Weapon.StopFire();
                 moveSpeedModifier_ = 1.0f;
             }
-            else if (fire && Weapon != null && Weapon.GetCdLeft() <= 0.0f)
+            else if (doFire && Weapon.GetCdLeft() <= 0.0f)
             {
                 isShooting_ = true;
                 moveSpeedModifier_ = Weapon.MoveSpeedModifier;
@@ -203,6 +224,11 @@ public class PlayerScript : MonoBehaviour
                 if (Weapon.Type == WeaponType.Grenade)
                 {
                     grenadeScript_.Throw(trans_.position, LookAt);
+                }
+                else if (Weapon.Type == WeaponType.Mine)
+                {
+                    var newMine = Instantiate<GameObject>(MineProto).GetComponent<MineScript>();
+                    newMine.Throw(trans_.position, LookAt);
                 }
             }
 
@@ -334,10 +360,10 @@ public class PlayerScript : MonoBehaviour
         {
             GameManager.SetDebugOutput("Cheat enabled", Time.time);
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                SetWeapon(WeaponType.Sword1);
+                SetWeapon(WeaponType.Machinegun);
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                SetWeapon(WeaponType.Horn);
+                SetWeapon(WeaponType.Grenade);
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
                 SetWeapon(WeaponType.ShotgunSlug);
@@ -414,7 +440,7 @@ public class PlayerScript : MonoBehaviour
 
     public void HolyTalk()
     {
-        Talk(getHolyWord(), 1.0f, Color.white);
+        Talk(GetHolyWord(), 1.0f, Color.white);
     }
 
     void UpdateOverheadText()

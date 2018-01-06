@@ -17,7 +17,7 @@ public class DeedUI : MonoBehaviour {
     {
         bool isComplete = SaveGame.Members.GetCounter(deed.CompletionCounter) > 0;
         DeedName.text = GameEvents.WrapInColor(deed.Title, isComplete);
-        DeedReq.text = string.Format(deed.Req, deed.KillReq);
+        DeedReq.text = string.Format(deed.Req, deed.BaseKillReq);
         DeedDescription.text = deed.Description;
         Checkmark.color = isComplete ? Color.green : new Color(0.2f, 0.1f, 0.1f);
 

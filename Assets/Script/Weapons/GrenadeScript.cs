@@ -67,7 +67,7 @@ public class GrenadeScript : MonoBehaviour
         float offsetY = 0;
 
         audioSource_.clip = AudioManager.Instance.AudioData.BombFuseBurn;
-        audioSource_.volume = 0.5f;
+        audioSource_.volume = 0.5f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
 
         while (Time.time < fuseT1)
@@ -97,7 +97,7 @@ public class GrenadeScript : MonoBehaviour
         fuseEmission.enabled = false;
 
         audioSource_.clip = AudioManager.Instance.AudioData.BombExplode;
-        audioSource_.volume = 1.0f;
+        audioSource_.volume = 1.0f * AudioManager.Instance.MasterVolume; ;
         audioSource_.Play();
         GameManager.Instance.MakeFlash(pos, Radius * 1.5f);
         GameManager.Instance.MakePoof(pos, 6, Radius * 1.5f);
@@ -132,13 +132,9 @@ public class GrenadeScript : MonoBehaviour
 
         // Kill player if very close, else just push
         float playerDist = BlackboardScript.DistanceToPlayer(pos);
-        if (playerDist < Radius * 0.35f)
+        if (playerDist < 3.0f)
         {
-            GameManager.Instance.PlayerScript.KillPlayer();
-        }
-        else if (playerDist < 3.0f)
-        {
-            GameManager.Instance.PlayerScript.AddForce((GameManager.Instance.PlayerTrans.position - pos) * 0.25f);
+            GameManager.Instance.PlayerScript.AddForce((GameManager.Instance.PlayerTrans.position - pos) * 0.1f);
         }
 
         Hide();

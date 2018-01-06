@@ -13,8 +13,8 @@ public class AudioManager : MonoBehaviour
     [System.NonSerialized]
     public AudioSource XpAudioSource;
 
-    public static AudioManager Instance;
-
+    [System.NonSerialized] public static AudioManager Instance;
+    public float MasterVolume;
     float lowPitchRange = .95f;
     float highPitchRange = 1.05f;
 
@@ -40,6 +40,11 @@ public class AudioManager : MonoBehaviour
     {
     }
 
+    public void SetVolume(float volume)
+    {
+        MasterVolume = volume;
+    }
+
     public void PlayClipWithRandomPitch(AudioSource source, AudioClip clip, float volumeScale = 1.0f)
     {
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
@@ -49,7 +54,7 @@ public class AudioManager : MonoBehaviour
     public void PlayClip(AudioSource source, AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f)
     {
         source.pitch = pitch;
-        source.PlayOneShot(clip, volumeScale);
+        source.PlayOneShot(clip, volumeScale * MasterVolume);
     }
 
     public void StopClip(AudioSource source)

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public enum DeedEnum { None, SnipersParadise, MachinegunMadness, LittleMonsters, WhiteWalkers };
+    public enum DeedEnum { None, SnipersParadise, MachinegunMadness, LittleMonsters, WhiteWalkers, Sandbox };
 
     public class DamageUnlockInfo
     {
@@ -37,8 +37,8 @@ namespace Assets.Script
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 500 },
             new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Any, Requirement = 5000 },
             new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Any, Requirement = 10000 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 500 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 1000 },
+            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 750 },
+            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 1500 },
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_BigWalker, Requirement = 100 },
             new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Caster, Requirement = 200 },
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Max_Score_Nursery, Requirement = 25 },
@@ -50,13 +50,13 @@ namespace Assets.Script
         public static List<WeaponUnlockInfo> WeaponUnlockInfo = new List<WeaponUnlockInfo>
         {
             new WeaponUnlockInfo { Type = WeaponType.Sniper, Counter = GameCounter.Score_Any_Sum, Requirement = 20 },
-            new WeaponUnlockInfo { Type = WeaponType.Sword1, Counter = GameCounter.Score_Any_Sum, Requirement = 100 },
-            new WeaponUnlockInfo { Type = WeaponType.Horn, Counter = GameCounter.Score_Any_Sum, Requirement = 200 },
-            new WeaponUnlockInfo { Type = WeaponType.ShotgunSlug, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
-            new WeaponUnlockInfo { Type = WeaponType.Paintball, Counter = GameCounter.Score_Any_Sum, Requirement = 400 },
-            new WeaponUnlockInfo { Type = WeaponType.Staff, Counter = GameCounter.Max_Score_Earth, Requirement = 15 },
-            new WeaponUnlockInfo { Type = WeaponType.SuperShotgun, Counter = GameCounter.Max_Score_Wind, Requirement = 15 },
-            new WeaponUnlockInfo { Type = WeaponType.SawedShotgun, Counter = GameCounter.Score_Fire_Sum, Requirement = 15 },
+            new WeaponUnlockInfo { Type = WeaponType.Sword1, Counter = GameCounter.Score_Any_Sum, Requirement = 50 },
+            new WeaponUnlockInfo { Type = WeaponType.ShotgunSlug, Counter = GameCounter.Score_Any_Sum, Requirement = 100 },
+            new WeaponUnlockInfo { Type = WeaponType.SuperShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 200 },
+            new WeaponUnlockInfo { Type = WeaponType.Staff, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
+            new WeaponUnlockInfo { Type = WeaponType.Horn, Counter = GameCounter.Score_Any_Sum, Requirement = 400 },
+            new WeaponUnlockInfo { Type = WeaponType.SawedShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 500 },
+            new WeaponUnlockInfo { Type = WeaponType.Paintball, Counter = GameCounter.Max_Score_Earth, Requirement = 10 },
             new WeaponUnlockInfo { Type = WeaponType.Rambo, Counter = GameCounter.score_Harmony_Sum, Requirement = 75 },
             new WeaponUnlockInfo { Type = WeaponType.Staff2, Counter = GameCounter.Kill_Any, Requirement = 2500 },
         };
@@ -208,6 +208,12 @@ namespace Assets.Script
         // Important: All counter events must go through here so unlocks can be checked
         public static void CounterEvent(GameCounter counter, int amount)
         {
+            if (GameManager.Instance.CurrentDeedData.Deed == DeedEnum.Sandbox)
+            {
+                // Seems ok to do this check here. Sandbox events do not count towards unlocks.
+                return;
+            }
+
             if (SaveGame.Members.IsMaxCounter(counter))
                 SaveGame.Members.TryUpdateMaxValue(counter, amount);
             else

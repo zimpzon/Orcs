@@ -22,7 +22,8 @@ public class SaveGameMembers
     public int Version;
     public int BestKills;
     public int BestScore;
-
+    public float VolumeMusic = 0.7f;
+    public float VolumeSfx = 1.0f;
     public int SelectedHero;
     public string UserId;
 

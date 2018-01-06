@@ -200,6 +200,10 @@ namespace Assets.Script
         {
             WeaponType orThis = WeaponType.None;
 
+            // If only 1 in list we have no choice
+            if (list.Count == 1)
+                return list[0];
+
             // Don't go from unarmed to paintball or vice versa. It is frustrating.
             switch(notThis)
             {
@@ -225,12 +229,12 @@ namespace Assets.Script
 
         public static void SetRandomWeapon()
         {
-            var currentWeapon = GameManager.Instance.PlayerScript.Weapon == null ? WeaponType.None : GameManager.Instance.PlayerScript.Weapon.Type;
+            var currentWeapon = GameManager.Instance.PlayerScript.Weapon.Type;
             var gameMode = GameManager.Instance.CurrentGameModeData;
             if (gameMode.WeaponRestrictions.Count > 0)
             {
                 var newWep = PickRandomWeaponFromlist(gameMode.WeaponRestrictions, currentWeapon);
-                GameManager.Instance.PlayerScript.SetWeapon(newWep);
+                GameManager.Instance.PlayerScript.SetWeaponTypes(newWep, WeaponType.None);
                 return;
             }
 
@@ -240,13 +244,13 @@ namespace Assets.Script
             // Newly unlocked weapons are seen a few times
             if (ForceWeaponCount > 0 && currentWeapon != ForceWeaponType)
             {
-                GameManager.Instance.PlayerScript.SetWeapon(ForceWeaponType);
+                GameManager.Instance.PlayerScript.SetWeaponTypes(ForceWeaponType, WeaponType.None);
                 ForceWeaponCount--;
                 return;
             }
 
             var newWeapon = PickRandomWeaponFromlist(unlockedWeapons_, currentWeapon);
-            GameManager.Instance.PlayerScript.SetWeapon(newWeapon);
+            GameManager.Instance.PlayerScript.SetWeaponTypes(newWeapon, WeaponType.None);
         }
 
         public static bool AllWeaponsUnlocked()

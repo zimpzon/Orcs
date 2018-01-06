@@ -12,7 +12,7 @@ public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelec
 
 public class GameManager : MonoBehaviour
 {
-    public enum State { None, Intro, Intro_GameMode, Intro_Unlocks, Intro_Deeds, Playing, Dead };
+    public enum State { None, Intro, Intro_GameMode, Intro_Unlocks, Intro_Deeds, Intro_Sandbox, Intro_Settings, Playing, Dead };
 
     public static GameManager Instance;
     public bool UnlockAllGameModes;
@@ -43,19 +43,27 @@ public class GameManager : MonoBehaviour
     public Renderer Floor;
     public GameObject DeedPrefab;
     public Transform DeedItemParent;
-
     public GameObject TextDeedsLocked;
     public Button ButtonGo;
     public Button ButtonPlay;
+    public Button ButtonSandbox;
     public string ColorLocked;
     public string ColorUnlocked;
 
+    public Slider SliderMusic;
+    public Slider SliderSfx;
+    public Dropdown DropdownResolution;
+
+    public GameObject ScrollSandboxHelp;
     public TextMeshProUGUI TextGameMode;
     public TextMeshProUGUI TextGameModeInfo;
+    public InputField InputSandboxJson;
+    public Text TextSandboxParseStatus;
     public GameObject PanelGameMode;
     public GameObject PanelUnlocks;
     public GameObject PanelDeeds;
-    public GameObject PanelResetProgress;
+    public GameObject PanelSandbox;
+    public GameObject PanelSettings;
     public Canvas CanvasGameOverDefault;
     public Canvas CanvasGameOverDeed;
     public GameModeEnum GameMode;
@@ -91,6 +99,8 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public GameModeData LatestGameModeData = new GameModeData();
     [NonSerialized] public GameModeData CurrentGameModeData;
     [NonSerialized] public DeedData CurrentDeedData = new DeedData();
+    [NonSerialized] public SandboxData CurrentSandboxData = new SandboxData();
+    DeedData DeedSandbox = new DeedData();
     public GameModeData GameModeDataNursery = new GameModeData();
     public GameModeData GameModeDataEarth = new GameModeData();
     public GameModeData GameModeDataWind = new GameModeData();
@@ -98,6 +108,7 @@ public class GameManager : MonoBehaviour
     public GameModeData GameModeDataStorm = new GameModeData();
     public GameModeData GameModeDataHarmony = new GameModeData();
     public GameModeData GameModeDataDeed = new GameModeData();
+    public GameModeData GameModeDataSandbox = new GameModeData();
 
     public List<DeedData> Deeds = new List<DeedData>();
     public List<DeedUI> DeedItems = new List<DeedUI>();
@@ -118,10 +129,112 @@ public class GameManager : MonoBehaviour
 
     float roundStartTime_;
     int roundStartBestScore_;
+    Sandbox sandbox_ = new Sandbox();
 
     public void OnKongregateLogin()
     {
         TextUser.text = KongregateApi.Instance.UserName;
+    }
+
+    public void OnButtonSettings()
+    {
+        PlayMenuSound();
+        GameState = State.Intro_Settings;
+
+        SliderMusic.value = SaveGame.Members.VolumeMusic;
+        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider
+        SliderSfx.value = SaveGame.Members.VolumeSfx;
+
+        EnablePanel(PanelSettings, true);
+    }
+
+    public void SliderMusicChanged()
+    {
+        float value = SliderMusic.value;
+        MusicManagerScript.Instance.SetVolume(value);
+        SaveGame.Members.VolumeMusic = value;
+    }
+
+    float sfxVolumeChangeLastFeedback_;
+    bool skipNextsfxVolumeChangeFeedback_;
+    public void SliderSfxChanged()
+    {
+        float value = SliderSfx.value;
+        AudioManager.Instance.SetVolume(value);
+        if (!skipNextsfxVolumeChangeFeedback_)
+        {
+            if (Time.time > sfxVolumeChangeLastFeedback_)
+            {
+                AudioManager.Instance.PlayClip(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.PlayerMachinegunFire);
+                sfxVolumeChangeLastFeedback_ = Time.time + 0.1f;
+            }
+        }
+        SaveGame.Members.VolumeSfx = value;
+        skipNextsfxVolumeChangeFeedback_ = false;
+    }
+
+    int[] resolutionWidths_ = { 1000, 1200, 1600, 2000, 3000 };
+    public void DropdownResolutionChanged()
+    {
+        int idx = DropdownResolution.value;
+        if (idx >= 0 && idx < resolutionWidths_.Length)
+        {
+            int width = resolutionWidths_[idx];
+            int height = (width * 3) / 4;
+            Screen.SetResolution(width, height, false);
+        }
+    }
+
+    public void OnButtonSandbox()
+    {
+        PlayMenuSound();
+        TextSandboxParseStatus.text = "";
+        GameState = State.Intro_Sandbox;
+        EnablePanel(PanelSandbox, true);
+    }
+
+    public void OnButtonSandboxGo()
+    {
+        string error;
+        var sand = SandboxData.TryParse(InputSandboxJson.text, out error);
+        if (sand != null)
+        {
+            CurrentSandboxData = sand;
+            DeedData.UpdateWithSandboxData(DeedSandbox, sand);
+            OnStartDeed(DeedSandbox);
+        }
+        else
+        {
+            // Sandbox json parse error
+            TextSandboxParseStatus.text = error;
+        }
+    }
+
+    void OnStartDeed(DeedData deedData)
+    {
+        deedData.Reset();
+        CurrentDeedData = deedData;
+        GameModeData.UpdateWithDeedData(GameModeDataDeed, CurrentDeedData);
+        SetCurrentGameModeData(GameModeEnum.Deed, remember: false);
+        StartGame();
+    }
+
+    public void OnButtonSandboxHelp()
+    {
+        PlayMenuSound();
+        ScrollSandboxHelp.SetActive(true);
+    }
+
+    public void OnButtonSandboxExample1()
+    {
+        var json = sandbox_.GetExample1();
+        InputSandboxJson.text = json;
+    }
+
+    public void OnButtonSandboxExample2()
+    {
+        var json = sandbox_.GetExample2();
+        InputSandboxJson.text = json;
     }
 
     public void SelectHero(HeroEnum heroType, bool save = false)
@@ -174,6 +287,7 @@ public class GameManager : MonoBehaviour
         bool canDoDeeds = Unlocks.WeaponIsUnlocked(WeaponType.Rambo);
 
         ButtonPlay.interactable = heroIsUnlocked;
+        ButtonSandbox.interactable = heroIsUnlocked;
         ButtonGo.interactable = heroIsUnlocked && gameModeIsUnlocked;
         ButtonUnlockedText.transform.parent.GetComponent<Button>().interactable = UnlockedPct > 0.0f;
         ButtonDeedText.transform.parent.GetComponent<Button>().interactable = canDoDeeds && heroIsUnlocked;
@@ -227,15 +341,6 @@ public class GameManager : MonoBehaviour
                 y += spacing;
             }
         }
-    }
-
-    void OnStartDeed(DeedData deedData)
-    {
-        deedData.Reset();
-        SetCurrentGameModeData(GameModeEnum.Deed, remember: false);
-        CurrentDeedData = deedData;
-        GameModeData.UpdateWithDeedData(CurrentGameModeData, CurrentDeedData);
-        StartGame();
     }
 
     void UpdateDeedsPanel()
@@ -355,6 +460,40 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
+            while (GameState == State.Intro_Sandbox)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    PlayMenuSound();
+                    if (ScrollSandboxHelp.activeInHierarchy)
+                    {
+                        ScrollSandboxHelp.SetActive(false);
+                    }
+                    else
+                    {
+                        GameState = State.Intro;
+                        EnablePanel(PanelSandbox, false);
+                        break;
+                    }
+                }
+
+                yield return null;
+            }
+
+            while (GameState == State.Intro_Settings)
+            {
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    PlayMenuSound();
+                    SaveGame.Save();
+                    GameState = State.Intro;
+                    EnablePanel(PanelSettings, false);
+                    break;
+                }
+
+                yield return null;
+            }
+
             while (GameState == State.Intro_Deeds)
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
@@ -440,7 +579,7 @@ public class GameManager : MonoBehaviour
         TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
         TextGameOverOrcsSavedBest.text = string.Format("{0}", bestScore);
 
-        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.KillReq);
+        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
         TextGameOverDeedScore.text = TextDeedScore.text;
         TextGameOverDeedComment.text = CurrentDeedData.DeedComplete ?
             "Victory! Your Heroic Feat Will Be Remembered!" : "Defeat. Your Heroic Efforts Were In Vain.";
@@ -464,12 +603,16 @@ public class GameManager : MonoBehaviour
         else
         {
             // Hacky. Show progress for first weapon (sniper) as teaser
-            var unlockInfo = GameEvents.WeaponUnlockInfo.Where(wep => wep.Type == WeaponType.Sniper).FirstOrDefault();
-            int needed = unlockInfo.Requirement - SaveGame.Members.GetCounter(unlockInfo.Counter);
-            if (needed > 0)
+            var nextWeapons = GameEvents.WeaponUnlockInfo.Where(
+                wep => wep.Counter == GameCounter.Score_Any_Sum && SaveGame.Members.GetCounter(wep.Counter) < wep.Requirement
+            ).OrderBy(wep => wep.Requirement).ToList();
+
+            if (nextWeapons.Count > 0)
             {
+                var nextWep = nextWeapons[0];
+                int needed = nextWep.Requirement - SaveGame.Members.GetCounter(nextWep.Counter);
                 TextRoundEndUnlocks.enabled = true;
-                TextRoundEndUnlocks.text = string.Format("Save {0} More To Unlock Next Weapon: {1}!", needed, WeaponBase.WeaponDisplayName(unlockInfo.Type));
+                TextRoundEndUnlocks.text = string.Format("Save {0} More To Unlock Next Weapon: {1}!", needed, WeaponBase.WeaponDisplayName(nextWep.Type));
             }
         }
 
@@ -497,36 +640,51 @@ public class GameManager : MonoBehaviour
 
     public void ShowTitle(bool autoStartGame = false)
     {
+        int debug = 0;
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         if (GameState == State.Intro)
             return;
 
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
+
         PanelGameMode.SetActive(false);
+        PanelSandbox.SetActive(false);
+        PanelSettings.SetActive(false);
         PanelUnlocks.SetActive(false);
         PanelDeeds.SetActive(false);
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         ProjectileManager.Instance.StopAll();
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         GameProgressScript.Instance.Stop();
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         Orc.Hide();
         Time.timeScale = 1.0f;
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
         SelectHero((HeroEnum)SaveGame.Members.SelectedHero);
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
         UpdateUnlockedPct();
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
         ButtonDeedText.text = string.Format("HEROIC FEATS ({0}%)", Mathf.RoundToInt(DeedDonePct * 100));
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
         UpdateButtonStates();
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);
         CanvasGame.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(false);
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
         System.GC.Collect();
+        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         if (autoStartGame)
         {
+            Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
             StartGame();
         }
         else
@@ -543,16 +701,22 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Playing)
             return;
 
+        int debug = 0;
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined; // TODO PE: Only works as a reponse to user action (browser security)
         SaveGame.ResetRound();
 
         CurrentDeedData.Reset();
-        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.KillReq);
+        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
         TextScore.text = SaveGame.RoundScore.ToString();
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasIntro.gameObject.SetActive(false);
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasDead.gameObject.SetActive(false);
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasGame.gameObject.SetActive(true);
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         BlackboardScript.DestroyAllCorpses();
         FloorBlood.Clear();
         GameState = State.Playing;
@@ -566,12 +730,22 @@ public class GameManager : MonoBehaviour
         if (CurrentDeedData.Deed != DeedEnum.None && CurrentDeedData.WeaponRestrictions.Count != 0)
         {
             // Start with a weapon when running a deed with weapon restrictions (mostly for the ones where player movement is ZERO)
-            PlayerScript.SetWeapon(CurrentDeedData.WeaponRestrictions[0]);
+            PlayerScript.SetWeaponTypes(CurrentDeedData.WeaponRestrictions[0], WeaponType.None);
         }
 
+        if (CurrentDeedData.Deed == DeedEnum.Sandbox)
+        {
+            PlayerScript.SetWeaponTypes((WeaponType)CurrentSandboxData.weapon_left_click, (WeaponType)CurrentSandboxData.weapon_right_click);
+        }
+
+        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin();
-        StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
+
+        if (CurrentDeedData.Deed == DeedEnum.Sandbox)
+            StartCoroutine(Server.Instance.UpdateStat("SandboxStart", 1));
+        else
+            StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
     }
 
     void ClearParticles()
@@ -631,18 +805,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            MusicManagerScript.Instance.ToggleMusic();
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            Screen.fullScreen = !Screen.fullScreen;
-        }
-
-        //var mousePos = new Vector3(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"), 0);
-        //SetDebugOutput("axis", mousePos);
         Vector3 worldPos = Input.mousePosition;
         worldPos.z = 0;
         Crosshair.position = worldPos;
@@ -679,7 +841,7 @@ public class GameManager : MonoBehaviour
 
         if (CurrentDeedData.OnKill(actor.ActorType))
         {
-            TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.KillReq);
+            TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
         }
     }
 
@@ -728,8 +890,11 @@ public class GameManager : MonoBehaviour
 
         TextScore.text = SaveGame.RoundScore.ToString();
 
-        Unlocks.SetRandomWeapon();
-        TextFloatingWeapon.SetText(WeaponBase.WeaponDisplayName(PlayerScript.Weapon.Type), 2.0f);
+        if (CurrentDeedData.Deed != DeedEnum.Sandbox)
+        {
+            Unlocks.SetRandomWeapon();
+            TextFloatingWeapon.SetText(WeaponBase.WeaponDisplayName(PlayerScript.Weapon.Type), 2.0f);
+        }
 
         if (CurrentDeedData.ShowOrcs)
         {
@@ -765,11 +930,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void TrySendEvent(string category, string value)
-    {
-        // Could be a PlayFab event?
-    }
-
     public static void SetDebugOutput(string key, object value)
     {
         DebugValues[key] = value.ToString();
@@ -790,12 +950,18 @@ public class GameManager : MonoBehaviour
         SpawnPoof.Emit(count);
     }
 
-    public void MakeFlash(Vector3 pos, float size = 1.0f)
+    public void MakeFlash(Vector3 pos, Color color, float size = 1.0f)
     {
         FlashParticles.transform.position = pos;
         var main = FlashParticles.main;
         main.startSize = size;
+        main.startColor = color;
         FlashParticles.Emit(1);
+    }
+
+    public void MakeFlash(Vector3 pos, float size = 1.0f)
+    {
+        MakeFlash(pos, Color.white, size);
     }
 
     public void MakeCircle(Vector3 pos, float size = 1.0f)
@@ -886,19 +1052,10 @@ public class GameManager : MonoBehaviour
         InitDeedItems();
 
         SaveGame.Load();
-
-        //// One-shot message when old prefs are deleted
-        //if (SaveGame.OldPrefsPresent())
-        //{
-        //    EnablePanel(PanelResetProgress, true);
-        //}
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
 
         Unlocks.RefreshUnlocked();
-    }
-
-    public void OnPrefsDeletedOk()
-    {
-        EnablePanel(PanelResetProgress, false);
     }
 
     private void Start()
