@@ -9,7 +9,7 @@ public class BigSkellieWalker : ActorBase
     Vector3 scale_;
     Vector3 target_;
 
-    protected override void PreAwake()
+    protected override void PreEnable()
     {
         Speed = 2.0f * GameMode.MoveSpeedModifier;
         Hp = 350 * GameMode.HitpointModifier;
@@ -17,7 +17,7 @@ public class BigSkellieWalker : ActorBase
         ActorType = ActorTypeEnum.LargeWalker;
     }
 
-    protected override void PostStart()
+    protected override void PostEnable()
     {
         scale_ = transform_.localScale  * (GameMode.HasExtraLargeWalkers ? 1.5f : 1.0f);
         position_ = this.Transform.position;
@@ -35,9 +35,9 @@ public class BigSkellieWalker : ActorBase
     {
         GameManager.Instance.MakePoof(position_, 4, 2.0f);
         if (Random.value < 0.5f)
-            GameProgressScript.Instance.EnemyExplosion(GameProgressScript.Instance.SkellieWalkerPrefab, transform_.position, 3, 3.0f);
+            GameProgressScript.Instance.EnemyExplosion(ActorTypeEnum.SmallWalker, transform_.position, 3, 3.0f);
         else
-            GameProgressScript.Instance.EnemyExplosion(GameProgressScript.Instance.SkellieCasterPrefab, transform_.position, 1, 3.0f);
+            GameProgressScript.Instance.EnemyExplosion(ActorTypeEnum.Caster, transform_.position, 1, 3.0f);
     }
 
     protected override void PreUpdate()

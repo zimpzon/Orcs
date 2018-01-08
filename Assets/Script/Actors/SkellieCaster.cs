@@ -18,7 +18,7 @@ public class SkellieCaster : ActorBase
         return result;
     }
 
-    protected override void PreAwake()
+    protected override void PreEnable()
     {
         Speed = 3.0f * GameMode.MoveSpeedModifier;
         Hp = 150 * GameMode.HitpointModifier;
@@ -26,7 +26,7 @@ public class SkellieCaster : ActorBase
         ActorType = ActorTypeEnum.Caster;
     }
 
-    protected override void PostStart()
+    protected override void PostEnable()
     {
         scale_ = transform_.localScale;
         position_ = this.Transform.position;
@@ -53,7 +53,7 @@ public class SkellieCaster : ActorBase
         basic.Type = ProjectileManager.ProjectileType.HarmsPlayer;
 
         basic.Speed = 4.0f;
-        basic.Damage = 35.0f;
+        basic.Damage = 100.0f;
         basic.MaxDistance = 15.0f;
         basic.Radius = 0.3f;
         basic.Color = Color.yellow;

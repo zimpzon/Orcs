@@ -4,14 +4,12 @@ using UnityEngine;
 public class GoCache : MonoBehaviour
 {
     public GameObject Prefab;
+    public string Name;
 
     public int PreCreateCount = 1;
 
-    [System.NonSerialized]
     public int InCache;
-    [System.NonSerialized]
     public int InFlight;
-    [System.NonSerialized]
     public int Total;
 
     private List<GameObject> objects = new List<GameObject>();

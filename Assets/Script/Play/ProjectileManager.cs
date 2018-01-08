@@ -88,7 +88,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
     private void Awake()
     {
         Instance = this;
-        projectileCache_ = new ReusableObject<Basic>(50, this);
+        projectileCache_ = new ReusableObject<Basic>(100, this);
         basicProjectiles_ = new List<Basic>();
         removeListBasic_ = new List<Basic>();
     }
@@ -194,9 +194,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 {
                     Vector3 dir = p.Position - DeflectSource;
                     float distance = dir.magnitude;
-                    dir.Normalize();
                     if (distance <= DeflectRadius)
                     {
+                        dir.Normalize();
                         p.Direction = Vector3.Reflect(p.Direction, dir) * 3;
                         float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
                         p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);

@@ -128,23 +128,5 @@ public class OrcController : MonoBehaviour
         {
             trans_.position += targetDir * ChaseSpeed * Time.deltaTime;
         }
-
-        //if (chasePlayer_)
-        //{
-        //    if (!(Mood == OrcMood.Nervous && dist < NervousMinDistance))
-        //    {
-        //        trans_.position += dir * ChaseSpeed * Time.deltaTime;
-
-        //        const float PushRadius = 0.1f;
-        //        int aliveCount = BlackboardScript.GetEnemies(trans_.position, PushRadius);
-        //        for (int i = 0; i < aliveCount; ++i)
-        //        {
-        //            int idx = BlackboardScript.Matches[i].Idx;
-        //            ActorBase enemy = BlackboardScript.Enemies[idx];
-
-        //            Vector3 pushDir = (enemy.transform.position - trans_.position).normalized;
-        //            enemy.AddForce(pushDir);
-        //        }
-        //    }
     }
 }

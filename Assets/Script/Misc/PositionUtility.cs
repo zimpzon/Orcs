@@ -106,7 +106,7 @@ public static class PositionUtility
     public const float PI2 = 3.14159265f * 2;
 
     public static IEnumerator SpawnGroup(
-        GameObject proto,
+        ActorTypeEnum actorType,
         int count,
         float timeBetweenEntities,
         bool outsideScreen,
@@ -114,7 +114,7 @@ public static class PositionUtility
     {
         for (int entity = 0; entity < count; ++entity)
         {
-            var spawn = GameObject.Instantiate<GameObject>(proto);
+            var spawn = EnemyManager.Instance.GetEnemyFromCache(actorType);
             float offset = 2.0f;
             Vector3 pos;
             if (outsideScreen)
@@ -123,19 +123,9 @@ public static class PositionUtility
                 pos = GetPointInsideArena(1.0f, 1.0f);
 
             spawn.transform.position = pos;
+            spawn.SetActive(true);
             if (timeBetweenEntities != 0.0)
                 yield return new WaitForSeconds(timeBetweenEntities);
-        }
-    }
-
-    public static IEnumerator SpawnList(GameObject proto, List<Vector3> list, float delayBetween)
-    {
-        for (int i = 0; i < list.Count; ++i)
-        {
-            var spawn = GameObject.Instantiate<GameObject>(proto);
-            spawn.transform.position = list[i];
-            if (delayBetween != 0.0)
-                yield return new WaitForSeconds(delayBetween);
         }
     }
 

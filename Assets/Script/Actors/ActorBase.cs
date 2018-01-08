@@ -15,7 +15,6 @@ public class ActorBase : MonoBehaviour
 
     [System.NonSerialized] public bool IsCorpse;
 
-    [System.NonSerialized] public bool IsInsideVisibleArea;
     [System.NonSerialized] public ActorTypeEnum ActorType;
     [System.NonSerialized] public float Hp;
     public Transform Transform;
@@ -36,11 +35,8 @@ public class ActorBase : MonoBehaviour
     protected int flashColorParamId_;
     protected float flashEndTime_;
 
-    protected virtual void PreAwake() { }
-    protected virtual void PostAwake() { }
-
-    protected virtual void PreStart() { }
-    protected virtual void PostStart() { }
+    protected virtual void PreEnable() { }
+    protected virtual void PostEnable() { }
 
     protected virtual void PreUpdate() { }
     protected virtual void PostUpdate() { }
@@ -61,9 +57,6 @@ public class ActorBase : MonoBehaviour
 
     public void Awake()
     {
-        GameMode = GameManager.Instance.CurrentGameModeData;
-        PreAwake();
-
         currentAnimations_ = SpriteData.Instance.SkellieWalkSprites; // Set default animations
 
         transform_ = this.transform;
@@ -80,22 +73,26 @@ public class ActorBase : MonoBehaviour
         RadiusBody *= scale;
         HeadOffset *= scale;
         BodyOffset *= scale;
-
-        PostAwake();
     }
 
     public void Start()
     {
-        PreStart();
-
         this.gameObject.layer = GameManager.Instance.LayerNeutral;
-        GameManager.Instance.RegisterEnemy(this);
         massInverse_ = 1.0f / mass_;
+    }
 
-        material_.color *= GameMode.AmbientColor;
+    public void OnEnable()
+    {
+        // This is annoying. OnEnable is called right after Awake (eg before Start) when the cache precreates the objects, if the prefab is enabled.
+        // On the other hand, if the prefab is NOT enabled, the first OnEnable call is called AFTER Start. So we don't know which is which here.
+        if (GameManager.Instance == null || GameManager.Instance.CurrentDeedData == null)
+            return;
 
-        PostStart();
+        GameMode = GameManager.Instance.CurrentGameModeData;
+        PreEnable();
+        GameManager.Instance.RegisterEnemy(this);
         StartCoroutine(SpawnAnimCo());
+        PostEnable();
     }
 
     public bool OnPaintballHit()
@@ -408,6 +405,30 @@ public class ActorBase : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         BlackboardScript.DeadEnemies.Remove(this);
-        GameObject.Destroy(this.gameObject);
+        ReturnToCache();
+    }
+
+    // TODO PE: Hmm easy to forget something here. Subclasses may also need a reset. Hopefully it will be easily detectable. Or not.
+    public void ResetForCaching()
+    {
+        StopAllCoroutines();
+        transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        transform_.localScale = new Vector3(Mathf.Abs(transform_.localScale.x), Mathf.Abs(transform_.localScale.y), Mathf.Abs(transform_.localScale.z));
+        IsCorpse = false;
+        isPainted_ = false;
+        isLivingBomb_ = false;
+        isSpawning_ = true;
+        isFullyReady_ = false;
+        slowmotionModifier_ = 1.0f;
+        flashEndTime_ = 0.0f;
+        force_ = Vector3.zero;
+
+        EnableShadow(true);
+    }
+
+    public void ReturnToCache()
+    {
+        ResetForCaching();
+        EnemyManager.Instance.ReturnEnemyToCache(this.ActorType, this.gameObject);
     }
 }

@@ -17,10 +17,10 @@ public class GameProgressScript : MonoBehaviour
     public Text TextSandboxCreator;
     public Text TextSandboxWeapons;
 
-    public GameObject SkellieWalkerPrefab;
-    public GameObject SkellieChargerPrefab;
-    public GameObject BigSkellieWalkerPrefab;
-    public GameObject SkellieCasterPrefab;
+    //public GameObject SkellieWalkerPrefab;
+    //public GameObject SkellieChargerPrefab;
+    //public GameObject BigSkellieWalkerPrefab;
+    //public GameObject SkellieCasterPrefab;
 
     bool isRunning_;
     DeedData currentDeed_;
@@ -135,16 +135,7 @@ public class GameProgressScript : MonoBehaviour
     IEnumerator SandboxWave(Wave wave)
     {
         yield return new WaitForSeconds(wave.start_time);
-        GameObject enemyPrefab;
-        switch ((ActorTypeEnum)wave.enemy_type)
-        {
-            case ActorTypeEnum.SmallWalker: enemyPrefab = SkellieWalkerPrefab; break;
-            case ActorTypeEnum.LargeWalker: enemyPrefab = BigSkellieWalkerPrefab; break;
-            case ActorTypeEnum.Caster: enemyPrefab = SkellieCasterPrefab; break;
-            case ActorTypeEnum.SmallCharger: enemyPrefab = SkellieChargerPrefab; break;
-            default: enemyPrefab = SkellieWalkerPrefab; break;
-        }
-        yield return PositionUtility.SpawnGroup(enemyPrefab, wave.count, wave.interval, wave.where != PositionUtility.SpawnDirection.Inside, wave.where);
+        yield return PositionUtility.SpawnGroup((ActorTypeEnum)wave.enemy_type, wave.count, wave.interval, wave.where != PositionUtility.SpawnDirection.Inside, wave.where);
     }
 
     private void Awake()
@@ -152,7 +143,7 @@ public class GameProgressScript : MonoBehaviour
         Instance = this;
     }
 
-    public void EnemyExplosion(GameObject prefab, Vector3 pos, int count, float force)
+    public void EnemyExplosion(ActorTypeEnum type, Vector3 pos, int count, float force)
     {
         if (currentDeed_.Deed == DeedEnum.Sandbox)
         {
@@ -163,10 +154,11 @@ public class GameProgressScript : MonoBehaviour
 
         for (int i = 0; i < count; ++i)
         {
-            var spawn = GameObject.Instantiate<GameObject>(prefab);
+            var spawn = EnemyManager.Instance.GetEnemyFromCache(type);
             spawn.transform.position = pos;
             var actor = spawn.GetComponent<ActorBase>();
             actor.AddForce(Random.insideUnitCircle.normalized * force);
+            spawn.SetActive(true);
         }
     }
 
@@ -179,7 +171,7 @@ public class GameProgressScript : MonoBehaviour
             amount += currentDeed_.DeedCurrentScore / 5;
 
             PositionUtility.SpawnDirection dir = PositionUtility.SpawnDirection.TopOrBottom;
-            yield return PositionUtility.SpawnGroup(BigSkellieWalkerPrefab, amount, 0.1f, true, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.LargeWalker, amount, 0.1f, true, dir);
 
             float delay = 5.0f;
             yield return new WaitForSeconds(delay);
@@ -197,7 +189,7 @@ public class GameProgressScript : MonoBehaviour
             bool inside = Random.value < 0.5f || SaveGame.RoundScore == 1;
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
-            yield return PositionUtility.SpawnGroup(SkellieWalkerPrefab, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.SmallWalker, amount, 0.1f, !inside, dir);
             float delay = 6 + Random.value;
             yield return new WaitForSeconds(delay);
         }
@@ -222,7 +214,7 @@ public class GameProgressScript : MonoBehaviour
 
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
-            yield return PositionUtility.SpawnGroup(SkellieChargerPrefab, amount, 0.1f, true, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.SmallCharger, amount, 0.1f, true, dir);
 
             // Wait semi-random after spawning
             float delay = 12 + Random.value * 2;
@@ -242,7 +234,7 @@ public class GameProgressScript : MonoBehaviour
 
             bool inside = Random.value < 0.2f;
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
-            yield return PositionUtility.SpawnGroup(BigSkellieWalkerPrefab, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.LargeWalker, amount, 0.1f, !inside, dir);
         }
     }
 
@@ -263,7 +255,7 @@ public class GameProgressScript : MonoBehaviour
 
             bool inside = Random.value < 0.05f;
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
-            yield return PositionUtility.SpawnGroup(SkellieCasterPrefab, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.Caster, amount, 0.1f, !inside, dir);
         }
     }
 
@@ -281,7 +273,7 @@ public class GameProgressScript : MonoBehaviour
 
             bool inside = Random.value < 0.05f;
             PositionUtility.SpawnDirection dir = Random.value < 0.5f ? PositionUtility.SpawnDirection.LeftOrRight : PositionUtility.SpawnDirection.TopOrBottom;
-            yield return PositionUtility.SpawnGroup(SkellieCasterPrefab, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.Caster, amount, 0.1f, !inside, dir);
 
             float delay = 5 + Random.value * 2;
             yield return new WaitForSeconds(delay);
@@ -299,7 +291,7 @@ public class GameProgressScript : MonoBehaviour
             bool inside = Random.value < 0.5f || SaveGame.RoundScore == 1;
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
-            yield return PositionUtility.SpawnGroup(SkellieWalkerPrefab, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.SmallWalker, amount, 0.1f, !inside, dir);
             float delay = 4 + Random.value;
             yield return new WaitForSeconds(delay);
         }

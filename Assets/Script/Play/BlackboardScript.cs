@@ -15,7 +15,7 @@ namespace Assets.Script
         {
             for (int i = 0; i < Enemies.Count; ++i)
             {
-                GameObject.Destroy(Enemies[i].gameObject);
+                Enemies[i].ReturnToCache();
             }
 
             Enemies.Clear();
@@ -25,7 +25,7 @@ namespace Assets.Script
         {
             for (int i = 0; i < DeadEnemies.Count; ++i)
             {
-                GameObject.Destroy(DeadEnemies[i].gameObject);
+                DeadEnemies[i].ReturnToCache();
             }
 
             DeadEnemies.Clear();

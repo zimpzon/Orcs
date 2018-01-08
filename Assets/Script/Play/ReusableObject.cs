@@ -15,6 +15,10 @@ namespace Assets.Script
 
         public ReusableObject(int startCapacity, IObjectFactory<T> objectFactoryMethod)
         {
+            // Capacity is increased by 50% at a time so we need at least two or we will be stuck at one forever
+            if (startCapacity < 2)
+                startCapacity = 2;
+
             objectFactoryMethod_ = objectFactoryMethod;
             ExpandCache(startCapacity);
         }

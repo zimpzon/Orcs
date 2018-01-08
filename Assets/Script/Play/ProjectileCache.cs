@@ -44,7 +44,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
 
     void Start()
     {
-        sprites_ = new ReusableObject<ProjectileInfo>(5, this);
+        sprites_ = new ReusableObject<ProjectileInfo>(100, this);
 	}
 
 	public ProjectileInfo GetSprite()

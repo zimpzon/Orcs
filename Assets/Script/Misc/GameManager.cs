@@ -559,6 +559,9 @@ public class GameManager : MonoBehaviour
         switch (CurrentGameModeData.GameMode)
         {
             case GameModeEnum.Nursery: UpdateStat("ScoreNursery", SaveGame.RoundScore); break;
+            case GameModeEnum.Earth: UpdateStat("ScoreEarth", SaveGame.RoundScore); break;
+            case GameModeEnum.Wind: UpdateStat("ScoreWind", SaveGame.RoundScore); break;
+            case GameModeEnum.Fire: UpdateStat("ScoreFire", SaveGame.RoundScore); break;
             case GameModeEnum.Storm: UpdateStat("ScoreStorm", SaveGame.RoundScore); break;
             default: break;
         }
@@ -766,13 +769,7 @@ public class GameManager : MonoBehaviour
 //        Server.Instance.LastResult
     }
 
-    void LateUpdate()
-    {
-        PruneDeadEnemies();
-    }
-
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
-    KeyCode[] CodeRestore = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.T, KeyCode.O, KeyCode.R, KeyCode.E };
 
     int codeIdx = 0;
     int restoreIdx = 0;
@@ -792,17 +789,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(CodeRestore[restoreIdx]))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            restoreIdx++;
-            if (restoreIdx == CodeRestore.Length)
-            {
-                restoreIdx = 0;
-                if (SaveGame.RestoreOldPrefs())
-                    TextHeroName.text = "Old data restored";
-                else
-                    TextHeroName.text = "No old data found";
-            }
+            Screen.fullScreen = !Screen.fullScreen;
         }
 
         Vector3 worldPos = Input.mousePosition;
@@ -1085,20 +1074,6 @@ public class GameManager : MonoBehaviour
         return pos;
     }
 
-    void OnGUI()
-    {
-        if (DebugValues.Count == 0)
-            return;
-
-        float y = 200.0f;
-        GUI.contentColor = Color.white;
-        foreach (var pair in DebugValues)
-        {
-            GUI.Label(new Rect(10, y, 1000, 20), string.Format("{0} = {1}", pair.Key, pair.Value));
-            y += 20;
-        }
-    }
-
     void PruneDeadEnemies()
     {
         for (int i = BlackboardScript.Enemies.Count - 1; i >= 0; --i)
@@ -1107,4 +1082,24 @@ public class GameManager : MonoBehaviour
                 RegisterEnemyDied(BlackboardScript.Enemies[i]);
         }
     }
+
+    void LateUpdate()
+    {
+        PruneDeadEnemies();
+    }
+
+    // Only enable this when needed. It creates garbage.
+    //void OnGUI()
+    //{
+    //    if (DebugValues.Count == 0)
+    //        return;
+
+    //    float y = 200.0f;
+    //    GUI.contentColor = Color.white;
+    //    foreach (var pair in DebugValues)
+    //    {
+    //        GUI.Label(new Rect(10, y, 1000, 20), string.Format("{0} = {1}", pair.Key, pair.Value));
+    //        y += 20;
+    //    }
+    //}
 }

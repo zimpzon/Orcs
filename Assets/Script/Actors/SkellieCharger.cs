@@ -11,7 +11,7 @@ public class SkellieCharger : ActorBase
     Vector3 scale_;
     Vector3 target_;
 
-    protected override void PreAwake()
+    protected override void PreEnable()
     {
         Speed = 1.5f * GameMode.MoveSpeedModifier;
         Hp = 50 * GameMode.HitpointModifier;
@@ -19,7 +19,7 @@ public class SkellieCharger : ActorBase
         ActorType = ActorTypeEnum.SmallCharger;
     }
 
-    protected override void PostStart()
+    protected override void PostEnable()
     {
         scale_ = transform_.localScale;
         position_ = this.Transform.position;

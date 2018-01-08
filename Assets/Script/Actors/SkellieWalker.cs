@@ -9,7 +9,7 @@ public class SkellieWalker : ActorBase
     Vector3 scale_;
     Vector3 target_;
 
-    protected override void PreAwake()
+    protected override void PreEnable()
     {
         Speed = 1.5f * GameMode.MoveSpeedModifier;
         Hp = 30 * GameMode.HitpointModifier;
@@ -17,7 +17,7 @@ public class SkellieWalker : ActorBase
         ActorType = ActorTypeEnum.SmallWalker;
     }
 
-    protected override void PostStart()
+    protected override void PostEnable()
     {
         scale_ = transform_.localScale;
         position_ = this.Transform.position;
@@ -83,7 +83,7 @@ public class SkellieWalker : ActorBase
         }
 
         Vector3 scale = scale_;
-        scale.x = moveVec_.x < 0 ? -scale_.x : scale.x;
+        scale.x = moveVec_.x < 0 ? -scale.x : scale.x;
         transform_.localScale = scale;
     }
 }

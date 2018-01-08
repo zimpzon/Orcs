@@ -10,7 +10,6 @@ namespace Assets.Script
     {
         public GameModeEnum GameMode;
         public Color BackgroundTint;
-        public Color AmbientColor = Color.white;
         public AudioClip Music;
         public float HitpointModifier = 1.0f;
         public float MoveSpeedModifier = 1.0f;
