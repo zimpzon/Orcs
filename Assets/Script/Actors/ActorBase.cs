@@ -422,6 +422,7 @@ public class ActorBase : MonoBehaviour
         slowmotionModifier_ = 1.0f;
         flashEndTime_ = 0.0f;
         force_ = Vector3.zero;
+        material_.color = Color.white;
 
         EnableShadow(true);
     }

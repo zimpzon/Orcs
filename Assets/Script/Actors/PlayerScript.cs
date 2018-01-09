@@ -321,7 +321,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         Camera cam = Camera.main;
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0.0001f;
         Vector3 cameraTarget = trans_.localPosition;
 
         RoundComplete = false;

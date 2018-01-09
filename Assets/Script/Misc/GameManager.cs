@@ -605,7 +605,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Hacky. Show progress for first weapon (sniper) as teaser
+            // Show progress towards next weapon (wheree counter is Score_Any_Sum)
             var nextWeapons = GameEvents.WeaponUnlockInfo.Where(
                 wep => wep.Counter == GameCounter.Score_Any_Sum && SaveGame.Members.GetCounter(wep.Counter) < wep.Requirement
             ).OrderBy(wep => wep.Requirement).ToList();
@@ -643,51 +643,37 @@ public class GameManager : MonoBehaviour
 
     public void ShowTitle(bool autoStartGame = false)
     {
-        int debug = 0;
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         if (GameState == State.Intro)
             return;
 
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
-
+        Time.timeScale = 1.0f;
         PanelGameMode.SetActive(false);
         PanelSandbox.SetActive(false);
         PanelSettings.SetActive(false);
         PanelUnlocks.SetActive(false);
         PanelDeeds.SetActive(false);
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         ProjectileManager.Instance.StopAll();
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         GameProgressScript.Instance.Stop();
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         Orc.Hide();
-        Time.timeScale = 1.0f;
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
         SelectHero((HeroEnum)SaveGame.Members.SelectedHero);
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
         UpdateUnlockedPct();
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
         ButtonDeedText.text = string.Format("HEROIC FEATS ({0}%)", Mathf.RoundToInt(DeedDonePct * 100));
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
         UpdateButtonStates();
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);
         CanvasGame.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(false);
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
 
-        System.GC.Collect();
-        Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
         if (autoStartGame)
         {
-            Debug.LogWarningFormat("{0} - {1}", (debug++).ToString(), Time.time);
             StartGame();
         }
         else
@@ -704,8 +690,6 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Playing)
             return;
 
-        int debug = 0;
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined; // TODO PE: Only works as a reponse to user action (browser security)
         SaveGame.ResetRound();
@@ -713,13 +697,9 @@ public class GameManager : MonoBehaviour
         CurrentDeedData.Reset();
         TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
         TextScore.text = SaveGame.RoundScore.ToString();
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasIntro.gameObject.SetActive(false);
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasDead.gameObject.SetActive(false);
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         CanvasGame.gameObject.SetActive(true);
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         BlackboardScript.DestroyAllCorpses();
         FloorBlood.Clear();
         GameState = State.Playing;
@@ -741,7 +721,6 @@ public class GameManager : MonoBehaviour
             PlayerScript.SetWeaponTypes((WeaponType)CurrentSandboxData.weapon_left_click, (WeaponType)CurrentSandboxData.weapon_right_click);
         }
 
-        Debug.LogWarningFormat("S {0} - {1}", (debug++).ToString(), Time.time);
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin();
 
