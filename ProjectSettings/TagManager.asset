@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PlayerProjectile
+  - EnemyProjectile
+  - Player
+  - Enemy
+  - Neutral
+  - EnemyCorpse
+  - XpPill
+  - Orc
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3357700859
+    locked: 0
+  - name: FloorMagic
+    uniqueID: 257647923
+    locked: 0
+  - name: BlobShadows
+    uniqueID: 966854303
+    locked: 0
+  - name: Entities
+    uniqueID: 2462870613
+    locked: 0
+  - name: TopEffects
+    uniqueID: 3418816889
+    locked: 0
+  - name: Border
+    uniqueID: 543535071
+    locked: 0
+  - name: Arches
+    uniqueID: 1332035993
+    locked: 0

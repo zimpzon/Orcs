@@ -175,6 +175,22 @@ namespace Assets.Script
             return Vector3.Distance(GameManager.Instance.PlayerTrans.position, pos);
         }
 
+        public static int GetIdxClosestEnemy(Vector3 pos, float radius, int maxCount = MaxMatches)
+        {
+            int count = GetEnemies(pos, radius, maxCount);
+            float closestDist = float.MaxValue;
+            int closestIdx = -1;
+            for (int i = 0; i < count; ++i)
+            {
+                if (Matches[i].Distance < closestDist)
+                {
+                    closestDist = Matches[i].Distance;
+                    closestIdx = Matches[i].Idx;
+                }
+            }
+            return closestIdx;
+        }
+
         public static int GetEnemies(Vector3 pos, float radius, int maxCount = MaxMatches)
         {
             int matchIdx = 0;

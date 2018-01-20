@@ -22,7 +22,7 @@ public class SkellieCaster : ActorBase
     {
         Speed = 3.0f * GameMode.MoveSpeedModifier;
         Hp = 150 * GameMode.HitpointModifier;
-        mass_ = 0.5f * GameMode.MassModifier;
+        mass_ = 1.2f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.Caster;
     }
 
@@ -56,7 +56,6 @@ public class SkellieCaster : ActorBase
         basic.Damage = 100.0f;
         basic.MaxDistance = 15.0f;
         basic.Radius = 0.3f;
-        basic.Color = Color.yellow;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 3.0f;
         scale.y = 3.0f;
@@ -86,7 +85,7 @@ public class SkellieCaster : ActorBase
         ep.startLifetime = 0.5f;
         for (int i = 0; i < Mathf.RoundToInt(15 * GameMode.ExplosionModifier); ++i)
         {
-            Vector2 rndDir = Random.insideUnitCircle.normalized;
+            Vector2 rndDir = RndUtil.RandomInsideUnitCircle().normalized;
             ep.velocity = rndDir * 2.5f;
             GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
         }
@@ -104,7 +103,7 @@ public class SkellieCaster : ActorBase
         {
             float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
             const float MinDistToShoot = 4.0f;
-            if (isFullyReady_ && Time.time > nextShoot && distanceToPlayer > MinDistToShoot)
+            if (IsFullyReady && Time.time > nextShoot && distanceToPlayer > MinDistToShoot)
             {
                 int projectileCount = 5 + SaveGame.RoundScore / 15;
                 projectileCount = Mathf.RoundToInt(projectileCount * GameMode.FireCountModifier);

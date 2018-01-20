@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public enum HeroEnum { StarterKnight, OrcWhisperer, TheKing, Last };
+    public enum HeroEnum { StarterKnight, OrcWhisperer, TheKing, Last, ThePirate, TheDuck };
 
     [Serializable]
     public class Hero

@@ -28,7 +28,7 @@ public class WeaponPaintball : WeaponBase
 
         float spreadFactor = 15f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;
-        Vector2 spread = Random.insideUnitCircle;
+        Vector2 spread = RndUtil.RandomInsideUnitCircle();
         dir.x += spread.x;
         dir.y += spread.y;
         dir.Normalize();

@@ -43,7 +43,7 @@ public class SkellieWalker : ActorBase
             ep.startLifetime = 2.0f;
             for (int i = 0; i < Mathf.RoundToInt(5 * GameMode.ExplosionModifier); ++i)
             {
-                Vector2 rndDir = Random.insideUnitCircle.normalized;
+                Vector2 rndDir = RndUtil.RandomInsideUnitCircle().normalized;
                 ep.velocity = rndDir * 1.5f;
                 GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
             }

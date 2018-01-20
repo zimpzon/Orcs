@@ -7,7 +7,6 @@ public struct ProjectileInfo
     {
         Transform = go.transform;
         Renderer = go.GetComponent<SpriteRenderer>();
-        Renderer.enabled = false;
         Collider = go.GetComponent<CapsuleCollider2D>();
     }
 
@@ -34,6 +33,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
     {
         var go = Instantiate<GameObject>(SpritePrefab);
         ProjectileInfo result = new ProjectileInfo(go);
+        result.Transform.gameObject.SetActive(false);
         return result;
     }
 
@@ -50,6 +50,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
 	public ProjectileInfo GetSprite()
     {
         var spriteInfo = sprites_.GetObject();
+        spriteInfo.Transform.gameObject.SetActive(true);
         spriteInfo.Renderer.enabled = true;
         spriteInfo.Collider.enabled = true;
         return spriteInfo;
@@ -57,6 +58,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
 
     public void ReturnSprite(ProjectileInfo spriteInfo)
     {
+        spriteInfo.Transform.gameObject.SetActive(false);
         spriteInfo.Renderer.enabled = false;
         spriteInfo.Collider.enabled = false;
         sprites_.ReturnObject(spriteInfo);

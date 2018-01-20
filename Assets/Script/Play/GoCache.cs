@@ -19,12 +19,13 @@ public class GoCache : MonoBehaviour
         while (objects.Count < count)
         {
             var newInstance = (GameObject)Instantiate(Prefab);
+            newInstance.transform.position = Vector3.left * 20000; // Whoops, why are they still in the physics system when active = false? Have to hide them.
             newInstance.SetActive(false);
             objects.Add(newInstance);
         }
     }
 
-    void Awake()
+    void Start()
     {
         PreCreate(PreCreateCount);
     }
@@ -48,6 +49,8 @@ public class GoCache : MonoBehaviour
     public void ReturnInstance(GameObject instance)
     {
         InFlight--;
+        // Whoops, why are they still in the physics system when active = false? Have to hide them.
+        instance.transform.position = Vector3.left * 20000;
         instance.SetActive(false);
         objects.Add(instance);
     }

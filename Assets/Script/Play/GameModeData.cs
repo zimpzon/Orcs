@@ -22,6 +22,7 @@ namespace Assets.Script
         public List<WeaponType> WeaponRestrictions = new List<WeaponType>();
         public bool SmallEnemiesExplode = false;
         public bool HasExtraLargeWalkers = false;
+        public WeaponType SecondaryWeapon = WeaponType.None;
 
         public static void UpdateWithDeedData(GameModeData gameMode, DeedData deed)
         {

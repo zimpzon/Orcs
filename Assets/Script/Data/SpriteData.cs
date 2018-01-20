@@ -18,12 +18,14 @@ public class SpriteData : ScriptableObject
     public Sprite[] Skellie2WalkSprites;
     public Sprite[] SkellieCasterWalkSprites;
     public Sprite[] SkellieGunWalkSprites;
+    public Sprite[] Pirate1WalkSprites;
 
     public Sprite MeleeTrail;
 
     public Sprite Orc;
     public Sprite Bullet;
     public Sprite RoundBullet;
+    public Sprite Sawblade;
 
     public Sprite Shotgun;
     public Sprite Sniper;

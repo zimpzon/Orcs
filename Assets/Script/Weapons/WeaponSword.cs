@@ -3,28 +3,35 @@ using UnityEngine;
 
 public class WeaponSword : WeaponBase
 {
-    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
+    public static int Swing(Vector3 where, float damage, float radius, AudioClip clipHit, AudioClip clipMiss, out float recoil)
     {
-        lastFire_ = Time.time;
         recoil = -0.2f;
-        GameManager.Instance.PlayerScript.SwingMelee();
 
-        const float Damage = 500;
-        const float Radius = 3.0f;
-        var pos = GameManager.Instance.PlayerTrans.position;
-        ProjectileManager.Instance.DeflectSource = pos;
+        ProjectileManager.Instance.DeflectSource = where;
         ProjectileManager.Instance.DoDeflect = true;
-        ProjectileManager.Instance.DeflectRadius = Radius;
+        ProjectileManager.Instance.DeflectRadius = radius;
 
-        int aliveCount = BlackboardScript.GetEnemies(pos, Radius);
-        var clip = aliveCount == 0 ? FireAudio : AudioManager.Instance.AudioData.SaberHit;
+        int aliveCount = BlackboardScript.GetEnemies(where, radius);
+        var clip = aliveCount == 0 ? clipMiss : clipHit;
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, clip);
         for (int i = 0; i < aliveCount; ++i)
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
             enemy.SetSlowmotion();
-            enemy.ApplyDamage(Damage, enemy.transform.position - pos, 1.0f, true);
+            enemy.ApplyDamage(damage, enemy.transform.position - where, 1.0f, true);
         }
+        return aliveCount;
+    }
+
+    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
+    {
+        lastFire_ = Time.time;
+
+        const float Damage = 500;
+        const float Radius = 3.0f;
+        var pos = GameManager.Instance.PlayerTrans.position;
+        Swing(pos, Damage, Radius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out recoil);
+        GameManager.Instance.PlayerScript.SwingMelee();
     }
 }

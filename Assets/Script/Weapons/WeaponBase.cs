@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
-public enum WeaponType { None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, Rambo, Sword1, Mine, Last };
+public enum WeaponType {
+    None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball,
+    Rambo, Sword1, Mine, Yoda, Sawblade, Last };
 
 public class WeaponNone : WeaponBase
 {
@@ -29,6 +31,8 @@ public abstract class WeaponBase
             case WeaponType.Grenade: return "Grenade";
             case WeaponType.Sword1: return "Knightsaber";
             case WeaponType.Mine: return "Mines";
+            case WeaponType.Yoda: return "Yoda";
+            case WeaponType.Sawblade: return "Nightmare Sawblade";
             default: return wepType.ToString();
         }
     }
@@ -49,6 +53,8 @@ public abstract class WeaponBase
     static WeaponUnarmed Unarmed;
     static WeaponSword Sword;
     static WeaponMine Mine;
+    static WeaponYoda Yoda;
+    static WeaponSawblade Sawblade;
 
     public WeaponType Type;
     public Vector3 Scale;
@@ -73,6 +79,7 @@ public abstract class WeaponBase
 
     public abstract void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil);
     public virtual void StopFire() { }
+    public virtual void OnAcquired() { }
 
     public static WeaponBase GetWeapon(WeaponType type)
     {
@@ -286,6 +293,27 @@ public abstract class WeaponBase
                     Sword.MoveSpeedModifier = 0.0f;
                 }
                 return Sword;
+
+            case WeaponType.Yoda:
+                if (Yoda == null)
+                {
+                    Yoda = new WeaponYoda();
+                    Yoda.Type = WeaponType.Yoda;
+                }
+                return Yoda;
+
+            case WeaponType.Sawblade:
+                if (Sawblade == null)
+                {
+                    Sawblade = new WeaponSawblade();
+                    Sawblade.Type = WeaponType.Sawblade;
+                    Sawblade.Cd = 1.0f;
+                    Sawblade.BulletSprite = SpriteData.Instance.Sawblade;
+                    Sawblade.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
+                    Sawblade.FireAudio = AudioManager.Instance.AudioData.PlayerThrowBomb;
+                    Sawblade.MoveSpeedModifier = 0.2f;
+                }
+                return Sawblade;
 
             //case WeaponType.Flamethrower:
             //    if (Flamethrower == null)

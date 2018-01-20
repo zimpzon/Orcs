@@ -7,7 +7,6 @@ public class AudioData : ScriptableObject
     public AudioClip PlayerStaffHit;
     public AudioClip PlayerShotgunFire;
     public AudioClip PlayerSniperFire;
-    public AudioClip PlayerFlamethrowerFire;
     public AudioClip PlayerMachinegunFire;
     public AudioClip PlayerPaintballFire;
     public AudioClip PlayerThrowBomb;
@@ -15,7 +14,6 @@ public class AudioData : ScriptableObject
     public AudioClip PlayerDie;
     public AudioClip BombFuseBurn;
     public AudioClip BombExplode;
-    public AudioClip CorpseExplode;
     public AudioClip Menu;
     public AudioClip EnemyShoot;
     public AudioClip OrcPickup;
@@ -25,4 +23,5 @@ public class AudioData : ScriptableObject
     public AudioClip ChargerWarning;
     public AudioClip SaberSwing;
     public AudioClip SaberHit;
+    public AudioClip Chainsaw;
 }

@@ -157,7 +157,7 @@ public class GameProgressScript : MonoBehaviour
             var spawn = EnemyManager.Instance.GetEnemyFromCache(type);
             spawn.transform.position = pos;
             var actor = spawn.GetComponent<ActorBase>();
-            actor.AddForce(Random.insideUnitCircle.normalized * force);
+            actor.AddForce(RndUtil.RandomInsideUnitCircle().normalized * force);
             spawn.SetActive(true);
         }
     }

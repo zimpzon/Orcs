@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG;
+using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using DG.Tweening;
@@ -35,16 +36,26 @@ namespace Assets.Script
         {
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 100 },
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 500 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Any, Requirement = 5000 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 1000 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 2500 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Any, Requirement = 5000 },
             new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Any, Requirement = 10000 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 750 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Score_Any_Sum, Requirement = 250 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Score_Any_Sum, Requirement = 750 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Score_Any_Sum, Requirement = 1250 },
             new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Score_Any_Sum, Requirement = 1500 },
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_BigWalker, Requirement = 100 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Kill_Caster, Requirement = 200 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_BigWalker, Requirement = 250 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_BigWalker, Requirement = 500 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Caster, Requirement = 100 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Caster, Requirement = 250 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Kill_Caster, Requirement = 500 },
             new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Max_Score_Nursery, Requirement = 25 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Max_Score_Nursery, Requirement = 35 },
-            new DamageUnlockInfo { Amount = 30, Counter = GameCounter.Max_Score_Nursery, Requirement = 45 },
-            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.score_Harmony_Sum, Requirement = 50 },
+            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Max_Score_Earth, Requirement = 10 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Max_Score_Wind, Requirement = 10 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.Max_Score_Fire, Requirement = 10 },
+            new DamageUnlockInfo { Amount = 20, Counter = GameCounter.Max_Score_Storm, Requirement = 10 },
+            new DamageUnlockInfo { Amount = 10, Counter = GameCounter.score_Harmony_Sum, Requirement = 50 },
         };
 
         public static List<WeaponUnlockInfo> WeaponUnlockInfo = new List<WeaponUnlockInfo>
@@ -52,10 +63,12 @@ namespace Assets.Script
             new WeaponUnlockInfo { Type = WeaponType.Sniper, Counter = GameCounter.Score_Any_Sum, Requirement = 20 },
             new WeaponUnlockInfo { Type = WeaponType.Sword1, Counter = GameCounter.Score_Any_Sum, Requirement = 50 },
             new WeaponUnlockInfo { Type = WeaponType.ShotgunSlug, Counter = GameCounter.Score_Any_Sum, Requirement = 100 },
-            new WeaponUnlockInfo { Type = WeaponType.SuperShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 200 },
-            new WeaponUnlockInfo { Type = WeaponType.Staff, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
-            new WeaponUnlockInfo { Type = WeaponType.Horn, Counter = GameCounter.Score_Any_Sum, Requirement = 400 },
-            new WeaponUnlockInfo { Type = WeaponType.SawedShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 500 },
+            new WeaponUnlockInfo { Type = WeaponType.Sawblade, Counter = GameCounter.Score_Any_Sum, Requirement = 200 },
+            new WeaponUnlockInfo { Type = WeaponType.SuperShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 300 },
+            new WeaponUnlockInfo { Type = WeaponType.Yoda, Counter = GameCounter.Score_Any_Sum, Requirement = 400 },
+            new WeaponUnlockInfo { Type = WeaponType.Staff, Counter = GameCounter.Score_Any_Sum, Requirement = 500 },
+            new WeaponUnlockInfo { Type = WeaponType.Horn, Counter = GameCounter.Score_Any_Sum, Requirement = 600 },
+            new WeaponUnlockInfo { Type = WeaponType.SawedShotgun, Counter = GameCounter.Score_Any_Sum, Requirement = 700 },
             new WeaponUnlockInfo { Type = WeaponType.Paintball, Counter = GameCounter.Max_Score_Earth, Requirement = 10 },
             new WeaponUnlockInfo { Type = WeaponType.Rambo, Counter = GameCounter.score_Harmony_Sum, Requirement = 75 },
             new WeaponUnlockInfo { Type = WeaponType.Staff2, Counter = GameCounter.Kill_Any, Requirement = 2500 },
@@ -86,10 +99,10 @@ namespace Assets.Script
                 {
                     case GameModeEnum.Nursery: return "So cute they are!";
                     case GameModeEnum.Earth: return "A Rotten Stench Is In The Air";
-                    case GameModeEnum.Wind: return "Sprinting In Full Armor Is Impressive";
-                    case GameModeEnum.Fire: return "Fire. So much fire.";
+                    case GameModeEnum.Wind: return "Where The Wind Howls";
+                    case GameModeEnum.Fire: return "Fire. So Much Fire.";
                     case GameModeEnum.Storm: return "Madness.";
-                    case GameModeEnum.Harmony: return "No Violence, please.";
+                    case GameModeEnum.Harmony: return "No Violence, Please.";
                     default: return "unknown: " + gameMode.ToString();
                 }
             }
@@ -109,6 +122,8 @@ namespace Assets.Script
                 case GameModeEnum.Fire: return "Plane Of Fire";
                 case GameModeEnum.Storm: return "Perfect Storm";
                 case GameModeEnum.Harmony: return "Plane Of Harmony";
+                case GameModeEnum.PirateCave: return "The Pirate Cave";
+                case GameModeEnum.TreasureIsland: return "Treasure Island";
                 default: return "Unknown: " + gameMode.ToString();
             }
         }

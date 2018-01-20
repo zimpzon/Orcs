@@ -16,11 +16,11 @@ public class WeaponSawedShutgun : WeaponBase
         GameManager.Instance.MakeFlash(worldMuzzle);
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
 
-        for (int i = 0; i < 25; ++i)
+        for (int i = 0; i < 6; ++i)
         {
             float spreadFactor = 1.5f; // Increase this to limit spread (unit circle is moved further away)
             Vector3 dir = direction * spreadFactor;
-            Vector2 spread = Random.insideUnitCircle;
+            Vector2 spread = RndUtil.RandomInsideUnitCircle();
             dir.x += spread.x;
             dir.y += spread.y;
             dir.Normalize();
@@ -30,15 +30,15 @@ public class WeaponSawedShutgun : WeaponBase
             basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
             basic.Speed = 10.0f + Random.value * 2;
-            basic.Damage = 60.0f;
+            basic.Damage = 80.0f;
             basic.DamageFalloffDistance = 0.0f;
             basic.DamageFalloffPerMeter = 0.0f;
             basic.MaxDistance = 8.0f;
-            basic.Radius = 0.3f;
+            basic.Radius = 0.8f;
 
             Vector3 scale = basic.SpriteInfo.Transform.localScale;
-            scale.x = 2.0f;
-            scale.y = 2.0f;
+            scale.x = 4.0f;
+            scale.y = 4.0f;
             scale.z = 1.0f;
 
             basic.Position = worldMuzzle;

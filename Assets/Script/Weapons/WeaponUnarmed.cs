@@ -24,7 +24,7 @@ public class WeaponUnarmed : WeaponBase
             float distance = dir.magnitude + 0.0001f;
             dir /= distance;
             dir.Normalize();
-            var force = (Radius * distance) * dir * 0.045f;
+            var force = (Radius - distance) * dir * 0.25f;
             enemy.AddForce(force);
             enemy.SetSlowmotion();
         }

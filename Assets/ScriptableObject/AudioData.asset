@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0946b7b887d6c49983643a478d449f, type: 3}
+  m_Name: AudioData
+  m_EditorClassIdentifier: 
+  PlayerStaffFire: {fileID: 8300000, guid: 4259debc58b7bdc4e85507edcc45ff4b, type: 3}
+  PlayerStaffHit: {fileID: 8300000, guid: 4a56dc21f865f2c4d9c3a35b8e9cce88, type: 3}
+  PlayerShotgunFire: {fileID: 8300000, guid: 5bf1524458a456640b21c1ed4b76ae0e, type: 3}
+  PlayerSniperFire: {fileID: 8300000, guid: 47a6dd663f246b54fa2def940db1184a, type: 3}
+  PlayerMachinegunFire: {fileID: 8300000, guid: e5a3905bddaf3334d85e74620a79f48f,
+    type: 3}
+  PlayerPaintballFire: {fileID: 8300000, guid: c1983c5062415ee4ab3dea1c77f6ec8b, type: 3}
+  PlayerThrowBomb: {fileID: 8300000, guid: 4151b4fd0f70d1540a81a3f0ef58a030, type: 3}
+  LivingBombExplode: {fileID: 8300000, guid: 88b2d430ba8b01f4aa98635b74203421, type: 3}
+  PlayerDie: {fileID: 8300000, guid: c83ecd703a747f545a93898439aae95f, type: 3}
+  BombFuseBurn: {fileID: 8300000, guid: 3be72cdafff40cd4dbb67b6cd35a8947, type: 3}
+  BombExplode: {fileID: 8300000, guid: 67ab0d9bbc34b22488bead7bf83ba45e, type: 3}
+  Menu: {fileID: 8300000, guid: d75fc055824d73042b88f3c0cc9d6957, type: 3}
+  EnemyShoot: {fileID: 8300000, guid: fbb53febefedab8469e0fbede6b80ad5, type: 3}
+  OrcPickup: {fileID: 8300000, guid: eadd73d07a91f0d4e8a674553ad02f88, type: 3}
+  OrcHorn: {fileID: 8300000, guid: 29bcefeb61c74e2408c57551916c49cb, type: 3}
+  UnarmedBlast: {fileID: 8300000, guid: 1cc6045347c7cec438c30a8da9c9ed98, type: 3}
+  Victory: {fileID: 8300000, guid: 26ff9cd1b2d04f043b8aea9bb24be4ff, type: 3}
+  ChargerWarning: {fileID: 8300000, guid: 0d3e6dd0f2e0c8942a0caac398459d14, type: 3}
+  SaberSwing: {fileID: 8300000, guid: 73bbed54cac374445b311c941719c0c6, type: 3}
+  SaberHit: {fileID: 8300000, guid: 41a77d9029a153547a2dcc54cdfa9638, type: 3}
+  Chainsaw: {fileID: 8300000, guid: 5d8050daa1e0dba40bbfc86b360321dd, type: 3}

@@ -9,7 +9,6 @@ public class Server : MonoBehaviour
 {
     public static Server Instance;
 
-//    public string TitleId = "272"; // 272 - W..T..H..!!! // 5388
     public object LastResult; // Simple and effective.
 
     // Debug switches --->
@@ -26,7 +25,6 @@ public class Server : MonoBehaviour
     void Awake()
     {
         Instance = this;
-  //      PlayFabSettings.TitleId = TitleId;
     }
 
     void DoCustomLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
@@ -70,7 +68,20 @@ public class Server : MonoBehaviour
         yield return GetAllStats();
     }
 
-    Dictionary<string, uint?> statVersions = new Dictionary<string, uint?>();
+    Dictionary<string, StatisticValue> stats = new Dictionary<string, StatisticValue>();
+    public bool HasStatsFromServer = false;
+
+    public bool TryGetStat(string key, out int value)
+    {
+        value = 0;
+        StatisticValue stat;
+        if (stats.TryGetValue(key, out stat))
+        {
+            value = stat.Value;
+            return true;
+        }
+        return false;
+    }
 
     public IEnumerator GetAllStats()
     {
@@ -89,13 +100,17 @@ public class Server : MonoBehaviour
         {
             foreach (var stat in result.Statistics)
             {
-                statVersions[stat.StatisticName] = stat.Version;
+                stats[stat.StatisticName] = stat;
             }
+            HasStatsFromServer = true;
         }
     }
 
     public IEnumerator UpdateStat(string name, int value)
     {
+        //GameManager.SetDebugOutput("stats", "stat updates disabled");
+        //yield break;
+
         // Don't spam if client is not logged in (offline). Some score might also be posted before login completes and the SDK throws then.
         if (!PlayFabClientAPI.IsClientLoggedIn())
             yield break;
@@ -103,7 +118,7 @@ public class Server : MonoBehaviour
         UpdatePlayerStatisticsRequest req = new UpdatePlayerStatisticsRequest();
         StatisticUpdate stat = new StatisticUpdate
         {
-            Version = statVersions.ContainsKey(name) ? statVersions[name] : null,
+            Version = stats.ContainsKey(name) ? (uint?)stats[name].Version : null,
             StatisticName = name,
             Value = value,
         };

@@ -27,6 +27,11 @@ public class SaveGameMembers
     public int SelectedHero;
     public string UserId;
 
+    public int OrcsSaved;
+    public int EnemiesKilled;
+    public int PlayerDeaths;
+    public int SecondsPlayed;
+
     public bool IsMaxCounter(GameCounter counter)
     {
         return counter > GameCounter.Max_First && counter < GameCounter.Max_Last;
@@ -88,13 +93,18 @@ public static class SaveGame
     public static int RoundScore;
     public static int RoundKills;
 
-    public static void UpdateFromRound(bool reset)
+    public static void UpdateFromRound(int roundSeconds, bool reset)
     {
         if (RoundScore > Members.BestScore)
             Members.BestScore = RoundScore;
 
         if (RoundKills > Members.BestKills)
             Members.BestKills = RoundKills;
+
+        Members.OrcsSaved += RoundScore;
+        Members.EnemiesKilled += RoundKills;
+        Members.PlayerDeaths++;
+        Members.SecondsPlayed += roundSeconds;
 
         ResetRound();
     }

@@ -118,7 +118,7 @@ namespace Assets.Script
                 {
                     newGameModeUnlocks_.Add(gm);
                     unlockedGameModes_.Add(gm.GameMode);
-                    Debug.LogFormat("Unlocked GameMode {0}", gm.Counter.ToString());
+//                    Debug.LogFormat("Unlocked GameMode {0}", gm.Counter.ToString());
                 }
             }
             return newGameModeUnlocks_;
@@ -141,7 +141,7 @@ namespace Assets.Script
                 bool isMatch = (counterValue >= wep.Requirement && !onlyExactMatch) || (counterValue == wep.Requirement);
                 if (isMatch && !unlockedWeapons_.Contains(wep.Type))
                 {
-                    Debug.LogFormat("Unlocked weapon {0}", wep.Type);
+//                    Debug.LogFormat("Unlocked weapon {0}", wep.Type);
                     UnlockWeapon(wep.Type, forceSwitch: onlyExactMatch);
                     newWeaponUnlocks_.Add(wep);
                 }
@@ -166,7 +166,7 @@ namespace Assets.Script
                 bool isMatch = (counterValue >= dam.Requirement && !onlyExactMatch) || (counterValue == dam.Requirement);
                 if (isMatch && !unlockedDamage_.Contains(dam))
                 {
-                    Debug.LogFormat("Unlocked damage {0}", dam.Amount);
+//                    Debug.LogFormat("Unlocked damage {0}", dam.Amount);
                     DamageModifier += dam.Amount * 0.01f;
                     unlockedDamage_.Add(dam);
                     newDamageUnlocks_.Add(dam);
@@ -188,7 +188,7 @@ namespace Assets.Script
                 bool isMatch = (counterValue >= hero.Req && !onlyExactMatch) || (counterValue == hero.Req);
                 if (isMatch && !unlockedHeroes_.Contains(hero.HeroType))
                 {
-                    Debug.LogFormat("Unlocked hero {0}", hero.HeroType);
+//                    Debug.LogFormat("Unlocked hero {0}", hero.HeroType);
                     unlockedHeroes_.Add(hero.HeroType);
                     newHeroUnlocks_.Add(hero);
                 }

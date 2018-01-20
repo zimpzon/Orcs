@@ -165,6 +165,9 @@ public class PlayerScript : MonoBehaviour
         WeaponTypeLeft = left;
         WeaponTypeRight = right;
 
+        WeaponBase.GetWeapon(left).OnAcquired();
+        WeaponBase.GetWeapon(right).OnAcquired();
+
         SetWeapon(WeaponTypeLeft);
     }
 
@@ -262,7 +265,7 @@ public class PlayerScript : MonoBehaviour
             lookLen2 = muzzleLook.sqrMagnitude;
             if (lookLen2 < 0.1f)
             {
-                // Crosshair in on top of player
+                // Crosshair is on top of player
                 return;
             }
         }
@@ -296,7 +299,11 @@ public class PlayerScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col)
     {
         int layer = col.gameObject.layer;
-        if (isDead_ || layer == GameManager.Instance.LayerXpPill || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc)
+        if (isDead_ || layer == GameManager.Instance.LayerPlayerProjectile || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc)
+            return;
+
+        var actor = col.gameObject.GetComponent<ActorBase>();
+        if (actor != null && !actor.IsFullyReady)
             return;
 
         KillPlayer();
@@ -309,6 +316,7 @@ public class PlayerScript : MonoBehaviour
         isDead_ = true;
         shadowRenderer_.enabled = false;
         GameProgressScript.Instance.Stop();
+        AudioManager.Instance.StopAllRepeating();
         SetWeapon(WeaponType.None);
         var clip = victory ? AudioManager.Instance.AudioData.Victory : AudioManager.Instance.AudioData.PlayerDie;
         AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, clip);
@@ -326,6 +334,8 @@ public class PlayerScript : MonoBehaviour
 
         RoundComplete = false;
         float targetOrthoSize = 5.0f;
+        float targetShowGameOverOrthoSize = 6.0f;
+        bool quickDeath = true;
         while (true)
         {
             if (RoundComplete)
@@ -338,7 +348,7 @@ public class PlayerScript : MonoBehaviour
             cam.orthographicSize -= amount;
 
             // Show game over overlay
-            if (GameManager.Instance.GameState != GameManager.State.Dead && cam.orthographicSize < 6.0f)
+            if (GameManager.Instance.GameState != GameManager.State.Dead && (cam.orthographicSize < targetShowGameOverOrthoSize || quickDeath))
                 GameManager.Instance.ShowGameOver();
 
             if (cam.orthographicSize < targetOrthoSize + 0.1f)
@@ -360,16 +370,16 @@ public class PlayerScript : MonoBehaviour
         {
             GameManager.SetDebugOutput("Cheat enabled", Time.time);
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                SetWeapon(WeaponType.Machinegun);
+                SetWeaponTypes(WeaponType.Sawblade, WeaponType.SawedShotgun);
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                SetWeapon(WeaponType.Grenade);
+                SetWeaponTypes(WeaponType.Unarmed, WeaponType.Horn);
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                SetWeapon(WeaponType.ShotgunSlug);
+                SetWeaponTypes(WeaponType.Mine, WeaponType.Grenade);
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
-                SetWeapon(WeaponType.Staff2);
+                SetWeaponTypes(WeaponType.Mine, WeaponType.Grenade);
         }
 
         float left = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1.0f : 0.0f;
@@ -451,7 +461,7 @@ public class PlayerScript : MonoBehaviour
             OverheadText.text = "AAAARGH!";
             OverheadText.enabled = true;
 
-            Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 0.5f + ((Vector3)Random.insideUnitCircle * 0.07f));
+            Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 0.5f + ((Vector3)RndUtil.RandomInsideUnitCircle() * 0.07f));
             overheadTextTrans_.anchoredPosition = uiPos;
             Color col = Color.HSVToRGB(Random.value * 0.3f, 1.0f, 1.0f);
             OverheadText.color = col;

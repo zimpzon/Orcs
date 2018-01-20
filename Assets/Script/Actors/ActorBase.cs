@@ -24,6 +24,7 @@ public class ActorBase : MonoBehaviour
     protected AnimationController animationController_ = new AnimationController();
     protected Sprite[] currentAnimations_;
 
+    protected Vector3 baseScale_;
     protected Vector3 position_;
     protected float mass_ = 1.0f;
     protected float massInverse_;
@@ -51,7 +52,7 @@ public class ActorBase : MonoBehaviour
     float livingBombDamage_;
     float livingBombEnd_;
     protected bool isSpawning_ = true;
-    protected bool isFullyReady_ = false;
+    public bool IsFullyReady = false;
 
     Color outsideArenaColor = new Color(0.0f, 0.0f, 0.0f);
 
@@ -61,13 +62,14 @@ public class ActorBase : MonoBehaviour
 
         transform_ = this.transform;
         Transform = transform_;
+        baseScale_ = transform_.localScale;
         renderer_ = GetComponent<SpriteRenderer>();
         material_ = renderer_.material;
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
 
         // Assume uniform scale
-        float scale = transform_.localScale.x;
+        float scale = baseScale_.x;
         RadiusFirstCheck *= scale;
         RadiusHead *= scale;
         RadiusBody *= scale;
@@ -146,7 +148,7 @@ public class ActorBase : MonoBehaviour
 
     protected void UpdatePosition(Vector3 moveVec, float speed)
     {
-        if (!isFullyReady_)
+        if (!IsFullyReady)
         {
             // Force towards center
             Vector3 centerDir = (Vector3.zero - position_).normalized;
@@ -177,7 +179,7 @@ public class ActorBase : MonoBehaviour
 
         position_.z = 0;
 
-        if (isFullyReady_)
+        if (IsFullyReady)
             position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
 
         bool dead = Hp <= 0.0f;
@@ -281,7 +283,7 @@ public class ActorBase : MonoBehaviour
 
     void CheckFullyReady()
     {
-        if (isFullyReady_)
+        if (IsFullyReady)
             return;
 
         bool isFullyReady = !isSpawning_ && GameManager.Instance.IsInsideBounds(transform_.position, renderer_.sprite);
@@ -295,7 +297,7 @@ public class ActorBase : MonoBehaviour
         material_.SetColor(flashColorParamId_, Color.white);
         material_.SetFloat(flashParamId_, 0.0f);
 
-        isFullyReady_ = true;
+        IsFullyReady = true;
         this.gameObject.layer = GameManager.Instance.LayerEnemy;
     }
 
@@ -333,7 +335,7 @@ public class ActorBase : MonoBehaviour
             GameManager.Instance.PlayerScript.KillPlayer();
         }
 
-        ApplyDamage(livingBombDamage_, UnityEngine.Random.insideUnitCircle.normalized, 0.25f, true);
+        ApplyDamage(livingBombDamage_, RndUtil.RandomInsideUnitCircle().normalized, 0.25f, true);
     }
 
     IEnumerator DieAnimation(Vector3 deathSourceDir, float forceModifier)
@@ -413,12 +415,12 @@ public class ActorBase : MonoBehaviour
     {
         StopAllCoroutines();
         transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        transform_.localScale = new Vector3(Mathf.Abs(transform_.localScale.x), Mathf.Abs(transform_.localScale.y), Mathf.Abs(transform_.localScale.z));
+        transform_.localScale = baseScale_;
         IsCorpse = false;
         isPainted_ = false;
         isLivingBomb_ = false;
         isSpawning_ = true;
-        isFullyReady_ = false;
+        IsFullyReady = false;
         slowmotionModifier_ = 1.0f;
         flashEndTime_ = 0.0f;
         force_ = Vector3.zero;

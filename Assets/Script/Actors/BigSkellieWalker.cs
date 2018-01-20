@@ -12,14 +12,14 @@ public class BigSkellieWalker : ActorBase
     protected override void PreEnable()
     {
         Speed = 2.0f * GameMode.MoveSpeedModifier;
-        Hp = 350 * GameMode.HitpointModifier;
+        Hp = 600 * GameMode.HitpointModifier;
         mass_ = 3.0f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.LargeWalker;
     }
 
     protected override void PostEnable()
     {
-        scale_ = transform_.localScale  * (GameMode.HasExtraLargeWalkers ? 1.5f : 1.0f);
+        scale_ = baseScale_  * (GameMode.HasExtraLargeWalkers ? 1.5f : 1.0f);
         position_ = this.Transform.position;
         currentAnimations_ = SpriteData.Instance.SkellieWalkSprites;
         target_ = GetNewTarget();

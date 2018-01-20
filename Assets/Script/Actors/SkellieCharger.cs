@@ -40,9 +40,9 @@ public class SkellieCharger : ActorBase
         {
             float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
             const float MinDistToCharge = 3.0f;
-            if (isFullyReady_ && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
+            if (IsFullyReady && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
             {
-                target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(Random.insideUnitCircle * 2);
+                target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(RndUtil.RandomInsideUnitCircle() * 2);
                 target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
                 chargeSpeed_ = Speed * 5;
                 if (chargeSpeed_ > 8.0f)
@@ -86,7 +86,7 @@ public class SkellieCharger : ActorBase
             ep.startLifetime = 2.0f;
             for (int i = 0; i < Mathf.RoundToInt(5 * GameMode.ExplosionModifier); ++i)
             {
-                Vector2 rndDir = Random.insideUnitCircle.normalized;
+                Vector2 rndDir = RndUtil.RandomInsideUnitCircle().normalized;
                 ep.velocity = rndDir * 1.5f;
                 GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
             }

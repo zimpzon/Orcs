@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae8cf6714fdb2f499d4a415fbd08eab, type: 3}
+  m_Name: SpriteData
+  m_EditorClassIdentifier: 
+  PlayerRunSprites:
+  - {fileID: 21300000, guid: 5d6f88caa9397a645b622e65da0cd258, type: 3}
+  - {fileID: 21300000, guid: 0e80150245a5d9549b139e1210f175f4, type: 3}
+  - {fileID: 21300000, guid: f7a9c17b9f751b443952c008cc0e8372, type: 3}
+  - {fileID: 21300000, guid: fe801d47a4c6d9745aa025401682181a, type: 3}
+  PlayerIdleSprites:
+  - {fileID: 21300000, guid: 02881ca0a5021474ebcb375c314d692d, type: 3}
+  - {fileID: 21300000, guid: dcb67047a83e21846a5308d2a2d52db0, type: 3}
+  - {fileID: 21300000, guid: 7c858195f1208994aaef2e840b628df3, type: 3}
+  - {fileID: 21300000, guid: 67f3be7fff23b344abb8ba43a4ba804a, type: 3}
+  - {fileID: 21300000, guid: 54093c577fc448147b4c26c5be6e75b6, type: 3}
+  PlayerMeleeSprites:
+  - {fileID: 21300000, guid: 333ec32b63b8ee743a47f43edfdbc0d4, type: 3}
+  - {fileID: 21300000, guid: c996075bdd143634b94f2b403acdfc47, type: 3}
+  - {fileID: 21300000, guid: d5640c98e9de75849860784a7323262f, type: 3}
+  SkellieWalkSprites:
+  - {fileID: 21300000, guid: f463a478dccd71247ad83097e157d80f, type: 3}
+  - {fileID: 21300000, guid: 81b53d1351a2f7f428477d4772e9e8e4, type: 3}
+  - {fileID: 21300000, guid: 8c7860ae599914e41b5166760a4a76f7, type: 3}
+  - {fileID: 21300000, guid: a68e68f5b2efaa8439d2dd103613988c, type: 3}
+  Skellie2WalkSprites:
+  - {fileID: 21300000, guid: 001ff24213a766e4784a063abbfabeee, type: 3}
+  - {fileID: 21300000, guid: b9cc5441bfa60534c86b3c4eb88d9a54, type: 3}
+  - {fileID: 21300000, guid: bc1cbe82b02298d4ebb83381bab28f3d, type: 3}
+  - {fileID: 21300000, guid: 863dcef35bfee9e428f5f52593090ebb, type: 3}
+  SkellieCasterWalkSprites:
+  - {fileID: 21300000, guid: 178c50ef7cb37b844b03ddab8d362071, type: 3}
+  - {fileID: 21300000, guid: e46da280f4daf3145b3228595ccce2be, type: 3}
+  - {fileID: 21300000, guid: d60dd9aa58f568342aa82d3d1a0de020, type: 3}
+  - {fileID: 21300000, guid: 9c3e06bc109dd454480c529e74b22b00, type: 3}
+  SkellieGunWalkSprites:
+  - {fileID: 21300000, guid: 36b3ffdf1175a8644912de7a7e4fb669, type: 3}
+  - {fileID: 21300000, guid: 3e66aca86ecff4245b925020a0f49613, type: 3}
+  - {fileID: 21300000, guid: b88f2ee72d23c4d4393227ae133aa11e, type: 3}
+  - {fileID: 21300000, guid: 7c92aff2452e312418e424e321db7511, type: 3}
+  Pirate1WalkSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  MeleeTrail: {fileID: 21300000, guid: 99b9ce6438a65af499d6c99f815a007f, type: 3}
+  Orc: {fileID: 21300000, guid: 98b4e7dbddb51b448803737ab324dd55, type: 3}
+  Bullet: {fileID: 21300000, guid: 05c2a5dc58e2e5c439fcc7bb6f1f5ba2, type: 3}
+  RoundBullet: {fileID: 21300000, guid: abac9408e53de5347b6a0abb30214d95, type: 3}
+  Sawblade: {fileID: 21300000, guid: afbad81907cddef4bb79e95722d91bd3, type: 3}
+  Shotgun: {fileID: 21300000, guid: ac33ecd565230f240b38dadfb5f06bea, type: 3}
+  Sniper: {fileID: 21300000, guid: 41ff7e56296bd4542b03906a9108171b, type: 3}
+  Flamethrower: {fileID: 21300000, guid: 696511d9e070b624091b0b449e7a0686, type: 3}
+  MachineGun: {fileID: 21300000, guid: 9d1b5068ba2d4c34196dc9bd0404a434, type: 3}
+  Staff: {fileID: 21300000, guid: f862b6e807dfb7144a5bc94ec147a1a4, type: 3}

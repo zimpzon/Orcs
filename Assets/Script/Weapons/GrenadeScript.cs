@@ -24,13 +24,13 @@ public class GrenadeScript : MonoBehaviour
         trans_.position = Vector3.right * 10000;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, Radius);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, Radius);
+    //}
 
-    void Start()
+    void Awake()
     {
         trans_ = this.transform;
         bombRenderer_ = GetComponent<SpriteRenderer>();
@@ -97,7 +97,7 @@ public class GrenadeScript : MonoBehaviour
         fuseEmission.enabled = false;
 
         audioSource_.clip = AudioManager.Instance.AudioData.BombExplode;
-        audioSource_.volume = 1.0f * AudioManager.Instance.MasterVolume; ;
+        audioSource_.volume = 1.0f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
         GameManager.Instance.MakeFlash(pos, Radius * 1.5f);
         GameManager.Instance.MakePoof(pos, 6, Radius * 1.5f);
@@ -122,7 +122,7 @@ public class GrenadeScript : MonoBehaviour
 
         for (int i = 0; i < 10; ++i)
         {
-            Vector2 rnd = Random.insideUnitCircle * Radius * 0.5f;
+            Vector2 rnd = RndUtil.RandomInsideUnitCircle() * Radius * 0.5f;
             Vector3 flamePos = pos;
             flamePos.x += rnd.x;
             flamePos.y += rnd.y;

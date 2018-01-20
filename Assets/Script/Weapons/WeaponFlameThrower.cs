@@ -2,7 +2,7 @@
 
 class WeaponFlamethrower : WeaponBase
 {
-    public override void StopFire()
+    public override void OnAcquired()
     {
         AudioManager.Instance.StopClip(AudioManager.Instance.PlayerAudioSource);
     }

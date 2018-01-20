@@ -3,15 +3,10 @@
 public class AudioManager : MonoBehaviour
 {
     public AudioData AudioData;
-
-    [System.NonSerialized]
-    public AudioSource PlayerAudioSource;
-    [System.NonSerialized]
-    public AudioSource MiscAudioSource;
-    [System.NonSerialized]
-    public AudioSource EnemyShootAudioSource;
-    [System.NonSerialized]
-    public AudioSource XpAudioSource;
+    [System.NonSerialized] public AudioSource PlayerAudioSource;
+    [System.NonSerialized] public AudioSource MiscAudioSource;
+    [System.NonSerialized] public AudioSource EnemyShootAudioSource;
+    [System.NonSerialized] public RepeatingAudioClip RepeatingSawblade;
 
     [System.NonSerialized] public static AudioManager Instance;
     public float MasterVolume;
@@ -26,18 +21,24 @@ public class AudioManager : MonoBehaviour
         PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
         PlayerAudioSource.priority = priority++;
 
+        RepeatingSawblade = new RepeatingAudioClip(this.gameObject, 3, priority, 4.0f);
+        priority++;
+
         EnemyShootAudioSource = this.gameObject.AddComponent<AudioSource>();
         EnemyShootAudioSource.priority = priority++;
 
         MiscAudioSource = this.gameObject.AddComponent<AudioSource>();
         MiscAudioSource.priority = priority++;
-
-        XpAudioSource = this.gameObject.AddComponent<AudioSource>();
-        XpAudioSource.priority = priority++;
     }
 
-    private void Start()
+    public void StopAllRepeating()
     {
+        RepeatingSawblade.StopAllClips();
+    }
+
+    private void Update()
+    {
+        RepeatingSawblade.Update(Time.deltaTime);
     }
 
     public void SetVolume(float volume)

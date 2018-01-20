@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelectable, Deed };
+public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelectable, TreasureIsland, PirateCave, Deed };
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     public Text TextGameOverOrcsSavedBest;
     public Text TextGameOverDeedScore;
     public Text TextGameOverDeedComment;
+    public Text TextStatOrcsSaved;
+    public Text TextStatEnemiesKilled;
+    public Text TextStatDeaths;
+    public Text TextStatTimePlayed;
     public Text TextLocked;
     public Text TextNewRecord;
     public Text TextNewUnlock;
@@ -40,6 +44,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextColDamReq;
     public Text ButtonUnlockedText;
     public Text ButtonDeedText;
+    public Text TextFps;
     public Renderer Floor;
     public GameObject DeedPrefab;
     public Transform DeedItemParent;
@@ -109,6 +114,8 @@ public class GameManager : MonoBehaviour
     public GameModeData GameModeDataHarmony = new GameModeData();
     public GameModeData GameModeDataDeed = new GameModeData();
     public GameModeData GameModeDataSandbox = new GameModeData();
+    public GameModeData GameModeDataTreasureIsland = new GameModeData();
+    public GameModeData GameModeDataPirateCave = new GameModeData();
 
     public List<DeedData> Deeds = new List<DeedData>();
     public List<DeedUI> DeedItems = new List<DeedUI>();
@@ -141,8 +148,18 @@ public class GameManager : MonoBehaviour
         PlayMenuSound();
         GameState = State.Intro_Settings;
 
+        bool hasStatsToShow = Server.Instance.HasStatsFromServer || SaveGame.Members.PlayerDeaths > 0;
+        if (hasStatsToShow)
+        {
+            TextStatOrcsSaved.text = SaveGame.Members.OrcsSaved.ToString();
+            TextStatEnemiesKilled.text = SaveGame.Members.EnemiesKilled.ToString();
+            TextStatDeaths.text = SaveGame.Members.PlayerDeaths.ToString();
+            int secondsPlayed = SaveGame.Members.SecondsPlayed;
+            TextStatTimePlayed.text = string.Format("{0}h {1}min", secondsPlayed / 3600, (secondsPlayed / 60) % 60);
+        }
+
         SliderMusic.value = SaveGame.Members.VolumeMusic;
-        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider
+        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
         SliderSfx.value = SaveGame.Members.VolumeSfx;
 
         EnablePanel(PanelSettings, true);
@@ -157,6 +174,7 @@ public class GameManager : MonoBehaviour
 
     float sfxVolumeChangeLastFeedback_;
     bool skipNextsfxVolumeChangeFeedback_;
+
     public void SliderSfxChanged()
     {
         float value = SliderSfx.value;
@@ -276,8 +294,8 @@ public class GameManager : MonoBehaviour
     void EnablePanel(GameObject panel, bool enable)
     {
         // Work-around for Unity SetActive bug (still showing UI components after disable)
-        panel.SetActive(true);
-        panel.transform.localScale = enable ? Vector3.one : Vector3.zero;
+        panel.SetActive(enable);
+//        panel.transform.localScale = enable ? Vector3.one : Vector3.zero;
     }
 
     void UpdateButtonStates()
@@ -406,8 +424,37 @@ public class GameManager : MonoBehaviour
         TextLocked.enabled = !isUnlocked;
     }
 
+    IEnumerator DeathLoopCo()
+    {
+        SetDebugOutput("deathloop", "testing activated");
+        while (!Input.GetKeyDown(KeyCode.G))
+            yield return null;
+
+        while (true)
+        {
+            while (GameState != State.Playing)
+                yield return null;
+
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            PlayerScript.KillPlayer();
+
+            while (GameState != State.Dead)
+                yield return null;
+
+            // Game Over info now shown
+            yield return new WaitForSecondsRealtime(1.0f);
+
+            // This happens when pressing space
+            PlayerScript.RoundComplete = true;
+            ShowTitle(autoStartGame: true);
+        }
+    }
+
     IEnumerator GameStateCo()
     {
+//        StartCoroutine(DeathLoopCo());
+
         while (true)
         {
             while (GameState == State.Intro)
@@ -434,12 +481,12 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     GameModeChange(-1);
                 }
 
-                if (Input.GetKeyDown(KeyCode.D))
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     GameModeChange(1);
                 }
@@ -509,6 +556,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
+                // Moved to fixed update
                 float delta = Time.deltaTime;
                 ProjectileManager.Instance.Tick(delta);
                 yield return null;
@@ -534,6 +582,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //private void FixedUpdate()
+    //{
+    //    float delta = Time.fixedDeltaTime;
+    //    ProjectileManager.Instance.Tick(delta);
+    //}
+
     void UpdateStat(string name, int value)
     {
         StartCoroutine(Server.Instance.UpdateStat(name, value));
@@ -554,6 +608,7 @@ public class GameManager : MonoBehaviour
         TextFloatingWeapon.Clear();
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
+
         StartCoroutine(Server.Instance.UpdateStat("OrcsSaved", SaveGame.RoundScore));
         StartCoroutine(Server.Instance.UpdateStat("Kills", SaveGame.RoundKills));
         switch (CurrentGameModeData.GameMode)
@@ -576,7 +631,8 @@ public class GameManager : MonoBehaviour
         //}
 
         float roundTime = Time.time - roundStartTime_;
-        StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", Mathf.RoundToInt(roundTime)));
+        int roundSeconds = Mathf.RoundToInt(roundTime);
+        StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
 
         int bestScore = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
         TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
@@ -619,7 +675,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        SaveGame.UpdateFromRound(reset: true);
+        SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
 
         CanvasDead.gameObject.SetActive(true);
@@ -691,7 +747,6 @@ public class GameManager : MonoBehaviour
             return;
 
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined; // TODO PE: Only works as a reponse to user action (browser security)
         SaveGame.ResetRound();
 
         CurrentDeedData.Reset();
@@ -745,7 +800,22 @@ public class GameManager : MonoBehaviour
     IEnumerator ServerColdStart()
     {
         yield return StartCoroutine(Server.Instance.DoServerColdStart());
-//        Server.Instance.LastResult
+        // Update SaveGame stats with server stats. They could have been 100% local but
+        // since I didn't do that from the start I have to get the stats from the server
+        // at least once. So just do it every time, then it also works if local data is
+        // deleted.
+        int statValue;
+        if (Server.Instance.TryGetStat("OrcsSaved", out statValue))
+            SaveGame.Members.OrcsSaved = statValue;
+
+        if (Server.Instance.TryGetStat("Kills", out statValue))
+            SaveGame.Members.EnemiesKilled = statValue;
+
+        if (Server.Instance.TryGetStat("RoundStarted", out statValue))
+            SaveGame.Members.PlayerDeaths = statValue;
+
+        if (Server.Instance.TryGetStat("RoundSeconds", out statValue))
+            SaveGame.Members.SecondsPlayed = statValue;
     }
 
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
@@ -768,7 +838,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.I) && GameState != State.Intro_Sandbox)
+        {
+            TextFps.enabled = !TextFps.enabled;
+        }
+
+        if (TextFps.enabled)
+        {
+            TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && GameState != State.Intro_Sandbox)
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
@@ -948,7 +1028,7 @@ public class GameManager : MonoBehaviour
         FlameParticles.Emit(1);
     }
 
-    public void TriggerBlood(Vector3 pos, float amount)
+    public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)
     {
         FlyingBlood.transform.position = pos;
         int rangeFrom = Mathf.RoundToInt(10 * amount);
@@ -959,8 +1039,15 @@ public class GameManager : MonoBehaviour
         BloodDrops.transform.position = pos;
         BloodDrops.Emit(Mathf.RoundToInt(1 + (0.25f * amount)));
 
-        FloorBlood.transform.position = pos;
-        FloorBlood.Emit(Mathf.RoundToInt(1 + (0.25f * amount)));
+        if (UnityEngine.Random.value <= floorBloodRnd)
+        {
+            int bloodAmount = Mathf.RoundToInt(1 + (0.25f * amount));
+            if (bloodAmount > 8)
+                bloodAmount = 8;
+
+            FloorBlood.transform.position = pos;
+            FloorBlood.Emit(bloodAmount);
+        }
     }
 
     public void RegisterEnemy(ActorBase enemy)
@@ -999,7 +1086,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
+        Application.targetFrameRate = 60;
         SortLayerTopEffects = SortingLayer.NameToID("TopEffects");
         LayerPlayer = LayerMask.NameToLayer("Player");
         LayerEnemyProjectile = LayerMask.NameToLayer("EnemyProjectile");
@@ -1018,19 +1105,19 @@ public class GameManager : MonoBehaviour
         float halfY = bounds.size.y / 2;
         ArenaBounds = new Rect(-halfX, -halfY, halfX * 2, halfY * 2);
         InitDeedItems();
-
-        SaveGame.Load();
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
-        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
-
-        Unlocks.RefreshUnlocked();
+        TextFps.enabled = false;
     }
 
     private void Start()
     {
+        SaveGame.Load();
+        Unlocks.RefreshUnlocked();
+
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
-
         StartCoroutine(ServerColdStart());
         ShowTitle();
         StartCoroutine(GameStateCo());
@@ -1067,13 +1154,14 @@ public class GameManager : MonoBehaviour
         PruneDeadEnemies();
     }
 
-    // Only enable this when needed. It creates garbage.
     //void OnGUI()
     //{
+    //    SetDebugOutput("OnGUI enabled", Time.time);
+
     //    if (DebugValues.Count == 0)
     //        return;
 
-    //    float y = 200.0f;
+    //    float y = 150.0f;
     //    GUI.contentColor = Color.white;
     //    foreach (var pair in DebugValues)
     //    {

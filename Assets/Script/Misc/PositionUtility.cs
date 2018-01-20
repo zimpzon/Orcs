@@ -148,7 +148,7 @@ public static class PositionUtility
         for (int i = 0; i < count; ++i)
         {
             Vector3 p = center;
-            Vector2 rnd = Random.insideUnitCircle * radius;
+            Vector2 rnd = RndUtil.RandomInsideUnitCircle() * radius;
             p.x += rnd.x;
             p.y += rnd.y;
             list.Add(p);
