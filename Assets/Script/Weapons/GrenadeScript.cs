@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GrenadeScript : MonoBehaviour
 {
+    public static float Cd = 1.5f;
+    public static float FuseTime = 3.0f;
+    public const float DefaultRadius = 3.5f;
+    public const float DefaultDamage = 280.0f;
+
     SpriteRenderer bombRenderer_;
     SpriteRenderer shadowRenderer_;
     Transform trans_;
@@ -37,23 +42,23 @@ public class GrenadeScript : MonoBehaviour
         Hide();
     }
 
-    public void Throw(Vector3 from, Vector3 to)
+    public void Throw(Vector3 from, Vector3 to, float radius = DefaultRadius, float damage = DefaultDamage)
     {
         StopAllCoroutines();
-        StartCoroutine(ThrowCo(from, to));
+        StartCoroutine(ThrowCo(from, to, radius, damage));
     }
 
-    IEnumerator ThrowCo(Vector3 from, Vector3 to)
+    IEnumerator ThrowCo(Vector3 from, Vector3 to, float radius, float damage)
     {
         shadowRenderer_.enabled = false;
         var fuseEmission = fuseParticles_.emission;
         fuseEmission.enabled = true;
 
         float length = (to - from).magnitude;
-        float force = Mathf.Min(5.0f, length);
-        float velocityY = 1.0f * force;
-        float downForce = -25.0f;
-        float speed = 5.0f * force;
+        float force = Mathf.Min(50.0f, length);
+        float velocityY = 0.5f * force;
+        float downForce = -15.0f;
+        float speed = 4.0f * force;
 
         float fuseT0 = Time.time;
         float fuseT1 = fuseT0 + FuseTime;
@@ -77,9 +82,12 @@ public class GrenadeScript : MonoBehaviour
 
             offsetY += velocityY * delta;
             velocityY += downForce * delta;
+
             if (offsetY <= 0)
             {
-                shadowRenderer_.enabled = true;
+                if (velocityY <= 0.1f)
+                    shadowRenderer_.enabled = true;
+
                 velocityY = -velocityY * 0.5f;
             }
 
@@ -92,43 +100,36 @@ public class GrenadeScript : MonoBehaviour
         fuseEmission.enabled = false;
 
         audioSource_.clip = AudioManager.Instance.AudioData.BombExplode;
-        audioSource_.volume = 1.0f * AudioManager.Instance.MasterVolume;
+        audioSource_.volume = 0.25f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
-        GameManager.Instance.MakeFlash(pos, Radius * 1.5f);
-        GameManager.Instance.MakePoof(pos, 6, Radius * 1.5f);
-        GameManager.Instance.ShakeCamera(4.0f);
+        GameManager.Instance.MakeFlash(pos, radius * 1.0f);
+        GameManager.Instance.MakePoof(pos, 2, radius * 1.0f);
+        GameManager.Instance.ShakeCamera(1.0f);
 
-        int deadCount = BlackboardScript.GetDeadEnemies(pos, Radius);
+        int deadCount = BlackboardScript.GetDeadEnemies(pos, radius);
         for (int i = 0; i < deadCount; ++i)
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.DeadEnemies[idx];
             enemy.AddForce((enemy.transform.position - pos) * 0.25f);
-//            enemy.Explode(2.0f + Random.value * 2);
         }
 
-        int aliveCount = BlackboardScript.GetEnemies(pos, Radius);
+        int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
-            enemy.ApplyDamage(Damage, enemy.transform.position - pos, 1.0f, true);
+            enemy.ApplyDamage(damage, enemy.transform.position - pos, 1.0f, true);
         }
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 3; ++i)
         {
-            Vector2 rnd = RndUtil.RandomInsideUnitCircle() * Radius * 0.5f;
+            Vector2 rnd = RndUtil.RandomInsideUnitCircle() * radius * 0.2f;
             Vector3 flamePos = pos;
             flamePos.x += rnd.x;
             flamePos.y += rnd.y;
-            GameManager.Instance.EmitFlame(flamePos, Random.value + 0.5f);
+            GameManager.Instance.EmitFlame(flamePos, Random.value + 0.25f);
             yield return null;
-        }
-
-        float playerDist = BlackboardScript.DistanceToPlayer(pos);
-        if (playerDist < 3.0f)
-        {
-            GameManager.Instance.PlayerScript.AddForce((GameManager.Instance.PlayerTrans.position - pos) * 0.1f);
         }
 
         Hide();

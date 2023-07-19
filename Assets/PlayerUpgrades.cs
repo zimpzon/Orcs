@@ -7,15 +7,24 @@ public class UpgradeData
     public float MoveSpeedAddPct = 0.0f;
 
     // orc pickups
-    public bool BlastOnPickupEnabled;
-    public float BlastOnPickupAmount = 1.0f;
-    public float BlastOnPickupMod = 1.0f;
+    public bool OrcPickupForceWaveEnabled = true;
+    public float OrcPickupForceWaveAmount = 1.0f;
+    public float OrcPickupForceWaveRadius = 5.0f;
+
+    public bool OrcPickupSawbladeEnabled = true;
+    public int OrcPickupSawbladeCount = 1;
 
     // paintball
     public bool PaintballEnabled = true;
     public float PaintballCd = 4;
     public int PaintballCount = 10;
     public float PaintballTimer;
+
+    // on kill
+    public bool OnKillDropBombEnabled = true;
+    public int OnKillDropBombKillCount = 4;
+    public int OnKillDropBombCurrentKillCount = 0;
+    public int OnKillDropBombChance = 4;
 }
 
 public class PlayerUpgrades : MonoBehaviour

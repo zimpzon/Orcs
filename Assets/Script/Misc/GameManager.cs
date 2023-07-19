@@ -725,6 +725,15 @@ public class GameManager : MonoBehaviour
             GameEvents.CounterEvent(GameCounter.Kill_BigWalker, 1);
         else if (actor.ActorType == ActorTypeEnum.Caster)
             GameEvents.CounterEvent(GameCounter.Kill_Caster, 1);
+
+        if (PlayerUpgrades.Data.OnKillDropBombEnabled)
+        {
+            if (PlayerUpgrades.Data.OnKillDropBombCurrentKillCount++ >= PlayerUpgrades.Data.OnKillDropBombKillCount)
+            {
+                PlayerScript.EjectGrenade(actor.transform.position, radius: 2.0f, damage: 200.0f);
+                PlayerUpgrades.Data.OnKillDropBombCurrentKillCount = 0;
+            }
+        }
     }
 
     public void OnOrcPickup(Vector3 pos)
@@ -766,9 +775,18 @@ public class GameManager : MonoBehaviour
             GameEvents.CounterEvent(GameCounter.Max_score_Harmony, SaveGame.RoundScore);
         }
 
-        if (PlayerUpgrades.Data.BlastOnPickupEnabled)
+        if (SaveGame.RoundScore > 1)
         {
-            Explosions.Push(pos, 5, 1);
+            if (PlayerUpgrades.Data.OrcPickupForceWaveEnabled)
+            {
+                Explosions.Push(pos, PlayerUpgrades.Data.OrcPickupForceWaveRadius, PlayerUpgrades.Data.OrcPickupForceWaveAmount);
+            }
+
+            if (PlayerUpgrades.Data.OrcPickupSawbladeEnabled)
+            {
+                var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
+                sawblades.Eject(pos, UnityEngine.Random.insideUnitCircle);
+            }
         }
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.OrcPickup);

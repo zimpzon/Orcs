@@ -240,6 +240,13 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void EjectGrenade(Vector3 pos, float radius, float damage)
+    {
+        var grenade = GameObject.Instantiate(Grenade);
+        var script = grenade.GetComponent<GrenadeScript>();
+        script.Throw(GameManager.Instance.Orc.transform.position, pos, radius, damage);
+    }
+
     void UpdateWeapon()
     {
         if (Weapon == null)

@@ -9,7 +9,7 @@ public class WeaponNone : WeaponBase
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0.0f; }
 }
 
-public abstract class WeaponBase
+public class WeaponBase
 {
     public static string WeaponDisplayName(WeaponType wepType)
     {
@@ -78,7 +78,9 @@ public abstract class WeaponBase
         return worldMuzzle;
     }
 
-    public abstract void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil);
+    public virtual void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0; }
+    public virtual void Eject(Vector3 pos, Vector3 direction) { }
+
     public virtual void StopFire() { }
     public virtual void OnAcquired() { }
 

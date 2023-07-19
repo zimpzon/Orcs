@@ -6,8 +6,8 @@ public static class Explosions
 {
     public static void Push(Vector3 pos, float radius, float force)
     {
-        GameManager.Instance.MakeFlash(pos, radius * 5f);
-        GameManager.Instance.MakePoof(pos, 1, radius * 1f);
+        GameManager.Instance.MakeFlash(pos, radius * 1f);
+        GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
         GameManager.Instance.ShakeCamera(1.0f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
 
@@ -16,11 +16,14 @@ public static class Explosions
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
+
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;
             dir /= distance;
             dir.Normalize();
-            var push = (radius - distance) * dir * force * 4;
+
+            float baseForce = Mathf.Clamp((radius - distance) * distance, 2.0f, 100.0f) * 0.25f;
+            var push = dir * baseForce * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
         }
