@@ -102,8 +102,8 @@ public class GrenadeScript : MonoBehaviour
         audioSource_.clip = AudioManager.Instance.AudioData.BombExplode;
         audioSource_.volume = 0.25f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
-        GameManager.Instance.MakeFlash(pos, radius * 1.0f);
-        GameManager.Instance.MakePoof(pos, 2, radius * 1.0f);
+        GameManager.Instance.MakeFlash(pos, radius * 2.0f);
+        GameManager.Instance.MakePoof(pos, 2, radius * 2.05f);
         GameManager.Instance.ShakeCamera(1.0f);
 
         int deadCount = BlackboardScript.GetDeadEnemies(pos, radius);
@@ -128,7 +128,7 @@ public class GrenadeScript : MonoBehaviour
             Vector3 flamePos = pos;
             flamePos.x += rnd.x;
             flamePos.y += rnd.y;
-            GameManager.Instance.EmitFlame(flamePos, Random.value + 0.25f);
+            GameManager.Instance.EmitFlame(flamePos, Random.value + 0.5f);
             yield return null;
         }
 

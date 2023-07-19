@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour
     public Button ButtonPlay;
     public string ColorLocked;
     public string ColorUnlocked;
-
+    public ShopItemScript ShopItemProto;
+    public Transform ShopItemsRoot;
     public Slider SliderMusic;
     public Slider SliderSfx;
     public Dropdown DropdownResolution;
@@ -53,8 +54,8 @@ public class GameManager : MonoBehaviour
     public GameObject PanelGameMode;
     public GameObject PanelUnlocks;
     public GameObject PanelSettings;
+    public GameObject PanelShop;
     public Canvas CanvasGameOverDefault;
-    public Canvas CanvasGameOverDeed;
     public GameModeEnum GameMode;
 
     public TextBlinkScript TextFloatingWeapon;
@@ -94,7 +95,6 @@ public class GameManager : MonoBehaviour
     public GameModeData GameModeDataFire = new GameModeData();
     public GameModeData GameModeDataStorm = new GameModeData();
     public GameModeData GameModeDataHarmony = new GameModeData();
-    public GameModeData GameModeDataDeed = new GameModeData();
 
     public List<Hero> Heroes = new List<Hero>();
     public Hero SelectedHero;
@@ -120,18 +120,6 @@ public class GameManager : MonoBehaviour
     float currentLevel = 1;
     float roundStartTime_;
     int roundStartBestScore_;
-
-    public void OnButtonSettings()
-    {
-        PlayMenuSound();
-        GameState = State.Intro_Settings;
-
-        SliderMusic.value = SaveGame.Members.VolumeMusic;
-        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
-        SliderSfx.value = SaveGame.Members.VolumeSfx;
-
-        EnablePanel(PanelSettings, true);
-    }
 
     public void SliderMusicChanged()
     {
@@ -224,6 +212,18 @@ public class GameManager : MonoBehaviour
         ButtonUnlockedText.transform.parent.GetComponent<Button>().interactable = UnlockedPct > 0.0f;
     }
 
+    public void OnButtonSettings()
+    {
+        PlayMenuSound();
+        GameState = State.Intro_Settings;
+
+        SliderMusic.value = SaveGame.Members.VolumeMusic;
+        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
+        SliderSfx.value = SaveGame.Members.VolumeSfx;
+
+        EnablePanel(PanelSettings, true);
+    }
+
     public void OnButtonGo()
     {
         PlayMenuSound();
@@ -251,8 +251,8 @@ public class GameManager : MonoBehaviour
     {
         PlayMenuSound();
         GameState = State.Intro_Shop;
-        EnablePanel(PanelUnlocks, true);
-        UpdateUnlocksPanel();
+        EnablePanel(PanelShop, true);
+        ShopItems.UpdateBoughtItems();
     }
 
     void UpdateUnlocksPanel()
@@ -411,7 +411,9 @@ public class GameManager : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     PlayMenuSound();
+                    SaveGame.Save();
                     GameState = State.Intro;
+                    EnablePanel(PanelShop, false);
                     break;
                 }
 
@@ -728,10 +730,10 @@ public class GameManager : MonoBehaviour
 
         if (PlayerUpgrades.Data.OnKillDropBombEnabled)
         {
-            if (PlayerUpgrades.Data.OnKillDropBombCurrentKillCount++ >= PlayerUpgrades.Data.OnKillDropBombKillCount)
+            if (PlayerUpgrades.Data.Counters.OnKillDropBombCurrentKillCount++ >= PlayerUpgrades.Data.OnKillDropBombKillCount)
             {
                 PlayerScript.EjectGrenade(actor.transform.position, radius: 2.0f, damage: 200.0f);
-                PlayerUpgrades.Data.OnKillDropBombCurrentKillCount = 0;
+                PlayerUpgrades.Data.Counters.OnKillDropBombCurrentKillCount = 0;
             }
         }
     }
@@ -955,6 +957,8 @@ public class GameManager : MonoBehaviour
         float halfY = bounds.size.y / 2;
         ArenaBounds = new Rect(-halfX, -halfY, halfX * 2, halfY * 2);
         TextFps.enabled = false;
+
+        ShopItems.CreateItemGoList(ShopItemProto, ShopItemsRoot);
     }
 
     private void Start()

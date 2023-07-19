@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameCounter {
@@ -17,6 +18,9 @@ public enum GameCounter {
 
 public class SaveGameMembers
 {
+    public int PlayerMoney;
+    public Dictionary<ShopItemType, BoughtItem> BoughtItems = new Dictionary<ShopItemType, BoughtItem>();
+
     public int[] Counters = new int[(int)GameCounter.Last];
 
     public int Version;

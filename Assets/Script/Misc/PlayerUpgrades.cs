@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class UpgradeData
 {
+    public class CounterClass
+    {
+        public float PaintballTimer;
+        public int OnKillDropBombCurrentKillCount = 0;
+    }
+
     public float CooldownReductionMul = 1.0f;
     public float DamageAddPct = 0.0f;
     public float MoveSpeedAddPct = 0.0f;
@@ -18,13 +24,19 @@ public class UpgradeData
     public bool PaintballEnabled = true;
     public float PaintballCd = 4;
     public int PaintballCount = 10;
-    public float PaintballTimer;
 
     // on kill
     public bool OnKillDropBombEnabled = true;
-    public int OnKillDropBombKillCount = 4;
-    public int OnKillDropBombCurrentKillCount = 0;
-    public int OnKillDropBombChance = 4;
+    public int OnKillDropBombKillCount = 20;
+
+    // bought
+    public int DamageLevel;
+    public int RunSpeedLevel;
+    public int CoolDownLevel;
+    public int PrimaryWeaponDamageLevel;
+    public int PrimaryWeaponProjectilesLevel;
+
+    public CounterClass Counters = new CounterClass();
 }
 
 public class PlayerUpgrades : MonoBehaviour
@@ -53,8 +65,8 @@ public class PlayerUpgrades : MonoBehaviour
         if (!Data.PaintballEnabled)
             return;
 
-        Data.PaintballTimer += Time.deltaTime;
-        if (Data.PaintballTimer > Data.PaintballCd)
+        Data.Counters.PaintballTimer += Time.deltaTime;
+        if (Data.Counters.PaintballTimer > Data.PaintballCd)
         {
             var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
 
@@ -66,7 +78,7 @@ public class PlayerUpgrades : MonoBehaviour
                 paintball.Fire(this.transform, dir, GameManager.Instance.SortLayerTopEffects, out _);
                 angle += angleStep;
             }
-            Data.PaintballTimer = 0;
+            Data.Counters.PaintballTimer = 0;
         }
     }
 
