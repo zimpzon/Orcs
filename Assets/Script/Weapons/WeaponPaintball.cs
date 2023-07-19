@@ -6,7 +6,7 @@ public class WeaponPaintball : WeaponBase
 
     void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
     {
-        if (other.OnPaintballHit())
+        if (other.OnPaintballHit(projectile.Color))
         {
             if (--projectile.CustomCounter == 0)
                 projectile.DieOnCollision = true;
@@ -17,7 +17,7 @@ public class WeaponPaintball : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        Color color = new Color(0.8f, 0.6f, 0.1f);
+        Color color = Color.HSVToRGB(UnityEngine.Random.value, 1.0f, 1.0f);
 
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
         worldMuzzle += -direction * 0.2f; // Start a little behind muzzle because its very unfun missing an enemy that is too close

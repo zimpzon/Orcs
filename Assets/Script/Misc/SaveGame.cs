@@ -123,15 +123,15 @@ public static class SaveGame
 
     public static void Save()
     {
-        ZPlayerPrefs.SetString(securePrefs, Members.ToJson());
-        ZPlayerPrefs.Save();
+        PlayerPrefs.SetString(securePrefs, Members.ToJson());
+        PlayerPrefs.Save();
     }
 
     public static bool RestoreOldPrefs()
     {
-        if (ZPlayerPrefs.HasKey("prefs_"))
+        if (PlayerPrefs.HasKey("prefs_"))
         {
-            var restoredV1 = SaveGameMembers.FromJson(ZPlayerPrefs.GetString("prefs_"));
+            var restoredV1 = SaveGameMembers.FromJson(PlayerPrefs.GetString("prefs_"));
             if (restoredV1.BestScore > 0)
             {
                 Members = restoredV1;
@@ -142,7 +142,7 @@ public static class SaveGame
 
         if (PlayerPrefs.HasKey("prefs"))
         {
-            var restoredV0 = SaveGameMembers.FromJson(ZPlayerPrefs.GetString("prefs"));
+            var restoredV0 = SaveGameMembers.FromJson(PlayerPrefs.GetString("prefs"));
             if (restoredV0.BestScore > 0)
             {
                 Members = restoredV0;
@@ -160,8 +160,8 @@ public static class SaveGame
     {
         try
         {
-            ZPlayerPrefs.Initialize("UnlockedWeapons", "OrcsMustLive");
-            string prefs = ZPlayerPrefs.GetString(securePrefs);
+            // hmm, init?
+            string prefs = PlayerPrefs.GetString(securePrefs);
 
             Members = SaveGameMembers.FromJson(prefs);
             if (Members.Counters.Length != (int)GameCounter.Last)

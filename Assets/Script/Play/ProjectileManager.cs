@@ -112,7 +112,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         basicProjectiles_ = new List<Basic>();
         removeListBasic_ = new List<Basic>(50);
         arenaBoundsY_ = Camera.main.orthographicSize;
-        arenaBoundsX_ = arenaBoundsY_ / 0.75f; // 4:3 ratio
+        arenaBoundsX_ = arenaBoundsY_ * AspectUtility.WantedAspectRatio;
     }
 
     public Basic CreateObject()

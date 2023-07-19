@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class GrenadeScript : MonoBehaviour
 {
-    public static float Cd = 1.5f;
-    public static float FuseTime = 1.0f;
-    public static float Radius = 3.5f;
-    public static float Damage = 280.0f;
-
     SpriteRenderer bombRenderer_;
     SpriteRenderer shadowRenderer_;
     Transform trans_;
@@ -130,7 +125,6 @@ public class GrenadeScript : MonoBehaviour
             yield return null;
         }
 
-        // Kill player if very close, else just push
         float playerDist = BlackboardScript.DistanceToPlayer(pos);
         if (playerDist < 3.0f)
         {

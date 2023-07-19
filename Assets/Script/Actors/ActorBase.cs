@@ -87,7 +87,7 @@ public class ActorBase : MonoBehaviour
     {
         // This is annoying. OnEnable is called right after Awake (eg before Start) when the cache precreates the objects, if the prefab is enabled.
         // On the other hand, if the prefab is NOT enabled, the first OnEnable call is called AFTER Start. So we don't know which is which here.
-        if (GameManager.Instance == null || GameManager.Instance.CurrentDeedData == null)
+        if (GameManager.Instance == null)
             return;
 
         GameMode = GameManager.Instance.CurrentGameModeData;
@@ -97,14 +97,14 @@ public class ActorBase : MonoBehaviour
         PostEnable();
     }
 
-    public bool OnPaintballHit()
+    public bool OnPaintballHit(Color color)
     {
         if (isPainted_)
             return false;
 
         isPainted_ = true;
-        paintEnd_ = Time.time + 8.0f;
-        material_.color = Color.HSVToRGB(UnityEngine.Random.value, 1.0f, 1.0f);
+        paintEnd_ = Time.time + 3.0f;
+        material_.color = color;
         return true;
     }
 
@@ -223,8 +223,7 @@ public class ActorBase : MonoBehaviour
         if (Hp <= 0.0f)
             return;
 
-        // Sandbox mode is with default damage
-        float damageModifier = GameManager.Instance.CurrentDeedData.Deed == DeedEnum.Sandbox ? 1.0f : Unlocks.DamageModifier;
+        float damageModifier = Unlocks.DamageModifier;
         amount *= damageModifier;
 
         Hp -= amount;

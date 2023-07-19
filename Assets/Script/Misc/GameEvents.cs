@@ -1,5 +1,4 @@
-﻿using DG;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using DG.Tweening;
@@ -7,8 +6,6 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public enum DeedEnum { None, SnipersParadise, MachinegunMadness, LittleMonsters, WhiteWalkers, Sandbox };
-
     public class DamageUnlockInfo
     {
         public int Amount;
@@ -122,8 +119,6 @@ namespace Assets.Script
                 case GameModeEnum.Fire: return "Plane Of Fire";
                 case GameModeEnum.Storm: return "Perfect Storm";
                 case GameModeEnum.Harmony: return "Plane Of Harmony";
-                case GameModeEnum.PirateCave: return "The Pirate Cave";
-                case GameModeEnum.TreasureIsland: return "Treasure Island";
                 default: return "Unknown: " + gameMode.ToString();
             }
         }
@@ -223,12 +218,6 @@ namespace Assets.Script
         // Important: All counter events must go through here so unlocks can be checked
         public static void CounterEvent(GameCounter counter, int amount)
         {
-            if (GameManager.Instance.CurrentDeedData.Deed == DeedEnum.Sandbox)
-            {
-                // Seems ok to do this check here. Sandbox events do not count towards unlocks.
-                return;
-            }
-
             if (SaveGame.Members.IsMaxCounter(counter))
                 SaveGame.Members.TryUpdateMaxValue(counter, amount);
             else

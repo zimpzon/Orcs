@@ -12,16 +12,13 @@ public class GoCache : MonoBehaviour
     public int InFlight;
     public int Total;
 
-    private List<GameObject> objects = new List<GameObject>();
+    private List<GameObject> cachedObjects = new List<GameObject>();
 
     public void PreCreate(int count)
     {
-        while (objects.Count < count)
+        while (cachedObjects.Count < count)
         {
-            var newInstance = (GameObject)Instantiate(Prefab);
-            newInstance.transform.position = Vector3.left * 20000; // Whoops, why are they still in the physics system when active = false? Have to hide them.
-            newInstance.SetActive(false);
-            objects.Add(newInstance);
+            AddInstance();
         }
     }
 
@@ -30,20 +27,27 @@ public class GoCache : MonoBehaviour
         PreCreate(PreCreateCount);
     }
 
+    private void AddInstance()
+    {
+        var newInstance = (GameObject)Instantiate(Prefab);
+        newInstance.transform.position = Vector3.left * 20000; // Whoops, why are they still in the physics system when active = false? Have to hide them.
+        newInstance.SetActive(false);
+        cachedObjects.Add(newInstance);
+    }
+
     public GameObject GetInstance()
     {
-        if (objects.Count > 0)
+        if (cachedObjects.Count == 0)
         {
-            int last = objects.Count - 1;
-            var result = objects[last];
-            objects.RemoveAt(last);
-            InFlight++;
-            return result;
+            for (int i = 0; i < 10; ++i)
+                AddInstance();
         }
 
-        var newInstance = (GameObject)Instantiate(Prefab);
+        int last = cachedObjects.Count - 1;
+        var result = cachedObjects[last];
+        cachedObjects.RemoveAt(last);
         InFlight++;
-        return newInstance;
+        return result;
     }
 
     public void ReturnInstance(GameObject instance)
@@ -52,12 +56,12 @@ public class GoCache : MonoBehaviour
         // Whoops, why are they still in the physics system when active = false? Have to hide them.
         instance.transform.position = Vector3.left * 20000;
         instance.SetActive(false);
-        objects.Add(instance);
+        cachedObjects.Add(instance);
     }
 
     private void LateUpdate()
     {
-        InCache = objects.Count;
+        InCache = cachedObjects.Count;
         Total = InCache + InFlight;
     }
 }

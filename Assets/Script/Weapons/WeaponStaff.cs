@@ -6,7 +6,7 @@ public class WeaponStaff : WeaponBase
 
     void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
     {
-        other.OnLivingBombHit(500.0f);
+        other.OnLivingBombHit(5.0f);
     }
 
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)

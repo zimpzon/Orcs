@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class AudioManager : MonoBehaviour
     [System.NonSerialized] public RepeatingAudioClip RepeatingSawblade;
 
     [System.NonSerialized] public static AudioManager Instance;
+    Dictionary<int, float> _clipThrottle = new Dictionary<int, float>();
+
     public float MasterVolume;
     float lowPitchRange = .95f;
     float highPitchRange = 1.05f;
@@ -46,14 +49,39 @@ public class AudioManager : MonoBehaviour
         MasterVolume = volume;
     }
 
+    const float ThrottleTime = 0.1f;
+
+    bool ThrottleClip(AudioClip clip)
+    {
+        return false;// TODOOOO
+        GameManager.SetDebugOutput("id", clip.GetInstanceID());
+        _clipThrottle.TryGetValue(clip.GetInstanceID(), out float nextPlay);
+        if (Time.realtimeSinceStartup < nextPlay)
+        {
+            GameManager.SetDebugOutput("next", nextPlay);
+            GameManager.SetDebugOutput("rt", Time.realtimeSinceStartup);
+            return false;
+        }
+
+        GameManager.SetDebugOutput("GO", Time.realtimeSinceStartup);
+        _clipThrottle[clip.GetInstanceID()] = Time.realtimeSinceStartup + ThrottleTime;
+        return false;
+    }
+
     public void PlayClipWithRandomPitch(AudioSource source, AudioClip clip, float volumeScale = 1.0f)
     {
+        if (ThrottleClip(clip))
+            return;
+
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
         PlayClip(source, clip, volumeScale, randomPitch);
     }
 
     public void PlayClip(AudioSource source, AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f)
     {
+        if (ThrottleClip(clip))
+            return;
+
         source.pitch = pitch;
         source.PlayOneShot(clip, volumeScale * MasterVolume);
     }

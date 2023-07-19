@@ -166,31 +166,6 @@ public class OrcController : MonoBehaviour
         GameManager.Instance.OnOrcPickup(trans_.position);
     }
 
-    List<string> yodaTalk_ = new List<string>
-    {
-        "YEAH!",
-        "Get them!",
-        "That's how you do it!",
-    };
-
-    int lastYodaPlayerTalkIdx_;
-    string GetYodaPlayerTalk()
-    {
-        var words = yodaTalk_;
-        int idx = 0;
-        for (int i = 0; i < 10; ++i)
-        {
-            idx = Random.Range(0, words.Count);
-            if (idx == lastYodaPlayerTalkIdx_)
-                continue;
-
-            break;
-        }
-
-        lastYodaPlayerTalkIdx_ = idx;
-        return words[idx];
-    }
-
     IEnumerator Think()
     {
         float nextNervousMove = Time.time + 3.0f;
@@ -214,12 +189,9 @@ public class OrcController : MonoBehaviour
                 {
                     nextMeleeSwing = Time.time + 0.5f;
                     StartCoroutine(SwingMeleeCo(lookAt_));
-                    float recoil;
                     const float YodaDamage = 200.0f;
                     const float YodaRadius = 2.5f;
-                    int hitCount = WeaponSword.Swing(trans_.position, YodaDamage, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out recoil);
-                    if (hitCount > 2)
-                        GameManager.Instance.PlayerScript.Talk(GetYodaPlayerTalk(), 1.0f, Color.white);
+                    _ = WeaponSword.Swing(trans_.position, YodaDamage, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
 
                     target_ = PositionUtility.GetPointInsideArena(0.8f, 0.8f);
                 }

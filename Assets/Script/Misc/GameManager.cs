@@ -8,31 +8,25 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelectable, TreasureIsland, PirateCave, Deed };
+public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelectable };
 
 public class GameManager : MonoBehaviour
 {
-    public enum State { None, Intro, Intro_GameMode, Intro_Unlocks, Intro_Deeds, Intro_Sandbox, Intro_Settings, Playing, Dead };
+    public enum State { None, Intro, Intro_GameMode, Intro_Unlocks, Intro_Shop, Intro_Settings, Playing, Dead };
 
     public static GameManager Instance;
     public bool UnlockAllGameModes;
     public bool UnlockAllWeapons;
     public bool UnlockAllHeroes;
 
-    public Text TextScore;
+    public Text TextLevel;
+    public Text TextTime;
     public Text TextGameOverOrcsSaved;
     public Text TextGameOverOrcsSavedBest;
-    public Text TextGameOverDeedScore;
-    public Text TextGameOverDeedComment;
-    public Text TextStatOrcsSaved;
-    public Text TextStatEnemiesKilled;
-    public Text TextStatDeaths;
-    public Text TextStatTimePlayed;
     public Text TextLocked;
     public Text TextNewRecord;
     public Text TextNewUnlock;
     public Text TextRoundEndUnlocks;
-    public Text TextDeedScore;
     public Text TextUser;
     public TextMeshProUGUI TextHeroUnlock;
     public TextMeshProUGUI TextHeroName;
@@ -43,15 +37,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextColDamNames;
     public TextMeshProUGUI TextColDamReq;
     public Text ButtonUnlockedText;
-    public Text ButtonDeedText;
     public Text TextFps;
     public Renderer Floor;
-    public GameObject DeedPrefab;
-    public Transform DeedItemParent;
-    public GameObject TextDeedsLocked;
     public Button ButtonGo;
     public Button ButtonPlay;
-    public Button ButtonSandbox;
     public string ColorLocked;
     public string ColorUnlocked;
 
@@ -59,15 +48,10 @@ public class GameManager : MonoBehaviour
     public Slider SliderSfx;
     public Dropdown DropdownResolution;
 
-    public GameObject ScrollSandboxHelp;
     public TextMeshProUGUI TextGameMode;
     public TextMeshProUGUI TextGameModeInfo;
-    public InputField InputSandboxJson;
-    public Text TextSandboxParseStatus;
     public GameObject PanelGameMode;
     public GameObject PanelUnlocks;
-    public GameObject PanelDeeds;
-    public GameObject PanelSandbox;
     public GameObject PanelSettings;
     public Canvas CanvasGameOverDefault;
     public Canvas CanvasGameOverDeed;
@@ -100,12 +84,10 @@ public class GameManager : MonoBehaviour
     public int LayerNeutral;
     public int LayerXpPill;
     public int LayerOrc;
+    public float TimeSinceStartup;
 
     [NonSerialized] public GameModeData LatestGameModeData = new GameModeData();
     [NonSerialized] public GameModeData CurrentGameModeData;
-    [NonSerialized] public DeedData CurrentDeedData = new DeedData();
-    [NonSerialized] public SandboxData CurrentSandboxData = new SandboxData();
-    DeedData DeedSandbox = new DeedData();
     public GameModeData GameModeDataNursery = new GameModeData();
     public GameModeData GameModeDataEarth = new GameModeData();
     public GameModeData GameModeDataWind = new GameModeData();
@@ -113,12 +95,7 @@ public class GameManager : MonoBehaviour
     public GameModeData GameModeDataStorm = new GameModeData();
     public GameModeData GameModeDataHarmony = new GameModeData();
     public GameModeData GameModeDataDeed = new GameModeData();
-    public GameModeData GameModeDataSandbox = new GameModeData();
-    public GameModeData GameModeDataTreasureIsland = new GameModeData();
-    public GameModeData GameModeDataPirateCave = new GameModeData();
 
-    public List<DeedData> Deeds = new List<DeedData>();
-    public List<DeedUI> DeedItems = new List<DeedUI>();
     public List<Hero> Heroes = new List<Hero>();
     public Hero SelectedHero;
 
@@ -134,29 +111,20 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float DeedDonePct;
     [NonSerialized] public int RoundUnlockCount;
 
+    int lastSecondsLeft = 0;
+    const float WinTime = 60 * 15;
+    int xpToLevel = 1000;
+    int lastXpShown = 0;
+    int currentXp = 0;
+    int xpPerOrc = 100;
+    float currentLevel = 1;
     float roundStartTime_;
     int roundStartBestScore_;
-    Sandbox sandbox_ = new Sandbox();
-
-    public void OnKongregateLogin()
-    {
-        TextUser.text = KongregateApi.Instance.UserName;
-    }
 
     public void OnButtonSettings()
     {
         PlayMenuSound();
         GameState = State.Intro_Settings;
-
-        bool hasStatsToShow = Server.Instance.HasStatsFromServer || SaveGame.Members.PlayerDeaths > 0;
-        if (hasStatsToShow)
-        {
-            TextStatOrcsSaved.text = SaveGame.Members.OrcsSaved.ToString();
-            TextStatEnemiesKilled.text = SaveGame.Members.EnemiesKilled.ToString();
-            TextStatDeaths.text = SaveGame.Members.PlayerDeaths.ToString();
-            int secondsPlayed = SaveGame.Members.SecondsPlayed;
-            TextStatTimePlayed.text = string.Format("{0}h {1}min", secondsPlayed / 3600, (secondsPlayed / 60) % 60);
-        }
 
         SliderMusic.value = SaveGame.Members.VolumeMusic;
         skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
@@ -201,58 +169,6 @@ public class GameManager : MonoBehaviour
             int height = (width * 3) / 4;
             Screen.SetResolution(width, height, false);
         }
-    }
-
-    public void OnButtonSandbox()
-    {
-        PlayMenuSound();
-        TextSandboxParseStatus.text = "";
-        GameState = State.Intro_Sandbox;
-        EnablePanel(PanelSandbox, true);
-    }
-
-    public void OnButtonSandboxGo()
-    {
-        string error;
-        var sand = SandboxData.TryParse(InputSandboxJson.text, out error);
-        if (sand != null)
-        {
-            CurrentSandboxData = sand;
-            DeedData.UpdateWithSandboxData(DeedSandbox, sand);
-            OnStartDeed(DeedSandbox);
-        }
-        else
-        {
-            // Sandbox json parse error
-            TextSandboxParseStatus.text = error;
-        }
-    }
-
-    void OnStartDeed(DeedData deedData)
-    {
-        deedData.Reset();
-        CurrentDeedData = deedData;
-        GameModeData.UpdateWithDeedData(GameModeDataDeed, CurrentDeedData);
-        SetCurrentGameModeData(GameModeEnum.Deed, remember: false);
-        StartGame();
-    }
-
-    public void OnButtonSandboxHelp()
-    {
-        PlayMenuSound();
-        ScrollSandboxHelp.SetActive(true);
-    }
-
-    public void OnButtonSandboxExample1()
-    {
-        var json = sandbox_.GetExample1();
-        InputSandboxJson.text = json;
-    }
-
-    public void OnButtonSandboxExample2()
-    {
-        var json = sandbox_.GetExample2();
-        InputSandboxJson.text = json;
     }
 
     public void SelectHero(HeroEnum heroType, bool save = false)
@@ -302,14 +218,10 @@ public class GameManager : MonoBehaviour
     {
         bool heroIsUnlocked = SelectedHero.IsUnlocked();
         bool gameModeIsUnlocked = GameEvents.IsUnlocked(GameMode);
-        bool canDoDeeds = Unlocks.WeaponIsUnlocked(WeaponType.Rambo);
 
         ButtonPlay.interactable = heroIsUnlocked;
-        ButtonSandbox.interactable = heroIsUnlocked;
         ButtonGo.interactable = heroIsUnlocked && gameModeIsUnlocked;
         ButtonUnlockedText.transform.parent.GetComponent<Button>().interactable = UnlockedPct > 0.0f;
-        ButtonDeedText.transform.parent.GetComponent<Button>().interactable = canDoDeeds && heroIsUnlocked;
-        TextDeedsLocked.SetActive(!canDoDeeds);
     }
 
     public void OnButtonGo()
@@ -335,38 +247,12 @@ public class GameManager : MonoBehaviour
         UpdateUnlocksPanel();
     }
 
-    public void OnButtonDeeds()
+    public void OnButtonShop()
     {
         PlayMenuSound();
-        GameState = State.Intro_Deeds;
-        UpdateDeedsPanel();
-        EnablePanel(PanelDeeds, true);
-    }
-
-    void InitDeedItems()
-    {
-        if (DeedItems.Count == 0)
-        {
-            float y = 90.0f;
-            float spacing = 95;
-            for (int i = 0; i < Deeds.Count; ++i)
-            {
-                var fab = Instantiate<GameObject>(DeedPrefab);
-                var script = fab.GetComponent<DeedUI>();
-                DeedItems.Add(script);
-                fab.transform.position = Vector3.down * y;
-                fab.transform.SetParent(DeedItemParent, false);
-                y += spacing;
-            }
-        }
-    }
-
-    void UpdateDeedsPanel()
-    {
-        for (int i = 0; i < Deeds.Count; ++i)
-        {
-            DeedItems[i].UpdateFromDeed(Deeds[i], OnStartDeed);
-        }
+        GameState = State.Intro_Shop;
+        EnablePanel(PanelUnlocks, true);
+        UpdateUnlocksPanel();
     }
 
     void UpdateUnlocksPanel()
@@ -406,7 +292,6 @@ public class GameManager : MonoBehaviour
             case GameModeEnum.Fire: CurrentGameModeData = GameModeDataFire; break;
             case GameModeEnum.Storm: CurrentGameModeData = GameModeDataStorm; break;
             case GameModeEnum.Harmony: CurrentGameModeData = GameModeDataHarmony; break;
-            case GameModeEnum.Deed: CurrentGameModeData = GameModeDataDeed; break;
             default: CurrentGameModeData = GameModeDataNursery; break;
         }
         LatestGameModeData = CurrentGameModeData;
@@ -507,26 +392,6 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
-            while (GameState == State.Intro_Sandbox)
-            {
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    PlayMenuSound();
-                    if (ScrollSandboxHelp.activeInHierarchy)
-                    {
-                        ScrollSandboxHelp.SetActive(false);
-                    }
-                    else
-                    {
-                        GameState = State.Intro;
-                        EnablePanel(PanelSandbox, false);
-                        break;
-                    }
-                }
-
-                yield return null;
-            }
-
             while (GameState == State.Intro_Settings)
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
@@ -541,13 +406,12 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
-            while (GameState == State.Intro_Deeds)
+            while (GameState == State.Intro_Shop)
             {
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
-                    EnablePanel(PanelDeeds, false);
                     break;
                 }
 
@@ -556,7 +420,21 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
-                // Moved to fixed update
+                float runTime = Time.realtimeSinceStartup - roundStartTime_;
+                int secondsLeft = (int)(WinTime - runTime + 0.5f);
+                if (secondsLeft != lastSecondsLeft)
+                {
+                    TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
+                    lastSecondsLeft = secondsLeft;
+                }
+
+                if (currentXp != lastXpShown)
+                {
+                    float pct = (currentXp / (float)xpToLevel) * 100;
+                    TextLevel.text = $"LEVEL {currentLevel} ({pct:0.0}%)";
+                    lastXpShown = currentXp;
+                }
+
                 float delta = Time.deltaTime;
                 ProjectileManager.Instance.Tick(delta);
                 yield return null;
@@ -582,28 +460,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //private void FixedUpdate()
-    //{
-    //    float delta = Time.fixedDeltaTime;
-    //    ProjectileManager.Instance.Tick(delta);
-    //}
+    public void ShowingHowToPlay()
+    {
+        SetDebugOutput("currentXp123", currentXp);
+        roundStartTime_ = Time.realtimeSinceStartup;
+        currentXp = 0;
+        currentLevel = 1;
+        xpToLevel = 1000;
+    }
+
+    public void HidingHowToPlay()
+    {
+        PlayerUpgrades.ResetData();
+        PlayerScript.UpgradesActive = true;
+    }
 
     void UpdateStat(string name, int value)
     {
         StartCoroutine(Server.Instance.UpdateStat(name, value));
-
-        if (KongregateApi.Instance.LoggedIn)
-        {
-            Application.ExternalCall("kongregate.stats.submit", name, value);
-        }
     }
 
     public void ShowGameOver()
     {
         if (GameState == State.Dead)
             return;
-
-        bool wasDeed = CurrentDeedData.Deed != DeedEnum.None;
 
         TextFloatingWeapon.Clear();
         GameProgressScript.Instance.Stop();
@@ -621,15 +501,6 @@ public class GameManager : MonoBehaviour
             default: break;
         }
 
-        //switch(CurrentDeedData.Deed)
-        //{
-        //    case DeedEnum.SnipersParadise: StartCoroutine(Server.Instance.UpdateStat("DeedSnipersParadise", CurrentDeedData.DeedCurrentScore)); break;
-        //    case DeedEnum.MachinegunMadness: StartCoroutine(Server.Instance.UpdateStat("DeedTheEnd", CurrentDeedData.DeedCurrentScore)); break;
-        //    case DeedEnum.LittleMonsters: StartCoroutine(Server.Instance.UpdateStat("DeedLittleMonsters", CurrentDeedData.DeedCurrentScore)); break;
-        //    case DeedEnum.WhiteWalkers: StartCoroutine(Server.Instance.UpdateStat("DeedWhiteWalkers", CurrentDeedData.DeedCurrentScore)); break;
-        //    default: break;
-        //}
-
         float roundTime = Time.time - roundStartTime_;
         int roundSeconds = Mathf.RoundToInt(roundTime);
         StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
@@ -638,21 +509,11 @@ public class GameManager : MonoBehaviour
         TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
         TextGameOverOrcsSavedBest.text = string.Format("{0}", bestScore);
 
-        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
-        TextGameOverDeedScore.text = TextDeedScore.text;
-        TextGameOverDeedComment.text = CurrentDeedData.DeedComplete ?
-            "Victory! Your Heroic Feat Will Be Remembered!" : "Defeat. Your Heroic Efforts Were In Vain.";
-        TextGameOverDeedComment.color = CurrentDeedData.DeedComplete ? Color.green : Color.red;
-
-        if (wasDeed && CurrentDeedData.DeedComplete)
-            SaveGame.Members.SetCounter(CurrentDeedData.CompletionCounter, 1);
-
         bool newRecord = bestScore > roundStartBestScore_;
         TextNewRecord.GetComponent<TextBlinkScript>().enabled = newRecord;
         TextNewRecord.enabled = newRecord;
 
-        CanvasGameOverDefault.enabled = !wasDeed;
-        CanvasGameOverDeed.enabled = wasDeed;
+        CanvasGameOverDefault.enabled = true;
 
         TextRoundEndUnlocks.enabled = RoundUnlockCount > 0;
         if (RoundUnlockCount > 0)
@@ -690,11 +551,6 @@ public class GameManager : MonoBehaviour
         int possibleUnlocks = Unlocks.CountPossibleUnlocks();
         UnlockedPct = unlockedCount / (float)possibleUnlocks;
         StartCoroutine(Server.Instance.UpdateStat("PctUnlocked", Mathf.RoundToInt(UnlockedPct * 100)));
-
-        int deedDoneCount = Unlocks.CountDoneDeeds();
-        int possibleDeedCount = Unlocks.CountPossibleDeeds();
-        DeedDonePct = deedDoneCount / (float)possibleDeedCount;
-        StartCoroutine(Server.Instance.UpdateStat("DeedPct", Mathf.RoundToInt(DeedDonePct * 100)));
     }
 
     public void ShowTitle(bool autoStartGame = false)
@@ -704,10 +560,8 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1.0f;
         PanelGameMode.SetActive(false);
-        PanelSandbox.SetActive(false);
         PanelSettings.SetActive(false);
         PanelUnlocks.SetActive(false);
-        PanelDeeds.SetActive(false);
         ProjectileManager.Instance.StopAll();
         PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
@@ -720,7 +574,6 @@ public class GameManager : MonoBehaviour
 
         UpdateUnlockedPct();
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
-        ButtonDeedText.text = string.Format("HEROIC FEATS ({0}%)", Mathf.RoundToInt(DeedDonePct * 100));
 
         UpdateButtonStates();
         ClearParticles();
@@ -735,7 +588,6 @@ public class GameManager : MonoBehaviour
         else
         {
             SetCurrentGameModeData(LatestGameModeData.GameMode);
-            CurrentDeedData = new DeedData();
             GameState = State.Intro;
             MusicManagerScript.Instance.PlayIntroMusic();
         }
@@ -749,9 +601,8 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         SaveGame.ResetRound();
 
-        CurrentDeedData.Reset();
-        TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
-        TextScore.text = SaveGame.RoundScore.ToString();
+        InitXpText();
+
         CanvasIntro.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(false);
         CanvasGame.gameObject.SetActive(true);
@@ -765,24 +616,10 @@ public class GameManager : MonoBehaviour
         Orc.SetPosition(Vector3.up * 3);
         TextUnlockBasePos = TextNewUnlock.rectTransform.anchoredPosition.y;
 
-        if (CurrentDeedData.Deed != DeedEnum.None && CurrentDeedData.WeaponRestrictions.Count != 0)
-        {
-            // Start with a weapon when running a deed with weapon restrictions (mostly for the ones where player movement is ZERO)
-            PlayerScript.SetWeaponTypes(CurrentDeedData.WeaponRestrictions[0], WeaponType.None);
-        }
-
-        if (CurrentDeedData.Deed == DeedEnum.Sandbox)
-        {
-            PlayerScript.SetWeaponTypes((WeaponType)CurrentSandboxData.weapon_left_click, (WeaponType)CurrentSandboxData.weapon_right_click);
-        }
-
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin();
 
-        if (CurrentDeedData.Deed == DeedEnum.Sandbox)
-            StartCoroutine(Server.Instance.UpdateStat("SandboxStart", 1));
-        else
-            StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
+        StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
     }
 
     void ClearParticles()
@@ -825,6 +662,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        TimeSinceStartup = Time.realtimeSinceStartup;
+
         if (Input.GetKey(Code[codeIdx]))
         {
             codeIdx++;
@@ -838,7 +677,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.I) && GameState != State.Intro_Sandbox)
+        if (Input.GetKeyDown(KeyCode.I))
         {
             TextFps.enabled = !TextFps.enabled;
         }
@@ -848,7 +687,7 @@ public class GameManager : MonoBehaviour
             TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && GameState != State.Intro_Sandbox)
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
@@ -886,15 +725,12 @@ public class GameManager : MonoBehaviour
             GameEvents.CounterEvent(GameCounter.Kill_BigWalker, 1);
         else if (actor.ActorType == ActorTypeEnum.Caster)
             GameEvents.CounterEvent(GameCounter.Kill_Caster, 1);
-
-        if (CurrentDeedData.OnKill(actor.ActorType))
-        {
-            TextDeedScore.text = string.Format("{0} / {1}", CurrentDeedData.DeedCurrentScore, CurrentDeedData.UpdatedKillReq);
-        }
     }
 
     public void OnOrcPickup(Vector3 pos)
     {
+        currentXp += xpPerOrc;
+
         SaveGame.RoundScore++;
         GameEvents.CounterEvent(GameCounter.Score_Any_Sum, 1);
         GameEvents.CounterEvent(GameCounter.Max_Score_Any, SaveGame.RoundScore);
@@ -930,52 +766,48 @@ public class GameManager : MonoBehaviour
             GameEvents.CounterEvent(GameCounter.Max_score_Harmony, SaveGame.RoundScore);
         }
 
+        if (PlayerUpgrades.Data.BlastOnPickupEnabled)
+        {
+            Explosions.Push(pos, 5, 1);
+        }
+
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.OrcPickup);
 
         Vector2 uiPos = UiPositionFromWorld(PlayerTrans.position + Vector3.up * 0.5f);
         var rectTransform = TextFloatingWeapon.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = uiPos;
 
-        TextScore.text = SaveGame.RoundScore.ToString();
+        Unlocks.SetRandomWeapon();
+        TextFloatingWeapon.SetText(WeaponBase.WeaponDisplayName(PlayerScript.Weapon.Type), 2.0f);
 
-        if (CurrentDeedData.Deed != DeedEnum.Sandbox)
+        Vector3 bestPos = Vector3.zero;
+        float bestDistance = 0.0f;
+        for (int i = 0; i < 5; ++i)
         {
-            Unlocks.SetRandomWeapon();
-            TextFloatingWeapon.SetText(WeaponBase.WeaponDisplayName(PlayerScript.Weapon.Type), 2.0f);
-        }
-
-        if (CurrentDeedData.ShowOrcs)
-        {
-            Vector3 bestPos = Vector3.zero;
-            float bestDistance = 0.0f;
-            for (int i = 0; i < 5; ++i)
+            Vector3 newPos = PositionUtility.GetPointInsideArena(1.0f, 0.9f);
+            float distance = Vector3.Distance(newPos, pos);
+            if (distance > bestDistance)
             {
-                Vector3 newPos = PositionUtility.GetPointInsideArena(1.0f, 0.9f);
-                float distance = Vector3.Distance(newPos, pos);
-                if (distance > bestDistance)
-                {
-                    bestDistance = distance;
-                    bestPos = newPos;
-                }
-
-                // TODO PE: Does not seem to work? I've seen it behind the score.
-                // Let's try not placing the orc around the UI
-                bool nearUi = newPos.y > 4.5f && (newPos.x > -3.5f && newPos.x < 3.5f);
-                if (nearUi)
-                    continue;
-
-                if (distance > 5.0f)
-                    break;
+                bestDistance = distance;
+                bestPos = newPos;
             }
 
-            Orc.SetPosition(bestPos);
-            MakeFlash(bestPos, 2.0f);
+            // TODO PE: Does not seem to work? I've seen it behind the score.
+            // Let's try not placing the orc around the UI
+            bool nearUi = newPos.y > 4.5f && (newPos.x > -3.5f && newPos.x < 3.5f);
+            if (nearUi)
+                continue;
+
+            if (distance > 5.0f)
+                break;
         }
-        else
-        {
-            // Hide the orc
-            Orc.SetPosition(Vector3.left * 10000);
-        }
+
+        Orc.SetPosition(bestPos);
+    }
+
+    private void InitXpText()
+    {
+        TextLevel.text = $"LEVEL 1 (0%)";
     }
 
     public static void SetDebugOutput(string key, object value)
@@ -1104,13 +936,13 @@ public class GameManager : MonoBehaviour
         float halfX = bounds.size.x / 2;
         float halfY = bounds.size.y / 2;
         ArenaBounds = new Rect(-halfX, -halfY, halfX * 2, halfY * 2);
-        InitDeedItems();
         TextFps.enabled = false;
     }
 
     private void Start()
     {
-        SaveGame.Load();
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); SaveGame.Load();
+
         Unlocks.RefreshUnlocked();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
@@ -1154,19 +986,19 @@ public class GameManager : MonoBehaviour
         PruneDeadEnemies();
     }
 
-    //void OnGUI()
-    //{
-    //    SetDebugOutput("OnGUI enabled", Time.time);
+    void OnGUI()
+    {
+        SetDebugOutput("OnGUI enabled", Time.time);
 
-    //    if (DebugValues.Count == 0)
-    //        return;
+        if (DebugValues.Count == 0)
+            return;
 
-    //    float y = 150.0f;
-    //    GUI.contentColor = Color.white;
-    //    foreach (var pair in DebugValues)
-    //    {
-    //        GUI.Label(new Rect(10, y, 1000, 20), string.Format("{0} = {1}", pair.Key, pair.Value));
-    //        y += 20;
-    //    }
-    //}
+        float y = 50.0f;
+        GUI.contentColor = Color.white;
+        foreach (var pair in DebugValues)
+        {
+            GUI.Label(new Rect(10, y, 1000, 20), string.Format("{0} = {1}", pair.Key, pair.Value));
+            y += 20;
+        }
+    }
 }

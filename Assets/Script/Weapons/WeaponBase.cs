@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public enum WeaponType {
-    None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball,
+    None, Unarmed, Shotgun, Grenade, Machinegun, SuperShotgun, SawedShotgun, ShotgunSlug, Sniper, Horn, Staff, Staff2, Paintball, PaintBallRandom,
     Rambo, Sword1, Mine, Yoda, Sawblade, Last };
 
 public class WeaponNone : WeaponBase
@@ -42,6 +42,7 @@ public abstract class WeaponBase
     static WeaponStaff Staff;
     static WeaponStaff2 Staff2;
     static WeaponPaintball Paintball;
+    static WeaponPaintballRandom PaintballRandom;
     static WeaponRambo Rambo;
     static WeaponShutgun Shotgun;
     static WeaponSuperShutgun SuperShotgun;
@@ -226,6 +227,20 @@ public abstract class WeaponBase
                     Paintball.MoveSpeedModifier = 1.0f;
                 }
                 return Paintball;
+
+            case WeaponType.PaintBallRandom:
+                if (PaintballRandom == null)
+                {
+                    PaintballRandom = new WeaponPaintballRandom();
+                    PaintballRandom.Type = WeaponType.PaintBallRandom;
+                    PaintballRandom.Scale = new Vector3(1.5f, 4.0f, 1.0f);
+                    PaintballRandom.Sprite = SpriteData.Instance.MachineGun;
+                    PaintballRandom.BulletSprite = SpriteData.Instance.RoundBullet;
+                    PaintballRandom.Muzzle = new Vector3(0.0f, 0.0f, 0.0f);
+                    PaintballRandom.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
+                    PaintballRandom.MoveSpeedModifier = 1.0f;
+                }
+                return PaintballRandom;
 
             case WeaponType.Rambo:
                 if (Rambo == null)

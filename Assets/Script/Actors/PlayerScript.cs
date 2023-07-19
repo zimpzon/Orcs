@@ -16,10 +16,11 @@ public class PlayerScript : MonoBehaviour
     float MoveSpeed = 5.0f;
     float moveSpeedModifier_ = 1.0f;
     float flipX_;
-    bool isDead_;
+    bool isDead_ = true;
     float playerScale_ = 2.0f;
     bool isShooting_;
     public bool RoundComplete;
+    public bool UpgradesActive = false;
 
     public Text OverheadText;
 
@@ -33,17 +34,14 @@ public class PlayerScript : MonoBehaviour
     SpriteRenderer weaponRenderer_;
     Transform weaponTransform_;
 
+    PlayerUpgrades _playerUpgrades;
+
     WeaponType WeaponTypeLeft;
-    WeaponType WeaponTypeRight;
     [System.NonSerialized] public WeaponBase Weapon;
     public Transform MeleeWeapon;
-    SpriteRenderer meleeRenderer_;
 
     Transform laserTransform_;
     SpriteRenderer laserRenderer_;
-
-    ParticleSystem floorTrail_;
-    Vector3 lastEmitPos_;
 
     ParticleSystem flames_;
     Transform flamesTransform_;
@@ -63,8 +61,7 @@ public class PlayerScript : MonoBehaviour
         playerPos_ = trans_.position;
         grenadeScript_ = Grenade.GetComponent<GrenadeScript>();
         basePos_ = trans_.position;
-
-        meleeRenderer_ = MeleeWeapon.GetComponentInChildren<SpriteRenderer>();
+        _playerUpgrades = GetComponent<PlayerUpgrades>();
 
         weaponTransform_ = trans_.Find("Weapon").GetComponent<Transform>();
         weaponRenderer_ = weaponTransform_.gameObject.GetComponent<SpriteRenderer>();
@@ -72,7 +69,6 @@ public class PlayerScript : MonoBehaviour
         laserTransform_ = trans_.Find("LaserLine").GetComponent<Transform>();
         laserRenderer_ = laserTransform_.gameObject.GetComponent<SpriteRenderer>();
 
-        floorTrail_ = trans_.Find("FloorTrail").GetComponent<ParticleSystem>();
         flames_ = trans_.Find("FlamethrowerParticles").GetComponent<ParticleSystem>();
         flamesTransform_ = flames_.transform;
 
@@ -123,6 +119,7 @@ public class PlayerScript : MonoBehaviour
 
     public void ResetAll()
     {
+        UpgradesActive = false;
         MeleeWeapon.gameObject.SetActive(false);
         shadowRenderer_.enabled = true;
         moveSpeedModifier_ = 1.0f;
@@ -163,7 +160,6 @@ public class PlayerScript : MonoBehaviour
     public void SetWeaponTypes(WeaponType left, WeaponType right)
     {
         WeaponTypeLeft = left;
-        WeaponTypeRight = right;
 
         WeaponBase.GetWeapon(left).OnAcquired();
         WeaponBase.GetWeapon(right).OnAcquired();
@@ -180,7 +176,12 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator Think()
     {
-        bool wasFireDown = false;
+        const float FireCd = 2;
+        const int Shots = 4;
+
+        float nextFire = Time.realtimeSinceStartup + FireCd;
+        int shotsLeft = 0;
+
         while (true)
         {
             if (GameManager.Instance.GameState != GameManager.State.Playing)
@@ -189,24 +190,15 @@ public class PlayerScript : MonoBehaviour
                 continue;
             }
 
-            bool leftDown = Input.GetMouseButton(0);
-            bool rightDown = Input.GetMouseButton(1);
-            bool bothDown = leftDown && rightDown;
-            bool doFire = false;
-
-            if (!bothDown)
+            if (Time.realtimeSinceStartup > nextFire)
             {
-                // First show the correct weapon if not already shown
-                if (leftDown && Weapon.Type != WeaponTypeLeft && WeaponTypeLeft != WeaponType.None)
-                    SetWeapon(WeaponTypeLeft);
-
-                if (rightDown && Weapon.Type != WeaponTypeRight && WeaponTypeRight != WeaponType.None)
-                    SetWeapon(WeaponTypeRight);
-
-                doFire = leftDown || rightDown;
+                nextFire = Time.realtimeSinceStartup + FireCd;
+                shotsLeft = Shots;
             }
 
-            if (!doFire && wasFireDown)
+            bool doFire = shotsLeft > 0;
+
+            if (!doFire)
             {
                 // Stop firing
                 isShooting_ = false;
@@ -215,9 +207,10 @@ public class PlayerScript : MonoBehaviour
             }
             else if (doFire && Weapon.GetCdLeft() <= 0.0f)
             {
+                shotsLeft--;
+
                 isShooting_ = true;
-                moveSpeedModifier_ = Weapon.MoveSpeedModifier;
-                wasFireDown = true;
+                //moveSpeedModifier_ = Weapon.MoveSpeedModifier;
                 float recoil;
                 Weapon.Fire(weaponTransform_, lookDir_, GameManager.Instance.SortLayerTopEffects, out recoil);
                 AddForce(lookDir_ * -recoil);
@@ -366,20 +359,20 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.GameState != GameManager.State.Playing)
             return;
 
-        if (false)
+        if (true)
         {
             GameManager.SetDebugOutput("Cheat enabled", Time.time);
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 SetWeaponTypes(WeaponType.Sawblade, WeaponType.SawedShotgun);
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                SetWeaponTypes(WeaponType.Unarmed, WeaponType.Horn);
+                SetWeaponTypes(WeaponType.Staff, WeaponType.Horn);
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
-                SetWeaponTypes(WeaponType.Mine, WeaponType.Grenade);
+                SetWeaponTypes(WeaponType.Grenade, WeaponType.Grenade); 
 
             if (Input.GetKeyDown(KeyCode.Alpha4))
-                SetWeaponTypes(WeaponType.Mine, WeaponType.Grenade);
+                SetWeaponTypes(WeaponType.Sword1, WeaponType.Grenade);
         }
 
         float left = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1.0f : 0.0f;
@@ -391,11 +384,6 @@ public class PlayerScript : MonoBehaviour
         float speed = MoveSpeed * playerSpeedModifier;
 
         bool userMoved = left == 1.0f || right == 1.0f || up == 1.0f || down == 1.0f;
-        if (userMoved && playerSpeedModifier == 0.0f)
-        {
-            // User tried to move but speed modifier is 0
-            Talk("My legs! They chewed through the armor!", 0.25f, Color.red);
-        }
         speed *= Time.deltaTime;
 
         Vector3 newMoveVec_ = Vector3.left * (left * speed) + Vector3.right * (right * speed) + Vector3.up * (up * speed) + Vector3.down * (down * speed);
@@ -425,19 +413,6 @@ public class PlayerScript : MonoBehaviour
     public void AddForce(Vector3 f)
     {
         force_ += f;
-    }
-
-    void LeaveTrail()
-    {
-        Vector3 pos = trans_.position;
-        Vector3 move = pos - lastEmitPos_;
-        if (move.sqrMagnitude > 0.05f)
-        {
-            lastEmitPos_ = pos;
-            //Vector3 basePos = floorTrail_.transform.position;
-            //Vector3 emitPos = basePos + Random.insideUnitCircle
-            floorTrail_.Emit(1);
-        }
     }
 
     public void Talk(string text, float time, Color color)
@@ -495,6 +470,8 @@ public class PlayerScript : MonoBehaviour
         CheckControls();
         UpdateWeapon();
         UpdateOverheadText();
-//        LeaveTrail();
+
+        if (UpgradesActive && !isDead_)
+            _playerUpgrades.UpdateUpgrades();
     }
 }

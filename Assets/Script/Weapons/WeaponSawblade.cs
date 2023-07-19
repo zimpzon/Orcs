@@ -19,13 +19,13 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
-        basic.Speed = 7.0f;
+        basic.Speed = 5.0f;
         basic.Damage = 2.0f;
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
         basic.Force = 1.0f;
         basic.MaxDistance = 30.0f;
-        basic.Radius = 0.5f;
+        basic.Radius = 0.4f;
         basic.DieOnCollision = false;
         basic.ReflectOnEdges = true;
         basic.CollisionSound = AudioManager.Instance.AudioData.Chainsaw;
@@ -35,8 +35,8 @@ public class WeaponSawblade : WeaponBase
         basic.StickToTarget = true;
 
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
-        scale.x = 0.5f;
-        scale.y = 0.5f;
+        scale.x = 0.4f;
+        scale.y = 0.4f;
         scale.z = 1.0f;
 
         basic.Position = worldMuzzle;

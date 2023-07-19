@@ -29,7 +29,7 @@ public class WeaponMachinegun : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 10.0f + Random.value * 2;
-        basic.Damage = 65.0f;
+        basic.Damage = 10.0f;
         basic.MaxDistance = 12.0f;
         basic.Radius = 0.3f;
 

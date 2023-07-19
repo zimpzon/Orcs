@@ -2,7 +2,7 @@
 
 public class AspectUtility : MonoBehaviour
 {
-    public float _wantedAspectRatio = 1.3333333f;
+    public static float WantedAspectRatio = 1.6f;
     static float wantedAspectRatio;
     float startAspectRatio_;
     static Camera cam;
@@ -18,10 +18,11 @@ public class AspectUtility : MonoBehaviour
 
         if (!cam)
         {
-            Debug.LogError("No camera available");            return;
+            Debug.LogError("No camera available");
+            return;
         }
 
-        wantedAspectRatio = _wantedAspectRatio;
+        wantedAspectRatio = WantedAspectRatio;
 
         SetCamera();
         startAspectRatio_ = (float)Screen.width / Screen.height;

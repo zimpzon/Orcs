@@ -24,11 +24,17 @@ namespace Assets.Script
             CheckDebugUnlocks();
 
             unlockedWeapons_.Clear();
-            UnlockEarnedWeapons();
-            UnlockWeapon(WeaponType.Unarmed);
-            UnlockWeapon(WeaponType.Shotgun);
-            UnlockWeapon(WeaponType.Grenade);
+            //UnlockEarnedWeapons();
+            //UnlockWeapon(WeaponType.Unarmed);
+            //UnlockWeapon(WeaponType.Shotgun);
+            //UnlockWeapon(WeaponType.Grenade);
+            //UnlockWeapon(WeaponType.Paintball);
             UnlockWeapon(WeaponType.Machinegun);
+            //UnlockWeapon(WeaponType.Yoda);
+            //UnlockWeapon(WeaponType.Rambo);
+            //UnlockWeapon(WeaponType.Sawblade);
+            //UnlockWeapon(WeaponType.Staff);
+            //UnlockWeapon(WeaponType.Staff2);
 
             unlockedGameModes_.Clear();
             UnlockEarnedGameModes();
@@ -77,16 +83,6 @@ namespace Assets.Script
                         SaveGame.Members.UpdateCounter(hero.GameCounter, hero.Req);
                 }
             }
-        }
-
-        public static int CountDoneDeeds()
-        {
-            return GameManager.Instance.Deeds.Where(d => SaveGame.Members.GetCounter(d.CompletionCounter) > 0).Count();
-        }
-
-        public static int CountPossibleDeeds()
-        {
-            return GameManager.Instance.Deeds.Count;
         }
 
         public static int CountPossibleUnlocks()
@@ -237,9 +233,6 @@ namespace Assets.Script
                 GameManager.Instance.PlayerScript.SetWeaponTypes(newWep, WeaponType.None);
                 return;
             }
-
-            if (unlockedWeapons_.Count < 2)
-                return;
 
             // Newly unlocked weapons are seen a few times
             if (ForceWeaponCount > 0 && currentWeapon != ForceWeaponType)

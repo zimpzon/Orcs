@@ -60,7 +60,7 @@ public class SkellieWalker : ActorBase
         {
             material_.SetFloat(flashParamId_, 0.0f);
 
-            bool closeToPlayer = BlackboardScript.DistanceToPlayer(position_) < 2.0f;
+            bool closeToPlayer = BlackboardScript.DistanceToPlayer(position_) < 6.0f;
             if (closeToPlayer || isPainted_)
             {
                 target_ = GameManager.Instance.PlayerTrans.position;
