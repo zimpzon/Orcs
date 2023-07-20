@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.0026533017, g: 0.33962262, b: 0, a: 0.78039217}
+  m_EffectColor: {r: 0.0026533017, g: 0.33962262, b: 0, a: 1}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
 --- !u!114 &-4671996363010083757
@@ -223,6 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1070c648d7f039a4d9671addffb3fa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefaultBackgroundColor: {r: 0.003921569, g: 0.34117648, b: 0, a: 1}
+  MaxedBackgroundColor: {r: 0.003916111, g: 0.56, b: 0, a: 1}
+  DefaultButtonBackgroundColor: {r: 0, g: 0.7176471, b: 0.08235294, a: 1}
+  DisabledButtonBackgroundColor: {r: 0.547, g: 0.547, b: 0.547, a: 1}
   ItemType: 0
   Title: {fileID: 4121296396397650450}
   Description: {fileID: 4121296397467671993}
@@ -265,8 +269,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46.4, y: -100}
-  m_SizeDelta: {x: 76.6143, y: 23.304}
+  m_AnchoredPosition: {x: 70.67109, y: -100}
+  m_SizeDelta: {x: 125.1564, y: 23.304}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4121296397380460124
 CanvasRenderer:

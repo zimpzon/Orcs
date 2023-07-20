@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
-public enum ShopItemType { Refund, DamageAll, PrimaryWeaponDamage, PrimaryWeaponAttackSpeed, PrimaryWeaponBulletsPerRound, Rambo, Money }
+public enum ShopItemType { Refund, DamageAll, PrimaryWeaponDamage, PrimaryWeaponCd, PrimaryWeaponBulletsPerRound, Rambo, MoreMoney }
 
+[Serializable]
 public class BoughtItem
 {
     public ShopItemType ItemType;
@@ -51,21 +51,34 @@ public static class ShopItems
             script.OnClickCallback = OnBuy;
             Scripts.Add(script);
         }
-
-        //LayoutRebuilder.MarkLayoutForRebuild(parent as RectTransform);
     }
 
     private static void OnBuy(ShopItemType itemType)
     {
+        if (itemType == ShopItemType.Refund)
+        {
+            SaveGame.Members.BoughtItems.Clear();
+            SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
+            SaveGame.Members.MoneySpentInShop = 0;
+            UpdateBoughtItems();
+            GameManager.Instance.OnItemBought(itemType);
+            return;
+        }
+
         SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
         bought ??= new BoughtItem { ItemType = itemType };
 
         var item = Items.Where(i => i.ItemType == itemType).First();
-        if (item.GetPrice(bought.Level) < SaveGame.Members.PlayerMoney)
+        int price = item.GetPrice(bought.Level);
+        if (price > SaveGame.Members.Money)
             return;
 
+        SaveGame.Members.Money -= price;
+        SaveGame.Members.MoneySpentInShop += price;
         bought.Level++;
         SaveGame.Members.BoughtItems[itemType] = bought;
+        UpdateBoughtItems();
+        GameManager.Instance.OnItemBought(itemType);
     }
 
     public static void UpdateBoughtItems()
@@ -77,14 +90,18 @@ public static class ShopItems
             bought ??= new BoughtItem { ItemType = item.ItemType };
             int level = bought.Level;
             int price = item.GetPrice(bought.Level);
-            bool canAfford = price <= SaveGame.Members.PlayerMoney;
+            bool canAfford = price <= SaveGame.Members.Money;
+            bool isMaxLevel = bought.Level >= item.MaxLevel;
+            bool disable = !canAfford || isMaxLevel;
+
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
             script.Description.text = item.GetDescription(level);
-            script.ButtonText.text = item.GetButtonText(level);
-            script.BuyButton.interactable = canAfford;
-            if (!canAfford)
-                script.BuyButton.GetComponent<Image>().color = Color.gray;
+            script.ButtonText.text = isMaxLevel ? "max" : item.GetButtonText(level);
+
+            script.BuyButton.interactable = !disable;
+            script.SetDisableButton(disable);
+            script.SetIsMaxed(isMaxLevel);
         }
     }
 
@@ -95,8 +112,8 @@ public static class ShopItems
             new ShopItem
             {
                 ItemType = ShopItemType.DamageAll,
-                Title = "Damage, all",
-                Description = "Increase damage by <color=#00ff00>+10%</color> per rank.",
+                Title = "Damage",
+                Description = "Increase all damage by <color=#00ff00>+#VALUE%</color> per rank.",
                 Value = 10,
             },
 
@@ -104,36 +121,37 @@ public static class ShopItems
             {
                 ItemType = ShopItemType.PrimaryWeaponDamage,
                 Title = "Main weapon, damage",
-                Description = "Increase primary weapon damage by <color=#00ff00>+15%</color> per rank.",
+                Description = "Increase main weapon damage by <color=#00ff00>+#VALUE%</color> per rank.",
                 Value = 15,
             },
 
             new ShopItem
             {
-                ItemType = ShopItemType.PrimaryWeaponAttackSpeed,
-                Title = "Main weapon, speed",
-                Description = "Increase primary weapon attack speed by <color=#00ff00>+10%</color> per rank."
+                ItemType = ShopItemType.PrimaryWeaponCd,
+                Title = "Main weapon, cooldown",
+                Description = "Decrease main weapon cooldown by <color=#00ff00>+#VALUE%</color> per rank."
             },
 
             new ShopItem
             {
                 ItemType = ShopItemType.PrimaryWeaponBulletsPerRound,
                 Title = "Main weapon, bullets",
-                Description = "Increase primary weapon bullets per round by <color=#00ff00>+1</color> per rank."
+                Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank."
             },
 
             new ShopItem
             {
-                ItemType = ShopItemType.PrimaryWeaponBulletsPerRound,
+                ItemType = ShopItemType.Rambo,
                 Title = "Sir Rambo",
-                Description = "Randomly go beserk for a damage burst."
+                Description = "Randomly go beserk for a damage burst.",
+                BasePrice = 1000,
             },
 
             new ShopItem
             {
-                ItemType = ShopItemType.Money,
+                ItemType = ShopItemType.MoreMoney,
                 Title = "More money",
-                Description = "Increase income from all sources by <color=#00ff00>+10%</color> per rank."
+                Description = "Increase income from all sources by <color=#00ff00>+#VALUE%</color> per rank."
             },
 
             new ShopItem
@@ -141,9 +159,13 @@ public static class ShopItems
                 ItemType = ShopItemType.Refund,
                 ShowLevelInTitle = false,
                 Title = "Refund",
-                Description = "Reset all choices and get your money back.",
+                BasePrice = 0,
+                Description = "Refund all purchases and get your money back.",
                 GetButtonText = (_) => "Free",
             },
         };
+
+        foreach (var item in Items)
+            item.Description = item.Description.Replace("#VALUE", item.Value.ToString());
     }
 }

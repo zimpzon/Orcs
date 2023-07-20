@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public Text TextNewUnlock;
     public Text TextRoundEndUnlocks;
     public Text TextUser;
+    public Text TextShopMoney;
     public TextMeshProUGUI TextHeroUnlock;
     public TextMeshProUGUI TextHeroName;
     public TextMeshProUGUI TextColWepNames;
@@ -108,7 +109,6 @@ public class GameManager : MonoBehaviour
     static Dictionary<string, string> DebugValues = new Dictionary<string, string>();
 
     [NonSerialized] public float UnlockedPct;
-    [NonSerialized] public float DeedDonePct;
     [NonSerialized] public int RoundUnlockCount;
 
     int lastSecondsLeft = 0;
@@ -250,6 +250,7 @@ public class GameManager : MonoBehaviour
     public void OnButtonShop()
     {
         PlayMenuSound();
+        UpdateMoneyLabels();
         GameState = State.Intro_Shop;
         EnablePanel(PanelShop, true);
         ShopItems.UpdateBoughtItems();
@@ -336,6 +337,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdateMoneyLabels()
+    {
+        SetDebugOutput("the fok", SaveGame.Members.Money);
+
+        TextShopMoney.text = $"${SaveGame.Members.Money}";
+    }
+
+    public void OnItemBought(ShopItemType itemType)
+    {
+        UpdateMoneyLabels();
+    }
+
     IEnumerator GameStateCo()
     {
 //        StartCoroutine(DeathLoopCo());
@@ -408,6 +421,13 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Shop)
             {
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    SaveGame.Members.Money += 500;
+                    ShopItems.UpdateBoughtItems();
+                    UpdateMoneyLabels();
+                }
+
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     PlayMenuSound();

@@ -9,17 +9,18 @@ public enum GameCounter {
     unlocked_paintball,
     Score_Nursery_Sum, Score_Earth_Sum, Score_Wind_Sum, Score_Fire_Sum, Score_Storm_Sum, score_Harmony_Sum, Score_Any_Sum,
     Max_First,
-        Max_Score_Nursery, Max_Score_Earth, Max_Score_Wind, Max_Score_Fire, Max_Score_Storm, Max_score_Harmony, Max_Score_Any,
+    Max_Score_Nursery, Max_Score_Earth, Max_Score_Wind, Max_Score_Fire, Max_Score_Storm, Max_score_Harmony, Max_Score_Any,
     Max_Last,
-    unlocked_sniper, unlocked_slug, unlocked_rambo, unlocked_staff, unlocked_staff2, unlocked_orcs_revenge,
-    deed_snipers_paradise, deed_machinegun_madness, deed_little_monsters, deed_white_walkers,
-    Last
+    unlocked_sniper, unlocked_slug, unlocked_rambo, unlocked_staff, unlocked_staff2, unlocked_orcs_revenge, Last
 };
 
 public class SaveGameMembers
 {
-    public int PlayerMoney;
+    public int Money;
+    public int MoneySpentInShop;
     public Dictionary<ShopItemType, BoughtItem> BoughtItems = new Dictionary<ShopItemType, BoughtItem>();
+    public ShopItemType[] TempBoughtTypes = new ShopItemType[0];
+    public BoughtItem[] TempBoughtItems = new BoughtItem[0];
 
     public int[] Counters = new int[(int)GameCounter.Last];
 
@@ -127,7 +128,13 @@ public static class SaveGame
 
     public static void Save()
     {
-        PlayerPrefs.SetString(securePrefs, Members.ToJson());
+        // workaround for dictionary not serialized
+        Members.TempBoughtTypes = new ShopItemType[Members.BoughtItems.Count];
+        Members.TempBoughtItems = new BoughtItem[Members.BoughtItems.Count];
+        Members.BoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
+        Members.BoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
+
+        PlayerPrefs.SetString(prefs, Members.ToJson());
         PlayerPrefs.Save();
     }
 
@@ -158,14 +165,14 @@ public static class SaveGame
         return false;
     }
 
-    static string securePrefs = "prefs_1";
+    static string prefs = "prefs_1";
 
     public static void Load()
     {
         try
         {
             // hmm, init?
-            string prefs = PlayerPrefs.GetString(securePrefs);
+            string prefs = PlayerPrefs.GetString(SaveGame.prefs);
 
             Members = SaveGameMembers.FromJson(prefs);
             if (Members.Counters.Length != (int)GameCounter.Last)
@@ -179,9 +186,15 @@ public static class SaveGame
                 // Might want to put in a bunch of pladeholders to make this less likely in a release.
                 Debug.Log("New counters detected, expanding array");
             }
+
+            // workaround for dictionary not serialized
+            Members.BoughtItems.Clear();
+            for (int i = 0; i < Members.TempBoughtTypes.Length; ++i)
+                Members.BoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
         }
-        catch(Exception)
+        catch (Exception e)
         {
+            GameManager.SetDebugOutput("error loading settings", e.Message);
             Members = null;
         }
 
