@@ -19,7 +19,7 @@ public class WeaponSniper : WeaponBase
 
         GameManager.Instance.MakeFlash(worldMuzzle);
         GameManager.Instance.MakePoof(worldMuzzle, 2);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();

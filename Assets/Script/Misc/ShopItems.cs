@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum ShopItemType { Refund, DamageAll, PrimaryWeaponDamage, PrimaryWeaponCd, PrimaryWeaponBulletsPerRound, Rambo, MoreMoney }
+public enum ShopItemType
+{
+    Refund,
+    DamageAll,
+    PrimaryWeaponRange,
+    PrimaryWeaponDamage,
+    PrimaryWeaponCd,
+    PrimaryWeaponCdBetweenBullets,
+    PrimaryWeaponBulletsPerRound,
+    Rambo, // todo
+    MoreMoney, //todo
+    OrcPickupXpMul, // todo
+    KillXpChanceMul, // todo, display text, maybe in baseActor?
+}
 
 [Serializable]
 public class BoughtItem
 {
     public ShopItemType ItemType;
-    public int Level = 0;
+    public int Level;
+    public float Value;
+    public float ValueScale;
 }
 
 public class ShopItem
@@ -21,6 +36,7 @@ public class ShopItem
     public string Description;
     public int MaxLevel = 5;
     public float Value = 1;
+    public float ValueScale = 1;
     public bool ShowLevelInTitle = true;
 
     public int GetPrice(int level) => (int)(BasePrice * Math.Pow(PriceMultiplier, level));
@@ -53,6 +69,56 @@ public static class ShopItems
         }
     }
 
+    public static void ApplyToPlayerUpgrades()
+    {
+        foreach(var pair in SaveGame.Members.BoughtItems)
+        {
+            var item = pair.Value;
+            var itemType = pair.Key;
+
+            if (itemType == ShopItemType.DamageAll)
+            {
+                PlayerUpgrades.Data.DamageMul += item.Level * item.Value * item.ValueScale;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.DamageMul);
+            }
+
+            else if (itemType == ShopItemType.PrimaryWeaponBulletsPerRound)
+            {
+                PlayerUpgrades.Data.PrimaryBulletsAdd += item.Level * (int)item.Value;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryBulletsAdd);
+            }
+
+            else if (itemType == ShopItemType.PrimaryWeaponCd)
+            {
+                PlayerUpgrades.Data.PrimaryCdMul *= 1.0f - item.Value * item.ValueScale * item.Level;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryCdMul);
+            }
+
+            else if (itemType == ShopItemType.PrimaryWeaponCdBetweenBullets)
+            {
+                PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul *= 1.0f - item.Value * item.ValueScale * item.Level;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul);
+            }
+
+            else if (itemType == ShopItemType.PrimaryWeaponRange)
+            {
+                PlayerUpgrades.Data.PrimaryRangeMul += item.Level * item.Value * item.ValueScale;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryRangeMul);
+            }
+
+            else if (itemType == ShopItemType.PrimaryWeaponDamage)
+            {
+                PlayerUpgrades.Data.PrimaryDamageMul += item.Level * item.Value * item.ValueScale;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryDamageMul);
+            }
+
+            else
+            {
+                GameManager.SetDebugOutput(pair.Key.ToString(), "NOT IMPLEMENTED");
+            }
+        }
+    }
+
     private static void OnBuy(ShopItemType itemType)
     {
         if (itemType == ShopItemType.Refund)
@@ -65,10 +131,11 @@ public static class ShopItems
             return;
         }
 
-        SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
-        bought ??= new BoughtItem { ItemType = itemType };
-
         var item = Items.Where(i => i.ItemType == itemType).First();
+
+        SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
+        bought ??= new BoughtItem { ItemType = itemType, Value = item.Value, ValueScale = item.ValueScale };
+
         int price = item.GetPrice(bought.Level);
         if (price > SaveGame.Members.Money)
             return;
@@ -115,6 +182,7 @@ public static class ShopItems
                 Title = "Damage",
                 Description = "Increase all damage by <color=#00ff00>+#VALUE%</color> per rank.",
                 Value = 10,
+                ValueScale = 0.01f,
             },
 
             new ShopItem
@@ -123,20 +191,43 @@ public static class ShopItems
                 Title = "Main weapon, damage",
                 Description = "Increase main weapon damage by <color=#00ff00>+#VALUE%</color> per rank.",
                 Value = 15,
+                ValueScale = 0.01f,
+            },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.PrimaryWeaponRange,
+                Title = "Main weapon, range",
+                Description = "Increase main weapon range by <color=#00ff00>+#VALUE%</color> per rank.",
+                Value = 15,
+                ValueScale = 0.01f,
             },
 
             new ShopItem
             {
                 ItemType = ShopItemType.PrimaryWeaponCd,
                 Title = "Main weapon, cooldown",
-                Description = "Decrease main weapon cooldown by <color=#00ff00>+#VALUE%</color> per rank."
+                Description = "Decrease main weapon cooldown by <color=#00ff00>+#VALUE%</color> per rank.",
+                Value = 8,
+                ValueScale = 0.01f,
+            },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.PrimaryWeaponCdBetweenBullets,
+                Title = "Main weapon, bullet cooldown",
+                Description = "Decrease main weapon time between each bullet by <color=#00ff00>+#VALUE%</color> per rank.",
+                Value = 10,
+                ValueScale = 0.01f,
             },
 
             new ShopItem
             {
                 ItemType = ShopItemType.PrimaryWeaponBulletsPerRound,
-                Title = "Main weapon, bullets",
-                Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank."
+                Title = "Main weapon, bullet count",
+                Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank.",
+                Value = 1,
+                ValueScale = 1,
             },
 
             new ShopItem
@@ -145,13 +236,18 @@ public static class ShopItems
                 Title = "Sir Rambo",
                 Description = "Randomly go beserk for a damage burst.",
                 BasePrice = 1000,
+                MaxLevel = 1,
             },
 
             new ShopItem
             {
                 ItemType = ShopItemType.MoreMoney,
                 Title = "More money",
-                Description = "Increase income from all sources by <color=#00ff00>+#VALUE%</color> per rank."
+                Description = "Increase income from all sources by <color=#00ff00>+#VALUE%</color> per rank.",
+                MaxLevel = 3,
+                BasePrice = 1000,
+                Value = 20,
+                ValueScale = 0.01f,
             },
 
             new ShopItem

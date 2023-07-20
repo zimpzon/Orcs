@@ -9,6 +9,13 @@ static class RndUtil
 //        return Random.insideUnitCircle;
     }
 
+    public static Vector2 RandomInsideUnitCircleDiagonals()
+    {
+        float x = Random.Range(0.2f, 0.8f) * Random.value < 0.5f ? 1 : -1;
+        float y = Random.Range(0.2f, 0.8f) * Random.value < 0.5f ? 1 : -1;
+        return new Vector2(x, y).normalized;
+    }
+
     public static Vector3 RandomSpread(Vector3 direction, float spread = 15)
     {
         Vector3 dir = direction * spread;

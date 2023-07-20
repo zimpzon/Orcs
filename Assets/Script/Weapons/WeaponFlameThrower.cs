@@ -15,6 +15,6 @@ class WeaponFlamethrower : WeaponBase
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
         worldMuzzle += -direction * 0.5f; // Start a little behind muzzle because its very unfun missing an enemy that is too close (even further for flamethrower)
 
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
     }
 }

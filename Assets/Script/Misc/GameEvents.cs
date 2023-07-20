@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using DG.Tweening;
-using UnityEngine;
 
 namespace Assets.Script
 {
@@ -230,11 +228,6 @@ namespace Assets.Script
 
             // This is all pretty ugly. Redundant formatting in dam, overwriting each other etc.
 
-            // Check for new damage
-            var newDamage = Unlocks.UnlockEarnedDamage(onlyExactMatch: true);
-            foreach (var newDam in newDamage)
-                blink.SetText(string.Format("{0} Unlocked!", string.Format("+{0}% Damage", newDam.Amount), SaveGame.Members.ReqMet(newDam.Requirement, newDam.Counter)), DisplayTime);
-
             // Check for new weapons
             var newWeps = Unlocks.UnlockEarnedWeapons(onlyExactMatch: true);
             foreach (var newWep in newWeps)
@@ -249,32 +242,6 @@ namespace Assets.Script
             var newHeroes = Unlocks.UnlockEarnedHeroes(onlyExactMatch: true);
             foreach (var newHero in newHeroes)
                 blink.SetText(string.Format("{0} Unlocked!", newHero.Name), DisplayTime);
-
-            GameManager.Instance.RoundUnlockCount += newDamage.Count + newWeps.Count + newModes.Count + newHeroes.Count;
-            bool hadNewUnlock = newDamage.Count > 0 || newWeps.Count > 0 || newModes.Count > 0 || newHeroes.Count > 0;
-            if (hadNewUnlock)
-            {
-                Unlocks.LatestUnlockText = blink.Text.text;
-
-                float basePos = GameManager.Instance.TextUnlockBasePos;
-                ((RectTransform)blinkTrans).DOAnchorPosY(basePos - 300, 0.0f);
-                ((RectTransform)blinkTrans).DOAnchorPosY(basePos, 0.5f);
-
-                blinkTrans.DOScale(0.5f, 0.0f);
-                blinkTrans.DOScale(1.0f, 0.5f);
-            }
-
-            // TODO PE: This is sort of hacked. It might be ok for now. If X was present in the newly unlocked weapons then set the corresponding GameCounter.
-            UpdateUnlockCounters(newWeps, WeaponType.Paintball, GameCounter.unlocked_paintball);
-            UpdateUnlockCounters(newWeps, WeaponType.ShotgunSlug, GameCounter.unlocked_slug);
-            UpdateUnlockCounters(newWeps, WeaponType.Rambo, GameCounter.unlocked_rambo);
-            UpdateUnlockCounters(newWeps, WeaponType.Staff, GameCounter.unlocked_staff);
-        }
-
-        static void UpdateUnlockCounters(List<WeaponUnlockInfo> newWeapons, WeaponType ifThisWasJustUnlocked, GameCounter thenSetThisCounter)
-        {
-            if (newWeapons.Where(wep => wep.Type == ifThisWasJustUnlocked).Count() == 1)
-                GameEvents.CounterEvent(thenSetThisCounter, 1);
         }
     }
 }

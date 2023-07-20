@@ -22,7 +22,7 @@ public class WeaponPaintballRandom : WeaponBase
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
 
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, FireAudio, volumeScale: 0.3f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.3f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();

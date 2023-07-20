@@ -15,7 +15,7 @@ public class WeaponRambo : WeaponBase
 
         GameManager.Instance.MakePoof(worldMuzzle, 1);
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
 
         float spreadFactor = 10f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;

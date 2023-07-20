@@ -13,7 +13,7 @@ public class WeaponUnarmed : WeaponBase
         GameManager.Instance.MakeFlash(pos, Radius * 5f);
         GameManager.Instance.MakePoof(pos, 1, Radius * 1f);
         GameManager.Instance.ShakeCamera(1.0f);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, FireAudio, volumeScale: 1.0f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.0f);
 
         int aliveCount = BlackboardScript.GetEnemies(pos, Radius);
         for (int i = 0; i < aliveCount; ++i)

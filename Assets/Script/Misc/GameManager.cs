@@ -87,6 +87,8 @@ public class GameManager : MonoBehaviour
     public int LayerXpPill;
     public int LayerOrc;
     public float TimeSinceStartup;
+    public bool PauseGameTime;
+    public float GameTime;
 
     [NonSerialized] public GameModeData LatestGameModeData = new GameModeData();
     [NonSerialized] public GameModeData CurrentGameModeData;
@@ -121,6 +123,8 @@ public class GameManager : MonoBehaviour
     float roundStartTime_;
     int roundStartBestScore_;
 
+    KeyCode menyBackKey_ = KeyCode.Escape;
+
     public void SliderMusicChanged()
     {
         float value = SliderMusic.value;
@@ -139,7 +143,7 @@ public class GameManager : MonoBehaviour
         {
             if (Time.time > sfxVolumeChangeLastFeedback_)
             {
-                AudioManager.Instance.PlayClip(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.PlayerMachinegunFire);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerMachinegunFire);
                 sfxVolumeChangeLastFeedback_ = Time.time + 0.1f;
             }
         }
@@ -339,8 +343,6 @@ public class GameManager : MonoBehaviour
 
     void UpdateMoneyLabels()
     {
-        SetDebugOutput("the fok", SaveGame.Members.Money);
-
         TextShopMoney.text = $"${SaveGame.Members.Money}";
     }
 
@@ -362,7 +364,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_GameMode)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(menyBackKey_))
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
@@ -394,7 +396,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Unlocks)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(menyBackKey_))
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
@@ -407,7 +409,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Settings)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(menyBackKey_))
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -428,7 +430,7 @@ public class GameManager : MonoBehaviour
                     UpdateMoneyLabels();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(menyBackKey_))
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -442,7 +444,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
-                float runTime = Time.realtimeSinceStartup - roundStartTime_;
+                float runTime = GameTime;
                 int secondsLeft = (int)(WinTime - runTime + 0.5f);
                 if (secondsLeft != lastSecondsLeft)
                 {
@@ -469,7 +471,7 @@ public class GameManager : MonoBehaviour
                     PlayerScript.RoundComplete = true;
                     ShowTitle(autoStartGame: true);
                 }
-                else if (Input.GetKeyDown(KeyCode.Escape))
+                else if (Input.GetKeyDown(menyBackKey_))
                 {
                     PlayerScript.RoundComplete = true;
                     ShowTitle();
@@ -493,7 +495,6 @@ public class GameManager : MonoBehaviour
 
     public void HidingHowToPlay()
     {
-        PlayerUpgrades.ResetData();
         PlayerScript.UpgradesActive = true;
     }
 
@@ -620,8 +621,11 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Playing)
             return;
 
+        GameTime = 0.0001f;
         Cursor.visible = false;
         SaveGame.ResetRound();
+        PlayerUpgrades.ResetAll();
+        ShopItems.ApplyToPlayerUpgrades();
 
         InitXpText();
 
@@ -680,11 +684,12 @@ public class GameManager : MonoBehaviour
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
 
     int codeIdx = 0;
-    int restoreIdx = 0;
 
     void Update()
     {
         TimeSinceStartup = Time.realtimeSinceStartup;
+        if (!PauseGameTime)
+            GameTime += Time.deltaTime;
 
         if (Input.GetKey(Code[codeIdx]))
         {
@@ -733,7 +738,7 @@ public class GameManager : MonoBehaviour
 
     void PlayMenuSound()
     {
-        AudioManager.Instance.PlayClip(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.Menu);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
     public void OnEnemyKill(ActorBase actor)
@@ -756,6 +761,11 @@ public class GameManager : MonoBehaviour
                 PlayerUpgrades.Data.Counters.OnKillDropBombCurrentKillCount = 0;
             }
         }
+    }
+
+    private void OnFirstOrcPickup()
+    {
+        PlayerScript.SetWeapon(WeaponType.Machinegun);
     }
 
     public void OnOrcPickup(Vector3 pos)
@@ -796,6 +806,8 @@ public class GameManager : MonoBehaviour
             GameEvents.CounterEvent(GameCounter.score_Harmony_Sum, 1);
             GameEvents.CounterEvent(GameCounter.Max_score_Harmony, SaveGame.RoundScore);
         }
+        if (SaveGame.RoundScore == 1)
+            OnFirstOrcPickup();
 
         if (SaveGame.RoundScore > 1)
         {
@@ -807,18 +819,15 @@ public class GameManager : MonoBehaviour
             if (PlayerUpgrades.Data.OrcPickupSawbladeEnabled)
             {
                 var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-                sawblades.Eject(pos, UnityEngine.Random.insideUnitCircle);
+                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals());
             }
         }
 
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.OrcPickup);
+        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
 
         Vector2 uiPos = UiPositionFromWorld(PlayerTrans.position + Vector3.up * 0.5f);
         var rectTransform = TextFloatingWeapon.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = uiPos;
-
-        Unlocks.SetRandomWeapon();
-        TextFloatingWeapon.SetText(WeaponBase.WeaponDisplayName(PlayerScript.Weapon.Type), 2.0f);
 
         Vector3 bestPos = Vector3.zero;
         float bestDistance = 0.0f;
@@ -949,10 +958,9 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier, bool headshot = false)
     {
-        if (headshot)
-            amount *= 1.5f;
-
-        enemy.ApplyDamage(amount, direction, forceModifier, headshot);
+        amount *= PlayerUpgrades.Data.DamageMul;
+        SetDebugOutput("dmg", amount);
+        enemy.ApplyDamage(amount, direction, forceModifier, headshot: false);
     }
 
     void Awake()

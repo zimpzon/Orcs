@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    const float BaseCd = 2.0f;
+    const int BaseBullets = 2;
+
     [System.NonSerialized] public Vector3 LookAt;
     Vector3 lookDir_;
     Vector3 moveVec_;
@@ -13,12 +16,14 @@ public class PlayerScript : MonoBehaviour
     Transform trans_;
     SpriteRenderer renderer_;
     Vector3 playerPos_;
-    float MoveSpeed = 5.0f;
+    float MoveSpeed = 4f;
     float moveSpeedModifier_ = 1.0f;
     float flipX_;
     bool isDead_ = true;
     float playerScale_ = 2.0f;
     bool isShooting_;
+    float nextFire_ = float.MaxValue;
+    int shotsLeft_ = 0;
     public bool RoundComplete;
     public bool UpgradesActive = false;
 
@@ -157,31 +162,28 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(Think());
     }
 
-    public void SetWeaponTypes(WeaponType left, WeaponType right)
-    {
-        WeaponTypeLeft = left;
-
-        WeaponBase.GetWeapon(left).OnAcquired();
-        WeaponBase.GetWeapon(right).OnAcquired();
-
-        SetWeapon(WeaponTypeLeft);
-    }
-
-    void SetWeapon(WeaponType type)
+    public void SetWeapon(WeaponType type)
     {
         Weapon = WeaponBase.GetWeapon(type);
         weaponTransform_.localScale = Weapon.Scale;
         weaponRenderer_.sprite = Weapon.Sprite;
+        if (type != WeaponType.None)
+            SetNextFire();
+    }
+
+    void RefreshBulletCount()
+    {
+        shotsLeft_ = BaseBullets + PlayerUpgrades.Data.PrimaryBulletsAdd;
+    }
+
+    void SetNextFire()
+    {
+        float FireCd = BaseCd * PlayerUpgrades.Data.PrimaryCdMul;
+        nextFire_ = GameManager.Instance.GameTime + FireCd;
     }
 
     IEnumerator Think()
     {
-        const float FireCd = 2;
-        const int Shots = 4;
-
-        float nextFire = Time.realtimeSinceStartup + FireCd;
-        int shotsLeft = 0;
-
         while (true)
         {
             if (GameManager.Instance.GameState != GameManager.State.Playing)
@@ -190,31 +192,31 @@ public class PlayerScript : MonoBehaviour
                 continue;
             }
 
-            if (Time.realtimeSinceStartup > nextFire)
+            if (GameManager.Instance.GameTime > nextFire_)
             {
-                nextFire = Time.realtimeSinceStartup + FireCd;
-                shotsLeft = Shots;
+                RefreshBulletCount();
+                nextFire_ = float.MaxValue;
             }
 
-            bool doFire = shotsLeft > 0;
+            bool hasBullets = shotsLeft_ > 0;
 
-            if (!doFire)
+            if (!hasBullets)
             {
                 // Stop firing
                 isShooting_ = false;
                 Weapon.StopFire();
-                moveSpeedModifier_ = 1.0f;
             }
-            else if (doFire && Weapon.GetCdLeft() <= 0.0f)
+            else if (hasBullets && Weapon.GetCdLeft() <= 0.0f)
             {
-                shotsLeft--;
+                shotsLeft_--;
+                if (shotsLeft_ == 0)
+                    SetNextFire();
 
                 isShooting_ = true;
-                //moveSpeedModifier_ = Weapon.MoveSpeedModifier;
                 float recoil;
                 Weapon.Fire(weaponTransform_, lookDir_, GameManager.Instance.SortLayerTopEffects, out recoil);
                 AddForce(lookDir_ * -recoil);
-                const float RecoilScreenShakeFactor = 4.0f;
+                const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
 
                 if (Weapon.Type == WeaponType.Grenade)
@@ -319,7 +321,7 @@ public class PlayerScript : MonoBehaviour
         AudioManager.Instance.StopAllRepeating();
         SetWeapon(WeaponType.None);
         var clip = victory ? AudioManager.Instance.AudioData.Victory : AudioManager.Instance.AudioData.PlayerDie;
-        AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, clip);
+        AudioManager.Instance.PlayClip(clip);
 
         if (!victory)
         {
@@ -365,22 +367,6 @@ public class PlayerScript : MonoBehaviour
 
         if (GameManager.Instance.GameState != GameManager.State.Playing)
             return;
-
-        if (true)
-        {
-            GameManager.SetDebugOutput("Cheat enabled", Time.time);
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                SetWeaponTypes(WeaponType.Sawblade, WeaponType.SawedShotgun);
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                SetWeaponTypes(WeaponType.Staff, WeaponType.Horn);
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                SetWeaponTypes(WeaponType.Grenade, WeaponType.Grenade); 
-
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-                SetWeaponTypes(WeaponType.Sword1, WeaponType.Grenade);
-        }
 
         float left = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1.0f : 0.0f;
         float right = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1.0f : 0.0f;

@@ -7,7 +7,7 @@ public class WeaponSawblade : WeaponBase
     public override void Eject(Vector3 pos, Vector3 direction)
     {
         GameManager.Instance.MakeFlash(pos);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
         Vector3 dir = direction.normalized;
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
@@ -52,7 +52,7 @@ public class WeaponSawblade : WeaponBase
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
 
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
         Vector3 dir = direction.normalized;
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();

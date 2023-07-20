@@ -66,10 +66,12 @@ public class WeaponBase
     public AudioClip FireAudio;
 
     protected float lastFire_;
+    public bool IsPrimary = false;
 
     public float GetCdLeft()
     {
-        return Mathf.Max(0.0f, (lastFire_ + Cd) - Time.time);
+        float cd = IsPrimary ? PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul * Cd : Cd;
+        return Mathf.Max(0.0f, lastFire_ - Time.time + cd);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)

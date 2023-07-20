@@ -9,7 +9,7 @@ public static class Explosions
         GameManager.Instance.MakeFlash(pos, radius * 1f);
         GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
         GameManager.Instance.ShakeCamera(1.0f);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
 
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)

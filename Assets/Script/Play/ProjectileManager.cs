@@ -256,7 +256,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             if (p.StickySoundRepeater != null)
                                 p.StickySoundRepeater.StartClipWithRandomPitch(p.CollisionSound);
                             else
-                                AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, p.CollisionSound);
+                                AudioManager.Instance.PlayClipWithRandomPitch(p.CollisionSound);
                         }
 
                         float damage = Basic.CalcDamage(p);

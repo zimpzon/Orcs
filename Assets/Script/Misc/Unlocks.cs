@@ -11,7 +11,6 @@ namespace Assets.Script
 
         public static string LatestUnlockText = string.Empty;
 
-        public static float DamageModifier = 1.0f;
         static List<WeaponType> unlockedWeapons_ = new List<WeaponType>();
         static List<GameModeEnum> unlockedGameModes_ = new List<GameModeEnum>();
         static List<DamageUnlockInfo> unlockedDamage_ = new List<DamageUnlockInfo>();
@@ -19,8 +18,6 @@ namespace Assets.Script
 
         public static void RefreshUnlocked()
         {
-            DamageModifier = 1.0f;
-
             CheckDebugUnlocks();
 
             unlockedWeapons_.Clear();
@@ -40,7 +37,6 @@ namespace Assets.Script
             UnlockEarnedGameModes();
 
             unlockedDamage_.Clear();
-            UnlockEarnedDamage();
 
             unlockedHeroes_.Clear();
             UnlockEarnedHeroes();
@@ -153,25 +149,6 @@ namespace Assets.Script
 
         static List<DamageUnlockInfo> newDamageUnlocks_ = new List<DamageUnlockInfo>();
 
-        public static List<DamageUnlockInfo> UnlockEarnedDamage(bool onlyExactMatch = false)
-        {
-            newDamageUnlocks_.Clear();
-            foreach (var dam in GameEvents.DamageUnlockInfo)
-            {
-                int counterValue = SaveGame.Members.GetCounter(dam.Counter);
-                bool isMatch = (counterValue >= dam.Requirement && !onlyExactMatch) || (counterValue == dam.Requirement);
-                if (isMatch && !unlockedDamage_.Contains(dam))
-                {
-//                    Debug.LogFormat("Unlocked damage {0}", dam.Amount);
-                    DamageModifier += dam.Amount * 0.01f;
-                    unlockedDamage_.Add(dam);
-                    newDamageUnlocks_.Add(dam);
-                }
-            }
-
-            return newDamageUnlocks_;
-        }
-
         // Heroes
         static List<Hero> newHeroUnlocks_ = new List<Hero>();
 
@@ -221,29 +198,6 @@ namespace Assets.Script
             }
             // Failed to find a new one. Have to return notThis.
             return notThis;
-        }
-
-        public static void SetRandomWeapon()
-        {
-            var currentWeapon = GameManager.Instance.PlayerScript.Weapon.Type;
-            var gameMode = GameManager.Instance.CurrentGameModeData;
-            if (gameMode.WeaponRestrictions.Count > 0)
-            {
-                var newWep = PickRandomWeaponFromlist(gameMode.WeaponRestrictions, currentWeapon);
-                GameManager.Instance.PlayerScript.SetWeaponTypes(newWep, WeaponType.None);
-                return;
-            }
-
-            // Newly unlocked weapons are seen a few times
-            if (ForceWeaponCount > 0 && currentWeapon != ForceWeaponType)
-            {
-                GameManager.Instance.PlayerScript.SetWeaponTypes(ForceWeaponType, WeaponType.None);
-                ForceWeaponCount--;
-                return;
-            }
-
-            var newWeapon = PickRandomWeaponFromlist(unlockedWeapons_, currentWeapon);
-            GameManager.Instance.PlayerScript.SetWeaponTypes(newWeapon, WeaponType.None);
         }
 
         public static bool AllWeaponsUnlocked()

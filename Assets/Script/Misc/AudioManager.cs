@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public AudioData AudioData;
+    public AudioMixerGroup SfxMixerGroup;
+
     [System.NonSerialized] public AudioSource PlayerAudioSource;
     [System.NonSerialized] public AudioSource MiscAudioSource;
     [System.NonSerialized] public AudioSource EnemyShootAudioSource;
     [System.NonSerialized] public RepeatingAudioClip RepeatingSawblade;
 
     [System.NonSerialized] public static AudioManager Instance;
-    Dictionary<int, float> _clipThrottle = new Dictionary<int, float>();
 
     public float MasterVolume;
     float lowPitchRange = .95f;
     float highPitchRange = 1.05f;
+    List<AudioSource> sfxSources_ = new List<AudioSource>();
 
     private void Awake()
     {
@@ -24,7 +27,7 @@ public class AudioManager : MonoBehaviour
         PlayerAudioSource = this.gameObject.AddComponent<AudioSource>();
         PlayerAudioSource.priority = priority++;
 
-        RepeatingSawblade = new RepeatingAudioClip(this.gameObject, 3, priority, 4.0f);
+        RepeatingSawblade = new RepeatingAudioClip(this.gameObject, maxConcurrent: 2, priority, fadeSpeed: 4.0f);
         priority++;
 
         EnemyShootAudioSource = this.gameObject.AddComponent<AudioSource>();
@@ -32,6 +35,42 @@ public class AudioManager : MonoBehaviour
 
         MiscAudioSource = this.gameObject.AddComponent<AudioSource>();
         MiscAudioSource.priority = priority++;
+
+        const int SfxSourceCount = 20;
+
+        for (int i = 0; i < SfxSourceCount; ++i)
+        {
+            var sfxSource = gameObject.AddComponent<AudioSource>();
+            sfxSource.outputAudioMixerGroup = SfxMixerGroup;
+            sfxSources_.Add(sfxSource);
+        }
+    }
+
+    int CountPlayingInstancesOfClip(AudioClip clip, out AudioSource currentlyPlayingInstance)
+    {
+        currentlyPlayingInstance = null;
+        int result = 0;
+        for (int i = 0; i < sfxSources_.Count; ++i)
+        {
+            if (sfxSources_[i].isPlaying && sfxSources_[i].clip == clip)
+            {
+                result++;
+                currentlyPlayingInstance = sfxSources_[i];
+            }
+        }
+        return result;
+    }
+
+    AudioSource GetSourceForNewSound(bool replaceIfNoneAvailable)
+    {
+        for (int i = 0; i < sfxSources_.Count; ++i)
+        {
+            if (!sfxSources_[i].isPlaying)
+                return sfxSources_[i];
+        }
+
+        // No sources were available, replace a random existing if requested, else return null
+        return replaceIfNoneAvailable ? sfxSources_[UnityEngine.Random.Range(0, sfxSources_.Count)] : null;
     }
 
     public void StopAllRepeating()
@@ -49,41 +88,27 @@ public class AudioManager : MonoBehaviour
         MasterVolume = volume;
     }
 
-    const float ThrottleTime = 0.1f;
-
-    bool ThrottleClip(AudioClip clip)
+    public void PlayClipWithRandomPitch(AudioClip clip, float volumeScale = 1.0f)
     {
-        return false;// TODOOOO
-        GameManager.SetDebugOutput("id", clip.GetInstanceID());
-        _clipThrottle.TryGetValue(clip.GetInstanceID(), out float nextPlay);
-        if (Time.realtimeSinceStartup < nextPlay)
-        {
-            GameManager.SetDebugOutput("next", nextPlay);
-            GameManager.SetDebugOutput("rt", Time.realtimeSinceStartup);
-            return false;
-        }
-
-        GameManager.SetDebugOutput("GO", Time.realtimeSinceStartup);
-        _clipThrottle[clip.GetInstanceID()] = Time.realtimeSinceStartup + ThrottleTime;
-        return false;
-    }
-
-    public void PlayClipWithRandomPitch(AudioSource source, AudioClip clip, float volumeScale = 1.0f)
-    {
-        if (ThrottleClip(clip))
-            return;
-
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
-        PlayClip(source, clip, volumeScale, randomPitch);
+        PlayClip(clip, volumeScale, randomPitch);
     }
 
-    public void PlayClip(AudioSource source, AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f)
+    public void PlayClip(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f)
     {
-        if (ThrottleClip(clip))
-            return;
+        const int maxInstances = 1;
 
-        source.pitch = pitch;
-        source.PlayOneShot(clip, volumeScale * MasterVolume);
+        AudioSource selectedSource = null;
+        int count = CountPlayingInstancesOfClip(clip, out AudioSource existingPlayingSource);
+        selectedSource = count >= maxInstances ? existingPlayingSource : GetSourceForNewSound(replaceIfNoneAvailable: true);
+        if (selectedSource != null)
+        {
+            // Replace an existing source
+            selectedSource.Stop();
+            selectedSource.clip = clip;
+            selectedSource.pitch = pitch;
+            selectedSource.Play();
+        }
     }
 
     public void StopClip(AudioSource source)

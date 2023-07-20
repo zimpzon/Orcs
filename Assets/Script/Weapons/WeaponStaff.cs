@@ -19,7 +19,7 @@ public class WeaponStaff : WeaponBase
 
         GameManager.Instance.MakePoof(worldMuzzle, 4);
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
 
         Vector3 dir = direction.normalized;
 

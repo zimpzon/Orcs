@@ -125,7 +125,7 @@ public class ActorBase : MonoBehaviour
         GameManager.Instance.MakePoof(transform_.position, 5, 1.0f);
         GameManager.Instance.ShakeCamera(0.1f);
         if (playSound)
-            AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.PlayerStaffHit);
+            AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.PlayerStaffHit);
     }
 
     private void UpdateLivingBomb()
@@ -223,9 +223,6 @@ public class ActorBase : MonoBehaviour
         if (Hp <= 0.0f)
             return;
 
-        float damageModifier = Unlocks.DamageModifier;
-        amount *= damageModifier;
-
         Hp -= amount;
         GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
 
@@ -311,7 +308,7 @@ public class ActorBase : MonoBehaviour
         }
 
         const float ExplodeRadius = 3.0f;
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.LivingBombExplode);
+        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.LivingBombExplode);
         GameManager.Instance.MakeCircle(transform_.position, ExplodeRadius);
         GameManager.Instance.MakePoof(transform_.position, 2, ExplodeRadius * 0.2f);
         GameManager.Instance.ShakeCamera(0.4f);

@@ -24,7 +24,7 @@ public class WeaponPaintball : WeaponBase
 
         GameManager.Instance.MakePoof(worldMuzzle, 1);
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.PlayerAudioSource, FireAudio, volumeScale: 0.7f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.7f);
 
         float spreadFactor = 15f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;

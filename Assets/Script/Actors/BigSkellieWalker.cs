@@ -11,7 +11,7 @@ public class BigSkellieWalker : ActorBase
 
     protected override void PreEnable()
     {
-        Speed = 2.0f * GameMode.MoveSpeedModifier;
+        Speed = 1.2f * GameMode.MoveSpeedModifier;
         Hp = 600 * GameMode.HitpointModifier;
         mass_ = 3.0f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.LargeWalker;

@@ -13,7 +13,7 @@ public class WeaponSword : WeaponBase
 
         int aliveCount = BlackboardScript.GetEnemies(where, radius);
         var clip = aliveCount == 0 ? clipMiss : clipHit;
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, clip);
+        AudioManager.Instance.PlayClipWithRandomPitch(clip);
         for (int i = 0; i < aliveCount; ++i)
         {
             int idx = BlackboardScript.Matches[i].Idx;

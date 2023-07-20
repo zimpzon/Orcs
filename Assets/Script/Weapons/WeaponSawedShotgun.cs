@@ -14,7 +14,7 @@ public class WeaponSawedShutgun : WeaponBase
 
         GameManager.Instance.MakePoof(worldMuzzle, 4);
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
 
         for (int i = 0; i < 6; ++i)
         {

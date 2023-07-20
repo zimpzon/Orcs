@@ -6,6 +6,6 @@ public class WeaponGrenade : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.1f;
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.PlayerAudioSource, FireAudio);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
     }
 }

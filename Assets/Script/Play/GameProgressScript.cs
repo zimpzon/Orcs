@@ -96,7 +96,7 @@ public class GameProgressScript : MonoBehaviour
             const float WarnDelay = 0.5f;
 
             // Warn player
-            AudioManager.Instance.PlayClip(AudioManager.Instance.MiscAudioSource, AudioManager.Instance.AudioData.ChargerWarning);
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ChargerWarning);
             yield return new WaitForSeconds(WarnDelay);
 
             int amount = 1 + (SaveGame.RoundScore / 15);

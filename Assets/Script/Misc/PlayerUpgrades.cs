@@ -8,9 +8,13 @@ public class UpgradeData
         public int OnKillDropBombCurrentKillCount = 0;
     }
 
-    public float CooldownReductionMul = 1.0f;
-    public float DamageAddPct = 0.0f;
-    public float MoveSpeedAddPct = 0.0f;
+    public float DamageMul = 1.0f;
+
+    public float PrimaryCdMul = 1.0f;
+    public float PrimaryCdBetweenBulletsMul = 1.0f;
+    public float PrimaryDamageMul = 1.0f;
+    public int PrimaryBulletsAdd = 0;
+    public float PrimaryRangeMul = 1.0f;
 
     // orc pickups
     public bool OrcPickupForceWaveEnabled = true;
@@ -29,13 +33,6 @@ public class UpgradeData
     public bool OnKillDropBombEnabled = true;
     public int OnKillDropBombKillCount = 20;
 
-    // bought
-    public int DamageLevel;
-    public int RunSpeedLevel;
-    public int CoolDownLevel;
-    public int PrimaryWeaponDamageLevel;
-    public int PrimaryWeaponProjectilesLevel;
-
     public CounterClass Counters = new CounterClass();
 }
 
@@ -45,7 +42,7 @@ public class PlayerUpgrades : MonoBehaviour
 
     public static UpgradeData Data = new UpgradeData();
 
-    public static void ResetData()
+    public static void ResetAll()
     {
         Data = new UpgradeData();
     }
