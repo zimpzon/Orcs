@@ -1,12 +1,11 @@
 ﻿using Assets.Script;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public enum OrcMood { Default, Nervous };
 
-public enum OrcState { Default, ChasePlayer, Yoda };
+public enum OrcState { Default, Yoda };
 
 public class OrcController : MonoBehaviour
 {
@@ -22,6 +21,7 @@ public class OrcController : MonoBehaviour
     public Transform MeleeWeapon;
     public SpriteRenderer MeleeRenderer;
 
+    bool chasePlayer_;
     float distanceToPlayer_;
     bool playerIsClose_;
     Vector3 playerPos_;
@@ -37,7 +37,7 @@ public class OrcController : MonoBehaviour
     Vector3 target_;
     Vector3 lookAt_;
 
-    const float RunSpeed = 6.0f;
+    const float RunSpeed = 3.0f;
     const float NervousMinDistance = 4.0f;
 
     void Awake()
@@ -124,7 +124,7 @@ public class OrcController : MonoBehaviour
 
     public void SetChasePlayer(bool chase)
     {
-        State = OrcState.ChasePlayer;
+        chasePlayer_ = true;
     }
 
     public void SetYoda()
@@ -146,6 +146,7 @@ public class OrcController : MonoBehaviour
 
     void ResetAll()
     {
+        chasePlayer_ = false;
         State = OrcState.Default;
         pickedUp_ = false;
         target_ = trans_.position;
@@ -174,26 +175,30 @@ public class OrcController : MonoBehaviour
         while (true)
         {
             var em = hearts_.emission;
-            em.enabled = (playerIsClose_ || State == OrcState.ChasePlayer) && Mood != OrcMood.Nervous;
+            em.enabled = (playerIsClose_ || chasePlayer_) && Mood != OrcMood.Nervous;
             renderer_.flipX = trans_.position.x > lookAt_.x;
 
-            if (State == OrcState.ChasePlayer)
+            if (chasePlayer_)
             {
                 lookAt_ = GameManager.Instance.PlayerTrans.position;
                 target_ = playerPos_;
             }
-            else if (State == OrcState.Yoda)
+
+            if (State == OrcState.Yoda)
             {
-                lookAt_ = target_;
+                if (!chasePlayer_)
+                    lookAt_ = target_;
+
                 if (Time.time > nextMeleeSwing)
                 {
                     nextMeleeSwing = Time.time + 0.5f;
                     StartCoroutine(SwingMeleeCo(lookAt_));
-                    const float YodaDamage = 200.0f;
-                    const float YodaRadius = 2.5f;
+                    float YodaDamage = 30.0f * PlayerUpgrades.Data.OrcJediDamageMul;
+                    float YodaRadius = 3.0f;
                     _ = WeaponSword.Swing(trans_.position, YodaDamage, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
 
-                    target_ = PositionUtility.GetPointInsideArena(0.8f, 0.8f);
+                    if (!chasePlayer_)
+                        target_ = PositionUtility.GetPointInsideArena(0.8f, 0.8f);
                 }
 
                 if (distanceToPlayer_ < 3)

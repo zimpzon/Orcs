@@ -773,53 +773,34 @@ public class GameManager : MonoBehaviour
         currentXp += xpPerOrc;
 
         SaveGame.RoundScore++;
-        GameEvents.CounterEvent(GameCounter.Score_Any_Sum, 1);
-        GameEvents.CounterEvent(GameCounter.Max_Score_Any, SaveGame.RoundScore);
 
-        if (GameMode == GameModeEnum.Nursery)
-        {
-            GameEvents.CounterEvent(GameCounter.Score_Nursery_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_Score_Nursery, SaveGame.RoundScore);
-        }
-        else if (GameMode == GameModeEnum.Earth)
-        {
-            GameEvents.CounterEvent(GameCounter.Score_Earth_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_Score_Earth, SaveGame.RoundScore);
-        }
-        else if (GameMode == GameModeEnum.Wind)
-        {
-            GameEvents.CounterEvent(GameCounter.Score_Wind_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_Score_Wind, SaveGame.RoundScore);
-        }
-        else if (GameMode == GameModeEnum.Fire)
-        {
-            GameEvents.CounterEvent(GameCounter.Score_Fire_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_Score_Fire, SaveGame.RoundScore);
-        }
-        else if (GameMode == GameModeEnum.Storm)
-        {
-            GameEvents.CounterEvent(GameCounter.Score_Storm_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_Score_Storm, SaveGame.RoundScore);
-        }
-        else if (GameMode == GameModeEnum.Harmony)
-        {
-            GameEvents.CounterEvent(GameCounter.score_Harmony_Sum, 1);
-            GameEvents.CounterEvent(GameCounter.Max_score_Harmony, SaveGame.RoundScore);
-        }
         if (SaveGame.RoundScore == 1)
             OnFirstOrcPickup();
 
         if (SaveGame.RoundScore > 1)
         {
-            if (PlayerUpgrades.Data.OrcPickupForceWaveEnabled)
+            if (PlayerUpgrades.Data.OrcPickupForcePushEnabled)
             {
-                Explosions.Push(pos, PlayerUpgrades.Data.OrcPickupForceWaveRadius, PlayerUpgrades.Data.OrcPickupForceWaveAmount);
+                Explosions.Push(
+                    pos,
+                    PlayerUpgrades.Data.OrcPickupForcePushRadius * PlayerUpgrades.Data.OrcPickupForcePushRadiusMul,
+                    PlayerUpgrades.Data.OrcPickupForcePushAmount * PlayerUpgrades.Data.OrcPickupForcePushAmountMul,
+                    PlayerUpgrades.Data.OrcPickupForcePushDamage * PlayerUpgrades.Data.OrcPickupForcePushDamageMul);
             }
 
             if (PlayerUpgrades.Data.OrcPickupSawbladeEnabled)
             {
                 var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
                 sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals());
+            }
+        }
+
+        if (PlayerUpgrades.Data.OrcJedisEnabled)
+        {
+            if (PlayerUpgrades.Data.Counters.OrcJediCounter++ == PlayerUpgrades.Data.OrcJediActivate)
+            {
+                PlayerUpgrades.Data.Counters.OrcJediCounter = 0;
+                Orc.SetYoda();
             }
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Explosions
 {
-    public static void Push(Vector3 pos, float radius, float force)
+    public static void Push(Vector3 pos, float radius, float force, float damage = 0)
     {
         GameManager.Instance.MakeFlash(pos, radius * 1f);
         GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
@@ -26,6 +26,7 @@ public static class Explosions
             var push = dir * baseForce * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
+            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.1f, headshot: false);
         }
     }
 
