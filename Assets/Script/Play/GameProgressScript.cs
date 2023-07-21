@@ -73,14 +73,14 @@ public class GameProgressScript : MonoBehaviour
     {
         while (true)
         {
-            int amount = 5 + (SaveGame.RoundScore / 5);
+            int amount = 15 + (SaveGame.RoundScore / 5);
             if (Random.value < 0.1f)
                 amount += 2;
 
             bool inside = false;// Random.value < 0.5f || SaveGame.RoundScore == 1;
             PositionUtility.SpawnDirection dir = PositionUtility.GetRandomDirOutside();
 
-            yield return PositionUtility.SpawnGroup(ActorTypeEnum.SmallWalker, amount, 0.1f, !inside, dir);
+            yield return PositionUtility.SpawnGroup(ActorTypeEnum.SmallWalker, amount, 0.01f, !inside, dir);
             float delay = 1 + Random.value;
             yield return new WaitForSeconds(delay);
         }

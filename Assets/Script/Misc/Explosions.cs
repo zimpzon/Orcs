@@ -8,7 +8,7 @@ public static class Explosions
     {
         GameManager.Instance.MakeFlash(pos, radius * 1f);
         GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
-        GameManager.Instance.ShakeCamera(1.0f);
+        GameManager.Instance.ShakeCamera(0.2f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
 
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
@@ -22,11 +22,11 @@ public static class Explosions
             dir /= distance;
             dir.Normalize();
 
-            float baseForce = Mathf.Clamp((radius - distance) * distance, 2.0f, 100.0f) * 0.25f;
-            var push = dir * baseForce * force;
+            force = Mathf.Clamp(((radius - distance) / radius) * force, min: force * 0.5f, max: force);
+            var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
-            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.1f, headshot: false);
+            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f, headshot: false);
         }
     }
 

@@ -107,6 +107,7 @@ public class AudioManager : MonoBehaviour
             selectedSource.Stop();
             selectedSource.clip = clip;
             selectedSource.pitch = pitch;
+            selectedSource.volume = AudioManager.Instance.MasterVolume * SaveGame.Members.VolumeSfx * volumeScale;
             selectedSource.Play();
         }
     }

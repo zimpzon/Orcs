@@ -15,20 +15,22 @@ public class WeaponSawblade : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 5.0f;
-        basic.Damage = 2.0f;
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
         basic.Force = 0.5f;
-        basic.MaxDistance = 30.0f;
+        basic.MaxDistance = 100.0f;
         basic.Radius = 0.4f;
         basic.DieOnCollision = false;
         basic.ReflectOnEdges = true;
         basic.CollisionSound = AudioManager.Instance.AudioData.Chainsaw;
         basic.StickySoundRepeater = AudioManager.Instance.RepeatingSawblade;
+        basic.Volume = 0.3f;
         basic.RotationSpeed = 360.0f * 1;
         basic.RotationSpeedWhenStuck = 360.0f * 6;
         basic.StickToTarget = true;
-
+        basic.Damage = 20.0f;
+        basic.StickyDamageCd = 0.1f;
+        basic.StickyMaxTotalDamage = 400.0f;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 0.4f;
         scale.y = 0.4f;

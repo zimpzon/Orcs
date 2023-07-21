@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
     public Slider SliderMusic;
     public Slider SliderSfx;
     public Dropdown DropdownResolution;
+    public GameObject UpgradeChoice1;
+    public GameObject UpgradeChoice2;
+    public GameObject UpgradeChoice3;
 
     public TextMeshProUGUI TextGameMode;
     public TextMeshProUGUI TextGameModeInfo;
@@ -115,7 +118,8 @@ public class GameManager : MonoBehaviour
 
     int lastSecondsLeft = 0;
     const float WinTime = 60 * 15;
-    int xpToLevel = 1000;
+    int baseXpToLevel = 200;
+    int xpToLevel;
     int lastXpShown = 0;
     int currentXp = 0;
     int xpPerOrc = 100;
@@ -454,10 +458,16 @@ public class GameManager : MonoBehaviour
 
                 if (currentXp != lastXpShown)
                 {
-                    float pct = (currentXp / (float)xpToLevel) * 100;
+                    float pct = Math.Min(100, (currentXp / (float)xpToLevel) * 100);
                     TextLevel.text = $"LEVEL {currentLevel} ({pct:0.0}%)";
                     lastXpShown = currentXp;
                 }
+
+                SetDebugOutput("xp", currentXp);
+                SetDebugOutput("xp to level", xpToLevel);
+
+                while (currentXp >= xpToLevel)
+                    yield return LevelUp();
 
                 float delta = Time.deltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -484,17 +494,56 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    IEnumerator LevelUp()
+    {
+        bool selectionDone = false;
+
+        void SelectionCallback(UpgradeChoices.Choice choice)
+        {
+            selectionDone = true;
+            choice.Apply();
+        }
+
+        UpgradeChoice1.SetActive(true);
+        UpgradeChoice2.SetActive(true);
+        UpgradeChoice3.SetActive(true);
+        UpgradeChoice1.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
+        UpgradeChoice2.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
+        UpgradeChoice3.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
+
+        AudioListener.pause = true;
+
+        Time.timeScale = 0.0001f;
+        PauseGameTime = true;
+
+        while (!selectionDone)
+        {
+            yield return null;
+        }
+
+        currentXp -= xpToLevel;
+        xpToLevel = (int)(xpToLevel * 1.2f);
+
+        PauseGameTime = false;
+        Time.timeScale = 1.0f;
+
+        UpgradeChoice1.SetActive(false);
+        UpgradeChoice2.SetActive(false);
+        UpgradeChoice3.SetActive(false);
+
+        AudioListener.pause = false;
+    }
+
     public void ShowingHowToPlay()
     {
-        SetDebugOutput("currentXp123", currentXp);
-        roundStartTime_ = Time.realtimeSinceStartup;
         currentXp = 0;
+        xpToLevel = baseXpToLevel;
         currentLevel = 1;
-        xpToLevel = 1000;
     }
 
     public void HidingHowToPlay()
     {
+        roundStartTime_ = Time.realtimeSinceStartup;
         PlayerScript.UpgradesActive = true;
     }
 
@@ -626,6 +675,7 @@ public class GameManager : MonoBehaviour
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
         ShopItems.ApplyToPlayerUpgrades();
+        UpgradeChoices.InitChoices();
 
         InitXpText();
 
@@ -768,10 +818,13 @@ public class GameManager : MonoBehaviour
         PlayerScript.SetWeapon(WeaponType.Machinegun);
     }
 
+    void AddXp(int amount)
+    {
+        currentXp += amount;
+    }
+
     public void OnOrcPickup(Vector3 pos)
     {
-        currentXp += xpPerOrc;
-
         SaveGame.RoundScore++;
 
         if (SaveGame.RoundScore == 1)
@@ -797,11 +850,7 @@ public class GameManager : MonoBehaviour
 
         if (PlayerUpgrades.Data.OrcJedisEnabled)
         {
-            if (PlayerUpgrades.Data.Counters.OrcJediCounter++ == PlayerUpgrades.Data.OrcJediActivate)
-            {
-                PlayerUpgrades.Data.Counters.OrcJediCounter = 0;
-                Orc.SetYoda();
-            }
+            Orc.SetYoda();
         }
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
@@ -833,6 +882,8 @@ public class GameManager : MonoBehaviour
         }
 
         Orc.SetPosition(bestPos);
+
+        AddXp(xpPerOrc);
     }
 
     private void InitXpText()
@@ -940,8 +991,8 @@ public class GameManager : MonoBehaviour
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier, bool headshot = false)
     {
         amount *= PlayerUpgrades.Data.DamageMul;
-        SetDebugOutput("dmg", amount);
         enemy.ApplyDamage(amount, direction, forceModifier, headshot: false);
+        FloatingTextSpawner.Instance.Spawn(enemy.transform.position + Vector3.up * 0.2f, ((int)(amount + 0.5f)).ToString(), Color.red, speed: 0.05f, timeToLive: 0.5f);
     }
 
     void Awake()

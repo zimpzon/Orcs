@@ -15,6 +15,7 @@ public class MusicManagerScript : MonoBehaviour
     {
         Instance = this;
         audioSource_ = GetComponent<AudioSource>();
+        audioSource_.ignoreListenerPause = true;
     }
 
     public void SetVolume(float volume)

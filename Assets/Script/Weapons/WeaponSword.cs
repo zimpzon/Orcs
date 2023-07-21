@@ -13,13 +13,13 @@ public class WeaponSword : WeaponBase
 
         int aliveCount = BlackboardScript.GetEnemies(where, radius);
         var clip = aliveCount == 0 ? clipMiss : clipHit;
-        AudioManager.Instance.PlayClipWithRandomPitch(clip);
+        AudioManager.Instance.PlayClipWithRandomPitch(clip, volumeScale: 0.5f);
         for (int i = 0; i < aliveCount; ++i)
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
             enemy.SetSlowmotion();
-            float force = 1.5f * PlayerUpgrades.Data.OrcJediKnockBackForceMul;
+            float force = 30.0f * PlayerUpgrades.Data.OrcJediKnockBackForceMul;
             enemy.ApplyDamage(damage, enemy.transform.position - where, force, headshot: false);
         }
         return aliveCount;

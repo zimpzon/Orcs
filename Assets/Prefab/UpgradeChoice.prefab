@@ -130,8 +130,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0428, y: -9.3412}
-  m_SizeDelta: {x: 468.0856, y: 70.0474}
+  m_AnchoredPosition: {x: 0.0428, y: -15.6004}
+  m_SizeDelta: {x: 468.0856, y: 57.5289}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2584943359885748761
 CanvasRenderer:
@@ -168,7 +168,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 4
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 2584943360580046161}
   - component: {fileID: 2584943360580046167}
   - component: {fileID: 4500519137226056090}
+  - component: {fileID: 7392847955435286600}
   m_Layer: 5
   m_Name: UpgradeChoice
   m_TagString: Untagged
@@ -297,3 +298,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee0be4341c381d40819bbed5ec8503e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TextHeader: {fileID: 2584943358945618696}
+  TextDescription: {fileID: 2584943359885748760}
+--- !u!114 &7392847955435286600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2584943360580046163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4500519137226056090}
+          m_TargetAssemblyTypeName: UpgradeChoiceScript, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2

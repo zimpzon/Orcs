@@ -15,7 +15,7 @@ public class WeaponMachinegun : WeaponBase
         worldMuzzle += -direction * 0.2f; // Start a little behind muzzle because its very unfun missing an enemy that is too close
 
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio, volumeScale: 0.2f);
+        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio, volumeScale: 0.5f);
 
         float spreadFactor = 10f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;

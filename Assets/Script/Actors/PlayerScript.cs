@@ -362,6 +362,9 @@ public class PlayerScript : MonoBehaviour
 
     void CheckControls()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+            FloatingTextSpawner.Instance.Spawn(trans_.position, "-45", Color.red, speed: 0.01f, timeToLive: 0.5f);
+
         if (isDead_)
             return;
 
@@ -447,6 +450,9 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.PauseGameTime)
+            return;
+
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
         if (isMoving_ && !isDead_)

@@ -56,8 +56,13 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             RotationSpeedWhenStuck = 0.0f;
             CollisionSound = null;
             StickToTarget = false;
+            StickyMaxTotalDamage = 0;
+            StickyDamageTimeNext = 0;
+            StickyDamageCd = 0;
+            StickyDamageDone = 0;
             CurrentTarget = null;
             StickOffset = Vector3.zero;
+            Volume = 1.0f;
         }
 
         public ProjectileInfo SpriteInfo;
@@ -85,9 +90,14 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float RotationSpeed;
         public float RotationSpeedWhenStuck;
         public bool StickToTarget;
+        public float StickyDamageCd;
+        public float StickyDamageTimeNext;
+        public float StickyMaxTotalDamage;
+        public float StickyDamageDone;
         public Vector3 StickOffset;
         public ActorBase CurrentTarget;
         public AudioClip CollisionSound;
+        public float Volume;
         public RepeatingAudioClip StickySoundRepeater;
         public bool MaintainCollisionSound;
         public Action<Basic, ActorBase, float, Vector3> CustomCollisionResponse;
@@ -176,8 +186,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             else
             {
                 bool outOfTime = p.DieTime > 0.0f && time >= p.DieTime;
+                bool outOfDamage = p.StickyMaxTotalDamage > 0 && p.StickyDamageDone >= p.StickyMaxTotalDamage;
                 bool endOfDistance = p.DistanceTraveled >= p.MaxDistance;
-                if (!p.IsLastFrame && (endOfDistance || outOfTime))
+                if (!p.IsLastFrame && (endOfDistance || outOfDamage || outOfTime))
                 {
                     p.SpriteInfo.Renderer.color = Color.white;
                     p.IsLastFrame = true;
@@ -233,10 +244,17 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         // Keep sticking to target at specific offset
                         p.Position = p.CurrentTarget.transform.position + p.StickOffset;
                         p.CurrentTarget.SetSlowmotion(0.5f);
-                        Vector3 damageDirection = (p.StickOffset * -1).normalized;
-                        p.CurrentTarget.ApplyDamage(p.Damage, damageDirection, 0.25f, false);
-                        GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
-                        GameManager.Instance.ShakeCamera(0.1f);
+                        if (GameManager.Instance.GameTime > p.StickyDamageTimeNext)
+                        {
+                            Vector3 damageDirection = (p.StickOffset * -1).normalized;
+
+                            float damage = p.Damage * PlayerUpgrades.Data.DamageMul;
+                            p.CurrentTarget.ApplyDamage(damage, damageDirection, forceModifier: 0.25f, headshot: false);
+                            p.StickyDamageDone += damage;
+
+                            GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
+                            p.StickyDamageTimeNext = GameManager.Instance.GameTime + p.StickyDamageCd;
+                        }
                     }
                 }
                 else if (p.Type == ProjectileType.HarmsEnemies)
@@ -254,9 +272,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickOffset = (p.SpriteInfo.Transform.position - enemy.transform.position) * 0.9f;
 
                             if (p.StickySoundRepeater != null)
-                                p.StickySoundRepeater.StartClipWithRandomPitch(p.CollisionSound);
+                                p.StickySoundRepeater.StartClipWithRandomPitch(p.CollisionSound, p.Volume);
                             else
-                                AudioManager.Instance.PlayClipWithRandomPitch(p.CollisionSound);
+                                AudioManager.Instance.PlayClipWithRandomPitch(p.CollisionSound, p.Volume);
                         }
 
                         float damage = Basic.CalcDamage(p);

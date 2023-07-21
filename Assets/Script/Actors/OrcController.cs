@@ -24,6 +24,7 @@ public class OrcController : MonoBehaviour
     bool chasePlayer_;
     float distanceToPlayer_;
     bool playerIsClose_;
+    Vector3 startPos_;
     Vector3 playerPos_;
     Vector3 targetVec_;
     Vector3 targetDir_;
@@ -37,7 +38,8 @@ public class OrcController : MonoBehaviour
     Vector3 target_;
     Vector3 lookAt_;
 
-    const float RunSpeed = 3.0f;
+    const float MeleeCd = 1.5f;
+    const float RunSpeed = 2.0f;
     const float NervousMinDistance = 4.0f;
 
     void Awake()
@@ -140,6 +142,7 @@ public class OrcController : MonoBehaviour
 
     public void SetPosition(Vector3 pos)
     {
+        startPos_ = pos;
         trans_.position = pos;
         target_ = trans_.position;
     }
@@ -191,14 +194,13 @@ public class OrcController : MonoBehaviour
 
                 if (Time.time > nextMeleeSwing)
                 {
-                    nextMeleeSwing = Time.time + 0.5f;
+                    nextMeleeSwing = Time.time + MeleeCd;
                     StartCoroutine(SwingMeleeCo(lookAt_));
-                    float YodaDamage = 30.0f * PlayerUpgrades.Data.OrcJediDamageMul;
-                    float YodaRadius = 3.0f;
-                    _ = WeaponSword.Swing(trans_.position, YodaDamage, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
+                    float YodaRadius = 2.0f;
+                    _ = WeaponSword.Swing(trans_.position, damage: 0.0f, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
 
                     if (!chasePlayer_)
-                        target_ = PositionUtility.GetPointInsideArena(0.8f, 0.8f);
+                        target_ = (Vector3)(Random.insideUnitCircle * 2) + startPos_;
                 }
 
                 if (distanceToPlayer_ < 3)

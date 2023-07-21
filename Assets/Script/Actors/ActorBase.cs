@@ -188,7 +188,7 @@ public class ActorBase : MonoBehaviour
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
 
-        const float RegenTime = 1.0f;
+        const float RegenTime = 2.0f;
         slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + Time.deltaTime / RegenTime);
 
         PostUpdate();
@@ -220,9 +220,6 @@ public class ActorBase : MonoBehaviour
 
     public void ApplyDamage(float amount, Vector3 direction, float forceModifier, bool headshot)
     {
-        if (Hp <= 0.0f)
-            return;
-
         Hp -= amount;
         GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
 
@@ -235,10 +232,14 @@ public class ActorBase : MonoBehaviour
         }
         else
         {
-            float force = Mathf.Clamp(amount * 0.2f, 1.0f, 3.0f);
+            float force = Mathf.Clamp(amount * 0.2f, 0.1f, 3.0f);
             AddForce(direction * (force * 0.2f * massInverse_ * forceModifier));
-            material_.SetFloat(flashParamId_, 0.75f);
-            flashEndTime_ = Time.time + 0.1f * forceModifier;
+            if (amount > 0.01f)
+            {
+                material_.SetFloat(flashParamId_, 0.75f);
+                flashEndTime_ = Time.time + 0.2f;
+            }
+
             if (headshot)
                 slowmotionModifier_ = 0.0f;
         }

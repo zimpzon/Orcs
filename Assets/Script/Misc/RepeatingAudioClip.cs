@@ -30,6 +30,11 @@ public class RepeatingAudioClip
         startVolume_ = new float[maxConcurrent];
     }
 
+    public void PauseEffects(bool pause)
+    {
+
+    }
+
     int GetAvailableSource()
     {
         for (int i = 0; i < audioSource_.Length; ++i)

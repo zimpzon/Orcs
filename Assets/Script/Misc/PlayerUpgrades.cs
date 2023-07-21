@@ -18,17 +18,15 @@ public class UpgradeData
     public float PrimaryRangeMul = 1.0f;
 
     // orc
-    public bool OrcJedisEnabled = true;
-    public int OrcJediActivate = 3;
+    public bool OrcJedisEnabled = false;
     public float OrcJediKnockBackForceMul = 1.0f;
-    public float OrcJediDamageMul = 1.0f;
 
-    public bool OrcPickupForcePushEnabled = true;
-    public float OrcPickupForcePushAmountMul = 1.0f;
-    public float OrcPickupForcePushRadiusMul = 1.0f;
+    public bool OrcPickupForcePushEnabled = false;
     public float OrcPickupForcePushAmount = 1.0f;
-    public float OrcPickupForcePushRadius = 3.0f;
-    public float OrcPickupForcePushDamage = 50.0f;
+    public float OrcPickupForcePushAmountMul = 1.0f;
+    public float OrcPickupForcePushRadius = 5.0f;
+    public float OrcPickupForcePushRadiusMul = 1.0f;
+    public float OrcPickupForcePushDamage = 10.0f;
     public float OrcPickupForcePushDamageMul = 1.0f;
 
     public bool OrcPickupSawbladeEnabled = true;
@@ -37,10 +35,10 @@ public class UpgradeData
     // paintball
     public bool PaintballEnabled = true;
     public float PaintballCd = 4;
-    public int PaintballCount = 10;
+    public int PaintballCount = 50;
 
     // on kill
-    public bool OnKillDropBombEnabled = true;
+    public bool OnKillDropBombEnabled = false;
     public int OnKillDropBombKillCount = 20;
 
     public CounterClass Counters = new CounterClass();
