@@ -1,12 +1,9 @@
-﻿Shotgun damage +10%
-Shotgun bullets +1
-Shotgun Push +10%
-Shotgun Cooldown -10%
+﻿DAMAGE NUMBERS:
 
-Ignite-Corpse-Gun - will explode after a few sec.
-
-Shotgun more damage up close. Try: Two quick shots, then reload. Right click fire both.
-
+  machine gun: 50
+  shotgun pellet: 10
+  sniper: 100
+  sawblade, large: total damage: 400
 
 https://www.assetstore.unity3d.com/en/#!/content/29304
 https://www.assetstore.unity3d.com/en/#!/content/40252

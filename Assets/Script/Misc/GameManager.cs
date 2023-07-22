@@ -498,7 +498,7 @@ public class GameManager : MonoBehaviour
     {
         bool selectionDone = false;
 
-        void SelectionCallback(UpgradeChoices.Choice choice)
+        void SelectionCallback(Choice choice)
         {
             selectionDone = true;
             choice.Apply();
@@ -832,19 +832,16 @@ public class GameManager : MonoBehaviour
 
         if (SaveGame.RoundScore > 1)
         {
-            if (PlayerUpgrades.Data.OrcPickupForcePushEnabled)
-            {
-                Explosions.Push(
-                    pos,
-                    PlayerUpgrades.Data.OrcPickupForcePushRadius * PlayerUpgrades.Data.OrcPickupForcePushRadiusMul,
-                    PlayerUpgrades.Data.OrcPickupForcePushAmount * PlayerUpgrades.Data.OrcPickupForcePushAmountMul,
-                    PlayerUpgrades.Data.OrcPickupForcePushDamage * PlayerUpgrades.Data.OrcPickupForcePushDamageMul);
-            }
-
             if (PlayerUpgrades.Data.OrcPickupSawbladeEnabled)
             {
                 var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals());
+                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals(), weaponScale: 1.0f);
+            }
+
+            if (PlayerUpgrades.Data.OrcPickupSmallSawbladeEnabled)
+            {
+                var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
+                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals(), weaponScale: 0.5f);
             }
         }
 

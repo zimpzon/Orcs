@@ -9,7 +9,9 @@ public class UpgradeData
         public int OrcJediCounter;
     }
 
+    // global
     public float DamageMul = 1.0f;
+    public float SawbladeDurabilityMul = 1.0f;
 
     public float PrimaryCdMul = 1.0f;
     public float PrimaryCdBetweenBulletsMul = 1.0f;
@@ -21,16 +23,8 @@ public class UpgradeData
     public bool OrcJedisEnabled = false;
     public float OrcJediKnockBackForceMul = 1.0f;
 
-    public bool OrcPickupForcePushEnabled = false;
-    public float OrcPickupForcePushAmount = 1.0f;
-    public float OrcPickupForcePushAmountMul = 1.0f;
-    public float OrcPickupForcePushRadius = 5.0f;
-    public float OrcPickupForcePushRadiusMul = 1.0f;
-    public float OrcPickupForcePushDamage = 10.0f;
-    public float OrcPickupForcePushDamageMul = 1.0f;
-
-    public bool OrcPickupSawbladeEnabled = true;
-    public int OrcPickupSawbladeCount = 1;
+    public bool OrcPickupSawbladeEnabled = false;
+    public bool OrcPickupSmallSawbladeEnabled = false;
 
     // paintball
     public bool PaintballEnabled = true;

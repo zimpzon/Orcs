@@ -4,7 +4,7 @@ public class WeaponSawblade : WeaponBase
 {
     public Sprite BulletSprite;
 
-    public override void Eject(Vector3 pos, Vector3 direction)
+    public override void Eject(Vector3 pos, Vector3 direction, float weaponScale)
     {
         GameManager.Instance.MakeFlash(pos);
         AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
@@ -14,12 +14,12 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
-        basic.Speed = 5.0f;
+        basic.Speed = 5.0f * weaponScale;
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
-        basic.Force = 0.5f;
-        basic.MaxDistance = 100.0f;
-        basic.Radius = 0.4f;
+        basic.Force = 0.5f * weaponScale;
+        basic.MaxDistance = 100.0f * PlayerUpgrades.Data.SawbladeDurabilityMul;
+        basic.Radius = 0.4f * weaponScale;
         basic.DieOnCollision = false;
         basic.ReflectOnEdges = true;
         basic.CollisionSound = AudioManager.Instance.AudioData.Chainsaw;
@@ -28,12 +28,12 @@ public class WeaponSawblade : WeaponBase
         basic.RotationSpeed = 360.0f * 1;
         basic.RotationSpeedWhenStuck = 360.0f * 6;
         basic.StickToTarget = true;
-        basic.Damage = 20.0f;
+        basic.Damage = 20.0f * weaponScale;
         basic.StickyDamageCd = 0.1f;
-        basic.StickyMaxTotalDamage = 400.0f;
+        basic.StickyMaxTotalDamage = 400.0f * PlayerUpgrades.Data.SawbladeDurabilityMul * weaponScale;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
-        scale.x = 0.4f;
-        scale.y = 0.4f;
+        scale.x = 0.4f * weaponScale;
+        scale.y = 0.4f * weaponScale;
         scale.z = 1.0f;
 
         basic.Position = pos;
