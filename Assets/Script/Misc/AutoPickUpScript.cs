@@ -35,7 +35,7 @@ public class AutoPickUpScript : MonoBehaviour
         throwStartTime_ = GameManager.Instance.GameTime + 0.05f;
     }
 
-    void Die()
+    public void Die()
     {
         PickUpManagerScript.Instance.ReturnPickUpToCache(Type, gameObject);
     }
@@ -69,6 +69,9 @@ public class AutoPickUpScript : MonoBehaviour
         if (diff.sqrMagnitude < sqrPickupDistance_ && time > throwEndTime_)
         {
             AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup);
+            if (Type == AutoPickUpType.Money)
+                SaveGame.Members.Money++;
+
             Die();
         }
     }

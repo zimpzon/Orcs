@@ -70,7 +70,7 @@ public class WeaponBase
 
     public float GetCdLeft()
     {
-        return Mathf.Max(0.0f, lastFire_ - Time.time + Cd);
+        return Mathf.Max(0.0f, (lastFire_ - Time.time) + Cd * PlayerUpgrades.Data.WeaponsCdMul);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)

@@ -12,6 +12,10 @@ public class PickUpManagerScript : MonoBehaviour
         Instance = this;
     }
 
+    public void WithdrawAllActive()
+    {
+    }
+
     public GameObject GetPickUpFromCache(AutoPickUpType type)
     {
         return GetCacheFromType(type).GetInstance();

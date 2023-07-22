@@ -665,6 +665,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void ResetDynamicObjects()
+    {
+        // pickups
+        var pickups = Resources.FindObjectsOfTypeAll(typeof(AutoPickUpScript)).Cast<AutoPickUpScript>().ToList();
+        foreach(var pickup in pickups)
+        {
+            if (pickup.isActiveAndEnabled)
+                pickup.Die();
+        }
+    }
+
     public void StartGame()
     {
         if (GameState == State.Playing)
