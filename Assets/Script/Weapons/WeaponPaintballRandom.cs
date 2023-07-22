@@ -17,7 +17,7 @@ public class WeaponPaintballRandom : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        Color color = new Color(0.6f, 1.0f, 0.7f);
+        Color color = new Color(0.4f, 0.8f, 0.3f);
 
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
 

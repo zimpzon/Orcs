@@ -104,7 +104,7 @@ public class ActorBase : MonoBehaviour
 
         isPainted_ = true;
         paintEnd_ = Time.time + 3.0f;
-        material_.color = color;
+        material_.color = Color.Lerp(Color.white, color, 0.5f);
         return true;
     }
 

@@ -221,7 +221,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
                 if (p.StickToTarget && p.CurrentTarget != null)
                 {
-                    if (p.CurrentTarget.Hp <= 0)
+                    if (p.CurrentTarget.Hp <= 0 && PlayerUpgrades.Data.SawbladePickNewTarget)
                     {
                         // Target we are stuck to died. Scan for a new one close by or continue moving if nothing found.
                         if (p.StickySoundRepeater != null)

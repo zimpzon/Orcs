@@ -173,12 +173,12 @@ public class PlayerScript : MonoBehaviour
 
     void RefreshBulletCount()
     {
-        shotsLeft_ = BaseBullets + PlayerUpgrades.Data.PrimaryBulletsAdd;
+        shotsLeft_ = BaseBullets + PlayerUpgrades.Data.MachinegunBulletsAdd;
     }
 
     void SetNextFire()
     {
-        float FireCd = BaseCd * PlayerUpgrades.Data.PrimaryCdMul;
+        float FireCd = BaseCd * PlayerUpgrades.Data.WeaponsCdMul;
         nextFire_ = GameManager.Instance.GameTime + FireCd;
     }
 

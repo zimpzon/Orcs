@@ -6,18 +6,18 @@ public class UpgradeData
     {
         public float PaintballTimer;
         public int OnKillDropBombCurrentKillCount;
-        public int OrcJediCounter;
     }
 
     // global
     public float DamageMul = 1.0f;
     public float SawbladeDurabilityMul = 1.0f;
+    public bool SawbladePickNewTarget = false;
 
-    public float PrimaryCdMul = 1.0f;
-    public float PrimaryCdBetweenBulletsMul = 1.0f;
-    public float PrimaryDamageMul = 1.0f;
-    public int PrimaryBulletsAdd = 0;
-    public float PrimaryRangeMul = 1.0f;
+    // weapons
+    public float WeaponsCdMul = 1.0f;
+    public float WeaponsDamageMul = 1.0f;
+    public float WeaponsRangeMul = 1.0f;
+    public int MachinegunBulletsAdd = 0;
 
     // orc
     public bool OrcJedisEnabled = false;
@@ -27,9 +27,10 @@ public class UpgradeData
     public bool OrcPickupSmallSawbladeEnabled = false;
 
     // paintball
-    public bool PaintballEnabled = true;
-    public float PaintballCd = 4;
-    public int PaintballCount = 50;
+    public bool PaintballEnabled = false;
+    public float PaintballCd = 5.0f;
+    public float PaintballCdMul = 1.0f;
+    public int PaintballCount = 10;
 
     // on kill
     public bool OnKillDropBombEnabled = false;
@@ -65,8 +66,10 @@ public class PlayerUpgrades : MonoBehaviour
             return;
 
         Data.Counters.PaintballTimer += Time.deltaTime;
-        if (Data.Counters.PaintballTimer > Data.PaintballCd)
+        GameManager.SetDebugOutput("timer1", Data.Counters.PaintballTimer);
+        if (Data.Counters.PaintballTimer > Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
         {
+            GameManager.SetDebugOutput("timer2", "gogo");
             var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
 
             float angleStep = 360 / Data.PaintballCount;

@@ -988,8 +988,20 @@ public class GameManager : MonoBehaviour
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier, bool headshot = false)
     {
         amount *= PlayerUpgrades.Data.DamageMul;
+        bool isCrit = UnityEngine.Random.value < 0.25;
+        if (isCrit)
+            amount *= 2;
+
         enemy.ApplyDamage(amount, direction, forceModifier, headshot: false);
-        FloatingTextSpawner.Instance.Spawn(enemy.transform.position + Vector3.up * 0.2f, ((int)(amount + 0.5f)).ToString(), Color.red, speed: 0.05f, timeToLive: 0.5f);
+
+        string text = string.Concat("-", ((int)(amount + 0.5f)).ToString());
+
+        FloatingTextSpawner.Instance.Spawn(
+            enemy.transform.position + Vector3.up * 0.3f,
+            text,
+            isCrit ? Color.yellow : Color.red,
+            speed: isCrit ? 0.4f : 0.25f,
+            timeToLive: 0.5f, isCrit ? FontStyles.Bold : FontStyles.Normal);
     }
 
     void Awake()

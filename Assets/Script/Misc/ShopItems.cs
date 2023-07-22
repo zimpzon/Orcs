@@ -10,9 +10,7 @@ public enum ShopItemType
     PrimaryWeaponRange,
     PrimaryWeaponDamage,
     PrimaryWeaponCd,
-    PrimaryWeaponCdBetweenBullets,
     PrimaryWeaponBulletsPerRound,
-    Rambo, // todo
     MoreMoney, //todo
     OrcPickupXpMul, // todo
     KillXpChanceMul, // todo, display text, maybe in baseActor?
@@ -84,32 +82,26 @@ public static class ShopItems
 
             else if (itemType == ShopItemType.PrimaryWeaponBulletsPerRound)
             {
-                PlayerUpgrades.Data.PrimaryBulletsAdd += item.Level * (int)item.Value;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryBulletsAdd);
+                PlayerUpgrades.Data.MachinegunBulletsAdd += item.Level * (int)item.Value;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.MachinegunBulletsAdd);
             }
 
             else if (itemType == ShopItemType.PrimaryWeaponCd)
             {
-                PlayerUpgrades.Data.PrimaryCdMul *= 1.0f - item.Value * item.ValueScale * item.Level;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryCdMul);
-            }
-
-            else if (itemType == ShopItemType.PrimaryWeaponCdBetweenBullets)
-            {
-                PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul *= 1.0f - item.Value * item.ValueScale * item.Level;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul);
+                PlayerUpgrades.Data.WeaponsCdMul *= 1.0f - item.Value * item.ValueScale * item.Level;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsCdMul);
             }
 
             else if (itemType == ShopItemType.PrimaryWeaponRange)
             {
-                PlayerUpgrades.Data.PrimaryRangeMul += item.Level * item.Value * item.ValueScale;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryRangeMul);
+                PlayerUpgrades.Data.WeaponsRangeMul += item.Level * item.Value * item.ValueScale;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsRangeMul);
             }
 
             else if (itemType == ShopItemType.PrimaryWeaponDamage)
             {
-                PlayerUpgrades.Data.PrimaryDamageMul += item.Level * item.Value * item.ValueScale;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.PrimaryDamageMul);
+                PlayerUpgrades.Data.WeaponsDamageMul += item.Level * item.Value * item.ValueScale;
+                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsDamageMul);
             }
 
             else
@@ -214,29 +206,11 @@ public static class ShopItems
 
             new ShopItem
             {
-                ItemType = ShopItemType.PrimaryWeaponCdBetweenBullets,
-                Title = "Main weapon, bullet cooldown",
-                Description = "Decrease main weapon time between each bullet by <color=#00ff00>+#VALUE%</color> per rank.",
-                Value = 10,
-                ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
                 ItemType = ShopItemType.PrimaryWeaponBulletsPerRound,
                 Title = "Main weapon, bullet count",
                 Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank.",
                 Value = 1,
                 ValueScale = 1,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.Rambo,
-                Title = "Sir Rambo",
-                Description = "Randomly go beserk for a damage burst.",
-                BasePrice = 1000,
-                MaxLevel = 1,
             },
 
             new ShopItem

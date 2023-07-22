@@ -8,22 +8,32 @@ public static class ChoicesWeapon
         {
             new Choice
             {
-                Title = "High caliber (1)",
-                Description = "Main weapon damage <color=#00ff00>+20%</color>, main weapon cooldown <color=#ff0000>+5%</color>",
+                Title = "Weapons: Damage (1)",
+                Description = "Adds <color=#00ff00>10%</color> damage to weapons and increases firing cooldown by <color=#ff0000>5%</color>.",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PrimaryCdMul += 0.05f;
-                    PlayerUpgrades.Data.PrimaryDamageMul += 0.2f;
+                    PlayerUpgrades.Data.WeaponsCdMul += 0.05f;
+                    PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "High caliber (2)",
-                    Description = "Main weapon damage <color=#00ff00>+30%</color>, main weapon cooldown <color=#ff0000>+5%</color>",
+                    Title = "Weapons: Damage (2)",
+                    Description = "Adds <color=#00ff00>10%</color> damage to weapons and increases firing cooldown by <color=#ff0000>2%</color>.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.PrimaryDamageMul += 0.3f;
-                        PlayerUpgrades.Data.PrimaryCdMul += 0.05f;
+                        PlayerUpgrades.Data.WeaponsCdMul += 0.02f;
+                        PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
                     },
+                    NextLevel = new Choice
+                    {
+                        Title = "Weapons: Damage (3)",
+                        Description = "Adds <color=#00ff00>15%</color> damage to weapons and decreases number of machinegun bullets by <color=#ff0000>1</color>.",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.MachinegunBulletsAdd -= 1;
+                            PlayerUpgrades.Data.WeaponsDamageMul += 0.15f;
+                        },
+                    }
                 }
             },
 
@@ -33,7 +43,7 @@ public static class ChoicesWeapon
                 Description = "Main weapon cooldown <color=#00ff00>-10%</color>",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PrimaryCdMul -= 0.1f;
+                    PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
                 },
                 NextLevel = new Choice
                 {
@@ -41,29 +51,37 @@ public static class ChoicesWeapon
                     Description = "Main weapon cooldown <color=#00ff00>-15%</color>, main weapon damage <color=#ff0000>-5%</color>",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.PrimaryCdMul -= 0.15f;
-                        PlayerUpgrades.Data.PrimaryDamageMul -= 0.05f;
+                        PlayerUpgrades.Data.WeaponsCdMul -= 0.15f;
+                        PlayerUpgrades.Data.WeaponsDamageMul -= 0.05f;
                     },
                 }
             },
 
             new Choice
             {
-                Title = "Trigger-happy (1)",
-                Description = "Main weapon <color=#00ff00>+1</color> bullet per round, <color=#00ff00>-10%</color> time between bullets.",
+                Title = "Machinegun: Trigger-happy (1)",
+                Description = "Add <color=#00ff00>+1</color> bullet per round.",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PrimaryBulletsAdd += 1;
-                    PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul -= 0.1f;
+                    PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Trigger-happy (2)",
-                    Description = "Main weapon <color=#00ff00>+2</color> bullets per round.",
+                    Title = "Machinegun: Trigger-happy (2)",
+                    Description = "Add <color=#00ff00>+1</color> bullet per round.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.PrimaryBulletsAdd += 2;
+                        PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
                     },
+                    NextLevel = new Choice
+                    {
+                        Title = "Machinegun: Trigger-happy (3)",
+                        Description = "Add <color=#00ff00>+2</color> bullets per round.",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.MachinegunBulletsAdd += 2;
+                        },
+                    }
                 }
             },
         };

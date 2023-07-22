@@ -8,7 +8,7 @@ public static class ChoicesBabyOrc
         {
             new Choice
             {
-                Title = "Sawblade (1)",
+                Title = "Baby orc: Sawblade (1)",
                 Description = "Spawn a large sawblade when saving a baby orc.",
                 Apply = () =>
                 {
@@ -16,13 +16,22 @@ public static class ChoicesBabyOrc
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Sawblade (2)",
-                    Description = "Add <color=#00ff00>+25%</color> to durabilty of all sawblades and spawn a second smaller sawblade.",
+                    Title = "Baby orc: Sawblade (2)",
+                    Description = "All sawblades automatically move to nearby targets when their target dies.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.SawbladeDurabilityMul += 0.25f;
-                        PlayerUpgrades.Data.OrcPickupSawbladeEnabled = true;
+                        PlayerUpgrades.Data.SawbladePickNewTarget = true;
                     },
+                    NextLevel = new Choice
+                    {
+                        Title = "Baby orc: Sawblade (3)",
+                        Description = "Add <color=#00ff00>+25%</color> durabilty to all sawblades and spawn a second smaller sawblade when you save a baby orc.",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.SawbladeDurabilityMul += 0.25f;
+                            PlayerUpgrades.Data.OrcPickupSmallSawbladeEnabled = true;
+                        },
+                    }
                 }
             },
 

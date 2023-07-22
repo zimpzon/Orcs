@@ -29,8 +29,8 @@ public class WeaponMachinegun : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 10.0f + Random.value * 2;
-        basic.Damage = 35.0f * PlayerUpgrades.Data.PrimaryDamageMul;
-        basic.MaxDistance = 6.0f * PlayerUpgrades.Data.PrimaryRangeMul;
+        basic.Damage = 35.0f * PlayerUpgrades.Data.WeaponsDamageMul;
+        basic.MaxDistance = 6.0f * PlayerUpgrades.Data.WeaponsRangeMul;
         basic.Radius = 0.3f;
 
         Vector3 scale = basic.SpriteInfo.Transform.localScale;

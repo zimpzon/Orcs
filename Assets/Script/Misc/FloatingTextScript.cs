@@ -19,9 +19,11 @@ public class FloatingTextScript : MonoBehaviour
     public void Init(GameObjectPool textPool, Vector3 position, string text, Color color, float speed = 1.0f, float timeToLive = 2.0f, FontStyles fontStyle = FontStyles.Bold)
     {
         textPool_ = textPool;
+
         text_.SetText(text);
         text_.color = color;
         text_.fontStyle = fontStyle;
+
         transform_.position = position;
         position_ = position;
         speed_ = speed;

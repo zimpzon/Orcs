@@ -70,8 +70,7 @@ public class WeaponBase
 
     public float GetCdLeft()
     {
-        float cd = IsPrimary ? PlayerUpgrades.Data.PrimaryCdBetweenBulletsMul * Cd : Cd;
-        return Mathf.Max(0.0f, lastFire_ - Time.time + cd);
+        return Mathf.Max(0.0f, lastFire_ - Time.time + Cd);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)
