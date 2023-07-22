@@ -22,7 +22,7 @@ public class PickUpManagerScript : MonoBehaviour
         GetCacheFromType(type).ReturnInstance(go);
     }
 
-    public GoCache GetCacheFromType(AutoPickUpType type)
+    private GoCache GetCacheFromType(AutoPickUpType type)
     {
         GoCache result = null;
         switch (type)

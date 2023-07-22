@@ -823,6 +823,17 @@ public class GameManager : MonoBehaviour
         currentXp += amount;
     }
 
+    public void ThrowMoney(Vector2 pos, int amount)
+    {
+        for (int i = 0; i < amount; ++i)
+        {
+            var money = PickUpManagerScript.Instance.GetPickUpFromCache(AutoPickUpType.Money);
+            money.transform.position = pos;
+            money.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle);
+            money.SetActive(true);
+        }
+    }
+
     public void OnOrcPickup(Vector3 pos)
     {
         SaveGame.RoundScore++;
@@ -881,6 +892,10 @@ public class GameManager : MonoBehaviour
         Orc.SetPosition(bestPos);
 
         AddXp(xpPerOrc);
+        var xpColor = new Color(0.4f, 0.5f, 1.0f);
+        FloatingTextSpawner.Instance.Spawn(pos + Vector3.up * 1.0f, $"{xpPerOrc} xp", xpColor, speed: 0.2f, 2.0f, FontStyles.Bold);
+
+        ThrowMoney(pos, 2 + SaveGame.RoundScore / 3);
     }
 
     private void InitXpText()
