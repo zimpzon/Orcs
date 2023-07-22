@@ -41,7 +41,6 @@ public class PlayerScript : MonoBehaviour
 
     PlayerUpgrades _playerUpgrades;
 
-    WeaponType WeaponTypeLeft;
     [System.NonSerialized] public WeaponBase Weapon;
     public Transform MeleeWeapon;
 

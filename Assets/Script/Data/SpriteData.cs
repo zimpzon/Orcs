@@ -32,4 +32,9 @@ public class SpriteData : ScriptableObject
     public Sprite Flamethrower;
     public Sprite MachineGun;
     public Sprite Staff;
+    public Sprite Coin1;
+    public Sprite Coin2;
+    public Sprite Coin3;
+    public Sprite Coin4;
+    public Sprite Xp;
 }

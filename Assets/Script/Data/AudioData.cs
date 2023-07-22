@@ -24,4 +24,5 @@ public class AudioData : ScriptableObject
     public AudioClip SaberSwing;
     public AudioClip SaberHit;
     public AudioClip Chainsaw;
+    public AudioClip MoneyPickup;
 }
