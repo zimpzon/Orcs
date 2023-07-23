@@ -36,6 +36,34 @@ public static class ChoicesWeapon
 
             new Choice
             {
+                Title = "Weapons: Range (1)",
+                Description = "<color=#00ff00>10%</color> weapon range.",
+                Apply = () =>
+                {
+                    PlayerUpgrades.Data.WeaponsRangeMul += 0.1f;
+                },
+                NextLevel = new Choice
+                {
+                    Title = "Weapons: range (2)",
+                    Description = "<color=#00ff00>10%</color> weapon range.",
+                    Apply = () =>
+                    {
+                        PlayerUpgrades.Data.WeaponsRangeMul += 0.1f;
+                    },
+                    NextLevel = new Choice
+                    {
+                        Title = "Weapons: range (3)",
+                        Description = "<color=#00ff00>15%</color> weapon range.",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.WeaponsRangeMul += 0.15f;
+                        },
+                    }
+                }
+            },
+
+            new Choice
+            {
                 Title = "Quickshot (1)",
                 Description = "Weapon attack speed <color=#00ff00>+10%</color>",
                 Apply = () =>

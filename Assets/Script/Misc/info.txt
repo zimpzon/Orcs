@@ -9,6 +9,10 @@ BUGS
   enemies on the way in can be killed and remain deadly (and white)
   player can leave arena on left and right sides
 
+NEXT
+  HEALTH - immunity timer, new upgrades: max life, regen, defense, health now, regen for x seconds
+
+
 SMART DESIGN
  save baby knight? can then use orc enemies
  friendly is blue'ish, deadly is red'ish.
@@ -24,7 +28,7 @@ GRAPHIX:
     https://assetstore.unity.com/packages/2d/characters/pixel-heroes-editor-250116
 
 BRAINSTORM
-  add life? new upgrades: max life, regen, defense
+  rare pickup that gives a bonus choice
   conditions on upgrades, so you can upgrade weapon fully without shop, but after using shop you will get other choices.
   when you get an upgrade, immediately fire it, much more fun
   taking damage = 0.5 sec shield, very long cooldown

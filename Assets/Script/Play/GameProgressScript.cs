@@ -73,7 +73,7 @@ public class GameProgressScript : MonoBehaviour
     {
         while (true)
         {
-            int amount = 5;
+            int amount = 10;
             if (Random.value < 0.1f)
                 amount += 2;
 

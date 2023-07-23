@@ -832,7 +832,7 @@ public class GameManager : MonoBehaviour
         PlayerScript.SetWeapon(WeaponType.Machinegun);
     }
 
-    void AddXp(int amount)
+    public void AddXp(int amount)
     {
         currentXp += amount;
     }

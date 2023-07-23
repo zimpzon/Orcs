@@ -76,6 +76,8 @@ public class AutoPickUpScript : MonoBehaviour
             AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup);
             if (Type == AutoPickUpType.Money)
                 SaveGame.Members.Money++;
+            else if (Type == AutoPickUpType.Xp)
+                GameManager.Instance.AddXp(1);
 
             Die();
         }
