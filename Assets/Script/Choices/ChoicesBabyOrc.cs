@@ -8,24 +8,24 @@ public static class ChoicesBabyOrc
         {
             new Choice
             {
-                Title = "Baby orc: Sawblade (1)",
-                Description = "Spawn a large sawblade when saving a baby orc.",
+                Title = "Baby orc pickup: Sawblade (1)",
+                Description = "Large sawblade.",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.OrcPickupSawbladeEnabled = true;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Baby orc: Sawblade (2)",
-                    Description = "All sawblades automatically move to nearby targets when their target dies.",
+                    Title = "Baby orc pickup: Sawblade (2)",
+                    Description = "All sawblades: pick nearby target when target dies.",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.SawbladePickNewTarget = true;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Baby orc: Sawblade (3)",
-                        Description = "Add <color=#00ff00>+25%</color> durabilty to all sawblades and spawn a second smaller sawblade when you save a baby orc.",
+                        Title = "Baby orc pickup: Sawblade (3)",
+                        Description = "All sawblades: <color=#00ff00>+25%</color> durabilty, <color=#00ff00>+1%</color> small sawblade.",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.SawbladeDurabilityMul += 0.25f;
@@ -37,8 +37,8 @@ public static class ChoicesBabyOrc
 
             new Choice
             {
-                Title = "Jedi apprentice (1)",
-                Description = "Baby orcs are Jedi apprentices, wielding a Knightsaber to push and briefly slow enemies.",
+                Title = "Baby orc: Jedi apprentice (1)",
+                Description = "May the force be with you.",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.OrcJedisEnabled = true;
@@ -46,8 +46,8 @@ public static class ChoicesBabyOrc
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Jedi apprentice (2)",
-                    Description = "Knightsaber knockback force increased by <color=#00ff00>+100%</color>.",
+                    Title = "Baby orc: Jedi apprentice (2)",
+                    Description = "<color=#00ff00>+100%</color> knockback.",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.OrcJediKnockBackForceMul += 1.0f;

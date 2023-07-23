@@ -95,9 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f40dec6fe29c8a41997dcb70d0ab0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 1
   Value: 1
-  AttractDistance: 5
+  AttractDistance: 3
   PickupDistance: 0.3
   AttractPower: 20
   ThrowForce: 5

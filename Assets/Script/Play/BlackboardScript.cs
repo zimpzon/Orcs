@@ -171,7 +171,7 @@ namespace Assets.Script
 
         public static float DistanceToPlayer(Vector3 pos)
         {
-            return Vector3.Distance(GameManager.Instance.PlayerTrans.position, pos);
+            return Mathf.Abs(Vector3.Distance(GameManager.Instance.PlayerTrans.position, pos));
         }
 
         public static int GetIdxClosestEnemy(Vector3 pos, float radius, int maxCount = MaxMatches)

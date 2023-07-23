@@ -9,28 +9,25 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = "Weapons: Damage (1)",
-                Description = "Adds <color=#00ff00>10%</color> damage to weapons and increases firing cooldown by <color=#ff0000>5%</color>.",
+                Description = "<color=#00ff00>10%</color> weapon damage.",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.WeaponsCdMul += 0.05f;
                     PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
                     Title = "Weapons: Damage (2)",
-                    Description = "Adds <color=#00ff00>10%</color> damage to weapons and increases firing cooldown by <color=#ff0000>2%</color>.",
+                    Description = "<color=#00ff00>10%</color> weapon damage.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.WeaponsCdMul += 0.02f;
                         PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
                     },
                     NextLevel = new Choice
                     {
                         Title = "Weapons: Damage (3)",
-                        Description = "Adds <color=#00ff00>15%</color> damage to weapons and decreases number of machinegun bullets by <color=#ff0000>1</color>.",
+                        Description = "<color=#00ff00>15%</color> weapon damage.",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MachinegunBulletsAdd -= 1;
                             PlayerUpgrades.Data.WeaponsDamageMul += 0.15f;
                         },
                     }
@@ -40,7 +37,7 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = "Quickshot (1)",
-                Description = "Main weapon cooldown <color=#00ff00>-10%</color>",
+                Description = "Weapon attack speed <color=#00ff00>+10%</color>",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
@@ -48,10 +45,10 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = "Quickshot (2)",
-                    Description = "Main weapon cooldown <color=#00ff00>-15%</color>, main weapon damage <color=#ff0000>-5%</color>",
+                    Description = "Weapon attack speed <color=#00ff00>+10%</color>",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.WeaponsCdMul -= 0.15f;
+                        PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
                         PlayerUpgrades.Data.WeaponsDamageMul -= 0.05f;
                     },
                 }
@@ -76,10 +73,10 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = "Machinegun: Trigger-happy (3)",
-                        Description = "Add <color=#00ff00>+2</color> bullets per round.",
+                        Description = "Add <color=#00ff00>+1</color> bullets per round.",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MachinegunBulletsAdd += 2;
+                            PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
                         },
                     }
                 }

@@ -29,7 +29,7 @@ public class WeaponMachinegun : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 10.0f + Random.value * 2;
-        basic.Damage = 35.0f * PlayerUpgrades.Data.WeaponsDamageMul;
+        basic.Damage = 75.0f * PlayerUpgrades.Data.WeaponsDamageMul;
         basic.MaxDistance = 6.0f * PlayerUpgrades.Data.WeaponsRangeMul;
         basic.Radius = 0.3f;
 
@@ -45,6 +45,7 @@ public class WeaponMachinegun : WeaponBase
         basic.Color = color;
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
+        basic.Force = 0.75f;
 
         ProjectileManager.Instance.Fire(basic);
     }

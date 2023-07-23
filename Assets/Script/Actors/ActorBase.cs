@@ -1,12 +1,20 @@
 ﻿using Assets.Script;
 using System.Collections;
 using UnityEngine;
-using System;
 
 public enum ActorTypeEnum { None, Any, SmallWalker, SmallCharger, LargeWalker, Caster };
 
 public class ActorBase : MonoBehaviour
 {
+    public static void ResetClosestEnemy()
+    {
+        PlayerClosestEnemy = null;
+        PlayerDistanceToClosestEnemy = float.MaxValue;
+    }
+
+    [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
+    [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
+
     [System.NonSerialized] public float RadiusFirstCheck = 0.6f;
     [System.NonSerialized] public float RadiusBody = 0.3f;
     [System.NonSerialized] public Vector3 BodyOffset = new Vector3(0.0f, -0.25f, 0.0f);
@@ -18,7 +26,6 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public ActorTypeEnum ActorType;
     [System.NonSerialized] public float Hp;
     public Transform Transform;
-
     protected GameModeData GameMode;
     protected float DecayTime = 20.0f;
     protected AnimationController animationController_ = new AnimationController();
@@ -142,7 +149,7 @@ public class ActorBase : MonoBehaviour
 
         float flashAmount = ((int)(Time.time * 6) & 1) == 0 ? 0.0f : 0.8f;
         material_.SetFloat(flashParamId_, flashAmount);
-        if (UnityEngine.Random.value < 0.01f)
+        if (Random.value < 0.01f)
             GameManager.Instance.MakePoof(transform_.position, 1, 1.0f);
     }
 
@@ -179,10 +186,23 @@ public class ActorBase : MonoBehaviour
 
         position_.z = 0;
 
+        bool dead = Hp <= 0.0f;
+
         if (IsFullyReady)
+        {
             position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
 
-        bool dead = Hp <= 0.0f;
+            if (!dead)
+            {
+                float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
+                if (distanceToPlayer < PlayerDistanceToClosestEnemy)
+                {
+                    PlayerClosestEnemy = this;
+                    PlayerDistanceToClosestEnemy = distanceToPlayer;
+                }
+            }
+        }
+
         if (!dead)
             animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, currentAnimations_);
 

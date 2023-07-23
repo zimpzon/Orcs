@@ -3,13 +3,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+// NB! this script is set to run after all other scripts, so we can be sure closestEnemy is updated
 public class PlayerScript : MonoBehaviour
 {
     const float BaseCd = 0.5f;
     const int BaseBullets = 2;
 
-    [System.NonSerialized] public Vector3 LookAt;
+    [System.NonSerialized] public Vector3 CursorPos;
     Vector3 lookDir_;
+    Vector3 lookDirFromMuzzle_;
+    Vector3 muzzlePoint_;
     Vector3 moveVec_;
     bool isMoving_;
     Vector3 force_;
@@ -97,7 +100,7 @@ public class PlayerScript : MonoBehaviour
 
     public IEnumerator SwingMeleeCo()
     {
-        int flipX = LookAt.x < trans_.position.x ? -1 : 1;
+        int flipX = lookDir_.x < trans_.position.x ? -1 : 1;
         MeleeWeapon.gameObject.SetActive(true);
         float degreeStart = 90 * flipX;
         float degreeEnd = -180 * flipX;
@@ -134,7 +137,7 @@ public class PlayerScript : MonoBehaviour
         SetPlayerPos(basePos_);
         laserRenderer_.enabled = false;
         grenadeScript_.Hide();
-        LookAt = LookAt.x < 0.0f ? Vector3.left : Vector3.right;
+        lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         SetWeapon(WeaponType.None);
     }
 
@@ -220,12 +223,12 @@ public class PlayerScript : MonoBehaviour
 
                 if (Weapon.Type == WeaponType.Grenade)
                 {
-                    grenadeScript_.Throw(trans_.position, LookAt);
+                    grenadeScript_.Throw(trans_.position, CursorPos);
                 }
                 else if (Weapon.Type == WeaponType.Mine)
                 {
                     var newMine = Instantiate<GameObject>(MineProto).GetComponent<MineScript>();
-                    newMine.Throw(trans_.position, LookAt);
+                    newMine.Throw(trans_.position, CursorPos);
                 }
             }
 
@@ -253,38 +256,23 @@ public class PlayerScript : MonoBehaviour
         if (Weapon == null)
             return;
 
-        Vector3 muzzlePoint = Weapon.GetMuzzlePoint(weaponTransform_);
-        Vector3 muzzleLook = (LookAt - muzzlePoint);
+        muzzlePoint_ = Weapon.GetMuzzlePoint(weaponTransform_);
+        lookDirFromMuzzle_ = (lookDir_ - muzzlePoint_);
 
-        // If closer than the muzzle use player position instead. Prevents insane oscillation.
-        float lookLen2 = muzzleLook.sqrMagnitude;
-        bool tooCloseForLaser = false;
-        if (lookLen2 <= 1.0f)
-        {
-            tooCloseForLaser = true;
-            muzzleLook = LookAt - trans_.position;
-            lookLen2 = muzzleLook.sqrMagnitude;
-            if (lookLen2 < 0.1f)
-            {
-                // Crosshair is on top of player
-                return;
-            }
-        }
-
-        float rot_z = Mathf.Atan2(muzzleLook.y, muzzleLook.x) * Mathf.Rad2Deg;
-        flamesTransform_.SetPositionAndRotation(muzzlePoint, Quaternion.Euler(-rot_z, 90, 0)); // Compensate for initial emitter position (TODO PE: details...)
+        float rot_z = Mathf.Atan2(lookDirFromMuzzle_.y, lookDirFromMuzzle_.x) * Mathf.Rad2Deg;
+        flamesTransform_.SetPositionAndRotation(muzzlePoint_, Quaternion.Euler(-rot_z, 90, 0)); // Compensate for initial emitter position (TODO PE: details...)
 
         if (flipX_ < 0)
             rot_z += 180;
 
         weaponTransform_.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
-        bool enable = Weapon.Type == WeaponType.Sniper && !tooCloseForLaser;
+        bool enable = Weapon.Type == WeaponType.Sniper;
         laserRenderer_.enabled = enable;
         if (!enable)
             return;
 
-        laserTransform_.SetPositionAndRotation(muzzlePoint, Quaternion.Euler(0f, 0f, rot_z));
+        laserTransform_.SetPositionAndRotation(muzzlePoint_, Quaternion.Euler(0f, 0f, rot_z));
     }
 
     public void KillPlayer()
@@ -378,7 +366,6 @@ public class PlayerScript : MonoBehaviour
         float playerSpeedModifier = GameManager.Instance.CurrentGameModeData.PlayerMoveSpeedModifier;
         float speed = MoveSpeed * playerSpeedModifier;
 
-        bool userMoved = left == 1.0f || right == 1.0f || up == 1.0f || down == 1.0f;
         speed *= Time.deltaTime;
 
         Vector3 newMoveVec_ = Vector3.left * (left * speed) + Vector3.right * (right * speed) + Vector3.up * (up * speed) + Vector3.down * (down * speed);
@@ -396,10 +383,14 @@ public class PlayerScript : MonoBehaviour
 
         isMoving_ = moveVec_ != Vector3.zero;
 
-        LookAt = GameManager.Instance.CrosshairWorldPosition;
-        lookDir_ = (LookAt - trans_.position).normalized;
+        CursorPos = GameManager.Instance.CrosshairWorldPosition;
 
-        flipX_ = LookAt.x < trans_.position.x ? -playerScale_ : playerScale_;
+        if (ActorBase.PlayerClosestEnemy != null)
+            lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - transform.position).normalized;
+        else
+            lookDir_ = Vector2.right;
+
+        flipX_ = lookDir_.x < trans_.position.x ? -playerScale_ : playerScale_;
         Vector3 scale = trans_.localScale;
         scale.x = flipX_;
         trans_.localScale = scale;

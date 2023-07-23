@@ -7,6 +7,7 @@ DAMAGE NUMBERS:
 
 
 SMART DESIGN
+  another choice on leveling (copy halls of torment)
   declarative spawning!
   batter enemy creation than prefab. scriptable objects? factory? json? custom?
   conditions on upgrades, so you can upgrade weapon fully without shop, but after using shop you will get other choices.
@@ -20,6 +21,8 @@ GRAPHIX:
     https://assetstore.unity.com/packages/2d/characters/pixel-heroes-editor-250116
 
 BRAINSTORM
+  ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
+  spawn large stationary enemies? either shooting or just being in the way.
   attachment: shotgun (unlock at some boss?)
   attachment: sniper (or laser from Chuck?), possibly pushing to form a path? (unlock at some boss?)
   more crit %, more crit damage

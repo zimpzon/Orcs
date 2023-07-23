@@ -17213,7 +17213,7 @@ MonoBehaviour:
   GameTime: 0
   GameModeDataNursery:
     GameMode: 0
-    BackgroundTint: {r: 0.83800006, g: 0.80513734, b: 0.5290902, a: 1}
+    BackgroundTint: {r: 1, g: 0.9607844, b: 0.6313726, a: 1}
     Music: {fileID: 8300000, guid: cb56835755fa64244a4954537b18751b, type: 3}
     HitpointModifier: 1
     MoveSpeedModifier: 1

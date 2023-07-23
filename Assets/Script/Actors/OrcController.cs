@@ -95,7 +95,7 @@ public class OrcController : MonoBehaviour
 
     void UpdateWeapon()
     {
-        var playerLookAt = GameManager.Instance.PlayerScript.LookAt;
+        var playerLookAt = GameManager.Instance.PlayerScript.CursorPos;
         Vector3 muzzlePoint = WeaponTransform.position + new Vector3(0.6f, 0.02f, 0.0f);
         Vector3 muzzleLook = (playerLookAt - muzzlePoint);
 

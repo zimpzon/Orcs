@@ -671,6 +671,7 @@ public class GameManager : MonoBehaviour
             return;
 
         GameTime = 0.0001f;
+        ActorBase.ResetClosestEnemy();
         Cursor.visible = false;
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
@@ -734,6 +735,12 @@ public class GameManager : MonoBehaviour
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
 
     int codeIdx = 0;
+
+    void LateUpdate()
+    {
+        PruneDeadEnemies();
+        ActorBase.ResetClosestEnemy();
+    }
 
     void Update()
     {
@@ -802,6 +809,8 @@ public class GameManager : MonoBehaviour
             ThrowMoney(actor.transform.position, amount, forceScale: 1.0f);
         }
 
+        DropXp(actor.transform.position);
+
         if (actor.ActorType == ActorTypeEnum.SmallWalker || actor.ActorType == ActorTypeEnum.SmallCharger)
             GameEvents.CounterEvent(GameCounter.Kill_Small, 1);
         else if (actor.ActorType == ActorTypeEnum.LargeWalker)
@@ -838,6 +847,14 @@ public class GameManager : MonoBehaviour
             if (pickup.isActiveAndEnabled)
                 pickup.Die();
         }
+    }
+
+    public void DropXp(Vector2 pos)
+    {
+            var xp = PickUpManagerScript.Instance.GetPickUpFromCache(AutoPickUpType.Xp);
+            xp.transform.position = pos;
+            xp.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale: 0.0f);
+            xp.SetActive(true);
     }
 
     public void ThrowMoney(Vector2 pos, int amount, float forceScale = 1.0f)
@@ -1107,11 +1124,6 @@ public class GameManager : MonoBehaviour
             if (BlackboardScript.Enemies[i].Hp <= 0)
                 RegisterEnemyDied(BlackboardScript.Enemies[i]);
         }
-    }
-
-    void LateUpdate()
-    {
-        PruneDeadEnemies();
     }
 
     void OnGUI()
