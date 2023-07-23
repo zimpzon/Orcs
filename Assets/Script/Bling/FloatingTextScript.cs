@@ -27,7 +27,7 @@ public class FloatingTextScript : MonoBehaviour
         transform_.position = position;
         position_ = position;
         speed_ = speed;
-        dieTime_ = GameManager.Instance.GameTime + timeToLive;
+        dieTime_ = Time.time + timeToLive;
     }
 
     public void Die()
@@ -40,7 +40,7 @@ public class FloatingTextScript : MonoBehaviour
         position_.y += Time.deltaTime * speed_;
         transform_.position = position_;
 
-        if (GameManager.Instance.GameTime >= dieTime_)
+        if (Time.time >= dieTime_)
             Die();
     }
 }

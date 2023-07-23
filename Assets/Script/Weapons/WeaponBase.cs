@@ -197,7 +197,7 @@ public class WeaponBase
                     Sniper.BulletSprite = SpriteData.Instance.Bullet;
                     Sniper.Muzzle = new Vector3(0.6f, 0.02f, 0.0f);
                     Sniper.FireAudio = AudioManager.Instance.AudioData.PlayerSniperFire;
-                    Sniper.MoveSpeedModifier = 0.25f;
+                    Sniper.MoveSpeedModifier = 1.0f;
                 }
                 return Sniper;
 
@@ -212,7 +212,7 @@ public class WeaponBase
                     Machinegun.BulletSprite = SpriteData.Instance.RoundBullet;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerMachinegunFire;
-                    Machinegun.MoveSpeedModifier = 0.5f;
+                    Machinegun.MoveSpeedModifier = 1.0f;
                 }
                 return Machinegun;
 

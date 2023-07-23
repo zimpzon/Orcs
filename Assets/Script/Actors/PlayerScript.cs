@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
-    const float BaseCd = 1.0f;
+    const float BaseCd = 0.5f;
     const int BaseBullets = 2;
 
     [System.NonSerialized] public Vector3 LookAt;

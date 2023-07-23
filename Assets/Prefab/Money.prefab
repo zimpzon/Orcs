@@ -93,16 +93,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3419473842350216865}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 050b497a2e7d8fc4bbd322d7b49b87af, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f40dec6fe29c8a41997dcb70d0ab0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 0
   Value: 1
-  AttractDistance: 2
+  AttractDistance: 5
   PickupDistance: 0.3
-  AttractPower: 10
-  ThrowForce: 10
-  Drag: 2.5
+  AttractPower: 20
+  ThrowForce: 5
+  Drag: 5
 --- !u!1 &5817520777507395313
 GameObject:
   m_ObjectHideFlags: 0

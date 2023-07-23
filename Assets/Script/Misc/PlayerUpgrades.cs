@@ -13,6 +13,9 @@ public class UpgradeData
     public float SawbladeDurabilityMul = 1.0f;
     public bool SawbladePickNewTarget = false;
 
+    // gold
+    public float MoneyDoubleChance = 0.0f;
+
     // weapons
     public float WeaponsCdMul = 1.0f;
     public float WeaponsDamageMul = 1.0f;
@@ -55,21 +58,14 @@ public class PlayerUpgrades : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     void UpdatePaintball()
     {
         if (!Data.PaintballEnabled)
             return;
 
         Data.Counters.PaintballTimer += Time.deltaTime;
-        GameManager.SetDebugOutput("timer1", Data.Counters.PaintballTimer);
         if (Data.Counters.PaintballTimer > Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
         {
-            GameManager.SetDebugOutput("timer2", "gogo");
             var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
 
             float angleStep = 360 / Data.PaintballCount;

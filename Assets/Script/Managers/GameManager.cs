@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     float roundStartTime_;
     int roundStartBestScore_;
 
-    KeyCode menyBackKey_ = KeyCode.Escape;
+    KeyCode menuBackKey_ = KeyCode.Escape;
 
     public void SliderMusicChanged()
     {
@@ -368,7 +368,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_GameMode)
             {
-                if (Input.GetKeyDown(menyBackKey_))
+                if (Input.GetKeyDown(menuBackKey_))
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
@@ -400,7 +400,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Unlocks)
             {
-                if (Input.GetKeyDown(menyBackKey_))
+                if (Input.GetKeyDown(menuBackKey_))
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
@@ -413,7 +413,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Settings)
             {
-                if (Input.GetKeyDown(menyBackKey_))
+                if (Input.GetKeyDown(menuBackKey_))
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -434,7 +434,7 @@ public class GameManager : MonoBehaviour
                     UpdateMoneyLabels();
                 }
 
-                if (Input.GetKeyDown(menyBackKey_))
+                if (Input.GetKeyDown(menuBackKey_))
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -481,7 +481,7 @@ public class GameManager : MonoBehaviour
                     PlayerScript.RoundComplete = true;
                     ShowTitle(autoStartGame: true);
                 }
-                else if (Input.GetKeyDown(menyBackKey_))
+                else if (Input.GetKeyDown(menuBackKey_))
                 {
                     PlayerScript.RoundComplete = true;
                     ShowTitle();
@@ -665,7 +665,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void ResetDynamicObjects()
+    void ResetPickups()
     {
         // pickups
         var pickups = Resources.FindObjectsOfTypeAll(typeof(AutoPickUpScript)).Cast<AutoPickUpScript>().ToList();
@@ -687,7 +687,7 @@ public class GameManager : MonoBehaviour
         PlayerUpgrades.ResetAll();
         ShopItems.ApplyToPlayerUpgrades();
         UpgradeChoices.InitChoices();
-
+        ResetPickups();
         InitXpText();
 
         CanvasIntro.gameObject.SetActive(false);
@@ -834,13 +834,19 @@ public class GameManager : MonoBehaviour
         currentXp += amount;
     }
 
-    public void ThrowMoney(Vector2 pos, int amount)
+    public void ThrowMoney(Vector2 pos, int amount, float forceScale = 1.0f)
     {
+        if (UnityEngine.Random.value < PlayerUpgrades.Data.MoneyDoubleChance)
+        {
+            FloatingTextSpawner.Instance.Spawn(pos + Vector2.up * 0.75f, "X2", Color.yellow, 0.0f, 0.5f, FontStyles.Bold);
+            amount *= 2;
+        }
+        
         for (int i = 0; i < amount; ++i)
         {
             var money = PickUpManagerScript.Instance.GetPickUpFromCache(AutoPickUpType.Money);
             money.transform.position = pos;
-            money.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle);
+            money.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale);
             money.SetActive(true);
         }
     }
@@ -903,8 +909,8 @@ public class GameManager : MonoBehaviour
         Orc.SetPosition(bestPos);
 
         AddXp(xpPerOrc);
-        var xpColor = new Color(0.4f, 0.5f, 1.0f);
-        FloatingTextSpawner.Instance.Spawn(pos + Vector3.up * 1.0f, $"{xpPerOrc} xp", xpColor, speed: 0.2f, 2.0f, FontStyles.Bold);
+        var xpColor = new Color(0.4f, 0.6f, 1.0f);
+        FloatingTextSpawner.Instance.Spawn(pos + Vector3.up * 1.0f, $"{xpPerOrc}XP", xpColor, speed: 0.2f, 2.0f, FontStyles.Bold);
 
         ThrowMoney(pos, 2 + SaveGame.RoundScore / 3);
     }

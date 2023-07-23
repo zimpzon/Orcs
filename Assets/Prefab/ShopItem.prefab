@@ -106,9 +106,8 @@ GameObject:
   - component: {fileID: 4121296396425431283}
   - component: {fileID: 4121296396425431281}
   - component: {fileID: 4121296396425431282}
-  - component: {fileID: 4121296396425431280}
   - component: {fileID: 4121296396425431287}
-  - component: {fileID: -4671996363010083757}
+  - component: {fileID: 6167657173574252977}
   m_Layer: 0
   m_Name: ShopItem
   m_TagString: Untagged
@@ -176,26 +175,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4121296396425431280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4121296396425431308}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: 249.23509
-  m_MinHeight: 119.66981
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!114 &4121296396425431287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +190,7 @@ MonoBehaviour:
   m_EffectColor: {r: 0.0026533017, g: 0.33962262, b: 0, a: 1}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
---- !u!114 &-4671996363010083757
+--- !u!114 &6167657173574252977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,13 +199,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4121296396425431308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1070c648d7f039a4d9671addffb3fa42, type: 3}
+  m_Script: {fileID: 11500000, guid: c81e2aecf9410eb4ab7b8bbfefc9979a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultBackgroundColor: {r: 0.003921569, g: 0.34117648, b: 0, a: 1}
-  MaxedBackgroundColor: {r: 0.003916111, g: 0.56, b: 0, a: 1}
-  DefaultButtonBackgroundColor: {r: 0, g: 0.7176471, b: 0.08235294, a: 1}
-  DisabledButtonBackgroundColor: {r: 0.547, g: 0.547, b: 0.547, a: 1}
+  DefaultBackgroundColor: {r: 0, g: 0.5372549, b: 0.03137255, a: 1}
+  MaxedBackgroundColor: {r: 0.4115373, g: 0.5372549, b: 0.41887847, a: 1}
+  DefaultButtonBackgroundColor: {r: 0.011764707, g: 0.70980394, b: 0.09411766, a: 1}
+  DisabledButtonBackgroundColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   ItemType: 0
   Title: {fileID: 4121296396397650450}
   Description: {fileID: 4121296397467671993}
@@ -354,7 +333,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -4671996363010083757}
+      - m_Target: {fileID: 6167657173574252977}
         m_TargetAssemblyTypeName: ShopItemScript, Assembly-CSharp
         m_MethodName: OnClick
         m_Mode: 1

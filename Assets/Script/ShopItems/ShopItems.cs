@@ -7,13 +7,16 @@ public enum ShopItemType
 {
     Refund,
     DamageAll,
-    PrimaryWeaponRange,
-    PrimaryWeaponDamage,
-    PrimaryWeaponCd,
-    PrimaryWeaponBulletsPerRound,
-    MoreMoney, //todo
-    OrcPickupXpMul, // todo
-    KillXpChanceMul, // todo, display text, maybe in baseActor?
+    WeaponRange,
+    WeaponDamage,
+    WeaponCd,
+    MachinegunBulletsPerRound,
+    DoubleMoney,
+    EnemyMoneyDropChance,
+    EnemyMoneyDropAmountMin,
+    EnemyMoneyDropAmountMax,
+    OrcPickupXpMul,
+    KillXpChanceMul,
 }
 
 [Serializable]
@@ -41,6 +44,7 @@ public class ShopItem
     public Func<int, string> GetButtonText ;
     public Func<int, string> GetTitle;
     public Func<int, string> GetDescription;
+    public Action<BoughtItem> Apply;
 
     public ShopItem()
     {
@@ -71,43 +75,9 @@ public static class ShopItems
     {
         foreach(var pair in SaveGame.Members.BoughtItems)
         {
-            var item = pair.Value;
-            var itemType = pair.Key;
-
-            if (itemType == ShopItemType.DamageAll)
-            {
-                PlayerUpgrades.Data.DamageMul += item.Level * item.Value * item.ValueScale;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.DamageMul);
-            }
-
-            else if (itemType == ShopItemType.PrimaryWeaponBulletsPerRound)
-            {
-                PlayerUpgrades.Data.MachinegunBulletsAdd += item.Level * (int)item.Value;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.MachinegunBulletsAdd);
-            }
-
-            else if (itemType == ShopItemType.PrimaryWeaponCd)
-            {
-                PlayerUpgrades.Data.WeaponsCdMul *= 1.0f - item.Value * item.ValueScale * item.Level;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsCdMul);
-            }
-
-            else if (itemType == ShopItemType.PrimaryWeaponRange)
-            {
-                PlayerUpgrades.Data.WeaponsRangeMul += item.Level * item.Value * item.ValueScale;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsRangeMul);
-            }
-
-            else if (itemType == ShopItemType.PrimaryWeaponDamage)
-            {
-                PlayerUpgrades.Data.WeaponsDamageMul += item.Level * item.Value * item.ValueScale;
-                GameManager.SetDebugOutput(pair.Key.ToString(), PlayerUpgrades.Data.WeaponsDamageMul);
-            }
-
-            else
-            {
-                GameManager.SetDebugOutput(pair.Key.ToString(), "NOT IMPLEMENTED");
-            }
+            var bought = pair.Value;
+            var shopItem = ShopItems.Items.First(i => i.ItemType == bought.ItemType);
+            shopItem.Apply(bought);
         }
     }
 
@@ -173,67 +143,32 @@ public static class ShopItems
                 ItemType = ShopItemType.DamageAll,
                 Title = "Damage",
                 Description = "Increase all damage by <color=#00ff00>+#VALUE%</color> per rank.",
-                Value = 10,
-                ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.PrimaryWeaponDamage,
-                Title = "Main weapon, damage",
-                Description = "Increase main weapon damage by <color=#00ff00>+#VALUE%</color> per rank.",
-                Value = 15,
-                ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.PrimaryWeaponRange,
-                Title = "Main weapon, range",
-                Description = "Increase main weapon range by <color=#00ff00>+#VALUE%</color> per rank.",
-                Value = 15,
-                ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.PrimaryWeaponCd,
-                Title = "Main weapon, cooldown",
-                Description = "Decrease main weapon cooldown by <color=#00ff00>+#VALUE%</color> per rank.",
-                Value = 8,
-                ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.PrimaryWeaponBulletsPerRound,
-                Title = "Main weapon, bullet count",
-                Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank.",
-                Value = 1,
-                ValueScale = 1,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.MoreMoney,
-                Title = "More money",
-                Description = "Increase income from all sources by <color=#00ff00>+#VALUE%</color> per rank.",
+                BasePrice = 500,
+                PriceMultiplier = 2.0f,
                 MaxLevel = 3,
-                BasePrice = 1000,
-                Value = 20,
+                Value = 5,
                 ValueScale = 0.01f,
-            },
-
-            new ShopItem
-            {
-                ItemType = ShopItemType.Refund,
-                ShowLevelInTitle = false,
-                Title = "Refund",
-                BasePrice = 0,
-                Description = "Refund all purchases and get your money back.",
-                GetButtonText = (_) => "Free",
+                Apply = (bought) =>
+                {
+                    PlayerUpgrades.Data.DamageMul += bought.Level * bought.Value * bought.ValueScale;
+                }
             },
         };
+
+        Items.AddRange(ShopItemsWeapons.GetWeaponItems());
+        Items.AddRange(ShopItemsMoneyXp.GetMoneyXpItems());
+
+        // Refund last
+        Items.Add(new ShopItem
+        {
+            ItemType = ShopItemType.Refund,
+            ShowLevelInTitle = false,
+            Title = "Refund",
+            BasePrice = 0,
+            Description = "Refund all purchases and get your money back.",
+            GetButtonText = (_) => "Free",
+            Apply = (_) => { }
+        });
 
         foreach (var item in Items)
             item.Description = item.Description.Replace("#VALUE", item.Value.ToString());

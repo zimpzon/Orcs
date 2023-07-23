@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 363254771901372911}
   - component: {fileID: 363254771901372908}
   - component: {fileID: 363254771901372909}
-  - component: {fileID: 8795898076989195382}
+  - component: {fileID: 1641631498479826656}
   m_Layer: 0
   m_Name: FloatingTextPrefab
   m_TagString: Untagged
@@ -212,7 +212,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363254771901372906}
   m_CullTransparentMesh: 1
---- !u!114 &8795898076989195382
+--- !u!114 &1641631498479826656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,6 +221,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 363254771901372906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 911effc9185d469428e91a267f4add25, type: 3}
+  m_Script: {fileID: 11500000, guid: 4efac0aea9b2e9f4e980ff8f3ed4804a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
