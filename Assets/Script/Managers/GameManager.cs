@@ -665,17 +665,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void ResetPickups()
-    {
-        // pickups
-        var pickups = Resources.FindObjectsOfTypeAll(typeof(AutoPickUpScript)).Cast<AutoPickUpScript>().ToList();
-        foreach(var pickup in pickups)
-        {
-            if (pickup.isActiveAndEnabled)
-                pickup.Die();
-        }
-    }
-
     public void StartGame()
     {
         if (GameState == State.Playing)
@@ -807,6 +796,12 @@ public class GameManager : MonoBehaviour
         SaveGame.RoundKills++;
         GameEvents.CounterEvent(GameCounter.Kill_Any, 1);
 
+        if (UnityEngine.Random.value < PlayerUpgrades.Data.DropMoneyOnKillChance)
+        {
+            int amount = UnityEngine.Random.Range(PlayerUpgrades.Data.DropMoneyOnKillMin, PlayerUpgrades.Data.DropMoneyOnKillMax + 1);
+            ThrowMoney(actor.transform.position, amount, forceScale: 1.0f);
+        }
+
         if (actor.ActorType == ActorTypeEnum.SmallWalker || actor.ActorType == ActorTypeEnum.SmallCharger)
             GameEvents.CounterEvent(GameCounter.Kill_Small, 1);
         else if (actor.ActorType == ActorTypeEnum.LargeWalker)
@@ -834,11 +829,21 @@ public class GameManager : MonoBehaviour
         currentXp += amount;
     }
 
+    void ResetPickups()
+    {
+        // pickups
+        var pickups = Resources.FindObjectsOfTypeAll(typeof(AutoPickUpScript)).Cast<AutoPickUpScript>().ToList();
+        foreach (var pickup in pickups)
+        {
+            if (pickup.isActiveAndEnabled)
+                pickup.Die();
+        }
+    }
+
     public void ThrowMoney(Vector2 pos, int amount, float forceScale = 1.0f)
     {
         if (UnityEngine.Random.value < PlayerUpgrades.Data.MoneyDoubleChance)
         {
-            FloatingTextSpawner.Instance.Spawn(pos + Vector2.up * 0.75f, "X2", Color.yellow, 0.0f, 0.5f, FontStyles.Bold);
             amount *= 2;
         }
         
@@ -912,7 +917,7 @@ public class GameManager : MonoBehaviour
         var xpColor = new Color(0.4f, 0.6f, 1.0f);
         FloatingTextSpawner.Instance.Spawn(pos + Vector3.up * 1.0f, $"{xpPerOrc}XP", xpColor, speed: 0.2f, 2.0f, FontStyles.Bold);
 
-        ThrowMoney(pos, 2 + SaveGame.RoundScore / 3);
+        ThrowMoney(pos, 2 + SaveGame.RoundScore / 3, forceScale: 1.0f);
     }
 
     private void InitXpText()
@@ -1111,6 +1116,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
+        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

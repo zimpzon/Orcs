@@ -12,9 +12,7 @@ public enum ShopItemType
     WeaponCd,
     MachinegunBulletsPerRound,
     DoubleMoney,
-    EnemyMoneyDropChance,
-    EnemyMoneyDropAmountMin,
-    EnemyMoneyDropAmountMax,
+    EnemyMoneyDrop,
     OrcPickupXpMul,
     KillXpChanceMul,
 }

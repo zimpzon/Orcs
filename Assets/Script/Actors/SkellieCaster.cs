@@ -78,17 +78,6 @@ public class SkellieCaster : ActorBase
     protected override void OnDeath()
     {
         GameManager.Instance.MakePoof(position_, 3, 1.0f);
-        ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
-        ep.startColor = new Color32(255, 255, 255, 255);
-        ep.position = position_;
-        ep.startSize = 0.5f;
-        ep.startLifetime = 0.5f;
-        for (int i = 0; i < Mathf.RoundToInt(15 * GameMode.ExplosionModifier); ++i)
-        {
-            Vector2 rndDir = RndUtil.RandomInsideUnitCircle().normalized;
-            ep.velocity = rndDir * 2.5f;
-            GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
-        }
     }
 
     IEnumerator Think()

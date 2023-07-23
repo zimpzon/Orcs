@@ -14,7 +14,10 @@ public class UpgradeData
     public bool SawbladePickNewTarget = false;
 
     // gold
-    public float MoneyDoubleChance = 0.0f;
+    public float MoneyDoubleChance = 0.5f;
+    public float DropMoneyOnKillChance = 0.01f;
+    public int DropMoneyOnKillMin = 1;
+    public int DropMoneyOnKillMax = 3;
 
     // weapons
     public float WeaponsCdMul = 1.0f;
