@@ -201,18 +201,6 @@ namespace Assets.Script
                 yield return WrapInColor(string.Format("+{0}%", dmg.Amount), SaveGame.Members.ReqMet(dmg.Requirement, dmg.Counter));
         }
 
-        static string MaskString(string str, bool doMask)
-        {
-            if (!doMask)
-                return str;
-
-            var sb = new StringBuilder(20);
-            for (int i = 0; i < str.Length; ++i)
-                sb.Append(str[i] == ' ' ? ' ' : '*');
-
-            return sb.ToString();
-        }
-
         // Important: All counter events must go through here so unlocks can be checked
         public static void CounterEvent(GameCounter counter, int amount)
         {
@@ -220,28 +208,6 @@ namespace Assets.Script
                 SaveGame.Members.TryUpdateMaxValue(counter, amount);
             else
                 SaveGame.Members.UpdateCounter(counter, amount);
-
-            const float DisplayTime = 3.0f;
-
-            var blink = GameManager.Instance.TextNewUnlock.GetComponent<TextBlinkScript>();
-            var blinkTrans = GameManager.Instance.TextNewUnlock.transform;
-
-            // This is all pretty ugly. Redundant formatting in dam, overwriting each other etc.
-
-            // Check for new weapons
-            var newWeps = Unlocks.UnlockEarnedWeapons(onlyExactMatch: true);
-            foreach (var newWep in newWeps)
-                blink.SetText(string.Format("{0} Unlocked!", WeaponBase.WeaponDisplayName(newWep.Type)), DisplayTime);
-
-            // Check for new game modes
-            var newModes = Unlocks.UnlockEarnedGameModes(onlyExactMatch: true);
-            foreach (var newMode in newModes)
-                blink.SetText(string.Format("{0} Unlocked!", GameModeDisplayName(newMode.GameMode)), DisplayTime);
-
-            // Check for new heroes
-            var newHeroes = Unlocks.UnlockEarnedHeroes(onlyExactMatch: true);
-            foreach (var newHero in newHeroes)
-                blink.SetText(string.Format("{0} Unlocked!", newHero.Name), DisplayTime);
         }
     }
 }

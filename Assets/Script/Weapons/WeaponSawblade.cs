@@ -40,7 +40,7 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo.Renderer.sprite = BulletSprite;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
         basic.Direction = dir;
-        basic.Color = Color.white;
+        basic.Color = new Color(0.3f, 0.7f, 1.0f);
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
 

@@ -9,7 +9,7 @@ public class WeaponMachinegun : WeaponBase
         lastFire_ = Time.time;
         recoil = 0.01f;
         IsPrimary = true;
-        Color color = new Color(0.8f, 0.6f, 0.1f);
+        Color color = new Color(0.2f, 0.5f, 1.0f);
 
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
         worldMuzzle += -direction * 0.2f; // Start a little behind muzzle because its very unfun missing an enemy that is too close

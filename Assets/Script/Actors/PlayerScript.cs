@@ -3,16 +3,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-// NB! this script is set to run after all other scripts, so we can be sure closestEnemy is updated
+// NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour
 {
     const float BaseCd = 0.5f;
-    const int BaseBullets = 2;
+    const int BaseBullets = 1;
 
     [System.NonSerialized] public Vector3 CursorPos;
     Vector3 lookDir_;
-    Vector3 lookDirFromMuzzle_;
-    Vector3 muzzlePoint_;
     Vector3 moveVec_;
     bool isMoving_;
     Vector3 force_;
@@ -39,9 +37,6 @@ public class PlayerScript : MonoBehaviour
     Vector3 basePos_;
     RectTransform overheadTextTrans_;
 
-    SpriteRenderer weaponRenderer_;
-    Transform weaponTransform_;
-
     PlayerUpgrades _playerUpgrades;
 
     [System.NonSerialized] public WeaponBase Weapon;
@@ -49,9 +44,6 @@ public class PlayerScript : MonoBehaviour
 
     Transform laserTransform_;
     SpriteRenderer laserRenderer_;
-
-    ParticleSystem flames_;
-    Transform flamesTransform_;
 
     SpriteRenderer shadowRenderer_;
 
@@ -70,14 +62,8 @@ public class PlayerScript : MonoBehaviour
         basePos_ = trans_.position;
         _playerUpgrades = GetComponent<PlayerUpgrades>();
 
-        weaponTransform_ = trans_.Find("Weapon").GetComponent<Transform>();
-        weaponRenderer_ = weaponTransform_.gameObject.GetComponent<SpriteRenderer>();
-
         laserTransform_ = trans_.Find("LaserLine").GetComponent<Transform>();
         laserRenderer_ = laserTransform_.gameObject.GetComponent<SpriteRenderer>();
-
-        flames_ = trans_.Find("FlamethrowerParticles").GetComponent<ParticleSystem>();
-        flamesTransform_ = flames_.transform;
 
         overheadTextTrans_ = OverheadText.GetComponent<RectTransform>();
 
@@ -167,8 +153,6 @@ public class PlayerScript : MonoBehaviour
     public void SetWeapon(WeaponType type)
     {
         Weapon = WeaponBase.GetWeapon(type);
-        weaponTransform_.localScale = Weapon.Scale;
-        weaponRenderer_.sprite = Weapon.Sprite;
         if (type != WeaponType.None)
             SetNextFire();
     }
@@ -216,7 +200,7 @@ public class PlayerScript : MonoBehaviour
 
                 isShooting_ = true;
                 float recoil;
-                Weapon.Fire(weaponTransform_, lookDir_, GameManager.Instance.SortLayerTopEffects, out recoil);
+                Weapon.Fire(trans_, lookDir_, GameManager.Instance.SortLayerTopEffects, out recoil);
                 AddForce(lookDir_ * -recoil);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
@@ -249,30 +233,6 @@ public class PlayerScript : MonoBehaviour
         var grenade = GameObject.Instantiate(Grenade);
         var script = grenade.GetComponent<GrenadeScript>();
         script.Throw(GameManager.Instance.Orc.transform.position, pos, radius, damage);
-    }
-
-    void UpdateWeapon()
-    {
-        if (Weapon == null)
-            return;
-
-        muzzlePoint_ = Weapon.GetMuzzlePoint(weaponTransform_);
-        lookDirFromMuzzle_ = (lookDir_ - muzzlePoint_);
-
-        float rot_z = Mathf.Atan2(lookDirFromMuzzle_.y, lookDirFromMuzzle_.x) * Mathf.Rad2Deg;
-        flamesTransform_.SetPositionAndRotation(muzzlePoint_, Quaternion.Euler(-rot_z, 90, 0)); // Compensate for initial emitter position (TODO PE: details...)
-
-        if (flipX_ < 0)
-            rot_z += 180;
-
-        weaponTransform_.rotation = Quaternion.Euler(0f, 0f, rot_z);
-
-        bool enable = Weapon.Type == WeaponType.Sniper;
-        laserRenderer_.enabled = enable;
-        if (!enable)
-            return;
-
-        laserTransform_.SetPositionAndRotation(muzzlePoint_, Quaternion.Euler(0f, 0f, rot_z));
     }
 
     public void KillPlayer()
@@ -386,7 +346,7 @@ public class PlayerScript : MonoBehaviour
         CursorPos = GameManager.Instance.CrosshairWorldPosition;
 
         if (ActorBase.PlayerClosestEnemy != null)
-            lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - transform.position).normalized;
+            lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
         else
             lookDir_ = Vector2.right;
 
@@ -457,7 +417,6 @@ public class PlayerScript : MonoBehaviour
         force_ *= 1.0f - (20.0f * Time.deltaTime);
 
         CheckControls();
-        UpdateWeapon();
         UpdateOverheadText();
 
         if (UpgradesActive && !isDead_)

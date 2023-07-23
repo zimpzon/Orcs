@@ -29,7 +29,6 @@ public class OrcController : MonoBehaviour
     Vector3 targetVec_;
     Vector3 targetDir_;
     float distanceToTarget_;
-    Vector3 scale_;
     Transform trans_;
     SpriteRenderer renderer_;
     ParticleSystem hearts_;
@@ -46,7 +45,6 @@ public class OrcController : MonoBehaviour
     {
         trans_ = this.transform;
         renderer_ = GetComponent<SpriteRenderer>();
-        scale_ = trans_.localScale;
         hearts_ = trans_.Find("Hearts").GetComponent<ParticleSystem>();
         arrow_ = trans_.Find("Arrow").GetComponent<Transform>();
         Text.text = "";
@@ -91,37 +89,6 @@ public class OrcController : MonoBehaviour
         LaserRenderer.enabled = use;
 
         Text.text = "";
-    }
-
-    void UpdateWeapon()
-    {
-        var playerLookAt = GameManager.Instance.PlayerScript.CursorPos;
-        Vector3 muzzlePoint = WeaponTransform.position + new Vector3(0.6f, 0.02f, 0.0f);
-        Vector3 muzzleLook = (playerLookAt - muzzlePoint);
-
-        // If closer than the muzzle use orc position instead. Prevents insane oscillation.
-        float lookLen2 = muzzleLook.sqrMagnitude;
-        bool tooCloseForLaser = false;
-        if (lookLen2 <= 1.0f)
-        {
-            tooCloseForLaser = true;
-            muzzleLook = playerLookAt - trans_.position;
-            lookLen2 = muzzleLook.sqrMagnitude;
-            if (lookLen2 < 0.1f)
-            {
-                // Crosshair is on top of orc
-                return;
-            }
-        }
-
-        float rot_z = Mathf.Atan2(muzzleLook.y, muzzleLook.x) * Mathf.Rad2Deg;
-
-        //if (renderer_.flipX)
-        //    rot_z += 180;
-
-        WeaponTransform.rotation = Quaternion.Euler(0f, 0f, rot_z);
-
-        LaserRenderer.enabled = !tooCloseForLaser;
     }
 
     public void SetChasePlayer(bool chase)

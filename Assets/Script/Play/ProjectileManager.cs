@@ -221,22 +221,25 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
                 if (p.StickToTarget && p.CurrentTarget != null)
                 {
-                    if (p.CurrentTarget.Hp <= 0 && PlayerUpgrades.Data.SawbladePickNewTarget)
+                    if (p.CurrentTarget.Hp <= 0)
                     {
                         // Target we are stuck to died. Scan for a new one close by or continue moving if nothing found.
                         if (p.StickySoundRepeater != null)
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
-                        if (idxClosest >= 0)
+                        if (PlayerUpgrades.Data.SawbladePickNewTarget)
                         {
-                            var closeEnemy = BlackboardScript.Enemies[idxClosest];
-                            p.Direction = (closeEnemy.transform.position - p.Position).normalized;
-                        }
-                        else
-                        {
-                            // Maintain direction
+                            int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
+                            if (idxClosest >= 0)
+                            {
+                                var closeEnemy = BlackboardScript.Enemies[idxClosest];
+                                p.Direction = (closeEnemy.transform.position - p.Position).normalized;
+                            }
+                            else
+                            {
+                                // Maintain direction
+                            }
                         }
                     }
                     else

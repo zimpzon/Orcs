@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
     public Text TextGameOverOrcsSaved;
     public Text TextGameOverOrcsSavedBest;
     public Text TextLocked;
-    public Text TextNewRecord;
-    public Text TextNewUnlock;
     public Text TextRoundEndUnlocks;
     public Text TextUser;
     public Text TextShopMoney;
@@ -49,10 +47,11 @@ public class GameManager : MonoBehaviour
     public Slider SliderMusic;
     public Slider SliderSfx;
     public Dropdown DropdownResolution;
+    public Transform PanelChoices;
     public GameObject UpgradeChoice1;
     public GameObject UpgradeChoice2;
     public GameObject UpgradeChoice3;
-
+    public GameObject UpgradeChoice4;
     public TextMeshProUGUI TextGameMode;
     public TextMeshProUGUI TextGameModeInfo;
     public GameObject PanelGameMode;
@@ -494,6 +493,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void SetChoicesVisible(bool visible)
+    {
+        PanelChoices.gameObject.SetActive(visible);
+    }
+
     IEnumerator LevelUp()
     {
         bool selectionDone = false;
@@ -504,12 +508,12 @@ public class GameManager : MonoBehaviour
             choice.Apply();
         }
 
-        UpgradeChoice1.SetActive(true);
-        UpgradeChoice2.SetActive(true);
-        UpgradeChoice3.SetActive(true);
+        SetChoicesVisible(true);
+
         UpgradeChoice1.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
         UpgradeChoice2.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
         UpgradeChoice3.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
+        UpgradeChoice4.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
 
         AudioListener.pause = true;
 
@@ -527,9 +531,7 @@ public class GameManager : MonoBehaviour
         PauseGameTime = false;
         Time.timeScale = 1.0f;
 
-        UpgradeChoice1.SetActive(false);
-        UpgradeChoice2.SetActive(false);
-        UpgradeChoice3.SetActive(false);
+        SetChoicesVisible(false);
 
         AudioListener.pause = false;
     }
@@ -582,8 +584,6 @@ public class GameManager : MonoBehaviour
         TextGameOverOrcsSavedBest.text = string.Format("{0}", bestScore);
 
         bool newRecord = bestScore > roundStartBestScore_;
-        TextNewRecord.GetComponent<TextBlinkScript>().enabled = newRecord;
-        TextNewRecord.enabled = newRecord;
 
         CanvasGameOverDefault.enabled = true;
 
@@ -691,7 +691,6 @@ public class GameManager : MonoBehaviour
         roundStartBestScore_ = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
         PlayerScript.SetPlayerPos(Vector3.zero);
         Orc.SetPosition(Vector3.up * 3);
-        TextUnlockBasePos = TextNewUnlock.rectTransform.anchoredPosition.y;
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin();
@@ -1074,6 +1073,8 @@ public class GameManager : MonoBehaviour
 
         SpriteFlashParamId = Shader.PropertyToID("_FlashAmount");
         SpriteFlashColorParamId = Shader.PropertyToID("_FlashColor");
+
+        SetChoicesVisible(false);
 
         var bounds = GetComponent<BoxCollider2D>();
         float halfX = bounds.size.x / 2;
