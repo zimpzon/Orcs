@@ -142,9 +142,6 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
     public void Fire(Basic basic)
     {
-        if (basic.Type == ProjectileType.HarmsEnemies)
-            basic.Color *= GameManager.Instance.SelectedHero.BulletColor;
-
         // Automatically adjust capsule collider to sprite
         var spriteSize = basic.SpriteInfo.Renderer.sprite.bounds.size;
         basic.SpriteInfo.Collider.size = spriteSize * 0.8f; // A little smaller so player won't feel cheated.
@@ -262,7 +259,6 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 }
                 else if (p.Type == ProjectileType.HarmsEnemies)
                 {
-                    // TODO PE: This should be changed to colliders. Might enable walls too?
                     // Find enemies hit by projectile
                     if (BlackboardScript.GetEnemies(p.Position, p.Radius, 1) > 0)
                     {

@@ -1065,7 +1065,7 @@ public class GameManager : MonoBehaviour
 
         // adjust arena to be 16:10 since on 16:9 we add black bars left/right
         float arenaHeight = bounds.size.y;
-        float arenaWidth = arenaHeight * (16.0f / 10.0f);
+        float arenaWidth = arenaHeight * AspectUtility.WantedAspectRatio;
         float halfX = arenaWidth / 2;
         float halfY = arenaHeight / 2;
 
@@ -1120,6 +1120,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
+        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

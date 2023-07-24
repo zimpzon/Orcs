@@ -129,29 +129,13 @@ namespace Assets.Script
                     hit.Idx = i;
                     hit.IsHeadshot = false;
 
-                    // Possible hit
-                    circleCenter = Enemies[i].transform.position + Enemies[i].HeadOffset;
                     ClosestPointOnRay(from, to, circleCenter, ref cp);
-                    rad2 = Enemies[i].RadiusHead * Enemies[i].RadiusHead;
-                    if (Vector3.SqrMagnitude(circleCenter - cp) < rad2)
-                    {
-                        // Head hit
-                        hit.IsHeadshot = true;
-                        hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - from);
-                        Matches[matchIdx++] = hit;
-                    }
-                    else
-                    {
-                        circleCenter = Enemies[i].transform.position + Enemies[i].BodyOffset;
-                        ClosestPointOnRay(from, to, circleCenter, ref cp);
-                        rad2 = Enemies[i].RadiusBody * Enemies[i].RadiusBody;
-                        if (Vector3.SqrMagnitude(circleCenter - cp) < rad2)
-                        {
-                            // Body hit
-                            hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - from);
-                            Matches[matchIdx++] = hit;
-                        }
-                    }
+                    circleCenter = Enemies[i].transform.position + Enemies[i].BodyOffset;
+                    ClosestPointOnRay(from, to, circleCenter, ref cp);
+                    rad2 = Enemies[i].RadiusBody * Enemies[i].RadiusBody;
+
+                    hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - from);
+                    Matches[matchIdx++] = hit;
 
                     if (matchIdx == Matches.Length || matchIdx == maxCount)
                         break;
@@ -198,32 +182,33 @@ namespace Assets.Script
                 if (Enemies[i].Hp <= 0 || Enemies[i].gameObject.layer != GameManager.Instance.LayerEnemy)
                     continue;
 
-                if (CheckOverlap(Enemies[i].transform.position, pos, Enemies[i].RadiusFirstCheck, radius))
+                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, Enemies[i].RadiusBody, radius))
                 {
                     HitMatch hit = Matches[matchIdx];
                     hit.Idx = i;
                     hit.IsHeadshot = false;
-
-                    // Possible hit
-                    if (CheckOverlap(Enemies[i].transform.position + Enemies[i].HeadOffset, pos, Enemies[i].RadiusHead, radius))
-                    {
-                        // Head hit
-                        hit.IsHeadshot = true;
-                        hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - pos);
-                        Matches[matchIdx++] = hit;
-                    }
-                    else if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, Enemies[i].RadiusBody, radius))
-                    {
-                        // Body hit
-                        hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - pos);
-                        Matches[matchIdx++] = hit;
-                    }
-
-                    if (matchIdx == Matches.Length || matchIdx == maxCount)
-                        break;
+                    hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - pos);
+                    Matches[matchIdx++] = hit;
                 }
+
+                if (matchIdx == Matches.Length || matchIdx == maxCount)
+                    break;
             }
             return matchIdx;
+        }
+
+        public static int CountEnemies(Vector3 pos, float radius)
+        {
+            int result = 0;
+            for (int i = 0; i < Enemies.Count; ++i)
+            {
+                if (Enemies[i].Hp <= 0 || Enemies[i].gameObject.layer != GameManager.Instance.LayerEnemy)
+                    continue;
+
+                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, Enemies[i].RadiusBody, radius))
+                    result++;
+            }
+            return result;
         }
 
         public static int GetDeadEnemies(Vector3 pos, float radius, int maxCount = MaxMatches)

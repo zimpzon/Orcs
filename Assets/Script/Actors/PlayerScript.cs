@@ -41,7 +41,6 @@ public class PlayerScript : MonoBehaviour
 
     public Text OverheadText;
 
-    public GameObject MineProto;
     public Transform Grenade;
     GrenadeScript grenadeScript_;
 
@@ -236,11 +235,6 @@ public class PlayerScript : MonoBehaviour
                 {
                     grenadeScript_.Throw(trans_.position, CursorPos);
                 }
-                else if (Weapon.Type == WeaponType.Mine)
-                {
-                    var newMine = Instantiate<GameObject>(MineProto).GetComponent<MineScript>();
-                    newMine.Throw(trans_.position, CursorPos);
-                }
             }
 
             if (!isMoving_)
@@ -262,7 +256,7 @@ public class PlayerScript : MonoBehaviour
         script.Throw(GameManager.Instance.Orc.transform.position, pos, radius, damage);
     }
 
-    public void DamagePlayer(ActorBase actor)
+    public void DamagePlayer(float damage)
     {
         if (isDead_)
             return;
@@ -270,7 +264,7 @@ public class PlayerScript : MonoBehaviour
         if (Time.time < immunityEnd_)
             return;
 
-        float damage = actor.Damage * PlayerUpgrades.Data.HealthDefenseMul;
+        damage = damage * PlayerUpgrades.Data.HealthDefenseMul;
         Hp -= damage;
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, 4.0f);
 
@@ -310,7 +304,17 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(EndGame(victory: true));
     }
 
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        CheckCollision(col);
+    }
+
     void OnCollisionStay2D(Collision2D col)
+    {
+        CheckCollision(col);
+    }
+
+    void CheckCollision(Collision2D col)
     {
         int layer = col.gameObject.layer;
         if (isDead_ || layer == GameManager.Instance.LayerPlayerProjectile || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc)
@@ -320,7 +324,8 @@ public class PlayerScript : MonoBehaviour
         if (actor != null && !actor.IsFullyReady)
             return;
 
-        DamagePlayer(actor);
+        // Projectiles gets same damage as actors, hackz
+        DamagePlayer(ActorBase.Damage);
     }
 
     IEnumerator EndGame(bool victory)

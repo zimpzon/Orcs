@@ -12,18 +12,19 @@ public class ActorBase : MonoBehaviour
         PlayerDistanceToClosestEnemy = float.MaxValue;
     }
 
-    [System.NonSerialized] public float Damage = 25.0f;
+    [System.NonSerialized] public static float Damage = 25.0f;
 
     [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
     [System.NonSerialized] public float RadiusFirstCheck = 0.6f;
-    [System.NonSerialized] public float RadiusBody = 0.3f;
+    [System.NonSerialized] public float RadiusBody = 0.4f;
     [System.NonSerialized] public Vector3 BodyOffset = new Vector3(0.0f, -0.25f, 0.0f);
-    [System.NonSerialized] public float RadiusHead = 0.2f;
-    [System.NonSerialized] public Vector3 HeadOffset = new Vector3(0.0f, 0.15f, 0.0f);
 
     [System.NonSerialized] public bool IsCorpse;
+
+    private bool hasForcedDestination_;
+    private Vector3 forcedDestination_;
 
     [System.NonSerialized] public ActorTypeEnum ActorType;
     [System.NonSerialized] public float Hp;
@@ -45,6 +46,9 @@ public class ActorBase : MonoBehaviour
     protected int flashParamId_;
     protected int flashColorParamId_;
     protected float flashEndTime_;
+    protected float nextCheckForCrowded_;
+    protected bool avoidCrowds_ = true;
+
 
     protected virtual void PreEnable() { }
     protected virtual void PostEnable() { }
@@ -81,9 +85,7 @@ public class ActorBase : MonoBehaviour
         // Assume uniform scale
         float scale = baseScale_.x;
         RadiusFirstCheck *= scale;
-        RadiusHead *= scale;
         RadiusBody *= scale;
-        HeadOffset *= scale;
         BodyOffset *= scale;
     }
 
@@ -165,6 +167,12 @@ public class ActorBase : MonoBehaviour
             moveVec = (moveVec + centerDir).normalized;
         }
 
+        if (hasForcedDestination_)
+        {
+            var dir = (forcedDestination_ - position_).normalized;
+            moveVec = (moveVec + dir).normalized;
+        }
+
         if (isLivingBomb_)
             speed *= 0.9f;
         else if (isPainted_)
@@ -173,8 +181,34 @@ public class ActorBase : MonoBehaviour
         position_ += moveVec * speed * slowmotionModifier_ * Timers.EnemyTimer * Time.deltaTime;
     }
 
+    void CheckForCrowded()
+    {
+        int crowdCount = BlackboardScript.CountEnemies(position_, 0.25f);
+        if (crowdCount > 3)
+        {
+            if (Random.value > 0.75f)
+            {
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 2;
+                hasForcedDestination_ = true;
+                FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
+            }
+        }
+        nextCheckForCrowded_ = Time.time + 0.5f + Random.value;
+    }
+
     public void Update()
     {
+        if (!hasForcedDestination_ && avoidCrowds_ && Time.time > nextCheckForCrowded_)
+        {
+            CheckForCrowded();
+        }
+
+        if (hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.5f)
+        {
+            FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
+            hasForcedDestination_ = false;
+        }
+
         force_ *= 1.0f - (30.0f * Time.deltaTime);
         position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
         transform_.position = position_;
@@ -237,8 +271,6 @@ public class ActorBase : MonoBehaviour
     public void AddForce(Vector3 force)
     {
         force_ += force;
-        //if (force_.magnitude > 0.5f)
-        //    force_ = force_.normalized * 0.5f;
     }
 
     public void ApplyDamage(float amount, Vector3 direction, float forceModifier, bool headshot)
@@ -439,6 +471,8 @@ public class ActorBase : MonoBehaviour
         slowmotionModifier_ = 1.0f;
         flashEndTime_ = 0.0f;
         force_ = Vector3.zero;
+        hasForcedDestination_ = false;
+        forcedDestination_ = Vector3.zero;
         material_.color = Color.white;
 
         EnableShadow(true);
