@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public bool UnlockAllHeroes;
 
     public Text TextLevel;
+    public Text TextHp;
     public Text TextTime;
     public Text TextGameOverOrcsSaved;
     public Text TextGameOverOrcsSavedBest;
@@ -116,6 +117,8 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public int RoundUnlockCount;
 
     int lastSecondsLeft = 0;
+    int lastHp_ = 0;
+    int lastMaxHp_ = 0;
     const float WinTime = 60 * 15;
     int baseXpToLevel = 200;
     int xpToLevel;
@@ -317,33 +320,6 @@ public class GameManager : MonoBehaviour
         TextLocked.enabled = !isUnlocked;
     }
 
-    IEnumerator DeathLoopCo()
-    {
-        SetDebugOutput("deathloop", "testing activated");
-        while (!Input.GetKeyDown(KeyCode.G))
-            yield return null;
-
-        while (true)
-        {
-            while (GameState != State.Playing)
-                yield return null;
-
-            yield return new WaitForSecondsRealtime(0.1f);
-
-            PlayerScript.KillPlayer();
-
-            while (GameState != State.Dead)
-                yield return null;
-
-            // Game Over info now shown
-            yield return new WaitForSecondsRealtime(1.0f);
-
-            // This happens when pressing space
-            PlayerScript.RoundComplete = true;
-            ShowTitle(autoStartGame: true);
-        }
-    }
-
     void UpdateMoneyLabels()
     {
         TextShopMoney.text = $"${SaveGame.Members.Money}";
@@ -356,8 +332,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameStateCo()
     {
-//        StartCoroutine(DeathLoopCo());
-
         while (true)
         {
             while (GameState == State.Intro)
@@ -448,11 +422,21 @@ public class GameManager : MonoBehaviour
             while (GameState == State.Playing)
             {
                 float runTime = GameTime;
+
                 int secondsLeft = (int)(WinTime - runTime + 0.5f);
                 if (secondsLeft != lastSecondsLeft)
                 {
                     TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
                     lastSecondsLeft = secondsLeft;
+                }
+
+                int hpLeft = (int)(PlayerScript.Hp + 0.5f);
+                int maxHp = (int)(PlayerScript.MaxHp + 0.5f);
+                if (hpLeft != lastHp_ || maxHp != lastMaxHp_)
+                {
+                    TextHp.text = $"{hpLeft}/{PlayerScript.MaxHp} HP";
+                    lastHp_ = hpLeft;
+                    lastMaxHp_ = maxHp;
                 }
 
                 if (currentXp != lastXpShown)
@@ -673,7 +657,7 @@ public class GameManager : MonoBehaviour
 
         GameTime = 0.0001f;
         ActorBase.ResetClosestEnemy();
-        Cursor.visible = false;
+        //Cursor.visible = false;
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
         ShopItems.ApplyToPlayerUpgrades();
@@ -1078,9 +1062,15 @@ public class GameManager : MonoBehaviour
         SetChoicesVisible(false);
 
         var bounds = GetComponent<BoxCollider2D>();
-        float halfX = bounds.size.x / 2;
-        float halfY = bounds.size.y / 2;
+
+        // adjust arena to be 16:10 since on 16:9 we add black bars left/right
+        float arenaHeight = bounds.size.y;
+        float arenaWidth = arenaHeight * (16.0f / 10.0f);
+        float halfX = arenaWidth / 2;
+        float halfY = arenaHeight / 2;
+
         ArenaBounds = new Rect(-halfX, -halfY, halfX * 2, halfY * 2);
+
         TextFps.enabled = false;
 
         ShopItems.CreateItemGoList(ShopItemProto, ShopItemsRoot);
@@ -1095,8 +1085,8 @@ public class GameManager : MonoBehaviour
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Confined;
         StartCoroutine(ServerColdStart());
         ShowTitle();
         StartCoroutine(GameStateCo());
@@ -1112,8 +1102,8 @@ public class GameManager : MonoBehaviour
 
     public Vector3 ClampToBounds(Vector3 pos, Sprite sprite)
     {
-        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y;
-        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x;
+        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y / 2;
+        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x / 2;
         pos.x = Mathf.Clamp(pos.x, ArenaBounds.xMin + halfW, ArenaBounds.xMax - halfW);
         pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + halfH * 2, ArenaBounds.yMax - halfH); // Pivot is at head so * 2 for bottom
         return pos;
@@ -1130,7 +1120,6 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

@@ -65,7 +65,7 @@ public class SkellieCaster : ActorBase
         basic.SpriteInfo.Renderer.sprite = SpriteData.Instance.Bullet;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
         basic.Direction = direction;
-        basic.Color = new Color(1.0f, 0.6f, 0.2f);
+        basic.Color = new Color(1.0f, 0.4f, 0.1f);
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

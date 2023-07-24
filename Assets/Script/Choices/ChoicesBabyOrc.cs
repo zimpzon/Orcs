@@ -20,7 +20,7 @@ public static class ChoicesBabyOrc
                     Description = "All sawblades: pick nearby target when target dies.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.SawbladePickNewTarget = true;
+                        PlayerUpgrades.Data.OrcPickupSawbladePickNewTarget = true;
                     },
                     NextLevel = new Choice
                     {
@@ -28,7 +28,7 @@ public static class ChoicesBabyOrc
                         Description = "All sawblades: <color=#00ff00>+25%</color> durabilty, <color=#00ff00>+1%</color> small sawblade.",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.SawbladeDurabilityMul += 0.25f;
+                            PlayerUpgrades.Data.OrcPickupSawbladeDurabilityMul += 0.25f;
                             PlayerUpgrades.Data.OrcPickupSmallSawbladeEnabled = true;
                         },
                     }

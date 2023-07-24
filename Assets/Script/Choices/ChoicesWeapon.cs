@@ -65,7 +65,7 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = "Quickshot (1)",
-                Description = "Weapon attack speed <color=#00ff00>+10%</color>",
+                Description = "<color=#00ff00>+10%</color> attack speed",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
@@ -73,7 +73,7 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = "Quickshot (2)",
-                    Description = "Weapon attack speed <color=#00ff00>+10%</color>",
+                Description = "<color=#00ff00>+10%</color> attack speed",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;

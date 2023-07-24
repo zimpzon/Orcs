@@ -10,14 +10,22 @@ public class UpgradeData
 
     // global
     public float DamageMul = 1.0f;
-    public float SawbladeDurabilityMul = 1.0f;
-    public bool SawbladePickNewTarget = false;
 
     // gold
     public float MoneyDoubleChance = 0.5f;
     public float DropMoneyOnKillChance = 0.01f;
     public int DropMoneyOnKillMin = 1;
     public int DropMoneyOnKillMax = 3;
+
+    // player
+    public int BaseHealth = 100;
+    public float HealthMul = 1.0f;
+    public float BaseHealthRegenSec = 0.5f;
+    public float HealthRegenSecMul = 1.0f;
+    public float OnDamageTimeImmune = 0.1f;
+    public float HealthDefenseMul = 1.0f;
+
+    public float MoveSpeedMul = 1.0f;
 
     // weapons
     public float WeaponsCdMul = 1.0f;
@@ -31,6 +39,8 @@ public class UpgradeData
 
     public bool OrcPickupSawbladeEnabled = false;
     public bool OrcPickupSmallSawbladeEnabled = false;
+    public float OrcPickupSawbladeDurabilityMul = 1.0f;
+    public bool OrcPickupSawbladePickNewTarget = false;
 
     // paintball
     public bool PaintballEnabled = false;

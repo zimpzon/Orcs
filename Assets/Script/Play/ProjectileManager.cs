@@ -228,7 +228,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        if (PlayerUpgrades.Data.SawbladePickNewTarget)
+                        if (PlayerUpgrades.Data.OrcPickupSawbladePickNewTarget)
                         {
                             int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
                             if (idxClosest >= 0)

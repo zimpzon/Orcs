@@ -88,7 +88,7 @@ public class MineScript : MonoBehaviour
             float playerDist = BlackboardScript.DistanceToPlayer(pos);
             if (playerDist < Radius * 0.2f)
             {
-                GameManager.Instance.PlayerScript.KillPlayer();
+                GameManager.Instance.PlayerScript.DamagePlayer(null); // TODO, actor
             }
             else if (playerDist < 1.0f)
             {

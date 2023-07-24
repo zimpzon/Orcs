@@ -11,18 +11,18 @@ public class FlamethrowerParticlesScript : MonoBehaviour
 
     void OnParticleCollision(GameObject other)
     {
+        ActorBase actor = other.GetComponent<ActorBase>();
         if (other.layer == GameManager.Instance.LayerEnemy)
         {
-            ActorBase enemy = other.GetComponent<ActorBase>();
-            if (enemy != null)
+            if (actor != null)
             {
                 Vector3 direction = other.transform.position - trans_.position;
-                GameManager.Instance.DamageEnemy(enemy, 30.0f, direction.normalized, 0.1f);
+                GameManager.Instance.DamageEnemy(actor, 30.0f, direction.normalized, 0.1f);
             }
         }
         else if (other.layer == GameManager.Instance.LayerPlayer)
         {
-            GameManager.Instance.PlayerScript.KillPlayer();
+            GameManager.Instance.PlayerScript.DamagePlayer(actor);
         }
     }
 }

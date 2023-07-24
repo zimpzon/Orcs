@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,10 @@ public class PlayerScript : MonoBehaviour
 {
     const float BaseCd = 0.5f;
     const int BaseBullets = 1;
+    const float BaseMoveSpeed = 4f;
+
+    public float Hp;
+    public float MaxHp;
 
     [System.NonSerialized] public Vector3 CursorPos;
     Vector3 lookDir_;
@@ -17,14 +22,20 @@ public class PlayerScript : MonoBehaviour
     Transform trans_;
     SpriteRenderer renderer_;
     Vector3 playerPos_;
-    float MoveSpeed = 4f;
-    float moveSpeedModifier_ = 1.0f;
     float flipX_;
     bool isDead_ = true;
     float playerScale_ = 2.0f;
     bool isShooting_;
     float nextFire_ = float.MaxValue;
     int shotsLeft_ = 0;
+    int flashParamId_;
+    int flashColorParamId_;
+    float flashEndTime_;
+    float lastRegenTick_;
+    bool flashActive_;
+    Material material_;
+    float immunityEnd_;
+
     public bool RoundComplete;
     public bool UpgradesActive = false;
 
@@ -44,7 +55,6 @@ public class PlayerScript : MonoBehaviour
 
     Transform laserTransform_;
     SpriteRenderer laserRenderer_;
-
     SpriteRenderer shadowRenderer_;
 
     AnimationController animationController_ = new AnimationController();
@@ -61,6 +71,10 @@ public class PlayerScript : MonoBehaviour
         grenadeScript_ = Grenade.GetComponent<GrenadeScript>();
         basePos_ = trans_.position;
         _playerUpgrades = GetComponent<PlayerUpgrades>();
+
+        flashParamId_ = Shader.PropertyToID("_FlashAmount");
+        flashColorParamId_ = Shader.PropertyToID("_FlashColor");
+        material_ = renderer_.material;
 
         laserTransform_ = trans_.Find("LaserLine").GetComponent<Transform>();
         laserRenderer_ = laserTransform_.gameObject.GetComponent<SpriteRenderer>();
@@ -110,12 +124,25 @@ public class PlayerScript : MonoBehaviour
         yield break;
     }
 
+    public void UpdateMaxHp()
+    {
+        float newMaxHp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
+        float hpAdded = newMaxHp - MaxHp;
+        Hp += hpAdded;
+        MaxHp = newMaxHp;
+        if (Hp > MaxHp)
+            Hp = MaxHp;
+    }
+
     public void ResetAll()
     {
+        Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
+        UpdateMaxHp();
+
+        lastRegenTick_ = 0;
         UpgradesActive = false;
         MeleeWeapon.gameObject.SetActive(false);
         shadowRenderer_.enabled = true;
-        moveSpeedModifier_ = 1.0f;
         isDead_ = false;
         isMoving_ = false;
         force_ = Vector3.zero;
@@ -235,9 +262,47 @@ public class PlayerScript : MonoBehaviour
         script.Throw(GameManager.Instance.Orc.transform.position, pos, radius, damage);
     }
 
-    public void KillPlayer()
+    public void DamagePlayer(ActorBase actor)
     {
-        StartCoroutine(EndGame(victory: false));
+        if (isDead_)
+            return;
+
+        if (Time.time < immunityEnd_)
+            return;
+
+        float damage = actor.Damage * PlayerUpgrades.Data.HealthDefenseMul;
+        Hp -= damage;
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, 4.0f);
+
+        FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"-{(int)damage:0}", Color.blue, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
+        if (Hp <= 0)
+        {
+            Hp = 0;
+            isDead_ = true;
+            StartCoroutine(EndGame(victory: false));
+        }
+        else
+        {
+            immunityEnd_ = Time.time + PlayerUpgrades.Data.OnDamageTimeImmune;
+            SetFlash(true);
+        }
+    }
+
+    void SetFlash(bool setActive)
+    {
+        if (setActive && !flashActive_)
+        {
+            material_.SetFloat(flashParamId_, 1.0f);
+            material_.SetColor(flashColorParamId_, new Color(1.0f, 0.6f, 0.6f));
+            flashEndTime_ = Time.time + PlayerUpgrades.Data.OnDamageTimeImmune;
+        }
+        else if (flashActive_)
+        {
+            material_.SetFloat(flashParamId_, 0.0f);
+            flashEndTime_ = float.MaxValue;
+        }
+
+        flashActive_ = setActive;
     }
 
     public void Victory()
@@ -245,7 +310,7 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(EndGame(victory: true));
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
         int layer = col.gameObject.layer;
         if (isDead_ || layer == GameManager.Instance.LayerPlayerProjectile || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc)
@@ -255,7 +320,7 @@ public class PlayerScript : MonoBehaviour
         if (actor != null && !actor.IsFullyReady)
             return;
 
-        KillPlayer();
+        DamagePlayer(actor);
     }
 
     IEnumerator EndGame(bool victory)
@@ -263,6 +328,7 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         isDead_ = true;
+        SetFlash(false);
         shadowRenderer_.enabled = false;
         GameProgressScript.Instance.Stop();
         AudioManager.Instance.StopAllRepeating();
@@ -309,9 +375,6 @@ public class PlayerScript : MonoBehaviour
 
     void CheckControls()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            FloatingTextSpawner.Instance.Spawn(trans_.position, "-45", Color.red, speed: 0.01f, timeToLive: 0.5f);
-
         if (isDead_)
             return;
 
@@ -323,8 +386,7 @@ public class PlayerScript : MonoBehaviour
         float up = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1.0f : 0.0f;
         float down = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1.0f : 0.0f;
 
-        float playerSpeedModifier = GameManager.Instance.CurrentGameModeData.PlayerMoveSpeedModifier;
-        float speed = MoveSpeed * playerSpeedModifier;
+        float speed = BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
 
         speed *= Time.deltaTime;
 
@@ -403,10 +465,22 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.PauseGameTime)
             return;
 
+        if (Time.time > lastRegenTick_ + 1.0f)
+        {
+            Hp += PlayerUpgrades.Data.BaseHealthRegenSec * PlayerUpgrades.Data.HealthRegenSecMul;
+            lastRegenTick_ = Time.time;
+
+            if (Hp > MaxHp)
+                Hp = MaxHp;
+        }
+
+        if (flashActive_ && Time.time > flashEndTime_)
+            SetFlash(false);
+
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
         if (isMoving_ && !isDead_)
-            playerPos_ += moveVec_ * moveSpeedModifier_ * Timers.PlayerTimer;
+            playerPos_ += moveVec_;
 
         if (!isDead_)
             playerPos_ += force_ * Time.deltaTime * 60;

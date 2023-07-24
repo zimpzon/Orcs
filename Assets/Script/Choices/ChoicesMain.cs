@@ -31,6 +31,7 @@ public static class UpgradeChoices
     {
         CurrentChoices = new List<Choice>();
         CurrentChoices.AddRange(ChoicesWeapon.GetWeaponChoices());
+        CurrentChoices.AddRange(ChoicesPlayer.GetPlayerChoices());
         CurrentChoices.AddRange(ChoicesBabyOrc.GetBabyOrcChoices());
         CurrentChoices.AddRange(ChoicesPoison.GetPoisonChoices());
     }

@@ -12,6 +12,8 @@ public class ActorBase : MonoBehaviour
         PlayerDistanceToClosestEnemy = float.MaxValue;
     }
 
+    [System.NonSerialized] public float Damage = 25.0f;
+
     [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
@@ -25,9 +27,10 @@ public class ActorBase : MonoBehaviour
 
     [System.NonSerialized] public ActorTypeEnum ActorType;
     [System.NonSerialized] public float Hp;
+
     public Transform Transform;
     protected GameModeData GameMode;
-    protected float DecayTime = 20.0f;
+    protected float DecayTime = 10.0f;
     protected AnimationController animationController_ = new AnimationController();
     protected Sprite[] currentAnimations_;
 
@@ -347,12 +350,7 @@ public class ActorBase : MonoBehaviour
             }
         }
 
-        if (BlackboardScript.DistanceToPlayer(transform_.position) < ExplodeRadius * 0.5f)
-        {
-            GameManager.Instance.PlayerScript.KillPlayer();
-        }
-
-        ApplyDamage(livingBombDamage_, RndUtil.RandomInsideUnitCircle().normalized, 0.25f, true);
+        ApplyDamage(livingBombDamage_, RndUtil.RandomInsideUnitCircle().normalized, forceModifier: 0.25f, headshot: false);
     }
 
     IEnumerator DieAnimation(Vector3 deathSourceDir, float forceModifier)
