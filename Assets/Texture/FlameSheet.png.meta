@@ -168,6 +168,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -256,6 +257,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 128
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1277,6 +1290,55 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      FlameSheet_41: 21300082
+      FlameSheet_24: 21300048
+      FlameSheet_12: 21300024
+      FlameSheet_28: 21300056
+      FlameSheet_37: 21300074
+      FlameSheet_32: 21300064
+      FlameSheet_22: 21300044
+      FlameSheet_23: 21300046
+      FlameSheet_25: 21300050
+      FlameSheet_20: 21300040
+      FlameSheet_26: 21300052
+      FlameSheet_9: 21300018
+      FlameSheet_15: 21300030
+      FlameSheet_10: 21300020
+      FlameSheet_45: 21300090
+      FlameSheet_47: 21300094
+      FlameSheet_43: 21300086
+      FlameSheet_19: 21300038
+      FlameSheet_36: 21300072
+      FlameSheet_6: 21300012
+      FlameSheet_35: 21300070
+      FlameSheet_16: 21300032
+      FlameSheet_17: 21300034
+      FlameSheet_0: 21300000
+      FlameSheet_4: 21300008
+      FlameSheet_3: 21300006
+      FlameSheet_27: 21300054
+      FlameSheet_44: 21300088
+      FlameSheet_21: 21300042
+      FlameSheet_8: 21300016
+      FlameSheet_14: 21300028
+      FlameSheet_42: 21300084
+      FlameSheet_31: 21300062
+      FlameSheet_1: 21300002
+      FlameSheet_30: 21300060
+      FlameSheet_2: 21300004
+      FlameSheet_5: 21300010
+      FlameSheet_18: 21300036
+      FlameSheet_29: 21300058
+      FlameSheet_46: 21300092
+      FlameSheet_40: 21300080
+      FlameSheet_7: 21300014
+      FlameSheet_39: 21300078
+      FlameSheet_34: 21300068
+      FlameSheet_11: 21300022
+      FlameSheet_38: 21300076
+      FlameSheet_33: 21300066
+      FlameSheet_13: 21300026
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

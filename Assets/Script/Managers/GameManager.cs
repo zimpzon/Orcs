@@ -534,6 +534,7 @@ public class GameManager : MonoBehaviour
         SetChoicesVisible(false);
 
         AudioListener.pause = false;
+        Explosions.Push(PlayerScript.transform.position, 4.0f, 1.0f);
     }
 
     public void ShowingHowToPlay()
