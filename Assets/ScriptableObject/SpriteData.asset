@@ -3,14 +3,33 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ae8cf6714fdb2f499d4a415fbd08eab, type: 3}
   m_Name: SpriteData
   m_EditorClassIdentifier: 
+  Ogrelarge:
+    WalkSprites: []
+    Settings:
+      Damage: 25
+      Hp: 1000
+      MoveSpeed: 1
+  OgreDefault:
+    WalkSprites: []
+    Settings:
+      Damage: 25
+      Hp: 500
+      MoveSpeed: 1
+  OgreMini:
+    WalkSprites: []
+    Settings:
+      Damage: 25
+      Hp: 100
+      MoveSpeed: 1
   PlayerRunSprites:
   - {fileID: 21300000, guid: 5d6f88caa9397a645b622e65da0cd258, type: 3}
   - {fileID: 21300000, guid: 0e80150245a5d9549b139e1210f175f4, type: 3}
@@ -61,3 +80,8 @@ MonoBehaviour:
   Flamethrower: {fileID: 21300000, guid: 696511d9e070b624091b0b449e7a0686, type: 3}
   MachineGun: {fileID: 21300000, guid: 9d1b5068ba2d4c34196dc9bd0404a434, type: 3}
   Staff: {fileID: 21300000, guid: f862b6e807dfb7144a5bc94ec147a1a4, type: 3}
+  Coin1: {fileID: 0}
+  Coin2: {fileID: 0}
+  Coin3: {fileID: 0}
+  Coin4: {fileID: 0}
+  Xp: {fileID: 0}

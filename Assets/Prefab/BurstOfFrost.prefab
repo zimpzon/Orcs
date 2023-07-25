@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b35aa65b6620575489a8bb1252df2905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FrozenColor: {r: 0, g: 1, b: 1, a: 0.75686276}
 --- !u!212 &8826407342926426585
 SpriteRenderer:
   m_ObjectHideFlags: 0

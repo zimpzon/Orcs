@@ -11,8 +11,8 @@ public class SkellieWalker : ActorBase
 
     protected override void PreEnable()
     {
-        Speed = 1.0f * GameMode.MoveSpeedModifier;
-        Hp = 50 * GameMode.HitpointModifier;
+        Speed = 1.0f;
+        Hp = 50;
         mass_ = 1.0f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.SmallWalker;
     }

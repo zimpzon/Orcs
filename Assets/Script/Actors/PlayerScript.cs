@@ -34,6 +34,7 @@ public class PlayerScript : MonoBehaviour
     bool flashActive_;
     Material material_;
     float immunityEnd_;
+    bool immortal_;
 
     public bool RoundComplete;
     public bool UpgradesActive = false;
@@ -263,7 +264,12 @@ public class PlayerScript : MonoBehaviour
             return;
 
         damage = damage * PlayerUpgrades.Data.HealthDefenseMul;
-        Hp -= damage;
+
+        if (!immortal_)
+            Hp -= damage;
+        else
+            FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 1.0f, $"immortal", Color.white, speed: 0.1f, timeToLive: 0.2f, fontStyle: FontStyles.Normal);
+
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, 4.0f);
 
         FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"-{(int)damage:0}", Color.blue, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
@@ -465,6 +471,12 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            immortal_ = !immortal_;
+            FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
+        }
+
         if (GameManager.Instance.PauseGameTime)
             return;
 

@@ -24,7 +24,7 @@ BRAINSTORM
   taking damage = 0.5 sec shield, very long cooldown
   random portal leading to bonus map?
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
-  spawn large stationary enemies? either shooting or just being in the way.
+  spawn large stationary enemies? either shooting or just being in the way. Could use avoidance for actors.
   very dark map?
   healers, pretty awesome :p
   horn of Orcdor: every 10 seconds the baby orc will walk towards you OR if not picked up for X seconds
@@ -32,6 +32,7 @@ BRAINSTORM
      - ai can have some options (exists: speed, hp, weight), projectiles, cd, etc. snipers, shotguns
 
 SPAWNS
+  despawn after forced target reached, Y/N
   more spawns when killed faster
   timer based sections, to control pace
   special events besides grunts (bosses, casters, etc.)
@@ -52,3 +53,51 @@ https://www.assetstore.unity3d.com/en/#!/content/28729
 Weapons:
 https://www.assetstore.unity3d.com/en/#!/content/53117 
 
+
+
+AUTOGEN
+
+small ogre, shield1
+  shield2 are the same with larger (cooler shield) could be later waves)
+  unarmed are the same, just no shield and no weapon
+
+creatures_pack
+
+  Shield1/1/LVL0_: plain
+  Shield1/9/LVL0_: bronze mask, red eyes
+  Shield1/11/LVL0_: white skull mask
+  Shield1/17/LVL0_: full face iron mask
+  Shield1/19/LVL0_: full face iron mask, one red eye
+
+  Shield2/1/LVL0_: plain
+  Shield2/9/LVL0_: bronze mask, red eyes
+  Shield2/11/LVL0_: white skull mask
+  Shield2/17/LVL0_: full face iron mask
+  Shield2/19/LVL0_: full face iron mask, one red eye
+
+  unarmed/1/LVL0_: unarmed, plain
+  unarmed/9/LVL0_: unarmed, bronze mask, red eyes
+  unarmed/11/LVL0_: unarmed, white skull mask
+  unarmed/17/LVL0_: unarmed, full face iron mask
+  unarmed/19/LVL0_: unarmed, full face iron mask, one red eye
+
+Medieval_Warriors_Pack
+  Knight2\Sword\Walking: cool red stuff on head, iron armor
+
+Monsters_Pirates_Pack
+
+  Monster1\Walking: our plain ogre
+  Monster1\Walking\gun: ogre read headband, weapon
+  Monster1\Walking\no_gun: ogre read headband, unarmed
+  Monster3\Walking: skeleton
+  Monster4\Walking\gun: our skellie caster, with staff
+  Monster4\Walking\no_gun: our skellie caster, unarmed
+
+  pirate1\Walking\gun: human pirate, head bandana, gun
+  pirate1\Walking\no_gun: human pirate, head bandana, unarmed
+  pirate2\Walking\gun: red beard, captains hat, gun
+  pirate2\Walking\no_gun: red beard, captains hat, gun
+  pirate3\Walking: red cape, looks important, unarmed
+  pirate4\Walking: a duck...unarmed
+  pirate5\Walking\gun: no shirt, gun
+  pirate5\Walking\no_gun: no shirt, unarmed

@@ -25,6 +25,7 @@ public class ActorBase : MonoBehaviour
 
     private bool hasForcedDestination_;
     private Vector3 forcedDestination_;
+    protected bool despawnOnForcedDestinationReached_;
 
     [System.NonSerialized] public ActorTypeEnum ActorType;
     [System.NonSerialized] public float Hp;
@@ -95,7 +96,7 @@ public class ActorBase : MonoBehaviour
 
     public void Start()
     {
-        this.gameObject.layer = GameManager.Instance.LayerNeutral;
+        gameObject.layer = GameManager.Instance.LayerNeutral;
         massInverse_ = 1.0f / mass_;
     }
 
@@ -162,8 +163,7 @@ public class ActorBase : MonoBehaviour
 
         if (hasForcedDestination_)
         {
-            var dir = (forcedDestination_ - position_).normalized;
-            moveVec = (moveVec + dir).normalized;
+            moveVec = (forcedDestination_ - position_).normalized;
         }
 
         if (isLivingBomb_)
@@ -178,17 +178,21 @@ public class ActorBase : MonoBehaviour
 
     void CheckForCrowded()
     {
-        int crowdCount = BlackboardScript.CountEnemies(position_, 0.25f);
-        if (crowdCount > 4)
+        if (hasForcedDestination_ || !avoidCrowds_ || Time.time < nextCheckForCrowded_)
+            return;
+
+        int crowdCount = BlackboardScript.CountEnemies(position_, 0.1f);
+        if (crowdCount > 3)
         {
-            if (Random.value > 0.75f)
+            if (Random.value > 0.25f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1;
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.5f;
+                forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
-                FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
+                //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
-        nextCheckForCrowded_ = Time.time + 0.5f + Random.value;
+        nextCheckForCrowded_ = Time.time + 0.3f + Random.value * 0.5f;
     }
 
     public bool OnFreeze(Color color, float freezeTime)
@@ -216,15 +220,18 @@ public class ActorBase : MonoBehaviour
 
         if (!isFrozen_)
         {
-            if (!hasForcedDestination_ && avoidCrowds_ && Time.time > nextCheckForCrowded_)
-            {
-                CheckForCrowded();
-            }
+            CheckForCrowded();
 
-            if (hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.3f)
+            bool forcedDistinationReached = hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.2f;
+            if (forcedDistinationReached)
             {
-                FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
+                //FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
                 hasForcedDestination_ = false;
+                if (despawnOnForcedDestinationReached_)
+                {
+                    StopAllCoroutines();
+                    ReturnToCache();
+                }
             }
 
             force_ *= 1.0f - (30.0f * Time.deltaTime);
@@ -324,7 +331,7 @@ public class ActorBase : MonoBehaviour
             if (amount > 0.01f)
             {
                 material_.SetFloat(flashParamId_, 0.75f);
-                flashEndTime_ = Time.time + 0.2f;
+                flashEndTime_ = Time.time + 0.03f;
             }
 
             if (headshot)
@@ -484,7 +491,7 @@ public class ActorBase : MonoBehaviour
     IEnumerator Decay(float delay)
     {
         yield return new WaitForSeconds(delay);
-
+        StopAllCoroutines();
         BlackboardScript.DeadEnemies.Remove(this);
         ReturnToCache();
     }
@@ -506,6 +513,7 @@ public class ActorBase : MonoBehaviour
         force_ = Vector3.zero;
         hasForcedDestination_ = false;
         forcedDestination_ = Vector3.zero;
+        despawnOnForcedDestinationReached_ = false;
         material_.color = Color.white;
 
         EnableShadow(true);

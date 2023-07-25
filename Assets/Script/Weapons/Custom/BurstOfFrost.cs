@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BurstOfFrost : MonoBehaviour
 {
+    public Color FrozenColor = Color.cyan;
+
     const float FreezeTime = 3.0f;
     const float BurstTime = 0.05f;
     const float MaxScale = 5.0f;
@@ -67,7 +69,7 @@ public class BurstOfFrost : MonoBehaviour
             ActorBase enemy = BlackboardScript.Enemies[idx];
 
             if (Random.value < FreezeChance)
-                enemy.OnFreeze(renderer_.color, FreezeTime);
+                enemy.OnFreeze(FrozenColor, FreezeTime);
 
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;
