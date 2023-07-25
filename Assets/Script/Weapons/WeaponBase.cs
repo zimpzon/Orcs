@@ -44,9 +44,6 @@ public class WeaponBase
     static WeaponPaintball Paintball;
     static WeaponPaintballRandom PaintballRandom;
     static WeaponRambo Rambo;
-    static WeaponShutgun Shotgun;
-    static WeaponSuperShutgun SuperShotgun;
-    static WeaponSawedShutgun SawedShotgun;
     static WeaponShutgunSlug ShotgunSlug;
     static WeaponSniper Sniper;
     static WeaponMachinegun Machinegun;
@@ -70,7 +67,7 @@ public class WeaponBase
 
     public float GetCdLeft()
     {
-        return Mathf.Max(0.0f, (lastFire_ - Time.time) + Cd * PlayerUpgrades.Data.WeaponsCdMul);
+        return Mathf.Max(0.0f, (lastFire_ - Time.time) + Cd * PlayerUpgrades.Data.MagicMissileCdMul);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)
@@ -95,51 +92,6 @@ public class WeaponBase
         {
             case WeaponType.None:
                 return None;
-
-            case WeaponType.Shotgun:
-                if (Shotgun == null)
-                {
-                    Shotgun = new WeaponShutgun();
-                    Shotgun.Type = WeaponType.Shotgun;
-                    Shotgun.Cd = 0.5f;
-                    Shotgun.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    Shotgun.Sprite = SpriteData.Instance.Shotgun;
-                    Shotgun.BulletSprite = SpriteData.Instance.RoundBullet;
-                    Shotgun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    Shotgun.FireAudio = AudioManager.Instance.AudioData.PlayerShotgunFire;
-                    Shotgun.MoveSpeedModifier = 0.25f;
-                }
-                return Shotgun;
-
-            case WeaponType.SuperShotgun:
-                if (SuperShotgun == null)
-                {
-                    SuperShotgun = new WeaponSuperShutgun();
-                    SuperShotgun.Type = WeaponType.SuperShotgun;
-                    SuperShotgun.Cd = 0.4f;
-                    SuperShotgun.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    SuperShotgun.Sprite = SpriteData.Instance.Shotgun;
-                    SuperShotgun.BulletSprite = SpriteData.Instance.RoundBullet;
-                    SuperShotgun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    SuperShotgun.FireAudio = AudioManager.Instance.AudioData.PlayerShotgunFire;
-                    SuperShotgun.MoveSpeedModifier = 0.25f;
-                }
-                return SuperShotgun;
-
-            case WeaponType.SawedShotgun:
-                if (SawedShotgun == null)
-                {
-                    SawedShotgun = new WeaponSawedShutgun();
-                    SawedShotgun.Type = WeaponType.SawedShotgun;
-                    SawedShotgun.Cd = 0.4f;
-                    SawedShotgun.Scale = new Vector3(1.0f, 4.0f, 1.0f);
-                    SawedShotgun.Sprite = SpriteData.Instance.Shotgun;
-                    SawedShotgun.BulletSprite = SpriteData.Instance.RoundBullet;
-                    SawedShotgun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    SawedShotgun.FireAudio = AudioManager.Instance.AudioData.PlayerShotgunFire;
-                    SawedShotgun.MoveSpeedModifier = 0.25f;
-                }
-                return SawedShotgun;
 
             case WeaponType.ShotgunSlug:
                 if (ShotgunSlug == null)
@@ -333,24 +285,9 @@ public class WeaponBase
                 }
                 return Sawblade;
 
-            //case WeaponType.Flamethrower:
-            //    if (Flamethrower == null)
-            //    {
-            //        Flamethrower = new WeaponFlamethrower();
-            //        Flamethrower.Type = WeaponType.Flamethrower;
-            //        Flamethrower.Cd = 0.05f;
-            //        Flamethrower.Scale = new Vector3(1.5f, 2.0f, 1.0f);
-            //        Flamethrower.Sprite = SpriteData.Instance.Flamethrower;
-            //        Flamethrower.BulletSprite = SpriteData.Instance.RoundBullet;
-            //        Flamethrower.Muzzle = new Vector3(0.6f, 0.02f, 0.0f);
-            //        Flamethrower.FireAudio = AudioManager.Instance.AudioData.PlayerFlamethrowerFire;
-            //        Flamethrower.MoveSpeedModifier = 0.5f;
-            //    }
-            //return Flamethrower;
-
             default:
                 Debug.LogError("Unknown weapon type: " + type.ToString());
-                return Shotgun;
+                return Unarmed;
         }
     }
 }

@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     const float BaseCd = 0.5f;
-    const int BaseBullets = 1;
     const float BaseMoveSpeed = 4f;
 
     public float Hp;
@@ -40,7 +39,6 @@ public class PlayerScript : MonoBehaviour
     public bool UpgradesActive = false;
 
     public Text OverheadText;
-
     public Transform Grenade;
     GrenadeScript grenadeScript_;
 
@@ -185,12 +183,12 @@ public class PlayerScript : MonoBehaviour
 
     void RefreshBulletCount()
     {
-        shotsLeft_ = BaseBullets + PlayerUpgrades.Data.MachinegunBulletsAdd;
+        shotsLeft_ = PlayerUpgrades.Data.MagicMissileBaseBullets + PlayerUpgrades.Data.MagicMissileBulletsAdd;
     }
 
     void SetNextFire()
     {
-        float FireCd = BaseCd * PlayerUpgrades.Data.WeaponsCdMul;
+        float FireCd = BaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
         nextFire_ = GameManager.Instance.GameTime + FireCd;
     }
 
@@ -472,8 +470,17 @@ public class PlayerScript : MonoBehaviour
 
         if (Time.time > lastRegenTick_ + 1.0f)
         {
-            Hp += PlayerUpgrades.Data.BaseHealthRegenSec * PlayerUpgrades.Data.HealthRegenSecMul;
             lastRegenTick_ = Time.time;
+
+            if (Hp >= MaxHp)
+                return;
+
+            int newHp = (int)(Hp + PlayerUpgrades.Data.BaseHealthRegenSec * PlayerUpgrades.Data.HealthRegenSecMul + 0.5f);
+            int change = newHp - (int)(Hp + 0.5f);
+            Hp = newHp;
+
+            if (change > 0)
+                FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{change}", new Color(0, 1, 0, 0.2f), speed: 0.75f, timeToLive: 0.5f);
 
             if (Hp > MaxHp)
                 Hp = MaxHp;

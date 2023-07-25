@@ -8,22 +8,6 @@ public static class ShopItemsWeapons
         {
             new ShopItem
             {
-                ItemType = ShopItemType.WeaponDamage,
-                Title = "Main weapon, damage",
-                Description = "Increase main weapon damage by <color=#00ff00>+#VALUE%</color> per rank.",
-                BasePrice = 500,
-                PriceMultiplier = 2.0f,
-                MaxLevel = 4,
-                Value = 15,
-                ValueScale = 0.01f,
-                Apply = (BoughtItem bought) =>
-                {
-                    PlayerUpgrades.Data.WeaponsDamageMul += bought.Level * bought.Value * bought.ValueScale;
-                }
-            },
-
-            new ShopItem
-            {
                 ItemType = ShopItemType.WeaponRange,
                 Title = "Main weapon, range",
                 Description = "Increase main weapon range by <color=#00ff00>+#VALUE%</color> per rank.",
@@ -34,7 +18,7 @@ public static class ShopItemsWeapons
                 ValueScale = 0.01f,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.WeaponsRangeMul += bought.Level * bought.Value * bought.ValueScale;
+                    PlayerUpgrades.Data.MagicMissileRangeMul += bought.Level * bought.Value * bought.ValueScale;
                 }
             },
 
@@ -50,7 +34,7 @@ public static class ShopItemsWeapons
                 ValueScale = 0.01f,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.WeaponsCdMul *= 1.0f - bought.Value * bought.ValueScale * bought.Level;
+                    PlayerUpgrades.Data.MagicMissileCdMul *= 1.0f - bought.Value * bought.ValueScale * bought.Level;
                 }
             },
 
@@ -66,7 +50,7 @@ public static class ShopItemsWeapons
                 ValueScale = 1,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.MachinegunBulletsAdd += bought.Level * (int)bought.Value;
+                    PlayerUpgrades.Data.MagicMissileBulletsAdd += bought.Level * (int)bought.Value;
                 }
             },
         };

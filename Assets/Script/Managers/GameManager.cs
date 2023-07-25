@@ -1023,12 +1023,12 @@ public class GameManager : MonoBehaviour
     Vector3 rotInf = new Vector3(0, 0, 0);
     float magn = 1.0f, rough = 10, fadeIn = 0.5f, fadeOut = 0.5f;
 
-    public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier, bool headshot = false)
+    public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
     {
         amount *= PlayerUpgrades.Data.DamageMul;
-        bool isCrit = UnityEngine.Random.value < 0.25;
+        bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;
         if (isCrit)
-            amount *= 2;
+            amount *= PlayerUpgrades.Data.CritValueMul;
 
         enemy.ApplyDamage(amount, direction, forceModifier, headshot: false);
 

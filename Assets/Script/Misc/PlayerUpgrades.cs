@@ -10,9 +10,12 @@ public class UpgradeData
 
     // global
     public float DamageMul = 1.0f;
+    public float BaseCritChance = 0.01f;
+    public float CritChanceMul = 1.0f;
+    public float CritValueMul = 2.0f;
 
     // gold
-    public float MoneyDoubleChance = 0.5f;
+    public float MoneyDoubleChance = 0.05f;
     public float DropMoneyOnKillChance = 0.01f;
     public int DropMoneyOnKillMin = 1;
     public int DropMoneyOnKillMax = 3;
@@ -24,14 +27,14 @@ public class UpgradeData
     public float HealthRegenSecMul = 1.0f;
     public float OnDamageTimeImmune = 0.1f;
     public float HealthDefenseMul = 1.0f;
-
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float WeaponsCdMul = 1.0f;
-    public float WeaponsDamageMul = 1.0f;
-    public float WeaponsRangeMul = 1.0f;
-    public int MachinegunBulletsAdd = 0;
+    public float MagicMissileCdMul = 1.0f;
+    public float MagicMissileBaseRange = 6.0f;
+    public float MagicMissileRangeMul = 1.0f;
+    public int MagicMissileBaseBullets = 2;
+    public int MagicMissileBulletsAdd = 0;
 
     // orc
     public bool OrcJedisEnabled = false;

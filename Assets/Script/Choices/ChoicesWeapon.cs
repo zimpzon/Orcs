@@ -8,55 +8,27 @@ public static class ChoicesWeapon
         {
             new Choice
             {
-                Title = "Weapons: Damage (1)",
-                Description = "<color=#00ff00>10%</color> weapon damage.",
-                Apply = () =>
-                {
-                    PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
-                },
-                NextLevel = new Choice
-                {
-                    Title = "Weapons: Damage (2)",
-                    Description = "<color=#00ff00>10%</color> weapon damage.",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.WeaponsDamageMul += 0.1f;
-                    },
-                    NextLevel = new Choice
-                    {
-                        Title = "Weapons: Damage (3)",
-                        Description = "<color=#00ff00>15%</color> weapon damage.",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.WeaponsDamageMul += 0.15f;
-                        },
-                    }
-                }
-            },
-
-            new Choice
-            {
-                Title = "Weapons: Range (1)",
+                Title = "Magic missile range (1)",
                 Description = "<color=#00ff00>10%</color> weapon range.",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.WeaponsRangeMul += 0.1f;
+                    PlayerUpgrades.Data.MagicMissileRangeMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Weapons: range (2)",
+                    Title = "Magic missile range (2)",
                     Description = "<color=#00ff00>10%</color> weapon range.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.WeaponsRangeMul += 0.1f;
+                        PlayerUpgrades.Data.MagicMissileRangeMul += 0.1f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Weapons: range (3)",
+                        Title = "Magic missile range (3)",
                         Description = "<color=#00ff00>15%</color> weapon range.",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.WeaponsRangeMul += 0.15f;
+                            PlayerUpgrades.Data.MagicMissileRangeMul += 0.15f;
                         },
                     }
                 }
@@ -64,51 +36,60 @@ public static class ChoicesWeapon
 
             new Choice
             {
-                Title = "Quickshot (1)",
+                Title = "Magic missile attack speed (1)",
                 Description = "<color=#00ff00>+10%</color> attack speed",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
+                    PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Quickshot (2)",
-                Description = "<color=#00ff00>+10%</color> attack speed",
+                    Title = "Magic missile attack speed (2)",
+                    Description = "<color=#00ff00>+10%</color> attack speed",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.WeaponsCdMul -= 0.1f;
-                        PlayerUpgrades.Data.WeaponsDamageMul -= 0.05f;
-                    },
-                }
-            },
-
-            new Choice
-            {
-                Title = "Machinegun: Trigger-happy (1)",
-                Description = "Add <color=#00ff00>+1</color> bullet per round.",
-                Apply = () =>
-                {
-                    PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
-                },
-                NextLevel = new Choice
-                {
-                    Title = "Machinegun: Trigger-happy (2)",
-                    Description = "Add <color=#00ff00>+1</color> bullet per round.",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
+                        PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Machinegun: Trigger-happy (3)",
-                        Description = "Add <color=#00ff00>+1</color> bullets per round.",
+                        Title = "Magic missile attack speed ()",
+                        Description = "<color=#00ff00>+10%</color> attack speed",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MachinegunBulletsAdd += 1;
+                            PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
                         },
                     }
                 }
             },
+
+            new Choice
+            {
+                Title = "Magic missile salvo (1)",
+                Description = "Add <color=#00ff00>+1</color> missile per round.",
+                Apply = () =>
+                {
+                    PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                },
+                NextLevel = new Choice
+                {
+                    Title = "Magic missile salvo (2)",
+                    Description = "Add <color=#00ff00>+1</color> missile per round.",
+                    Apply = () =>
+                    {
+                        PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                    },
+                    NextLevel = new Choice
+                    {
+                        Title = "Magic missile salvo (3)",
+                        Description = "Add <color=#00ff00>+1</color> missile per round.",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                        },
+                    }
+                }
+            },
+
         };
     }
 }

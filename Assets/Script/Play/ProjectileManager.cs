@@ -142,6 +142,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
     public void Fire(Basic basic)
     {
+        // add global bonuses
+        basic.Damage *= PlayerUpgrades.Data.DamageMul;
+
         // Automatically adjust capsule collider to sprite
         var spriteSize = basic.SpriteInfo.Renderer.sprite.bounds.size;
         basic.SpriteInfo.Collider.size = spriteSize * 0.8f; // A little smaller so player won't feel cheated.

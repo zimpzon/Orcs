@@ -30,6 +30,7 @@ public static class UpgradeChoices
     public static void InitChoices()
     {
         CurrentChoices = new List<Choice>();
+        CurrentChoices.AddRange(ChoicesGlobal.GetGlobalChoices());
         CurrentChoices.AddRange(ChoicesWeapon.GetWeaponChoices());
         CurrentChoices.AddRange(ChoicesPlayer.GetPlayerChoices());
         CurrentChoices.AddRange(ChoicesBabyOrc.GetBabyOrcChoices());

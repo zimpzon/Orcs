@@ -2,10 +2,8 @@
   enemies on the way in can be killed and remain deadly (and white)
   player can leave arena on left and right sides
 
-NEXT
-  HEALTH - immunity timer, new upgrades: max life, regen, defense, health now, regen for x seconds
-
 SMART DESIGN
+ really need current and new value for choices
  save baby knight? can then use orc enemies
  friendly is blue'ish, deadly is red'ish.
  COHERENT DESIGN, it is now spells :)
@@ -14,29 +12,22 @@ SMART DESIGN
   balance/rewards for picking up orc and killing enemies
   synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
-GRAPHIX:
-  awesome chars:
-    https://assetstore.unity.com/packages/2d/characters/2d-pixel-unit-maker-spum-188715
-    https://assetstore.unity.com/packages/2d/characters/pixel-heroes-editor-250116
-
 BRAINSTORM
-  drop stuff that attacks when and enemy is close
+  FROZEN enemies cannot harm you?
+  chain lightning...
+  health + health regen pickups that are temp (voluntary uregency)   urgency with "loot goblins"? / money
   rare pickup that gives a bonus choice
+  drop stuff that attacks when and enemy is close
+  pool of stuff on the floor
   conditions on upgrades, so you can upgrade weapon fully without shop, but after using shop you will get other choices.
   when you get an upgrade, immediately fire it, much more fun
   taking damage = 0.5 sec shield, very long cooldown
   random portal leading to bonus map?
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
   spawn large stationary enemies? either shooting or just being in the way.
-  attachment: shotgun (unlock at some boss?)
-  attachment: sniper (or laser from Chuck?), possibly pushing to form a path? (unlock at some boss?)
-  more crit %, more crit damage
-  % chance to drop xp in kill, crits increase change (synergy)
   very dark map?
   healers, pretty awesome :p
   horn of Orcdor: every 10 seconds the baby orc will walk towards you OR if not picked up for X seconds
-  urgency with "loot goblins"? / money
-  pool of stuff on the floor
   ai can be reused for multiple chars with no or simples param changes. still gives the impression of many enemies.
      - ai can have some options (exists: speed, hp, weight), projectiles, cd, etc. snipers, shotguns
 

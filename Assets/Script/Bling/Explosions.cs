@@ -4,12 +4,15 @@ using UnityEngine;
 
 public static class Explosions
 {
-    public static void Push(Vector3 pos, float radius, float force, float damage = 0)
+    public static void Push(Vector3 pos, float radius, float force, float damage = 0, bool silent = false)
     {
-        GameManager.Instance.MakeFlash(pos, radius * 1f);
-        GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
-        GameManager.Instance.ShakeCamera(0.2f);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
+        if (!silent)
+        {
+            GameManager.Instance.MakeFlash(pos, radius * 1f);
+            GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
+            GameManager.Instance.ShakeCamera(0.2f);
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
+        }
 
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)

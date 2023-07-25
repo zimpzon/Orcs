@@ -2,11 +2,12 @@
 
 public class WeaponPaintball : WeaponBase
 {
+    const float SlowTime = 3.0f;
     public Sprite BulletSprite;
 
     void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
     {
-        if (other.OnPaintballHit(projectile.Color))
+        if (other.OnPaintballHit(projectile.Color, SlowTime))
         {
             if (--projectile.CustomCounter == 0)
                 projectile.DieOnCollision = true;

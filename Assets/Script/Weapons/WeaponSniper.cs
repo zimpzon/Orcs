@@ -60,7 +60,7 @@ public class WeaponSniper : WeaponBase
             BlackboardScript.HitMatch match = ordered[i];
             ActorBase enemy = BlackboardScript.Enemies[match.Idx];
             float enemyDamage = Mathf.Min(enemy.Hp, damage);
-            GameManager.Instance.DamageEnemy(enemy, enemyDamage, direction, 1.0f, match.IsHeadshot);
+            GameManager.Instance.DamageEnemy(enemy, enemyDamage, direction, 1.0f);
             damage -= enemyDamage;
             if (damage <= 0)
                 break;

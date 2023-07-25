@@ -62,6 +62,10 @@ public class ActorBase : MonoBehaviour
 
     protected bool isPainted_;
     float paintEnd_;
+    Color paintColor_;
+    protected bool isFrozen_;
+    float frozenEnd_;
+    Color frozenColor_;
     protected bool isLivingBomb_;
     float livingBombDamage_;
     float livingBombEnd_;
@@ -107,17 +111,6 @@ public class ActorBase : MonoBehaviour
         GameManager.Instance.RegisterEnemy(this);
         StartCoroutine(SpawnAnimCo());
         PostEnable();
-    }
-
-    public bool OnPaintballHit(Color color)
-    {
-        if (isPainted_)
-            return false;
-
-        isPainted_ = true;
-        paintEnd_ = Time.time + 3.0f;
-        material_.color = Color.Lerp(Color.white, color, 0.5f);
-        return true;
     }
 
     public void OnLivingBombHit(float damage, bool playSound = true)
@@ -175,20 +168,22 @@ public class ActorBase : MonoBehaviour
 
         if (isLivingBomb_)
             speed *= 0.9f;
+        else if (isFrozen_)
+            speed *= 0.001f;
         else if (isPainted_)
             speed *= 0.25f;
 
-        position_ += moveVec * speed * slowmotionModifier_ * Timers.EnemyTimer * Time.deltaTime;
+        position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
     }
 
     void CheckForCrowded()
     {
         int crowdCount = BlackboardScript.CountEnemies(position_, 0.25f);
-        if (crowdCount > 3)
+        if (crowdCount > 4)
         {
             if (Random.value > 0.75f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 2;
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1;
                 hasForcedDestination_ = true;
                 FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
@@ -196,28 +191,53 @@ public class ActorBase : MonoBehaviour
         nextCheckForCrowded_ = Time.time + 0.5f + Random.value;
     }
 
+    public bool OnFreeze(Color color, float freezeTime)
+    {
+        frozenColor_ = color;
+        isFrozen_ = true;
+        frozenEnd_ = Time.time + freezeTime;
+        return true;
+    }
+
+    public bool OnPaintballHit(Color color, float paintTime)
+    {
+        isPainted_ = true;
+        paintColor_ = color;
+        paintEnd_ = Time.time + paintTime;
+        return true;
+    }
+
     public void Update()
     {
-        if (!hasForcedDestination_ && avoidCrowds_ && Time.time > nextCheckForCrowded_)
-        {
-            CheckForCrowded();
-        }
+        if (isFrozen_)
+            material_.color = Color.Lerp(Color.white, frozenColor_, 0.6f);
+        else if (isPainted_)
+            material_.color = Color.Lerp(Color.white, paintColor_, 0.8f);
 
-        if (hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.5f)
+        if (!isFrozen_)
         {
-            FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
-            hasForcedDestination_ = false;
-        }
+            if (!hasForcedDestination_ && avoidCrowds_ && Time.time > nextCheckForCrowded_)
+            {
+                CheckForCrowded();
+            }
 
-        force_ *= 1.0f - (30.0f * Time.deltaTime);
-        position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
-        transform_.position = position_;
+            if (hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.3f)
+            {
+                FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
+                hasForcedDestination_ = false;
+            }
+
+            force_ *= 1.0f - (30.0f * Time.deltaTime);
+            position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
+            transform_.position = position_;
+        }
 
         if (isSpawning_)
             return;
 
         PreUpdate();
         CheckPainted();
+        CheckFrozen();
         UpdateLivingBomb();
         CheckFullyReady();
 
@@ -240,7 +260,7 @@ public class ActorBase : MonoBehaviour
             }
         }
 
-        if (!dead)
+        if (!dead && !isFrozen_)
             animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, currentAnimations_);
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
@@ -264,6 +284,18 @@ public class ActorBase : MonoBehaviour
         if (Time.time > paintEnd_)
         {
             isPainted_ = false;
+            material_.color = Color.white;
+        }
+    }
+
+    private void CheckFrozen()
+    {
+        if (!isFrozen_)
+            return;
+
+        if (Time.time > frozenEnd_)
+        {
+            isFrozen_ = false;
             material_.color = Color.white;
         }
     }
@@ -465,6 +497,7 @@ public class ActorBase : MonoBehaviour
         transform_.localScale = baseScale_;
         IsCorpse = false;
         isPainted_ = false;
+        isFrozen_ = false;
         isLivingBomb_ = false;
         isSpawning_ = true;
         IsFullyReady = false;
