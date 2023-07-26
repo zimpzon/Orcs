@@ -22,15 +22,15 @@ public class SkellieCaster : ActorBase
     {
         Speed = 3.0f * GameMode.MoveSpeedModifier;
         Hp = 150 * GameMode.HitpointModifier;
-        mass_ = 1.2f * GameMode.MassModifier;
+        Mass = 1.2f * GameMode.MassModifier;
         ActorType = ActorTypeEnum.Caster;
     }
 
     protected override void PostEnable()
     {
         scale_ = transform_.localScale;
-        position_ = this.Transform.position;
-        currentAnimations_ = SpriteData.Instance.SkellieCasterWalkSprites;
+        position_ = transform_.position;
+        Animations = SpriteData.Instance.SkellieCasterWalkSprites;
         GetNewTarget();
 
         StartCoroutine(Think());

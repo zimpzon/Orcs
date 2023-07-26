@@ -1,8 +1,11 @@
-﻿BUGS
-  enemies on the way in can be killed and remain deadly (and white)
-  player can leave arena on left and right sides
+﻿CAM: 8.4
 
+BUGS
+  enemies on the way in can be killed and remain deadly (and white)
+  died a few times without seeing why
+  
 SMART DESIGN
+ orc sword is required atm, fix that it gets swarmed an is impossible to get.
  really need current and new value for choices
  save baby knight? can then use orc enemies
  friendly is blue'ish, deadly is red'ish.
@@ -13,8 +16,12 @@ SMART DESIGN
   synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
-  FROZEN enemies cannot harm you?
-  chain lightning...
+  shield/sword enemies loses items which flies away, and continues as plain enemies.
+  use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
+  chance to deflect projectiles? make 'em blue.
+  hit furthest enemy :)
+  +1 bullet is too good, +0.x instead
+  chain-something, lightning...
   health + health regen pickups that are temp (voluntary uregency)   urgency with "loot goblins"? / money
   rare pickup that gives a bonus choice
   drop stuff that attacks when and enemy is close
@@ -26,7 +33,6 @@ BRAINSTORM
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
   spawn large stationary enemies? either shooting or just being in the way. Could use avoidance for actors.
   very dark map?
-  healers, pretty awesome :p
   horn of Orcdor: every 10 seconds the baby orc will walk towards you OR if not picked up for X seconds
   ai can be reused for multiple chars with no or simples param changes. still gives the impression of many enemies.
      - ai can have some options (exists: speed, hp, weight), projectiles, cd, etc. snipers, shotguns
@@ -54,8 +60,21 @@ Weapons:
 https://www.assetstore.unity3d.com/en/#!/content/53117 
 
 
-
 AUTOGEN
+  from game perspective:
+    get enemy(type), that is it? spawner will pick the right one for bosses etc.
+  
+  data driven:
+    sprites path
+    enum name
+    components to add
+    name base class (ActorBase or custom)
+
+  create sprite lists
+  create default data for each
+  if baseClass is set, 
+  create classes for each (need filename, can also be used for enum)
+  
 
 small ogre, shield1
   shield2 are the same with larger (cooler shield) could be later waves)
@@ -87,11 +106,12 @@ Medieval_Warriors_Pack
 Monsters_Pirates_Pack
 
   Monster1\Walking: our plain ogre
-  Monster1\Walking\gun: ogre read headband, weapon
-  Monster1\Walking\no_gun: ogre read headband, unarmed
+  Monster2\Walking\gun: ogre read headband, weapon
+  Monster2\Walking\no_gun: ogre read headband, unarmed
   Monster3\Walking: skeleton
   Monster4\Walking\gun: our skellie caster, with staff
   Monster4\Walking\no_gun: our skellie caster, unarmed
+
 
   pirate1\Walking\gun: human pirate, head bandana, gun
   pirate1\Walking\no_gun: human pirate, head bandana, unarmed

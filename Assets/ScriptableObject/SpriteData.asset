@@ -12,24 +12,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae8cf6714fdb2f499d4a415fbd08eab, type: 3}
   m_Name: SpriteData
   m_EditorClassIdentifier: 
-  Ogrelarge:
+  OgreLarge:
     WalkSprites: []
     Settings:
-      Damage: 25
-      Hp: 1000
+      ActorType: 0
+      Scale: 1
+      Hp: 100
       MoveSpeed: 1
-  OgreDefault:
+      MaxHp: 666
+  Ogre:
     WalkSprites: []
     Settings:
-      Damage: 25
-      Hp: 500
+      ActorType: 0
+      Scale: 1
+      Hp: 100
       MoveSpeed: 1
+      MaxHp: 666
   OgreMini:
     WalkSprites: []
     Settings:
-      Damage: 25
+      ActorType: 0
+      Scale: 1
       Hp: 100
       MoveSpeed: 1
+      MaxHp: 666
+  OgreCasterMini:
+    WalkSprites: []
+    Settings:
+      ActorType: 0
+      Scale: 1
+      Hp: 100
+      MoveSpeed: 1
+      MaxHp: 666
+  OgreCaster:
+    WalkSprites: []
+    Settings:
+      ActorType: 0
+      Scale: 1
+      Hp: 100
+      MoveSpeed: 1
+      MaxHp: 666
+  OgreCasterLarge:
+    WalkSprites: []
+    Settings:
+      ActorType: 0
+      Scale: 1
+      Hp: 100
+      MoveSpeed: 1
+      MaxHp: 666
+  OgreHeadband:
+    WalkSprites: []
+    Settings:
+      ActorType: 0
+      Scale: 1
+      Hp: 100
+      MoveSpeed: 1
+      MaxHp: 666
+  OgreHeadbandWeapon:
+    WalkSprites: []
+    Settings:
+      ActorType: 0
+      Scale: 1
+      Hp: 100
+      MoveSpeed: 1
+      MaxHp: 666
   PlayerRunSprites:
   - {fileID: 21300000, guid: 5d6f88caa9397a645b622e65da0cd258, type: 3}
   - {fileID: 21300000, guid: 0e80150245a5d9549b139e1210f175f4, type: 3}
@@ -45,13 +91,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 333ec32b63b8ee743a47f43edfdbc0d4, type: 3}
   - {fileID: 21300000, guid: c996075bdd143634b94f2b403acdfc47, type: 3}
   - {fileID: 21300000, guid: d5640c98e9de75849860784a7323262f, type: 3}
-  SkellieWalkSprites:
-  - {fileID: 21300000, guid: f463a478dccd71247ad83097e157d80f, type: 3}
-  - {fileID: 21300000, guid: 81b53d1351a2f7f428477d4772e9e8e4, type: 3}
-  - {fileID: 21300000, guid: 8c7860ae599914e41b5166760a4a76f7, type: 3}
-  - {fileID: 21300000, guid: a68e68f5b2efaa8439d2dd103613988c, type: 3}
+  OgreWalkSprites: []
   Skellie2WalkSprites:
-  - {fileID: 21300000, guid: 001ff24213a766e4784a063abbfabeee, type: 3}
+  - {fileID: 21300000, guid: 3e66aca86ecff4245b925020a0f49613, type: 3}
   - {fileID: 21300000, guid: b9cc5441bfa60534c86b3c4eb88d9a54, type: 3}
   - {fileID: 21300000, guid: bc1cbe82b02298d4ebb83381bab28f3d, type: 3}
   - {fileID: 21300000, guid: 863dcef35bfee9e428f5f52593090ebb, type: 3}

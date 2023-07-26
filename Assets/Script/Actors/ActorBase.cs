@@ -2,10 +2,21 @@
 using System.Collections;
 using UnityEngine;
 
-public enum ActorTypeEnum { None, Any, SmallWalker, SmallCharger, LargeWalker, Caster };
+public enum ActorTypeEnum { None, Any, SmallWalker, SmallCharger, LargeWalker, Caster,
+    Ogre, OgreSmall, OgreLarge,
+ };
 
 public class ActorBase : MonoBehaviour
 {
+    public Sprite[] Animations;
+    public bool CanBeFrozen = true;
+    public bool CanBePoisened = true;
+    public float Speed = 1.0f;
+    public bool AvoidCrowds = true;
+    public float Mass = 1.0f;
+    public ActorTypeEnum ActorType;
+    public float Hp = 50;
+
     public static void ResetClosestEnemy()
     {
         PlayerClosestEnemy = null;
@@ -13,10 +24,12 @@ public class ActorBase : MonoBehaviour
     }
 
     [System.NonSerialized] public static float Damage = 25.0f;
+    [System.NonSerialized] public bool IsFullyReady = false;
 
     [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
+    // TODO: hardcoded???
     [System.NonSerialized] public float RadiusFirstCheck = 0.6f;
     [System.NonSerialized] public float RadiusBody = 0.4f;
     [System.NonSerialized] public Vector3 BodyOffset = new Vector3(0.0f, -0.25f, 0.0f);
@@ -27,18 +40,11 @@ public class ActorBase : MonoBehaviour
     private Vector3 forcedDestination_;
     protected bool despawnOnForcedDestinationReached_;
 
-    [System.NonSerialized] public ActorTypeEnum ActorType;
-    [System.NonSerialized] public float Hp;
-
-    public Transform Transform;
     protected GameModeData GameMode;
     protected float DecayTime = 10.0f;
     protected AnimationController animationController_ = new AnimationController();
-    protected Sprite[] currentAnimations_;
 
-    protected Vector3 baseScale_;
     protected Vector3 position_;
-    protected float mass_ = 1.0f;
     protected float massInverse_;
     protected Vector3 force_;
     protected Transform transform_;
@@ -48,8 +54,6 @@ public class ActorBase : MonoBehaviour
     protected int flashColorParamId_;
     protected float flashEndTime_;
     protected float nextCheckForCrowded_;
-    protected bool avoidCrowds_ = true;
-
 
     protected virtual void PreEnable() { }
     protected virtual void PostEnable() { }
@@ -71,33 +75,28 @@ public class ActorBase : MonoBehaviour
     float livingBombDamage_;
     float livingBombEnd_;
     protected bool isSpawning_ = true;
-    public bool IsFullyReady = false;
 
     Color outsideArenaColor = new Color(0.0f, 0.0f, 0.0f);
 
     public void Awake()
     {
-        currentAnimations_ = SpriteData.Instance.SkellieWalkSprites; // Set default animations
-
         transform_ = this.transform;
-        Transform = transform_;
-        baseScale_ = transform_.localScale;
+
         renderer_ = GetComponent<SpriteRenderer>();
         material_ = renderer_.material;
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
 
         // Assume uniform scale
-        float scale = baseScale_.x;
-        RadiusFirstCheck *= scale;
-        RadiusBody *= scale;
-        BodyOffset *= scale;
+        RadiusFirstCheck *= transform_.localScale.x;
+        RadiusBody *= transform_.localScale.x;
+        BodyOffset *= transform_.localScale.x;
     }
 
     public void Start()
     {
         gameObject.layer = GameManager.Instance.LayerNeutral;
-        massInverse_ = 1.0f / mass_;
+        massInverse_ = 1.0f / Mass;
     }
 
     public void OnEnable()
@@ -148,7 +147,7 @@ public class ActorBase : MonoBehaviour
 
         float flashAmount = ((int)(Time.time * 6) & 1) == 0 ? 0.0f : 0.8f;
         material_.SetFloat(flashParamId_, flashAmount);
-        if (Random.value < 0.01f)
+        if (UnityEngine.Random.value < 0.01f)
             GameManager.Instance.MakePoof(transform_.position, 1, 1.0f);
     }
 
@@ -178,7 +177,7 @@ public class ActorBase : MonoBehaviour
 
     void CheckForCrowded()
     {
-        if (hasForcedDestination_ || !avoidCrowds_ || Time.time < nextCheckForCrowded_)
+        if (hasForcedDestination_ || !AvoidCrowds || Time.time < nextCheckForCrowded_)
             return;
 
         int crowdCount = BlackboardScript.CountEnemies(position_, 0.1f);
@@ -268,7 +267,7 @@ public class ActorBase : MonoBehaviour
         }
 
         if (!dead && !isFrozen_)
-            animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, currentAnimations_);
+            animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, Animations);
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
 
@@ -501,7 +500,6 @@ public class ActorBase : MonoBehaviour
     {
         StopAllCoroutines();
         transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        transform_.localScale = baseScale_;
         IsCorpse = false;
         isPainted_ = false;
         isFrozen_ = false;

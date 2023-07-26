@@ -16,6 +16,12 @@ public class AnimationController
 
     public void Tick(float delta, SpriteRenderer renderer, Sprite[] animations, float delay = 0.15f)
     {
+        if (animations.Length == 0)
+        {
+            Debug.LogError("animations array is empty");
+            return;
+        }
+
         if (!object.ReferenceEquals(animations, prevAnimation))
         {
             nextChange_ = 0;

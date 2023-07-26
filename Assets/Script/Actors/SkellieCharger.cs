@@ -15,15 +15,14 @@ public class SkellieCharger : ActorBase
     {
         Speed = 1.5f * GameMode.MoveSpeedModifier;
         Hp = 50 * GameMode.HitpointModifier;
-        mass_ = 1.0f * GameMode.MassModifier;
-        ActorType = ActorTypeEnum.SmallCharger;
+        Mass = 1.0f * GameMode.MassModifier;
     }
 
     protected override void PostEnable()
     {
         scale_ = transform_.localScale;
-        position_ = this.Transform.position;
-        currentAnimations_ = SpriteData.Instance.Skellie2WalkSprites;
+        position_ = this.transform_.position;
+        Animations = SpriteData.Instance.Skellie2WalkSprites;
         target_ = GetNewTarget();
         StartCoroutine(Think());
     }

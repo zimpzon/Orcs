@@ -43,7 +43,7 @@ public class SpriteData : ScriptableObject
     public Sprite[] PlayerIdleSprites;
     public Sprite[] PlayerMeleeSprites;
 
-    public Sprite[] SkellieWalkSprites;
+    public Sprite[] OgreWalkSprites;
     public Sprite[] Skellie2WalkSprites;
     public Sprite[] SkellieCasterWalkSprites;
     public Sprite[] SkellieGunWalkSprites;
