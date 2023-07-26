@@ -73,25 +73,6 @@ public class SkellieCharger : ActorBase
         return result;
     }
 
-    protected override void OnDeath()
-    {
-        GameManager.Instance.MakePoof(position_, 3, 1.0f);
-        if (GameMode.SmallEnemiesExplode)
-        {
-            ParticleSystem.EmitParams ep = new ParticleSystem.EmitParams();
-            ep.startColor = new Color32(255, 255, 255, 255);
-            ep.position = position_;
-            ep.startSize = 0.75f;
-            ep.startLifetime = 2.0f;
-            for (int i = 0; i < Mathf.RoundToInt(5 * GameMode.ExplosionModifier); ++i)
-            {
-                Vector2 rndDir = RndUtil.RandomInsideUnitCircle().normalized;
-                ep.velocity = rndDir * 1.5f;
-                GameManager.Instance.NpcFlameParticles.Emit(ep, 1);
-            }
-        }
-    }
-
     protected override void PreUpdate()
     {
         bool dead = Hp <= 0.0f;

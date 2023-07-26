@@ -30,13 +30,12 @@ namespace Assets.Script
             DeadEnemies.Clear();
         }
 
-        public static bool CheckOverlap(Vector3 posA, Vector3 posB, float radA, float radB)
+        public static bool CheckOverlap(Vector3 posA, Vector3 posB, float rad)
         {
             float diffX = posA.x - posB.x;
             float diffY = posA.y - posB.y;
             float dist2 = diffX * diffX + diffY * diffY;
-            float radSum = radA + radB;
-            return dist2 < radSum * radSum;
+            return dist2 < rad * rad;
         }
 
         public static bool CheckIntersect(Vector3 posA, Vector3 posB, float radA, float radB)
@@ -111,39 +110,6 @@ namespace Assets.Script
         public const int MaxMatches = 50;
         public static HitMatch[] Matches = new HitMatch[MaxMatches];
 
-        public static int GetEnemies(Vector3 from, Vector3 to, int maxCount = MaxMatches)
-        {
-            int matchIdx = 0;
-            Vector3 cp = Vector3.zero;
-            for (int i = 0; i < Enemies.Count; ++i)
-            {
-                if (Enemies[i].Hp <= 0 || Enemies[i].gameObject.layer != GameManager.Instance.LayerEnemy)
-                    continue;
-
-                Vector3 circleCenter = Enemies[i].transform.position;
-                float rad2 = Enemies[i].RadiusFirstCheck * Enemies[i].RadiusFirstCheck;
-                ClosestPointOnRay(from, to, circleCenter, ref cp);
-                if (Vector3.SqrMagnitude(circleCenter - cp) < rad2)
-                {
-                    HitMatch hit = Matches[matchIdx];
-                    hit.Idx = i;
-                    hit.IsHeadshot = false;
-
-                    ClosestPointOnRay(from, to, circleCenter, ref cp);
-                    circleCenter = Enemies[i].transform.position + Enemies[i].BodyOffset;
-                    ClosestPointOnRay(from, to, circleCenter, ref cp);
-                    rad2 = Enemies[i].RadiusBody * Enemies[i].RadiusBody;
-
-                    hit.Distance = Vector3.SqrMagnitude(Enemies[i].transform.position - from);
-                    Matches[matchIdx++] = hit;
-
-                    if (matchIdx == Matches.Length || matchIdx == maxCount)
-                        break;
-                }
-            }
-            return matchIdx;
-        }
-
         public const int MaxColliders = 50;
         public static Collider2D[] Colliders = new Collider2D[MaxColliders];
 
@@ -182,7 +148,7 @@ namespace Assets.Script
                 if (Enemies[i].Hp <= 0 || Enemies[i].gameObject.layer != GameManager.Instance.LayerEnemy)
                     continue;
 
-                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, Enemies[i].RadiusBody, radius))
+                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, radius))
                 {
                     HitMatch hit = Matches[matchIdx];
                     hit.Idx = i;
@@ -205,7 +171,7 @@ namespace Assets.Script
                 if (Enemies[i].Hp <= 0 || Enemies[i].gameObject.layer != GameManager.Instance.LayerEnemy)
                     continue;
 
-                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, Enemies[i].RadiusBody, radius))
+                if (CheckOverlap(Enemies[i].transform.position + Enemies[i].BodyOffset, pos, radius))
                     result++;
             }
             return result;
@@ -219,7 +185,7 @@ namespace Assets.Script
                 if (DeadEnemies[i] != null && DeadEnemies[i].Hp > 0 || !DeadEnemies[i].IsCorpse)
                     continue;
 
-                if (CheckOverlap(DeadEnemies[i].transform.position, pos, DeadEnemies[i].RadiusFirstCheck, radius))
+                if (CheckOverlap(DeadEnemies[i].transform.position, pos, radius))
                 {
                     HitMatch hit = Matches[matchIdx];
                     hit.Idx = i;

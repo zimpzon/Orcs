@@ -30,7 +30,7 @@ public class GoCache : MonoBehaviour
     private void AddInstance()
     {
         var newInstance = (GameObject)Instantiate(Prefab);
-        newInstance.transform.position = Vector3.left * 20000; // Whoops, why are they still in the physics system when active = false? Have to hide them.
+        newInstance.transform.position = Vector3.left * (10000 + Random.value * 10000); // Whoops, why are they still in the physics system when active = false? Have to hide them.
         newInstance.SetActive(false);
         cachedObjects.Add(newInstance);
     }

@@ -1,8 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-using UnityEngine;
-using System.Collections;
 
 public class Camera16x9 : MonoBehaviour {
 	

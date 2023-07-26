@@ -40,8 +40,6 @@ public class PlayerScript : MonoBehaviour
     public bool UpgradesActive = false;
 
     public Text OverheadText;
-    public Transform Grenade;
-    GrenadeScript grenadeScript_;
 
     Vector3 basePos_;
     RectTransform overheadTextTrans_;
@@ -51,8 +49,6 @@ public class PlayerScript : MonoBehaviour
     [System.NonSerialized] public WeaponBase Weapon;
     public Transform MeleeWeapon;
 
-    Transform laserTransform_;
-    SpriteRenderer laserRenderer_;
     SpriteRenderer shadowRenderer_;
 
     AnimationController animationController_ = new AnimationController();
@@ -66,16 +62,12 @@ public class PlayerScript : MonoBehaviour
         playerScale_ = trans_.localScale.x; // Assume uniform scale
         renderer_ = GetComponent<SpriteRenderer>();
         playerPos_ = trans_.position;
-        grenadeScript_ = Grenade.GetComponent<GrenadeScript>();
         basePos_ = trans_.position;
         _playerUpgrades = GetComponent<PlayerUpgrades>();
 
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
         material_ = renderer_.material;
-
-        laserTransform_ = trans_.Find("LaserLine").GetComponent<Transform>();
-        laserRenderer_ = laserTransform_.gameObject.GetComponent<SpriteRenderer>();
 
         overheadTextTrans_ = OverheadText.GetComponent<RectTransform>();
 
@@ -146,8 +138,6 @@ public class PlayerScript : MonoBehaviour
         force_ = Vector3.zero;
         moveVec_ = Vector3.zero;
         SetPlayerPos(basePos_);
-        laserRenderer_.enabled = false;
-        grenadeScript_.Hide();
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         SetWeapon(WeaponType.None);
     }
@@ -229,11 +219,6 @@ public class PlayerScript : MonoBehaviour
                 AddForce(lookDir_ * -recoil);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
-
-                if (Weapon.Type == WeaponType.Grenade)
-                {
-                    grenadeScript_.Throw(trans_.position, CursorPos);
-                }
             }
 
             if (!isMoving_)
@@ -246,13 +231,6 @@ public class PlayerScript : MonoBehaviour
             }
             yield return null;
         }
-    }
-
-    public void EjectGrenade(Vector3 pos, float radius, float damage)
-    {
-        var grenade = GameObject.Instantiate(Grenade);
-        var script = grenade.GetComponent<GrenadeScript>();
-        script.Throw(GameManager.Instance.Orc.transform.position, pos, radius, damage);
     }
 
     public void DamagePlayer(float damage)
@@ -348,7 +326,6 @@ public class PlayerScript : MonoBehaviour
         if (!victory)
         {
             GameManager.Instance.TriggerBlood(trans_.position, 1);
-            GameEvents.CounterEvent(GameCounter.Player_Death, 1);
             MusicManagerScript.Instance.StopMusic();
         }
 

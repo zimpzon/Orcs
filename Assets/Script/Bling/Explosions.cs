@@ -29,7 +29,7 @@ public static class Explosions
             var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
-            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f, headshot: false);
+            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f);
         }
     }
 
@@ -53,7 +53,7 @@ public static class Explosions
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
-            enemy.ApplyDamage(damage, enemy.transform.position - pos, 1.0f, true);
+            enemy.ApplyDamage(damage, enemy.transform.position - pos, forceModifier: 1.0f);
         }
 
         for (int i = 0; i < 10; ++i)

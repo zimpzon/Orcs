@@ -51,10 +51,6 @@ public class UpgradeData
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 10;
 
-    // on kill
-    public bool OnKillDropBombEnabled = false;
-    public int OnKillDropBombKillCount = 20;
-
     public CounterClass Counters = new CounterClass();
 }
 

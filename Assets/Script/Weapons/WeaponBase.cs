@@ -45,12 +45,10 @@ public class WeaponBase
     static WeaponPaintballRandom PaintballRandom;
     static WeaponRambo Rambo;
     static WeaponShutgunSlug ShotgunSlug;
-    static WeaponSniper Sniper;
     static WeaponMachinegun Machinegun;
     static WeaponGrenade Grenade;
     static WeaponUnarmed Unarmed;
     static WeaponSword Sword;
-    static WeaponMine Mine;
     static WeaponYoda Yoda;
     static WeaponSawblade Sawblade;
 
@@ -138,21 +136,6 @@ public class WeaponBase
                 }
                 return Staff2;
 
-            case WeaponType.Sniper:
-                if (Sniper == null)
-                {
-                    Sniper = new WeaponSniper();
-                    Sniper.Type = WeaponType.Sniper;
-                    Sniper.Cd = 0.4f;
-                    Sniper.Scale = new Vector3(1.5f, 2.0f, 1.0f);
-                    Sniper.Sprite = SpriteData.Instance.Sniper;
-                    Sniper.BulletSprite = SpriteData.Instance.Bullet;
-                    Sniper.Muzzle = new Vector3(0.6f, 0.02f, 0.0f);
-                    Sniper.FireAudio = AudioManager.Instance.AudioData.PlayerSniperFire;
-                    Sniper.MoveSpeedModifier = 1.0f;
-                }
-                return Sniper;
-
             case WeaponType.Machinegun:
                 if (Machinegun == null)
                 {
@@ -221,16 +204,6 @@ public class WeaponBase
                     Grenade.FireAudio = AudioManager.Instance.AudioData.PlayerThrowBomb;
                 }
                 return Grenade;
-
-            case WeaponType.Mine:
-                if (Mine == null)
-                {
-                    Mine = new WeaponMine();
-                    Mine.Type = WeaponType.Mine;
-                    Mine.Cd = 0.3f;
-                    Mine.FireAudio = AudioManager.Instance.AudioData.PlayerThrowBomb;
-                }
-                return Mine;
 
             case WeaponType.Unarmed:
                 if (Unarmed == null)

@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameModeEnum { Nursery, Earth, Wind, Fire, Storm, Harmony, LastSelectable };
+public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
     public ParticleSystem SpawnPoof;
     public ParticleSystem FlashParticles;
     public ParticleSystem CircleParticles;
-    public ParticleSystem FlameParticles;
-    public ParticleSystem NpcFlameParticles;
     public OrcController Orc;
     public int SortLayerTopEffects;
     public State GameState;
@@ -178,8 +176,6 @@ public class GameManager : MonoBehaviour
         bool isUnlocked = hero.IsUnlocked();
         renderer.sprite = hero.ShowoffSprite;
         renderer.color = isUnlocked ? Color.white : Color.black;
-        string unlockText = isUnlocked ? hero.Description : string.Format(GameEvents.ActionDisplayString(hero.GameCounter), SaveGame.Members.GetCounter(hero.GameCounter), hero.Req);
-        TextHeroUnlock.text = unlockText;
         TextHeroName.text = hero.Name;
         Orc.Mood = hero.OrcMood;
         SaveGame.Members.SelectedHero = (int)hero.HeroType;
@@ -215,10 +211,9 @@ public class GameManager : MonoBehaviour
     void UpdateButtonStates()
     {
         bool heroIsUnlocked = SelectedHero.IsUnlocked();
-        bool gameModeIsUnlocked = GameEvents.IsUnlocked(GameMode);
 
         ButtonPlay.interactable = heroIsUnlocked;
-        ButtonGo.interactable = heroIsUnlocked && gameModeIsUnlocked;
+        ButtonGo.interactable = heroIsUnlocked;
         ButtonUnlockedText.transform.parent.GetComponent<Button>().interactable = UnlockedPct > 0.0f;
     }
 
@@ -245,7 +240,6 @@ public class GameManager : MonoBehaviour
     {
         PlayMenuSound();
         GameState = State.Intro_GameMode;
-        GameModeChange();
         EnablePanel(PanelGameMode, true);
     }
 
@@ -254,7 +248,6 @@ public class GameManager : MonoBehaviour
         PlayMenuSound();
         GameState = State.Intro_Unlocks;
         EnablePanel(PanelUnlocks, true);
-        UpdateUnlocksPanel();
     }
 
     public void OnButtonShop()
@@ -264,60 +257,6 @@ public class GameManager : MonoBehaviour
         GameState = State.Intro_Shop;
         EnablePanel(PanelShop, true);
         ShopItems.UpdateBoughtItems();
-    }
-
-    void UpdateUnlocksPanel()
-    {
-        TextColWepNames.text = string.Join(Environment.NewLine, GameEvents.FormattedWepNames().ToArray());
-        TextColWepReq.text = string.Join(Environment.NewLine, GameEvents.FormattedWepReqs().ToArray());
-
-        TextColLocNames.text = string.Join(Environment.NewLine, GameEvents.FormattedGameModeNames().ToArray());
-        TextColLocReq.text = string.Join(Environment.NewLine, GameEvents.FormattedGameModeReqs().ToArray());
-
-        TextColDamNames.text = string.Join(Environment.NewLine, GameEvents.FormattedUpgradeNames().ToArray());
-        TextColDamReq.text = string.Join(Environment.NewLine, GameEvents.FormattedUpgradeReqs().ToArray());
-    }
-
-    public void GameModeChange(int direction = 0)
-    {
-        if(direction != 0)
-            PlayMenuSound();
-
-        GameMode += direction;
-        if (GameMode < 0)
-            GameMode = GameModeEnum.LastSelectable - 1;
-
-        if (GameMode >= GameModeEnum.LastSelectable)
-            GameMode = GameModeEnum.Nursery;
-
-        SetCurrentGameModeData(GameMode);
-    }
-
-    void SetCurrentGameModeData(GameModeEnum gameMode, bool remember = true)
-    {
-        switch (gameMode)
-        {
-            case GameModeEnum.Nursery: CurrentGameModeData = GameModeDataNursery; break;
-            case GameModeEnum.Earth: CurrentGameModeData = GameModeDataEarth; break;
-            case GameModeEnum.Wind: CurrentGameModeData = GameModeDataWind; break;
-            case GameModeEnum.Fire: CurrentGameModeData = GameModeDataFire; break;
-            case GameModeEnum.Storm: CurrentGameModeData = GameModeDataStorm; break;
-            case GameModeEnum.Harmony: CurrentGameModeData = GameModeDataHarmony; break;
-            default: CurrentGameModeData = GameModeDataNursery; break;
-        }
-        LatestGameModeData = CurrentGameModeData;
-
-        SetGameModeText(GameMode);
-        Floor.material.color = CurrentGameModeData.BackgroundTint;
-        UpdateButtonStates();
-    }
-
-    void SetGameModeText(GameModeEnum gameMode)
-    {
-        bool isUnlocked = GameEvents.IsUnlocked(gameMode);
-        TextGameMode.text = GameEvents.WrapInColor(GameEvents.GameModeDisplayName(gameMode), isUnlocked);
-        TextGameModeInfo.text = GameEvents.GameModeInfo(gameMode);
-        TextLocked.enabled = !isUnlocked;
     }
 
     void UpdateMoneyLabels()
@@ -351,21 +290,8 @@ public class GameManager : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    if (GameEvents.IsUnlocked(CurrentGameModeData.GameMode))
-                    {
-                        PlayMenuSound();
-                        StartGame();
-                    }
-                }
-
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    GameModeChange(-1);
-                }
-
-                if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    GameModeChange(1);
+                    PlayMenuSound();
+                    StartGame();
                 }
 
                 yield return null;
@@ -548,18 +474,6 @@ public class GameManager : MonoBehaviour
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
 
-        StartCoroutine(Server.Instance.UpdateStat("OrcsSaved", SaveGame.RoundScore));
-        StartCoroutine(Server.Instance.UpdateStat("Kills", SaveGame.RoundKills));
-        switch (CurrentGameModeData.GameMode)
-        {
-            case GameModeEnum.Nursery: UpdateStat("ScoreNursery", SaveGame.RoundScore); break;
-            case GameModeEnum.Earth: UpdateStat("ScoreEarth", SaveGame.RoundScore); break;
-            case GameModeEnum.Wind: UpdateStat("ScoreWind", SaveGame.RoundScore); break;
-            case GameModeEnum.Fire: UpdateStat("ScoreFire", SaveGame.RoundScore); break;
-            case GameModeEnum.Storm: UpdateStat("ScoreStorm", SaveGame.RoundScore); break;
-            default: break;
-        }
-
         float roundTime = Time.time - roundStartTime_;
         int roundSeconds = Mathf.RoundToInt(roundTime);
         StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
@@ -568,30 +482,8 @@ public class GameManager : MonoBehaviour
         TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
         TextGameOverOrcsSavedBest.text = string.Format("{0}", bestScore);
 
-        bool newRecord = bestScore > roundStartBestScore_;
-
         CanvasGameOverDefault.enabled = true;
-
         TextRoundEndUnlocks.enabled = RoundUnlockCount > 0;
-        if (RoundUnlockCount > 0)
-        {
-            TextRoundEndUnlocks.text = Unlocks.LatestUnlockText;
-        }
-        else
-        {
-            // Show progress towards next weapon (wheree counter is Score_Any_Sum)
-            var nextWeapons = GameEvents.WeaponUnlockInfo.Where(
-                wep => wep.Counter == GameCounter.Score_Any_Sum && SaveGame.Members.GetCounter(wep.Counter) < wep.Requirement
-            ).OrderBy(wep => wep.Requirement).ToList();
-
-            if (nextWeapons.Count > 0)
-            {
-                var nextWep = nextWeapons[0];
-                int needed = nextWep.Requirement - SaveGame.Members.GetCounter(nextWep.Counter);
-                TextRoundEndUnlocks.enabled = true;
-                TextRoundEndUnlocks.text = string.Format("Save {0} More To Unlock Next Weapon: {1}!", needed, WeaponBase.WeaponDisplayName(nextWep.Type));
-            }
-        }
 
         SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
@@ -600,14 +492,6 @@ public class GameManager : MonoBehaviour
         CanvasIntro.gameObject.SetActive(false);
 
         GameState = State.Dead;
-    }
-
-    void UpdateUnlockedPct()
-    {
-        int unlockedCount = Unlocks.CountUnlocked();
-        int possibleUnlocks = Unlocks.CountPossibleUnlocks();
-        UnlockedPct = unlockedCount / (float)possibleUnlocks;
-        StartCoroutine(Server.Instance.UpdateStat("PctUnlocked", Mathf.RoundToInt(UnlockedPct * 100)));
     }
 
     public void ShowTitle(bool autoStartGame = false)
@@ -629,7 +513,6 @@ public class GameManager : MonoBehaviour
         Camera.main.orthographicSize = 7.68f;
         SelectHero((HeroEnum)SaveGame.Members.SelectedHero);
 
-        UpdateUnlockedPct();
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
 
         UpdateButtonStates();
@@ -644,7 +527,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SetCurrentGameModeData(LatestGameModeData.GameMode);
             GameState = State.Intro;
             MusicManagerScript.Instance.PlayIntroMusic();
         }
@@ -678,7 +560,7 @@ public class GameManager : MonoBehaviour
         Orc.SetPosition(Vector3.up * 3);
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
-        GameProgressScript.Instance.Begin();
+        GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
 
         StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
     }
@@ -691,8 +573,6 @@ public class GameManager : MonoBehaviour
         PoofClouds.Clear();
         SpawnPoof.Clear();
         FlashParticles.Clear();
-        FlameParticles.Clear();
-        NpcFlameParticles.Clear();
     }
 
     IEnumerator ServerColdStart()
@@ -740,7 +620,6 @@ public class GameManager : MonoBehaviour
                 codeIdx = 0;
                 SaveGame.ResetAll();
                 SaveGame.Save();
-                Unlocks.RefreshUnlocked();
                 return;
             }
         }
@@ -785,7 +664,6 @@ public class GameManager : MonoBehaviour
     public void OnEnemyKill(ActorBase actor)
     {
         SaveGame.RoundKills++;
-        GameEvents.CounterEvent(GameCounter.Kill_Any, 1);
 
         if (UnityEngine.Random.value < PlayerUpgrades.Data.DropMoneyOnKillChance)
         {
@@ -794,22 +672,6 @@ public class GameManager : MonoBehaviour
         }
 
         DropXp(actor.transform.position);
-
-        if (actor.ActorType == ActorTypeEnum.SmallWalker || actor.ActorType == ActorTypeEnum.SmallCharger)
-            GameEvents.CounterEvent(GameCounter.Kill_Small, 1);
-        else if (actor.ActorType == ActorTypeEnum.LargeWalker)
-            GameEvents.CounterEvent(GameCounter.Kill_BigWalker, 1);
-        else if (actor.ActorType == ActorTypeEnum.Caster)
-            GameEvents.CounterEvent(GameCounter.Kill_Caster, 1);
-
-        if (PlayerUpgrades.Data.OnKillDropBombEnabled)
-        {
-            if (PlayerUpgrades.Data.Counters.OnKillDropBombCurrentKillCount++ >= PlayerUpgrades.Data.OnKillDropBombKillCount)
-            {
-                PlayerScript.EjectGrenade(actor.transform.position, radius: 2.0f, damage: 200.0f);
-                PlayerUpgrades.Data.Counters.OnKillDropBombCurrentKillCount = 0;
-            }
-        }
     }
 
     private void OnFirstOrcPickup()
@@ -942,7 +804,6 @@ public class GameManager : MonoBehaviour
     public void MakeSpawnPoof(Vector3 pos, int count)
     {
         SpawnPoof.transform.position = pos;
-        var main = SpawnPoof.main;
         SpawnPoof.Emit(count);
     }
 
@@ -970,10 +831,7 @@ public class GameManager : MonoBehaviour
 
     public void EmitFlame(Vector3 pos, float size = 1.0f)
     {
-        FlameParticles.transform.position = pos;
-        var main = FlameParticles.main;
-        main.startSize = size;
-        FlameParticles.Emit(1);
+        Debug.Log("NOT IMPLEMENTED");
     }
 
     public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)
@@ -1030,7 +888,7 @@ public class GameManager : MonoBehaviour
         if (isCrit)
             amount *= PlayerUpgrades.Data.CritValueMul;
 
-        enemy.ApplyDamage(amount, direction, forceModifier, headshot: false);
+        enemy.ApplyDamage(amount, direction, forceModifier);
 
         string text = string.Concat("-", ((int)(amount + 0.5f)).ToString());
 
@@ -1059,6 +917,8 @@ public class GameManager : MonoBehaviour
         SpriteFlashParamId = Shader.PropertyToID("_FlashAmount");
         SpriteFlashColorParamId = Shader.PropertyToID("_FlashColor");
 
+        CurrentGameModeData = GameModeDataNursery;
+
         SetChoicesVisible(false);
 
         var bounds = GetComponent<BoxCollider2D>();
@@ -1079,8 +939,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); SaveGame.Load();
-
-        Unlocks.RefreshUnlocked();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
@@ -1120,7 +978,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
+        //return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Script.Enemies;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,24 +55,6 @@ public static class PositionUtility
         return point;
     }
 
-    //public static Vector3 GetPointInsideArena(float maxOffsetX, float maxOffsetY)
-    //{
-    //    float x = Random.Range(-0.45f, 0.45f) * maxOffsetX;
-    //    float y = Random.Range(-0.45f, 0.45f) * maxOffsetY;
-    //    Rect scr = AspectUtility.screenRelativeRect;
-    //    Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
-    //    return point;
-    //}
-
-    //public static Vector3 GetPointInsideScreen(float maxOffsetX, float maxOffsetY)
-    //{
-    //    float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
-    //    float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
-    //    Rect scr = AspectUtility.screenRelativeRect;
-    //    Vector3 point = new Vector3(scr.width * x, scr.height * y, 0.0f);
-    //    return point;
-    //}
-
     public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter)
     {
         if (dir == SpawnDirection.Any)
@@ -114,8 +97,8 @@ public static class PositionUtility
     {
         for (int entity = 0; entity < count; ++entity)
         {
-            var spawn = EnemyManager.Instance.GetEnemyFromCache(actorType);
-            float offset = 2.0f;
+            var spawn = ActorCache.Instance.GetActor(actorType);
+            float offset = 1.0f;
             Vector3 pos;
             if (outsideScreen)
                 pos = GetPointOutsideScreen(dir, offset, Random.value * 0.5f);

@@ -119,7 +119,7 @@ public class GrenadeScript : MonoBehaviour
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
-            enemy.ApplyDamage(damage, enemy.transform.position - pos, 1.0f, true);
+            enemy.ApplyDamage(damage, enemy.transform.position - pos, 1.0f);
         }
 
         for (int i = 0; i < 3; ++i)

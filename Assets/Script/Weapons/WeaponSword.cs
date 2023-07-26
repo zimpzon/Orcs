@@ -20,7 +20,7 @@ public class WeaponSword : WeaponBase
             ActorBase enemy = BlackboardScript.Enemies[idx];
             enemy.SetSlowmotion();
             float force = 30.0f * PlayerUpgrades.Data.OrcJediKnockBackForceMul;
-            enemy.ApplyDamage(damage, enemy.transform.position - where, force, headshot: false);
+            enemy.ApplyDamage(damage, enemy.transform.position - where, force);
         }
         return aliveCount;
     }

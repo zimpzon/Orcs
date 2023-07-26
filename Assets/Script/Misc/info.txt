@@ -1,10 +1,12 @@
 ﻿CAM: 8.4
 
 BUGS
-  enemies on the way in can be killed and remain deadly (and white)
-  died a few times without seeing why
+  WTF IS up with closet target? misses very close shots.
+  player always faces middle X
   
 SMART DESIGN
+ getting to orcs quickly can be stressful. maybe reduce xp.
+ xp is not balanced, drops become worthless
  orc sword is required atm, fix that it gets swarmed an is impossible to get.
  really need current and new value for choices
  save baby knight? can then use orc enemies
@@ -16,6 +18,8 @@ SMART DESIGN
   synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
+  can "ascending" like Cookie Clicker be done? Possibly with new chars?
+  enemies that follows paths and just shoots?
   shield/sword enemies loses items which flies away, and continues as plain enemies.
   use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
   chance to deflect projectiles? make 'em blue.

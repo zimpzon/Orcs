@@ -1,10 +1,15 @@
 ﻿using Assets.Script;
+using Assets.Script.Enemies;
 using System.Collections;
 using UnityEngine;
 
-public enum ActorTypeEnum { None, Any, SmallWalker, SmallCharger, LargeWalker, Caster,
-    Ogre, OgreSmall, OgreLarge,
- };
+public enum ActorTypeEnum
+{
+    None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
+    OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
+    OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
+    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton,
+};
 
 public class ActorBase : MonoBehaviour
 {
@@ -29,8 +34,6 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
-    // TODO: hardcoded???
-    [System.NonSerialized] public float RadiusFirstCheck = 0.6f;
     [System.NonSerialized] public float RadiusBody = 0.4f;
     [System.NonSerialized] public Vector3 BodyOffset = new Vector3(0.0f, -0.25f, 0.0f);
 
@@ -66,17 +69,17 @@ public class ActorBase : MonoBehaviour
     protected float slowmotionModifier_ = 1.0f;
 
     protected bool isPainted_;
-    float paintEnd_;
-    Color paintColor_;
     protected bool isFrozen_;
-    float frozenEnd_;
-    Color frozenColor_;
     protected bool isLivingBomb_;
-    float livingBombDamage_;
-    float livingBombEnd_;
     protected bool isSpawning_ = true;
 
-    Color outsideArenaColor = new Color(0.0f, 0.0f, 0.0f);
+    float paintEnd_;
+    Color paintColor_;
+    float frozenEnd_;
+    Color frozenColor_;
+    float livingBombDamage_;
+    float livingBombEnd_;
+    Vector3 scale_;
 
     public void Awake()
     {
@@ -88,9 +91,10 @@ public class ActorBase : MonoBehaviour
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
 
         // Assume uniform scale
-        RadiusFirstCheck *= transform_.localScale.x;
         RadiusBody *= transform_.localScale.x;
         BodyOffset *= transform_.localScale.x;
+
+        scale_ = transform_.localScale;
     }
 
     public void Start()
@@ -123,7 +127,7 @@ public class ActorBase : MonoBehaviour
 
         const float BombTime = 1.0f;
         const float BombRnd = 0.1f;
-        livingBombEnd_ = Time.time + BombTime + UnityEngine.Random.value * BombRnd;
+        livingBombEnd_ = Time.time + BombTime + Random.value * BombRnd;
 
         material_.SetColor(flashColorParamId_, new Color(1.0f, 0.6f, 0.6f));
         GameManager.Instance.MakeFlash(transform_.position);
@@ -147,7 +151,7 @@ public class ActorBase : MonoBehaviour
 
         float flashAmount = ((int)(Time.time * 6) & 1) == 0 ? 0.0f : 0.8f;
         material_.SetFloat(flashParamId_, flashAmount);
-        if (UnityEngine.Random.value < 0.01f)
+        if (Random.value < 0.01f)
             GameManager.Instance.MakePoof(transform_.position, 1, 1.0f);
     }
 
@@ -173,6 +177,19 @@ public class ActorBase : MonoBehaviour
             speed *= 0.25f;
 
         position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
+
+        GameManager.SetDebugOutput("moveVec", Mathf.Sign(moveVec.x));
+
+        Vector3 scale = scale_;
+        //bool closeToCenterX = Mathf.Abs(moveVec.x) < 0.25;
+        //if (closeToCenterX)
+        //    scale.x = -1;
+        //else
+            scale.x = moveVec.x < 0 ? -1 : 1;
+
+        GameManager.SetDebugOutput("scale", scale.x);
+
+        transform_.localScale = scale;
     }
 
     void CheckForCrowded()
@@ -212,6 +229,9 @@ public class ActorBase : MonoBehaviour
 
     public void Update()
     {
+        if (Time.time > flashEndTime_)
+            material_.SetFloat(flashParamId_, 0.0f);
+
         if (isFrozen_)
             material_.color = Color.Lerp(Color.white, frozenColor_, 0.6f);
         else if (isPainted_)
@@ -234,7 +254,7 @@ public class ActorBase : MonoBehaviour
             }
 
             force_ *= 1.0f - (30.0f * Time.deltaTime);
-            position_ += force_ * Time.deltaTime * 60 * Timers.EnemyTimer;
+            position_ += force_ * Time.deltaTime * 60; 
             transform_.position = position_;
         }
 
@@ -267,7 +287,9 @@ public class ActorBase : MonoBehaviour
         }
 
         if (!dead && !isFrozen_)
-            animationController_.Tick(Time.deltaTime * Timers.EnemyTimer, renderer_, Animations);
+        {
+            animationController_.Tick(Time.deltaTime, renderer_, Animations);
+        }
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
 
@@ -311,13 +333,14 @@ public class ActorBase : MonoBehaviour
         force_ += force;
     }
 
-    public void ApplyDamage(float amount, Vector3 direction, float forceModifier, bool headshot)
+    public void ApplyDamage(float amount, Vector3 direction, float forceModifier)
     {
         Hp -= amount;
         GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
 
         if (Hp <= 0.0f)
         {
+            Hp = 0;
             GameManager.Instance.OnEnemyKill(this);
             OnDeath();
             StopAllCoroutines();
@@ -332,15 +355,7 @@ public class ActorBase : MonoBehaviour
                 material_.SetFloat(flashParamId_, 0.75f);
                 flashEndTime_ = Time.time + 0.03f;
             }
-
-            if (headshot)
-                slowmotionModifier_ = 0.0f;
         }
-    }
-
-    protected void EnableShadow(bool enable)
-    {
-        transform.Find("BlobShadow").GetComponent<SpriteRenderer>().enabled = enable;
     }
 
     public void Explode(float delay)
@@ -378,17 +393,10 @@ public class ActorBase : MonoBehaviour
 
         bool isFullyReady = !isSpawning_ && GameManager.Instance.IsInsideBounds(transform_.position, renderer_.sprite);
         if (!isFullyReady)
-        {
-            material_.SetColor(flashColorParamId_, outsideArenaColor);
-            material_.SetFloat(flashParamId_, 0.4f);
             return;
-        }
-
-        material_.SetColor(flashColorParamId_, Color.white);
-        material_.SetFloat(flashParamId_, 0.0f);
 
         IsFullyReady = true;
-        this.gameObject.layer = GameManager.Instance.LayerEnemy;
+        gameObject.layer = GameManager.Instance.LayerEnemy;
     }
 
     IEnumerator ExplodeCo(float delay)
@@ -420,16 +428,17 @@ public class ActorBase : MonoBehaviour
             }
         }
 
-        ApplyDamage(livingBombDamage_, RndUtil.RandomInsideUnitCircle().normalized, forceModifier: 0.25f, headshot: false);
+        ApplyDamage(livingBombDamage_, RndUtil.RandomInsideUnitCircle().normalized, forceModifier: 0.25f);
     }
 
     IEnumerator DieAnimation(Vector3 deathSourceDir, float forceModifier)
     {
-        EnableShadow(false);
-        this.gameObject.layer = GameManager.Instance.LayerEnemyCorpse;
+        gameObject.layer = GameManager.Instance.LayerEnemyCorpse;
 
         float direction = transform_.position.x < deathSourceDir.x ? -1 : 1;
         material_.SetColor(flashColorParamId_, Color.black);
+        flashEndTime_ = float.MaxValue;
+
         float flashAmount = 0.0f;
 
         Vector3 startPos = position_;
@@ -513,13 +522,11 @@ public class ActorBase : MonoBehaviour
         forcedDestination_ = Vector3.zero;
         despawnOnForcedDestinationReached_ = false;
         material_.color = Color.white;
-
-        EnableShadow(true);
     }
 
     public void ReturnToCache()
     {
         ResetForCaching();
-        EnemyManager.Instance.ReturnEnemyToCache(this.ActorType, this.gameObject);
+        ActorCache.Instance.ReturnObject(gameObject);
     }
 }
