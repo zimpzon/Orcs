@@ -335,8 +335,11 @@ public class ActorBase : MonoBehaviour
 
     public void ApplyDamage(float amount, Vector3 direction, float forceModifier)
     {
-        Hp -= amount;
-        GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
+        if (amount > 0)
+        {
+            Hp -= amount;
+            GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
+        }
 
         if (Hp <= 0.0f)
         {

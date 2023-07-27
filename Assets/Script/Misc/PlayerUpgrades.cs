@@ -20,6 +20,9 @@ public class UpgradeData
     public int DropMoneyOnKillMin = 1;
     public int DropMoneyOnKillMax = 3;
 
+    // xp
+    public float XpDoubleChance = 0.05f;
+
     // player
     public int BaseHealth = 100;
     public float HealthMul = 1.0f;
@@ -37,6 +40,9 @@ public class UpgradeData
     public int MagicMissileBulletsAdd = 0;
 
     // orc
+    public float OrcReviveTime = 3.0f;
+    public float OrcReviveTimeMul = 1.0f;
+
     public bool OrcJedisEnabled = false;
     public float OrcJediKnockBackForceMul = 1.0f;
 

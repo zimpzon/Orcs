@@ -3,15 +3,12 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public enum OrcMood { Default, Nervous };
-
 public enum OrcState { Default, Yoda };
 
 public class OrcController : MonoBehaviour
 {
-    public OrcMood Mood;
     public OrcState State;
-    public TextMeshPro Text;
+    public Color GhostColor;
 
     public SpriteRenderer Sunglasses;
     public Transform WeaponTransform;
@@ -36,18 +33,19 @@ public class OrcController : MonoBehaviour
     bool pickedUp_;
     Vector3 target_;
     Vector3 lookAt_;
+    Color baseColor_;
+    float reviveTime_;
 
     const float MeleeCd = 1.5f;
     const float RunSpeed = 2.0f;
-    const float NervousMinDistance = 4.0f;
 
     void Awake()
     {
-        trans_ = this.transform;
+        trans_ = transform;
         renderer_ = GetComponent<SpriteRenderer>();
         hearts_ = trans_.Find("Hearts").GetComponent<ParticleSystem>();
         arrow_ = trans_.Find("Arrow").GetComponent<Transform>();
-        Text.text = "";
+        baseColor_ = renderer_.color;
     }
 
     private void Start()
@@ -87,13 +85,11 @@ public class OrcController : MonoBehaviour
         Sunglasses.enabled = use;
         WeaponRenderer.enabled = use;
         LaserRenderer.enabled = use;
-
-        Text.text = "";
     }
 
     public void SetChasePlayer(bool chase)
     {
-        chasePlayer_ = true;
+        chasePlayer_ = chase;
     }
 
     public void SetYoda()
@@ -101,27 +97,37 @@ public class OrcController : MonoBehaviour
         State = OrcState.Yoda;
     }
 
-    public void Hide()
+    void Hide()
     {
-        SetPosition(Vector3.right * 10000);
-        ResetAll();
+        SetPosition(Vector3.right * 10000, startingGame: false);
     }
 
-    public void SetPosition(Vector3 pos)
+    public void SetPosition(Vector3 pos, bool startingGame = false)
     {
         startPos_ = pos;
         trans_.position = pos;
         target_ = trans_.position;
+        if (startingGame)
+            MakeGhost(false);
     }
 
-    void ResetAll()
+    public void ResetAll()
     {
         chasePlayer_ = false;
         State = OrcState.Default;
         pickedUp_ = false;
         target_ = trans_.position;
-        Text.text = string.Empty;
         MeleeWeapon.gameObject.SetActive(false);
+        Hide();
+        MakeGhost(true);
+    }
+
+    void MakeGhost(bool isGhost)
+    {
+        arrow_.gameObject.SetActive(!isGhost);
+        GetComponent<SpriteRenderer>().color = isGhost ? GhostColor : baseColor_;
+        GetComponent<Collider2D>().enabled = !isGhost;
+        reviveTime_ = Time.time + PlayerUpgrades.Data.OrcReviveTime * PlayerUpgrades.Data.OrcReviveTimeMul;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -129,23 +135,30 @@ public class OrcController : MonoBehaviour
         if (pickedUp_)
             return;
 
-        if (Mood != OrcMood.Nervous)
-            hearts_.Emit(1);
-
-        pickedUp_ = true;
         ResetAll();
         GameManager.Instance.OnOrcPickup(trans_.position);
+        pickedUp_ = true;
+        SetPosition(PositionUtility.GetPointInsideArena());
     }
 
     IEnumerator Think()
     {
-        float nextNervousMove = Time.time + 3.0f;
         float nextMeleeSwing = 0.0f;
 
         while (true)
         {
+            if (pickedUp_ && Time.time > reviveTime_)
+            {
+                pickedUp_ = false;
+                MakeGhost(false);
+                Explosions.Push(trans_.position, radius: 5.0f, force: 10.0f);
+            }
+
+            if (pickedUp_)
+                yield return null;
+
             var em = hearts_.emission;
-            em.enabled = (playerIsClose_ || chasePlayer_) && Mood != OrcMood.Nervous;
+            em.enabled = playerIsClose_ || chasePlayer_;
             renderer_.flipX = trans_.position.x > lookAt_.x;
 
             if (chasePlayer_)
@@ -176,34 +189,7 @@ public class OrcController : MonoBehaviour
             else if (State == OrcState.Default)
             {
                 lookAt_ = GameManager.Instance.PlayerTrans.position;
-                if (Mood == OrcMood.Nervous)
-                {
-                    if (Time.time > nextNervousMove)
-                    {
-                        // Look confused for a little bit
-                        Text.text = "?";
-                        yield return new WaitForSeconds(2.0f);
-                        if (Mood != OrcMood.Nervous || State != OrcState.Default) continue;
-
-                        // Get alarmed for a very short time
-                        Text.text = "!";
-                        yield return new WaitForSeconds(0.5f);
-
-                        if (Mood != OrcMood.Nervous || State != OrcState.Default) continue;
-                        Text.text = "";
-
-                        // Run randomly
-                        target_ = PositionUtility.GetPointInsideArena(1.0f, 1.0f);
-                        nextNervousMove = Time.time + 5 + Random.value * 5;
-                    }
-
-                    if (distanceToPlayer_ <= NervousMinDistance || distanceToTarget_ < 0.2f)
-                        target_ = trans_.position; // Stop
-                }
             }
-
-            if (Mood != OrcMood.Nervous && Text.text != string.Empty)
-                Text.text = string.Empty;
 
             yield return null;
         }
@@ -211,7 +197,6 @@ public class OrcController : MonoBehaviour
 
     void Update()
     {
-        Text.enabled = Mood == OrcMood.Nervous;
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
         playerPos_ = GameManager.Instance.PlayerTrans.position;

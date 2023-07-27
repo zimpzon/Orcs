@@ -18,6 +18,7 @@ SMART DESIGN
   synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
+  bullets dropped on ground when moving, arming time, then fly. could be cool to surround enemies
   can "ascending" like Cookie Clicker be done? Possibly with new chars?
   enemies that follows paths and just shoots?
   shield/sword enemies loses items which flies away, and continues as plain enemies.

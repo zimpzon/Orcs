@@ -7874,7 +7874,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 67f3be7fff23b344abb8ba43a4ba804a, type: 3}
     - {fileID: 21300000, guid: 54093c577fc448147b4c26c5be6e75b6, type: 3}
     ShowoffSprite: {fileID: 21300000, guid: 02881ca0a5021474ebcb375c314d692d, type: 3}
-    OrcMood: 0
   - HeroType: 1
     Name: The Orc Whisperer
     Description: It's Just Confusing Them But +1 For Effort
@@ -7902,7 +7901,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: e0c61dc5f783fa14d9e03527d759d850, type: 3}
     - {fileID: 21300000, guid: d9f74726be70df4449952984bb5821f2, type: 3}
     ShowoffSprite: {fileID: 21300000, guid: d9f74726be70df4449952984bb5821f2, type: 3}
-    OrcMood: 1
   - HeroType: 2
     Name: The King
     Description: '"It''s Good To Be The King!"'
@@ -7929,7 +7927,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 900dff8553e686142b93f198ad02261f, type: 3}
     - {fileID: 21300000, guid: 9fb93bc9eac2c7948b213ef3c10db9b7, type: 3}
     ShowoffSprite: {fileID: 21300000, guid: fe50e3ca27f3c5644940fb42fc680722, type: 3}
-    OrcMood: 0
   - HeroType: 4
     Name: Quack
     Description: '"Quack?"'
@@ -7953,7 +7950,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 882e9f8085d22aa48851115c7b859b92, type: 3}
     - {fileID: 21300000, guid: c3c06e12617c4b74fb817458579e4f75, type: 3}
     ShowoffSprite: {fileID: 21300000, guid: 882e9f8085d22aa48851115c7b859b92, type: 3}
-    OrcMood: 0
   - HeroType: 3
     Name: The Pirate
     Description: '"Arrrrr!"'
@@ -7980,7 +7976,6 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 900dff8553e686142b93f198ad02261f, type: 3}
     - {fileID: 21300000, guid: 9fb93bc9eac2c7948b213ef3c10db9b7, type: 3}
     ShowoffSprite: {fileID: 21300000, guid: fe50e3ca27f3c5644940fb42fc680722, type: 3}
-    OrcMood: 0
   SelectedHero:
     HeroType: 0
     Name: 
@@ -7992,7 +7987,6 @@ MonoBehaviour:
     PlayerRunSprites: []
     PlayerIdleSprites: []
     ShowoffSprite: {fileID: 0}
-    OrcMood: 0
   SpriteFlashParamId: 0
   SpriteFlashColorParamId: 0
   ArenaBounds:
@@ -23110,7 +23104,6 @@ MonoBehaviour:
   RoundComplete: 0
   UpgradesActive: 0
   OverheadText: {fileID: 1280188514}
-  Grenade: {fileID: 824311153}
   MeleeWeapon: {fileID: 2138555409}
 --- !u!4 &1038077830
 Transform:
@@ -31198,9 +31191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4f8538359ea3c4fae0378245aaa546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mood: 0
   State: 0
-  Text: {fileID: 268604711}
+  GhostColor: {r: 0, g: 0, b: 0, a: 0.24705882}
   Sunglasses: {fileID: 1856907029}
   WeaponTransform: {fileID: 642360717}
   WeaponRenderer: {fileID: 642360716}

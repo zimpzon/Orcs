@@ -23,7 +23,7 @@ public static class PositionUtility
         return (SpawnDirection)Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
     }
 
-    public static Vector3 GetPointInsideArena(float maxOffsetX, float maxOffsetY)
+    public static Vector3 GetPointInsideArena(float maxOffsetX = 1.0f, float maxOffsetY = 1.0f)
     {
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)

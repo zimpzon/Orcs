@@ -25,7 +25,7 @@ public static class Explosions
             dir /= distance;
             dir.Normalize();
 
-            force = Mathf.Clamp(((radius - distance) / radius) * force, min: force * 0.5f, max: force);
+            force = Mathf.Clamp(((radius - distance) / radius) * force, min: force * 0.9f, max: force);
             var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();

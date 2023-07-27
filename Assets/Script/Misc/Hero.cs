@@ -19,7 +19,6 @@ namespace Assets.Script
         public Sprite[] PlayerRunSprites;
         public Sprite[] PlayerIdleSprites;
         public Sprite ShowoffSprite;
-        public OrcMood OrcMood;
 
         public bool IsUnlocked(bool mustBeExactlyAtCounter = false)
         {

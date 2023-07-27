@@ -122,7 +122,6 @@ public class GameManager : MonoBehaviour
     int xpToLevel;
     int lastXpShown = 0;
     int currentXp = 0;
-    int xpPerOrc = 100;
     float currentLevel = 1;
     float roundStartTime_;
     int roundStartBestScore_;
@@ -177,7 +176,6 @@ public class GameManager : MonoBehaviour
         renderer.sprite = hero.ShowoffSprite;
         renderer.color = isUnlocked ? Color.white : Color.black;
         TextHeroName.text = hero.Name;
-        Orc.Mood = hero.OrcMood;
         SaveGame.Members.SelectedHero = (int)hero.HeroType;
 
         UpdateButtonStates();
@@ -460,11 +458,6 @@ public class GameManager : MonoBehaviour
         PlayerScript.UpgradesActive = true;
     }
 
-    void UpdateStat(string name, int value)
-    {
-        StartCoroutine(Server.Instance.UpdateStat(name, value));
-    }
-
     public void ShowGameOver()
     {
         if (GameState == State.Dead)
@@ -507,7 +500,7 @@ public class GameManager : MonoBehaviour
         PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
         GameProgressScript.Instance.Stop();
-        Orc.Hide();
+        Orc.ResetAll();
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
@@ -557,7 +550,7 @@ public class GameManager : MonoBehaviour
         roundStartTime_ = Time.time;
         roundStartBestScore_ = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
         PlayerScript.SetPlayerPos(Vector3.zero);
-        Orc.SetPosition(Vector3.up * 3);
+        Orc.SetPosition(Vector3.up * 3, startingGame: true);
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
@@ -668,10 +661,10 @@ public class GameManager : MonoBehaviour
         if (UnityEngine.Random.value < PlayerUpgrades.Data.DropMoneyOnKillChance)
         {
             int amount = UnityEngine.Random.Range(PlayerUpgrades.Data.DropMoneyOnKillMin, PlayerUpgrades.Data.DropMoneyOnKillMax + 1);
-            ThrowMoney(actor.transform.position, amount, forceScale: 1.0f);
+            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount, forceScale: 1.0f);
         }
 
-        DropXp(actor.transform.position);
+        ThrowPickups(AutoPickUpType.Xp, actor.transform.position, 1, forceScale: 0.01f);
     }
 
     private void OnFirstOrcPickup()
@@ -703,16 +696,16 @@ public class GameManager : MonoBehaviour
             xp.SetActive(true);
     }
 
-    public void ThrowMoney(Vector2 pos, int amount, float forceScale = 1.0f)
+    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, float forceScale = 1.0f)
     {
-        if (UnityEngine.Random.value < PlayerUpgrades.Data.MoneyDoubleChance)
-        {
+        float doubleChange = pickupType == AutoPickUpType.Money ? PlayerUpgrades.Data.MoneyDoubleChance : PlayerUpgrades.Data.XpDoubleChance;
+
+        if (UnityEngine.Random.value < doubleChange)
             amount *= 2;
-        }
         
         for (int i = 0; i < amount; ++i)
         {
-            var money = PickUpManagerScript.Instance.GetPickUpFromCache(AutoPickUpType.Money);
+            var money = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);
             money.transform.position = pos;
             money.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale);
             money.SetActive(true);
@@ -748,39 +741,12 @@ public class GameManager : MonoBehaviour
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
 
-        Vector2 uiPos = UiPositionFromWorld(PlayerTrans.position + Vector3.up * 0.5f);
-        var rectTransform = TextFloatingWeapon.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = uiPos;
+        //Vector2 uiPos = UiPositionFromWorld(PlayerTrans.position + Vector3.up * 0.5f);
+        //var rectTransform = TextFloatingWeapon.GetComponent<RectTransform>();
+        //rectTransform.anchoredPosition = uiPos;
 
-        Vector3 bestPos = Vector3.zero;
-        float bestDistance = 0.0f;
-        for (int i = 0; i < 5; ++i)
-        {
-            Vector3 newPos = PositionUtility.GetPointInsideArena(1.0f, 0.9f);
-            float distance = Vector3.Distance(newPos, pos);
-            if (distance > bestDistance)
-            {
-                bestDistance = distance;
-                bestPos = newPos;
-            }
-
-            // TODO PE: Does not seem to work? I've seen it behind the score.
-            // Let's try not placing the orc around the UI
-            bool nearUi = newPos.y > 4.5f && (newPos.x > -3.5f && newPos.x < 3.5f);
-            if (nearUi)
-                continue;
-
-            if (distance > 5.0f)
-                break;
-        }
-
-        Orc.SetPosition(bestPos);
-
-        AddXp(xpPerOrc);
-        var xpColor = new Color(0.4f, 0.6f, 1.0f);
-        FloatingTextSpawner.Instance.Spawn(pos + Vector3.up * 1.0f, $"{xpPerOrc}XP", xpColor, speed: 0.2f, 2.0f, FontStyles.Bold);
-
-        ThrowMoney(pos, 2 + SaveGame.RoundScore / 3, forceScale: 1.0f);
+        ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 3, forceScale: 2.0f);
+        ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 3, forceScale: 1.1f);
     }
 
     private void InitXpText()
