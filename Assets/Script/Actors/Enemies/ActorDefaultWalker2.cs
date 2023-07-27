@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ActorDefaultWalker : ActorBase
+public class ActorDefaultWalker233 : ActorBase
 {
     Vector3 moveVec_;
     Vector3 target_;
@@ -13,7 +13,6 @@ public class ActorDefaultWalker : ActorBase
         target_ = GetNewTarget();
         StartCoroutine(Think());
     }
-
     IEnumerator Think()
     {
         while (isSpawning_)

@@ -1,3 +1,3 @@
-﻿public class ActorOgreSmall : ActorBase
+﻿public class ActorOgreSmall : ActorDefaultWalker
 {
 }
