@@ -14,6 +14,8 @@ SMART DESIGN
   synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
+LOSE ALL GOLD BUT PERMANTLY +dam and +gold (buy shop item)
+  background in title screen could have moving enemies.
   bullets dropped on ground when moving, arming time, then fly. could be cool to surround enemies
   can "ascending" like Cookie Clicker be done? Possibly with new chars? reset all progress and get double gold and xp? could be greyed out button with explanation.
   enemies that follows paths and just shoots?

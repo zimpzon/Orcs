@@ -1,4 +1,5 @@
 ﻿using Assets.Script.Enemies;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,12 @@ public static class PositionUtility
 
     public static SpawnDirection GetRandomDirOutside()
     {
-        return (SpawnDirection)Random.Range(0, (int)SpawnDirection.Inside); // TODO PEE: Not pretty. Pick one BEFORE .Inside.
+        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Inside); // TODO PEE: Not pretty. Pick one BEFORE .Inside.
     }
 
     public static SpawnDirection GetRandomDirAny()
     {
-        return (SpawnDirection)Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
+        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
     }
 
     public static Vector3 GetPointInsideArena(float maxOffsetX = 1.0f, float maxOffsetY = 1.0f)
@@ -28,8 +29,8 @@ public static class PositionUtility
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
-            float x = Random.Range(-0.4f, 0.4f) * maxOffsetX;
-            float y = Random.Range(-0.4f, 0.4f) * maxOffsetY;
+            float x = UnityEngine.Random.Range(-0.4f, 0.4f) * maxOffsetX;
+            float y = UnityEngine.Random.Range(-0.4f, 0.4f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
             bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
@@ -44,8 +45,8 @@ public static class PositionUtility
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
-            float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
-            float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
+            float x = UnityEngine.Random.Range(-0.5f, 0.5f) * maxOffsetX;
+            float y = UnityEngine.Random.Range(-0.5f, 0.5f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
             bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
@@ -64,16 +65,16 @@ public static class PositionUtility
 
         if (dir == SpawnDirection.LeftOrRight)
         {
-            dir = Random.value < 0.5f ? SpawnDirection.Left : SpawnDirection.Right;
+            dir = UnityEngine.Random.value < 0.5f ? SpawnDirection.Left : SpawnDirection.Right;
         }
         else if (dir == SpawnDirection.TopOrBottom)
         {
-            dir = Random.value < 0.5f ? SpawnDirection.Top : SpawnDirection.Bottom;
+            dir = UnityEngine.Random.value < 0.5f ? SpawnDirection.Top : SpawnDirection.Bottom;
         }
 
         Rect scr = AspectUtility.screenRelativeRect;
         float x = 0.0f; float y = 0.0f; float offsetX = 0.0f; float offsetY = 0.0f;
-        float rnd = Random.Range(-1.0f, 1.0f) * maxDistFromCenter;
+        float rnd = UnityEngine.Random.Range(-1.0f, 1.0f) * maxDistFromCenter;
         switch (dir)
         {
             case SpawnDirection.Top:     x = 0.5f + rnd; y = 1.0f; offsetY =  offset; break;
@@ -88,6 +89,80 @@ public static class PositionUtility
 
     public const float PI2 = 3.14159265f * 2;
 
+    public static IEnumerator SpawnAndMaintain(
+        ActorTypeEnum actorType,
+        TimeSpan startTime,
+        TimeSpan endTime,
+        int count,
+        int countPerTick,
+        float timeBetweenTicks,
+        bool outsideScreen,
+        SpawnDirection dir)
+    {
+        List<ActorBase> alive = new ();
+
+        var wait = new WaitForSeconds(timeBetweenTicks);
+
+        float startTimeSec = (float)startTime.TotalSeconds;
+        float endTimeSec = (float)endTime.TotalSeconds;
+
+        while (GameManager.Instance.GameTime < startTimeSec)
+        {
+            yield return null;
+        }
+
+        void RemoveDead()
+        {
+            while (true)
+            {
+                bool removed = false;
+                for (int i = 0; i < alive.Count; ++i)
+                {
+                    if (alive[i].IsDead)
+                    {
+                        alive.RemoveAt(i);
+                        removed = true;
+                        break;
+                    }
+                }
+
+                if (!removed)
+                    break;
+            }
+        }
+
+        while (GameManager.Instance.GameTime < endTimeSec)
+        {
+            if (alive.Count < count)
+            {
+                for (int i = 0; i < countPerTick && alive.Count < count; i++)
+                {
+                    var spawn = ActorCache.Instance.GetActor(actorType);
+                    float offset = 0.5f;
+                    Vector3 pos;
+                    if (outsideScreen)
+                        pos = GetPointOutsideScreen(dir, offset, UnityEngine.Random.value * 0.5f);
+                    else
+                        pos = GetPointInsideArena(1.0f, 1.0f);
+
+                    spawn.transform.position = pos;
+                    spawn.SetActive(true);
+                    alive.Add(spawn.GetComponent<ActorBase>());
+                }
+
+                GameManager.SetDebugOutput("alive", alive.Count);
+                RemoveDead();
+
+                if (timeBetweenTicks != 0.0)
+                    yield return wait;
+            }
+
+            GameManager.SetDebugOutput("alive", alive.Count);
+            RemoveDead();
+            yield return null;
+        }
+    }
+
     public static IEnumerator SpawnGroup(
         ActorTypeEnum actorType,
         int count,
@@ -101,7 +176,7 @@ public static class PositionUtility
             float offset = 1.0f;
             Vector3 pos;
             if (outsideScreen)
-                pos = GetPointOutsideScreen(dir, offset, Random.value * 0.5f);
+                pos = GetPointOutsideScreen(dir, offset, UnityEngine.Random.value * 0.5f);
             else
                 pos = GetPointInsideArena(1.0f, 1.0f);
 

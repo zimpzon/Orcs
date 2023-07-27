@@ -135,8 +135,8 @@ public class OrcController : MonoBehaviour
         if (pickedUp_)
             return;
 
+        GameManager.Instance.OnOrcPickup(trans_.position); 
         ResetAll();
-        GameManager.Instance.OnOrcPickup(trans_.position);
         pickedUp_ = true;
         SetPosition(PositionUtility.GetPointInsideArena());
     }

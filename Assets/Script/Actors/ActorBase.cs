@@ -30,6 +30,7 @@ public class ActorBase : MonoBehaviour
 
     [System.NonSerialized] public static float Damage = 25.0f;
     [System.NonSerialized] public bool IsFullyReady = false;
+    [System.NonSerialized] public bool UseSpawnParticles = false;
 
     [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
@@ -38,6 +39,7 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public Vector3 BodyOffset = new Vector3(0.0f, -0.25f, 0.0f);
 
     [System.NonSerialized] public bool IsCorpse;
+    [System.NonSerialized] public bool IsDead;
 
     private bool hasForcedDestination_;
     private Vector3 forcedDestination_;
@@ -113,7 +115,14 @@ public class ActorBase : MonoBehaviour
         GameMode = GameManager.Instance.CurrentGameModeData;
         PreEnable();
         GameManager.Instance.RegisterEnemy(this);
-        StartCoroutine(SpawnAnimCo());
+
+        if (UseSpawnParticles)
+        {
+            StartCoroutine(SpawnAnimCo());
+        }
+
+        isSpawning_ = false;
+
         PostEnable();
     }
 
@@ -181,13 +190,7 @@ public class ActorBase : MonoBehaviour
         GameManager.SetDebugOutput("moveVec", Mathf.Sign(moveVec.x));
 
         Vector3 scale = scale_;
-        //bool closeToCenterX = Mathf.Abs(moveVec.x) < 0.25;
-        //if (closeToCenterX)
-        //    scale.x = -1;
-        //else
-            scale.x = moveVec.x < 0 ? -1 : 1;
-
-        GameManager.SetDebugOutput("scale", scale.x);
+        scale.x = moveVec.x < 0 ? -scale.x : scale.x;
 
         transform_.localScale = scale;
     }
@@ -269,13 +272,13 @@ public class ActorBase : MonoBehaviour
 
         position_.z = 0;
 
-        bool dead = Hp <= 0.0f;
+        IsDead = Hp <= 0.0f;
 
         if (IsFullyReady)
         {
             position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
 
-            if (!dead)
+            if (!IsDead)
             {
                 float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
                 if (distanceToPlayer < PlayerDistanceToClosestEnemy)
@@ -286,14 +289,14 @@ public class ActorBase : MonoBehaviour
             }
         }
 
-        if (!dead && !isFrozen_)
+        if (!IsDead && !isFrozen_)
         {
             animationController_.Tick(Time.deltaTime, renderer_, Animations);
         }
 
-        renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (dead ? 10000 : 0);
+        renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (IsDead ? 10000 : 0);
 
-        const float RegenTime = 2.0f;
+        const float RegenTime = 1.0f;
         slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + Time.deltaTime / RegenTime);
 
         PostUpdate();
@@ -513,6 +516,8 @@ public class ActorBase : MonoBehaviour
         StopAllCoroutines();
         transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         IsCorpse = false;
+        IsDead = false;
+        UseSpawnParticles = false;
         isPainted_ = false;
         isFrozen_ = false;
         isLivingBomb_ = false;

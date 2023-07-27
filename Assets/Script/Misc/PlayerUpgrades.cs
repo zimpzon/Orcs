@@ -36,7 +36,7 @@ public class UpgradeData
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileBaseRange = 6.0f;
     public float MagicMissileRangeMul = 1.0f;
-    public int MagicMissileBaseBullets = 2;
+    public int MagicMissileBaseBullets = 3;
     public int MagicMissileBulletsAdd = 0;
 
     // orc

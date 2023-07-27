@@ -143,11 +143,11 @@ public class WeaponBase
                     Machinegun = new WeaponMachinegun();
                     Machinegun.Type = WeaponType.Machinegun;
                     Machinegun.Cd = 0.08f;
-                    Machinegun.Scale = new Vector3(1.5f, 4.0f, 1.0f);
+                    Machinegun.Scale = new Vector3(0.2f, 0.08f, 1.0f);
                     Machinegun.Sprite = SpriteData.Instance.MachineGun;
                     Machinegun.BulletSprite = SpriteData.Instance.RoundBullet;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerMachinegunFire;
+                    Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
                     Machinegun.MoveSpeedModifier = 1.0f;
                 }
                 return Machinegun;

@@ -217,7 +217,6 @@ public class PlayerScript : MonoBehaviour
                 Vector3 worldMuzzle = trans_.TransformPoint(Weapon.Muzzle);
 
                 float recoil;
-                Debug.DrawLine(worldMuzzle, trans_.position + lookDir_ * 100, Color.yellow, 0.3f);
                 var fireDir = lookDir_;
                 if (ActorBase.PlayerClosestEnemy != null)
                     fireDir = (ActorBase.PlayerClosestEnemy.transform.position - worldMuzzle).normalized;
@@ -403,12 +402,15 @@ public class PlayerScript : MonoBehaviour
         if (ActorBase.PlayerClosestEnemy != null)
             lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
         else
-            lookDir_ = Vector2.right;
+            lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
 
-        flipX_ = moveVec_.x < 0 ? -playerScale_ : playerScale_;
-        Vector3 scale = trans_.localScale;
-        scale.x = flipX_;
-        trans_.localScale = scale;
+        if (moveVec_.x != 0.0f)
+        {
+            flipX_ = moveVec_.x < 0 ? -playerScale_ : playerScale_;
+            Vector3 scale = trans_.localScale;
+            scale.x = flipX_;
+            trans_.localScale = scale;
+        }
     }
 
     public void AddForce(Vector3 f)

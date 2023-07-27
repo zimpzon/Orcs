@@ -12,9 +12,10 @@ public class WeaponMachinegun : WeaponBase
         Color color = new Color(0.2f, 0.5f, 1.0f);
 
         GameManager.Instance.MakeFlash(point);
-        AudioManager.Instance.PlayClipWithRandomPitch(FireAudio, volumeScale: 0.5f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.7f, pitch: 0.2f);
+        //AudioManager.Instance.PlayClipWithRandomPitch(FireAudio, volumeScale: 0.5f);
 
-        float spreadFactor = 30f; // Increase this to limit spread (unit circle is moved further away)
+        float spreadFactor = 40f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;
         Vector2 spread = RndUtil.RandomInsideUnitCircle();
         dir.x += spread.x;
@@ -25,7 +26,7 @@ public class WeaponMachinegun : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
-        basic.Speed = 10.0f + Random.value * 2;
+        basic.Speed = 8.0f + Random.value * 0.1f;
         basic.Damage = 75.0f;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileBaseRange * PlayerUpgrades.Data.MagicMissileRangeMul;
         basic.Radius = 0.3f;
@@ -42,7 +43,9 @@ public class WeaponMachinegun : WeaponBase
         basic.Color = color;
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
-        basic.Force = 0.75f;
+        basic.Force = 0.5f;
+        //float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        //basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
         ProjectileManager.Instance.Fire(basic);
     }

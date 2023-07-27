@@ -204,13 +204,13 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 {
                     float newX = p.Position.x + movement.x;
                     float newY = p.Position.y + movement.y;
-                    if (newX < -arenaBoundsX_ || newX > arenaBoundsX_)
+                    if (newX < GameManager.Instance.ArenaBounds.xMin + 0.5f || newX > GameManager.Instance.ArenaBounds.xMax - 0.5f)
                     {
                         movement = new Vector3(-movement.x, movement.y, 0.0f);
                         p.Direction = new Vector3(-p.Direction.x, p.Direction.y, 0.0f);
                     }
 
-                    if (newY < -arenaBoundsY_ || newY > arenaBoundsY_)
+                    if (newY < GameManager.Instance.ArenaBounds.yMin + 0.5f || newY > GameManager.Instance.ArenaBounds.yMax - 0.5f)
                     {
                         movement = new Vector3(movement.x, -movement.y, 0.0f);
                         p.Direction = new Vector3(p.Direction.x, -p.Direction.y, 0.0f);

@@ -434,7 +434,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentXp -= xpToLevel;
-        xpToLevel = (int)(xpToLevel * 1.2f);
+        xpToLevel = (int)(xpToLevel * 1.1f);
 
         PauseGameTime = false;
         Time.timeScale = 1.0f;
@@ -698,17 +698,17 @@ public class GameManager : MonoBehaviour
 
     public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, float forceScale = 1.0f)
     {
-        float doubleChange = pickupType == AutoPickUpType.Money ? PlayerUpgrades.Data.MoneyDoubleChance : PlayerUpgrades.Data.XpDoubleChance;
+        float doubleChance = pickupType == AutoPickUpType.Money ? PlayerUpgrades.Data.MoneyDoubleChance : PlayerUpgrades.Data.XpDoubleChance;
 
-        if (UnityEngine.Random.value < doubleChange)
+        if (UnityEngine.Random.value < doubleChance)
             amount *= 2;
-        
+
         for (int i = 0; i < amount; ++i)
         {
-            var money = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);
-            money.transform.position = pos;
-            money.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale);
-            money.SetActive(true);
+            var pickup = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);
+            pickup.transform.position = pos;
+            pickup.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale);
+            pickup.SetActive(true);
         }
     }
 
