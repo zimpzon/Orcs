@@ -1,8 +1,5 @@
 ﻿CAM: 8.4
 
-BUGS
-  player always faces middle X
-  
 SMART DESIGN
  getting to orcs quickly can be stressful. maybe reduce xp.
  xp is not balanced, drops become worthless
