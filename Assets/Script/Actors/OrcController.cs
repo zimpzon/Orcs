@@ -147,15 +147,17 @@ public class OrcController : MonoBehaviour
 
         while (true)
         {
-            if (pickedUp_ && Time.time > reviveTime_)
+            while (pickedUp_)
             {
-                pickedUp_ = false;
-                MakeGhost(false);
-                Explosions.Push(trans_.position, radius: 5.0f, force: 10.0f);
-            }
+                if (Time.time > reviveTime_)
+                {
+                    pickedUp_ = false;
+                    MakeGhost(false);
+                    Explosions.Push(trans_.position, radius: 1.5f, force: 2.0f);
+                }
 
-            if (pickedUp_)
                 yield return null;
+            }
 
             var em = hearts_.emission;
             em.enabled = playerIsClose_ || chasePlayer_;

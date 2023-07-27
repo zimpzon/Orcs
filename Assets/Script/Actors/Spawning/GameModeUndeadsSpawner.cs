@@ -16,7 +16,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         while (true)
         {
             yield return PositionUtility.SpawnGroup(ActorTypeEnum.OgreShamanStaffLarge, 1, 0.00f, outsideScreen: true, PositionUtility.GetRandomDirOutside());
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(50);
         }
     }
 

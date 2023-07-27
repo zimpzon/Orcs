@@ -40,7 +40,7 @@ public class UpgradeData
     public int MagicMissileBulletsAdd = 0;
 
     // orc
-    public float OrcReviveTime = 3.0f;
+    public float OrcReviveTime = 8.0f;
     public float OrcReviveTimeMul = 1.0f;
 
     public bool OrcJedisEnabled = false;

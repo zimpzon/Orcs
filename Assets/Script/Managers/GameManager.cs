@@ -741,12 +741,9 @@ public class GameManager : MonoBehaviour
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
 
-        //Vector2 uiPos = UiPositionFromWorld(PlayerTrans.position + Vector3.up * 0.5f);
-        //var rectTransform = TextFloatingWeapon.GetComponent<RectTransform>();
-        //rectTransform.anchoredPosition = uiPos;
-
-        ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 3, forceScale: 2.0f);
-        ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 3, forceScale: 1.1f);
+        // TODO: playerUpgrades
+        ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, forceScale: 2.0f);
+        ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 2, forceScale: 1.1f);
     }
 
     private void InitXpText()

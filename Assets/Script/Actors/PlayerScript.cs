@@ -214,8 +214,15 @@ public class PlayerScript : MonoBehaviour
                     SetNextFire();
 
                 isShooting_ = true;
+                Vector3 worldMuzzle = trans_.TransformPoint(Weapon.Muzzle);
+
                 float recoil;
-                Weapon.Fire(trans_, lookDir_, GameManager.Instance.SortLayerTopEffects, out recoil);
+                Debug.DrawLine(worldMuzzle, trans_.position + lookDir_ * 100, Color.yellow, 0.3f);
+                var fireDir = lookDir_;
+                if (ActorBase.PlayerClosestEnemy != null)
+                    fireDir = (ActorBase.PlayerClosestEnemy.transform.position - worldMuzzle).normalized;
+
+                Weapon.FireFromPoint(worldMuzzle, fireDir, GameManager.Instance.SortLayerTopEffects, out recoil);
                 AddForce(lookDir_ * -recoil);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
@@ -398,7 +405,7 @@ public class PlayerScript : MonoBehaviour
         else
             lookDir_ = Vector2.right;
 
-        flipX_ = lookDir_.x < trans_.position.x ? -playerScale_ : playerScale_;
+        flipX_ = moveVec_.x < 0 ? -playerScale_ : playerScale_;
         Vector3 scale = trans_.localScale;
         scale.x = flipX_;
         trans_.localScale = scale;

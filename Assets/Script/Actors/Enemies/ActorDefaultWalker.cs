@@ -13,7 +13,6 @@ public class ActorDefaultWalker : ActorBase
         target_ = GetNewTarget();
         StartCoroutine(Think());
     }
-
     IEnumerator Think()
     {
         while (isSpawning_)
@@ -22,7 +21,7 @@ public class ActorDefaultWalker : ActorBase
         while (true)
         {
             float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
-            target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(RndUtil.RandomInsideUnitCircle() * 2);
+            target_ = GameManager.Instance.PlayerTrans.position;
             yield return null;
         }
     }

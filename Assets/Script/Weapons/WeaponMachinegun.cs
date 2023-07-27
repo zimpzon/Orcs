@@ -4,20 +4,17 @@ public class WeaponMachinegun : WeaponBase
 {
     public Sprite BulletSprite;
 
-    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
+    public override void FireFromPoint(Vector3 point, Vector3 direction, int sortingLayer, out float recoil)
     {
         lastFire_ = Time.time;
         recoil = 0.01f;
         IsPrimary = true;
         Color color = new Color(0.2f, 0.5f, 1.0f);
 
-        Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
-        worldMuzzle += -direction * 0.2f; // Start a little behind muzzle because its very unfun missing an enemy that is too close
-
-        GameManager.Instance.MakeFlash(worldMuzzle);
+        GameManager.Instance.MakeFlash(point);
         AudioManager.Instance.PlayClipWithRandomPitch(FireAudio, volumeScale: 0.5f);
 
-        float spreadFactor = 10f; // Increase this to limit spread (unit circle is moved further away)
+        float spreadFactor = 30f; // Increase this to limit spread (unit circle is moved further away)
         Vector3 dir = direction * spreadFactor;
         Vector2 spread = RndUtil.RandomInsideUnitCircle();
         dir.x += spread.x;
@@ -38,7 +35,7 @@ public class WeaponMachinegun : WeaponBase
         scale.y = 3.0f;
         scale.z = 1.0f;
 
-        basic.Position = worldMuzzle;
+        basic.Position = point;
         basic.SpriteInfo.Renderer.sprite = BulletSprite;
         basic.SpriteInfo.Renderer.sortingLayerID = sortingLayer;
         basic.Direction = dir;
@@ -48,5 +45,10 @@ public class WeaponMachinegun : WeaponBase
         basic.Force = 0.75f;
 
         ProjectileManager.Instance.Fire(basic);
+    }
+
+    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
+    {
+        recoil = 0;
     }
 }

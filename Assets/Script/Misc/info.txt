@@ -1,7 +1,6 @@
 ﻿CAM: 8.4
 
 BUGS
-  WTF IS up with closet target? misses very close shots.
   player always faces middle X
   
 SMART DESIGN
@@ -19,7 +18,7 @@ SMART DESIGN
 
 BRAINSTORM
   bullets dropped on ground when moving, arming time, then fly. could be cool to surround enemies
-  can "ascending" like Cookie Clicker be done? Possibly with new chars?
+  can "ascending" like Cookie Clicker be done? Possibly with new chars? reset all progress and get double gold and xp? could be greyed out button with explanation.
   enemies that follows paths and just shoots?
   shield/sword enemies loses items which flies away, and continues as plain enemies.
   use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.

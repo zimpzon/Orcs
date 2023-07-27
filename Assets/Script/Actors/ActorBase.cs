@@ -194,11 +194,11 @@ public class ActorBase : MonoBehaviour
 
     void CheckForCrowded()
     {
-        if (hasForcedDestination_ || !AvoidCrowds || Time.time < nextCheckForCrowded_)
+        if (!AvoidCrowds || Time.time < nextCheckForCrowded_)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, 0.1f);
-        if (crowdCount > 3)
+        int crowdCount = BlackboardScript.CountEnemies(position_, 0.35f);
+        if (crowdCount > 2)
         {
             if (Random.value > 0.25f)
             {
