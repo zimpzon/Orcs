@@ -16,7 +16,7 @@ public enum GameCounter {
 
 public class SaveGameMembers
 {
-    public int Money = 400;
+    public int Money = 0;
     public int MoneySpentInShop;
     public Dictionary<ShopItemType, BoughtItem> BoughtItems = new Dictionary<ShopItemType, BoughtItem>();
     public ShopItemType[] TempBoughtTypes = new ShopItemType[0];

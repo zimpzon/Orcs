@@ -1,5 +1,10 @@
 ﻿CAM: 8.4
 
+BUGS
+ bullets often passing through large ogre, check collider
+ enemies getting stuck when reviving with maintain code - they stay on round restart! even after main menu.
+ cpu/gpu usage? pc getting warm.
+
 SMART DESIGN
  getting to orcs quickly can be stressful. maybe reduce xp.
  xp is not balanced, drops become worthless

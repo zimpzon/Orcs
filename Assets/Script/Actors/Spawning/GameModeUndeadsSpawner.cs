@@ -20,7 +20,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
-                endTime: new TimeSpan(0, 1, 0),
+                endTime: new TimeSpan(0, 30, 0),
                 count: 50,
                 countPerTick: 5,
                 timeBetweenTicks: 0.2f,
@@ -30,14 +30,26 @@ public class GameModeUndeadsSpawner : MonoBehaviour
 
         StartCoroutine(
             PositionUtility.SpawnAndMaintain(
-                ActorTypeEnum.OgreSmall,
+                ActorTypeEnum.OgreLarge,
                 startTime: new TimeSpan(0, 0, 10),
-                endTime: new TimeSpan(0, 1, 0),
-                count: 50,
-                countPerTick: 5,
+                endTime: new TimeSpan(0, 30, 0),
+                count: 1,
+                countPerTick: 1,
                 timeBetweenTicks: 0.2f,
                 outsideScreen: true,
-                PositionUtility.SpawnDirection.LeftOrRight)
+                PositionUtility.SpawnDirection.TopOrBottom)
+            );
+
+        StartCoroutine(
+            PositionUtility.SpawnAndMaintain(
+                ActorTypeEnum.PirateRedBeardGun,
+                startTime: new TimeSpan(0, 0, 30),
+                endTime: new TimeSpan(0, 10, 0),
+                count: 3,
+                countPerTick: 1,
+                timeBetweenTicks: 0.2f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.TopOrBottom)
             );
 
         while (true)
