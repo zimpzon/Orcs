@@ -941,7 +941,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
+        //return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

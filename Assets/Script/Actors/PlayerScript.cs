@@ -12,6 +12,8 @@ public class PlayerScript : MonoBehaviour
 
     public float Hp;
     public float MaxHp;
+    public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
+    //[System.NonSerialized] public Vector3 LatestLeftRightUpDown;
 
     [System.NonSerialized] public Vector3 CursorPos;
     Vector3 lookDir_;
@@ -47,7 +49,6 @@ public class PlayerScript : MonoBehaviour
     PlayerUpgrades _playerUpgrades;
 
     [System.NonSerialized] public WeaponBase Weapon;
-    public Transform MeleeWeapon;
 
     SpriteRenderer shadowRenderer_;
 
@@ -83,37 +84,6 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
     }
 
-    public void SwingMelee()
-    {
-        StartCoroutine(SwingMeleeCo());
-    }
-
-    public IEnumerator SwingMeleeCo()
-    {
-        int flipX = lookDir_.x < trans_.position.x ? -1 : 1;
-        MeleeWeapon.gameObject.SetActive(true);
-        float degreeStart = 90 * flipX;
-        float degreeEnd = -180 * flipX;
-        float degrees = degreeStart;
-
-        while (true)
-        {
-            if (flipX == 1.0f && degrees < degreeEnd)
-                break;
-
-            if (flipX == -1.0f && degrees > degreeEnd)
-                break;
-
-            MeleeWeapon.rotation = Quaternion.Euler(0.0f, 0.0f, degrees);
-            degrees -= 1500 * flipX * Time.deltaTime;
-            yield return null;
-        }
-
-        MeleeWeapon.gameObject.SetActive(false);
-
-        yield break;
-    }
-
     public void UpdateMaxHp()
     {
         float newMaxHp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
@@ -129,9 +99,12 @@ public class PlayerScript : MonoBehaviour
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         UpdateMaxHp();
 
+        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
+        foreach (var toggleEffect in toggleEffects)
+            toggleEffect.Enable(true);
+
         lastRegenTick_ = 0;
         UpgradesActive = false;
-        MeleeWeapon.gameObject.SetActive(false);
         shadowRenderer_.enabled = true;
         isDead_ = false;
         isMoving_ = false;
@@ -461,6 +434,14 @@ public class PlayerScript : MonoBehaviour
         {
             immortal_ = !immortal_;
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            var melee = CacheManager.Instance.MeleeThrowCache.GetInstance().GetComponent<MeleeThrow>();
+            melee.transform.position = trans_.position;
+            melee.gameObject.SetActive(true);
+            melee.Throw(LatestLeftRight, 8, 9);
         }
 
         if (GameManager.Instance.PauseGameTime)

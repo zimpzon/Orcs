@@ -14,7 +14,7 @@ public class ActorDefaultWalker : ActorBase
         StartCoroutine(Think());
     }
 
-    IEnumerator Think()
+    protected virtual IEnumerator Think()
     {
         while (isSpawning_)
             yield return null;
@@ -27,7 +27,7 @@ public class ActorDefaultWalker : ActorBase
         }
     }
 
-    Vector3 GetNewTarget()
+    protected virtual Vector3 GetNewTarget()
     {
         Vector3 result = PositionUtility.GetPointInsideArena(1.0f, 1.0f);
         return result;

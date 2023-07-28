@@ -27,12 +27,6 @@ public class WeaponSword : WeaponBase
 
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
-
-        const float Damage = 500;
-        const float Radius = 3.0f;
-        var pos = GameManager.Instance.PlayerTrans.position;
-        Swing(pos, Damage, Radius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out recoil);
-        GameManager.Instance.PlayerScript.SwingMelee();
+        recoil = 0.0f;
     }
 }

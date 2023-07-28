@@ -1,7 +1,7 @@
 using Assets.Script;
 using UnityEngine;
 
-public class BurstOfFrost : MonoBehaviour
+public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 {
     public Color FrozenColor = Color.cyan;
 
@@ -31,15 +31,15 @@ public class BurstOfFrost : MonoBehaviour
 
     void Update()
     {
-        if (Time.time > nextBurst_ && !isBursting_)
+        if (GameManager.Instance.GameTime > nextBurst_ && !isBursting_)
         {
             isBursting_ = true;
-            burstStartTime_ = Time.time;
+            burstStartTime_ = GameManager.Instance.GameTime;
         }
 
         if (isBursting_)
         {
-            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - Time.time) / BurstTime);
+            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - GameManager.Instance.GameTime) / BurstTime);
             float scale = t * MaxScale;
             //renderer_.transform.localScale = Vector3.one * Mathf.PingPong(scale, 0.95f + 0.1f);
             baseColor_.a = 8.0f / 255.0f;
@@ -49,7 +49,7 @@ public class BurstOfFrost : MonoBehaviour
             {
                 //renderer_.transform.localScale = Vector3.one;
                 isBursting_ = false;
-                nextBurst_ = Time.time + 1.0f;
+                nextBurst_ = GameManager.Instance.GameTime + 1.0f;
                 baseColor_.a = baseAlpha_;
                 renderer_.color = baseColor_;
 
@@ -80,6 +80,20 @@ public class BurstOfFrost : MonoBehaviour
             var push = dir * force;
             enemy.AddForce(push);
             enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f);
+        }
+    }
+
+    public void Enable(bool enable)
+    {
+        gameObject.SetActive(enable);
+        isBursting_ = false;
+        if (enable)
+        {
+            nextBurst_ = GameManager.Instance.GameTime + 0.5f;
+        }
+        else
+        {
+            nextBurst_ = float.MaxValue;
         }
     }
 }

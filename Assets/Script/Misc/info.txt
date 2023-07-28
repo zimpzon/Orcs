@@ -5,6 +5,9 @@ BUGS
  enemies getting stuck when reviving with maintain code - they stay on round restart! even after main menu.
  cpu/gpu usage? pc getting warm.
 
+copy vampire:
+  start with sword that does damage in the facing direction. very pleasant to move around, aim, kill.
+   
 SMART DESIGN
  getting to orcs quickly can be stressful. maybe reduce xp.
  xp is not balanced, drops become worthless
