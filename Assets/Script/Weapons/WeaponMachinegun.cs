@@ -27,7 +27,7 @@ public class WeaponMachinegun : WeaponBase
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 8.0f + Random.value * 0.1f;
-        basic.Damage = 75.0f;
+        basic.Damage = 20.0f;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileBaseRange * PlayerUpgrades.Data.MagicMissileRangeMul;
         basic.Radius = 0.3f;
 

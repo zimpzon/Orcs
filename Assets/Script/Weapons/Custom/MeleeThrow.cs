@@ -13,8 +13,9 @@ public class MeleeThrow : MonoBehaviour
         trans_ = transform;
     }
 
-    float drag_;
+    float drag_ = 9.0f;
     float degrees_;
+    float damage_;
 
     public float rotationspeed = 700.0f;
 
@@ -25,16 +26,9 @@ public class MeleeThrow : MonoBehaviour
 
         speed_ -= drag_ * Time.deltaTime;
 
-        //if (speed_ > 0.0f)
-        //    speed_ -= drag * Time.deltaTime;
-        //else
-        //    speed_ += drag * Time.deltaTime;
-
-        trans_.position += startDir_ * speed_ * Time.deltaTime;
+        trans_.position += speed_ * Time.deltaTime * startDir_;
 
         float dist = Vector3.Distance(startPos_, trans_.position);
-        GameManager.SetDebugOutput("dist", dist);
-        GameManager.SetDebugOutput("speed", speed_);
         bool isBack = Mathf.Sign(speed_) != startSign_ && dist < 0.3f;
         if (isBack)
         {
@@ -43,11 +37,23 @@ public class MeleeThrow : MonoBehaviour
         }
     }
 
-    public void Throw(Vector2 dir, float throwPower, float drag)
+    void OnCollisionEnter2D(Collision2D col)
     {
+        int layer = col.gameObject.layer;
+        if (layer != GameManager.Instance.LayerEnemy)
+            return;
+
+        var actor = col.gameObject.GetComponent<ActorBase>();
+        float forceMul = Mathf.Sign(speed_) == startSign_ ? 0.4f : 0.01f;
+        GameManager.Instance.DamageEnemy(actor, damage_, speed_ * startDir_, forceMul);
+    }
+
+    public void Throw(Vector2 dir, float damage, Vector3 scale)
+    {
+        trans_.localScale = scale;
         startPos_ = trans_.position;
-        speed_ = throwPower;
-        drag_ = drag;
+        speed_ = PlayerUpgrades.Data.MeleeThrowBasePower * PlayerUpgrades.Data.MeleeThrowPowerMul;
+        damage_ = damage;
         startSign_ = Mathf.Sign(speed_);
         startDir_ = dir.normalized;
     }

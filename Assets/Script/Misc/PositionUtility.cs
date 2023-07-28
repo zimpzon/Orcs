@@ -93,8 +93,9 @@ public static class PositionUtility
         ActorTypeEnum actorType,
         TimeSpan startTime,
         TimeSpan endTime,
-        int count,
-        int countPerTick,
+        int maintainCount,
+        float maintainCountIncreasePerSec,
+        int spawnCountPerTick,
         float timeBetweenTicks,
         bool outsideScreen,
         SpawnDirection dir)
@@ -131,14 +132,18 @@ public static class PositionUtility
             }
         }
 
+        float extraSpawns = 0;
+
         while (GameManager.Instance.GameTime < endTimeSec)
         {
-            if (alive.Count < count)
+            extraSpawns += maintainCountIncreasePerSec * Time.deltaTime;
+
+            if (alive.Count < maintainCount + extraSpawns)
             {
-                for (int i = 0; i < countPerTick && alive.Count < count; i++)
+                for (int i = 0; i < spawnCountPerTick && alive.Count < maintainCount + extraSpawns; i++)
                 {
                     var spawn = ActorCache.Instance.GetActor(actorType);
-                    float offset = 0.5f;
+                    float offset = 1.0f;
                     Vector3 pos;
                     if (outsideScreen)
                         pos = GetPointOutsideScreen(dir, offset, UnityEngine.Random.value * 0.5f);
@@ -150,14 +155,12 @@ public static class PositionUtility
                     alive.Add(spawn.GetComponent<ActorBase>());
                 }
 
-                GameManager.SetDebugOutput("alive", alive.Count);
                 RemoveDead();
 
                 if (timeBetweenTicks != 0.0)
                     yield return wait;
             }
 
-            GameManager.SetDebugOutput("alive", alive.Count);
             RemoveDead();
             yield return null;
         }

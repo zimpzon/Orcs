@@ -57,7 +57,7 @@ MonoBehaviour:
   AvoidCrowds: 1
   Mass: 1
   ActorType: 13
-  Hp: 50
+  BaseHp: 100
 --- !u!212 &873531276831567093
 SpriteRenderer:
   m_ObjectHideFlags: 0

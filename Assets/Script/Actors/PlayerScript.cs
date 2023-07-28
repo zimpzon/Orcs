@@ -436,14 +436,6 @@ public class PlayerScript : MonoBehaviour
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            var melee = CacheManager.Instance.MeleeThrowCache.GetInstance().GetComponent<MeleeThrow>();
-            melee.transform.position = trans_.position;
-            melee.gameObject.SetActive(true);
-            melee.Throw(LatestLeftRight, 8, 9);
-        }
-
         if (GameManager.Instance.PauseGameTime)
             return;
 

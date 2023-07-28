@@ -20,7 +20,10 @@ public class ActorBase : MonoBehaviour
     public bool AvoidCrowds = true;
     public float Mass = 1.0f;
     public ActorTypeEnum ActorType;
-    public float Hp = 50;
+    public float BaseHp;
+    [System.NonSerialized] public float TimeBorn;
+    [System.NonSerialized] public float TimeDied;
+    [System.NonSerialized] public float Hp = 50;
 
     public static void ResetClosestEnemy()
     {
@@ -83,8 +86,32 @@ public class ActorBase : MonoBehaviour
     float livingBombEnd_;
     Vector3 scale_;
 
+    // TODO PE: Hmm easy to forget something here. Subclasses may also need a reset. Hopefully it will be easily detectable. Or not.
+    public void ResetForCaching()
+    {
+        StopAllCoroutines();
+        Hp = BaseHp;
+        transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        IsCorpse = false;
+        IsDead = false;
+        UseSpawnParticles = false;
+        isPainted_ = false;
+        isFrozen_ = false;
+        isLivingBomb_ = false;
+        isSpawning_ = true;
+        IsFullyReady = false;
+        slowmotionModifier_ = 1.0f;
+        flashEndTime_ = 0.0f;
+        force_ = Vector3.zero;
+        hasForcedDestination_ = false;
+        forcedDestination_ = Vector3.zero;
+        despawnOnForcedDestinationReached_ = false;
+        material_.color = Color.white;
+    }
+
     public void Awake()
     {
+        TimeBorn = Time.time;
         transform_ = this.transform;
 
         renderer_ = GetComponent<SpriteRenderer>();
@@ -439,6 +466,8 @@ public class ActorBase : MonoBehaviour
 
     IEnumerator DieAnimation(Vector3 deathSourceDir, float forceModifier)
     {
+        TimeDied = Time.time;
+
         gameObject.layer = GameManager.Instance.LayerEnemyCorpse;
 
         float direction = transform_.position.x < deathSourceDir.x ? -1 : 1;
@@ -508,28 +537,6 @@ public class ActorBase : MonoBehaviour
         StopAllCoroutines();
         BlackboardScript.DeadEnemies.Remove(this);
         ReturnToCache();
-    }
-
-    // TODO PE: Hmm easy to forget something here. Subclasses may also need a reset. Hopefully it will be easily detectable. Or not.
-    public void ResetForCaching()
-    {
-        StopAllCoroutines();
-        transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        IsCorpse = false;
-        IsDead = false;
-        UseSpawnParticles = false;
-        isPainted_ = false;
-        isFrozen_ = false;
-        isLivingBomb_ = false;
-        isSpawning_ = true;
-        IsFullyReady = false;
-        slowmotionModifier_ = 1.0f;
-        flashEndTime_ = 0.0f;
-        force_ = Vector3.zero;
-        hasForcedDestination_ = false;
-        forcedDestination_ = Vector3.zero;
-        despawnOnForcedDestinationReached_ = false;
-        material_.color = Color.white;
     }
 
     public void ReturnToCache()

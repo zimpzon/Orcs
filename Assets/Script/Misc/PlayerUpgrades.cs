@@ -28,16 +28,24 @@ public class UpgradeData
     public float HealthMul = 1.0f;
     public float BaseHealthRegenSec = 0.5f;
     public float HealthRegenSecMul = 1.0f;
-    public float OnDamageTimeImmune = 0.1f;
+    public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
+    public float MagicMissileBaseDamage = 20.0f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileBaseRange = 6.0f;
     public float MagicMissileRangeMul = 1.0f;
-    public int MagicMissileBaseBullets = 0;
+    public int MagicMissileBaseBullets = 2;
     public int MagicMissileBulletsAdd = 0;
+
+    public bool MeleeThrowEnabled = false;
+    public float MeleeThrowBasePower = 8.0f;
+    public float MeleeThrowPowerMul = 1.0f;
+    public float MeleeThrowBaseDamage = 20.0f;
+    public float MeleeThrowBaseCd = 2.0f;
+    public float MeleeThrowCdMul = 1.0f;
 
     // orc
     public float OrcReviveTime = 8.0f;
