@@ -51,17 +51,19 @@ public class UpgradeData
     public float MeleeThrowBaseCd = 2.0f;
     public float MeleeThrowCdMul = 1.0f;
 
+    public bool SawBladeEnabled = true;
+    public float SawBladeMaxDamage = 200;
+    public float SawBladeDurabilityMul = 1.0f;
+    public float SawBladeMaxDistance = 10;
+    public float SawBladeBaseCd = 2.0f;
+    public float SawBladeCdMul = 1.0f;
+
     // orc
     public float OrcReviveTime = 8.0f;
     public float OrcReviveTimeMul = 1.0f;
 
     public bool OrcJedisEnabled = false;
     public float OrcJediKnockBackForceMul = 1.0f;
-
-    public bool OrcPickupSawbladeEnabled = false;
-    public bool OrcPickupSmallSawbladeEnabled = false;
-    public float OrcPickupSawbladeDurabilityMul = 1.0f;
-    public bool OrcPickupSawbladePickNewTarget = false;
 
     // paintball
     public bool PaintballEnabled = true;

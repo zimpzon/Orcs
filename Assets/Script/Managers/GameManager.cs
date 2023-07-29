@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public Text TextLevel;
     public Text TextHp;
     public Text TextTime;
+    public Text TextRoundKills;
+    public Text TextRoundGold;
     public Text TextGameOverOrcsSaved;
     public Text TextGameOverOrcsSavedBest;
     public Text TextLocked;
@@ -61,7 +63,6 @@ public class GameManager : MonoBehaviour
     public GameModeEnum GameMode;
 
     public TextBlinkScript TextFloatingWeapon;
-    public Transform Crosshair;
     public ParticleSystem FlyingBlood;
     public ParticleSystem BloodDrops;
     public ParticleSystem FloorBlood;
@@ -105,7 +106,6 @@ public class GameManager : MonoBehaviour
     public int SpriteFlashColorParamId;
     public Rect ArenaBounds = new Rect();
     [NonSerialized] public float TextUnlockBasePos;
-    [NonSerialized] public Vector3 CrosshairWorldPosition;
 
     static Dictionary<string, string> DebugValues = new Dictionary<string, string>();
 
@@ -116,13 +116,14 @@ public class GameManager : MonoBehaviour
     int lastHp_ = 0;
     int lastMaxHp_ = 0;
     const float WinTime = 60 * 15;
-    int baseXpToLevel = 200;
+    int baseXpToLevel = 50;
     int xpToLevel;
     int lastXpShown = 0;
+    int lastKillsShown = 0;
+    int lastGoldShown = 0;
     int currentXp = 0;
     float currentLevel = 1;
     float roundStartTime_;
-    int roundStartBestScore_;
 
     KeyCode menuBackKey_ = KeyCode.Escape;
 
@@ -341,8 +342,17 @@ public class GameManager : MonoBehaviour
                     lastXpShown = currentXp;
                 }
 
-                SetDebugOutput("xp", currentXp);
-                SetDebugOutput("xp to level", xpToLevel);
+                if (SaveGame.RoundKills != lastKillsShown)
+                {
+                    TextRoundKills.text = SaveGame.RoundKills.ToString();
+                    lastKillsShown = SaveGame.RoundKills;
+                }
+
+                if (SaveGame.RoundGold != lastGoldShown)
+                {
+                    TextRoundGold.text = SaveGame.RoundGold.ToString();
+                    lastGoldShown = SaveGame.RoundGold;
+                }
 
                 while (currentXp >= xpToLevel)
                     yield return LevelUp();
@@ -405,7 +415,7 @@ public class GameManager : MonoBehaviour
         }
 
         currentXp -= xpToLevel;
-        xpToLevel = (int)(xpToLevel * 1.1f);
+        xpToLevel = (int)(xpToLevel * 1.2f);
 
         PauseGameTime = false;
         Time.timeScale = 1.0f;
@@ -518,7 +528,6 @@ public class GameManager : MonoBehaviour
         GameState = State.Playing;
         RoundUnlockCount = 0;
         roundStartTime_ = Time.time;
-        roundStartBestScore_ = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
         PlayerScript.SetPlayerPos(Vector3.zero);
         Orc.SetPosition(Vector3.up * 3, startingGame: true);
 
@@ -601,12 +610,6 @@ public class GameManager : MonoBehaviour
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
-
-        Vector3 worldPos = Input.mousePosition;
-        worldPos.z = 0;
-        Crosshair.position = worldPos;
-        CrosshairWorldPosition = Camera.main.ScreenToWorldPoint(worldPos);
-        CrosshairWorldPosition.z = 0.0f;
     }
 
     public Vector2 UiPositionFromWorld(Vector3 world)
@@ -688,21 +691,6 @@ public class GameManager : MonoBehaviour
 
         if (SaveGame.RoundScore == 1)
             OnFirstOrcPickup();
-
-        if (SaveGame.RoundScore > 1)
-        {
-            if (PlayerUpgrades.Data.OrcPickupSawbladeEnabled)
-            {
-                var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals(), weaponScale: 1.0f);
-            }
-
-            if (PlayerUpgrades.Data.OrcPickupSmallSawbladeEnabled)
-            {
-                var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-                sawblades.Eject(pos, RndUtil.RandomInsideUnitCircleDiagonals(), weaponScale: 0.5f);
-            }
-        }
 
         if (PlayerUpgrades.Data.OrcJedisEnabled)
         {
@@ -911,7 +899,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

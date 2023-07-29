@@ -28,7 +28,6 @@ public class UpgradeChoiceScript : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.SetDebugOutput(TextHeader.text, wasSelected_);
         UpgradeChoices.ReturnChoice(wasSelected_ ? choice_.NextLevel : choice_);
     }
 }

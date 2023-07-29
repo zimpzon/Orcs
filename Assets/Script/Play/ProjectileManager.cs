@@ -228,18 +228,15 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        if (PlayerUpgrades.Data.OrcPickupSawbladePickNewTarget)
+                        int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
+                        if (idxClosest >= 0)
                         {
-                            int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
-                            if (idxClosest >= 0)
-                            {
-                                var closeEnemy = BlackboardScript.Enemies[idxClosest];
-                                p.Direction = (closeEnemy.transform.position - p.Position).normalized;
-                            }
-                            else
-                            {
-                                // Maintain direction
-                            }
+                            var closeEnemy = BlackboardScript.Enemies[idxClosest];
+                            p.Direction = (closeEnemy.transform.position - p.Position).normalized;
+                        }
+                        else
+                        {
+                            // Maintain direction
                         }
                     }
                     else

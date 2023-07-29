@@ -263,8 +263,11 @@ public class PlayerScript : MonoBehaviour
             return;
 
         var actor = col.gameObject.GetComponent<ActorBase>();
-        if (actor != null && !actor.IsFullyReady)
-            return;
+        if (actor != null)
+        {
+            // Thorns
+            GameManager.Instance.DamageEnemy(actor, 30.0f, (actor.transform.position + trans_.position).normalized, 2.0f);
+        }
 
         // Projectiles gets same damage as actors, hackz
         DamagePlayer(ActorBase.Damage);
@@ -350,8 +353,6 @@ public class PlayerScript : MonoBehaviour
         }
 
         isMoving_ = moveVec_ != Vector3.zero;
-
-        CursorPos = GameManager.Instance.CrosshairWorldPosition;
 
         if (ActorBase.PlayerClosestEnemy != null)
             lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;

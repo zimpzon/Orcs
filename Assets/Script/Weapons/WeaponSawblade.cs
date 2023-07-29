@@ -18,7 +18,7 @@ public class WeaponSawblade : WeaponBase
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
         basic.Force = 0.75f * weaponScale;
-        basic.MaxDistance = 100.0f * PlayerUpgrades.Data.OrcPickupSawbladeDurabilityMul;
+        basic.MaxDistance = PlayerUpgrades.Data.SawBladeMaxDistance * PlayerUpgrades.Data.SawBladeDurabilityMul;
         basic.Radius = 0.4f * weaponScale;
         basic.DieOnCollision = false;
         basic.ReflectOnEdges = true;
@@ -30,7 +30,7 @@ public class WeaponSawblade : WeaponBase
         basic.StickToTarget = true;
         basic.Damage = 20.0f * weaponScale;
         basic.StickyDamageCd = 0.1f;
-        basic.StickyMaxTotalDamage = 400.0f * PlayerUpgrades.Data.OrcPickupSawbladeDurabilityMul * weaponScale;
+        basic.StickyMaxTotalDamage = PlayerUpgrades.Data.SawBladeMaxDamage * PlayerUpgrades.Data.SawBladeDurabilityMul;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 0.7f * weaponScale;
         scale.y = 0.7f * weaponScale;

@@ -222,8 +222,6 @@ public class ActorBase : MonoBehaviour
 
         position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
 
-        GameManager.SetDebugOutput("moveVec", Mathf.Sign(moveVec.x));
-
         Vector3 scale = scale_;
         scale.x = moveVec.x < 0 ? -scale.x : scale.x;
 
@@ -235,12 +233,12 @@ public class ActorBase : MonoBehaviour
         if (!AvoidCrowds || Time.time < nextCheckForCrowded_)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 0.5f);
+        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 0.75f);
         if (crowdCount > 2)
         {
             if (Random.value > 0.25f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.5f;
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 2.0f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);

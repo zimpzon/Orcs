@@ -97,6 +97,7 @@ public static class SaveGame
 
     public static int RoundScore;
     public static int RoundKills;
+    public static int RoundGold;
 
     public static void UpdateFromRound(int roundSeconds, bool reset)
     {
@@ -118,6 +119,7 @@ public static class SaveGame
     {
         RoundScore = 0;
         RoundKills = 0;
+        RoundGold = 0;
     }
 
     public static IEnumerator SaveCo()
