@@ -1,11 +1,9 @@
 ﻿CAM: 8.4
 
 NEXT
-  top-down overhaul. title screen, unlocks, no more char selection, map selection or simpler solution?
+  top-down overhaul. title screen, unlocks,
   NAME!
-  knights of the pixelated table, knights of the round'ish table
   save knight kids (sounds lame).
-  refactor start page
   
   // Light spell'ish color : 253, 248, 220 -> 250, 239, 129
 
@@ -15,23 +13,29 @@ BUGS
 copy vampire:
   start with sword that does damage in the facing direction. very pleasant to move around, aim, kill.
    
+current weapons
+  burst of frost
+  jar of poison
+  swirling swords
+  (sawblades) saw of satan :p
+
 SMART DESIGN
- getting to orcs quickly can be stressful. maybe reduce xp.
- xp is not balanced, drops become worthless
- orc sword is required atm, fix that it gets swarmed an is impossible to get.
+  UPGRADES (selected for v1)
+    EASY V1!!! BUY ALL/MOST WEAPONS! with levels.
+    SHOP can be *mostly* the good weapons (not all)
+
+    a lot of levelling of standard upgrades. every x levels get a random weapon selection. required xp increases, of course.
+    Bosses cycle through gold, weapon, rambo, starting at a random place.
+
+ enemies take damage when touching player?
  really need current and new value for choices
- save baby knight? can then use orc enemies
  friendly is blue'ish, deadly is red'ish.
- COHERENT DESIGN, it is now spells :)
-  declarative spawning!
-  batter enemy creation than prefab. scriptable objects? factory? json? custom?
-  balance/rewards for picking up orc and killing enemies
-  synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
+ synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
  sword explodes at furthest point
  +experience upgrade
-LOSE ALL GOLD BUT PERMANTLY +dam and +gold (buy shop item) (MIGHT ALSO work just with a high price, easier to implement but u dont get the "feeling")
+LOSE ALL GOLD BUT PERMANENTLY +dam and +gold (buy shop item) (MIGHT ALSO work just with a high price, easier to implement but u dont get the "feeling")
   background in title screen could have moving enemies.
   bullets dropped on ground when moving, arming time, then fly. could be cool to surround enemies
   can "ascending" like Cookie Clicker be done? Possibly with new chars? reset all progress and get double gold and xp? could be greyed out button with explanation.
@@ -40,35 +44,19 @@ LOSE ALL GOLD BUT PERMANTLY +dam and +gold (buy shop item) (MIGHT ALSO work just
   use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
   chance to deflect projectiles? make 'em blue.
   hit furthest enemy :)
-  +1 bullet is too good, +0.x instead
   chain-something, lightning...
-  health + health regen pickups that are temp (voluntary uregency)   urgency with "loot goblins"? / money
-  rare pickup that gives a bonus choice
-  drop stuff that attacks when and enemy is close
+  drop stuff that attacks when an enemy is close
   pool of stuff on the floor
-  conditions on upgrades, so you can upgrade weapon fully without shop, but after using shop you will get other choices.
-  when you get an upgrade, immediately fire it, much more fun
-  taking damage = 0.5 sec shield, very long cooldown
-  random portal leading to bonus map?
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
   spawn large stationary enemies? either shooting or just being in the way. Could use avoidance for actors.
-  very dark map?
   horn of Orcdor: every 10 seconds the baby orc will walk towards you OR if not picked up for X seconds
-  ai can be reused for multiple chars with no or simples param changes. still gives the impression of many enemies.
-     - ai can have some options (exists: speed, hp, weight), projectiles, cd, etc. snipers, shotguns
 
 SPAWNS
-  despawn after forced target reached, Y/N
-  more spawns when killed faster
-  timer based sections, to control pace
-  special events besides grunts (bosses, casters, etc.)
-  orcs, every x orcs spawns a boss, bosses reward:
   background color change for incoming danger! bosses, waves etc.
    moving wall of big ogres, need to shoot hole (move backwards lolz?)
    shapes, desired moving target (ex formations)
    PRIORITY destinations. 100% = ignore player, 50% = half notice range
-  LIKE DIABLO: add icons to enemies for easy reuse. High hp, fast, etc.
-
+  LIKE DIABLO: add icons/colored auras to enemies for easy reuse. High hp, fast, etc.
 
 
 https://www.assetstore.unity3d.com/en/#!/content/29304
@@ -79,22 +67,6 @@ https://www.assetstore.unity3d.com/en/#!/content/28729
 Weapons:
 https://www.assetstore.unity3d.com/en/#!/content/53117 
 
-
-AUTOGEN
-  from game perspective:
-    get enemy(type), that is it? spawner will pick the right one for bosses etc.
-  
-  data driven:
-    sprites path
-    enum name
-    components to add
-    name base class (ActorBase or custom)
-
-  create sprite lists
-  create default data for each
-  if baseClass is set, 
-  create classes for each (need filename, can also be used for enum)
-  
 
 small ogre, shield1
   shield2 are the same with larger (cooler shield) could be later waves)

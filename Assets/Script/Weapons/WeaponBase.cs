@@ -173,9 +173,9 @@ public class WeaponBase
                     PaintballRandom.Type = WeaponType.PaintBallRandom;
                     PaintballRandom.Scale = new Vector3(1.5f, 4.0f, 1.0f);
                     PaintballRandom.Sprite = SpriteData.Instance.MachineGun;
-                    PaintballRandom.BulletSprite = SpriteData.Instance.RoundBullet;
+                    PaintballRandom.BulletSprite = SpriteData.Instance.TinySword;
                     PaintballRandom.Muzzle = new Vector3(0.0f, 0.0f, 0.0f);
-                    PaintballRandom.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
+                    PaintballRandom.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
                     PaintballRandom.MoveSpeedModifier = 1.0f;
                 }
                 return PaintballRandom;

@@ -23,21 +23,21 @@ public class WeaponPaintballRandom : WeaponBase
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
 
         GameManager.Instance.MakeFlash(worldMuzzle);
-        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.3f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.1f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
         basic.Speed = 5.0f;
-        basic.MaxDistance = 8.0f;
+        basic.MaxDistance = PlayerUpgrades.Data.PaintballBaseRange * PlayerUpgrades.Data.PaintballRangeMul;
         basic.Radius = 0.3f;
         basic.DieOnCollision = false;
         basic.CustomCounter = 1;
         basic.CustomCollisionResponse = OnCollision;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
-        scale.x = 3.0f;
-        scale.y = 3.0f;
+        scale.x = 1.0f;
+        scale.y = 1.0f;
         scale.z = 1.0f;
 
         basic.Position = worldMuzzle;
@@ -47,6 +47,9 @@ public class WeaponPaintballRandom : WeaponBase
         basic.Color = color;
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
+
+        float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
 
         ProjectileManager.Instance.Fire(basic);
     }

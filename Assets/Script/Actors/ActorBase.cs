@@ -25,6 +25,8 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public float TimeDied;
     [System.NonSerialized] public float Hp = 50;
 
+    const float PaintBallTickTime = 1.0f;
+
     public static void ResetClosestEnemy()
     {
         PlayerClosestEnemy = null;
@@ -74,6 +76,7 @@ public class ActorBase : MonoBehaviour
     protected float slowmotionModifier_ = 1.0f;
 
     protected bool isPainted_;
+    private float nextPaintDamage_;
     protected bool isFrozen_;
     protected bool isLivingBomb_;
     protected bool isSpawning_ = true;
@@ -96,6 +99,7 @@ public class ActorBase : MonoBehaviour
         IsDead = false;
         UseSpawnParticles = false;
         isPainted_ = false;
+        nextPaintDamage_ = float.MaxValue;
         isFrozen_ = false;
         isLivingBomb_ = false;
         isSpawning_ = true;
@@ -210,7 +214,11 @@ public class ActorBase : MonoBehaviour
         else if (isFrozen_)
             speed *= 0.001f;
         else if (isPainted_)
-            speed *= 0.25f;
+        {
+            // paintball slow is proportional to mass
+            float slowEffect = Mass / 5.0f * PlayerUpgrades.Data.PaintballBaseSlowMul;
+            speed *= Mathf.Clamp(slowEffect, 0.25f, 0.9f);
+        }
 
         position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
 
@@ -252,6 +260,7 @@ public class ActorBase : MonoBehaviour
     public bool OnPaintballHit(Color color, float paintTime)
     {
         isPainted_ = true;
+        nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
         paintColor_ = color;
         paintEnd_ = Time.time + paintTime;
         return true;
@@ -265,7 +274,14 @@ public class ActorBase : MonoBehaviour
         if (isFrozen_)
             material_.color = Color.Lerp(Color.white, frozenColor_, 0.6f);
         else if (isPainted_)
+        {
             material_.color = Color.Lerp(Color.white, paintColor_, 0.8f);
+            if (GameManager.Instance.GameTime > nextPaintDamage_)
+            {
+                GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec, Vector3.zero, 0.01f);
+                nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
+            }
+        }
 
         if (!isFrozen_)
         {
@@ -471,7 +487,7 @@ public class ActorBase : MonoBehaviour
         gameObject.layer = GameManager.Instance.LayerEnemyCorpse;
 
         float direction = transform_.position.x < deathSourceDir.x ? -1 : 1;
-        material_.SetColor(flashColorParamId_, Color.black);
+        material_.SetColor(flashColorParamId_, new Color(0, 0, 0, 0.5f));
         flashEndTime_ = float.MaxValue;
 
         float flashAmount = 0.0f;

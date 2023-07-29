@@ -64,19 +64,25 @@ public class UpgradeData
     public bool OrcPickupSawbladePickNewTarget = false;
 
     // paintball
-    public bool PaintballEnabled = false;
-    public float PaintballCd = 5.0f;
+    public bool PaintballEnabled = true;
+    public float PaintballBaseRange = 3.0f;
+    public float PaintballRangeMul = 1.0f;
+    public float PaintballBaseSlowMul = 0.9f;
+    public float PaintballBaseDuration = 4.0f;
+    public float PaintballDurationMul = 1.0f;
+    public float PaintballCd = 2.0f;
     public float PaintballCdMul = 1.0f;
-    public int PaintballCount = 10;
+    public int PaintballCount = 6;
+    public float PaintballBaseDamagePerSec = 30.0f;
 
-    public CounterClass Counters = new CounterClass();
+    public CounterClass Counters = new ();
 }
 
 public class PlayerUpgrades : MonoBehaviour
 {
     public static PlayerUpgrades Instance;
 
-    public static UpgradeData Data = new UpgradeData();
+    public static UpgradeData Data = new ();
 
     public static void ResetAll()
     {
