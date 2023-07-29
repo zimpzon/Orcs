@@ -121,8 +121,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a68e68f5b2efaa8439d2dd103613988c, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 1.5
+  Speed: 1.75
   AvoidCrowds: 1
   Mass: 0.5
   ActorType: 9
-  BaseHp: 30
+  BaseHp: 25

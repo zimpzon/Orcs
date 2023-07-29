@@ -68,7 +68,7 @@ public static class ChoicesWeapon
                 Description = "Add <color=#00ff00>+1</color> missile per round.",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                    PlayerUpgrades.Data.MagicMissileBulletsMul += 1;
                 },
                 NextLevel = new Choice
                 {
@@ -76,7 +76,7 @@ public static class ChoicesWeapon
                     Description = "Add <color=#00ff00>+1</color> missile per round.",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                        PlayerUpgrades.Data.MagicMissileBulletsMul += 1;
                     },
                     NextLevel = new Choice
                     {
@@ -84,7 +84,7 @@ public static class ChoicesWeapon
                         Description = "Add <color=#00ff00>+1</color> missile per round.",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileBulletsAdd += 1;
+                            PlayerUpgrades.Data.MagicMissileBulletsMul += 1;
                         },
                     }
                 }

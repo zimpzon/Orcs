@@ -33,12 +33,16 @@ public class UpgradeData
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 20.0f;
+    public float MagicMissileBaseDamage = 15.0f;
+    public float MagicMissileBaseBulletCd = 0.1f;
+    public float MagicMissileBaseCd = 1.0f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileBaseRange = 6.0f;
+    public float MagicMissileBaseSpeed = 8.0f;
+    public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileRangeMul = 1.0f;
-    public int MagicMissileBaseBullets = 2;
-    public int MagicMissileBulletsAdd = 0;
+    public float MagicMissileBaseBullets = 2;
+    public float MagicMissileBulletsMul = 1.0f;
 
     public bool MeleeThrowEnabled = false;
     public float MeleeThrowBasePower = 8.0f;

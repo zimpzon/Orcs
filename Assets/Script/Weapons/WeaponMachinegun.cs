@@ -9,7 +9,7 @@ public class WeaponMachinegun : WeaponBase
         lastFire_ = Time.time;
         recoil = 0.01f;
         IsPrimary = true;
-        Color color = new Color(0.2f, 0.5f, 1.0f);
+        Color color = new (256 / 255.0f, 248 / 255.0f, 220 / 255.0f, 1.0f);
 
         GameManager.Instance.MakeFlash(point);
         AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.7f, pitch: 0.2f);
@@ -26,14 +26,17 @@ public class WeaponMachinegun : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
-        basic.Speed = 8.0f + Random.value * 0.1f;
+        basic.Speed = PlayerUpgrades.Data.MagicMissileBaseSpeed * PlayerUpgrades.Data.MagicMissileSpeedMul + Random.value * 0.1f;
         basic.Damage = 20.0f;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileBaseRange * PlayerUpgrades.Data.MagicMissileRangeMul;
         basic.Radius = 0.3f;
 
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
-        scale.x = 3.0f;
-        scale.y = 3.0f;
+        //scale.x = 3.0f;
+        //scale.y = 3.0f;
+        //scale.z = 1.0f;
+        scale.x = 1.0f;
+        scale.y = 1.0f;
         scale.z = 1.0f;
 
         basic.Position = point;
@@ -44,8 +47,9 @@ public class WeaponMachinegun : WeaponBase
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
         basic.Force = 0.5f;
-        //float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+
+        float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
 
         ProjectileManager.Instance.Fire(basic);
     }

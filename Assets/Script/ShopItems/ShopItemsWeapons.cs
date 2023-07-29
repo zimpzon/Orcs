@@ -50,7 +50,7 @@ public static class ShopItemsWeapons
                 ValueScale = 1,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.MagicMissileBulletsAdd += bought.Level * (int)bought.Value;
+                    PlayerUpgrades.Data.MagicMissileBulletsMul += bought.Level * (int)bought.Value;
                 }
             },
         };

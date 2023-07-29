@@ -53,6 +53,7 @@ public class SpriteData : ScriptableObject
 
     public Sprite Orc;
     public Sprite Bullet;
+    public Sprite TinySword;
     public Sprite RoundBullet;
     public Sprite Sawblade;
 

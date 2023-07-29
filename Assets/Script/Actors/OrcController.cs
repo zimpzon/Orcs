@@ -1,6 +1,5 @@
 ﻿using Assets.Script;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public enum OrcState { Default, Yoda };

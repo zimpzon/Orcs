@@ -26,7 +26,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
-                endTime: new TimeSpan(0, 5, 0),
+                endTime: new TimeSpan(0, 3, 0),
                 maintainCount: 10,
                 maintainCountIncreasePerSec: 0.25f,
                 spawnCountPerTick: 5,
@@ -41,7 +41,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 ActorTypeEnum.Ogre,
                 startTime: new TimeSpan(0, 1, 30),
                 endTime: new TimeSpan(0, 5, 0),
-                maintainCount: 20,
+                maintainCount: 50,
                 maintainCountIncreasePerSec: 0.1f,
                 spawnCountPerTick: 4,
                 timeBetweenTicks: 0.5f,

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 // NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour
 {
-    const float BaseCd = 0.5f;
-    const float BaseMoveSpeed = 4f;
+    const float BaseMoveSpeed = 3f;
 
     public float Hp;
     public float MaxHp;
@@ -28,7 +27,7 @@ public class PlayerScript : MonoBehaviour
     float playerScale_ = 2.0f;
     bool isShooting_;
     float nextFire_ = float.MaxValue;
-    int shotsLeft_ = 0;
+    float shotsLeft_ = 0;
     int flashParamId_;
     int flashColorParamId_;
     float flashEndTime_;
@@ -54,12 +53,9 @@ public class PlayerScript : MonoBehaviour
 
     AnimationController animationController_ = new AnimationController();
 
-    float talkEndTime_;
-    int lastHolyWordIdx_;
-
     private void Awake()
     {
-        trans_ = this.transform;
+        trans_ = transform;
         playerScale_ = trans_.localScale.x; // Assume uniform scale
         renderer_ = GetComponent<SpriteRenderer>();
         playerPos_ = trans_.position;
@@ -103,6 +99,7 @@ public class PlayerScript : MonoBehaviour
         foreach (var toggleEffect in toggleEffects)
             toggleEffect.Enable(true);
 
+        shotsLeft_ = 0;
         lastRegenTick_ = 0;
         UpgradesActive = false;
         shadowRenderer_.enabled = true;
@@ -112,24 +109,8 @@ public class PlayerScript : MonoBehaviour
         moveVec_ = Vector3.zero;
         SetPlayerPos(basePos_);
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
+        OverheadText.enabled = false;
         SetWeapon(WeaponType.None);
-    }
-
-    string GetHolyWord()
-    {
-        var words = GameManager.Instance.SelectedHero.Talk;
-        int idx = 0;
-        for (int i = 0; i < 50; ++i)
-        {
-            idx = Random.Range(0, words.Count);
-            if (idx == lastHolyWordIdx_)
-                continue;
-
-            break;
-        }
-
-        lastHolyWordIdx_ = idx;
-        return words[idx];
     }
 
     private void Start()
@@ -147,12 +128,12 @@ public class PlayerScript : MonoBehaviour
 
     void RefreshBulletCount()
     {
-        shotsLeft_ = PlayerUpgrades.Data.MagicMissileBaseBullets + PlayerUpgrades.Data.MagicMissileBulletsAdd;
+        shotsLeft_ += PlayerUpgrades.Data.MagicMissileBaseBullets * PlayerUpgrades.Data.MagicMissileBulletsMul;
     }
 
     void SetNextFire()
     {
-        float FireCd = BaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
+        float FireCd = PlayerUpgrades.Data.MagicMissileBaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
         nextFire_ = GameManager.Instance.GameTime + FireCd;
     }
 
@@ -172,7 +153,7 @@ public class PlayerScript : MonoBehaviour
                 nextFire_ = float.MaxValue;
             }
 
-            bool hasBullets = shotsLeft_ > 0;
+            bool hasBullets = (int)shotsLeft_ > 0;
 
             if (!hasBullets)
             {
@@ -182,8 +163,8 @@ public class PlayerScript : MonoBehaviour
             }
             else if (hasBullets && Weapon.GetCdLeft() <= 0.0f)
             {
-                shotsLeft_--;
-                if (shotsLeft_ == 0)
+                shotsLeft_ -= 1;
+                if (shotsLeft_ >= 1)
                     SetNextFire();
 
                 isShooting_ = true;
@@ -391,19 +372,6 @@ public class PlayerScript : MonoBehaviour
         force_ += f;
     }
 
-    public void Talk(string text, float time, Color color)
-    {
-        talkEndTime_ = Time.time + time;
-        OverheadText.color = color;
-        OverheadText.text = text;
-        OverheadText.enabled = true;
-    }
-
-    public void HolyTalk()
-    {
-        Talk(GetHolyWord(), 1.0f, Color.white);
-    }
-
     void UpdateOverheadText()
     {
         bool isRambo = Weapon != null && Weapon.Type == WeaponType.Rambo;
@@ -416,15 +384,6 @@ public class PlayerScript : MonoBehaviour
             overheadTextTrans_.anchoredPosition = uiPos;
             Color col = Color.HSVToRGB(Random.value * 0.3f, 1.0f, 1.0f);
             OverheadText.color = col;
-        }
-        else if (Time.time < talkEndTime_)
-        {
-            Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 0.5f);
-            overheadTextTrans_.anchoredPosition = uiPos;
-        }
-        else
-        {
-            OverheadText.enabled = false;
         }
     }
 

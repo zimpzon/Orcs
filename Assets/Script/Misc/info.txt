@@ -1,8 +1,15 @@
 ﻿CAM: 8.4
 
+NEXT
+  top-down overhaul. title screen, unlocks, no more char selection, map selection or simpler solution?
+  NAME!
+  knights of the pixelated table, knights of the round'ish table
+  save knight kids (sounds lame).
+  refactor start page
+  
+  // Light spell'ish color : 253, 248, 220 -> 250, 239, 129
+
 BUGS
- bullets often passing through large ogre, check collider
- enemies getting stuck when reviving with maintain code - they stay on round restart! even after main menu.
  cpu/gpu usage? pc getting warm.
 
 copy vampire:

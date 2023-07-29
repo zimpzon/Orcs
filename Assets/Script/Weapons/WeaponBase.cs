@@ -65,7 +65,7 @@ public class WeaponBase
 
     public float GetCdLeft()
     {
-        return Mathf.Max(0.0f, (lastFire_ - Time.time) + Cd * PlayerUpgrades.Data.MagicMissileCdMul);
+        return Mathf.Max(0.0f, (lastFire_ - Time.time) + PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)
@@ -140,12 +140,11 @@ public class WeaponBase
             case WeaponType.Machinegun:
                 if (Machinegun == null)
                 {
-                    Machinegun = new WeaponMachinegun();
+                    Machinegun = new ();
                     Machinegun.Type = WeaponType.Machinegun;
-                    Machinegun.Cd = 0.08f;
                     Machinegun.Scale = new Vector3(0.2f, 0.08f, 1.0f);
-                    Machinegun.Sprite = SpriteData.Instance.MachineGun;
-                    Machinegun.BulletSprite = SpriteData.Instance.RoundBullet;
+                    Machinegun.BulletSprite = SpriteData.Instance.TinySword;
+                    //Machinegun.BulletSprite = SpriteData.Instance.RoundBullet;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
                     Machinegun.MoveSpeedModifier = 1.0f;

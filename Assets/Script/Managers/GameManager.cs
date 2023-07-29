@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     public Text TextRoundEndUnlocks;
     public Text TextUser;
     public Text TextShopMoney;
-    public TextMeshProUGUI TextHeroUnlock;
-    public TextMeshProUGUI TextHeroName;
     public TextMeshProUGUI TextColWepNames;
     public TextMeshProUGUI TextColWepReq;
     public TextMeshProUGUI TextColLocNames;
@@ -175,28 +173,10 @@ public class GameManager : MonoBehaviour
         bool isUnlocked = hero.IsUnlocked();
         renderer.sprite = hero.ShowoffSprite;
         renderer.color = isUnlocked ? Color.white : Color.black;
-        TextHeroName.text = hero.Name;
         SaveGame.Members.SelectedHero = (int)hero.HeroType;
-
-        UpdateButtonStates();
 
         if (save)
             SaveGame.Save();
-    }
-
-    public void HeroChange(int direction = 0)
-    {
-        if (direction != 0)
-            PlayMenuSound();
-
-        HeroEnum nextHero = SelectedHero.HeroType + direction;
-        if (nextHero < 0)
-            nextHero = HeroEnum.Last - 1;
-
-        if (nextHero >= HeroEnum.Last)
-            nextHero = HeroEnum.StarterKnight;
-
-        SelectHero(nextHero, save: true);
     }
 
     void EnablePanel(GameObject panel, bool enable)
@@ -204,15 +184,6 @@ public class GameManager : MonoBehaviour
         // Work-around for Unity SetActive bug (still showing UI components after disable)
         panel.SetActive(enable);
 //        panel.transform.localScale = enable ? Vector3.one : Vector3.zero;
-    }
-
-    void UpdateButtonStates()
-    {
-        bool heroIsUnlocked = SelectedHero.IsUnlocked();
-
-        ButtonPlay.interactable = heroIsUnlocked;
-        ButtonGo.interactable = heroIsUnlocked;
-        ButtonUnlockedText.transform.parent.GetComponent<Button>().interactable = UnlockedPct > 0.0f;
     }
 
     public void OnButtonSettings()
@@ -508,7 +479,6 @@ public class GameManager : MonoBehaviour
 
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
 
-        UpdateButtonStates();
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);
         CanvasGame.gameObject.SetActive(false);

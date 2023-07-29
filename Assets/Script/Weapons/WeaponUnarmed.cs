@@ -7,7 +7,6 @@ public class WeaponUnarmed : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        GameManager.Instance.PlayerScript.HolyTalk();
         var pos = GameManager.Instance.PlayerTrans.position;
         const float Radius = 5.0f;
         GameManager.Instance.MakeFlash(pos, Radius * 5f);

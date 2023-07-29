@@ -31,10 +31,10 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
             Throw(Vector3.left, damage, scale);
             Throw(Vector3.up, damage, scale);
             Throw(Vector3.down, damage, scale);
-            Throw(Vector3.down + Vector3.left, damage * 0.25f, Vector3.one * 0.5f);
-            Throw(Vector3.down + Vector3.right, damage * 0.25f, Vector3.one * 0.5f);
-            Throw(Vector3.up + Vector3.left, damage * 0.25f, Vector3.one * 0.5f);
-            Throw(Vector3.up + Vector3.right, damage * 0.25f, Vector3.one * 0.5f);
+            //Throw(Vector3.down + Vector3.left, damage * 0.25f, Vector3.one * 0.5f);
+            //Throw(Vector3.down + Vector3.right, damage * 0.25f, Vector3.one * 0.5f);
+            //Throw(Vector3.up + Vector3.left, damage * 0.25f, Vector3.one * 0.5f);
+            //Throw(Vector3.up + Vector3.right, damage * 0.25f, Vector3.one * 0.5f);
 
             nextThrow_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.MeleeThrowBaseCd * PlayerUpgrades.Data.MeleeThrowCdMul;
         }
