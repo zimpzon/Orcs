@@ -9,7 +9,7 @@ public static class ShopItemsWeapons
             new ShopItem
             {
                 ItemType = ShopItemType.WeaponRange,
-                Title = "Main weapon, range",
+                Title = "Range",
                 Description = "Increase main weapon range by <color=#00ff00>+#VALUE%</color> per rank.",
                 BasePrice = 250,
                 PriceMultiplier = 2.0f,
@@ -25,7 +25,7 @@ public static class ShopItemsWeapons
             new ShopItem
             {
                 ItemType = ShopItemType.WeaponCd,
-                Title = "Main weapon, cooldown",
+                Title = "Speed",
                 Description = "Decrease main weapon cooldown by <color=#00ff00>+#VALUE%</color> per rank.",
                 BasePrice = 500,
                 PriceMultiplier = 2.0f,
@@ -41,7 +41,7 @@ public static class ShopItemsWeapons
             new ShopItem
             {
                 ItemType = ShopItemType.MachinegunBulletsPerRound,
-                Title = "Main weapon, bullet count",
+                Title = "Knife Throw",
                 Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank.",
                 BasePrice = 250,
                 PriceMultiplier = 2.0f,

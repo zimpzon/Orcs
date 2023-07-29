@@ -36,10 +36,9 @@ public class ShopItem
     public int MaxLevel = 5;
     public float Value = 1;
     public float ValueScale = 1;
-    public bool ShowLevelInTitle = true;
 
     public int GetPrice(int level) => (int)(BasePrice * Math.Pow(PriceMultiplier, level));
-    public Func<int, string> GetButtonText ;
+    public Func<int, string> GetButtonText;
     public Func<int, string> GetTitle;
     public Func<int, string> GetDescription;
     public Action<BoughtItem> Apply;
@@ -47,7 +46,7 @@ public class ShopItem
     public ShopItem()
     {
         GetButtonText = (int level) => $"${GetPrice(level)}";
-        GetTitle = (int level) => $"{Title}{(ShowLevelInTitle ? $" ({level}/{MaxLevel})" : string.Empty)}";
+        GetTitle = (int level) => $"{Title}";
         GetDescription = (int level) => Description;
     }
 }
@@ -123,11 +122,6 @@ public static class ShopItems
 
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
-            script.Description.text = item.GetDescription(level);
-            script.ButtonText.text = isMaxLevel ? "max" : item.GetButtonText(level);
-
-            script.BuyButton.interactable = !disable;
-            script.SetDisableButton(disable);
             script.SetIsMaxed(isMaxLevel);
         }
     }
@@ -160,7 +154,6 @@ public static class ShopItems
         Items.Add(new ShopItem
         {
             ItemType = ShopItemType.Refund,
-            ShowLevelInTitle = false,
             Title = "Refund",
             BasePrice = 0,
             Description = "Refund all purchases and get your money back.",

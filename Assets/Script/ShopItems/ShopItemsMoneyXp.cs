@@ -9,7 +9,7 @@ public static class ShopItemsMoneyXp
             new ShopItem
             {
                 ItemType = ShopItemType.DoubleMoney,
-                Title = "Chance to drop double gold",
+                Title = "Double Gold",
                 Description = "Any gold dropped has a <color=#00ff00>+#VALUE%</color> chance to be doubled.",
                 BasePrice = 25,
                 PriceMultiplier = 2.0f,
@@ -25,7 +25,7 @@ public static class ShopItemsMoneyXp
             new ShopItem
             {
                 ItemType = ShopItemType.EnemyMoneyDrop,
-                Title = "Gold drop",
+                Title = "Gold Drop",
                 Description = "Killed enemies have a <color=#00ff00>+#VALUE%</color> chance to drop <color=#00ff00>1</color>-<color=#00ff00>3</color> gold.",
                 BasePrice = 25,
                 PriceMultiplier = 2.0f,
