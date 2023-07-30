@@ -142,9 +142,6 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
     public void Fire(Basic basic)
     {
-        // add global bonuses
-        basic.Damage *= PlayerUpgrades.Data.DamageMul;
-
         // Automatically adjust capsule collider to sprite
         var spriteSize = basic.SpriteInfo.Renderer.sprite.bounds.size;
         basic.SpriteInfo.Collider.size = spriteSize * 0.8f; // A little smaller so player won't feel cheated.
@@ -248,7 +245,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         {
                             Vector3 damageDirection = (p.StickOffset * -1).normalized;
 
-                            float damage = p.Damage * PlayerUpgrades.Data.DamageMul;
+                            float damage = p.Damage;
                             p.CurrentTarget.ApplyDamage(damage, damageDirection, forceModifier: 0.25f);
                             p.StickyDamageDone += damage;
 

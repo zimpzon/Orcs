@@ -8,8 +8,8 @@ public static class ChoicesBabyOrc
         {
             new Choice
             {
-                Title = "Baby orc: Jedi apprentice (1)",
-                Description = "May the force be with you.",
+                Title = "Pirate duck, Knightsaber (1)",
+                Description = "Pushes away nearby enemies",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.OrcJedisEnabled = true;
@@ -17,8 +17,8 @@ public static class ChoicesBabyOrc
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Baby orc: Jedi apprentice (2)",
-                    Description = "<color=#00ff00>+100%</color> knockback.",
+                    Title = "Pirate duck, Knightsaber (2)",
+                    Description = "<color=#00ff00>+100%</color> push power",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.OrcJediKnockBackForceMul += 1.0f;

@@ -14,7 +14,7 @@ public class SawBladeController : MonoBehaviour, IPlayerToggleEfffect
 
     public void TryEnable()
     {
-        if (PlayerUpgrades.Data.SawBladeEnabled)
+        if (PlayerUpgrades.Data.SawBladeBought)
         {
             enabled_ = true;
             SetNextThrow();
@@ -28,13 +28,13 @@ public class SawBladeController : MonoBehaviour, IPlayerToggleEfffect
 
     void Update()
     {
-        if (!enabled_ || !PlayerUpgrades.Data.SawBladeEnabled)
+        if (!enabled_ || !PlayerUpgrades.Data.SawBladeEnabledInRound)
             return;
 
         if (GameManager.Instance.GameTime > nextThrow_)
         {
             var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-            sawblades.Eject(transform.position, RndUtil.RandomInsideUnitCircle(), Color, weaponScale: 0.75f);
+            sawblades.Eject(transform.position, RndUtil.RandomInsideUnitCircle(), Color, weaponScale: 1.0f);
 
             SetNextThrow();
         }

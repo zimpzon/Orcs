@@ -39,7 +39,8 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         StartCoroutine(
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,
-                startTime: new TimeSpan(0, 1, 30),
+                startTime: new TimeSpan(0, 0, 20),
+                //startTime: new TimeSpan(0, 1, 30),
                 endTime: new TimeSpan(0, 5, 0),
                 maintainCount: 50,
                 maintainCountIncreasePerSec: 0.1f,

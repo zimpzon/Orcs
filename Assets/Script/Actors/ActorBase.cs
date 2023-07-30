@@ -20,6 +20,7 @@ public class ActorBase : MonoBehaviour
     public bool AvoidCrowds = true;
     public bool IsBoss = false;
     public float Mass = 1.0f;
+    public int XpValue = 1;
     public ActorTypeEnum ActorType;
     public float BaseHp;
     [System.NonSerialized] public float TimeBorn;
@@ -234,7 +235,7 @@ public class ActorBase : MonoBehaviour
         if (!AvoidCrowds || Time.time < nextCheckForCrowded_)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 0.75f);
+        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
         if (crowdCount > 2)
         {
             if (Random.value > 0.25f)
@@ -261,7 +262,7 @@ public class ActorBase : MonoBehaviour
         isPainted_ = true;
         nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
         paintColor_ = color;
-        paintEnd_ = Time.time + paintTime;
+        paintEnd_ = GameManager.Instance.GameTime + paintTime;
         return true;
     }
 
@@ -277,7 +278,7 @@ public class ActorBase : MonoBehaviour
             material_.color = Color.Lerp(Color.white, paintColor_, 0.8f);
             if (GameManager.Instance.GameTime > nextPaintDamage_)
             {
-                GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec, Vector3.zero, 0.01f);
+                GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec * PlayerUpgrades.Data.PaintballDamagePerSecMul, Vector3.zero, 0.01f);
                 nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
             }
         }

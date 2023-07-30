@@ -58,6 +58,7 @@ MonoBehaviour:
   AvoidCrowds: 1
   IsBoss: 0
   Mass: 1
+  XpValue: 3
   ActorType: 3
   BaseHp: 200
 --- !u!212 &5867433870204344439

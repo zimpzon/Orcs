@@ -35,7 +35,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 
     public void TryEnable()
     {
-        if (PlayerUpgrades.Data.BurstOfFrostEnabled)
+        if (PlayerUpgrades.Data.BurstOfFrostBought)
         {
             isBursting_ = false;
             renderer_.enabled = true;
@@ -52,6 +52,9 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
     {
         if (GameManager.Instance.GameTime > nextBurst_ && !isBursting_)
         {
+            if (!PlayerUpgrades.Data.BurstOfFrostEnabledInRound)
+                return;
+
             isBursting_ = true;
             burstStartTime_ = GameManager.Instance.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;

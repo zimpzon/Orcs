@@ -4,31 +4,33 @@ public static class ChoicesGlobal
 {
     public static List<Choice> GetGlobalChoices()
     {
+        const string NameCrit = "Critical hits";
+
         return new List<Choice>
         {
             new Choice
             {
                 Title = "Damage (1)",
-                Description = "<color=#00ff00>10%</color> damage.",
+                Description = "<color=#00ff00>+5%</color> to all damage",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.DamageMul += 0.1f;
+                    PlayerUpgrades.Data.DamageMul += 0.05f;
                 },
                 NextLevel = new Choice
                 {
                     Title = "Damage (2)",
-                    Description = "<color=#00ff00>10%</color> damage.",
+                    Description = "<color=#00ff00>+5%</color> to all damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.DamageMul += 0.1f;
+                    PlayerUpgrades.Data.DamageMul += 0.05f;
                     },
                     NextLevel = new Choice
                     {
                         Title = "Damage (3)",
-                        Description = "<color=#00ff00>15%</color> damage.",
+                        Description = "<color=#00ff00>10%</color> to all damage",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.DamageMul += 0.15f;
+                            PlayerUpgrades.Data.DamageMul += 0.1f;
                         },
                     }
                 }
@@ -36,24 +38,24 @@ public static class ChoicesGlobal
 
             new Choice
             {
-                Title = "Crit chance (1)",
-                Description = "<color=#00ff00>+10%</color> chance.",
+                Title = $"{NameCrit}, chance (1)",
+                Description = "<color=#00ff00>5%</color> more critical hits",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.CritChanceMul += 0.1f;
+                    PlayerUpgrades.Data.CritChanceMul += 0.05f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Crit chance (2)",
-                    Description = "<color=#00ff00>+10%</color> chance.",
+                    Title = $"{NameCrit}, chance (2)",
+                    Description = "<color=#00ff00>5%</color> more critical hits",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.CritChanceMul += 0.1f;
+                        PlayerUpgrades.Data.CritChanceMul += 0.05f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Crit chance (3)",
-                        Description = "<color=#00ff00>+10%</color> chance.",
+                        Title = $"{NameCrit}, chance (3)",
+                        Description = "<color=#00ff00>10%</color> more critical hits",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.CritChanceMul += 0.1f;
@@ -64,27 +66,27 @@ public static class ChoicesGlobal
 
             new Choice
             {
-                Title = "Crit damage (1)",
-                Description = "<color=#00ff00>+10%</color> crit damage.",
+                Title = $"{NameCrit}, damage (1)",
+                Description = "Critical hits do <color=#00ff00>10%</color> more damage",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.CritValueMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Crit chance (2)",
-                    Description = "<color=#00ff00>+10%</color> crit damage.",
+                    Title = $"{NameCrit}, damage (2)",
+                        Description = "Critical hits do <color=#00ff00>10%</color> more damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.CritChanceMul += 0.1f;
+                        PlayerUpgrades.Data.CritValueMul += 0.1f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Crit chance (3)",
-                        Description = "<color=#00ff00>+15%</color> crit damage.",
+                        Title = $"{NameCrit}, damage (3)",
+                        Description = "Critical hits do <color=#00ff00>15%</color> more damage",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.CritChanceMul += 0.15f;
+                            PlayerUpgrades.Data.CritValueMul += 0.15f;
                         },
                     }
                 }

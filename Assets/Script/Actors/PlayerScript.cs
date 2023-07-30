@@ -177,14 +177,13 @@ public class PlayerScript : MonoBehaviour
                     SetNextFire();
 
                 isShooting_ = true;
-                Vector3 worldMuzzle = trans_.TransformPoint(Weapon.Muzzle);
 
                 float recoil;
                 var fireDir = lookDir_;
                 if (ActorBase.PlayerClosestEnemy != null)
-                    fireDir = (ActorBase.PlayerClosestEnemy.transform.position - worldMuzzle).normalized;
+                    fireDir = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
 
-                Weapon.FireFromPoint(worldMuzzle, fireDir, GameManager.Instance.SortLayerTopEffects, out recoil);
+                Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out recoil);
                 AddForce(lookDir_ * -recoil);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
@@ -415,7 +414,7 @@ public class PlayerScript : MonoBehaviour
             if (Hp >= MaxHp)
                 return;
 
-            int newHp = (int)(Hp + PlayerUpgrades.Data.BaseHealthRegenSec * PlayerUpgrades.Data.HealthRegenSecMul + 0.5f);
+            int newHp = (int)(Hp + PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd);
             int change = newHp - (int)(Hp + 0.5f);
             Hp = newHp;
 

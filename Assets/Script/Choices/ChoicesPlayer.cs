@@ -4,90 +4,111 @@ public static class ChoicesPlayer
 {
     public static List<Choice> GetPlayerChoices()
     {
+        const string Name = "Super Knight";
+
         return new List<Choice>
         {
             new Choice
             {
-                Title = "Max health (1)",
-                Description = "<color=#00ff00>+10%</color> max health.",
+                Title = $"{Name}, max life (1)",
+                Description = "<color=#00ff00>+20%</color> base max life",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.HealthMul += 0.1f;
+                    PlayerUpgrades.Data.HealthMul += 0.2f;
                     GameManager.Instance.PlayerScript.UpdateMaxHp();
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Max health (2)",
-                    Description = "<color=#00ff00>+10%</color> max health.",
+                    Title = $"{Name}, max life (2)",
+                    Description = "<color=#00ff00>+20%</color> base max life",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthMul += 0.1f;
+                        PlayerUpgrades.Data.HealthMul += 0.2f;
                         GameManager.Instance.PlayerScript.UpdateMaxHp();
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Max health (3)",
-                        Description = "<color=#00ff00>+15%</color> max health.",
+                        Title = $"{Name}, max life (3)",
+                        Description = "<color=#00ff00>+30%</color> base max life",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthMul += 0.15f;
+                            PlayerUpgrades.Data.HealthMul += 0.3f;
                             GameManager.Instance.PlayerScript.UpdateMaxHp();
                         },
-                    }
+                        NextLevel = new Choice
+                        {
+                            Title = $"{Name}, max life (4)",
+                            Description = "<color=#00ff00>+30%</color> base max life",
+                            Apply = () =>
+                            {
+                                PlayerUpgrades.Data.HealthMul += 0.3f;
+                                GameManager.Instance.PlayerScript.UpdateMaxHp();
+                            },
+                        }
+                    },
                 }
             },
 
             new Choice
             {
-                Title = "Health regen (1)",
-                Description = "<color=#00ff00>+20%</color> health regen.",
+                Title = $"{Name}, recovery (1)",
+                Description = "Heal <color=#00ff00>+0.2</color> life/sec",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.HealthRegenSecMul += 0.2f;
+                    PlayerUpgrades.Data.HealthRegenSecAdd += 0.2f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Health regen (2)",
-                    Description = "<color=#00ff00>+20%</color> health regen.",
+                    Title = $"{Name}, recovery (2)",
+                    Description = "Heal <color=#00ff00>+0.3</color> life/sec",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthMul += 0.2f;
+                        PlayerUpgrades.Data.HealthRegenSecAdd += 0.3f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Health regen (3)",
-                        Description = "<color=#00ff00>+25%</color> health regen.",
+                        Title = $"{Name}, recovery (3)",
+                        Description = "Heal <color=#00ff00>+0.4</color> life/sec",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthMul += 0.25f;
+                            PlayerUpgrades.Data.HealthRegenSecAdd += 0.4f;
                         },
+                        NextLevel = new Choice
+                        {
+                            Title = $"{Name}, recovery (4)",
+                            Description = "Heal <color=#00ff00>+0.5</color> life/sec",
+                            Apply = () =>
+                            {
+                                PlayerUpgrades.Data.HealthRegenSecAdd += 0.5f;
+                            },
+                        }
                     }
                 }
             },
 
             new Choice
             {
-                Title = "Defense (1)",
-                Description = "<color=#00ff00>+10%</color> defense.",
+                Title = $"{Name}, defense (1)",
+                Description = "Take <color=#00ff00>10%</color> less damage",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Defense (2)",
-                    Description = "<color=#00ff00>+10%</color> defense.",
+                Title = $"{Name}, defense (2)",
+                    Description = "Take <color=#00ff00>10%</color> less damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthMul -= 0.1f;
+                        PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Defense (3)",
-                        Description = "<color=#00ff00>+15%</color> defense.",
+                        Title = $"{Name}, defense (3)",
+                        Description = "Take <color=#00ff00>10%</color> less damage",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthMul -= 0.15f;
+                            PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
                         },
                     }
                 }
@@ -95,27 +116,27 @@ public static class ChoicesPlayer
 
             new Choice
             {
-                Title = "Run speed (1)",
-                Description = "<color=#00ff00>+10%</color> run speed.",
+                Title = "Turbo Knight (1)",
+                Description = "Run <color=#00ff00>10%</color> faster",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MoveSpeedMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Run speed (2)",
-                    Description = "<color=#00ff00>+10%</color> run speed.",
+                    Title = "Turbo Knight (2)",
+                    Description = "Run <color=#00ff00>10%</color> faster",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MoveSpeedMul += 0.1f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = "Run speed (3)",
-                        Description = "<color=#00ff00>+15%</color> run speed.",
+                        Title = "Turbo Knight (3)",
+                        Description = "Run <color=#00ff00>10%</color> faster",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MoveSpeedMul += 0.15f;
+                            PlayerUpgrades.Data.MoveSpeedMul += 0.1f;
                         },
                     }
                 }
