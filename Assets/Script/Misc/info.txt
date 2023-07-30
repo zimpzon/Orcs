@@ -1,25 +1,16 @@
 ﻿CAM: 8.4
 
 NEXT
-  top-down overhaul. title screen, unlocks,
-  NAME!
-  save knight kids (sounds lame).
-  
   // Light spell'ish color : 253, 248, 220 -> 250, 239, 129
 
-BUGS
- cpu/gpu usage? pc getting warm.
-
-copy vampire:
-  start with sword that does damage in the facing direction. very pleasant to move around, aim, kill.
-   
 current weapons
   burst of frost
   jar of poison
   swirling swords
-  (sawblades) saw of satan :p
+  (sawblades) saw of sacrilege
 
 SMART DESIGN
+ OH YEAH! level selection could be picking a duck in the start.
   UPGRADES (selected for v1)
     WEAPONS muct be unlocked level 1 in shop. Can buy many level but very expensive.
       after unlock WEAPON upgrades will also be choices (limited).

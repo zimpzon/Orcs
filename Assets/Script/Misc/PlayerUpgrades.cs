@@ -51,22 +51,20 @@ public class UpgradeData
     public float MeleeThrowBaseCd = 2.0f;
     public float MeleeThrowCdMul = 1.0f;
 
-    public bool SawBladeEnabled = true;
+    public bool SawBladeEnabled = false;
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 10;
     public float SawBladeBaseCd = 2.0f;
     public float SawBladeCdMul = 1.0f;
 
-    // orc
-    public float OrcReviveTime = 8.0f;
-    public float OrcReviveTimeMul = 1.0f;
+    public bool BurstOfFrostEnabled = true;
+    public float BurstOfFrostBaseCd = 1.0f;
+    public float BurstOfFrostCdMul = 1.0f;
+    public float BurstOfFrostBaseRange = 4.0f;
+    public float BurstOfFrostRangeMul = 1.0f;
 
-    public bool OrcJedisEnabled = false;
-    public float OrcJediKnockBackForceMul = 1.0f;
-
-    // paintball
-    public bool PaintballEnabled = true;
+    public bool PaintballEnabled = false;
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSlowMul = 0.9f;
@@ -76,6 +74,13 @@ public class UpgradeData
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 6;
     public float PaintballBaseDamagePerSec = 30.0f;
+
+    // orc
+    public float OrcReviveTime = 8.0f;
+    public float OrcReviveTimeMul = 1.0f;
+
+    public bool OrcJedisEnabled = false;
+    public float OrcJediKnockBackForceMul = 1.0f;
 
     public CounterClass Counters = new ();
 }

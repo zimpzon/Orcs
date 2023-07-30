@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
     int lastHp_ = 0;
     int lastMaxHp_ = 0;
     const float WinTime = 60 * 15;
-    int baseXpToLevel = 50;
+    int baseXpToLevel = 30;
     int xpToLevel;
     int lastXpShown = 0;
     int lastKillsShown = 0;
@@ -468,6 +468,15 @@ public class GameManager : MonoBehaviour
         GameState = State.Dead;
     }
 
+    void KillKillableObjects()
+    {
+        var killables = FindObjectsOfType<MonoBehaviour>().OfType<IKillableObject>();
+        foreach (var killable in killables)
+        {
+            killable.Kill();
+        }
+    }
+
     public void ShowTitle(bool autoStartGame = false)
     {
         if (GameState == State.Intro)
@@ -486,6 +495,7 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
         SelectHero((HeroEnum)SaveGame.Members.SelectedHero);
+        KillKillableObjects();
 
         ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
 
@@ -642,7 +652,7 @@ public class GameManager : MonoBehaviour
 
     private void OnFirstOrcPickup()
     {
-        PlayerScript.SetWeapon(WeaponType.Machinegun);
+        PlayerScript.OnInitialPickup(WeaponType.Machinegun);
     }
 
     public void AddXp(int amount)

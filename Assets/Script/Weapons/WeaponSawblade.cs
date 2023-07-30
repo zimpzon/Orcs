@@ -4,7 +4,7 @@ public class WeaponSawblade : WeaponBase
 {
     public Sprite BulletSprite;
 
-    public override void Eject(Vector3 pos, Vector3 direction, float weaponScale)
+    public override void Eject(Vector3 pos, Vector3 direction, Color color, float weaponScale)
     {
         GameManager.Instance.MakeFlash(pos);
         AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
@@ -40,7 +40,7 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo.Renderer.sprite = BulletSprite;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
         basic.Direction = dir;
-        basic.Color = new Color(0.3f, 0.7f, 1.0f);
+        basic.Color = color;
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeleeThrow : MonoBehaviour
+public class MeleeThrow : MonoBehaviour, IKillableObject
 {
     Transform trans_;
     Vector3 startPos_;
@@ -33,8 +33,13 @@ public class MeleeThrow : MonoBehaviour
         if (isBack)
         {
             GameManager.Instance.MakePoof(trans_.position, 3, 0.25f);
-            CacheManager.Instance.MeleeThrowCache.ReturnInstance(gameObject);
+            Kill();
         }
+    }
+
+    public void Kill()
+    {
+        CacheManager.Instance.MeleeThrowCache.ReturnInstance(gameObject);
     }
 
     void OnCollisionEnter2D(Collision2D col)

@@ -1,4 +1,5 @@
 ﻿public interface IPlayerToggleEfffect
 {
-    void Enable(bool enable);
+    void Disable();
+    void TryEnable();
 }

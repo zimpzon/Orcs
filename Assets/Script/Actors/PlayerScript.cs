@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour
     //[System.NonSerialized] public Vector3 LatestLeftRightUpDown;
 
     [System.NonSerialized] public Vector3 CursorPos;
+    [System.NonSerialized] public bool IsInRound;
     Vector3 lookDir_;
     Vector3 moveVec_;
     bool isMoving_;
@@ -95,9 +96,11 @@ public class PlayerScript : MonoBehaviour
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         UpdateMaxHp();
 
+        IsInRound = false;
+
         var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
         foreach (var toggleEffect in toggleEffects)
-            toggleEffect.Enable(true);
+            toggleEffect.Disable();
 
         shotsLeft_ = 0;
         lastRegenTick_ = 0;
@@ -110,7 +113,7 @@ public class PlayerScript : MonoBehaviour
         SetPlayerPos(basePos_);
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         OverheadText.enabled = false;
-        SetWeapon(WeaponType.None);
+        Weapon = WeaponBase.GetWeapon(WeaponType.None);
     }
 
     private void Start()
@@ -119,11 +122,17 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(Think());
     }
 
-    public void SetWeapon(WeaponType type)
+    public void OnInitialPickup(WeaponType type)
     {
         Weapon = WeaponBase.GetWeapon(type);
         if (type != WeaponType.None)
             SetNextFire();
+
+        IsInRound = true;
+
+        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
+        foreach (var toggleEffect in toggleEffects)
+            toggleEffect.TryEnable();
     }
 
     void RefreshBulletCount()
@@ -282,7 +291,7 @@ public class PlayerScript : MonoBehaviour
         shadowRenderer_.enabled = false;
         GameProgressScript.Instance.Stop();
         AudioManager.Instance.StopAllRepeating();
-        SetWeapon(WeaponType.None);
+        OnInitialPickup(WeaponType.None);
         var clip = victory ? AudioManager.Instance.AudioData.Victory : AudioManager.Instance.AudioData.PlayerDie;
         AudioManager.Instance.PlayClip(clip);
 

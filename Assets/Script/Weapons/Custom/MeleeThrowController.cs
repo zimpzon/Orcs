@@ -5,9 +5,23 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
     bool enabled_;
     float nextThrow_;
 
-    public void Enable(bool enable)
+    public void Disable()
     {
-        enabled_ = enable;
+        enabled_ = false;
+    }
+
+    public void TryEnable()
+    {
+        if (PlayerUpgrades.Data.MeleeThrowEnabled)
+        {
+            enabled_ = true;
+            SetNextThrow();
+        }
+    }
+
+    void SetNextThrow()
+    {
+        nextThrow_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.MeleeThrowBaseCd * PlayerUpgrades.Data.MeleeThrowCdMul;
     }
 
     void Throw(Vector3 dir, float damage, Vector3 scale)
@@ -26,7 +40,7 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
         if (GameManager.Instance.GameTime > nextThrow_)
         {
             float damage = PlayerUpgrades.Data.MeleeThrowBaseDamage * PlayerUpgrades.Data.DamageMul * PlayerUpgrades.Data.MeleeThrowPowerMul;
-            Vector3 scale = Vector3.one;
+            Vector3 scale = Vector3.one * 1.5f;
             Throw(Vector3.right, damage, scale);
             Throw(Vector3.left, damage, scale);
             Throw(Vector3.up, damage, scale);
@@ -36,7 +50,7 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
             //Throw(Vector3.up + Vector3.left, damage * 0.25f, Vector3.one * 0.5f);
             //Throw(Vector3.up + Vector3.right, damage * 0.25f, Vector3.one * 0.5f);
 
-            nextThrow_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.MeleeThrowBaseCd * PlayerUpgrades.Data.MeleeThrowCdMul;
+            SetNextThrow();
         }
     }
 }

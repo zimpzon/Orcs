@@ -76,7 +76,7 @@ public class WeaponBase
 
     public virtual void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0; }
     public virtual void FireFromPoint(Vector3 point, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0; }
-    public virtual void Eject(Vector3 pos, Vector3 direction, float weaponScale) { }
+    public virtual void Eject(Vector3 pos, Vector3 direction, Color color, float weaponScale) { }
 
     public virtual void StopFire() { }
     public virtual void OnAcquired() { }

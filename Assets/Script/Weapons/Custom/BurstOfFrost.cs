@@ -7,10 +7,9 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 
     const float FreezeTime = 3.0f;
     const float BurstTime = 0.05f;
-    const float MaxScale = 5.0f;
     const float Radius = 3.0f;
     const float Force = 1.0f;
-    const float FreezeChance = 0.25f;
+    const float FreezeChance = 0.5f;
 
     public static BurstOfFrost Instance;
 
@@ -20,13 +19,37 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
     float nextBurst_;
     bool isBursting_;
     float burstStartTime_;
+    ParticleSystem snowflakes_;
 
     private void Awake()
     {
         Instance = this;
         renderer_ = GetComponent<SpriteRenderer>();
+        snowflakes_ = GetComponent<ParticleSystem>();
         baseColor_ = renderer_.color;
         baseAlpha_ = baseColor_.a;
+    }
+
+    public void Disable()
+    {
+        renderer_.enabled = false;
+        isBursting_ = false;
+        nextBurst_ = float.MaxValue;
+    }
+
+    public void TryEnable()
+    {
+        if (PlayerUpgrades.Data.BurstOfFrostEnabled)
+        {
+            isBursting_ = false;
+            renderer_.enabled = true;
+            SetNextBurst();
+        }
+    }
+
+    void SetNextBurst()
+    {
+        nextBurst_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.BurstOfFrostBaseCd * PlayerUpgrades.Data.BurstOfFrostCdMul;
     }
 
     void Update()
@@ -35,14 +58,15 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         {
             isBursting_ = true;
             burstStartTime_ = GameManager.Instance.GameTime;
+            float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
+            renderer_.transform.localScale = Vector2.one * scale;
+            snowflakes_.Emit(5);
         }
 
         if (isBursting_)
         {
             float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - GameManager.Instance.GameTime) / BurstTime);
-            float scale = t * MaxScale;
-            //renderer_.transform.localScale = Vector3.one * Mathf.PingPong(scale, 0.95f + 0.1f);
-            baseColor_.a = 8.0f / 255.0f;
+            baseColor_.a = baseAlpha_ + t * 0.15f;
             renderer_.color = baseColor_;
 
             if (t >= 1.0f)
@@ -80,20 +104,6 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             var push = dir * force;
             enemy.AddForce(push);
             enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f);
-        }
-    }
-
-    public void Enable(bool enable)
-    {
-        gameObject.SetActive(enable);
-        isBursting_ = false;
-        if (enable)
-        {
-            nextBurst_ = GameManager.Instance.GameTime + 0.5f;
-        }
-        else
-        {
-            nextBurst_ = float.MaxValue;
         }
     }
 }
