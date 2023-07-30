@@ -18,6 +18,7 @@ public class ActorBase : MonoBehaviour
     public bool CanBePoisened = true;
     public float Speed = 1.0f;
     public bool AvoidCrowds = true;
+    public bool IsBoss = false;
     public float Mass = 1.0f;
     public ActorTypeEnum ActorType;
     public float BaseHp;

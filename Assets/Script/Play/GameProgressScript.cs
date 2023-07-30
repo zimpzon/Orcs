@@ -29,7 +29,7 @@ public class GameProgressScript : MonoBehaviour
     {
         TextScore.enabled = true;
 
-        TextHowTo.text = "Save The Baby Orcs";
+        TextHowTo.text = "Save The Picate Ducks";
 
         TextControls.enabled = true;
         TextHowTo.enabled = true;

@@ -124,6 +124,7 @@ MonoBehaviour:
   CanBePoisened: 1
   Speed: 1.75
   AvoidCrowds: 1
+  IsBoss: 0
   Mass: 0.5
   ActorType: 9
   BaseHp: 25

@@ -5,11 +5,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 {
     public Color FrozenColor = Color.cyan;
 
-    const float FreezeTime = 3.0f;
-    const float BurstTime = 0.05f;
-    const float Radius = 3.0f;
     const float Force = 1.0f;
-    const float FreezeChance = 0.5f;
 
     public static BurstOfFrost Instance;
 
@@ -59,25 +55,25 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             isBursting_ = true;
             burstStartTime_ = GameManager.Instance.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
-            renderer_.transform.localScale = Vector2.one * scale;
+            renderer_.transform.localScale = Vector2.one * scale * 1.5f;
             snowflakes_.Emit(5);
         }
 
         if (isBursting_)
         {
+            const float BurstTime = 0.1f;
             float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - GameManager.Instance.GameTime) / BurstTime);
             baseColor_.a = baseAlpha_ + t * 0.15f;
             renderer_.color = baseColor_;
 
             if (t >= 1.0f)
             {
-                //renderer_.transform.localScale = Vector3.one;
                 isBursting_ = false;
                 nextBurst_ = GameManager.Instance.GameTime + 1.0f;
                 baseColor_.a = baseAlpha_;
                 renderer_.color = baseColor_;
 
-                Burst(transform.position, Radius, Force, damage: 10);
+                Burst(transform.position, PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul, Force, damage: 0);
             }
         }
     }
@@ -91,9 +87,11 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         {
             int idx = BlackboardScript.Matches[i].Idx;
             ActorBase enemy = BlackboardScript.Enemies[idx];
+            if (enemy.IsBoss)
+                continue;
 
-            if (Random.value < FreezeChance)
-                enemy.OnFreeze(FrozenColor, FreezeTime);
+            if (Random.value < PlayerUpgrades.Data.BurstOfFrostBaseFreezeChance * PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul)
+                enemy.OnFreeze(FrozenColor, PlayerUpgrades.Data.BurstOfFrostBaseFreezeTime * PlayerUpgrades.Data.BurstOfFrostFreezeTimeMul);
 
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;

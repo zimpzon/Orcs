@@ -51,18 +51,22 @@ public class UpgradeData
     public float MeleeThrowBaseCd = 2.0f;
     public float MeleeThrowCdMul = 1.0f;
 
-    public bool SawBladeEnabled = false;
+    public bool SawBladeEnabled = true;
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
-    public float SawBladeMaxDistance = 10;
+    public float SawBladeMaxDistance = 15;
     public float SawBladeBaseCd = 2.0f;
     public float SawBladeCdMul = 1.0f;
 
-    public bool BurstOfFrostEnabled = true;
+    public bool BurstOfFrostEnabled = false;
     public float BurstOfFrostBaseCd = 1.0f;
     public float BurstOfFrostCdMul = 1.0f;
     public float BurstOfFrostBaseRange = 4.0f;
     public float BurstOfFrostRangeMul = 1.0f;
+    public float BurstOfFrostBaseFreezeChance = 0.6f;
+    public float BurstOfFrostFreezeChanceMul = 1.0f;
+    public float BurstOfFrostBaseFreezeTime = 2.0f;
+    public float BurstOfFrostFreezeTimeMul = 1.0f;
 
     public bool PaintballEnabled = false;
     public float PaintballBaseRange = 3.0f;
