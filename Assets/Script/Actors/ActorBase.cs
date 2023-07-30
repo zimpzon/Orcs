@@ -236,17 +236,17 @@ public class ActorBase : MonoBehaviour
             return;
 
         int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
-        if (crowdCount > 2)
+        if (crowdCount > 3)
         {
             if (Random.value > 0.25f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 2.0f;
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.8f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
-        nextCheckForCrowded_ = Time.time + 0.3f + Random.value * 0.5f;
+        nextCheckForCrowded_ = Time.time + 0.5f + Random.value * 1.5f;
     }
 
     public bool OnFreeze(Color color, float freezeTime)

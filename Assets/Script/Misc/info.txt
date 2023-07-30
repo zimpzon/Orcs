@@ -9,6 +9,12 @@ current weapons
   swirling swords
   (sawblades) saw of sacrilege
 
+BUGS
+  knife count seems wrong when adding % (use non-%?)
+  health regen not ticking
+  level up pause while an enemy is flying dead keeps spraying blood.
+  reset of weapons fokked up
+
 SMART DESIGN
  OH YEAH! level selection could be picking a duck in the start.
   UPGRADES (selected for v1)

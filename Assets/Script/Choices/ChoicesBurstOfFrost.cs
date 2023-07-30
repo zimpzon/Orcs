@@ -8,6 +8,8 @@ public static class ChoicesBurstOfFrost
 
     public static List<Choice> GetBurstOfFrostChoices(Action<List<Choice>> delayedAdd)
     {
+        delayedAdd_ = delayedAdd;
+
         if (!PlayerUpgrades.Data.BurstOfFrostBought)
             return new List<Choice>();
 

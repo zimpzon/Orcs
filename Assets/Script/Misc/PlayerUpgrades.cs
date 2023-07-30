@@ -34,19 +34,19 @@ public class UpgradeData
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 15.0f;
+    public float MagicMissileBaseDamage = 25.0f;
     public float MagicMissileDamageMul = 1.0f;
-    public float MagicMissileBaseBulletCd = 0.2f;
+    public float MagicMissileBaseBulletCd = 0.15f;
     public float MagicMissileBaseCd = 1.0f;
     public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileBaseRange = 4.0f;
+    public float MagicMissileBaseRange = 2.5f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileBaseBullets = 3;
     public float MagicMissileBulletsMul = 1.0f;
 
-    public bool MeleeThrowBought = true;
+    public bool MeleeThrowBought = false;
     public bool MeleeThrowEnabledInRound = false;
     public float MeleeThrowBasePower = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
@@ -92,7 +92,7 @@ public class UpgradeData
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 5;
     public float PaintballBaseDamagePerSec = 30.0f;
-    public float PaintballDamagePerSecMul = 30.0f;
+    public float PaintballDamagePerSecMul = 1.0f;
 
     // orc
     public float OrcReviveTime = 8.0f;

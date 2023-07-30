@@ -126,6 +126,7 @@ MonoBehaviour:
   AvoidCrowds: 1
   IsBoss: 0
   Mass: 0.5
+  XpValue: 1
   ActorType: 9
   BaseHp: 25
 --- !u!50 &-7997838977571149338
@@ -138,7 +139,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 8110873291523481598}
   m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
