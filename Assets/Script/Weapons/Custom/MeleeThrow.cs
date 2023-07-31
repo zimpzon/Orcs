@@ -6,6 +6,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
     Vector3 startPos_;
     Vector3 startDir_;
     float speed_;
+    float drag_;
     float startSign_;
 
     private void Awake()
@@ -13,11 +14,10 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
         trans_ = transform;
     }
 
-    float drag_ = 9.0f;
     float degrees_;
     float damage_;
 
-    public float rotationspeed = 700.0f;
+    public float rotationspeed = 200.0f;
 
     void Update()
     {
@@ -57,7 +57,8 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
     {
         trans_.localScale = scale;
         startPos_ = trans_.position;
-        speed_ = PlayerUpgrades.Data.MeleeThrowBasePower * PlayerUpgrades.Data.MeleeThrowPowerMul;
+        speed_ = PlayerUpgrades.Data.MeleeThrowBasePower * PlayerUpgrades.Data.MeleeThrowPowerMul * 0.25f;
+        drag_ = speed_;
         damage_ = damage;
         startSign_ = Mathf.Sign(speed_);
         startDir_ = dir.normalized;

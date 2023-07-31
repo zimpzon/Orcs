@@ -1,300 +1,275 @@
-﻿using UnityEngine;
-using PlayFab;
-using PlayFab.ClientModels;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿//using UnityEngine;
+//using PlayFab;
+//using PlayFab.ClientModels;
+//using System.Collections;
+//using System;
+//using System.Collections.Generic;
 
-public class Server : MonoBehaviour
-{
-    public static Server Instance;
+//public class Server : MonoBehaviour
+//{
+//    public static Server Instance;
 
-    public object LastResult; // Simple and effective.
+//    public object LastResult; // Simple and effective.
 
-    // Debug switches --->
-    [NonSerialized]
-    public bool SimulateConnectionLoss = false;
-    const PlayFabErrorCode FakeErrorCode = PlayFabErrorCode.InternalServerError;
+//    // Debug switches --->
+//    [NonSerialized]
+//    public bool SimulateConnectionLoss = false;
+//    const PlayFabErrorCode FakeErrorCode = PlayFabErrorCode.InternalServerError;
 
-    [NonSerialized]
-    public float AdditionalGlobalLatency = 0.0f;
+//    [NonSerialized]
+//    public float AdditionalGlobalLatency = 0.0f;
 
-    const bool OfflineMode = false; // When working without an internet connection
-    // <--- Debug switches
+//    const bool OfflineMode = false; // When working without an internet connection
+//    // <--- Debug switches
 
-    void Awake()
-    {
-        Instance = this;
-    }
+//    void Awake()
+//    {
+//        Instance = this;
+//    }
 
-    void DoCustomLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
-    {
-        LoginWithCustomIDRequest request = new LoginWithCustomIDRequest();
-        request.TitleId = PlayFabSettings.TitleId;
-        request.CustomId = SaveGame.Members.UserId;
-        request.CreateAccount = true;
+//    void DoCustomLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
+//    {
+//        LoginWithCustomIDRequest request = new LoginWithCustomIDRequest();
+//        request.TitleId = PlayFabSettings.TitleId;
+//        request.CustomId = SaveGame.Members.UserId;
+//        request.CreateAccount = true;
 
-        PlayFabClientAPI.LoginWithCustomID(request, onsuccess, onError);
-    }
+//        PlayFabClientAPI.LoginWithCustomID(request, onsuccess, onError);
+//    }
 
-    void DoAndroidLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
-    {
-        LoginWithAndroidDeviceIDRequest request = new LoginWithAndroidDeviceIDRequest();
-        request.TitleId = PlayFabSettings.TitleId;
-        request.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
-        request.OS = SystemInfo.operatingSystem;
-        request.AndroidDevice = SystemInfo.deviceModel;
-        request.CreateAccount = true;
+//    public IEnumerator DoServerColdStart()
+//    {
+//        yield return DoLoginCo();
+//        yield return GetAllStats();
+//    }
 
-        PlayFabClientAPI.LoginWithAndroidDeviceID(request, onsuccess, onError);
-    }
+//    Dictionary<string, StatisticValue> stats = new Dictionary<string, StatisticValue>();
+//    public bool HasStatsFromServer = false;
 
-    //void DoKongregateLogin(Action<LoginResult> onsuccess, Action<PlayFabError> onError)
-    //{
-    //    LoginWithKongregateRequest request = new LoginWithKongregateRequest();
-    //    request.TitleId = TitleId;
-    //    request.
-    //    request.AndroidDeviceId = SystemInfo.deviceUniqueIdentifier;
-    //    request.OS = SystemInfo.operatingSystem;
-    //    request.AndroidDevice = SystemInfo.deviceModel;
-    //    request.CreateAccount = true;
+//    public bool TryGetStat(string key, out int value)
+//    {
+//        value = 0;
+//        StatisticValue stat;
+//        if (stats.TryGetValue(key, out stat))
+//        {
+//            value = stat.Value;
+//            return true;
+//        }
+//        return false;
+//    }
 
-    //    PlayFabClientAPI.LoginWithAndroidDeviceID(request, onsuccess, onError);
-    //}
+//    public IEnumerator GetAllStats()
+//    {
+//        GetPlayerStatisticsRequest req = new GetPlayerStatisticsRequest
+//        {
+//        };
 
-    public IEnumerator DoServerColdStart()
-    {
-        yield return DoLoginCo();
-        yield return GetAllStats();
-    }
+//        Action<Action<GetPlayerStatisticsResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
+//        {
+//            PlayFabClientAPI.GetPlayerStatistics(req, onsuccess, onError);
+//        };
 
-    Dictionary<string, StatisticValue> stats = new Dictionary<string, StatisticValue>();
-    public bool HasStatsFromServer = false;
+//        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
+//        var result = (GetPlayerStatisticsResult)LastResult;
+//        if (result != null)
+//        {
+//            foreach (var stat in result.Statistics)
+//            {
+//                stats[stat.StatisticName] = stat;
+//            }
+//            HasStatsFromServer = true;
+//        }
+//    }
 
-    public bool TryGetStat(string key, out int value)
-    {
-        value = 0;
-        StatisticValue stat;
-        if (stats.TryGetValue(key, out stat))
-        {
-            value = stat.Value;
-            return true;
-        }
-        return false;
-    }
+//    public IEnumerator UpdateStat(string name, int value)
+//    {
+//        //GameManager.SetDebugOutput("stats", "stat updates disabled");
+//        //yield break;
 
-    public IEnumerator GetAllStats()
-    {
-        GetPlayerStatisticsRequest req = new GetPlayerStatisticsRequest
-        {
-        };
+//        // Don't spam if client is not logged in (offline). Some score might also be posted before login completes and the SDK throws then.
+//        if (!PlayFabClientAPI.IsClientLoggedIn())
+//            yield break;
 
-        Action<Action<GetPlayerStatisticsResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
-        {
-            PlayFabClientAPI.GetPlayerStatistics(req, onsuccess, onError);
-        };
+//        UpdatePlayerStatisticsRequest req = new UpdatePlayerStatisticsRequest();
+//        StatisticUpdate stat = new StatisticUpdate
+//        {
+//            Version = stats.ContainsKey(name) ? (uint?)stats[name].Version : null,
+//            StatisticName = name,
+//            Value = value,
+//        };
+//        req.Statistics = new List<StatisticUpdate> { stat };
 
-        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
-        var result = (GetPlayerStatisticsResult)LastResult;
-        if (result != null)
-        {
-            foreach (var stat in result.Statistics)
-            {
-                stats[stat.StatisticName] = stat;
-            }
-            HasStatsFromServer = true;
-        }
-    }
+//        Action<Action<UpdatePlayerStatisticsResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
+//        {
+//            PlayFabClientAPI.UpdatePlayerStatistics(req, onsuccess, onError);
+//        };
 
-    public IEnumerator UpdateStat(string name, int value)
-    {
-        //GameManager.SetDebugOutput("stats", "stat updates disabled");
-        //yield break;
+//        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
+//    }
 
-        // Don't spam if client is not logged in (offline). Some score might also be posted before login completes and the SDK throws then.
-        if (!PlayFabClientAPI.IsClientLoggedIn())
-            yield break;
+//    public IEnumerator GetAllPlayerData()
+//    {
+//        GetPlayerCombinedInfoRequest req = new GetPlayerCombinedInfoRequest();
+//        req.InfoRequestParameters = new GetPlayerCombinedInfoRequestParams();
+//        req.InfoRequestParameters.GetPlayerProfile = true;
+//        req.InfoRequestParameters.GetPlayerStatistics = true;
+//        req.InfoRequestParameters.GetTitleData = true;
+//        req.InfoRequestParameters.GetUserData = true;
+//        req.InfoRequestParameters.GetUserInventory = true;
+//        req.InfoRequestParameters.GetUserReadOnlyData = true;
+//        req.InfoRequestParameters.GetUserVirtualCurrency = true;
 
-        UpdatePlayerStatisticsRequest req = new UpdatePlayerStatisticsRequest();
-        StatisticUpdate stat = new StatisticUpdate
-        {
-            Version = stats.ContainsKey(name) ? (uint?)stats[name].Version : null,
-            StatisticName = name,
-            Value = value,
-        };
-        req.Statistics = new List<StatisticUpdate> { stat };
+//        Action<Action<GetPlayerCombinedInfoResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
+//        {
+//            PlayFabClientAPI.GetPlayerCombinedInfo(req, onsuccess, onError);
+//        };
 
-        Action<Action<UpdatePlayerStatisticsResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
-        {
-            PlayFabClientAPI.UpdatePlayerStatistics(req, onsuccess, onError);
-        };
+//        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
+//    }
 
-        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
-    }
+//    public IEnumerator GetRollData()
+//    {
+//        ExecuteCloudScriptRequest req = new ExecuteCloudScriptRequest();
+//        req.FunctionName = "helloWorld";
+//        req.FunctionParameter = "Whoop";
 
-    public IEnumerator GetAllPlayerData()
-    {
-        GetPlayerCombinedInfoRequest req = new GetPlayerCombinedInfoRequest();
-        req.InfoRequestParameters = new GetPlayerCombinedInfoRequestParams();
-        req.InfoRequestParameters.GetPlayerProfile = true;
-        req.InfoRequestParameters.GetPlayerStatistics = true;
-        req.InfoRequestParameters.GetTitleData = true;
-        req.InfoRequestParameters.GetUserData = true;
-        req.InfoRequestParameters.GetUserInventory = true;
-        req.InfoRequestParameters.GetUserReadOnlyData = true;
-        req.InfoRequestParameters.GetUserVirtualCurrency = true;
+//        Action<Action<ExecuteCloudScriptResult>, Action<PlayFabError>> apiCall = (onSuccess, onError) =>
+//        {
+//            PlayFabClientAPI.ExecuteCloudScript(req, onSuccess, onError);
+//        };
 
-        Action<Action<GetPlayerCombinedInfoResult>, Action<PlayFabError>> apiCall = (onsuccess, onError) =>
-        {
-            PlayFabClientAPI.GetPlayerCombinedInfo(req, onsuccess, onError);
-        };
+//        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 3.0f, messageBoxAfterSec: 5.0f);
+//    }
 
-        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
-    }
+//    public IEnumerator HelloWorld()
+//    {
+//        ExecuteCloudScriptRequest req = new ExecuteCloudScriptRequest();
+//        req.FunctionName = "helloWorld";
+//        yield break;
+//    }
 
-    public IEnumerator GetRollData()
-    {
-        ExecuteCloudScriptRequest req = new ExecuteCloudScriptRequest();
-        req.FunctionName = "helloWorld";
-        req.FunctionParameter = "Whoop";
+//    public IEnumerator DoLoginCo()
+//    {
+//        Action<Action<LoginResult>, Action<PlayFabError>> apiCall;
 
-        Action<Action<ExecuteCloudScriptResult>, Action<PlayFabError>> apiCall = (onSuccess, onError) =>
-        {
-            PlayFabClientAPI.ExecuteCloudScript(req, onSuccess, onError);
-        };
+//        switch (Application.platform)
+//        {
+//            case RuntimePlatform.Android:
+//                apiCall = DoAndroidLogin;
+//                break;
 
-        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 3.0f, messageBoxAfterSec: 5.0f);
-    }
+//            case RuntimePlatform.WebGLPlayer:
+//                apiCall = DoCustomLogin;
+//                break;
 
-    public IEnumerator HelloWorld()
-    {
-        ExecuteCloudScriptRequest req = new ExecuteCloudScriptRequest();
-        req.FunctionName = "helloWorld";
-        yield break;
-    }
+//            default:
+//                apiCall = DoCustomLogin;
+//                break;
+//        }
 
-    public IEnumerator DoLoginCo()
-    {
-        Action<Action<LoginResult>, Action<PlayFabError>> apiCall;
+//        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
+//    }
 
-        switch (Application.platform)
-        {
-            case RuntimePlatform.Android:
-                apiCall = DoAndroidLogin;
-                break;
+//    IEnumerator ExecuteApiCallWithRetry<TResult>(
+//        Action<Action<TResult>, Action<PlayFabError>> apiAction,
+//        float busyIndicatorAfterSec = 1.0f,
+//        float messageBoxAfterSec = 4.0f,
+//        float fakeApiLatency = 0.0f,
+//        int fakeFailureCount = 0)
+//    {
+//        LastResult = null;
 
-            case RuntimePlatform.WebGLPlayer:
-                apiCall = DoCustomLogin;
-                break;
+//        //if (busyIndicatorAfterSec <= 0)
+//        //    BusyScript.Instance.Show();
 
-            default:
-                apiCall = DoCustomLogin;
-                break;
-        }
+//        float startTime = Time.time;
+//        float timeWaited = 0;
+//        int attempts = 0;
+//        TResult result = default(TResult);
+//        int fakeFailuresLeft = fakeFailureCount;
 
-        yield return ExecuteApiCallWithRetry(apiCall, busyIndicatorAfterSec: 0.0f, messageBoxAfterSec: 4.0f);
-    }
+//        while (true)
+//        {
+//            attempts++;
+//            if (attempts > 5)
+//                break;
 
-    IEnumerator ExecuteApiCallWithRetry<TResult>(
-        Action<Action<TResult>, Action<PlayFabError>> apiAction,
-        float busyIndicatorAfterSec = 1.0f,
-        float messageBoxAfterSec = 4.0f,
-        float fakeApiLatency = 0.0f,
-        int fakeFailureCount = 0)
-    {
-        LastResult = null;
+//            bool callComplete = false;
+//            bool callSuccess = false;
+//            float apiCallRetryTime = 2.0f;
 
-        //if (busyIndicatorAfterSec <= 0)
-        //    BusyScript.Instance.Show();
+//            Action<TResult> onSuccess = callResult =>
+//            {
+//                Debug.Log(callResult);
+//                result = callResult;
+//                callComplete = true;
+//                callSuccess = true;
+//            };
 
-        float startTime = Time.time;
-        float timeWaited = 0;
-        int attempts = 0;
-        TResult result = default(TResult);
-        int fakeFailuresLeft = fakeFailureCount;
+//            Action<PlayFabError> onError = error =>
+//            {
+//                string fullMsg = error.ErrorMessage;
+//                if (error.ErrorDetails != null)
+//                    foreach (var pair in error.ErrorDetails)
+//                        foreach (var eachMsg in pair.Value)
+//                            fullMsg += "\n" + pair.Key + ": " + eachMsg;
 
-        while (true)
-        {
-            attempts++;
-            if (attempts > 5)
-                break;
+//                Debug.Log(fullMsg);
+//                callComplete = true;
+//            };
 
-            bool callComplete = false;
-            bool callSuccess = false;
-            float apiCallRetryTime = 2.0f;
+//            float fakeLatency = fakeApiLatency + AdditionalGlobalLatency;
+//            if (fakeLatency > 0.0f)
+//                yield return new WaitForSeconds(fakeLatency);
 
-            Action<TResult> onSuccess = callResult =>
-            {
-                Debug.Log(callResult);
-                result = callResult;
-                callComplete = true;
-                callSuccess = true;
-            };
+//            if (fakeFailuresLeft > 0 || SimulateConnectionLoss)
+//            {
+//                fakeFailuresLeft--;
+//                PlayFabError fakeError = new PlayFabError();
+//                fakeError.Error = FakeErrorCode;
+//                fakeError.ErrorMessage = "Fake error for testing";
+//                fakeError.HttpCode = 404;
+//                onError(fakeError);
+//            }
+//            else
+//            {
+//                apiAction(onSuccess, onError);
+//            }
 
-            Action<PlayFabError> onError = error =>
-            {
-                string fullMsg = error.ErrorMessage;
-                if (error.ErrorDetails != null)
-                    foreach (var pair in error.ErrorDetails)
-                        foreach (var eachMsg in pair.Value)
-                            fullMsg += "\n" + pair.Key + ": " + eachMsg;
+//            while (!callComplete)
+//            {
+//                yield return null;
+//                timeWaited = Time.time - startTime;
 
-                Debug.Log(fullMsg);
-                callComplete = true;
-            };
+//                // Ensure indicator shown after initial delay
+//                //if (timeWaited > busyIndicatorAfterSec)
+//                //    BusyScript.Instance.Show();
+//            }
 
-            float fakeLatency = fakeApiLatency + AdditionalGlobalLatency;
-            if (fakeLatency > 0.0f)
-                yield return new WaitForSeconds(fakeLatency);
+//            if (callSuccess)
+//                break;
 
-            if (fakeFailuresLeft > 0 || SimulateConnectionLoss)
-            {
-                fakeFailuresLeft--;
-                PlayFabError fakeError = new PlayFabError();
-                fakeError.Error = FakeErrorCode;
-                fakeError.ErrorMessage = "Fake error for testing";
-                fakeError.HttpCode = 404;
-                onError(fakeError);
-            }
-            else
-            {
-                apiAction(onSuccess, onError);
-            }
+//            timeWaited = Time.time - startTime;
+//            if (timeWaited >= messageBoxAfterSec)
+//            {
+//                //BusyScript.Instance.Hide();
+//                //string message = "Hov, der er noget galt med forbindelsen!\n\nTryk <#ffffff>OK</color> for at prøve igen"; // i8n
+//                //var wait = MessageBox.Instance.Show(message, MessageBox.Buttons.Ok, fadeInBackground: false);
+//                //yield return wait;
+//            }
 
-            while (!callComplete)
-            {
-                yield return null;
-                timeWaited = Time.time - startTime;
+//            //if (timeWaited >= busyIndicatorAfterSec)
+//            //    BusyScript.Instance.Show();
 
-                // Ensure indicator shown after initial delay
-                //if (timeWaited > busyIndicatorAfterSec)
-                //    BusyScript.Instance.Show();
-            }
+//            // Wait a bit so user can't spam retry
+//            yield return new WaitForSeconds(apiCallRetryTime);
+//        }
 
-            if (callSuccess)
-                break;
+//        //        BusyScript.Instance.Hide();
 
-            timeWaited = Time.time - startTime;
-            if (timeWaited >= messageBoxAfterSec)
-            {
-                //BusyScript.Instance.Hide();
-                //string message = "Hov, der er noget galt med forbindelsen!\n\nTryk <#ffffff>OK</color> for at prøve igen"; // i8n
-                //var wait = MessageBox.Instance.Show(message, MessageBox.Buttons.Ok, fadeInBackground: false);
-                //yield return wait;
-            }
-
-            //if (timeWaited >= busyIndicatorAfterSec)
-            //    BusyScript.Instance.Show();
-
-            // Wait a bit so user can't spam retry
-            yield return new WaitForSeconds(apiCallRetryTime);
-        }
-
-        //        BusyScript.Instance.Hide();
-
-        float timeTotal = Time.time - startTime;
-        Debug.LogFormat("API ms: {0}", timeTotal);
-        LastResult = result;
-        yield return result; // For CoroutineWithData
-    }
-}
+//        float timeTotal = Time.time - startTime;
+//        Debug.LogFormat("API ms: {0}", timeTotal);
+//        LastResult = result;
+//        yield return result; // For CoroutineWithData
+//    }
+//}

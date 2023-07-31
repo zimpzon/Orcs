@@ -32,7 +32,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 spawnCountPerTick: 5,
                 timeBetweenTicks: 1.0f,
                 outsideScreen: true,
-                PositionUtility.SpawnDirection.Any)
+                PositionUtility.SpawnDirection.TopOrBottom)
             );
 
         // normal 01:30 - 5:00

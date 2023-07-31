@@ -10,8 +10,9 @@ current weapons
   (sawblades) saw of sacrilege
 
 BUGS
+  dying WITHOUT seing how!
   knife count seems wrong when adding % (use non-%?)
-  health regen not ticking
+  health regen not ticking?
   level up pause while an enemy is flying dead keeps spraying blood.
   reset of weapons fokked up
 

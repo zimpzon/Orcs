@@ -14,22 +14,20 @@ public class WeaponPaintballRandom : WeaponBase
         }
     }
 
-    public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
+    public override void FireFromPoint(Vector3 point, Vector3 direction, int sortingLayer, out float recoil)
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
         Color color = new Color(0.4f, 0.8f, 0.3f);
 
-        Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);
-
-        GameManager.Instance.MakeFlash(worldMuzzle);
+        GameManager.Instance.MakeFlash(point);
         AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.1f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
-        basic.Speed = 5.0f;
+        basic.Speed = PlayerUpgrades.Data.PaintballBaseSpeed;
         basic.MaxDistance = PlayerUpgrades.Data.PaintballBaseRange * PlayerUpgrades.Data.PaintballRangeMul;
         basic.Radius = 0.3f;
         basic.DieOnCollision = false;
@@ -40,7 +38,7 @@ public class WeaponPaintballRandom : WeaponBase
         scale.y = 1.0f;
         scale.z = 1.0f;
 
-        basic.Position = worldMuzzle;
+        basic.Position = point;
         basic.SpriteInfo.Renderer.sprite = BulletSprite;
         basic.SpriteInfo.Renderer.sortingLayerID = sortingLayer;
         basic.Direction = direction;

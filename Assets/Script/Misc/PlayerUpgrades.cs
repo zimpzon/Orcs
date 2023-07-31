@@ -39,28 +39,29 @@ public class UpgradeData
     public float MagicMissileBaseBulletCd = 0.15f;
     public float MagicMissileBaseCd = 1.0f;
     public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileBaseRange = 2.5f;
+    public float MagicMissileBaseRange = 3.5f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileBaseBullets = 3;
     public float MagicMissileBulletsMul = 1.0f;
 
-    public bool MeleeThrowBought = false;
-    public bool MeleeThrowEnabledInRound = false;
+    public bool MeleeThrowBought = true;
+    public bool MeleeThrowEnabledInRound = true;
     public float MeleeThrowBasePower = 8.0f;
+    public float MeleeThrowDrag = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
     public float MeleeThrowBaseDamage = 20.0f;
     public float MeleeThrowBaseCd = 2.0f;
     public float MeleeThrowCdMul = 1.0f;
-    public bool MeleeThrowLeft = false;
-    public bool MeleeThrowRight = false;
-    public bool MeleeThrowUp = false;
-    public bool MeleeThrowDown = false;
-    public bool MeleeThrowUpLeft = false;
-    public bool MeleeThrowUpRight = false;
-    public bool MeleeThrowDownLeft = false;
-    public bool MeleeThrowDownRight = false;
+    public bool MeleeThrowLeft = true;
+    public bool MeleeThrowRight = true;
+    public bool MeleeThrowUp = true;
+    public bool MeleeThrowDown = true;
+    public bool MeleeThrowUpLeft = true;
+    public bool MeleeThrowUpRight = true;
+    public bool MeleeThrowDownLeft = true;
+    public bool MeleeThrowDownRight = true;
 
     public bool SawBladeBought = true;
     public bool SawBladeEnabledInRound = false;
@@ -76,21 +77,22 @@ public class UpgradeData
     public float BurstOfFrostCdMul = 1.0f;
     public float BurstOfFrostBaseRange = 2.0f;
     public float BurstOfFrostRangeMul = 1.0f;
-    public float BurstOfFrostBaseFreezeChance = 0.25f;
+    public float BurstOfFrostBaseFreezeChance = 0.75f;
     public float BurstOfFrostFreezeChanceMul = 1.0f;
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;
 
     public bool PaintballBought = true;
-    public bool PaintballActiveInRound = false;
+    public bool PaintballActiveInRound = true;
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
-    public float PaintballBaseSlowMul = 0.9f;
-    public float PaintballBaseDuration = 4.0f;
-    public float PaintballDurationMul = 1.0f;
-    public float PaintballCd = 2.0f;
+    public float PaintballBaseSpeed = 6.0f;
+    public float PaintballBaseSlowMul = 0.8f;
+    public float PaintballBaseDuration = 5.0f;
+    public float PaintballDurationMul = 0.50f;
+    public float PaintballCd = 1.5f;
     public float PaintballCdMul = 1.0f;
-    public int PaintballCount = 5;
+    public int PaintballCount = 12;
     public float PaintballBaseDamagePerSec = 30.0f;
     public float PaintballDamagePerSecMul = 1.0f;
 
@@ -130,12 +132,13 @@ public class PlayerUpgrades : MonoBehaviour
         {
             var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
 
+            Vector3 location = PositionUtility.GetPointInsideArena(0.9f, 0.9f);
             float angleStep = 360 / Data.PaintballCount;
             float angle = 0;
             for (int i = 0; i < Data.PaintballCount; ++i)
             {
                 var dir = Quaternion.Euler(0, 0, angle) * Vector2.up;
-                paintball.Fire(this.transform, dir, GameManager.Instance.SortLayerTopEffects, out _);
+                paintball.FireFromPoint(location, dir, GameManager.Instance.SortLayerTopEffects, out _);
                 angle += angleStep;
             }
             Data.Counters.PaintballTimer = 0;

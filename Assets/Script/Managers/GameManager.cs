@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
     public Transform ShopItemsRoot;
     public Slider SliderMusic;
     public Slider SliderSfx;
-    public Dropdown DropdownResolution;
     public Transform PanelChoices;
     public GameObject UpgradeChoice1;
     public GameObject UpgradeChoice2;
@@ -157,18 +156,6 @@ public class GameManager : MonoBehaviour
         }
         SaveGame.Members.VolumeSfx = value;
         skipNextsfxVolumeChangeFeedback_ = false;
-    }
-
-    int[] resolutionWidths_ = { 1000, 1200, 1600, 2000, 3000 };
-    public void DropdownResolutionChanged()
-    {
-        int idx = DropdownResolution.value;
-        if (idx >= 0 && idx < resolutionWidths_.Length)
-        {
-            int width = resolutionWidths_[idx];
-            int height = (width * 3) / 4;
-            Screen.SetResolution(width, height, false);
-        }
     }
 
     public void SelectHero(HeroEnum heroType, bool save = false)
@@ -457,7 +444,7 @@ public class GameManager : MonoBehaviour
 
         float roundTime = Time.time - roundStartTime_;
         int roundSeconds = Mathf.RoundToInt(roundTime);
-        StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
+        //StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
 
         int bestScore = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
         TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
@@ -551,7 +538,7 @@ public class GameManager : MonoBehaviour
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
 
-        StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
+        //StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
     }
 
     void ClearParticles()
@@ -566,23 +553,24 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ServerColdStart()
     {
-        yield return StartCoroutine(Server.Instance.DoServerColdStart());
+        //yield return StartCoroutine(Server.Instance.DoServerColdStart());
         // Update SaveGame stats with server stats. They could have been 100% local but
         // since I didn't do that from the start I have to get the stats from the server
         // at least once. So just do it every time, then it also works if local data is
         // deleted.
         int statValue;
-        if (Server.Instance.TryGetStat("OrcsSaved", out statValue))
-            SaveGame.Members.OrcsSaved = statValue;
+        //if (Server.Instance.TryGetStat("OrcsSaved", out statValue))
+        //    SaveGame.Members.OrcsSaved = statValue;
 
-        if (Server.Instance.TryGetStat("Kills", out statValue))
-            SaveGame.Members.EnemiesKilled = statValue;
+        //if (Server.Instance.TryGetStat("Kills", out statValue))
+        //    SaveGame.Members.EnemiesKilled = statValue;
 
-        if (Server.Instance.TryGetStat("RoundStarted", out statValue))
-            SaveGame.Members.PlayerDeaths = statValue;
+        //if (Server.Instance.TryGetStat("RoundStarted", out statValue))
+        //    SaveGame.Members.PlayerDeaths = statValue;
 
-        if (Server.Instance.TryGetStat("RoundSeconds", out statValue))
-            SaveGame.Members.SecondsPlayed = statValue;
+        //if (Server.Instance.TryGetStat("RoundSeconds", out statValue))
+        //    SaveGame.Members.SecondsPlayed = statValue;
+        yield return null;
     }
 
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
