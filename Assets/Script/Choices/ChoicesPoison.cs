@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ChoicesPoison
 {
     static Action<List<Choice>> delayedAdd_;
-    const string Name = "Dagger of Pestilence";
+    public const string Name = "Dagger of Pestilence";
 
     public static List<Choice> GetPoisonChoices(Action<List<Choice>> delayedAdd)
     {

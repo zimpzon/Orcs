@@ -61,6 +61,7 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
             float slowTime = PlayerUpgrades.Data.PaintballBaseDuration * PlayerUpgrades.Data.PaintballDurationMul;
 
             int aliveCount = BlackboardScript.GetEnemies(location, radius);
+            Debug.Log("alive: " + aliveCount);
             for (int i = 0; i < aliveCount; ++i)
             {
                 ActorBase enemy = BlackboardScript.EnemyOverlap[i];

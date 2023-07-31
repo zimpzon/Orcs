@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ChoicesSawblade
 {
     static Action<List<Choice>> delayedAdd_;
-    const string Name = "Saw of Sacrilege";
+    public const string Name = "Saw of Sacrilege";
 
     public static List<Choice> GetSawbladeChoices(Action<List<Choice>> delayedAdd)
     {

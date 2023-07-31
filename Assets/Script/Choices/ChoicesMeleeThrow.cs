@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ChoicesMeleeThrow
 {
     static Action<List<Choice>> delayedAdd_;
-    const string Name = "Swirling Swords";
+    public const string Name = "Swirling Swords";
 
     public static List<Choice> GetMeleeThrowChoices(Action<List<Choice>> delayedAdd)
     {

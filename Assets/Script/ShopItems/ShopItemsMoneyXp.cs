@@ -9,11 +9,11 @@ public static class ShopItemsMoneyXp
             new ShopItem
             {
                 ItemType = ShopItemType.DoubleMoney,
-                Title = "Double Gold",
-                Description = "Any gold dropped has a <color=#00ff00>+#VALUE%</color> chance to be doubled.",
+                Title = "Double Drop",
+                Description = "All dropped coins and XP have <color=#00ff00>+#VALUE%</color> chance of being doubled",
                 BasePrice = 25,
                 PriceMultiplier = 2.0f,
-                MaxLevel = 5,
+                MaxLevel = 10,
                 Value = 2,
                 ValueScale = 0.01f,
                 Apply = (BoughtItem bought) =>
@@ -25,11 +25,11 @@ public static class ShopItemsMoneyXp
             new ShopItem
             {
                 ItemType = ShopItemType.EnemyMoneyDrop,
-                Title = "Gold Drop",
-                Description = "Killed enemies have a <color=#00ff00>+#VALUE%</color> chance to drop <color=#00ff00>1</color>-<color=#00ff00>3</color> gold.",
+                Title = "Pickpocket",
+                Description = "Killed enemies have <color=#00ff00>+#VALUE%</color> chance to drop <color=#00ff00>1</color>-<color=#00ff00>3</color> gold",
                 BasePrice = 25,
                 PriceMultiplier = 2.0f,
-                MaxLevel = 5,
+                MaxLevel = 10,
                 Value = 2,
                 ValueScale = 0.01f,
                 Apply = (BoughtItem bought) =>

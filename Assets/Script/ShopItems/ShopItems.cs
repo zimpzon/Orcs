@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public enum ShopItemType
 {
-    Refund,
     DamageAll,
     WeaponRange,
     WeaponDamage,
@@ -13,8 +13,12 @@ public enum ShopItemType
     MachinegunBulletsPerRound,
     DoubleMoney,
     EnemyMoneyDrop,
-    OrcPickupXpMul,
     KillXpChanceMul,
+
+    UnlockPoisonDagger,
+    BurstOfFrost,
+    Sawblade,
+    MeleeThrow,
 }
 
 [Serializable]
@@ -41,20 +45,46 @@ public class ShopItem
     public Func<int, string> GetButtonText;
     public Func<int, string> GetTitle;
     public Func<int, string> GetDescription;
+    public Func<int, string> GetLevelText;
     public Action<BoughtItem> Apply;
+
+    readonly StringBuilder sb_ = new ();
 
     public ShopItem()
     {
         GetButtonText = (int level) => $"${GetPrice(level)}";
         GetTitle = (int level) => $"{Title}";
         GetDescription = (int level) => Description;
+
+        GetLevelText = (int level) =>
+        {
+            char c = '@';
+
+            sb_.Clear();
+            if (level > 0)
+            {
+                sb_.Append("<color=\"#00ff00\">");
+                for (int i = 0; i < level; ++i)
+                {
+                    sb_.Append(c);
+                }
+                sb_.Append("</color>");
+            }
+
+            for (int i = 0; i < MaxLevel - level; ++i)
+            {
+                sb_.Append(c);
+            }
+
+            return sb_.ToString();
+        };
     }
 }
 
 public static class ShopItems
 {
-    public static List<ShopItem> Items = new List<ShopItem>();
-    public static List<ShopItemScript> Scripts = new List<ShopItemScript>();
+    public static List<ShopItem> Items = new ();
+    public static List<ShopItemScript> Scripts = new ();
 
     public static void CreateItemGoList(ShopItemScript protoScript, Transform parent)
     {
@@ -73,23 +103,13 @@ public static class ShopItems
         foreach(var pair in SaveGame.Members.BoughtItems)
         {
             var bought = pair.Value;
-            var shopItem = ShopItems.Items.First(i => i.ItemType == bought.ItemType);
+            var shopItem = Items.First(i => i.ItemType == bought.ItemType);
             shopItem.Apply(bought);
         }
     }
 
     private static void OnBuy(ShopItemType itemType)
     {
-        if (itemType == ShopItemType.Refund)
-        {
-            SaveGame.Members.BoughtItems.Clear();
-            SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
-            SaveGame.Members.MoneySpentInShop = 0;
-            UpdateBoughtItems();
-            GameManager.Instance.OnItemBought(itemType);
-            return;
-        }
-
         var item = Items.Where(i => i.ItemType == itemType).First();
 
         SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
@@ -122,6 +142,9 @@ public static class ShopItems
 
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
+            script.Description.text = item.GetDescription(level);
+            script.Level.text = item.GetLevelText(level);
+            script.ButtonText.text = item.GetButtonText(level);
             script.SetIsMaxed(isMaxLevel);
         }
     }
@@ -149,17 +172,7 @@ public static class ShopItems
 
         Items.AddRange(ShopItemsWeapons.GetWeaponItems());
         Items.AddRange(ShopItemsMoneyXp.GetMoneyXpItems());
-
-        // Refund last
-        Items.Add(new ShopItem
-        {
-            ItemType = ShopItemType.Refund,
-            Title = "Refund",
-            BasePrice = 0,
-            Description = "Refund all purchases and get your money back.",
-            GetButtonText = (_) => "Free",
-            Apply = (_) => { }
-        });
+        Items.AddRange(ShopItemsUnlock.GetUnlockItems());
 
         foreach (var item in Items)
             item.Description = item.Description.Replace("#VALUE", item.Value.ToString());

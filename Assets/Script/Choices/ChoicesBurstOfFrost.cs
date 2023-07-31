@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ChoicesBurstOfFrost
 {
     static Action<List<Choice>> delayedAdd_;
-    const string Name = "Burst of Frost";
+    public const string Name = "Burst of Frost";
 
     public static List<Choice> GetBurstOfFrostChoices(Action<List<Choice>> delayedAdd)
     {

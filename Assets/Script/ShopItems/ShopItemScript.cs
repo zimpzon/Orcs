@@ -11,6 +11,7 @@ public class ShopItemScript : MonoBehaviour
     public ShopItemType ItemType;
     public Text Title;
     public Text Description;
+    public Text Level;
     public Text ButtonText;
     public Button BuyButton;
 

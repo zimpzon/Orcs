@@ -23,9 +23,7 @@ public class GameManager : MonoBehaviour
     public bool UnlockAllWeapons;
     public bool UnlockAllHeroes;
 
-    public Color[] xpColors = new Color[]
-    {
-    };
+    public Color[] xpColors = new Color[] { };
 
     public Text TextLevel;
     public Text TextHp;
@@ -99,19 +97,19 @@ public class GameManager : MonoBehaviour
 
     [NonSerialized] public GameModeData LatestGameModeData = new ();
     [NonSerialized] public GameModeData CurrentGameModeData;
-    public GameModeData GameModeDataNursery = new GameModeData();
-    public GameModeData GameModeDataEarth = new GameModeData();
-    public GameModeData GameModeDataWind = new GameModeData();
-    public GameModeData GameModeDataFire = new GameModeData();
-    public GameModeData GameModeDataStorm = new GameModeData();
-    public GameModeData GameModeDataHarmony = new GameModeData();
+    public GameModeData GameModeDataNursery = new ();
+    public GameModeData GameModeDataEarth = new ();
+    public GameModeData GameModeDataWind = new ();
+    public GameModeData GameModeDataFire = new ();
+    public GameModeData GameModeDataStorm = new ();
+    public GameModeData GameModeDataHarmony = new ();
 
     public List<Hero> Heroes = new ();
     public Hero SelectedHero;
 
     public int SpriteFlashParamId;
     public int SpriteFlashColorParamId;
-    public Rect ArenaBounds = new Rect();
+    public Rect ArenaBounds = new ();
     [NonSerialized] public float TextUnlockBasePos;
 
     static Dictionary<string, string> DebugValues = new ();
@@ -211,6 +209,15 @@ public class GameManager : MonoBehaviour
         PlayMenuSound();
         GameState = State.Intro_Unlocks;
         EnablePanel(PanelUnlocks, true);
+    }
+
+    public void OnButtonRefund()
+    {
+        PlayMenuSound();
+        SaveGame.Members.BoughtItems.Clear();
+        SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
+        SaveGame.Members.MoneySpentInShop = 0;
+        ShopItems.UpdateBoughtItems();
     }
 
     public void OnButtonShop()

@@ -83,7 +83,7 @@ public class UpgradeData
 
     public bool PaintballBought = true;
     public bool PaintballActiveInRound = true;
-    public float PaintballBaseRange = 2.0f;
+    public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
     public float PaintballBaseSlowMul = 0.8f; // hmm 0.8, check before changing
