@@ -225,16 +225,11 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        int idxClosest = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f, 5);
-                        if (idxClosest >= 0)
-                        {
-                            var closeEnemy = BlackboardScript.Enemies[idxClosest];
-                            p.Direction = (closeEnemy.transform.position - p.Position).normalized;
-                        }
-                        else
-                        {
-                            // Maintain direction
-                        }
+                        var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f);
+
+                        bool hasNearbyEnemy = closestEnemy != null;
+                        if (hasNearbyEnemy)
+                            p.Direction = (closestEnemy.transform.position - p.Position).normalized;
                     }
                     else
                     {
@@ -257,10 +252,10 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 else if (p.Type == ProjectileType.HarmsEnemies)
                 {
                     // Find enemies hit by projectile
-                    if (BlackboardScript.GetEnemies(p.Position, p.Radius, 1) > 0)
+                    if (BlackboardScript.GetEnemies(p.Position, p.Radius) > 0)
                     {
-                        int matchIdx = BlackboardScript.Matches[0].Idx;
-                        ActorBase enemy = BlackboardScript.Enemies[matchIdx];
+                        const int IdxFirst = 0;
+                        ActorBase enemy = BlackboardScript.EnemyOverlap[IdxFirst];
                         if (p.StickToTarget)
                         {
                             // Begin sticking to target

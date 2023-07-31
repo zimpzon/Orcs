@@ -17,8 +17,7 @@ public class WeaponUnarmed : WeaponBase
         int aliveCount = BlackboardScript.GetEnemies(pos, Radius);
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;
             dir /= distance;

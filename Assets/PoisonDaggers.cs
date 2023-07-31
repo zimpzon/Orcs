@@ -1,0 +1,78 @@
+using Assets.Script;
+using UnityEngine;
+
+public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
+{
+    public static PoisonDaggers Instance;
+
+    public Color Color;
+    ParticleSystem particles_;
+
+    private void Awake()
+    {
+        Instance = this;
+        particles_ = GetComponent<ParticleSystem>();
+    }
+
+    public void Disable()
+    {
+        enabled = false;
+    }
+
+    public void TryEnable()
+    {
+        if (PlayerUpgrades.Data.PaintballBought)
+        {
+            enabled = true;
+            SetNextUpdate();
+        }
+    }
+
+    void SetNextUpdate()
+    {
+        PlayerUpgrades.Data.Counters.PaintballTimer = 0;
+    }
+
+    void UpdatePaintball()
+    {
+        if (!PlayerUpgrades.Data.PaintballActiveInRound)
+            return;
+
+        PlayerUpgrades.Data.Counters.PaintballTimer += Time.deltaTime;
+
+        if (PlayerUpgrades.Data.Counters.PaintballTimer > PlayerUpgrades.Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
+        {
+            var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
+
+            Vector3 location = PositionUtility.GetPointInsideArena(0.9f, 0.9f);
+            float angleStep = 360 / PlayerUpgrades.Data.PaintballCount;
+            float angle = 0;
+            for (int i = 0; i < PlayerUpgrades.Data.PaintballCount; ++i)
+            {
+                var dir = Quaternion.Euler(0, 0, angle) * Vector2.up;
+                paintball.FireFromPoint(location, dir, GameManager.Instance.SortLayerTopEffects, out _);
+                angle += angleStep;
+            }
+
+            transform.position = location;
+            particles_.Emit(1);
+
+            float radius = PlayerUpgrades.Data.PaintballBaseRange * 0.75f;
+            float slowTime = PlayerUpgrades.Data.PaintballBaseDuration * PlayerUpgrades.Data.PaintballDurationMul;
+
+            int aliveCount = BlackboardScript.GetEnemies(location, radius);
+            for (int i = 0; i < aliveCount; ++i)
+            {
+                ActorBase enemy = BlackboardScript.EnemyOverlap[i];
+                enemy.OnPaintballHit(Color, slowTime);
+            }
+
+            SetNextUpdate();
+        }
+    }
+
+    void Update()
+    {
+        UpdatePaintball();
+    }
+}

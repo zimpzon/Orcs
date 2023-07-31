@@ -443,8 +443,5 @@ public class PlayerScript : MonoBehaviour
 
         CheckControls();
         UpdateOverheadText();
-
-        if (UpgradesActive && !isDead_)
-            _playerUpgrades.UpdateUpgrades();
     }
 }

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8110873291523481539}
   - component: {fileID: -4886777021025657628}
   - component: {fileID: 4470253746997890531}
-  - component: {fileID: -7997838977571149338}
   m_Layer: 12
   m_Name: OgreSmall
   m_TagString: Untagged
@@ -129,24 +128,3 @@ MonoBehaviour:
   XpValue: 1
   ActorType: 9
   BaseHp: 25
---- !u!50 &-7997838977571149338
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8110873291523481598}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7

@@ -5,7 +5,6 @@ public class UpgradeData
     public class CounterClass
     {
         public float PaintballTimer;
-        public int OnKillDropBombCurrentKillCount;
     }
 
     // global
@@ -84,13 +83,13 @@ public class UpgradeData
 
     public bool PaintballBought = true;
     public bool PaintballActiveInRound = true;
-    public float PaintballBaseRange = 3.0f;
+    public float PaintballBaseRange = 2.0f;
     public float PaintballRangeMul = 1.0f;
-    public float PaintballBaseSpeed = 6.0f;
-    public float PaintballBaseSlowMul = 0.8f;
+    public float PaintballBaseSpeed = 5.0f;
+    public float PaintballBaseSlowMul = 0.8f; // hmm 0.8, check before changing
     public float PaintballBaseDuration = 5.0f;
-    public float PaintballDurationMul = 0.50f;
-    public float PaintballCd = 1.5f;
+    public float PaintballDurationMul = 1.0f;
+    public float PaintballCd = 1.0f;
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 12;
     public float PaintballBaseDamagePerSec = 30.0f;
@@ -120,33 +119,5 @@ public class PlayerUpgrades : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
-
-    void UpdatePaintball()
-    {
-        if (!Data.PaintballActiveInRound)
-            return;
-
-        Data.Counters.PaintballTimer += Time.deltaTime;
-        if (Data.Counters.PaintballTimer > Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
-        {
-            var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);
-
-            Vector3 location = PositionUtility.GetPointInsideArena(0.9f, 0.9f);
-            float angleStep = 360 / Data.PaintballCount;
-            float angle = 0;
-            for (int i = 0; i < Data.PaintballCount; ++i)
-            {
-                var dir = Quaternion.Euler(0, 0, angle) * Vector2.up;
-                paintball.FireFromPoint(location, dir, GameManager.Instance.SortLayerTopEffects, out _);
-                angle += angleStep;
-            }
-            Data.Counters.PaintballTimer = 0;
-        }
-    }
-
-    public void UpdateUpgrades()
-    {
-        UpdatePaintball();
     }
 }

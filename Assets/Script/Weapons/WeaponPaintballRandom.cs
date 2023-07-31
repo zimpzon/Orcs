@@ -18,7 +18,7 @@ public class WeaponPaintballRandom : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        Color color = new Color(0.4f, 0.8f, 0.3f);
+        Color color = PoisonDaggers.Instance.Color;
 
         GameManager.Instance.MakeFlash(point);
         AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.1f);

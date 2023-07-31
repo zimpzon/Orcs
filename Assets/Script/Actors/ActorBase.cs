@@ -147,7 +147,6 @@ public class ActorBase : MonoBehaviour
 
         GameMode = GameManager.Instance.CurrentGameModeData;
         PreEnable();
-        GameManager.Instance.RegisterEnemy(this);
 
         if (UseSpawnParticles)
         {
@@ -251,6 +250,9 @@ public class ActorBase : MonoBehaviour
 
     public bool OnFreeze(Color color, float freezeTime)
     {
+        if (!CanBeFrozen)
+            return false;
+
         frozenColor_ = color;
         isFrozen_ = true;
         frozenEnd_ = Time.time + freezeTime;
@@ -259,6 +261,9 @@ public class ActorBase : MonoBehaviour
 
     public bool OnPaintballHit(Color color, float paintTime)
     {
+        if (!CanBePoisened)
+            return false;
+
         isPainted_ = true;
         nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
         paintColor_ = color;
@@ -468,8 +473,7 @@ public class ActorBase : MonoBehaviour
         bool isFirstHit = true;
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             if (enemy != this)
             {
                 enemy.OnLivingBombHit(livingBombDamage_ * 0.9f, isFirstHit);

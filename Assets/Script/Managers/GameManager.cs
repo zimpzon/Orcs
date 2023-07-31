@@ -781,14 +781,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RegisterEnemy(ActorBase enemy)
-    {
-        BlackboardScript.Enemies.Add(enemy);
-    }
-
     public void RegisterEnemyDied(ActorBase enemy)
     {
-        BlackboardScript.Enemies.Remove(enemy);
         BlackboardScript.DeadEnemies.Add(enemy);
     }
 
@@ -894,11 +888,8 @@ public class GameManager : MonoBehaviour
 
     void PruneDeadEnemies()
     {
-        for (int i = BlackboardScript.Enemies.Count - 1; i >= 0; --i)
-        {
-            if (BlackboardScript.Enemies[i].Hp <= 0)
-                RegisterEnemyDied(BlackboardScript.Enemies[i]);
-        }
+        for (int i = BlackboardScript.DeadEnemies.Count - 1; i >= 0; --i)
+            RegisterEnemyDied(BlackboardScript.DeadEnemies[i]);
     }
 
     void OnGUI()

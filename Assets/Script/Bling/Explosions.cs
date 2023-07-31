@@ -17,8 +17,7 @@ public static class Explosions
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
 
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;
@@ -42,8 +41,7 @@ public static class Explosions
         int deadCount = BlackboardScript.GetDeadEnemies(pos, radius);
         for (int i = 0; i < deadCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.DeadEnemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             enemy.AddForce((enemy.transform.position - pos) * 0.25f);
             //            enemy.Explode(2.0f + Random.value * 2);
         }
@@ -51,8 +49,7 @@ public static class Explosions
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             enemy.ApplyDamage(damage, enemy.transform.position - pos, forceModifier: 1.0f);
         }
 

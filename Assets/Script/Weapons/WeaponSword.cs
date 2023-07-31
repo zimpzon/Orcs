@@ -16,8 +16,7 @@ public class WeaponSword : WeaponBase
         AudioManager.Instance.PlayClipWithRandomPitch(clip, volumeScale: 0.5f);
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             enemy.SetSlowmotion();
             float force = 30.0f * PlayerUpgrades.Data.OrcJediKnockBackForceMul;
             enemy.ApplyDamage(damage, enemy.transform.position - where, force);

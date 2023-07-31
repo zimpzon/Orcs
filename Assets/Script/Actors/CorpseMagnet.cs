@@ -41,12 +41,11 @@ class CorpseMagnet : MonoBehaviour
 
     private void DoScan()
     {
-        count_ = BlackboardScript.GetDeadEnemies(trans_.position, Radius, 10);
+        count_ = BlackboardScript.GetDeadEnemies(trans_.position, Radius);
         corpses_.Clear();
         for (int i = 0; i < count_; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            corpses_.Add(BlackboardScript.DeadEnemies[idx]);
+            corpses_.Add(BlackboardScript.EnemyOverlap[i]);
         }
     }
 }

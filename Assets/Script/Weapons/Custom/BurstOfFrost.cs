@@ -88,8 +88,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)
         {
-            int idx = BlackboardScript.Matches[i].Idx;
-            ActorBase enemy = BlackboardScript.Enemies[idx];
+            ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             if (enemy.IsBoss)
                 continue;
 
