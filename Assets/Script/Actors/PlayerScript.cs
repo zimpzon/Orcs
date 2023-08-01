@@ -206,7 +206,7 @@ public class PlayerScript : MonoBehaviour
         if (isDead_)
             return;
 
-        if (Time.time < immunityEnd_)
+        if (GameManager.Instance.GameTime < immunityEnd_)
             return;
 
         damage = damage * PlayerUpgrades.Data.HealthDefenseMul;
@@ -227,7 +227,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            immunityEnd_ = Time.time + PlayerUpgrades.Data.OnDamageTimeImmune;
+            immunityEnd_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.OnDamageTimeImmune;
             SetFlash(true);
         }
     }
@@ -238,7 +238,7 @@ public class PlayerScript : MonoBehaviour
         {
             material_.SetFloat(flashParamId_, 1.0f);
             material_.SetColor(flashColorParamId_, new Color(1.0f, 0.6f, 0.6f));
-            flashEndTime_ = Time.time + PlayerUpgrades.Data.OnDamageTimeImmune;
+            flashEndTime_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.OnDamageTimeImmune;
         }
         else if (flashActive_)
         {
@@ -407,25 +407,30 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.PauseGameTime)
             return;
 
-        if (Time.time > lastRegenTick_ + 1.0f)
+        if (GameManager.Instance.GameTime > lastRegenTick_ + 1.0f)
         {
-            lastRegenTick_ = Time.time;
+            lastRegenTick_ = GameManager.Instance.GameTime;
 
             if (Hp >= MaxHp)
                 return;
 
-            int newHp = (int)(Hp + PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd);
-            int change = newHp - (int)(Hp + 0.5f);
+            float newHp = Hp + PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd;
+            int visibleOld = (int)(Hp + 0.5f);
+            int visibleNew = (int)(newHp + 0.5f);
+            int visibleChange = visibleNew - visibleOld;
             Hp = newHp;
 
-            if (change > 0)
-                FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{change}", new Color(0, 1, 0, 0.2f), speed: 0.75f, timeToLive: 0.5f);
+            if (visibleChange > 0)
+            {
+                const float a = 0.2f;
+                FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{visibleChange}", new Color(0, 1, 0, a), speed: 0.75f, timeToLive: 0.5f);
+            }
 
             if (Hp > MaxHp)
                 Hp = MaxHp;
         }
 
-        if (flashActive_ && Time.time > flashEndTime_)
+        if (flashActive_ && GameManager.Instance.GameTime > flashEndTime_)
             SetFlash(false);
 
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;

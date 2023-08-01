@@ -26,7 +26,7 @@ public class UpgradeData
     // player
     public int BaseHealth = 100;
     public float HealthMul = 1.0f;
-    public float BaseHealthRegenSec = 0.1f;
+    public float BaseHealthRegenSec = 0.2f;
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
@@ -86,7 +86,7 @@ public class UpgradeData
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
-    public float PaintballBaseSlowMul = 0.8f; // hmm 0.8, check before changing
+    public float PaintballBaseSlowMul = 0.9f; // slow amount at mass = 1
     public float PaintballBaseDuration = 5.0f;
     public float PaintballDurationMul = 1.0f;
     public float PaintballCd = 1.0f;

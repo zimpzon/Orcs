@@ -6,8 +6,8 @@ NEXT
 current weapons
   burst of frost
   jar of poison
-  swirling swords
-  (sawblades) saw of sacrilege
+  swirling swords (SUCK in enemies? need cool thing)
+  (sawblades) saw of sacrilege (of sadness (for your enemy))
 
 BUGS
   dying WITHOUT seing how!
@@ -17,6 +17,7 @@ BUGS
   reset of weapons fokked up
 
 SMART DESIGN
+ PITCH OF pickup xp increases
  OH YEAH! level selection could be picking a duck in the start.
   UPGRADES (selected for v1)
     WEAPONS muct be unlocked level 1 in shop. Can buy many level but very expensive.

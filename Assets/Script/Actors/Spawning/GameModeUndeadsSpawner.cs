@@ -27,7 +27,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
                 endTime: new TimeSpan(0, 3, 0),
-                maintainCount: 10,
+                maintainCount: 20,
                 maintainCountIncreasePerSec: 0.25f,
                 spawnCountPerTick: 5,
                 timeBetweenTicks: 1.0f,
@@ -42,12 +42,26 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 startTime: new TimeSpan(0, 0, 20),
                 //startTime: new TimeSpan(0, 1, 30),
                 endTime: new TimeSpan(0, 5, 0),
-                maintainCount: 50,
-                maintainCountIncreasePerSec: 0.1f,
-                spawnCountPerTick: 4,
+                maintainCount: 500,
+                maintainCountIncreasePerSec: 10.0f,
+                spawnCountPerTick: 20,
                 timeBetweenTicks: 0.5f,
                 outsideScreen: true,
-                PositionUtility.SpawnDirection.TopOrBottom)
+                PositionUtility.SpawnDirection.LeftOrRight)
+            );
+
+        StartCoroutine(
+            PositionUtility.SpawnAndMaintain(
+                ActorTypeEnum.OgreBandana,
+                startTime: new TimeSpan(0, 0, 30),
+                //startTime: new TimeSpan(0, 1, 30),
+                endTime: new TimeSpan(0, 5, 0),
+                maintainCount: 100,
+                maintainCountIncreasePerSec: 1.0f,
+                spawnCountPerTick: 10,
+                timeBetweenTicks: 0.5f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.LeftOrRight)
             );
 
         // spam for 1 min

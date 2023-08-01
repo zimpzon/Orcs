@@ -6,7 +6,7 @@ using UnityEngine;
 
 class CoResult<T>
 {
-    public T Value = default(T);
+    public T Value = default;
 }
 
 public static class PositionUtility
@@ -56,7 +56,7 @@ public static class PositionUtility
         return point;
     }
 
-    public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter)
+    public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter = 1.0f)
     {
         if (dir == SpawnDirection.Any)
         {
@@ -146,7 +146,7 @@ public static class PositionUtility
                     float offset = 1.0f;
                     Vector3 pos;
                     if (outsideScreen)
-                        pos = GetPointOutsideScreen(dir, offset, UnityEngine.Random.value * 0.5f);
+                        pos = GetPointOutsideScreen(dir, offset);
                     else
                         pos = GetPointInsideArena(1.0f, 1.0f);
 

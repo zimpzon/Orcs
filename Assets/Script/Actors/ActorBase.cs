@@ -13,6 +13,9 @@ public enum ActorTypeEnum
 
 public class ActorBase : MonoBehaviour
 {
+    const float IgnoreCrowdsWhenCloseToPlayer = 3.0f;
+    const float PaintBallTickTime = 1.0f;
+
     public Sprite[] Animations;
     public bool CanBeFrozen = true;
     public bool CanBePoisened = true;
@@ -26,8 +29,6 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public float TimeBorn;
     [System.NonSerialized] public float TimeDied;
     [System.NonSerialized] public float Hp = 50;
-
-    const float PaintBallTickTime = 1.0f;
 
     public static void ResetClosestEnemy()
     {
@@ -66,6 +67,7 @@ public class ActorBase : MonoBehaviour
     protected int flashColorParamId_;
     protected float flashEndTime_;
     protected float nextCheckForCrowded_;
+    protected float distanceToPlayer_;
 
     protected virtual void PreEnable() { }
     protected virtual void PostEnable() { }
@@ -96,6 +98,7 @@ public class ActorBase : MonoBehaviour
     {
         StopAllCoroutines();
         Hp = BaseHp;
+        distanceToPlayer_ = float.MaxValue;
         transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         IsCorpse = false;
         IsDead = false;
@@ -218,7 +221,7 @@ public class ActorBase : MonoBehaviour
         {
             // paintball slow is proportional to mass
             float slowEffect = Mass / 5.0f * PlayerUpgrades.Data.PaintballBaseSlowMul;
-            speed *= Mathf.Clamp(slowEffect, 0.25f, 0.9f);
+            speed *= Mathf.Clamp(slowEffect, 0.6f, 0.9f);
         }
 
         position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
@@ -234,12 +237,16 @@ public class ActorBase : MonoBehaviour
         if (!AvoidCrowds || Time.time < nextCheckForCrowded_)
             return;
 
+        // if distance to player is small ignore crowd rules and go for it!
+        if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer)
+            return;
+
         int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
         if (crowdCount > 3)
         {
             if (Random.value > 0.25f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.8f;
+                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.2f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
@@ -265,9 +272,13 @@ public class ActorBase : MonoBehaviour
             return false;
 
         isPainted_ = true;
-        nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
+
+        // add a little rnd so aoe poisened enemies don't look so synchronized
+        float rnd = Random.value * 0.3f;
+
+        nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime + rnd;
         paintColor_ = color;
-        paintEnd_ = GameManager.Instance.GameTime + paintTime;
+        paintEnd_ = GameManager.Instance.GameTime + paintTime + rnd;
         return true;
     }
 
@@ -328,11 +339,11 @@ public class ActorBase : MonoBehaviour
 
             if (!IsDead)
             {
-                float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
-                if (distanceToPlayer < PlayerDistanceToClosestEnemy)
+                distanceToPlayer_ = BlackboardScript.DistanceToPlayer(position_);
+                if (distanceToPlayer_ < PlayerDistanceToClosestEnemy)
                 {
                     PlayerClosestEnemy = this;
-                    PlayerDistanceToClosestEnemy = distanceToPlayer;
+                    PlayerDistanceToClosestEnemy = distanceToPlayer_;
                 }
             }
         }
@@ -546,6 +557,7 @@ public class ActorBase : MonoBehaviour
             yield return null;
         }
 
+        isPainted_ = false;
         IsCorpse = true;
 
         StartCoroutine(Decay(DecayTime));
