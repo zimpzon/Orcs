@@ -145,6 +145,7 @@ public static class ShopItems
             script.Description.text = item.GetDescription(level);
             script.Level.text = item.GetLevelText(level);
             script.ButtonText.text = item.GetButtonText(level);
+            script.BuyButton.enabled = !disable;
             script.SetIsMaxed(isMaxLevel);
         }
     }

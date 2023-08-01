@@ -220,6 +220,21 @@ public class GameManager : MonoBehaviour
         ShopItems.UpdateBoughtItems();
     }
 
+    public void OnButtonResetProgress()
+    {
+        PlayMenuSound();
+        float VolumeMusic = SaveGame.Members.VolumeMusic;
+        float VolumeSfx = SaveGame.Members.VolumeSfx;
+
+        SaveGame.Members = new SaveGameMembers();
+        SaveGame.Members.VolumeMusic = VolumeMusic;
+        SaveGame.Members.VolumeSfx = VolumeSfx;
+
+        SaveGame.Save();
+        ShopItems.UpdateBoughtItems();
+        UpdateMoneyLabels();
+    }
+
     public void OnButtonShop()
     {
         PlayMenuSound();
