@@ -74,7 +74,7 @@ public static class PositionUtility
 
         Rect scr = AspectUtility.screenRelativeRect;
         float x = 0.0f; float y = 0.0f; float offsetX = 0.0f; float offsetY = 0.0f;
-        float rnd = UnityEngine.Random.Range(-1.0f, 1.0f) * maxDistFromCenter;
+        float rnd = UnityEngine.Random.Range(-0.55f, 0.55f) * maxDistFromCenter;
         switch (dir)
         {
             case SpawnDirection.Top:     x = 0.5f + rnd; y = 1.0f; offsetY =  offset; break;
