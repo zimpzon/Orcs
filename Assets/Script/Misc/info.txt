@@ -5,8 +5,8 @@ NEXT
 
 current weapons
   burst of frost
-  jar of poison
-  swirling swords (SUCK in enemies? need cool thing)
+  poison, axe?
+  swirling swords OR shields that clears a path? small one pushes in, large ones out? (SUCK in enemies? need cool thing, move around in some cool way?)
   (sawblades) saw of sacrilege (of sadness (for your enemy))
 
 BUGS
@@ -17,15 +17,11 @@ BUGS
   reset of weapons fokked up
 
 SMART DESIGN
+ the most fun so far is moving between spread out enemies and escaping. Much fun!
+   can this be expanded upon? ablities that carves paths?
  PITCH OF pickup xp increases
- OH YEAH! level selection could be picking a duck in the start.
-  UPGRADES (selected for v1)
-    WEAPONS muct be unlocked level 1 in shop. Can buy many level but very expensive.
-      after unlock WEAPON upgrades will also be choices (limited).
-    a lot of levelling of standard upgrades.
-    Bosses cycle through gold, weapon, rambo, starting at a random place.
+ Bosses could cycle through gold, weapon, rambo, starting at a random place.
  VAMPIRE SURVIVORS use simple choices and details on mouseover. And buy button at mouseover menu.
- enemies take damage when touching player?
  really need current and new value for choices
  friendly is blue'ish, deadly is red'ish.
  synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)

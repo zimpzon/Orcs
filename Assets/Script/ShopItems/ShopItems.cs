@@ -138,15 +138,15 @@ public static class ShopItems
             int price = item.GetPrice(bought.Level);
             bool canAfford = price <= SaveGame.Members.Money;
             bool isMaxLevel = bought.Level >= item.MaxLevel;
-            bool disable = !canAfford || isMaxLevel;
+            bool disableBuyButton = !canAfford || isMaxLevel;
 
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
             script.Description.text = item.GetDescription(level);
             script.Level.text = item.GetLevelText(level);
             script.ButtonText.text = item.GetButtonText(level);
-            script.BuyButton.enabled = !disable;
             script.SetIsMaxed(isMaxLevel);
+            script.SetDisableButton(disableBuyButton);
         }
     }
 

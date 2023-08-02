@@ -218,6 +218,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
         SaveGame.Members.MoneySpentInShop = 0;
         ShopItems.UpdateBoughtItems();
+        UpdateMoneyLabels();
     }
 
     public void OnButtonResetProgress()

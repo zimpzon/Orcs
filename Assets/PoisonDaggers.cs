@@ -40,6 +40,8 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
 
         PlayerUpgrades.Data.Counters.PaintballTimer += Time.deltaTime;
 
+        Debug.Log(PlayerUpgrades.Data.Counters.PaintballTimer);
+
         if (PlayerUpgrades.Data.Counters.PaintballTimer > PlayerUpgrades.Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
         {
             var paintball = WeaponBase.GetWeapon(WeaponType.PaintBallRandom);

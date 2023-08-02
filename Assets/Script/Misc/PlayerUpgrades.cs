@@ -45,8 +45,8 @@ public class UpgradeData
     public float MagicMissileBaseBullets = 3;
     public float MagicMissileBulletsMul = 1.0f;
 
-    public bool MeleeThrowBought = true;
-    public bool MeleeThrowEnabledInRound = true;
+    public bool MeleeThrowBought = false;
+    public bool MeleeThrowEnabledInRound = false;
     public float MeleeThrowBasePower = 8.0f;
     public float MeleeThrowDrag = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
@@ -62,7 +62,7 @@ public class UpgradeData
     public bool MeleeThrowDownLeft = true;
     public bool MeleeThrowDownRight = true;
 
-    public bool SawBladeBought = true;
+    public bool SawBladeBought = false;
     public bool SawBladeEnabledInRound = false;
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
@@ -70,7 +70,7 @@ public class UpgradeData
     public float SawBladeBaseCd = 2.0f;
     public float SawBladeCdMul = 1.0f;
 
-    public bool BurstOfFrostBought = true;
+    public bool BurstOfFrostBought = false;
     public bool BurstOfFrostEnabledInRound = false;
     public float BurstOfFrostBaseCd = 1.0f;
     public float BurstOfFrostCdMul = 1.0f;
@@ -81,8 +81,8 @@ public class UpgradeData
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;
 
-    public bool PaintballBought = true;
-    public bool PaintballActiveInRound = true;
+    public bool PaintballBought = false;
+    public bool PaintballActiveInRound = false;
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
