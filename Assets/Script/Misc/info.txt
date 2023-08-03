@@ -18,9 +18,8 @@ BUGS
   POISON completely skips some cycles, others has 1 dagger or so. Cache empty??
   dying WITHOUT seing how!
   knife count seems wrong when adding % (use non-%?)
-  health regen not ticking?
   level up pause while an enemy is flying dead keeps spraying blood.
-  reset of weapons fokked up
+  reset of weapons fokked up?
 
 SMART DESIGN
   DECREASE rewards for repeated choices instead of increase! Encourages diversification!
@@ -39,7 +38,6 @@ BRAINSTORM
  +experience upgrade
 LOSE ALL GOLD BUT PERMANENTLY +dam and +gold (buy shop item) (MIGHT ALSO work just with a high price, easier to implement but u dont get the "feeling")
   background in title screen could have moving enemies.
-  bullets dropped on ground when moving, arming time, then fly. could be cool to surround enemies
   can "ascending" like Cookie Clicker be done? Possibly with new chars? reset all progress and get double gold and xp? could be greyed out button with explanation.
   enemies that follows paths and just shoots?
   shield/sword enemies loses items which flies away, and continues as plain enemies.
