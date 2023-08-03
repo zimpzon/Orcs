@@ -14963,7 +14963,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpritePrefab: {fileID: 1814539079731630, guid: ada414cff5cafd04fb3c0d28494b48a2,
     type: 3}
-  SpriteData: {fileID: 11400000, guid: 34a242979157d2a4897257e8c7673f5b, type: 2}
 --- !u!1 &642360715
 GameObject:
   m_ObjectHideFlags: 0
@@ -48148,7 +48147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84dfea8cea11fc54caaa4e32dda1491c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Color: {r: 1, g: 1, b: 1, a: 1}
+  Color: {r: 0.63836473, g: 0.8440651, b: 1, a: 1}
 --- !u!1 &1856907027
 GameObject:
   m_ObjectHideFlags: 0

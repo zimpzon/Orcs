@@ -65,7 +65,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         StartCoroutine(
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreBandana,
-                startTime: new TimeSpan(0, 0, 30),
+                startTime: new TimeSpan(0, 0, 2),
                 //startTime: new TimeSpan(0, 1, 30),
                 endTime: new TimeSpan(0, 5, 0),
                 maintainCount: 10,

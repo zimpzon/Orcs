@@ -23,7 +23,7 @@ BUGS
   reset of weapons fokked up
 
 SMART DESIGN
-  AUTO GEN levels. Seed + mobtypes, etc. Then Set up the timeline until EXIT opens!
+  DECREASE rewards for repeated choices instead of increase! Encourages diversification!
  the most fun so far is moving between spread out enemies and escaping. Much fun!
    can this be expanded upon? ablities that carves paths?
  PITCH OF pickup xp increases
@@ -34,6 +34,7 @@ SMART DESIGN
  synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
 BRAINSTORM
+  AUTO GEN levels. Seed + mobtypes, etc. Then Set up the timeline until EXIT opens!
  sword explodes at furthest point
  +experience upgrade
 LOSE ALL GOLD BUT PERMANENTLY +dam and +gold (buy shop item) (MIGHT ALSO work just with a high price, easier to implement but u dont get the "feeling")

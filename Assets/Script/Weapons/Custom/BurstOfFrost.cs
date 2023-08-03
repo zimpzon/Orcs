@@ -59,7 +59,8 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             burstStartTime_ = GameManager.Instance.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
             renderer_.transform.localScale = Vector2.one * scale * 1.5f;
-            snowflakes_.Emit(10);
+            GameManager.Instance.MakeFlash(transform.position, 3.0f);
+            snowflakes_.Emit(20);
         }
 
         if (isBursting_)

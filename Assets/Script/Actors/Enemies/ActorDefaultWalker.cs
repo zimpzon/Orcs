@@ -8,9 +8,13 @@ public class ActorDefaultWalker : MonoBehaviour
     Vector3 target_;
     ActorBase actorBase_;
 
-    void Start()
+    void Awake()
     {
         actorBase_ = GetComponent<ActorBase>();
+    }
+
+    void OnEnable()
+    {
         target_ = GetNewTarget();
         StartCoroutine(Think());
     }
@@ -18,7 +22,9 @@ public class ActorDefaultWalker : MonoBehaviour
     protected virtual IEnumerator Think()
     {
         while (actorBase_.IsSpawning)
+        {
             yield return null;
+        }
 
         while (true)
         {
