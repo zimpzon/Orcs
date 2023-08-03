@@ -27,7 +27,7 @@ public static class ShopItemsMoneyXp
                 ItemType = ShopItemType.EnemyMoneyDrop,
                 Title = "Pickpocket",
                 Description = "Killed enemies have <color=#00ff00>+#VALUE%</color> chance to drop <color=#00ff00>1</color>-<color=#00ff00>3</color> gold",
-                BasePrice = 25,
+                BasePrice = 20,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 10,
                 Value = 2,

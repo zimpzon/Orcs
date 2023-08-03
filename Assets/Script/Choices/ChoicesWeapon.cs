@@ -4,7 +4,7 @@ public static class ChoicesWeapon
 {
     public static List<Choice> GetWeaponChoices()
     {
-        const string Name = "Knife of Nobility";
+        const string Name = "Your trusty knife";
 
         return new List<Choice>
         {
@@ -122,31 +122,31 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, salvo (1)",
-                Description = "<color=#00ff00>+30%</color> chance for extra knifes",
+                Description = "<color=#00ff00>+0.4</color> more knives per round",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.MagicMissileBulletsMul += 0.3f;
+                    PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, salvo (2)",
-                    Description = "<color=#00ff00>+30%</color> chance for extra knifes",
+                    Description = "<color=#00ff00>+0.4%</color> more knives per round",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileBulletsMul += 0.3f;
+                        PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, salvo (3)",
-                        Description = "<color=#00ff00>+30%</color> chance for extra knifes",
+                        Description = "<color=#00ff00>+0.4%</color> more knives per round",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileBulletsMul += 0.3f;
+                            PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, salvo (4)",
-                            Description = "<color=#00ff00>+40%</color> chance for extra knifes",
+                            Description = "<color=#00ff00>+0.4%</color> more knives per round",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;

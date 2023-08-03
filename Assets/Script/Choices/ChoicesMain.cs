@@ -39,9 +39,9 @@ public static class UpgradeChoices
         CurrentChoices.AddRange(ChoicesWeapon.GetWeaponChoices());
         CurrentChoices.AddRange(ChoicesPlayer.GetPlayerChoices());
         CurrentChoices.AddRange(ChoicesBabyOrc.GetBabyOrcChoices());
+        CurrentChoices.AddRange(ChoicesSawblade.GetSawbladeChoices(DelayedAdd));
         CurrentChoices.AddRange(ChoicesPoison.GetPoisonChoices(DelayedAdd));
         CurrentChoices.AddRange(ChoicesBurstOfFrost.GetBurstOfFrostChoices(DelayedAdd));
-        CurrentChoices.AddRange(ChoicesSawblade.GetSawbladeChoices(DelayedAdd));
         CurrentChoices.AddRange(ChoicesMeleeThrow.GetMeleeThrowChoices(DelayedAdd));
     }
 }

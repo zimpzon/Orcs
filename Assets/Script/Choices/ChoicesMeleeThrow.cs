@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class ChoicesMeleeThrow
 {
     static Action<List<Choice>> delayedAdd_;
-    public const string Name = "Swirling Swords";
+    public const string Name = "Darkness";
 
     public static List<Choice> GetMeleeThrowChoices(Action<List<Choice>> delayedAdd)
     {
@@ -20,7 +20,7 @@ public static class ChoicesMeleeThrow
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Rotating swords that return to their origin",
+                    Description = "Black magic that sucks in enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MeleeThrowEnabledInRound = true;
@@ -40,31 +40,8 @@ public static class ChoicesMeleeThrow
         {
             new Choice
             {
-                Title = $"{Name}, Vertical",
-                Description = "Add <color=#00ff00>2</color> vertical swords doing <color=#00ff00>50%</color> damage",
-                Apply = () =>
-                {
-                    PlayerUpgrades.Data.MeleeThrowUp = true;
-                    PlayerUpgrades.Data.MeleeThrowDown = true;
-                },
-                NextLevel = new Choice
-                {
-                    Title = $"{Name}, Diagonal",
-                    Description = "Add <color=#00ff00>4</color> diagonal swords doing <color=#00ff00>25%</color> damage",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.MeleeThrowUpLeft = true;
-                        PlayerUpgrades.Data.MeleeThrowUpRight = true;
-                        PlayerUpgrades.Data.MeleeThrowDownLeft = true;
-                        PlayerUpgrades.Data.MeleeThrowDownRight = true;
-                    },
-                }
-            },
-
-            new Choice
-            {
                 Title = $"{Name}, Speed (1)",
-                Description = "<color=#00ff00>-10%</color> time between swords",
+                Description = "<color=#00ff00>-10%</color> shorter cooldown",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MeleeThrowCdMul -= 0.1f;
@@ -72,7 +49,7 @@ public static class ChoicesMeleeThrow
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, Speed (2)",
-                    Description = "<color=#00ff00>-10%</color> time between swords",
+                    Description = "<color=#00ff00>-10%</color> shorter cooldown",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MeleeThrowCdMul -= 0.1f;
@@ -80,7 +57,7 @@ public static class ChoicesMeleeThrow
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, Speed (3)",
-                        Description = "<color=#00ff00>-15%</color> time between swords",
+                        Description = "<color=#00ff00>-15%</color> shorter cooldown",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MeleeThrowCdMul -= 0.15f;

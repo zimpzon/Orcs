@@ -8,10 +8,23 @@ public static class ShopItemsUnlock
         {
             new ShopItem
             {
+                ItemType = ShopItemType.Sawblade,
+                Title = ChoicesSawblade.Name,
+                Description = $"You may now discover {ChoicesSawblade.Name} on your journey",
+                BasePrice = 50,
+                MaxLevel = 1,
+                Apply = (BoughtItem bought) =>
+                {
+                    PlayerUpgrades.Data.SawBladeBought = true;
+                }
+            },
+
+            new ShopItem
+            {
                 ItemType = ShopItemType.UnlockPoisonDagger,
                 Title = ChoicesPoison.Name,
                 Description = $"You may now discover {ChoicesPoison.Name} on your journey",
-                BasePrice = 25,
+                BasePrice = 200,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
@@ -24,7 +37,7 @@ public static class ShopItemsUnlock
                 ItemType = ShopItemType.BurstOfFrost,
                 Title = ChoicesBurstOfFrost.Name,
                 Description = $"You may now discover {ChoicesBurstOfFrost.Name} on your journey",
-                BasePrice = 25,
+                BasePrice = 200,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
@@ -34,23 +47,10 @@ public static class ShopItemsUnlock
 
             new ShopItem
             {
-                ItemType = ShopItemType.Sawblade,
-                Title = ChoicesSawblade.Name,
-                Description = $"You may now discover {ChoicesSawblade.Name} on your journey",
-                BasePrice = 25,
-                MaxLevel = 1,
-                Apply = (BoughtItem bought) =>
-                {
-                    PlayerUpgrades.Data.SawBladeBought = true;
-                }
-            },
-
-            new ShopItem
-            {
                 ItemType = ShopItemType.MeleeThrow,
                 Title = ChoicesMeleeThrow.Name,
                 Description = $"You may now discover {ChoicesMeleeThrow.Name} on your journey",
-                BasePrice = 25,
+                BasePrice = 200,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {

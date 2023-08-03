@@ -30,10 +30,7 @@ public class GameManager : MonoBehaviour
     public Text TextTime;
     public Text TextRoundKills;
     public Text TextRoundGold;
-    public Text TextGameOverOrcsSaved;
-    public Text TextGameOverOrcsSavedBest;
     public Text TextLocked;
-    public Text TextRoundEndUnlocks;
     public Text TextUser;
     public Text TextShopMoney;
     public TextMeshProUGUI TextColWepNames;
@@ -469,12 +466,7 @@ public class GameManager : MonoBehaviour
         int roundSeconds = Mathf.RoundToInt(roundTime);
         //StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
 
-        int bestScore = SaveGame.Members.GetCounter(GameCounter.Max_Score_Any);
-        TextGameOverOrcsSaved.text = string.Format("{0}", SaveGame.RoundScore);
-        TextGameOverOrcsSavedBest.text = string.Format("{0}", bestScore);
-
         CanvasGameOverDefault.enabled = true;
-        TextRoundEndUnlocks.enabled = RoundUnlockCount > 0;
 
         SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
@@ -917,7 +909,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

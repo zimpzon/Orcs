@@ -4,15 +4,15 @@ public static class ShopItemsWeapons
 {
     public static List<ShopItem> GetWeaponItems()
     {
-        const string Name = "Knife of Nobility";
+        const string Name = "Your trusty knife";
         return new List<ShopItem>
         {
             new ShopItem
             {
                 ItemType = ShopItemType.WeaponRange,
                 Title = $"{Name}, Range",
-                Description = $"Increase range of your {Name} by <color=#00ff00>+#VALUE%</color> per rank",
-                BasePrice = 250,
+                Description = $"Increase range of {Name} by <color=#00ff00>+#VALUE%</color> per rank",
+                BasePrice = 25,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,
                 Value = 10,
@@ -27,8 +27,8 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.WeaponCd,
                 Title = $"{Name}, Speed",
-                Description = $"Wait <color=#00ff00>#VALUE%</color> less time before next ${Name}",
-                BasePrice = 500,
+                Description = $"<color=#00ff00>#VALUE%</color> less time between attacks",
+                BasePrice = 50,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,
                 Value = 8,
@@ -43,11 +43,11 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.MachinegunBulletsPerRound,
                 Title = $"{Name}, Salvo",
-                Description = "Increase primary weapon bullets per round by <color=#00ff00>+#VALUE</color> per rank.",
-                BasePrice = 250,
+                Description = "<color=#00ff00>+#VALUE</color> more knives per rank.",
+                BasePrice = 35,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,
-                Value = 1,
+                Value = 0.5f,
                 ValueScale = 1,
                 Apply = (bought ) =>
                 {

@@ -128,7 +128,7 @@ MonoBehaviour:
   Mass: 1
   XpValue: 1
   ActorType: 9
-  BaseHp: 200
+  BaseHp: 50
 --- !u!114 &8450246416056095144
 MonoBehaviour:
   m_ObjectHideFlags: 0

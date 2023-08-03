@@ -20,7 +20,7 @@ public static class ChoicesPoison
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Dipped in poison, slows and damages enemies",
+                    Description = "Poisons enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballActiveInRound = true;
@@ -113,34 +113,34 @@ public static class ChoicesPoison
             new Choice
             {
                 Title = $"{Name}, amount (1)",
-                Description = "<color=#00ff00>+1</color> knife thrown",
+                Description = "<color=#00ff00>+4</color> knives thrown",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PaintballCount += 1;
+                    PlayerUpgrades.Data.PaintballCount += 4;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, amount (2)",
-                    Description = "<color=#00ff00>+1</color> knife thrown",
+                    Description = "<color=#00ff00>+4</color> knives thrown",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.PaintballCount += 1;
+                        PlayerUpgrades.Data.PaintballCount += 4;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, amount (3)",
-                        Description = "<color=#00ff00>+2</color> knives thrown",
+                        Description = "<color=#00ff00>+4</color> knives thrown",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.PaintballCount += 2;
+                            PlayerUpgrades.Data.PaintballCount += 4;
                         },
                         NextLevel = new Choice
                         {
-                            Title = $"{Name}, amount (2)",
-                            Description = "<color=#00ff00>+2</color> knives thrown",
+                            Title = $"{Name}, amount (4)",
+                            Description = "<color=#00ff00>+4</color> knives thrown",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.PaintballCount += 2;
+                                PlayerUpgrades.Data.PaintballCount += 4;
                             },
                         }
                     }

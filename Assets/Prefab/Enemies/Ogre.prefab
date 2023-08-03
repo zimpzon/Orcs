@@ -137,7 +137,7 @@ MonoBehaviour:
   Speed: 1
   AvoidCrowds: 1
   IsBoss: 0
-  Mass: 1
-  XpValue: 1
+  Mass: 2
+  XpValue: 2
   ActorType: 2
   BaseHp: 100

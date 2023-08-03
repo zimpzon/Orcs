@@ -20,7 +20,7 @@ public static class ChoicesBurstOfFrost
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "A blast of cold around you, freezing enemies",
+                    Description = "A burst of cold around you, freezing enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.BurstOfFrostEnabledInRound = true;
