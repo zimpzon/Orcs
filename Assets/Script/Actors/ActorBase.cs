@@ -14,7 +14,7 @@ public enum ActorTypeEnum
 
 public class ActorBase : MonoBehaviour
 {
-    const float IgnoreCrowdsWhenCloseToPlayer = 3.0f;
+    const float IgnoreCrowdsWhenCloseToPlayer = 2.0f;
     const float PaintBallTickTime = 1.0f;
 
     public Sprite[] Animations;
