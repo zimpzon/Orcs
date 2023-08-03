@@ -12,9 +12,9 @@ public class ActorOgreShamanShoot : MonoBehaviour
         actorBase_ = GetComponent<ActorBase>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
-        //StartCoroutine(Think());
+        StartCoroutine(Think());
     }
 
     void Shoot()
@@ -62,47 +62,31 @@ public class ActorOgreShamanShoot : MonoBehaviour
             yield return null;
 
         const float DelayBeforeFirstShoot = 1.0f;
-        float nextShoot = Time.time + DelayBeforeFirstShoot;
+        float nextShoot = GameManager.Instance.GameTime + DelayBeforeFirstShoot;
 
-        while (true)
+        while (!actorBase_.IsDead)
         {
             float distanceToPlayer = BlackboardScript.DistanceToPlayer(actorBase_.transform.position);
-            const float MinDistToShoot = 4.0f;
+            const float MinDistToShoot = 2.0f;
             if (actorBase_.IsFullyReady && GameManager.Instance.GameTime > nextShoot && distanceToPlayer > MinDistToShoot)
             {
-                int projectileCount = 5 + SaveGame.RoundScore / 15;
-                projectileCount = 2;
+                int projectileCount = 2;
 
                 for (int i = 0; i < projectileCount; ++i)
                 {
+                    if (actorBase_.IsDead)
+                        break;
+
                     Shoot();
                     GameManager.Instance.MakeFlash(actorBase_.transform.position, 1.0f);
                     yield return new WaitForSeconds(0.25f);
                 }
 
-                nextShoot = Time.time + cd;
+                nextShoot = GameManager.Instance.GameTime + cd;
                 cd = 1 + Random.value;
             }
 
-            //if (distanceToPlayer < 8.0f)
-            //{
-            //    target_ = GameManager.Instance.PlayerTrans.position;
-            //    target_.x = -target_.x;
-            //    target_.y = -target_.y;
-            //    target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
-            //}
-            //else
-            //{
-            //    if (Vector3.Distance(position_, target_) < 0.25f)
-            //        target_ = GetNewTarget();
-            //}
-
             yield return null;
         }
-    }
-
-    void Update()
-    {
-        
     }
 }

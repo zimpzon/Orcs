@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7638563561297629784}
   - component: {fileID: -8657664319067101931}
   - component: {fileID: 2593036212770784011}
+  - component: {fileID: 4963954644692822836}
   m_Layer: 12
   m_Name: OgreShamanStaff
   m_TagString: Untagged
@@ -139,5 +140,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1d8010bc943ce240a4eff7caebc7219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4963954644692822836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186553036434035137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

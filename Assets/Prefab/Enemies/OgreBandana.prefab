@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5867433870204344439}
   - component: {fileID: -783277564807082708}
   - component: {fileID: 6320525317707905664}
+  - component: {fileID: 4137816967742478357}
   m_Layer: 12
   m_Name: OgreBandana
   m_TagString: Untagged
@@ -141,3 +142,15 @@ MonoBehaviour:
   XpValue: 1
   ActorType: 3
   BaseHp: 200
+--- !u!114 &4137816967742478357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5867433870204344437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d8010bc943ce240a4eff7caebc7219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
