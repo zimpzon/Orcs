@@ -23,6 +23,7 @@ BUGS
   reset of weapons fokked up
 
 SMART DESIGN
+  AUTO GEN levels. Seed + mobtypes, etc. Then Set up the timeline until EXIT opens!
  the most fun so far is moving between spread out enemies and escaping. Much fun!
    can this be expanded upon? ablities that carves paths?
  PITCH OF pickup xp increases
