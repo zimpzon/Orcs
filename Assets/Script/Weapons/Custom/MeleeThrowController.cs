@@ -30,7 +30,7 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
 
         melee.transform.position = location;
         melee.gameObject.SetActive(true);
-        melee.Throw(dir, damage, scale);
+        melee.Throw(damage, scale);
     }
 
     void Update()
@@ -42,30 +42,30 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
         {
             Vector3 location = PositionUtility.GetPointInsideArena(0.9f, 0.9f);
             float damage = PlayerUpgrades.Data.MeleeThrowBaseDamage * PlayerUpgrades.Data.MeleeThrowPowerMul;
-            Vector3 scale = Vector3.one * 1.5f;
+            Vector3 scale = Vector3.one * 2.0f;
             if (PlayerUpgrades.Data.MeleeThrowLeft)
                 Throw(location, Vector3.left, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowRight)
-                Throw(location, Vector3.right, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowRight)
+            //    Throw(location, Vector3.right, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowUp)
-                Throw(location, Vector3.up, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowUp)
+            //    Throw(location, Vector3.up, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowDown)
-                Throw(location, Vector3.down, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowDown)
+            //    Throw(location, Vector3.down, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowDownLeft)
-                Throw(location, Vector3.down + Vector3.left, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowDownLeft)
+            //    Throw(location, Vector3.down + Vector3.left, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowDownRight)
-                Throw(location, Vector3.down + Vector3.right, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowDownRight)
+            //    Throw(location, Vector3.down + Vector3.right, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowUpLeft)
-                Throw(location, Vector3.up + Vector3.left, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowUpLeft)
+            //    Throw(location, Vector3.up + Vector3.left, damage, scale);
 
-            if (PlayerUpgrades.Data.MeleeThrowUpRight)
-                Throw(location, Vector3.up + Vector3.right, damage, scale);
+            //if (PlayerUpgrades.Data.MeleeThrowUpRight)
+            //    Throw(location, Vector3.up + Vector3.right, damage, scale);
 
                 SetNextThrow();
         }

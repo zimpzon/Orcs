@@ -315,8 +315,9 @@ public class ActorBase : MonoBehaviour
                 }
             }
 
-            force_ *= 1.0f - (30.0f * Time.deltaTime);
-            position_ += force_ * Time.deltaTime * 60; 
+            Vector3 diff = force_ * 25.0f;
+            force_ -= diff * Time.deltaTime;
+            position_ += force_ * Time.deltaTime * 60;
             transform_.position = position_;
         }
 

@@ -45,13 +45,13 @@ public class UpgradeData
     public float MagicMissileBaseBullets = 3;
     public float MagicMissileBulletsMul = 1.0f;
 
-    public bool MeleeThrowBought = false;
-    public bool MeleeThrowEnabledInRound = false;
+    public bool MeleeThrowBought = true;
+    public bool MeleeThrowEnabledInRound = true;
     public float MeleeThrowBasePower = 8.0f;
     public float MeleeThrowDrag = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
     public float MeleeThrowBaseDamage = 20.0f;
-    public float MeleeThrowBaseCd = 2.0f;
+    public float MeleeThrowBaseCd = 4.0f;
     public float MeleeThrowCdMul = 1.0f;
     public bool MeleeThrowLeft = true;
     public bool MeleeThrowRight = true;

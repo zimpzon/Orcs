@@ -1,15 +1,21 @@
 ﻿CAM: 8.4
 
+small levels, rooms
+
 NEXT
   // Light spell'ish color : 253, 248, 220 -> 250, 239, 129
 
 current weapons
-  burst of frost
-  poison, axe?
+  burst of frost MORE SWAG!!!
+  poison, axe? MORE SWAG!!!! A bunch of small poison circles? Particle circle does not follow dagger speed.
+
   swirling swords OR shields that clears a path? small one pushes in, large ones out? (SUCK in enemies? need cool thing, move around in some cool way?)
+   SWAG could be a few small circles, then blast aginst player, and right past out of the screen.
+
   (sawblades) saw of sacrilege (of sadness (for your enemy))
 
 BUGS
+  POISON completely skips some cycles, others has 1 dagger or so. Cache empty??
   dying WITHOUT seing how!
   knife count seems wrong when adding % (use non-%?)
   health regen not ticking?

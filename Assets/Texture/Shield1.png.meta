@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 128
+    maxTextureSize: 64
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -117,22 +117,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 2_0
+      name: Shield1_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 8
+        x: 0
+        y: 0
         width: 24
         height: 44
       alignment: 9
-      pivot: {x: 0.513978, y: 0.35894582}
+      pivot: {x: 0.5, y: 0.41}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae0905e27a7616d4f95d014b1a328ea4
-      internalID: -861761113
+      spriteID: 970e83865c689f54d9331b1378658af2
+      internalID: 309637470
       vertices: []
       indices: 
       edges: []
@@ -153,7 +153,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      2_0: -861761113
+      Shield1_0: 309637470
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

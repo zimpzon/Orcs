@@ -118,7 +118,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
     private void Awake()
     {
         Instance = this;
-        projectileCache_ = new ReusableObject<Basic>(100, this);
+        projectileCache_ = new ReusableObject<Basic>(300, this);
         basicProjectiles_ = new List<Basic>();
         removeListBasic_ = new List<Basic>(50);
         arenaBoundsY_ = Camera.main.orthographicSize;
