@@ -9,11 +9,6 @@ public class OrcController : MonoBehaviour
     public OrcState State;
     public Color GhostColor;
 
-    public SpriteRenderer Sunglasses;
-    public Transform WeaponTransform;
-    public SpriteRenderer WeaponRenderer;
-    public Transform LaserTransform;
-    public SpriteRenderer LaserRenderer;
     public Transform MeleeWeapon;
     public SpriteRenderer MeleeRenderer;
 
@@ -79,13 +74,6 @@ public class OrcController : MonoBehaviour
         yield break;
     }
 
-    public void SetUseWeapon(bool use)
-    {
-        Sunglasses.enabled = use;
-        WeaponRenderer.enabled = use;
-        LaserRenderer.enabled = use;
-    }
-
     public void SetChasePlayer(bool chase)
     {
         chasePlayer_ = chase;
@@ -98,7 +86,7 @@ public class OrcController : MonoBehaviour
 
     void Hide()
     {
-        SetPosition(Vector3.right * 10000, startingGame: false);
+        SetPosition(Vector3.right * 238, startingGame: false);
     }
 
     public void SetPosition(Vector3 pos, bool startingGame = false)

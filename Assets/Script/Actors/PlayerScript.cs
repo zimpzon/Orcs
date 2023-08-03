@@ -9,6 +9,9 @@ public class PlayerScript : MonoBehaviour
 {
     const float BaseMoveSpeed = 3f;
 
+    public Sprite[] RunSprites;
+    public Sprite[] IdleSprites;
+
     public float Hp;
     public float MaxHp;
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
@@ -99,6 +102,7 @@ public class PlayerScript : MonoBehaviour
         foreach (var toggleEffect in toggleEffects)
             toggleEffect.Disable();
 
+        immunityEnd_ = 0;
         shotsLeft_ = 0;
         lastRegenTick_ = 0;
         UpgradesActive = false;
@@ -188,11 +192,11 @@ public class PlayerScript : MonoBehaviour
 
             if (!isMoving_)
             {
-                animationController_.Tick(Time.deltaTime, renderer_, GameManager.Instance.SelectedHero.PlayerIdleSprites);
+                animationController_.Tick(Time.deltaTime, renderer_, IdleSprites);
             }
             else
             {
-                animationController_.Tick(Time.deltaTime, renderer_, GameManager.Instance.SelectedHero.PlayerRunSprites);
+                animationController_.Tick(Time.deltaTime, renderer_, RunSprites);
             }
             yield return null;
         }

@@ -28,7 +28,7 @@ public static class ShopItemsWeapons
                 ItemType = ShopItemType.WeaponCd,
                 Title = $"{Name}, Speed",
                 Description = $"<color=#00ff00>#VALUE%</color> less time between attacks",
-                BasePrice = 50,
+                BasePrice = 30,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,
                 Value = 8,

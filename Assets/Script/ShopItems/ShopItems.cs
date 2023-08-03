@@ -159,7 +159,7 @@ public static class ShopItems
                 ItemType = ShopItemType.DamageAll,
                 Title = "Damage",
                 Description = "Increase all damage by <color=#00ff00>+#VALUE%</color> per rank.",
-                BasePrice = 500,
+                BasePrice = 25,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 3,
                 Value = 5,

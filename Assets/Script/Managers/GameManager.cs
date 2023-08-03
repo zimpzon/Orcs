@@ -12,7 +12,7 @@ public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
-    public enum State { None, Intro, Intro_GameMode, Intro_Unlocks, Intro_Shop, Intro_Settings, Playing, Dead };
+    public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
     const float XpPerLevelMultiplier = 1.2f;
     const float WinTime = 60 * 15;
@@ -30,19 +30,10 @@ public class GameManager : MonoBehaviour
     public Text TextTime;
     public Text TextRoundKills;
     public Text TextRoundGold;
-    public Text TextLocked;
     public Text TextUser;
     public Text TextShopMoney;
-    public TextMeshProUGUI TextColWepNames;
-    public TextMeshProUGUI TextColWepReq;
-    public TextMeshProUGUI TextColLocNames;
-    public TextMeshProUGUI TextColLocReq;
-    public TextMeshProUGUI TextColDamNames;
-    public TextMeshProUGUI TextColDamReq;
-    public Text ButtonUnlockedText;
     public Text TextFps;
     public Renderer Floor;
-    public Button ButtonGo;
     public Button ButtonPlay;
     public string ColorLocked;
     public string ColorUnlocked;
@@ -55,10 +46,6 @@ public class GameManager : MonoBehaviour
     public GameObject UpgradeChoice2;
     public GameObject UpgradeChoice3;
     public GameObject UpgradeChoice4;
-    public TextMeshProUGUI TextGameMode;
-    public TextMeshProUGUI TextGameModeInfo;
-    public GameObject PanelGameMode;
-    public GameObject PanelUnlocks;
     public GameObject PanelSettings;
     public GameObject PanelShop;
     public Canvas CanvasGameOverDefault;
@@ -100,9 +87,6 @@ public class GameManager : MonoBehaviour
     public GameModeData GameModeDataFire = new ();
     public GameModeData GameModeDataStorm = new ();
     public GameModeData GameModeDataHarmony = new ();
-
-    public List<Hero> Heroes = new ();
-    public Hero SelectedHero;
 
     public int SpriteFlashParamId;
     public int SpriteFlashColorParamId;
@@ -153,21 +137,6 @@ public class GameManager : MonoBehaviour
         skipNextsfxVolumeChangeFeedback_ = false;
     }
 
-    public void SelectHero(HeroEnum heroType, bool save = false)
-    {
-        var hero = Heroes.Where(h => h.HeroType == heroType).FirstOrDefault();
-        SelectedHero = hero;
-
-        var renderer = PlayerScript.GetComponent<SpriteRenderer>();
-        bool isUnlocked = hero.IsUnlocked();
-        renderer.sprite = hero.ShowoffSprite;
-        renderer.color = isUnlocked ? Color.white : Color.black;
-        SaveGame.Members.SelectedHero = (int)hero.HeroType;
-
-        if (save)
-            SaveGame.Save();
-    }
-
     void EnablePanel(GameObject panel, bool enable)
     {
         // Work-around for Unity SetActive bug (still showing UI components after disable)
@@ -187,25 +156,10 @@ public class GameManager : MonoBehaviour
         EnablePanel(PanelSettings, true);
     }
 
-    public void OnButtonGo()
-    {
-        PlayMenuSound();
-        EnablePanel(PanelGameMode, false);
-        StartGame();
-    }
-
     public void OnButtonStart()
     {
         PlayMenuSound();
         GameState = State.Intro_GameMode;
-        EnablePanel(PanelGameMode, true);
-    }
-
-    public void OnButtonUnlocks()
-    {
-        PlayMenuSound();
-        GameState = State.Intro_Unlocks;
-        EnablePanel(PanelUnlocks, true);
     }
 
     public void OnButtonRefund()
@@ -267,7 +221,6 @@ public class GameManager : MonoBehaviour
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
-                    EnablePanel(PanelGameMode, false);
                     break;
                 }
 
@@ -275,19 +228,6 @@ public class GameManager : MonoBehaviour
                 {
                     PlayMenuSound();
                     StartGame();
-                }
-
-                yield return null;
-            }
-
-            while (GameState == State.Intro_Unlocks)
-            {
-                if (Input.GetKeyDown(menuBackKey_))
-                {
-                    PlayMenuSound();
-                    GameState = State.Intro;
-                    EnablePanel(PanelUnlocks, false);
-                    break;
                 }
 
                 yield return null;
@@ -492,9 +432,7 @@ public class GameManager : MonoBehaviour
             return;
 
         Time.timeScale = 1.0f;
-        PanelGameMode.SetActive(false);
         PanelSettings.SetActive(false);
-        PanelUnlocks.SetActive(false);
         ProjectileManager.Instance.StopAll();
         PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
@@ -503,10 +441,7 @@ public class GameManager : MonoBehaviour
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
-        SelectHero((HeroEnum)SaveGame.Members.SelectedHero);
         KillKillableObjects();
-
-        ButtonUnlockedText.text = string.Format("UNLOCKS ({0}%)", Mathf.RoundToInt(UnlockedPct * 100));
 
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);
@@ -909,7 +844,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
+        //return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)
