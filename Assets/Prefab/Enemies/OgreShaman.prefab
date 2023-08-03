@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8502718289208890170}
   - component: {fileID: 8502718289208890169}
   - component: {fileID: 94513832149057947}
+  - component: {fileID: -3822237845269552539}
   m_Layer: 12
   m_Name: OgreShaman
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: 2b2933db35e478948bdcf99ea497eb03, type: 3}
-  - {fileID: 21300000, guid: 8b42c8db85aaea84898db0604c9ee283, type: 3}
-  - {fileID: 21300000, guid: e29757b816aca694ab8331f44f72e924, type: 3}
-  - {fileID: 21300000, guid: 592344bcf8992f84890d38ec92bbe34a, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 6
-  BaseHp: 200
 --- !u!212 &8502718289208890169
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2b2933db35e478948bdcf99ea497eb03, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eb13abe25f71afa48a26bc13f2bda9de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,3 +115,29 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-3822237845269552539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8502718289208890167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations:
+  - {fileID: 21300000, guid: eb13abe25f71afa48a26bc13f2bda9de, type: 3}
+  - {fileID: 21300000, guid: 4f52d3040559efa418b8dea2ec62e458, type: 3}
+  - {fileID: 21300000, guid: 20d8296052c750d46ae6f37f62836f5f, type: 3}
+  - {fileID: 21300000, guid: 685d62d1eb26e0642ba9d4a5d20040db, type: 3}
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 6
+  BaseHp: 0

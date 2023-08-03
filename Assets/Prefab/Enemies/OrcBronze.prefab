@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8398983256320415958}
   - component: {fileID: 8398983256320415957}
   - component: {fileID: -8896606606581398853}
+  - component: {fileID: -2395036735246028462}
   m_Layer: 12
   m_Name: OrcBronze
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: cb3fb3a19da24d94da5b3e8145ea957f, type: 3}
-  - {fileID: 21300000, guid: cc9f7ee7e919fe04ba493c7a871c8c7f, type: 3}
-  - {fileID: 21300000, guid: bb40fb7a96342714dae435ea1f2952f7, type: 3}
-  - {fileID: 21300000, guid: 8bba77b269cd8284191dab768eb0fab4, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 10
-  BaseHp: 100
 --- !u!212 &8398983256320415957
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-2395036735246028462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8398983256320415963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

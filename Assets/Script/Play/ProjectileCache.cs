@@ -20,7 +20,6 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
     public static ProjectileCache Instance;
 
     public GameObject SpritePrefab;
-    public SpriteData SpriteData;
 
     ReusableObject<ProjectileInfo> sprites_;
 

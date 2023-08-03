@@ -46,8 +46,6 @@ public class PlayerScript : MonoBehaviour
     Vector3 basePos_;
     RectTransform overheadTextTrans_;
 
-    PlayerUpgrades _playerUpgrades;
-
     [System.NonSerialized] public WeaponBase Weapon;
 
     SpriteRenderer shadowRenderer_;
@@ -61,7 +59,6 @@ public class PlayerScript : MonoBehaviour
         renderer_ = GetComponent<SpriteRenderer>();
         playerPos_ = trans_.position;
         basePos_ = trans_.position;
-        _playerUpgrades = GetComponent<PlayerUpgrades>();
 
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");

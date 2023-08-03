@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7412948015652987122}
   - component: {fileID: 7412948015652987121}
   - component: {fileID: 671104767023114584}
+  - component: {fileID: -6179111339378959951}
   m_Layer: 12
   m_Name: PirateRedBeardGun
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: cbeaff8671930cd45af4ac13d2838c79, type: 3}
-  - {fileID: 21300000, guid: 095c996801a455e438d6dc305436cbd4, type: 3}
-  - {fileID: 21300000, guid: 0397532b546a34c4f8c562b4237a26a8, type: 3}
-  - {fileID: 21300000, guid: 35292f2486161d64aaccffb8f4558240, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 27
-  BaseHp: 100
 --- !u!212 &7412948015652987121
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-6179111339378959951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7412948015652987127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

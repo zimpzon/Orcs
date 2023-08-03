@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7302469099169139155}
   - component: {fileID: 7302469099169139180}
   - component: {fileID: -6455852108467203024}
+  - component: {fileID: 831484942663895498}
   m_Layer: 12
   m_Name: OrcPlainShield
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: a2d01d057cb800b4ebf0f75473fac8e5, type: 3}
-  - {fileID: 21300000, guid: fdd05d5d981320c47aaf41599f60c913, type: 3}
-  - {fileID: 21300000, guid: c05225b74e64b9a47ab4b6a61d45f457, type: 3}
-  - {fileID: 21300000, guid: 6c85a3aec6b17f941af67cc78a321a92, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 17
-  BaseHp: 100
 --- !u!212 &7302469099169139180
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &831484942663895498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302469099169139182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

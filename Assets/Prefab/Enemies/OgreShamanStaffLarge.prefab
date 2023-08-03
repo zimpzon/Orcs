@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4240795038208890159}
   - component: {fileID: 4240795038208890144}
   - component: {fileID: 4878245707668268526}
+  - component: {fileID: -3457177223524687487}
   m_Layer: 12
   m_Name: OgreShamanStaffLarge
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: 178c50ef7cb37b844b03ddab8d362071, type: 3}
-  - {fileID: 21300000, guid: e46da280f4daf3145b3228595ccce2be, type: 3}
-  - {fileID: 21300000, guid: d60dd9aa58f568342aa82d3d1a0de020, type: 3}
-  - {fileID: 21300000, guid: 9c3e06bc109dd454480c529e74b22b00, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 4
-  XpValue: 3
-  ActorType: 8
-  BaseHp: 1000
 --- !u!212 &4240795038208890144
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 178c50ef7cb37b844b03ddab8d362071, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1e55b4f12109cb46ad82cd9315f0589, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,3 +115,29 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-3457177223524687487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4240795038208890146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations:
+  - {fileID: 21300000, guid: d928ce3c11d70c64bb1d53d75810bac8, type: 3}
+  - {fileID: 21300000, guid: 7f1a4e4f34421874a9e14c631c84f83c, type: 3}
+  - {fileID: 21300000, guid: b123c4bda63b43348a2cf36431b0ad48, type: 3}
+  - {fileID: 21300000, guid: 592294bf3f8e2474a9fe3c4c1223a490, type: 3}
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 8
+  BaseHp: 0

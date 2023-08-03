@@ -2,26 +2,27 @@
 using System.Collections;
 using UnityEngine;
 
-public class ActorDefaultWalker : ActorBase
+public class ActorDefaultWalker : MonoBehaviour
 {
     Vector3 moveVec_;
     Vector3 target_;
+    ActorBase actorBase_;
 
-    protected override void PostEnable()
+    void Start()
     {
-        position_ = transform_.position;
+        actorBase_ = GetComponent<ActorBase>();
         target_ = GetNewTarget();
         StartCoroutine(Think());
     }
 
     protected virtual IEnumerator Think()
     {
-        while (isSpawning_)
+        while (actorBase_.IsSpawning)
             yield return null;
 
         while (true)
         {
-            float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
+            float distanceToPlayer = BlackboardScript.DistanceToPlayer(actorBase_.transform.position);
             target_ = GameManager.Instance.PlayerTrans.position;
             yield return null;
         }
@@ -33,20 +34,20 @@ public class ActorDefaultWalker : ActorBase
         return result;
     }
 
-    protected override void PreUpdate()
+    void Update()
     {
-        bool dead = Hp <= 0.0f;
+        bool dead = actorBase_.Hp <= 0.0f;
         if (dead)
             return;
 
-        float deltaX = target_.x - transform_.position.x;
-        float deltaY = target_.y - transform_.position.y;
+        float deltaX = target_.x - actorBase_.transform.position.x;
+        float deltaY = target_.y - actorBase_.transform.position.y;
 
         moveVec_.x = deltaX;
         moveVec_.y = deltaY;
         moveVec_.z = 0;
         moveVec_.Normalize();
 
-        UpdatePosition(moveVec_, Speed);
+        actorBase_.UpdatePosition(moveVec_, actorBase_.Speed);
     }
 }

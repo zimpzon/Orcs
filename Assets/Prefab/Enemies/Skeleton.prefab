@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3030390007288362799}
   - component: {fileID: 3030390007288362796}
   - component: {fileID: -410699779951129675}
+  - component: {fileID: 6621889289370319539}
   m_Layer: 12
   m_Name: Skeleton
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: aac744948436b494490682169eb6d443, type: 3}
-  - {fileID: 21300000, guid: 2f22932c9fa27d1449251c90c4e641e9, type: 3}
-  - {fileID: 21300000, guid: 41f1cc5754cd29f4f8c856175d88cae8, type: 3}
-  - {fileID: 21300000, guid: f6fb00d5e1fac264aadcf1068b2c2b1d, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 28
-  BaseHp: 100
 --- !u!212 &3030390007288362796
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &6621889289370319539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030390007288362794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

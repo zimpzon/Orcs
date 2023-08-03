@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6186553036434035142}
-  - component: {fileID: 6186553036434035140}
   - component: {fileID: 6186553036434035143}
   - component: {fileID: 7638563561297629784}
+  - component: {fileID: 4177844051738132486}
+  - component: {fileID: -8657664319067101931}
+  - component: {fileID: 6040675229805050594}
   m_Layer: 12
   m_Name: OgreShamanStaff
   m_TagString: Untagged
@@ -34,32 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6186553036434035140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6186553036434035137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: 178c50ef7cb37b844b03ddab8d362071, type: 3}
-  - {fileID: 21300000, guid: e46da280f4daf3145b3228595ccce2be, type: 3}
-  - {fileID: 21300000, guid: d60dd9aa58f568342aa82d3d1a0de020, type: 3}
-  - {fileID: 21300000, guid: 9c3e06bc109dd454480c529e74b22b00, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 7
-  BaseHp: 250
 --- !u!212 &6186553036434035143
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -109,7 +85,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &7638563561297629784
@@ -128,3 +104,63 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &4177844051738132486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186553036434035137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3961be8d6d1d1459a0238c9c820489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8657664319067101931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186553036434035137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations:
+  - {fileID: 21300000, guid: d928ce3c11d70c64bb1d53d75810bac8, type: 3}
+  - {fileID: 21300000, guid: 7f1a4e4f34421874a9e14c631c84f83c, type: 3}
+  - {fileID: 21300000, guid: b123c4bda63b43348a2cf36431b0ad48, type: 3}
+  - {fileID: 21300000, guid: 592294bf3f8e2474a9fe3c4c1223a490, type: 3}
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 7
+  BaseHp: 0
+--- !u!114 &6040675229805050594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186553036434035137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

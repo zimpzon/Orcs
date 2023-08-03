@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7567216715696399457}
   - component: {fileID: 7567216715696399456}
   - component: {fileID: 950640879620215684}
+  - component: {fileID: 6921681401564835088}
   m_Layer: 12
   m_Name: PirateNoShirt
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: b80e5a216bbc0684c8432c72a05306d6, type: 3}
-  - {fileID: 21300000, guid: 56516e204dc706545a7832f3f6f311d9, type: 3}
-  - {fileID: 21300000, guid: f5ee83fd3bc62da47ab77825ad5ccf70, type: 3}
-  - {fileID: 21300000, guid: 4c946b6aadd08144fbaab15ef041a568, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 25
-  BaseHp: 100
 --- !u!212 &7567216715696399456
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &6921681401564835088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7567216715696399458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

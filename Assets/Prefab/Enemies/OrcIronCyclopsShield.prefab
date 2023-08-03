@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6522258516728873234}
   - component: {fileID: 6522258516728873237}
   - component: {fileID: 8315530072556461047}
+  - component: {fileID: 4070471397752193475}
   m_Layer: 12
   m_Name: OrcIronCyclopsShield
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: c273fd2722a4b4046b36dcdfab0c0a2b, type: 3}
-  - {fileID: 21300000, guid: 2c95f7badddeb184587bcc97d85a5e4e, type: 3}
-  - {fileID: 21300000, guid: be1317863e16cb9479d65b16eb7791c9, type: 3}
-  - {fileID: 21300000, guid: 9b8ea7302993bfc45bb24462fa92538b, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 14
-  BaseHp: 100
 --- !u!212 &6522258516728873237
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &4070471397752193475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6522258516728873239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

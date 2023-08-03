@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Enemies;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -69,21 +70,13 @@ public class ActorBase : MonoBehaviour
     protected float nextCheckForCrowded_;
     protected float distanceToPlayer_;
 
-    protected virtual void PreEnable() { }
-    protected virtual void PostEnable() { }
-
-    protected virtual void PreUpdate() { }
-    protected virtual void PostUpdate() { }
-
-    protected virtual void OnDeath() { }
-
     protected float slowmotionModifier_ = 1.0f;
 
     protected bool isPainted_;
     private float nextPaintDamage_;
     protected bool isFrozen_;
     protected bool isLivingBomb_;
-    protected bool isSpawning_ = true;
+    [NonSerialized] public bool IsSpawning = true;
 
     float paintEnd_;
     Color paintColor_;
@@ -107,7 +100,7 @@ public class ActorBase : MonoBehaviour
         nextPaintDamage_ = float.MaxValue;
         isFrozen_ = false;
         isLivingBomb_ = false;
-        isSpawning_ = true;
+        IsSpawning = true;
         IsFullyReady = false;
         slowmotionModifier_ = 1.0f;
         flashEndTime_ = 0.0f;
@@ -120,8 +113,9 @@ public class ActorBase : MonoBehaviour
 
     public void Awake()
     {
-        TimeBorn = Time.time;
+        TimeBorn = GameManager.Instance.GameTime;
         transform_ = this.transform;
+        position_ = transform_.position;
 
         renderer_ = GetComponent<SpriteRenderer>();
         material_ = renderer_.material;
@@ -149,16 +143,11 @@ public class ActorBase : MonoBehaviour
             return;
 
         GameMode = GameManager.Instance.CurrentGameModeData;
-        PreEnable();
 
         if (UseSpawnParticles)
-        {
             StartCoroutine(SpawnAnimCo());
-        }
 
-        isSpawning_ = false;
-
-        PostEnable();
+        IsSpawning = false;
     }
 
     public void OnLivingBombHit(float damage, bool playSound = true)
@@ -171,7 +160,7 @@ public class ActorBase : MonoBehaviour
 
         const float BombTime = 1.0f;
         const float BombRnd = 0.1f;
-        livingBombEnd_ = Time.time + BombTime + Random.value * BombRnd;
+        livingBombEnd_ = Time.time + BombTime + UnityEngine.Random.value * BombRnd;
 
         material_.SetColor(flashColorParamId_, new Color(1.0f, 0.6f, 0.6f));
         GameManager.Instance.MakeFlash(transform_.position);
@@ -195,12 +184,16 @@ public class ActorBase : MonoBehaviour
 
         float flashAmount = ((int)(Time.time * 6) & 1) == 0 ? 0.0f : 0.8f;
         material_.SetFloat(flashParamId_, flashAmount);
-        if (Random.value < 0.01f)
+        if (UnityEngine.Random.value < 0.01f)
             GameManager.Instance.MakePoof(transform_.position, 1, 1.0f);
     }
 
-    protected void UpdatePosition(Vector3 moveVec, float speed)
+    public void UpdatePosition(Vector3 moveVec, float speed)
     {
+        GameManager.SetDebugOutput("update", moveVec);
+        GameManager.SetDebugOutput("ready", IsFullyReady);
+        GameManager.SetDebugOutput("spawning", IsSpawning);
+
         if (!IsFullyReady)
         {
             // Force towards center
@@ -244,15 +237,15 @@ public class ActorBase : MonoBehaviour
         int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
         if (crowdCount > 3)
         {
-            if (Random.value > 0.25f)
+            if (UnityEngine.Random.value > 0.25f)
             {
-                forcedDestination_ = position_ + (Vector3)Random.insideUnitCircle.normalized * 1.2f;
+                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 1.2f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
-        nextCheckForCrowded_ = Time.time + 0.5f + Random.value * 1.5f;
+        nextCheckForCrowded_ = Time.time + 0.5f + UnityEngine.Random.value * 1.5f;
     }
 
     public bool OnFreeze(Color color, float freezeTime)
@@ -274,7 +267,7 @@ public class ActorBase : MonoBehaviour
         isPainted_ = true;
 
         // add a little rnd so aoe poisened enemies don't look so synchronized
-        float rnd = Random.value * 0.3f;
+        float rnd = UnityEngine.Random.value * 0.3f;
 
         nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime + rnd;
         paintColor_ = color;
@@ -282,7 +275,7 @@ public class ActorBase : MonoBehaviour
         return true;
     }
 
-    public void Update()
+    public void LateUpdate()
     {
         if (Time.time > flashEndTime_)
             material_.SetFloat(flashParamId_, 0.0f);
@@ -321,10 +314,9 @@ public class ActorBase : MonoBehaviour
             transform_.position = position_;
         }
 
-        if (isSpawning_)
+        if (IsSpawning)
             return;
 
-        PreUpdate();
         CheckPainted();
         CheckFrozen();
         UpdateLivingBomb();
@@ -358,8 +350,6 @@ public class ActorBase : MonoBehaviour
 
         const float RegenTime = 1.0f;
         slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + Time.deltaTime / RegenTime);
-
-        PostUpdate();
     }
 
     public void SetSlowmotion(float amount = 0.0f)
@@ -408,7 +398,6 @@ public class ActorBase : MonoBehaviour
         {
             Hp = 0;
             GameManager.Instance.OnEnemyKill(this);
-            OnDeath();
             StopAllCoroutines();
             StartCoroutine(DieAnimation(direction, forceModifier));
         }
@@ -431,7 +420,7 @@ public class ActorBase : MonoBehaviour
 
     IEnumerator SpawnAnimCo()
     {
-        isSpawning_ = true;
+        IsSpawning = true;
         float endTime = Time.time + 1.0f;
         material_.SetColor(flashColorParamId_, new Color(0.3f, 0.3f, 0.3f));
         float flashAmount = 1.0f;
@@ -449,7 +438,7 @@ public class ActorBase : MonoBehaviour
         }
 
         material_.SetFloat(flashParamId_, 0.0f);
-        isSpawning_ = false;
+        IsSpawning = false;
     }
 
     void CheckFullyReady()
@@ -457,7 +446,7 @@ public class ActorBase : MonoBehaviour
         if (IsFullyReady)
             return;
 
-        bool isFullyReady = !isSpawning_ && GameManager.Instance.IsInsideBounds(transform_.position, renderer_.sprite);
+        bool isFullyReady = !IsSpawning && GameManager.Instance.IsInsideBounds(transform_.position, renderer_.sprite);
         if (!isFullyReady)
             return;
 

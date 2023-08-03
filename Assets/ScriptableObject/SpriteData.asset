@@ -115,7 +115,7 @@ MonoBehaviour:
   MeleeTrail: {fileID: 21300000, guid: 99b9ce6438a65af499d6c99f815a007f, type: 3}
   Orc: {fileID: 21300000, guid: 98b4e7dbddb51b448803737ab324dd55, type: 3}
   Bullet: {fileID: 21300000, guid: 05c2a5dc58e2e5c439fcc7bb6f1f5ba2, type: 3}
-  TinySword: {fileID: 21300000, guid: 7cacc20f45a1f3f44992ef0c9d16a4c1, type: 3}
+  TinySword: {fileID: 405790247, guid: d5ea92cf78b4a2645a9b8083ec819f93, type: 3}
   RoundBullet: {fileID: 21300000, guid: abac9408e53de5347b6a0abb30214d95, type: 3}
   Sawblade: {fileID: 21300000, guid: afbad81907cddef4bb79e95722d91bd3, type: 3}
   Shotgun: {fileID: 21300000, guid: ac33ecd565230f240b38dadfb5f06bea, type: 3}
@@ -123,8 +123,8 @@ MonoBehaviour:
   Flamethrower: {fileID: 21300000, guid: 696511d9e070b624091b0b449e7a0686, type: 3}
   MachineGun: {fileID: 21300000, guid: 9d1b5068ba2d4c34196dc9bd0404a434, type: 3}
   Staff: {fileID: 21300000, guid: f862b6e807dfb7144a5bc94ec147a1a4, type: 3}
-  Coin1: {fileID: 0}
-  Coin2: {fileID: 0}
-  Coin3: {fileID: 0}
-  Coin4: {fileID: 0}
+  Coin1: {fileID: 21300000, guid: 076fb69b11f4d444fbb39f70b3736785, type: 3}
+  Coin2: {fileID: 21300000, guid: 8299691737574334bbe8cf87c003ac85, type: 3}
+  Coin3: {fileID: 21300000, guid: 8903ad3778f3e4242b7ea35f8ad531ae, type: 3}
+  Coin4: {fileID: 21300000, guid: acbd490403d704a45981132c6a52ce3c, type: 3}
   Xp: {fileID: 0}

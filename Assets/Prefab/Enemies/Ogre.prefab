@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7806083319826730032}
   - component: {fileID: 7806083319826730039}
   - component: {fileID: 7927373448605877365}
+  - component: {fileID: 1316344112072341451}
   m_Layer: 12
   m_Name: Ogre
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: f463a478dccd71247ad83097e157d80f, type: 3}
-  - {fileID: 21300000, guid: 81b53d1351a2f7f428477d4772e9e8e4, type: 3}
-  - {fileID: 21300000, guid: 8c7860ae599914e41b5166760a4a76f7, type: 3}
-  - {fileID: 21300000, guid: a68e68f5b2efaa8439d2dd103613988c, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 2
-  ActorType: 2
-  BaseHp: 50
 --- !u!212 &7806083319826730039
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -101,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f463a478dccd71247ad83097e157d80f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d00c517de5cc415468f63327b9af77ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -128,3 +115,29 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &1316344112072341451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7806083319826730037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations:
+  - {fileID: 21300000, guid: d00c517de5cc415468f63327b9af77ff, type: 3}
+  - {fileID: 21300000, guid: 772758814835e5f4f96c5b5f2680e914, type: 3}
+  - {fileID: 21300000, guid: f76795538ed8cbc46981911add30ed1a, type: 3}
+  - {fileID: 21300000, guid: c714b5e5cf73e8b4fa0fe4cfa2684628, type: 3}
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 2
+  BaseHp: 0

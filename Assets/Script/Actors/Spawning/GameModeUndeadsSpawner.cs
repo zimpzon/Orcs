@@ -24,6 +24,19 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         // small 00:00 - 5:00
         StartCoroutine(
             PositionUtility.SpawnAndMaintain(
+                ActorTypeEnum.Ogre,
+                startTime: new TimeSpan(0, 0, 0),
+                endTime: new TimeSpan(0, 3, 0),
+                maintainCount: 2,
+                maintainCountIncreasePerSec: 0.0f,
+                spawnCountPerTick: 5,
+                timeBetweenTicks: 1.0f,
+                outsideScreen: false,
+                PositionUtility.SpawnDirection.Any)
+            );
+
+        StartCoroutine(
+            PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
                 endTime: new TimeSpan(0, 3, 0),

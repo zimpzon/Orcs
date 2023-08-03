@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7109154675842749469}
   - component: {fileID: 7109154675842749458}
   - component: {fileID: 8671448650190014592}
+  - component: {fileID: -7518152769744660022}
   m_Layer: 12
   m_Name: PirateDuck
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: 2442f275efd56f54d85172f21fc0d8ce, type: 3}
-  - {fileID: 21300000, guid: 330650ab74af21e4f9a1341f980331fa, type: 3}
-  - {fileID: 21300000, guid: 830e489a54e93b44fb06a8cacf12def5, type: 3}
-  - {fileID: 21300000, guid: 5cc99f5faea21e647b85310bab4a5729, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 22
-  BaseHp: 100
 --- !u!212 &7109154675842749458
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-7518152769744660022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7109154675842749456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0

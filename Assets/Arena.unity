@@ -7809,7 +7809,7 @@ MonoBehaviour:
   Heroes:
   - HeroType: 0
     Name: The Knight
-    Description: '"I''m No Hero, Just Doing My Job"'
+    Description: 
     GameCounter: 0
     Req: 0
     BulletColor: {r: 1, g: 1, b: 1, a: 1}
@@ -7825,17 +7825,18 @@ MonoBehaviour:
     - 
     - 
     PlayerRunSprites:
-    - {fileID: 21300000, guid: 5d6f88caa9397a645b622e65da0cd258, type: 3}
-    - {fileID: 21300000, guid: 0e80150245a5d9549b139e1210f175f4, type: 3}
-    - {fileID: 21300000, guid: f7a9c17b9f751b443952c008cc0e8372, type: 3}
-    - {fileID: 21300000, guid: fe801d47a4c6d9745aa025401682181a, type: 3}
+    - {fileID: 21300000, guid: 41ad6efa14ad7a44e9d6772432b00a63, type: 3}
+    - {fileID: 21300000, guid: 9d9683842cd8ce74b8fda3bd206d06bf, type: 3}
+    - {fileID: 21300000, guid: 6398fab94c0d41d4e91a975c36b20b26, type: 3}
+    - {fileID: 21300000, guid: 05f5fc424c6fa3041b945f4c89080a14, type: 3}
     PlayerIdleSprites:
-    - {fileID: 21300000, guid: 02881ca0a5021474ebcb375c314d692d, type: 3}
-    - {fileID: 21300000, guid: dcb67047a83e21846a5308d2a2d52db0, type: 3}
-    - {fileID: 21300000, guid: 7c858195f1208994aaef2e840b628df3, type: 3}
-    - {fileID: 21300000, guid: 67f3be7fff23b344abb8ba43a4ba804a, type: 3}
-    - {fileID: 21300000, guid: 54093c577fc448147b4c26c5be6e75b6, type: 3}
-    ShowoffSprite: {fileID: 21300000, guid: 02881ca0a5021474ebcb375c314d692d, type: 3}
+    - {fileID: 21300000, guid: 2c8e6b33988d73b49b76ee4fb9e0cc10, type: 3}
+    - {fileID: 21300000, guid: 2c8e6b33988d73b49b76ee4fb9e0cc10, type: 3}
+    - {fileID: 21300000, guid: 16ee95086c877a14a943b098bce00492, type: 3}
+    - {fileID: 21300000, guid: 9a2dbf6ea9b43364d94f857e274e08c9, type: 3}
+    - {fileID: 21300000, guid: 06fa8fd363fba5345ba3e5910d411473, type: 3}
+    - {fileID: 21300000, guid: 7770a567d403396448a7fa4ff424fc32, type: 3}
+    ShowoffSprite: {fileID: 21300000, guid: 7770a567d403396448a7fa4ff424fc32, type: 3}
   - HeroType: 1
     Name: The Orc Whisperer
     Description: It's Just Confusing Them But +1 For Effort
@@ -7946,9 +7947,18 @@ MonoBehaviour:
     Req: 0
     BulletColor: {r: 0, g: 0, b: 0, a: 0}
     Talk: []
-    PlayerRunSprites: []
-    PlayerIdleSprites: []
-    ShowoffSprite: {fileID: 0}
+    PlayerRunSprites:
+    - {fileID: 21300000, guid: 6398fab94c0d41d4e91a975c36b20b26, type: 3}
+    - {fileID: 21300000, guid: 05f5fc424c6fa3041b945f4c89080a14, type: 3}
+    - {fileID: 21300000, guid: 9d9683842cd8ce74b8fda3bd206d06bf, type: 3}
+    - {fileID: 21300000, guid: 41ad6efa14ad7a44e9d6772432b00a63, type: 3}
+    PlayerIdleSprites:
+    - {fileID: 21300000, guid: 06fa8fd363fba5345ba3e5910d411473, type: 3}
+    - {fileID: 21300000, guid: 7770a567d403396448a7fa4ff424fc32, type: 3}
+    - {fileID: 21300000, guid: 9a2dbf6ea9b43364d94f857e274e08c9, type: 3}
+    - {fileID: 21300000, guid: 16ee95086c877a14a943b098bce00492, type: 3}
+    - {fileID: 21300000, guid: 2c8e6b33988d73b49b76ee4fb9e0cc10, type: 3}
+    ShowoffSprite: {fileID: 21300000, guid: 7770a567d403396448a7fa4ff424fc32, type: 3}
   SpriteFlashParamId: 0
   SpriteFlashColorParamId: 0
   ArenaBounds:
@@ -8394,7 +8404,6 @@ GameObject:
   - component: {fileID: 366703238}
   - component: {fileID: 366703241}
   - component: {fileID: 366703240}
-  - component: {fileID: 366703239}
   - component: {fileID: 1465850447}
   m_Layer: 15
   m_Name: Orc
@@ -8427,27 +8436,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &366703239
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 95699498776326944, guid: 69cc0bfaa301bda4d9c91cc6e535c29a,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366703237}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e66f38f51d0669544b38cf9faab56442, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!58 &366703240
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8507,7 +8495,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dcf0df574b7842246b29d00d190265a4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a64494d968c30614780940bfca2e3108, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -15044,7 +15032,7 @@ SpriteRenderer:
   m_Size: {x: 0.8, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &642360717
@@ -23178,7 +23166,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 67f3be7fff23b344abb8ba43a4ba804a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 41ad6efa14ad7a44e9d6772432b00a63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -28657,7 +28645,7 @@ SpriteRenderer:
   m_Size: {x: 0.17, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1124403545
@@ -30436,7 +30424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -78.9, y: 214.6}
+  m_AnchoredPosition: {x: -78.9, y: 212.2}
   m_SizeDelta: {x: 100, y: 97.2969}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1406577113
@@ -30459,7 +30447,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dcf0df574b7842246b29d00d190265a4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a64494d968c30614780940bfca2e3108, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -36342,7 +36330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!223 &1497543155
 Canvas:
   m_ObjectHideFlags: 0
@@ -48098,7 +48086,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3bdc61b8d684b7349b3502b7b222b23e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d3fef0ff0476b84b829d849ff308bae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

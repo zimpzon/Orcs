@@ -1,107 +1,107 @@
-﻿using Assets.Script;
-using System.Collections;
-using UnityEngine;
+﻿//using Assets.Script;
+//using System.Collections;
+//using UnityEngine;
 
-public class SkellieCharger : ActorBase
-{
-    public Color ChargeColor;
-    float Speed;
-    float chargeSpeed_ = 0.0f;
-    Vector3 moveVec_;
-    Vector3 scale_;
-    Vector3 target_;
+//public class SkellieCharger : ActorBase
+//{
+//    public Color ChargeColor;
+//    float Speed;
+//    float chargeSpeed_ = 0.0f;
+//    Vector3 moveVec_;
+//    Vector3 scale_;
+//    Vector3 target_;
 
-    protected override void PreEnable()
-    {
-        Speed = 1.5f * GameMode.MoveSpeedModifier;
-        Hp = 50 * GameMode.HitpointModifier;
-        Mass = 1.0f * GameMode.MassModifier;
-    }
+//    protected override void PreEnable()
+//    {
+//        Speed = 1.5f * GameMode.MoveSpeedModifier;
+//        Hp = 50 * GameMode.HitpointModifier;
+//        Mass = 1.0f * GameMode.MassModifier;
+//    }
 
-    protected override void PostEnable()
-    {
-        scale_ = transform_.localScale;
-        position_ = this.transform_.position;
-        Animations = SpriteData.Instance.Skellie2WalkSprites;
-        target_ = GetNewTarget();
-        StartCoroutine(Think());
-    }
+//    protected override void PostEnable()
+//    {
+//        scale_ = transform_.localScale;
+//        position_ = this.transform_.position;
+//        Animations = SpriteData.Instance.Skellie2WalkSprites;
+//        target_ = GetNewTarget();
+//        StartCoroutine(Think());
+//    }
 
-    IEnumerator Think()
-    {
-        while (isSpawning_)
-            yield return null;
+//    IEnumerator Think()
+//    {
+//        while (IsSpawning)
+//            yield return null;
 
-        const float DelayBeforeFirstCharge = 1.0f;
-        float nextCharge = Time.time + DelayBeforeFirstCharge;
+//        const float DelayBeforeFirstCharge = 1.0f;
+//        float nextCharge = Time.time + DelayBeforeFirstCharge;
 
-        while (true)
-        {
-            float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
-            const float MinDistToCharge = 3.0f;
-            if (IsFullyReady && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
-            {
-                target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(RndUtil.RandomInsideUnitCircle() * 2);
-                target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
-                chargeSpeed_ = Speed * 5;
-                if (chargeSpeed_ > 8.0f)
-                    chargeSpeed_ = 8.0f;
+//        while (true)
+//        {
+//            float distanceToPlayer = BlackboardScript.DistanceToPlayer(position_);
+//            const float MinDistToCharge = 3.0f;
+//            if (IsFullyReady && Time.time > nextCharge && distanceToPlayer > MinDistToCharge)
+//            {
+//                target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(RndUtil.RandomInsideUnitCircle() * 2);
+//                target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
+//                chargeSpeed_ = Speed * 5;
+//                if (chargeSpeed_ > 8.0f)
+//                    chargeSpeed_ = 8.0f;
 
-                material_.color = ChargeColor;
+//                material_.color = ChargeColor;
 
-                while ((transform_.position - target_).magnitude > 0.2f)
-                {
-                    if (Random.value < 0.1f)
-                        GameManager.Instance.MakePoof(transform_.position + Vector3.down * 0.2f, 1, 0.3f);
+//                while ((transform_.position - target_).magnitude > 0.2f)
+//                {
+//                    if (Random.value < 0.1f)
+//                        GameManager.Instance.MakePoof(transform_.position + Vector3.down * 0.2f, 1, 0.3f);
 
-                    yield return null;
-                }
+//                    yield return null;
+//                }
 
-                material_.color = Color.white;
-                chargeSpeed_ = 0.0f;
-                float cd = (1.0f  + Random.value * 3) * GameMode.ChargeCdModifier;
-                nextCharge = Time.time + cd;
-            }
+//                material_.color = Color.white;
+//                chargeSpeed_ = 0.0f;
+//                float cd = (1.0f  + Random.value * 3) * GameMode.ChargeCdModifier;
+//                nextCharge = Time.time + cd;
+//            }
 
-            yield return null;
-        }
-    }
+//            yield return null;
+//        }
+//    }
 
-    Vector3 GetNewTarget()
-    {
-        Vector3 result = PositionUtility.GetPointInsideArena(1.0f, 1.0f);
-        return result;
-    }
+//    Vector3 GetNewTarget()
+//    {
+//        Vector3 result = PositionUtility.GetPointInsideArena(1.0f, 1.0f);
+//        return result;
+//    }
 
-    protected override void PreUpdate()
-    {
-        bool dead = Hp <= 0.0f;
-        if (dead)
-            return;
+//    protected override void PreUpdate()
+//    {
+//        bool dead = Hp <= 0.0f;
+//        if (dead)
+//            return;
 
-        if (Time.time > flashEndTime_)
-        {
-            material_.SetFloat(flashParamId_, 0.0f);
-        }
+//        if (Time.time > flashEndTime_)
+//        {
+//            material_.SetFloat(flashParamId_, 0.0f);
+//        }
 
-        if (chargeSpeed_ == 0.0f)
-        {
-            if (Vector3.Distance(position_, target_) < 0.25f)
-                target_ = GetNewTarget();
-        }
+//        if (chargeSpeed_ == 0.0f)
+//        {
+//            if (Vector3.Distance(position_, target_) < 0.25f)
+//                target_ = GetNewTarget();
+//        }
 
-        float deltaX = target_.x - transform_.position.x;
-        float deltaY = target_.y - transform_.position.y;
+//        float deltaX = target_.x - transform_.position.x;
+//        float deltaY = target_.y - transform_.position.y;
 
-        moveVec_.x = deltaX;
-        moveVec_.y = deltaY;
-        moveVec_.z = 0;
-        moveVec_.Normalize();
+//        moveVec_.x = deltaX;
+//        moveVec_.y = deltaY;
+//        moveVec_.z = 0;
+//        moveVec_.Normalize();
 
-        UpdatePosition(moveVec_, Speed + chargeSpeed_);
+//        UpdatePosition(moveVec_, Speed + chargeSpeed_);
 
-        Vector3 scale = scale_;
-        scale.x = moveVec_.x < 0 ? -scale_.x : scale.x;
-        transform_.localScale = scale;
-    }
-}
+//        Vector3 scale = scale_;
+//        scale.x = moveVec_.x < 0 ? -scale_.x : scale.x;
+//        transform_.localScale = scale;
+//    }
+//}

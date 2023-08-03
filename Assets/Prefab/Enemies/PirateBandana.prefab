@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6804215779794445435}
   - component: {fileID: 6804215779794445432}
   - component: {fileID: 1541635454680126507}
+  - component: {fileID: -4592483797756760238}
   m_Layer: 12
   m_Name: PirateBandana
   m_TagString: Untagged
@@ -46,20 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations:
-  - {fileID: 21300000, guid: cd4ed5976f5b82e48a333c913f8fdfb2, type: 3}
-  - {fileID: 21300000, guid: 3c272f7097e55eb43ab5a69478d20b9f, type: 3}
-  - {fileID: 21300000, guid: 4ff8a90d9694d1b4fa114efe99417c48, type: 3}
-  - {fileID: 21300000, guid: d6f2197c23552e5449affb0996c5b3e5, type: 3}
-  CanBeFrozen: 1
-  CanBePoisened: 1
-  Speed: 1
-  AvoidCrowds: 1
-  IsBoss: 0
-  Mass: 1
-  XpValue: 3
-  ActorType: 20
-  BaseHp: 100
 --- !u!212 &6804215779794445432
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,3 +115,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.09}
   m_Size: {x: 0.6, y: 0.8}
   m_Direction: 0
+--- !u!114 &-4592483797756760238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6804215779794445318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 1
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 1
+  IsBoss: 0
+  Mass: 1
+  XpValue: 1
+  ActorType: 0
+  BaseHp: 0
