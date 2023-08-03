@@ -140,4 +140,4 @@ MonoBehaviour:
   Mass: 1
   XpValue: 1
   ActorType: 3
-  BaseHp: 0
+  BaseHp: 200

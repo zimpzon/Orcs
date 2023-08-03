@@ -93,6 +93,7 @@ public class ActorBase : MonoBehaviour
         Hp = BaseHp;
         distanceToPlayer_ = float.MaxValue;
         transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        position_ = Vector3.zero;
         IsCorpse = false;
         IsDead = false;
         UseSpawnParticles = false;
@@ -115,7 +116,6 @@ public class ActorBase : MonoBehaviour
     {
         TimeBorn = GameManager.Instance.GameTime;
         transform_ = this.transform;
-        position_ = transform_.position;
 
         renderer_ = GetComponent<SpriteRenderer>();
         material_ = renderer_.material;
@@ -137,17 +137,18 @@ public class ActorBase : MonoBehaviour
 
     public void OnEnable()
     {
-        // This is annoying. OnEnable is called right after Awake (eg before Start) when the cache precreates the objects, if the prefab is enabled.
-        // On the other hand, if the prefab is NOT enabled, the first OnEnable call is called AFTER Start. So we don't know which is which here.
-        if (GameManager.Instance == null)
-            return;
+        //// This is annoying. OnEnable is called right after Awake (eg before Start) when the cache precreates the objects, if the prefab is enabled.
+        //// On the other hand, if the prefab is NOT enabled, the first OnEnable call is called AFTER Start. So we don't know which is which here.
+        //if (GameManager.Instance == null)
+        //    return;
 
+        position_ = transform_.position;
         GameMode = GameManager.Instance.CurrentGameModeData;
 
         if (UseSpawnParticles)
             StartCoroutine(SpawnAnimCo());
-
-        IsSpawning = false;
+        else
+            IsSpawning = false;
     }
 
     public void OnLivingBombHit(float damage, bool playSound = true)
@@ -190,10 +191,6 @@ public class ActorBase : MonoBehaviour
 
     public void UpdatePosition(Vector3 moveVec, float speed)
     {
-        GameManager.SetDebugOutput("update", moveVec);
-        GameManager.SetDebugOutput("ready", IsFullyReady);
-        GameManager.SetDebugOutput("spawning", IsSpawning);
-
         if (!IsFullyReady)
         {
             // Force towards center

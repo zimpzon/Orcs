@@ -32,7 +32,7 @@ namespace Assets.Script.Enemies
         {
             if (!Caches.TryGetValue(actorType, out var cache))
             {
-                var prefab = EnemyPrefabs.Enemies.Where(e => e.GetComponent<ActorBase>()?.ActorType == actorType)?.FirstOrDefault();
+                var prefab = EnemyPrefabs.Enemies.Where(e => e.GetComponent<ActorBase>().ActorType == actorType)?.FirstOrDefault();
                 if (prefab == null)
                     Debug.LogError($"ActorType {actorType} not found in scriptable object Enemies");
 
@@ -55,7 +55,7 @@ namespace Assets.Script.Enemies
             actor.SetActive(false);
 
             // still in the physics system when active = false, I think.
-            actor.transform.position = Vector3.left * (10000 + Random.value * 10000);
+            //actor.transform.position = Vector3.left * (100 + Random.value * 100);
 
             var cacheEntry = Caches[actorType];
             cacheEntry.Objects[--cacheEntry.Idx] = actor;
@@ -70,7 +70,7 @@ namespace Assets.Script.Enemies
             {
                 var newObject = Instantiate(prefab);
                 newObject.SetActive(false);
-                newObject.transform.position = Vector3.left * (10000 + Random.value * 10000);
+                //newObject.transform.position = Vector3.left * (100 + Random.value * 100);
                 cacheEntry.Objects.Add(newObject);
             }
         }
