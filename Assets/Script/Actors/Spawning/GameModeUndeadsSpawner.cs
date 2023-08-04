@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class GameModeUndeadsSpawner : MonoBehaviour
 {
-    // 20 minutes
-    // 0:00 1:30 min of small ogre, start X, increase to Y
-    // 1:00 5 min of ogre, start X, increase to Y
-    // 2:00 large ogre formation, 
-
     public void Run()
     {
         StartCoroutine(Test1());
@@ -25,11 +20,11 @@ public class GameModeUndeadsSpawner : MonoBehaviour
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreShamanStaff,
                 startTime: new TimeSpan(0, 2, 0),
-                endTime: new TimeSpan(0, 3, 0),
+                endTime: new TimeSpan(0, 4, 0),
                 maintainCount: 1,
-                maintainCountIncreasePerSec: 0.05f,
+                maintainCountIncreasePerSec: 0.0f,
                 spawnCountPerTick: 1,
-                timeBetweenTicks: 1.0f,
+                timeBetweenTicks: 8.0f,
                 outsideScreen: true,
                 PositionUtility.SpawnDirection.LeftOrRight)
             );
@@ -37,12 +32,12 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         StartCoroutine(
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.OgreShamanStaff,
-                startTime: new TimeSpan(0, 3, 0),
+                startTime: new TimeSpan(0, 4, 0),
                 endTime: new TimeSpan(0, 15, 0),
                 maintainCount: 1,
                 maintainCountIncreasePerSec: 0.05f,
                 spawnCountPerTick: 2,
-                timeBetweenTicks: 1.0f,
+                timeBetweenTicks: 5.0f,
                 outsideScreen: true,
                 PositionUtility.SpawnDirection.LeftOrRight)
             );
@@ -55,7 +50,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
                 endTime: new TimeSpan(0, 2, 0),
-                maintainCount: 20,
+                maintainCount: 3,
                 maintainCountIncreasePerSec: 0.25f,
                 spawnCountPerTick: 5,
                 timeBetweenTicks: 0.5f,
@@ -68,7 +63,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 2, 0),
                 endTime: new TimeSpan(0, 15, 0),
-                maintainCount: 30,
+                maintainCount: 20,
                 maintainCountIncreasePerSec: 0.0f,
                 spawnCountPerTick: 10,
                 timeBetweenTicks: 0.5f,
@@ -80,16 +75,49 @@ public class GameModeUndeadsSpawner : MonoBehaviour
     void Standard()
     {
         StartCoroutine(
+            PositionUtility.Swarm(
+                ActorTypeEnum.Ogre,
+                new TimeSpan(0, 0, 10),
+                new TimeSpan(0, 15, 0),
+                spawnCountPerTick: 2,
+                timeBetweenTicks: 3.0f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.Any));
+
+        StartCoroutine(
             PositionUtility.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,
-                startTime: new TimeSpan(0, 0, 45),
+                startTime: new TimeSpan(0, 0, 0),
+                endTime: new TimeSpan(0, 0, 30),
+                maintainCount: 25,
+                maintainCountIncreasePerSec: 0.0f,
+                spawnCountPerTick: 5,
+                timeBetweenTicks: 2.0f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.Any)
+            );
+
+        StartCoroutine(
+            PositionUtility.Swarm(
+                ActorTypeEnum.Ogre,
+                new TimeSpan(0, 0, 50),
+                new TimeSpan(0, 15, 0),
+                spawnCountPerTick: 5,
+                timeBetweenTicks: 5.0f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.Any));
+
+        StartCoroutine(
+            PositionUtility.SpawnAndMaintain(
+                ActorTypeEnum.Ogre,
+                startTime: new TimeSpan(0, 0, 40),
                 endTime: new TimeSpan(0, 10, 0),
-                maintainCount: 5,
-                maintainCountIncreasePerSec: 0.3f,
+                maintainCount: 20,
+                maintainCountIncreasePerSec: 0.1f,
                 spawnCountPerTick: 10,
                 timeBetweenTicks: 0.5f,
                 outsideScreen: true,
-                PositionUtility.SpawnDirection.LeftOrRight)
+                PositionUtility.SpawnDirection.Any)
             );
 
         StartCoroutine(

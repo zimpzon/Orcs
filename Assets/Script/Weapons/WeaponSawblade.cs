@@ -28,8 +28,8 @@ public class WeaponSawblade : WeaponBase
         basic.RotationSpeed = 360.0f * 2;
         basic.RotationSpeedWhenStuck = 360.0f * 6;
         basic.StickToTarget = true;
-        basic.Damage = 20.0f * weaponScale;
-        basic.StickyDamageCd = 0.1f;
+        basic.Damage = 10.0f * weaponScale;
+        basic.StickyDamageCd = 0.05f;
         basic.StickyMaxTotalDamage = PlayerUpgrades.Data.SawBladeMaxDamage * PlayerUpgrades.Data.SawBladeDurabilityMul;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 0.7f * weaponScale;

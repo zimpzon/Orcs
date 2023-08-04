@@ -48,34 +48,34 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, range (1)",
-                Description = "Throw <color=#00ff00>10%</color> farther",
+                Description = "Throw <color=#00ff00>20%</color> farther",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.MagicMissileRangeMul += 0.1f;
+                    PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, range (2)",
-                    Description = "Throw <color=#00ff00>10%</color> farther",
+                    Description = "Throw <color=#00ff00>20%</color> farther",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileRangeMul += 0.1f;
+                        PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, range (3)",
-                        Description = "Throw <color=#00ff00>15%</color> farther",
+                        Description = "Throw <color=#00ff00>20%</color> farther",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileRangeMul += 0.15f;
+                            PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, range (4)",
-                            Description = "Throw <color=#00ff00>15%</color> farther",
+                            Description = "Throw <color=#00ff00>20%</color> farther",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileRangeMul += 0.15f;
+                                PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
                             },
                         },
                     }

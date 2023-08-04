@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum GameCounter {
@@ -136,42 +136,22 @@ public static class SaveGame
         Members.BoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
         Members.BoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
 
-        PlayerPrefs.SetString(prefs, Members.ToJson());
-        PlayerPrefs.Save();
+        File.WriteAllText(GetPath(), Members.ToJson());
     }
 
-    public static bool RestoreOldPrefs()
+    static string GetPath()
     {
-        if (PlayerPrefs.HasKey("prefs_"))
-        {
-            var restoredV1 = SaveGameMembers.FromJson(PlayerPrefs.GetString("prefs_"));
-            if (restoredV1.BestScore > 0)
-            {
-                Members = restoredV1;
-                Save();
-                return true;
-            }
-        }
-
-        if (PlayerPrefs.HasKey("prefs"))
-        {
-            var restoredV0 = SaveGameMembers.FromJson(PlayerPrefs.GetString("prefs"));
-            if (restoredV0.BestScore > 0)
-            {
-                Members = restoredV0;
-                Save();
-                return true;
-            }
-        }
-
-        return false;
+        return Path.Combine(Application.persistentDataPath, "save.json");
     }
-
-    static string prefs = "prefs_1";
 
     public static void Load()
     {
-        string prefs = PlayerPrefs.GetString(SaveGame.prefs);
+        string prefs = string.Empty;
+        if (File.Exists(GetPath()))
+        {
+            prefs = File.ReadAllText(GetPath());
+        }
+
         if (!string.IsNullOrWhiteSpace(prefs))
         {
             Members = SaveGameMembers.FromJson(prefs);

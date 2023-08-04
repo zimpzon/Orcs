@@ -166,6 +166,47 @@ public static class PositionUtility
         }
     }
 
+    public static IEnumerator Swarm(
+        ActorTypeEnum actorType,
+        TimeSpan startTime,
+        TimeSpan endTime,
+        int spawnCountPerTick,
+        float timeBetweenTicks,
+        bool outsideScreen,
+        SpawnDirection dir)
+    {
+        var wait = new WaitForSeconds(timeBetweenTicks);
+
+        float startTimeSec = (float)startTime.TotalSeconds;
+        float endTimeSec = (float)endTime.TotalSeconds;
+
+        while (GameManager.Instance.GameTime < startTimeSec)
+        {
+            yield return null;
+        }
+
+        while (GameManager.Instance.GameTime < endTimeSec)
+        {
+            for (int i = 0; i < spawnCountPerTick; i++)
+            {
+                var spawn = ActorCache.Instance.GetActor(actorType);
+                float offset = 1.0f;
+                Vector3 pos;
+                if (outsideScreen)
+                    pos = GetPointOutsideScreen(dir, offset);
+                else
+                    pos = GetPointInsideArena(1.0f, 1.0f);
+
+                spawn.transform.position = pos;
+                spawn.SetActive(true);
+            }
+
+            yield return wait;
+        }
+
+        yield return null;
+    }
+
     public static IEnumerator SpawnGroup(
         ActorTypeEnum actorType,
         int count,

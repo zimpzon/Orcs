@@ -801,13 +801,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US"); SaveGame.Load();
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+        
+        SaveGame.Load();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
 
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Confined;
         StartCoroutine(ServerColdStart());
         ShowTitle();
         StartCoroutine(GameStateCo());

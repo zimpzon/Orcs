@@ -14,7 +14,7 @@ public enum ActorTypeEnum
 
 public class ActorBase : MonoBehaviour
 {
-    const float IgnoreCrowdsWhenCloseToPlayer = 2.0f;
+    const float IgnoreCrowdsWhenCloseToPlayer = 1.5f;
     const float PaintBallTickTime = 1.0f;
 
     public Sprite[] Animations;
@@ -74,6 +74,7 @@ public class ActorBase : MonoBehaviour
 
     protected bool isPainted_;
     private float nextPaintDamage_;
+    private float crowdedWaveRandom_;
     protected bool isFrozen_;
     protected bool isLivingBomb_;
     [NonSerialized] public bool IsSpawning = true;
@@ -116,6 +117,8 @@ public class ActorBase : MonoBehaviour
     {
         TimeBorn = GameManager.Instance.GameTime;
         transform_ = this.transform;
+
+        crowdedWaveRandom_ = UnityEngine.Random.value * 100;
 
         renderer_ = GetComponent<SpriteRenderer>();
         material_ = renderer_.material;
@@ -161,7 +164,7 @@ public class ActorBase : MonoBehaviour
 
         const float BombTime = 1.0f;
         const float BombRnd = 0.1f;
-        livingBombEnd_ = Time.time + BombTime + UnityEngine.Random.value * BombRnd;
+        livingBombEnd_ = GameManager.Instance.GameTime + BombTime + UnityEngine.Random.value * BombRnd;
 
         material_.SetColor(flashColorParamId_, new Color(1.0f, 0.6f, 0.6f));
         GameManager.Instance.MakeFlash(transform_.position);
@@ -176,14 +179,14 @@ public class ActorBase : MonoBehaviour
         if (!isLivingBomb_)
             return;
 
-        if (Time.time >= livingBombEnd_)
+        if (GameManager.Instance.GameTime >= livingBombEnd_)
         {
             isLivingBomb_ = false;
             StartCoroutine(ExplodeCo(0.0f));
             return;
         }
 
-        float flashAmount = ((int)(Time.time * 6) & 1) == 0 ? 0.0f : 0.8f;
+        float flashAmount = ((int)(GameManager.Instance.GameTime * 6) & 1) == 0 ? 0.0f : 0.8f;
         material_.SetFloat(flashParamId_, flashAmount);
         if (UnityEngine.Random.value < 0.01f)
             GameManager.Instance.MakePoof(transform_.position, 1, 1.0f);
@@ -224,25 +227,26 @@ public class ActorBase : MonoBehaviour
 
     void CheckForCrowded()
     {
-        if (!AvoidCrowds || Time.time < nextCheckForCrowded_)
+        if (!AvoidCrowds || GameManager.Instance.GameTime < nextCheckForCrowded_)
             return;
 
         // if distance to player is small ignore crowd rules and go for it!
         if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
-        if (crowdCount > 3)
+        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.5f);
+        if (crowdCount > 2)
         {
-            if (UnityEngine.Random.value > 0.25f)
+            float chance = (float)(Math.Sin(GameManager.Instance.GameTime * 0.5f + crowdedWaveRandom_) + 1) * 0.5f;
+            if (UnityEngine.Random.value > chance)
             {
-                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 1.2f;
+                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 1.5f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
-        nextCheckForCrowded_ = Time.time + 0.5f + UnityEngine.Random.value * 1.5f;
+        nextCheckForCrowded_ = GameManager.Instance.GameTime + 1.0f + UnityEngine.Random.value * 1.5f;
     }
 
     public bool OnFreeze(Color color, float freezeTime)
@@ -252,7 +256,7 @@ public class ActorBase : MonoBehaviour
 
         frozenColor_ = color;
         isFrozen_ = true;
-        frozenEnd_ = Time.time + freezeTime;
+        frozenEnd_ = GameManager.Instance.GameTime + freezeTime;
         return true;
     }
 
@@ -265,8 +269,8 @@ public class ActorBase : MonoBehaviour
 
         // add a little rnd so aoe poisened enemies don't look so synchronized
         float rnd = UnityEngine.Random.value * 0.3f;
-
         nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime + rnd;
+
         paintColor_ = color;
         paintEnd_ = GameManager.Instance.GameTime + paintTime + rnd;
         return true;
@@ -274,7 +278,7 @@ public class ActorBase : MonoBehaviour
 
     public void LateUpdate()
     {
-        if (Time.time > flashEndTime_)
+        if (GameManager.Instance.GameTime > flashEndTime_)
             material_.SetFloat(flashParamId_, 0.0f);
 
         if (isFrozen_)
@@ -359,7 +363,7 @@ public class ActorBase : MonoBehaviour
         if (!isPainted_)
             return;
 
-        if (Time.time > paintEnd_)
+        if (GameManager.Instance.GameTime > paintEnd_)
         {
             isPainted_ = false;
             material_.color = Color.white;
@@ -371,7 +375,7 @@ public class ActorBase : MonoBehaviour
         if (!isFrozen_)
             return;
 
-        if (Time.time > frozenEnd_)
+        if (GameManager.Instance.GameTime > frozenEnd_)
         {
             isFrozen_ = false;
             material_.color = Color.white;
@@ -405,7 +409,7 @@ public class ActorBase : MonoBehaviour
             if (amount > 0.01f)
             {
                 material_.SetFloat(flashParamId_, 0.75f);
-                flashEndTime_ = Time.time + 0.03f;
+                flashEndTime_ = GameManager.Instance.GameTime + 0.03f;
             }
         }
     }
@@ -418,10 +422,10 @@ public class ActorBase : MonoBehaviour
     IEnumerator SpawnAnimCo()
     {
         IsSpawning = true;
-        float endTime = Time.time + 1.0f;
+        float endTime = GameManager.Instance.GameTime + 1.0f;
         material_.SetColor(flashColorParamId_, new Color(0.3f, 0.3f, 0.3f));
         float flashAmount = 1.0f;
-        while (Time.time < endTime)
+        while (GameManager.Instance.GameTime < endTime)
         {
             Vector3 basePos = transform_.position;
             Vector3 pos = basePos;
@@ -453,11 +457,11 @@ public class ActorBase : MonoBehaviour
 
     IEnumerator ExplodeCo(float delay)
     {
-        float explodeTime = Time.time + delay;
+        float explodeTime = GameManager.Instance.GameTime + delay;
         float flashOffset = UnityEngine.Random.value;
-        while (Time.time < explodeTime)
+        while (GameManager.Instance.GameTime < explodeTime)
         {
-            material_.SetFloat(flashParamId_, 0.6f + (Mathf.Sin(((Time.time + flashOffset) * 10) + 1.0f) * 0.5f) * 0.25f);
+            material_.SetFloat(flashParamId_, 0.6f + (Mathf.Sin(((GameManager.Instance.GameTime + flashOffset) * 10) + 1.0f) * 0.5f) * 0.25f);
             yield return null;
         }
 
@@ -484,7 +488,7 @@ public class ActorBase : MonoBehaviour
 
     IEnumerator DieAnimation(Vector3 deathSourceDir, float forceModifier)
     {
-        TimeDied = Time.time;
+        TimeDied = GameManager.Instance.GameTime;
 
         gameObject.layer = GameManager.Instance.LayerEnemyCorpse;
 
@@ -502,10 +506,10 @@ public class ActorBase : MonoBehaviour
         float totalRotation = 0;
         Vector3 deathForce = deathSourceDir.normalized * 20 * forceModifier;
 
-        float maxTime = Time.time + 2.0f;
-        float bloodEndTime = Time.time + 0.5f;
+        float maxTime = GameManager.Instance.GameTime + 2.0f;
+        float bloodEndTime = GameManager.Instance.GameTime + 0.5f;
 
-        while (Time.time < maxTime)
+        while (GameManager.Instance.GameTime < maxTime)
         {
             float delta = Time.deltaTime;
 
@@ -538,7 +542,7 @@ public class ActorBase : MonoBehaviour
             if (stoppedMoving)
                 break;
 
-            if (Time.time < bloodEndTime)
+            if (GameManager.Instance.GameTime < bloodEndTime)
                 GameManager.Instance.TriggerBlood(pos, 0.1f);
 
             yield return null;

@@ -35,10 +35,10 @@ public class UpgradeData
     // weapons
     public float MagicMissileBaseDamage = 25.0f;
     public float MagicMissileDamageMul = 1.0f;
-    public float MagicMissileBaseBulletCd = 0.15f;
-    public float MagicMissileBaseCd = 1.0f;
+    public float MagicMissileBaseBulletCd = 0.12f;
+    public float MagicMissileBaseCd = 0.8f;
     public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileBaseRange = 3.5f;
+    public float MagicMissileBaseRange = 2.2f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
@@ -67,7 +67,7 @@ public class UpgradeData
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 25;
-    public float SawBladeBaseCd = 2.0f;
+    public float SawBladeBaseCd = 4.0f;
     public float SawBladeCdMul = 1.0f;
 
     public bool BurstOfFrostBought = false;
@@ -81,8 +81,8 @@ public class UpgradeData
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;
 
-    public bool PaintballBought = true;
-    public bool PaintballActiveInRound = true;
+    public bool PaintballBought = false;
+    public bool PaintballActiveInRound = false;
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
