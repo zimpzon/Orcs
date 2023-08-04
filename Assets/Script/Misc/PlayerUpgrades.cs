@@ -51,7 +51,7 @@ public class UpgradeData
     public float MeleeThrowDrag = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
     public float MeleeThrowBaseDamage = 20.0f;
-    public float MeleeThrowBaseCd = 4.0f;
+    public float MeleeThrowBaseCd = 15.0f;
     public float MeleeThrowCdMul = 1.0f;
     public bool MeleeThrowLeft = true;
     public bool MeleeThrowRight = true;
@@ -81,15 +81,15 @@ public class UpgradeData
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;
 
-    public bool PaintballBought = false;
-    public bool PaintballActiveInRound = false;
+    public bool PaintballBought = true;
+    public bool PaintballActiveInRound = true;
     public float PaintballBaseRange = 3.0f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
     public float PaintballBaseSlowMul = 0.9f; // slow amount at mass = 1
     public float PaintballBaseDuration = 5.0f;
     public float PaintballDurationMul = 1.0f;
-    public float PaintballCd = 1.0f;
+    public float PaintballCd = 3.0f;
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 12;
     public float PaintballBaseDamagePerSec = 30.0f;

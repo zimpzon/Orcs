@@ -30,8 +30,8 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
 
     ProjectileInfo CreateSpriteInfo()
     {
-        var go = Instantiate<GameObject>(SpritePrefab);
-        ProjectileInfo result = new ProjectileInfo(go);
+        var go = Instantiate(SpritePrefab);
+        ProjectileInfo result = new (go);
         result.Transform.gameObject.SetActive(false);
         return result;
     }

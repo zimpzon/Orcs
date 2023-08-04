@@ -13139,6 +13139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 630143962}
   - component: {fileID: 630143963}
+  - component: {fileID: 630143964}
   m_Layer: 0
   m_Name: SpriteCache
   m_TagString: Untagged
@@ -13170,6 +13171,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 630143961}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae8cf6714fdb2f499d4a415fbd08eab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShamanProjectile: {fileID: 21300000, guid: 05c2a5dc58e2e5c439fcc7bb6f1f5ba2, type: 3}
+  PlayerDagger: {fileID: 405790247, guid: d5ea92cf78b4a2645a9b8083ec819f93, type: 3}
+  RoundBullet: {fileID: 21300030, guid: 9780b41bcc160d34f98730360ae6d27b, type: 3}
+  Sawblade: {fileID: 21300000, guid: afbad81907cddef4bb79e95722d91bd3, type: 3}
+--- !u!114 &630143964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630143961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 037aeaef8871eb74db785ce720d9e250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -13192,7 +13209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &647078725
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13800,7 +13817,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &750419544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20478,7 +20495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1046829943
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25911,7 +25928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1159337916
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32019,7 +32036,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &1497543155
 Canvas:
   m_ObjectHideFlags: 0

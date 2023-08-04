@@ -35,12 +35,10 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
 
     void UpdatePaintball()
     {
-        if (!PlayerUpgrades.Data.PaintballActiveInRound)
+        if (!PlayerUpgrades.Data.PaintballActiveInRound || !enabled)
             return;
 
         PlayerUpgrades.Data.Counters.PaintballTimer += Time.deltaTime;
-
-        Debug.Log(PlayerUpgrades.Data.Counters.PaintballTimer);
 
         if (PlayerUpgrades.Data.Counters.PaintballTimer > PlayerUpgrades.Data.PaintballCd * PlayerUpgrades.Data.PaintballCdMul)
         {

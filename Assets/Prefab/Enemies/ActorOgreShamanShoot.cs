@@ -43,7 +43,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         scale.z = 1.0f;
 
         basic.Position = actorBase_.transform.position + muzzlePoint;
-        basic.SpriteInfo.Renderer.sprite = SpriteData.Instance.Bullet;
+        basic.SpriteInfo.Renderer.sprite = SpriteData.Instance.ShamanProjectile;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
         basic.Direction = direction;
         basic.Color = new Color(1.0f, 0.4f, 0.1f);

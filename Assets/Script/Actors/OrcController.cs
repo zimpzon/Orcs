@@ -124,8 +124,12 @@ public class OrcController : MonoBehaviour
 
         GameManager.Instance.OnOrcPickup(trans_.position); 
         ResetAll();
+
         pickedUp_ = true;
         SetPosition(PositionUtility.GetPointInsideArena());
+
+        if (PlayerUpgrades.Data.OrcJedisEnabled)
+            SetYoda();
     }
 
     IEnumerator Think()

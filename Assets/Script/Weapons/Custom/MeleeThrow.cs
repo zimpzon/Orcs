@@ -89,7 +89,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
         {
             var enemy = BlackboardScript.EnemyOverlap[i];
             var dir = RndUtil.RandomInsideUnitCircle().normalized;
-            enemy.AddForce(dir * 1.5f);
+            enemy.AddForce(dir * 1.0f);
             enemy.ApplyDamage(50, dir, 1.5f);
         }
 

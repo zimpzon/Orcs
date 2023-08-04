@@ -646,14 +646,8 @@ public class GameManager : MonoBehaviour
         if (SaveGame.RoundScore == 1)
             OnFirstOrcPickup();
 
-        if (PlayerUpgrades.Data.OrcJedisEnabled)
-        {
-            Orc.SetYoda();
-        }
-
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
 
-        // TODO: playerUpgrades
         ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, value: 1, forceScale: 2.0f);
         ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 2, value: 1, forceScale: 1.1f);
     }
@@ -844,7 +838,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)

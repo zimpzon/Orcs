@@ -171,11 +171,9 @@ public static class SaveGame
 
     public static void Load()
     {
-        try
+        string prefs = PlayerPrefs.GetString(SaveGame.prefs);
+        if (!string.IsNullOrWhiteSpace(prefs))
         {
-            // hmm, init?
-            string prefs = PlayerPrefs.GetString(SaveGame.prefs);
-
             Members = SaveGameMembers.FromJson(prefs);
             if (Members.Counters.Length != (int)GameCounter.Last)
             {
@@ -193,11 +191,6 @@ public static class SaveGame
             Members.BoughtItems.Clear();
             for (int i = 0; i < Members.TempBoughtTypes.Length; ++i)
                 Members.BoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
-        }
-        catch (Exception e)
-        {
-            GameManager.SetDebugOutput("error loading settings", e.Message);
-            Members = null;
         }
 
         if (Members == null)

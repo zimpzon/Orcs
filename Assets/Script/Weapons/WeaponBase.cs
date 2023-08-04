@@ -99,7 +99,6 @@ public class WeaponBase
                     ShotgunSlug.Type = WeaponType.ShotgunSlug;
                     ShotgunSlug.Cd = 0.3f;
                     ShotgunSlug.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    ShotgunSlug.Sprite = SpriteData.Instance.Shotgun;
                     ShotgunSlug.BulletSprite = SpriteData.Instance.RoundBullet;
                     ShotgunSlug.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     ShotgunSlug.FireAudio = AudioManager.Instance.AudioData.PlayerShotgunFire;
@@ -114,28 +113,12 @@ public class WeaponBase
                     Staff.Type = WeaponType.Staff;
                     Staff.Cd = 0.3f;
                     Staff.Scale = new Vector3(0.5f, 0.8f, 1.0f);
-                    Staff.Sprite = SpriteData.Instance.Staff;
-                    Staff.BulletSprite = SpriteData.Instance.Bullet;
+                    Staff.BulletSprite = SpriteData.Instance.ShamanProjectile;
                     Staff.Muzzle = new Vector3(1.5f, 0.013f, 0.0f);
                     Staff.FireAudio = AudioManager.Instance.AudioData.PlayerStaffFire;
                     Staff.MoveSpeedModifier = 0.8f;
                 }
                 return Staff;
-
-            case WeaponType.Staff2:
-                if (Staff2 == null)
-                {
-                    Staff2 = new WeaponStaff2();
-                    Staff2.Type = WeaponType.Staff2;
-                    Staff2.Cd = 0.5f;
-                    Staff2.Scale = new Vector3(0.5f, 0.8f, 1.0f);
-                    Staff2.Sprite = SpriteData.Instance.Staff;
-                    Staff2.BulletSprite = SpriteData.Instance.Orc;
-                    Staff2.Muzzle = new Vector3(1.5f, 0.013f, 0.0f);
-                    Staff2.FireAudio = AudioManager.Instance.AudioData.PlayerStaffFire;
-                    Staff2.MoveSpeedModifier = 0.8f;
-                }
-                return Staff2;
 
             case WeaponType.Machinegun:
                 if (Machinegun == null)
@@ -143,8 +126,7 @@ public class WeaponBase
                     Machinegun = new ();
                     Machinegun.Type = WeaponType.Machinegun;
                     Machinegun.Scale = new Vector3(0.2f, 0.08f, 1.0f);
-                    Machinegun.BulletSprite = SpriteData.Instance.TinySword;
-                    //Machinegun.BulletSprite = SpriteData.Instance.RoundBullet;
+                    Machinegun.BulletSprite = SpriteData.Instance.PlayerDagger;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
                     Machinegun.MoveSpeedModifier = 1.0f;
@@ -158,7 +140,6 @@ public class WeaponBase
                     Paintball.Type = WeaponType.Paintball;
                     Paintball.Cd = 0.2f;
                     Paintball.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    Paintball.Sprite = SpriteData.Instance.MachineGun;
                     Paintball.BulletSprite = SpriteData.Instance.RoundBullet;
                     Paintball.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     Paintball.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
@@ -172,8 +153,7 @@ public class WeaponBase
                     PaintballRandom = new WeaponPaintballRandom();
                     PaintballRandom.Type = WeaponType.PaintBallRandom;
                     PaintballRandom.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    PaintballRandom.Sprite = SpriteData.Instance.MachineGun;
-                    PaintballRandom.BulletSprite = SpriteData.Instance.TinySword;
+                    PaintballRandom.BulletSprite = SpriteData.Instance.PlayerDagger;
                     PaintballRandom.Muzzle = new Vector3(0.0f, 0.0f, 0.0f);
                     PaintballRandom.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
                     PaintballRandom.MoveSpeedModifier = 1.0f;
@@ -187,7 +167,6 @@ public class WeaponBase
                     Rambo.Type = WeaponType.Rambo;
                     Rambo.Cd = 0.07f;
                     Rambo.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    Rambo.Sprite = SpriteData.Instance.MachineGun;
                     Rambo.BulletSprite = SpriteData.Instance.RoundBullet;
                     Rambo.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
                     Rambo.FireAudio = AudioManager.Instance.AudioData.PlayerMachinegunFire;
