@@ -125,7 +125,7 @@ public static class ChoicesWeapon
                 Description = "<color=#00ff00>+0.4</color> more knives per round",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
+                    PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
                 },
                 NextLevel = new Choice
                 {
@@ -133,7 +133,7 @@ public static class ChoicesWeapon
                     Description = "<color=#00ff00>+0.4%</color> more knives per round",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
+                        PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
                     },
                     NextLevel = new Choice
                     {
@@ -141,7 +141,7 @@ public static class ChoicesWeapon
                         Description = "<color=#00ff00>+0.4%</color> more knives per round",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
+                            PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
                         },
                         NextLevel = new Choice
                         {
@@ -149,7 +149,7 @@ public static class ChoicesWeapon
                             Description = "<color=#00ff00>+0.4%</color> more knives per round",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileBulletsMul += 0.4f;
+                                PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
                             },
                         }
                     }

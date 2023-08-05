@@ -359,7 +359,7 @@ public class GameManager : MonoBehaviour
 
         AudioListener.pause = true;
 
-        Time.timeScale = 0.0001f;
+        Time.timeScale = 0.0f;
         PauseGameTime = true;
 
         while (!selectionDone)

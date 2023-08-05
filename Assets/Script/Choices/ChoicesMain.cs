@@ -37,6 +37,7 @@ public static class UpgradeChoices
         CurrentChoices = new List<Choice>();
         CurrentChoices.AddRange(ChoicesGlobal.GetGlobalChoices());
         CurrentChoices.AddRange(ChoicesWeapon.GetWeaponChoices());
+        CurrentChoices.AddRange(ChoicesCirclingAxe.GetCircelingAxeChoices());
         CurrentChoices.AddRange(ChoicesPlayer.GetPlayerChoices());
         CurrentChoices.AddRange(ChoicesBabyOrc.GetBabyOrcChoices());
         CurrentChoices.AddRange(ChoicesSawblade.GetSawbladeChoices(DelayedAdd));

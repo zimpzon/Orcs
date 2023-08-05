@@ -109,6 +109,7 @@ public class ActorBase : MonoBehaviour
         force_ = Vector3.zero;
         hasForcedDestination_ = false;
         forcedDestination_ = Vector3.zero;
+        nextCheckForCrowded_ = 0;
         despawnOnForcedDestinationReached_ = false;
         material_.color = Color.white;
     }
@@ -240,13 +241,13 @@ public class ActorBase : MonoBehaviour
             float chance = (float)(Math.Sin(GameManager.Instance.GameTime * 0.5f + crowdedWaveRandom_) + 1) * 0.5f;
             if (UnityEngine.Random.value > chance)
             {
-                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 1.5f;
+                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 2.5f;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
-        nextCheckForCrowded_ = GameManager.Instance.GameTime + 1.0f + UnityEngine.Random.value * 1.5f;
+        nextCheckForCrowded_ = GameManager.Instance.GameTime + 1.0f + UnityEngine.Random.value * 0.5f;
     }
 
     public bool OnFreeze(Color color, float freezeTime)

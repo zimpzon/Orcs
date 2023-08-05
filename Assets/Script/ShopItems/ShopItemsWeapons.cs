@@ -51,9 +51,27 @@ public static class ShopItemsWeapons
                 ValueScale = 1,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.MagicMissileBulletsMul += bought.Level * (int)bought.Value;
+                    PlayerUpgrades.Data.MagicMissileBulletsAdd += bought.Level * (int)bought.Value;
                 }
             },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.WeaponTripleShot,
+                Title = $"{Name}, Triple",
+                Description = $"{Name} fires in three directions, each shot doing 75% damage.",
+                BasePrice = 150,
+                PriceMultiplier = 1.0f,
+                MaxLevel = 1,
+                Value = 1,
+                ValueScale = 0.01f,
+                Apply = (bought ) =>
+                {
+                    PlayerUpgrades.Data.MagicMissileTripleShot = true;
+                    PlayerUpgrades.Data.MagicMissileDamageMul *= 0.75f;
+                }
+            },
+
         };
     }
 }

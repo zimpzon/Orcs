@@ -10,6 +10,7 @@ public enum ShopItemType
     WeaponRange,
     WeaponDamage,
     WeaponCd,
+    WeaponTripleShot,
     MachinegunBulletsPerRound,
     DoubleMoney,
     EnemyMoneyDrop,

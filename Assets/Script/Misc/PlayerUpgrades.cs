@@ -30,20 +30,22 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
+    public float BaseMoveSpeed = 4.0f;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 25.0f;
+    public float MagicMissileBaseDamage = 50.0f;
     public float MagicMissileDamageMul = 1.0f;
-    public float MagicMissileBaseBulletCd = 0.12f;
-    public float MagicMissileBaseCd = 0.8f;
+    public float MagicMissileBaseBulletCd = 0.15f;
+    public float MagicMissileBaseCd = 1.1f;
     public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileBaseRange = 2.2f;
+    public float MagicMissileBaseRange = 2.5f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileBaseBullets = 3;
-    public float MagicMissileBulletsMul = 1.0f;
+    public float MagicMissileBulletsAdd = 0.0f;
+    public bool MagicMissileTripleShot = false;
 
     public bool MeleeThrowBought = false;
     public bool MeleeThrowEnabledInRound = false;
@@ -67,7 +69,7 @@ public class UpgradeData
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 25;
-    public float SawBladeBaseCd = 4.0f;
+    public float SawBladeBaseCd = 6.0f;
     public float SawBladeCdMul = 1.0f;
 
     public bool BurstOfFrostBought = false;
@@ -94,6 +96,17 @@ public class UpgradeData
     public int PaintballCount = 12;
     public float PaintballBaseDamagePerSec = 30.0f;
     public float PaintballDamagePerSecMul = 1.0f;
+
+    // circling axe
+    public bool CirclingAxeEnabled = false;
+    public float CirclingAxeBaseCd = 8.0f;
+    public float CirclingAxeCdMul = 1.0f;
+    public float CirclingAxeBaseDamage = 20.0f;
+    public float CirclingAxeDamageMul = 1.0f;
+    public float CirclingAxeBaseSpeed = 6.0f;
+    public float CirclingAxeSpeedMul = 1.0f;
+    public float CirclingAxeBaseLifetime = 4.0f;
+    public float CirclingAxeLifetimeMul = 1.0f;
 
     // orc
     public float OrcReviveTime = 8.0f;

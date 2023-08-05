@@ -7,8 +7,6 @@ using UnityEngine.UI;
 // NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour
 {
-    const float BaseMoveSpeed = 3f;
-
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
 
@@ -138,7 +136,7 @@ public class PlayerScript : MonoBehaviour
 
     void RefreshBulletCount()
     {
-        shotsLeft_ += PlayerUpgrades.Data.MagicMissileBaseBullets * PlayerUpgrades.Data.MagicMissileBulletsMul;
+        shotsLeft_ += PlayerUpgrades.Data.MagicMissileBaseBullets + PlayerUpgrades.Data.MagicMissileBulletsAdd;
     }
 
     void SetNextFire()
@@ -184,7 +182,16 @@ public class PlayerScript : MonoBehaviour
                 if (ActorBase.PlayerClosestEnemy != null)
                     fireDir = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
 
+                bool tripleShot = PlayerUpgrades.Data.MagicMissileTripleShot;
                 Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out recoil);
+                if (tripleShot)
+                {
+                    fireDir = Quaternion.AngleAxis(-20, Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out _);
+                    fireDir = Quaternion.AngleAxis(+40, Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out _);
+                }
+
                 AddForce(lookDir_ * -recoil);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
@@ -302,7 +309,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         Camera cam = Camera.main;
-        Time.timeScale = 0.0001f;
+        Time.timeScale = 0.0f;
         Vector3 cameraTarget = trans_.localPosition;
 
         RoundComplete = false;
@@ -344,7 +351,7 @@ public class PlayerScript : MonoBehaviour
         float up = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1.0f : 0.0f;
         float down = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1.0f : 0.0f;
 
-        float speed = BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
+        float speed = PlayerUpgrades.Data.BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
 
         speed *= Time.deltaTime;
 
@@ -371,9 +378,7 @@ public class PlayerScript : MonoBehaviour
         if (moveVec_.x != 0.0f)
         {
             flipX_ = moveVec_.x < 0 ? -playerScale_ : playerScale_;
-            Vector3 scale = trans_.localScale;
-            scale.x = flipX_;
-            trans_.localScale = scale;
+            renderer_.flipX = flipX_ < 0;
         }
     }
 

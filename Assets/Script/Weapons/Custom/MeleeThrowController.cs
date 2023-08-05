@@ -46,28 +46,7 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
             if (PlayerUpgrades.Data.MeleeThrowLeft)
                 Throw(location, Vector3.left, damage, scale);
 
-            //if (PlayerUpgrades.Data.MeleeThrowRight)
-            //    Throw(location, Vector3.right, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowUp)
-            //    Throw(location, Vector3.up, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowDown)
-            //    Throw(location, Vector3.down, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowDownLeft)
-            //    Throw(location, Vector3.down + Vector3.left, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowDownRight)
-            //    Throw(location, Vector3.down + Vector3.right, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowUpLeft)
-            //    Throw(location, Vector3.up + Vector3.left, damage, scale);
-
-            //if (PlayerUpgrades.Data.MeleeThrowUpRight)
-            //    Throw(location, Vector3.up + Vector3.right, damage, scale);
-
-                SetNextThrow();
+            SetNextThrow();
         }
     }
 }

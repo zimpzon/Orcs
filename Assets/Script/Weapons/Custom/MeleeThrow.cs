@@ -8,15 +8,14 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
 
     Transform trans_;
     Vector3 startPos_;
-    Vector3 startDir_;
-    float startSign_;
+    float damage_;
+
     private void Awake()
     {
         trans_ = transform;
     }
 
     float degrees_;
-    float damage_;
 
     public float rotationspeed = 200.0f;
 
@@ -90,7 +89,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             var enemy = BlackboardScript.EnemyOverlap[i];
             var dir = RndUtil.RandomInsideUnitCircle().normalized;
             enemy.AddForce(dir * 1.0f);
-            enemy.ApplyDamage(50, dir, 1.5f);
+            enemy.ApplyDamage(damage_, dir, 1.5f);
         }
 
         //float dist = Vector3.Distance(GameManager.Instance.PlayerScript.transform.position, trans_.position);
@@ -104,17 +103,6 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
     {
         CacheManager.Instance.MeleeThrowCache.ReturnInstance(gameObject);
     }
-
-    //void OnCollisionEnter2D(Collision2D col)
-    //{
-    //    int layer = col.gameObject.layer;
-    //    if (layer != GameManager.Instance.LayerEnemy)
-    //        return;
-
-    //    var actor = col.gameObject.GetComponent<ActorBase>();
-    //    float forceMul = 1.0f;
-    //    GameManager.Instance.DamageEnemy(actor, damage_, actor.transform.position - trans_.position, forceMul);
-    //}
 
     public void Throw(float damage, Vector3 scale)
     {

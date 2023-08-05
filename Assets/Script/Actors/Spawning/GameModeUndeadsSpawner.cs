@@ -134,6 +134,19 @@ public class GameModeUndeadsSpawner : MonoBehaviour
             );
     }
 
+    void Large()
+    {
+        StartCoroutine(
+            PositionUtility.Swarm(
+                ActorTypeEnum.OgreLarge,
+                new TimeSpan(0, 0, 30),
+                new TimeSpan(0, 15, 0),
+                spawnCountPerTick: 1,
+                timeBetweenTicks: 30.0f,
+                outsideScreen: true,
+                PositionUtility.SpawnDirection.Any));
+    }
+
     void Bandanas()
     {
         StartCoroutine(
@@ -155,6 +168,7 @@ public class GameModeUndeadsSpawner : MonoBehaviour
         Casters();
         SmallOnes();
         Standard();
+        Large();
         Bandanas();
 
         while (true)

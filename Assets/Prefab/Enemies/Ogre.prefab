@@ -134,7 +134,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c714b5e5cf73e8b4fa0fe4cfa2684628, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 1
+  Speed: 2
   AvoidCrowds: 1
   IsBoss: 0
   Mass: 2
