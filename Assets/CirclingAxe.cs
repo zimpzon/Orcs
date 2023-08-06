@@ -32,6 +32,7 @@ public class CirclingAxe : MonoBehaviour, IKillableObject
 
         var actor = col.gameObject.GetComponent<ActorBase>();
         float forceMul = 0.0f;
+        actor.OnPaintballHit(Color.green, 2.0f);
         GameManager.Instance.DamageEnemy(actor, damage_, (trans_.position - lastPos_).normalized , forceMul);
     }
 

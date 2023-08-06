@@ -64,8 +64,8 @@ public class UpgradeData
     public bool MeleeThrowDownLeft = true;
     public bool MeleeThrowDownRight = true;
 
-    public bool SawBladeBought = true;
-    public bool SawBladeEnabledInRound = true;
+    public bool SawBladeBought = false;
+    public bool SawBladeEnabledInRound = false;
     public float SawBladeMaxDamage = 200;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 25;
@@ -98,14 +98,14 @@ public class UpgradeData
     public float PaintballDamagePerSecMul = 1.0f;
 
     // circling axe
-    public bool CirclingAxeEnabled = true;
-    public float CirclingAxeBaseCd = 8.0f;
+    public bool CirclingAxeEnabled = false;
+    public float CirclingAxeBaseCd = 5.0f;
     public float CirclingAxeCdMul = 1.0f;
-    public float CirclingAxeBaseDamage = 20.0f;
+    public float CirclingAxeBaseDamage = 45.0f;
     public float CirclingAxeDamageMul = 1.0f;
     public float CirclingAxeBaseSpeed = 6.0f;
     public float CirclingAxeSpeedMul = 1.0f;
-    public float CirclingAxeBaseLifetime = 6.0f;
+    public float CirclingAxeBaseLifetime = 8.0f;
     public float CirclingAxeLifetimeMul = 1.0f;
 
     // orc

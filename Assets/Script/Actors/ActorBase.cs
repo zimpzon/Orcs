@@ -235,8 +235,8 @@ public class ActorBase : MonoBehaviour
         if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.5f);
-        if (crowdCount > 2)
+        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
+        if (crowdCount > 3)
         {
             float chance = (float)(Math.Sin(GameManager.Instance.GameTime * 0.5f + crowdedWaveRandom_) + 1) * 0.5f;
             if (UnityEngine.Random.value > chance)

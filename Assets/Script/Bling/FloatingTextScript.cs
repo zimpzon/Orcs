@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class FloatingTextScript : MonoBehaviour
+public class FloatingTextScript : MonoBehaviour, IKillableObject
 {
     Transform transform_;
     TextMeshPro text_;
@@ -42,5 +42,10 @@ public class FloatingTextScript : MonoBehaviour
 
         if (Time.time >= dieTime_)
             Die();
+    }
+
+    public void Kill()
+    {
+        Die();
     }
 }

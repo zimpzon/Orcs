@@ -22,8 +22,9 @@ BUGS
   reset of weapons fokked up?
 
 SMART DESIGN
+  MORE COWBELL! flash when enemies die?
   smaller player hitbox? already tiny.
-  SAW FRONTROW! do like axe.
+  SAW FRONTROW! no unlock? more blood? some flashing and dust?
   MORE SWAG AND MORE DODGING, need more paths between enemies. groups of enemies could work.
   DECREASE rewards for repeated choices instead of increase! Encourages diversification!
  the most fun so far is moving between spread out enemies and escaping. Much fun!

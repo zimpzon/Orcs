@@ -52,34 +52,34 @@ public static class ChoicesPlayer
             new Choice
             {
                 Title = $"{Name}, recovery (1)",
-                Description = "Heal <color=#00ff00>+0.2</color> life/sec",
+                Description = "Heal <color=#00ff00>+0.5</color> life/sec",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.HealthRegenSecAdd += 0.2f;
+                    PlayerUpgrades.Data.HealthRegenSecAdd += 0.5f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, recovery (2)",
-                    Description = "Heal <color=#00ff00>+0.3</color> life/sec",
+                    Description = "Heal <color=#00ff00>+0.5</color> life/sec",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthRegenSecAdd += 0.3f;
+                        PlayerUpgrades.Data.HealthRegenSecAdd += 0.5f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, recovery (3)",
-                        Description = "Heal <color=#00ff00>+0.4</color> life/sec",
+                        Description = "Heal <color=#00ff00>+1</color> life/sec",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthRegenSecAdd += 0.4f;
+                            PlayerUpgrades.Data.HealthRegenSecAdd += 1.0f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, recovery (4)",
-                            Description = "Heal <color=#00ff00>+0.5</color> life/sec",
+                            Description = "Heal <color=#00ff00>+1</color> life/sec",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.HealthRegenSecAdd += 0.5f;
+                                PlayerUpgrades.Data.HealthRegenSecAdd += 1.0f;
                             },
                         }
                     }

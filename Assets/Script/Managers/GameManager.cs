@@ -753,6 +753,8 @@ public class GameManager : MonoBehaviour
 
         enemy.ApplyDamage(amount, direction, forceModifier);
 
+        MakeFlash(enemy.transform.position, 1.5f);
+
         string text = string.Concat("-", ((int)(amount + 0.5f)).ToString());
 
         FloatingTextSpawner.Instance.Spawn(
