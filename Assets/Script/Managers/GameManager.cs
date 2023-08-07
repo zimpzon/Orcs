@@ -7,12 +7,18 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
+using Unity.Services.Core;
+using System.Threading.Tasks;
 
 public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
+
+    public const string GameOverEvent = "gameOver";
+    public const string ItemBoughtEvent = "itemBought";
 
     const float XpPerLevelMultiplier = 1.2f;
     const float WinTime = 60 * 15;
@@ -204,6 +210,14 @@ public class GameManager : MonoBehaviour
     public void OnItemBought(ShopItemType itemType)
     {
         UpdateMoneyLabels();
+
+        var res = Analytics.CustomEvent(ItemBoughtEvent, new Dictionary<string, object>
+        {
+            { "type", itemType.ToString() },
+            { "goldLeft", (int)SaveGame.Members.Money },
+            { "goldSpent", (int)SaveGame.Members.MoneySpentInShop },
+        });
+        Debug.Log(res);
     }
 
     IEnumerator GameStateCo()
@@ -415,6 +429,14 @@ public class GameManager : MonoBehaviour
         CanvasIntro.gameObject.SetActive(false);
 
         GameState = State.Dead;
+
+        Analytics.CustomEvent(GameOverEvent, new Dictionary<string, object>
+        {
+            { "score", SaveGame.RoundScore },
+            { "level", (int)currentLevel_ },
+            { "gold", SaveGame.RoundGold },
+            { "kills", SaveGame.RoundKills },
+        });
     }
 
     void KillKillableObjects()
@@ -767,6 +789,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Task.Run(() => { UnityServices.InitializeAsync(); });
+
         Instance = this;
         Application.targetFrameRate = 60;
         SortLayerTopEffects = SortingLayer.NameToID("TopEffects");

@@ -10,6 +10,7 @@ public class CirclingAxeController : MonoBehaviour, IPlayerToggleEfffect
     public void Disable()
     {
         enabled_ = false;
+        nextThrow_ = 0;
     }
 
     public void TryEnable()

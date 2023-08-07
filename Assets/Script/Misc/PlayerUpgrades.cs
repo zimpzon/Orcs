@@ -99,13 +99,13 @@ public class UpgradeData
 
     // circling axe
     public bool CirclingAxeEnabled = false;
-    public float CirclingAxeBaseCd = 5.0f;
+    public float CirclingAxeBaseCd = 8.0f;
     public float CirclingAxeCdMul = 1.0f;
     public float CirclingAxeBaseDamage = 45.0f;
     public float CirclingAxeDamageMul = 1.0f;
     public float CirclingAxeBaseSpeed = 6.0f;
     public float CirclingAxeSpeedMul = 1.0f;
-    public float CirclingAxeBaseLifetime = 8.0f;
+    public float CirclingAxeBaseLifetime = 4.0f;
     public float CirclingAxeLifetimeMul = 1.0f;
 
     // orc
