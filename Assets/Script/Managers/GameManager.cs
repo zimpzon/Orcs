@@ -7,9 +7,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Analytics;
-using Unity.Services.Core;
-using System.Threading.Tasks;
 
 public enum GameModeEnum { Undeads };
 
@@ -17,12 +14,9 @@ public class GameManager : MonoBehaviour
 {
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
-    public const string GameOverEvent = "gameOver";
-    public const string ItemBoughtEvent = "itemBought";
-
     const float XpPerLevelMultiplier = 1.2f;
     const float WinTime = 60 * 15;
-    const float BaseXpToLevel = 10;
+    const float BaseXpToLevel = 15;
 
     public static GameManager Instance;
     public bool UnlockAllGameModes;
@@ -31,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     public Color[] xpColors = new Color[] { };
 
+    public Text TextWin;
     public Text TextLevel;
     public Text TextHp;
     public Text TextTime;
@@ -207,18 +202,27 @@ public class GameManager : MonoBehaviour
         TextShopMoney.text = $"${SaveGame.Members.Money}";
     }
 
+    static int BuyCount = 0;
+
     public void OnItemBought(ShopItemType itemType)
     {
         UpdateMoneyLabels();
 
-        var res = Analytics.CustomEvent(ItemBoughtEvent, new Dictionary<string, object>
+        BuyCount++;
+
+        var props = new Dictionary<string, object>
         {
             { "type", itemType.ToString() },
             { "goldLeft", (int)SaveGame.Members.Money },
             { "goldSpent", (int)SaveGame.Members.MoneySpentInShop },
-        });
-        Debug.Log(res);
+        };
+
+        Playfab.PlayerEvent(Playfab.ItemBoughtEvent, props);
+        Playfab.PlayerStat(Playfab.ItemsBoughtStat, BuyCount);
     }
+
+    bool GoBack()
+        => Input.GetKeyDown(menuBackKey_) || Input.GetKeyDown(KeyCode.Backspace);
 
     IEnumerator GameStateCo()
     {
@@ -231,7 +235,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_GameMode)
             {
-                if (Input.GetKeyDown(menuBackKey_))
+                if (GoBack())
                 {
                     PlayMenuSound();
                     GameState = State.Intro;
@@ -249,7 +253,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Settings)
             {
-                if (Input.GetKeyDown(menuBackKey_))
+                if (GoBack())
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -263,14 +267,14 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Shop)
             {
-                if (Input.GetKeyDown(KeyCode.M))
+                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.RightShift))
                 {
                     SaveGame.Members.Money += 500;
                     ShopItems.UpdateBoughtItems();
                     UpdateMoneyLabels();
                 }
 
-                if (Input.GetKeyDown(menuBackKey_))
+                if (GoBack())
                 {
                     PlayMenuSound();
                     SaveGame.Save();
@@ -291,6 +295,8 @@ public class GameManager : MonoBehaviour
                 {
                     TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
                     lastSecondsLeft = secondsLeft;
+                    if (secondsLeft <= 0)
+                        TextWin.enabled = true;
                 }
 
                 int hpLeft = (int)(PlayerScript.Hp + 0.5f);
@@ -336,7 +342,7 @@ public class GameManager : MonoBehaviour
                     PlayerScript.RoundComplete = true;
                     ShowTitle(autoStartGame: true);
                 }
-                else if (Input.GetKeyDown(menuBackKey_))
+                else if (GoBack())
                 {
                     PlayerScript.RoundComplete = true;
                     ShowTitle();
@@ -412,7 +418,28 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Dead)
             return;
 
+        var props = new Dictionary<string, object>
+        {
+            { "score", SaveGame.RoundScore },
+            { "level", (int)currentLevel_ },
+            { "gold", SaveGame.RoundGold },
+            { "kills", SaveGame.RoundKills },
+        };
+
+        Playfab.PlayerEvent(Playfab.GameOverEvent, props);
+
+        Rounds++;
+
+        var dic = new Dictionary<string, int>();
+        dic[Playfab.GoldStat] = SaveGame.RoundGold;
+        dic[Playfab.LevelStat] = (int)currentLevel_;
+        dic[Playfab.KillsStat] = SaveGame.RoundKills;
+        dic[Playfab.ScoreStat] = SaveGame.RoundScore;
+        dic[Playfab.RoundsCompletedStat] = Rounds;
+
+        Playfab.PlayerStat(dic);
         TextFloatingWeapon.Clear();
+
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
 
@@ -429,15 +456,9 @@ public class GameManager : MonoBehaviour
         CanvasIntro.gameObject.SetActive(false);
 
         GameState = State.Dead;
-
-        Analytics.CustomEvent(GameOverEvent, new Dictionary<string, object>
-        {
-            { "score", SaveGame.RoundScore },
-            { "level", (int)currentLevel_ },
-            { "gold", SaveGame.RoundGold },
-            { "kills", SaveGame.RoundKills },
-        });
     }
+
+    static int Rounds = 0;
 
     void KillKillableObjects()
     {
@@ -789,7 +810,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Task.Run(() => { UnityServices.InitializeAsync(); });
+        Playfab.Login();
 
         Instance = this;
         Application.targetFrameRate = 60;
