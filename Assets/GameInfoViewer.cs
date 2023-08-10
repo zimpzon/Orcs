@@ -1,33 +1,59 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public class GameInfo
+{
+    public string Text;
+    public float? Duration;
+    public float? FadeInDuration;
+    public float? FadeOutDuration;
+    public Color? Color;
+    public int? FontSize;
+    public Vector2? Position;
+}
+
 public class GameInfoViewer : MonoBehaviour, IKillableObject
 {
-    Color defaultColor;
     Color hiddenColor;
     Text text_;
     float hideTime_;
+    float fadeOutDuration_;
+    GameInfo defaultInfo_;
 
     private void Awake()
     {
         text_ = GetComponent<Text>();
-        defaultColor = text_.color;
         hideTime_ = float.MaxValue;
+
+        defaultInfo_ = new GameInfo
+        {
+            Text = "default",
+            Duration = 3.0f,
+
+            Color = text_.color,
+            FontSize = 10,
+            Position = Vector2.up * -140,
+        };
         gameObject.SetActive(false);
     }
 
-    public void Show(string text, float duration, Color? color = null)
+    public void Show(GameInfo info)
     {
-        var finalColor = color ?? defaultColor;
+        var finalColor = (info.Color ?? defaultInfo_.Color).Value;
         hiddenColor = finalColor;
         hiddenColor.a = 0;
         text_.color = hiddenColor;
 
-        text_.text = text;
-        hideTime_ = GameManager.Instance.GameTime + duration;
+        text_.text = info.Text;
+        text_.fontSize = (info.FontSize ?? defaultInfo_.FontSize).Value;
+        hideTime_ = GameManager.Instance.GameTime + (info.Duration ?? defaultInfo_.Duration).Value;
+        GetComponent<RectTransform>().anchoredPosition = (info.Position ?? defaultInfo_.Position).Value;
+
         gameObject.SetActive(true);
 
-        LeanTween.textColor(text_.rectTransform, finalColor, 0.25f);
+        fadeOutDuration_ = (info.FadeOutDuration ?? defaultInfo_.FadeOutDuration).Value;
+        float fadeInDuration = (info.FadeInDuration ?? defaultInfo_.FadeInDuration).Value;
+        LeanTween.textColor(text_.rectTransform, finalColor, fadeInDuration);
     }
 
     void Update()
@@ -39,7 +65,7 @@ public class GameInfoViewer : MonoBehaviour, IKillableObject
                 gameObject.SetActive(false);
                 hideTime_ = float.MaxValue;
             }
-            LeanTween.textColor(text_.rectTransform, hiddenColor, 1.0f).setOnComplete(OnComplete);
+            LeanTween.textColor(text_.rectTransform, hiddenColor, fadeOutDuration_).setOnComplete(OnComplete);
         }
     }
 

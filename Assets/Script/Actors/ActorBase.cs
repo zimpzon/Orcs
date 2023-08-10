@@ -12,6 +12,8 @@ public enum ActorTypeEnum
     PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton,
 };
 
+public enum ActorForcedTargetType { Absolute, Direction };
+
 public class ActorBase : MonoBehaviour
 {
     const float IgnoreCrowdsWhenCloseToPlayer = 1.5f;
@@ -57,8 +59,10 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public bool IsDead;
 
     private bool hasForcedDestination_;
+    private ActorForcedTargetType forcedTargetType_;
+    private bool forcedDestinationBreakAtDamage_;
     private Vector3 forcedDestination_;
-    protected bool despawnOnForcedDestinationReached_;
+    protected bool despawnAtForcedDestination_;
 
     protected GameModeData GameMode;
     protected float DecayTime = 10.0f;
@@ -119,8 +123,9 @@ public class ActorBase : MonoBehaviour
         force_ = Vector3.zero;
         hasForcedDestination_ = false;
         forcedDestination_ = Vector3.zero;
+        despawnAtForcedDestination_ = false;
+        forcedDestinationBreakAtDamage_ = true;
         nextCheckForCrowded_ = 0;
-        despawnOnForcedDestinationReached_ = false;
         material_.color = Color.white;
     }
 
@@ -216,7 +221,14 @@ public class ActorBase : MonoBehaviour
 
         if (hasForcedDestination_)
         {
-            moveVec = (forcedDestination_ - position_).normalized;
+            if (forcedTargetType_ == ActorForcedTargetType.Absolute)
+            {
+                moveVec = (forcedDestination_ - position_).normalized;
+            }
+            else
+            {
+                moveVec = forcedDestination_;
+            }
         }
 
         if (isLivingBomb_)
@@ -238,9 +250,18 @@ public class ActorBase : MonoBehaviour
         transform_.localScale = scale;
     }
 
+    public void SetForcedTarget(Vector2 target, bool despawnAtDestination = false, bool breakAtDamage = true, ActorForcedTargetType targetType = ActorForcedTargetType.Absolute)
+    {
+        hasForcedDestination_ = true;
+        forcedTargetType_ = targetType;
+        forcedDestination_ = targetType == ActorForcedTargetType.Absolute ? target : (target - (Vector2)position_).normalized;
+        despawnAtForcedDestination_ = despawnAtDestination;
+        forcedDestinationBreakAtDamage_ = breakAtDamage;
+    }
+
     void CheckForCrowded()
     {
-        if (!AvoidCrowds || GameManager.Instance.GameTime < nextCheckForCrowded_)
+        if (!AvoidCrowds || hasForcedDestination_ || GameManager.Instance.GameTime < nextCheckForCrowded_)
             return;
 
         // if distance to player is small ignore crowd rules and go for it!
@@ -253,9 +274,10 @@ public class ActorBase : MonoBehaviour
             float chance = (float)(Math.Sin(GameManager.Instance.GameTime * 0.5f + crowdedWaveRandom_) + 1) * 0.5f;
             if (UnityEngine.Random.value > chance)
             {
-                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * CrowdOutOfTheWayRange;
-                forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
-                hasForcedDestination_ = true;
+                var forcedPos = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * CrowdOutOfTheWayRange;
+                forcedPos = GameManager.Instance.ClampToBounds(forcedPos, renderer_.sprite);
+                SetForcedTarget(forcedPos);
+
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
             }
         }
@@ -310,15 +332,27 @@ public class ActorBase : MonoBehaviour
         {
             CheckForCrowded();
 
-            bool forcedDistinationReached = hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.2f;
+            bool forcedDistinationReached;
+            if (forcedTargetType_ == ActorForcedTargetType.Absolute)
+            {
+                forcedDistinationReached = hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.2f;
+            }
+            else
+            {
+                forcedDistinationReached = IsFullyReady && !GameManager.Instance.IsOutsideBounds(position_);
+            }
+
             if (forcedDistinationReached)
             {
-                //FloatingTextSpawner.Instance.Spawn(position_, "Avoided", Color.cyan);
+                //FloatingTextSpawner.Instance.Spawn(position_, "reached", Color.cyan);
                 hasForcedDestination_ = false;
-                if (despawnOnForcedDestinationReached_)
+                if (despawnAtForcedDestination_)
                 {
+                    GameManager.Instance.MakePoof(position_, 3);
+                    GameManager.Instance.MakeFlash(position_, 1);
                     StopAllCoroutines();
                     ReturnToCache();
+                    return;
                 }
             }
 
@@ -342,7 +376,8 @@ public class ActorBase : MonoBehaviour
 
         if (IsFullyReady)
         {
-            position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
+            if (!hasForcedDestination_)
+                position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
 
             if (!IsDead)
             {
@@ -400,6 +435,9 @@ public class ActorBase : MonoBehaviour
         if (IsBoss)
             return;
 
+        if (hasForcedDestination_ && !forcedDestinationBreakAtDamage_)
+            return;
+
         force_ += force;
     }
 
@@ -410,6 +448,9 @@ public class ActorBase : MonoBehaviour
             Hp -= amount;
             GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
         }
+
+        if (hasForcedDestination_ && forcedDestinationBreakAtDamage_)
+           hasForcedDestination_ = false;
 
         if (Hp <= 0.0f)
         {
@@ -422,6 +463,7 @@ public class ActorBase : MonoBehaviour
         {
             float force = Mathf.Clamp(amount * 0.2f, 0.1f, 3.0f);
             AddForce(direction * (force * 0.2f * massInverse_ * forceModifier));
+
             if (amount > 0.01f)
             {
                 material_.SetFloat(flashParamId_, 0.75f);

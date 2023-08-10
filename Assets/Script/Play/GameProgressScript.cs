@@ -11,19 +11,15 @@ public class GameProgressScript : MonoBehaviour
     public Text TextScore;
     public Text TextHowToPause;
 
-    bool isRunning_;
-
     public void Begin(GameModeEnum gameMode)
     {
-        isRunning_ = true;
         StartCoroutine(Run(gameMode));
     }
 
     public void Stop()
     {
-        isRunning_ = false;
         StopAllCoroutines();
-        GetComponent<GameModeUndeadsSpawner>().Stop();
+        GetComponent<Chapter1Controller>().Stop();
     }
 
     IEnumerator Run(GameModeEnum gameMode)
@@ -48,7 +44,7 @@ public class GameProgressScript : MonoBehaviour
         TextHowToPause.enabled = false;
 
         // only one gamemode for now
-        GetComponent<GameModeUndeadsSpawner>().Run();
+        GetComponent<Chapter1Controller>().Run();
     }
 
     private void Awake()

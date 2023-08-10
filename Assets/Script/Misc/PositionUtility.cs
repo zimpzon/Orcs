@@ -1,7 +1,4 @@
-﻿using Assets.Script.Enemies;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 class CoResult<T>
@@ -11,6 +8,20 @@ class CoResult<T>
 
 public static class PositionUtility
 {
+    public static float Top = 8;
+    public static float Bottom = -Top;
+    public static float Left = -12.5f;
+    public static float Right = -Left;
+    public static Vector2 TopMidOut = new(0, Top + 2);
+    public static Vector2 BottomMidOut = new(0, Bottom - 2);
+    public static Vector2 LeftMidOut = new(Left - 2, 0);
+    public static Vector2 RightMidOut = new(Right + 2, 0);
+
+    public static Vector2 TopLeftOut = new(Left - 2, Top + 2);
+    public static Vector2 TopRightOut = new(Right + 2, Top + 2);
+    public static Vector2 BottomLeftOut = new(Left - 2, Bottom - 2);
+    public static Vector2 BottomRightOut = new(Right + 2, Bottom - 2);
+
     public enum SpawnDirection { Top, Bottom, Left, Right, TopOrBottom, LeftOrRight, Inside, Any };
     public enum GroupFormation { Circle, Line };
 
@@ -29,8 +40,8 @@ public static class PositionUtility
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
-            float x = UnityEngine.Random.Range(-0.4f, 0.4f) * maxOffsetX;
-            float y = UnityEngine.Random.Range(-0.4f, 0.4f) * maxOffsetY;
+            float x = Random.Range(-0.4f, 0.4f) * maxOffsetX;
+            float y = Random.Range(-0.4f, 0.4f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
             bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
@@ -45,8 +56,8 @@ public static class PositionUtility
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
-            float x = UnityEngine.Random.Range(-0.5f, 0.5f) * maxOffsetX;
-            float y = UnityEngine.Random.Range(-0.5f, 0.5f) * maxOffsetY;
+            float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
+            float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
             bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
@@ -114,173 +125,6 @@ public static class PositionUtility
     }
 
     public const float PI2 = 3.14159265f * 2;
-
-    public static IEnumerator SpawnAndMaintain(
-        ActorTypeEnum actorType,
-        TimeSpan startTime,
-        TimeSpan endTime,
-        int maintainCount,
-        float maintainCountIncreasePerSec,
-        int spawnCountPerTick,
-        float timeBetweenTicks,
-        bool outsideScreen,
-        SpawnDirection dir)
-    {
-        List<ActorBase> alive = new ();
-
-        var wait = new WaitForSeconds(timeBetweenTicks);
-
-        float startTimeSec = (float)startTime.TotalSeconds;
-        float endTimeSec = (float)endTime.TotalSeconds;
-
-        while (GameManager.Instance.GameTime < startTimeSec)
-        {
-            yield return null;
-        }
-
-        void RemoveDead()
-        {
-            while (true)
-            {
-                bool removed = false;
-                for (int i = 0; i < alive.Count; ++i)
-                {
-                    if (alive[i].IsDead)
-                    {
-                        alive.RemoveAt(i);
-                        removed = true;
-                        break;
-                    }
-                }
-
-                if (!removed)
-                    break;
-            }
-        }
-
-        float extraSpawns = 0;
-
-        while (GameManager.Instance.GameTime < endTimeSec)
-        {
-            extraSpawns += maintainCountIncreasePerSec * Time.deltaTime;
-
-            if (alive.Count < maintainCount + extraSpawns)
-            {
-                for (int i = 0; i < spawnCountPerTick && alive.Count < maintainCount + extraSpawns; i++)
-                {
-                    var spawn = ActorCache.Instance.GetActor(actorType);
-                    float offset = 1.0f;
-                    Vector3 pos;
-                    if (outsideScreen)
-                        pos = GetPointOutsideScreen(dir, offset);
-                    else
-                        pos = GetPointInsideArena(1.0f, 1.0f);
-
-                    spawn.transform.position = pos;
-                    spawn.SetActive(true);
-                    alive.Add(spawn.GetComponent<ActorBase>());
-                }
-
-                RemoveDead();
-
-                if (timeBetweenTicks != 0.0)
-                    yield return wait;
-            }
-
-            RemoveDead();
-            yield return null;
-        }
-    }
-
-    public static IEnumerator Swarm(
-        ActorTypeEnum actorType,
-        TimeSpan startTime,
-        TimeSpan endTime,
-        int spawnCountPerTick,
-        float timeBetweenTicks,
-        bool outsideScreen,
-        SpawnDirection dir)
-    {
-        var wait = new WaitForSeconds(timeBetweenTicks);
-
-        float startTimeSec = (float)startTime.TotalSeconds;
-        float endTimeSec = (float)endTime.TotalSeconds;
-
-        while (GameManager.Instance.GameTime < startTimeSec)
-        {
-            yield return null;
-        }
-
-        while (GameManager.Instance.GameTime < endTimeSec)
-        {
-            for (int i = 0; i < spawnCountPerTick; i++)
-            {
-                var spawn = ActorCache.Instance.GetActor(actorType);
-                float offset = 1.0f;
-                Vector3 pos;
-                if (outsideScreen)
-                    pos = GetPointOutsideScreen(dir, offset);
-                else
-                    pos = GetPointInsideArena(1.0f, 1.0f);
-
-                spawn.transform.position = pos;
-                spawn.SetActive(true);
-            }
-
-            yield return wait;
-        }
-
-        yield return null;
-    }
-
-    public static IEnumerator Single(
-        ActorTypeEnum actorType,
-        TimeSpan time,
-        bool outsideScreen,
-        SpawnDirection dir)
-    {
-        float startTimeSec = (float)time.TotalSeconds;
-
-        while (GameManager.Instance.GameTime < startTimeSec)
-        {
-            yield return null;
-        }
-
-        var spawn = ActorCache.Instance.GetActor(actorType);
-        float offset = 1.0f;
-        Vector3 pos;
-        if (outsideScreen)
-            pos = GetPointOutsideScreen(dir, offset);
-        else
-            pos = GetPointInsideArena(1.0f, 1.0f);
-
-        spawn.transform.position = pos;
-        spawn.SetActive(true);
-    }
-
-    public static IEnumerator SpawnGroup(
-        ActorTypeEnum actorType,
-        int count,
-        float timeBetweenEntities,
-        bool outsideScreen,
-        SpawnDirection dir)
-    {
-        for (int entity = 0; entity < count; ++entity)
-        {
-            var spawn = ActorCache.Instance.GetActor(actorType);
-            float offset = 1.0f;
-            Vector3 pos;
-            if (outsideScreen)
-                pos = GetPointOutsideScreen(dir, offset, UnityEngine.Random.value * 0.5f);
-            else
-                pos = GetPointInsideArena(1.0f, 1.0f);
-
-            spawn.transform.position = pos;
-            spawn.SetActive(true);
-            if (timeBetweenEntities != 0.0)
-                yield return new WaitForSeconds(timeBetweenEntities);
-        }
-    }
 
     public static void GetCircleEdge(int count, float radius, Vector3 center, List<Vector3> list)
     {

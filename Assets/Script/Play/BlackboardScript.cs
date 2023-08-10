@@ -7,18 +7,21 @@ namespace Assets.Script
     {
         public static PlayerScript PlayerScript;
         public static Transform PlayerTrans;
-        public static List<ActorBase> DeadEnemies = new List<ActorBase>();
+        public static List<ActorBase> DeadEnemies = new ();
         static Collider2D[] RawEnemyOverlap = new Collider2D[200];
         public static ActorBase[] EnemyOverlap = new ActorBase[200];
 
         public static void DestroyAllEnemies()
         {
-            var allEnemies = GameObject.FindObjectsOfType<ActorBase>();
+            var allEnemies = GetAllEnemies();
             for (int i = 0; i < allEnemies.Length; ++i)
             {
                 allEnemies[i].ReturnToCache();
             }
         }
+
+        public static ActorBase[] GetAllEnemies()
+            => GameObject.FindObjectsOfType<ActorBase>();
 
         public static void DestroyAllCorpses()
         {

@@ -28,7 +28,6 @@ public class ActorDefaultWalker : MonoBehaviour
 
         while (true)
         {
-            float distanceToPlayer = BlackboardScript.DistanceToPlayer(actorBase_.transform.position);
             target_ = GameManager.Instance.PlayerTrans.position;
             yield return null;
         }

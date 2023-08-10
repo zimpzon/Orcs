@@ -5,14 +5,16 @@
 
 CAM: 8.4
 
-small levels, rooms
+left:  -12,5
+right:  12,5
+top:     8,0
+bottom: -8,0
 
-NEXT
-  // Light spell'ish color : 253, 248, 220 -> 250, 239, 129
+CHAPTERS
+--------
+first duck: ui to select chapter? and speed per chapter? x1, x2, x3, x4. GOLD IS DOUBLED WITH SPEED??
+BOSS must be cool or get out. Phases. Talk?
 
-current weapons
-  burst of frost MORE SWAG!!!
-  poison, axe? MORE SWAG!!!! A bunch of small poison circles? Particle circle does not follow dagger speed.
 
   swirling swords OR shields that clears a path? small one pushes in, large ones out? (SUCK in enemies? need cool thing, move around in some cool way?)
    SWAG could be a few small circles, then blast aginst player, and right past out of the screen.

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
     const float XpPerLevelMultiplier = 1.2f;
-    const float WinTime = 60 * 15;
+    const float ChapterTime = 60 * 5;
     const float BaseXpToLevel = 14;
 
     public static GameManager Instance;
@@ -325,7 +325,7 @@ public class GameManager : MonoBehaviour
             {
                 float runTime = GameTime;
 
-                int secondsLeft = (int)(WinTime - runTime + 0.5f);
+                int secondsLeft = (int)(ChapterTime - runTime + 0.5f);
                 if (secondsLeft != lastSecondsLeft)
                 {
                     TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
@@ -656,7 +656,7 @@ public class GameManager : MonoBehaviour
     {
         TimeSinceStartup = Time.realtimeSinceStartup;
         if (!PauseGameTime)
-            GameTime += Time.deltaTime;
+            GameTime += Time.deltaTime * 2;
 
         if (Input.GetKey(Code[codeIdx]))
         {
@@ -941,7 +941,13 @@ public class GameManager : MonoBehaviour
     {
         float halfH = sprite.bounds.extents.y;
         float halfW = sprite.bounds.extents.x;
-        Rect sizeAdjustedBounds = Rect.MinMaxRect(ArenaBounds.xMin + halfW, ArenaBounds.yMin + halfH * 2, ArenaBounds.xMax - halfW, ArenaBounds.yMax - halfH); // Pivot is at head so * 2 for bottom
+        Rect sizeAdjustedBounds = Rect.MinMaxRect(ArenaBounds.xMin + halfW, ArenaBounds.yMin + halfH * 2, ArenaBounds.xMax - halfW, ArenaBounds.yMax - halfH);
+        return sizeAdjustedBounds.Contains(pos);
+    }
+
+    public bool IsOutsideBounds(Vector3 pos)
+    {
+        Rect sizeAdjustedBounds = Rect.MinMaxRect(ArenaBounds.xMin - 2, ArenaBounds.yMin - 2, ArenaBounds.xMax + 2, ArenaBounds.yMax + 2);
         return sizeAdjustedBounds.Contains(pos);
     }
 
