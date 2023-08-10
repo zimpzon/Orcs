@@ -15,6 +15,7 @@ public enum ShopItemType
     DoubleMoney,
     EnemyMoneyDrop,
     KillXpChanceMul,
+    DoubleTime,
 
     UnlockPoisonDagger,
     BurstOfFrost,
@@ -145,7 +146,7 @@ public static class ShopItems
             script.Title.text = item.GetTitle(level);
             script.Description.text = item.GetDescription(level);
             script.Level.text = item.GetLevelText(level);
-            script.ButtonText.text = item.GetButtonText(level);
+            script.ButtonText.text = isMaxLevel ? "MAX" : item.GetButtonText(level);
             script.SetIsMaxed(isMaxLevel);
             script.SetDisableButton(disableBuyButton);
         }
@@ -175,6 +176,7 @@ public static class ShopItems
         Items.AddRange(ShopItemsWeapons.GetWeaponItems());
         Items.AddRange(ShopItemsMoneyXp.GetMoneyXpItems());
         Items.AddRange(ShopItemsUnlock.GetUnlockItems());
+        Items.AddRange(ShopItemsProgress.GeProgressItems());
 
         foreach (var item in Items)
             item.Description = item.Description.Replace("#VALUE", item.Value.ToString());

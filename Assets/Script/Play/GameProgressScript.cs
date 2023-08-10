@@ -9,6 +9,7 @@ public class GameProgressScript : MonoBehaviour
     public Text TextControls;
     public Text TextHowTo;
     public Text TextScore;
+    public Text TextHowToPause;
 
     bool isRunning_;
 
@@ -33,6 +34,7 @@ public class GameProgressScript : MonoBehaviour
 
         TextControls.enabled = true;
         TextHowTo.enabled = true;
+        TextHowToPause.enabled = true;
 
         while (SaveGame.RoundScore == 0)
         {
@@ -43,6 +45,7 @@ public class GameProgressScript : MonoBehaviour
         GameManager.Instance.HidingHowToPlay();
         TextControls.enabled = false;
         TextHowTo.enabled = false;
+        TextHowToPause.enabled = false;
 
         // only one gamemode for now
         GetComponent<GameModeUndeadsSpawner>().Run();

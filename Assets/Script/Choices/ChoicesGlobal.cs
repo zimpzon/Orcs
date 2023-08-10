@@ -42,7 +42,7 @@ public static class ChoicesGlobal
                 Description = "<color=#00ff00>5%</color> more critical hits",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.CritChanceMul += 0.05f;
+                    PlayerUpgrades.Data.BaseCritChance += 0.05f;
                 },
                 NextLevel = new Choice
                 {
@@ -50,7 +50,7 @@ public static class ChoicesGlobal
                     Description = "<color=#00ff00>5%</color> more critical hits",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.CritChanceMul += 0.05f;
+                        PlayerUpgrades.Data.BaseCritChance += 0.05f;
                     },
                     NextLevel = new Choice
                     {
@@ -58,7 +58,7 @@ public static class ChoicesGlobal
                         Description = "<color=#00ff00>10%</color> more critical hits",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.CritChanceMul += 0.1f;
+                            PlayerUpgrades.Data.BaseCritChance += 0.1f;
                         },
                     }
                 }

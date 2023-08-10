@@ -1,4 +1,9 @@
-﻿CAM: 8.4
+﻿Upload:
+  unity play
+  itch io
+  newgrounds
+
+CAM: 8.4
 
 small levels, rooms
 

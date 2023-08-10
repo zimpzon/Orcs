@@ -8,6 +8,7 @@ using UnityEngine;
 public static class Playfab
 {
     public static string playerId;
+    public static string DisplayStatus = "not logged in";
     static LoginResult LoginRes;
 
     public const string GameOverEvent = "game_over";
@@ -18,21 +19,42 @@ public static class Playfab
     public const string ScoreStat = "round_score";
     public const string LevelStat = "round_level";
     public const string KillsStat = "round_kills";
+    public const string SecondsLeftStat = "round_seconds_left";
+    public const string TotalSeconds = "total_seconds";
 
     const string Version = "1.0";
+
+    const string PlayerIdKey = "playerId";
+
+    static void RecoverSettingsFromOldFileLocation()
+    {
+        string idPath = Path.Combine(Application.persistentDataPath, PlayerIdKey);
+        if (File.Exists(idPath))
+        {
+            string id = File.ReadAllText(idPath);
+            PlayerPrefs.SetString(PlayerIdKey, id);
+            File.Delete(idPath);
+        }
+    }
 
     public static void Login()
     {
         PlayFabSettings.TitleId = "A45ED";
 
-        string idPath = Path.Combine(Application.persistentDataPath, "playerId");
-        if (!File.Exists(idPath))
+        RecoverSettingsFromOldFileLocation();
+
+        void CreateNewId()
         {
-            string newId = new Guid().ToString();
-            File.WriteAllText(idPath, newId);
+            string newId = Guid.NewGuid().ToString();
+            PlayerPrefs.SetString(PlayerIdKey, newId);
         }
 
-        string id = File.ReadAllText(idPath);
+        if (!PlayerPrefs.HasKey(PlayerIdKey))
+            CreateNewId();
+
+        string id = PlayerPrefs.GetString(PlayerIdKey);
+        playerId = id;
+
         var req = new LoginWithCustomIDRequest
         {
             CreateAccount = true,
@@ -43,11 +65,16 @@ public static class Playfab
         void Callback(LoginResult result)
         {
             LoginRes = result;
+            DisplayStatus = "logged in";
+            GameManager.Instance.TextUser.text = DisplayStatus;
             Debug.Log($"login successful, id: {result.PlayFabId}, created: {result.NewlyCreated}");
         }
 
         void ErrorCallback(PlayFabError result)
         {
+            DisplayStatus = "error logging in";
+            GameManager.Instance.TextUser.text = DisplayStatus;
+
             Debug.LogError($"login error: {result}");
         }
 
@@ -61,6 +88,11 @@ public static class Playfab
             Body = properties,
             CustomTags = new Dictionary<string, string> { { "version", Version } },
             EventName = eventName,
+            AuthenticationContext = new PlayFabAuthenticationContext
+            {
+                ClientSessionTicket = LoginRes.SessionTicket,
+                PlayFabId = LoginRes.PlayFabId,
+            }
         };
 
         void Callback(WriteEventResponse res)
@@ -80,7 +112,12 @@ public static class Playfab
     {
         var req = new UpdatePlayerStatisticsRequest
         {
-            Statistics = new List<StatisticUpdate>()
+            Statistics = new List<StatisticUpdate>(),
+            AuthenticationContext = new PlayFabAuthenticationContext
+            {
+                ClientSessionTicket = LoginRes.SessionTicket,
+                PlayFabId = LoginRes.PlayFabId,
+            }
         };
 
         foreach(var pair in stats)

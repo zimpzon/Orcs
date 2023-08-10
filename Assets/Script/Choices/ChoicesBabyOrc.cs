@@ -2,13 +2,43 @@ using System.Collections.Generic;
 
 public static class ChoicesBabyOrc
 {
+    public const string Name = "Pirate duck";
+
     public static List<Choice> GetBabyOrcChoices()
     {
         return new List<Choice>
         {
             new Choice
             {
-                Title = "Pirate duck, Knightsaber (1)",
+                Title = $"{Name}, first aid (1)",
+                Description = $"<color=#00ff00>+5</color> more life when rescuing a {Name}",
+                Apply = () =>
+                {
+                    PlayerUpgrades.Data.RescueDuckHp += 5;
+                },
+                NextLevel = new Choice
+                {
+                    Title = $"{Name}, first aid (2)",
+                    Description = $"<color=#00ff00>+5</color> more life when rescuing a {Name}",
+                    Apply = () =>
+                    {
+                        PlayerUpgrades.Data.RescueDuckHp += 5;
+                    },
+                    NextLevel = new Choice
+                    {
+                        Title = $"{Name}, first aid (3)",
+                        Description = $"<color=#00ff00>+5</color> more life when rescuing a {Name}",
+                        Apply = () =>
+                        {
+                            PlayerUpgrades.Data.RescueDuckHp += 5;
+                        },
+                    }
+                }
+            },
+
+            new Choice
+            {
+                Title = $"{Name}, Knightsaber (1)",
                 Description = "Pushes away nearby enemies",
                 Apply = () =>
                 {
@@ -17,7 +47,7 @@ public static class ChoicesBabyOrc
                 },
                 NextLevel = new Choice
                 {
-                    Title = "Pirate duck, Knightsaber (2)",
+                    Title = $"{Name}, Knightsaber (2)",
                     Description = "<color=#00ff00>+100%</color> push power",
                     Apply = () =>
                     {

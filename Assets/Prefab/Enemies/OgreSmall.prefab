@@ -124,11 +124,16 @@ MonoBehaviour:
   CanBePoisened: 1
   Speed: 1.1
   AvoidCrowds: 1
+  CrowdScanRadius: 1
+  CrowdMaxNearby: 3
+  CrowdOutOfTheWayRange: 2.5
   IsBoss: 0
   Mass: 1
   XpValue: 1
+  XpCount: 1
+  GoldCount: 0
   ActorType: 9
-  BaseHp: 50
+  BaseHp: 45
 --- !u!114 &8450246416056095144
 MonoBehaviour:
   m_ObjectHideFlags: 0

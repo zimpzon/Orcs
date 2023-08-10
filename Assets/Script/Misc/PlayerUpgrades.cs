@@ -9,7 +9,7 @@ public class UpgradeData
 
     // global
     public float DamageMul = 1.0f;
-    public float BaseCritChance = 0.01f;
+    public float BaseCritChance = 0.05f;
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
 
@@ -33,19 +33,21 @@ public class UpgradeData
     public float BaseMoveSpeed = 4.0f;
     public float MoveSpeedMul = 1.0f;
 
+    public int RescueDuckHp = 5;
+
     // weapons
-    public float MagicMissileBaseDamage = 50.0f;
+    public float MagicMissileBaseDamage = 40.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileBaseBulletCd = 0.15f;
-    public float MagicMissileBaseCd = 1.1f;
+    public float MagicMissileBaseCd = 0.75f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileBaseRange = 2.5f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
-    public float MagicMissileBaseBullets = 3;
+    public float MagicMissileBaseBullets = 4;
     public float MagicMissileBulletsAdd = 0.0f;
-    public bool MagicMissileTripleShot = false;
+    public int MagicMissileMultiShots = 0;
 
     public bool MeleeThrowBought = false;
     public bool MeleeThrowEnabledInRound = false;

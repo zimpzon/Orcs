@@ -12,13 +12,6 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public static float CalcDamage(Basic b)
         {
             float damage = b.Damage;
-            if (b.DamageFalloffDistance != 0.0f && b.DistanceTraveled > b.DamageFalloffDistance)
-            {
-                float metersPastFalloff = b.DistanceTraveled - b.DamageFalloffDistance;
-                float falloffFactor = Mathf.Max(0.0f, (1.0f - (b.DamageFalloffPerMeter * metersPastFalloff)));
-                const float MinimumDamage = 0.25f;
-                damage = MinimumDamage * damage + ((1.0f - MinimumDamage) * falloffFactor * damage);
-            }
             return damage;
         }
 

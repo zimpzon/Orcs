@@ -27,11 +27,13 @@ public class SaveGameMembers
     public int Version;
     public int BestKills;
     public int BestScore;
+    public float VolumeMaster = 1.0f;
     public float VolumeMusic = 0.7f;
     public float VolumeSfx = 1.0f;
     public int SelectedHero;
     public string UserId;
 
+    public int TotalSeconds;
     public int OrcsSaved;
     public int EnemiesKilled;
     public int PlayerDeaths;
@@ -136,21 +138,34 @@ public static class SaveGame
         Members.BoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
         Members.BoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
 
-        File.WriteAllText(GetPath(), Members.ToJson());
+        PlayerPrefs.SetString(SaveGameKey, Members.ToJson());
     }
+
+    const string SaveGameKey = "save.json";
 
     static string GetPath()
     {
-        return Path.Combine(Application.persistentDataPath, "save.json");
+        return Path.Combine(Application.persistentDataPath, SaveGameKey);
+    }
+
+    static void RecoverSaveFromOldFileLocation()
+    {
+        string path = GetPath();
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            PlayerPrefs.SetString(SaveGameKey, json);
+            File.Delete(path);
+        }
     }
 
     public static void Load()
     {
+        RecoverSaveFromOldFileLocation();
+
         string prefs = string.Empty;
-        if (File.Exists(GetPath()))
-        {
-            prefs = File.ReadAllText(GetPath());
-        }
+        if (PlayerPrefs.HasKey(SaveGameKey))
+            prefs = PlayerPrefs.GetString(SaveGameKey);
 
         if (!string.IsNullOrWhiteSpace(prefs))
         {

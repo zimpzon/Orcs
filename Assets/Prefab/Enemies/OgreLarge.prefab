@@ -136,8 +136,13 @@ MonoBehaviour:
   CanBePoisened: 1
   Speed: 2.5
   AvoidCrowds: 0
+  CrowdScanRadius: 1
+  CrowdMaxNearby: 3
+  CrowdOutOfTheWayRange: 2.5
   IsBoss: 0
   Mass: 10
-  XpValue: 10
+  XpValue: 20
+  XpCount: 1
+  GoldCount: 0
   ActorType: 5
-  BaseHp: 1000
+  BaseHp: 800

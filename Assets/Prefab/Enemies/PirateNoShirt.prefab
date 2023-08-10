@@ -96,7 +96,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &950640879620215684
@@ -132,8 +132,13 @@ MonoBehaviour:
   CanBePoisened: 1
   Speed: 1
   AvoidCrowds: 1
+  CrowdScanRadius: 1
+  CrowdMaxNearby: 3
+  CrowdOutOfTheWayRange: 2.5
   IsBoss: 0
   Mass: 1
   XpValue: 1
+  XpCount: 1
+  GoldCount: 0
   ActorType: 0
   BaseHp: 0

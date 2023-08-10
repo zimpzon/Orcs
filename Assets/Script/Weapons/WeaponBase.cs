@@ -75,7 +75,7 @@ public class WeaponBase
     }
 
     public virtual void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0; }
-    public virtual void FireFromPoint(Vector3 point, Vector3 direction, int sortingLayer, out float recoil) { recoil = 0; }
+    public virtual void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil) { recoil = 0; }
     public virtual void Eject(Vector3 pos, Vector3 direction, Color color, float weaponScale) { }
 
     public virtual void StopFire() { }
@@ -128,7 +128,7 @@ public class WeaponBase
                     Machinegun.Scale = new Vector3(0.2f, 0.08f, 1.0f);
                     Machinegun.BulletSprite = SpriteData.Instance.PlayerDagger;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    Machinegun.FireAudio = AudioManager.Instance.AudioData.PlayerPaintballFire;
+                    Machinegun.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
                     Machinegun.MoveSpeedModifier = 1.0f;
                 }
                 return Machinegun;

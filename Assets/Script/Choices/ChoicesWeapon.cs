@@ -85,7 +85,7 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, speed (1)",
-                Description = "<color=#00ff00>-10%</color> time between knifes",
+                Description = "<color=#00ff00>-10%</color> time between knives",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
@@ -93,7 +93,7 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, speed (2)",
-                    Description = "<color=#00ff00>-10%</color> time between knifes",
+                    Description = "<color=#00ff00>-10%</color> time between knives",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
@@ -101,7 +101,7 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, speed (3)",
-                        Description = "<color=#00ff00>-10%</color> time between knifes",
+                        Description = "<color=#00ff00>-10%</color> time between knives",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
@@ -109,10 +109,10 @@ public static class ChoicesWeapon
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, speed (4)",
-                            Description = "<color=#00ff00>-15%</color> time between knifes",
+                            Description = "<color=#00ff00>-5%</color> time between knives",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.15f;
+                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.05f;
                             },
                         }
                     }

@@ -14,7 +14,7 @@ public class WeaponPaintballRandom : WeaponBase
         }
     }
 
-    public override void FireFromPoint(Vector3 point, Vector3 direction, int sortingLayer, out float recoil)
+    public override void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil)
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
@@ -27,16 +27,13 @@ public class WeaponPaintballRandom : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
+        basic.Damage = damage;
         basic.Speed = PlayerUpgrades.Data.PaintballBaseSpeed;
         basic.MaxDistance = PlayerUpgrades.Data.PaintballBaseRange * PlayerUpgrades.Data.PaintballRangeMul;
         basic.Radius = 0.3f;
         basic.DieOnCollision = false;
         basic.CustomCounter = 1;
         basic.CustomCollisionResponse = OnCollision;
-        Vector3 scale = basic.SpriteInfo.Transform.localScale;
-        scale.x = 1.0f;
-        scale.y = 1.0f;
-        scale.z = 1.0f;
 
         basic.Position = point;
         basic.SpriteInfo.Renderer.sprite = BulletSprite;
@@ -44,7 +41,7 @@ public class WeaponPaintballRandom : WeaponBase
         basic.Direction = direction;
         basic.Color = color;
         basic.DieTime = 0.0f;
-        basic.SpriteInfo.Transform.localScale = scale;
+        basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
 
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);

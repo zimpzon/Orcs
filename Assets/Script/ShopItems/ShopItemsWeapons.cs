@@ -30,7 +30,7 @@ public static class ShopItemsWeapons
                 Description = $"<color=#00ff00>#VALUE%</color> less time between attacks",
                 BasePrice = 30,
                 PriceMultiplier = 2.0f,
-                MaxLevel = 5,
+                MaxLevel = 6,
                 Value = 8,
                 ValueScale = 0.01f,
                 Apply = (bought ) =>
@@ -43,10 +43,10 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.MachinegunBulletsPerRound,
                 Title = $"{Name}, Salvo",
-                Description = "<color=#00ff00>+#VALUE</color> more knives per rank.",
-                BasePrice = 35,
+                Description = "<color=#00ff00>+#VALUE</color> more knives per rank",
+                BasePrice = 50,
                 PriceMultiplier = 2.0f,
-                MaxLevel = 5,
+                MaxLevel = 8,
                 Value = 0.5f,
                 ValueScale = 1,
                 Apply = (bought ) =>
@@ -58,17 +58,16 @@ public static class ShopItemsWeapons
             new ShopItem
             {
                 ItemType = ShopItemType.WeaponTripleShot,
-                Title = $"{Name}, Triple",
-                Description = $"{Name} fires in three directions, each shot doing 75% damage.",
-                BasePrice = 150,
-                PriceMultiplier = 1.0f,
-                MaxLevel = 1,
-                Value = 1,
-                ValueScale = 0.01f,
+                Title = $"{Name}, Dagger storm",
+                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing 20% damage",
+                BasePrice = 100,
+                PriceMultiplier = 2.0f,
+                MaxLevel = 5,
+                Value = 1.0f,
+                ValueScale = 1.0f,
                 Apply = (bought ) =>
                 {
-                    PlayerUpgrades.Data.MagicMissileTripleShot = true;
-                    PlayerUpgrades.Data.MagicMissileDamageMul *= 0.75f;
+                    PlayerUpgrades.Data.MagicMissileMultiShots += 1 * bought.Level;
                 }
             },
 

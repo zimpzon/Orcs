@@ -182,14 +182,22 @@ public class PlayerScript : MonoBehaviour
                 if (ActorBase.PlayerClosestEnemy != null)
                     fireDir = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
 
-                bool tripleShot = PlayerUpgrades.Data.MagicMissileTripleShot;
-                Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out recoil);
-                if (tripleShot)
+                float damage = PlayerUpgrades.Data.MagicMissileBaseDamage * PlayerUpgrades.Data.MagicMissileDamageMul;
+
+                Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out recoil);
+
+                const float anglePerShot = 20;
+                const float multiDaggerScale = 0.8f;
+
+                damage *= 0.20f;
+
+                for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
                 {
-                    fireDir = Quaternion.AngleAxis(-20, Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out _);
-                    fireDir = Quaternion.AngleAxis(+40, Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, fireDir, GameManager.Instance.SortLayerTopEffects, out _);
+                    var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+
+                    var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
                 }
 
                 AddForce(lookDir_ * -recoil);
@@ -279,10 +287,10 @@ public class PlayerScript : MonoBehaviour
             return;
 
         var actor = col.gameObject.GetComponent<ActorBase>();
-        if (actor != null)
+        if (actor != null && !actor.IsBoss)
         {
             // Thorns
-            GameManager.Instance.DamageEnemy(actor, 30.0f, (actor.transform.position + trans_.position).normalized, 2.0f);
+            GameManager.Instance.DamageEnemy(actor, 20.0f, (actor.transform.position + trans_.position).normalized, 2.0f);
         }
 
         // Projectiles gets same damage as actors, hackz
@@ -402,9 +410,36 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void AddHp(float value, bool alwaysShow = false)
+    {
+        if (Hp >= MaxHp && !alwaysShow)
+            return;
+
+        if (alwaysShow)
+            FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{(int)value}", new Color(0, 1, 0, 1.0f), speed: 0.5f, timeToLive: 0.75f);
+
+        float newHp = Hp + value;
+        int visibleOld = (int)(Hp + 0.5f);
+        int visibleNew = (int)(newHp + 0.5f);
+        int visibleChange = visibleNew - visibleOld;
+        Hp = newHp;
+
+        if (visibleChange > 0 && !alwaysShow)
+        {
+            const float a = 0.3f;
+            FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{visibleChange}", new Color(0, 1, 0, a), speed: 0.75f, timeToLive: 0.5f);
+        }
+
+        if (Hp > MaxHp)
+            Hp = MaxHp;
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Z))
+            BlackboardScript.DestroyAllEnemies();
+
+        if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.RightShift))
         {
             immortal_ = !immortal_;
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
@@ -413,27 +448,14 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.PauseGameTime)
             return;
 
+        GameManager.SetDebugOutput("lastRegenTick_", lastRegenTick_);
+        GameManager.SetDebugOutput("perTick", PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd);
+
         if (GameManager.Instance.GameTime > lastRegenTick_ + 1.0f)
         {
             lastRegenTick_ = GameManager.Instance.GameTime;
 
-            if (Hp >= MaxHp)
-                return;
-
-            float newHp = Hp + PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd;
-            int visibleOld = (int)(Hp + 0.5f);
-            int visibleNew = (int)(newHp + 0.5f);
-            int visibleChange = visibleNew - visibleOld;
-            Hp = newHp;
-
-            if (visibleChange > 0)
-            {
-                const float a = 0.2f;
-                FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 0.5f, $"+{visibleChange}", new Color(0, 1, 0, a), speed: 0.75f, timeToLive: 0.5f);
-            }
-
-            if (Hp > MaxHp)
-                Hp = MaxHp;
+            AddHp(PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd);
         }
 
         if (flashActive_ && GameManager.Instance.GameTime > flashEndTime_)

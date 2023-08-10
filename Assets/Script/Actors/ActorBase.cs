@@ -22,9 +22,15 @@ public class ActorBase : MonoBehaviour
     public bool CanBePoisened = true;
     public float Speed = 1.0f;
     public bool AvoidCrowds = true;
+    public float CrowdScanRadius = 1.0f;
+    public int CrowdMaxNearby = 3;
+    public float CrowdOutOfTheWayRange = 2.5f;
+
     public bool IsBoss = false;
     public float Mass = 1.0f;
     public int XpValue = 1;
+    public int XpCount = 1;
+    public int GoldCount = 0;
     public ActorTypeEnum ActorType;
     public float BaseHp;
     [System.NonSerialized] public float TimeBorn;
@@ -88,16 +94,20 @@ public class ActorBase : MonoBehaviour
     Vector3 scale_;
 
     // TODO PE: Hmm easy to forget something here. Subclasses may also need a reset. Hopefully it will be easily detectable. Or not.
-    public void ResetForCaching()
+    public void Reset(bool init)
     {
-        StopAllCoroutines();
+        if (!init)
+        {
+            StopAllCoroutines();
+            transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            UseSpawnParticles = false;
+        }
+
         Hp = BaseHp;
         distanceToPlayer_ = float.MaxValue;
-        transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         position_ = Vector3.zero;
         IsCorpse = false;
         IsDead = false;
-        UseSpawnParticles = false;
         isPainted_ = false;
         nextPaintDamage_ = float.MaxValue;
         isFrozen_ = false;
@@ -125,6 +135,8 @@ public class ActorBase : MonoBehaviour
         material_ = renderer_.material;
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
+
+        Reset(init: true);
 
         // Assume uniform scale
         RadiusBody *= transform_.localScale.x;
@@ -232,16 +244,16 @@ public class ActorBase : MonoBehaviour
             return;
 
         // if distance to player is small ignore crowd rules and go for it!
-        if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer)
+        if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer && !IsBoss)
             return;
 
-        int crowdCount = BlackboardScript.CountEnemies(position_, radius: 1.0f);
-        if (crowdCount > 3)
+        int crowdCount = BlackboardScript.CountEnemies(position_, radius: CrowdScanRadius);
+        if (crowdCount > CrowdMaxNearby)
         {
             float chance = (float)(Math.Sin(GameManager.Instance.GameTime * 0.5f + crowdedWaveRandom_) + 1) * 0.5f;
             if (UnityEngine.Random.value > chance)
             {
-                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * 2.5f;
+                forcedDestination_ = position_ + (Vector3)UnityEngine.Random.insideUnitCircle.normalized * CrowdOutOfTheWayRange;
                 forcedDestination_ = GameManager.Instance.ClampToBounds(forcedDestination_, renderer_.sprite);
                 hasForcedDestination_ = true;
                 //FloatingTextSpawner.Instance.Spawn(position_, "CROWD!", Color.yellow);
@@ -385,6 +397,9 @@ public class ActorBase : MonoBehaviour
 
     public void AddForce(Vector3 force)
     {
+        if (IsBoss)
+            return;
+
         force_ += force;
     }
 
@@ -565,7 +580,7 @@ public class ActorBase : MonoBehaviour
 
     public void ReturnToCache()
     {
-        ResetForCaching();
+        Reset(init: false);
         ActorCache.Instance.ReturnObject(gameObject);
     }
 }

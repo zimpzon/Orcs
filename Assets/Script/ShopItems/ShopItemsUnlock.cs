@@ -24,7 +24,7 @@ public static class ShopItemsUnlock
                 ItemType = ShopItemType.UnlockPoisonDagger,
                 Title = ChoicesPoison.Name,
                 Description = $"You may now discover {ChoicesPoison.Name} on your journey",
-                BasePrice = 200,
+                BasePrice = 350,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
@@ -37,7 +37,7 @@ public static class ShopItemsUnlock
                 ItemType = ShopItemType.BurstOfFrost,
                 Title = ChoicesBurstOfFrost.Name,
                 Description = $"You may now discover {ChoicesBurstOfFrost.Name} on your journey",
-                BasePrice = 200,
+                BasePrice = 300,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
@@ -50,7 +50,7 @@ public static class ShopItemsUnlock
                 ItemType = ShopItemType.MeleeThrow,
                 Title = ChoicesMeleeThrow.Name,
                 Description = $"You may now discover {ChoicesMeleeThrow.Name} on your journey",
-                BasePrice = 200,
+                BasePrice = 400,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {

@@ -50,7 +50,7 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
             for (int i = 0; i < PlayerUpgrades.Data.PaintballCount; ++i)
             {
                 var dir = Quaternion.Euler(0, 0, angle) * Vector2.up;
-                paintball.FireFromPoint(location, dir, GameManager.Instance.SortLayerTopEffects, out _);
+                paintball.FireFromPoint(location, dir, damage: 0.0f, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out _);
                 angle += angleStep;
             }
 

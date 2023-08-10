@@ -56,6 +56,32 @@ public static class PositionUtility
         return point;
     }
 
+    public static Vector3 GetClosePointOutsideScreen(Vector3 fromPos)
+    {
+        SpawnDirection dir;
+
+        bool xLeft = fromPos.x < 0.5f;
+        bool yTop = fromPos.y < 0.5f;
+        if (xLeft && yTop)
+        {
+            dir = fromPos.x < fromPos.y ? SpawnDirection.Left : SpawnDirection.Top;
+        }
+        else if (!xLeft && yTop)
+        {
+            dir = fromPos.x > fromPos.y ? SpawnDirection.Right : SpawnDirection.Top;
+        }
+        else if (xLeft)
+        {
+            dir = fromPos.x < fromPos.y ? SpawnDirection.Left : SpawnDirection.Bottom;
+        }
+        else
+        {
+            dir = fromPos.x > fromPos.y ? SpawnDirection.Right : SpawnDirection.Bottom;
+        }
+
+        return GetPointOutsideScreen(dir, offset: 1.0f, maxDistFromCenter: 3.0f);
+    }
+
     public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter = 1.0f)
     {
         if (dir == SpawnDirection.Any)
@@ -205,6 +231,31 @@ public static class PositionUtility
         }
 
         yield return null;
+    }
+
+    public static IEnumerator Single(
+        ActorTypeEnum actorType,
+        TimeSpan time,
+        bool outsideScreen,
+        SpawnDirection dir)
+    {
+        float startTimeSec = (float)time.TotalSeconds;
+
+        while (GameManager.Instance.GameTime < startTimeSec)
+        {
+            yield return null;
+        }
+
+        var spawn = ActorCache.Instance.GetActor(actorType);
+        float offset = 1.0f;
+        Vector3 pos;
+        if (outsideScreen)
+            pos = GetPointOutsideScreen(dir, offset);
+        else
+            pos = GetPointInsideArena(1.0f, 1.0f);
+
+        spawn.transform.position = pos;
+        spawn.SetActive(true);
     }
 
     public static IEnumerator SpawnGroup(

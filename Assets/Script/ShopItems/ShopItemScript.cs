@@ -33,6 +33,7 @@ public class ShopItemScript : MonoBehaviour
     public void SetDisableButton(bool disable)
     {
         BuyButton.GetComponent<Image>().color = disable ? DisabledButtonBackgroundColor : DefaultButtonBackgroundColor;
+        BuyButton.enabled = !disable;
     }
 
     public Action<ShopItemType> OnClickCallback;

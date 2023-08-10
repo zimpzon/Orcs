@@ -98,9 +98,8 @@ public class AudioManager : MonoBehaviour
     {
         const int maxInstances = 1;
 
-        AudioSource selectedSource = null;
         int count = CountPlayingInstancesOfClip(clip, out AudioSource existingPlayingSource);
-        selectedSource = count >= maxInstances ? existingPlayingSource : GetSourceForNewSound(replaceIfNoneAvailable: true);
+        AudioSource selectedSource = count >= maxInstances ? existingPlayingSource : GetSourceForNewSound(replaceIfNoneAvailable: true);
         if (selectedSource != null)
         {
             // Replace an existing source

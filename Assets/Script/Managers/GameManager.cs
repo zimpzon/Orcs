@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     const float XpPerLevelMultiplier = 1.2f;
     const float WinTime = 60 * 15;
-    const float BaseXpToLevel = 15;
+    const float BaseXpToLevel = 14;
 
     public static GameManager Instance;
     public bool UnlockAllGameModes;
@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public Color[] xpColors = new Color[] { };
 
+    public LeanTween Tween;
+    public Text TextGameInfo;
     public Text TextWin;
     public Text TextLevel;
     public Text TextHp;
@@ -34,15 +36,20 @@ public class GameManager : MonoBehaviour
     public Text TextUser;
     public Text TextShopMoney;
     public Text TextFps;
-    public Renderer Floor;
+    public Text TextGameOverGold;
+    public SpriteRenderer Floor;
+    public SpriteRenderer FloorFilter;
+    Color floorDefaultColor;
     public Button ButtonPlay;
     public string ColorLocked;
     public string ColorUnlocked;
     public ShopItemScript ShopItemProto;
     public Transform ShopItemsRoot;
+    public Slider SliderMaster;
     public Slider SliderMusic;
     public Slider SliderSfx;
     public Transform PanelChoices;
+    public Transform PanelPaused;
     public GameObject UpgradeChoice1;
     public GameObject UpgradeChoice2;
     public GameObject UpgradeChoice3;
@@ -99,7 +106,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
 
-    int lastSecondsLeft = 0;
+    public int lastSecondsLeft = 0;
     int lastHp_ = 0;
     int lastMaxHp_ = 0;
     float xpToLevel_;
@@ -112,10 +119,18 @@ public class GameManager : MonoBehaviour
 
     KeyCode menuBackKey_ = KeyCode.Escape;
 
+    public void SliderMasterChanged()
+    {
+        float value = SliderMaster.value;
+        SaveGame.Members.VolumeMaster = value;
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
+    }
+
     public void SliderMusicChanged()
     {
         float value = SliderMusic.value;
-        MusicManagerScript.Instance.SetVolume(value);
+        MusicManagerScript.Instance.SetVolume(value * SaveGame.Members.VolumeMaster);
         SaveGame.Members.VolumeMusic = value;
     }
 
@@ -125,7 +140,7 @@ public class GameManager : MonoBehaviour
     public void SliderSfxChanged()
     {
         float value = SliderSfx.value;
-        AudioManager.Instance.SetVolume(value);
+        AudioManager.Instance.SetVolume(value * SaveGame.Members.VolumeMaster);
         if (!skipNextsfxVolumeChangeFeedback_)
         {
             if (Time.time > sfxVolumeChangeLastFeedback_)
@@ -150,6 +165,7 @@ public class GameManager : MonoBehaviour
         PlayMenuSound();
         GameState = State.Intro_Settings;
 
+        SliderMaster.value = SaveGame.Members.VolumeMaster;
         SliderMusic.value = SaveGame.Members.VolumeMusic;
         skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
         SliderSfx.value = SaveGame.Members.VolumeSfx;
@@ -176,12 +192,16 @@ public class GameManager : MonoBehaviour
     public void OnButtonResetProgress()
     {
         PlayMenuSound();
+        float VolumeMaster = SaveGame.Members.VolumeMaster;
         float VolumeMusic = SaveGame.Members.VolumeMusic;
         float VolumeSfx = SaveGame.Members.VolumeSfx;
+        int totalSeconds = SaveGame.Members.TotalSeconds;
 
-        SaveGame.Members = new SaveGameMembers();
+        SaveGame.Members = new ();
+        SaveGame.Members.VolumeMaster = VolumeMaster;
         SaveGame.Members.VolumeMusic = VolumeMusic;
         SaveGame.Members.VolumeSfx = VolumeSfx;
+        SaveGame.Members.TotalSeconds = totalSeconds;
 
         SaveGame.Save();
         ShopItems.UpdateBoughtItems();
@@ -221,8 +241,23 @@ public class GameManager : MonoBehaviour
         Playfab.PlayerStat(Playfab.ItemsBoughtStat, BuyCount);
     }
 
+    static bool BackButtonClicked = false;
+
+    public void OnBackButtonClick()
+    {
+        BackButtonClicked = true;
+    }
+
     bool GoBack()
-        => Input.GetKeyDown(menuBackKey_) || Input.GetKeyDown(KeyCode.Backspace);
+    {
+        if (BackButtonClicked)
+        {
+            BackButtonClicked = false;
+            return true;
+        }
+
+        return Input.GetKeyDown(menuBackKey_) || Input.GetKeyDown(KeyCode.Backspace);
+    }
 
     IEnumerator GameStateCo()
     {
@@ -267,7 +302,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Shop)
             {
-                if (Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.RightShift))
+                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.RightShift))
                 {
                     SaveGame.Members.Money += 500;
                     ShopItems.UpdateBoughtItems();
@@ -330,6 +365,13 @@ public class GameManager : MonoBehaviour
                 while (currentXp_ >= xpToLevel_)
                     yield return LevelUp();
 
+                if (GoBack())
+                {
+                    PauseGameTime = true;
+                    while (PauseGameTime)
+                        yield return Pause();
+                }
+
                 float delta = Time.deltaTime;
                 ProjectileManager.Instance.Tick(delta);
                 yield return null;
@@ -358,6 +400,50 @@ public class GameManager : MonoBehaviour
     void SetChoicesVisible(bool visible)
     {
         PanelChoices.gameObject.SetActive(visible);
+    }
+
+    public void PauseResume()
+    {
+        Unpause();
+    }
+
+    public void PauseQuitToMenu()
+    {
+        Unpause();
+        PlayerScript.RoundComplete = true;
+        ShowTitle(autoStartGame: false);
+    }
+
+    private void Unpause()
+    {
+        EnablePanel(PanelPaused.gameObject, false);
+        PauseGameTime = false;
+        Time.timeScale = 1.0f;
+        SetChoicesVisible(false);
+        AudioListener.pause = false;
+    }
+
+    IEnumerator Pause()
+    {
+        PlayMenuSound();
+        EnablePanel(PanelPaused.gameObject, true);
+
+        AudioListener.pause = true;
+
+        Time.timeScale = 0.0f;
+        PauseGameTime = true;
+
+        while (PauseGameTime)
+        {
+            yield return null;
+
+            if (GoBack())
+            {
+                PlayMenuSound();
+                Unpause();
+                yield break;
+            }
+        }
     }
 
     IEnumerator LevelUp()
@@ -409,7 +495,7 @@ public class GameManager : MonoBehaviour
 
     public void HidingHowToPlay()
     {
-        roundStartTime_ = Time.realtimeSinceStartup;
+        roundStartTime_ = GameTime;
         PlayerScript.UpgradesActive = true;
     }
 
@@ -424,11 +510,17 @@ public class GameManager : MonoBehaviour
             { "level", (int)currentLevel_ },
             { "gold", SaveGame.RoundGold },
             { "kills", SaveGame.RoundKills },
+            { "seconds_left", lastSecondsLeft },
         };
-
         Playfab.PlayerEvent(Playfab.GameOverEvent, props);
 
         Rounds++;
+
+        TextGameInfo.gameObject.SetActive(false);
+
+        float roundTime = GameTime - roundStartTime_;
+        int roundSeconds = Mathf.RoundToInt(roundTime);
+        SaveGame.Members.TotalSeconds += roundSeconds;
 
         var dic = new Dictionary<string, int>();
         dic[Playfab.GoldStat] = SaveGame.RoundGold;
@@ -436,16 +528,14 @@ public class GameManager : MonoBehaviour
         dic[Playfab.KillsStat] = SaveGame.RoundKills;
         dic[Playfab.ScoreStat] = SaveGame.RoundScore;
         dic[Playfab.RoundsCompletedStat] = Rounds;
+        dic[Playfab.SecondsLeftStat] = lastSecondsLeft;
+        dic[Playfab.TotalSeconds] = SaveGame.Members.TotalSeconds;
 
         Playfab.PlayerStat(dic);
         TextFloatingWeapon.Clear();
 
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
-
-        float roundTime = Time.time - roundStartTime_;
-        int roundSeconds = Mathf.RoundToInt(roundTime);
-        //StartCoroutine(Server.Instance.UpdateStat("RoundSeconds", roundSeconds));
 
         CanvasGameOverDefault.enabled = true;
 
@@ -454,6 +544,11 @@ public class GameManager : MonoBehaviour
 
         CanvasDead.gameObject.SetActive(true);
         CanvasIntro.gameObject.SetActive(false);
+
+        if (SaveGame.Members.Money < 20)
+            TextGameOverGold.text = $"Go to the shop and spend your... <color=#ffd700>{SaveGame.Members.Money}</color> gold... Nevermind, go collect some more!";
+        else
+            TextGameOverGold.text = $"Go to the shop and spend your <color=#ffd700>{SaveGame.Members.Money}</color> gold!";
 
         GameState = State.Dead;
     }
@@ -473,6 +568,9 @@ public class GameManager : MonoBehaviour
     {
         if (GameState == State.Intro)
             return;
+
+        Floor.color = floorDefaultColor;
+        FloorFilter.color = Color.clear;
 
         Time.timeScale = 1.0f;
         PanelSettings.SetActive(false);
@@ -544,28 +642,6 @@ public class GameManager : MonoBehaviour
         FlashParticles.Clear();
     }
 
-    IEnumerator ServerColdStart()
-    {
-        //yield return StartCoroutine(Server.Instance.DoServerColdStart());
-        // Update SaveGame stats with server stats. They could have been 100% local but
-        // since I didn't do that from the start I have to get the stats from the server
-        // at least once. So just do it every time, then it also works if local data is
-        // deleted.
-        int statValue;
-        //if (Server.Instance.TryGetStat("OrcsSaved", out statValue))
-        //    SaveGame.Members.OrcsSaved = statValue;
-
-        //if (Server.Instance.TryGetStat("Kills", out statValue))
-        //    SaveGame.Members.EnemiesKilled = statValue;
-
-        //if (Server.Instance.TryGetStat("RoundStarted", out statValue))
-        //    SaveGame.Members.PlayerDeaths = statValue;
-
-        //if (Server.Instance.TryGetStat("RoundSeconds", out statValue))
-        //    SaveGame.Members.SecondsPlayed = statValue;
-        yield return null;
-    }
-
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
 
     int codeIdx = 0;
@@ -635,7 +711,8 @@ public class GameManager : MonoBehaviour
             ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount, value: 1, forceScale: 1.0f);
         }
 
-        ThrowPickups(AutoPickUpType.Xp, actor.transform.position, amount: 1, value: actor.XpValue, forceScale: 0.01f);
+        ThrowPickups(AutoPickUpType.Money, actor.transform.position, actor.GoldCount, value: 1, forceScale: 1.0f);
+        ThrowPickups(AutoPickUpType.Xp, actor.transform.position, amount: actor.XpCount, value: actor.XpValue, forceScale: 0.01f);
     }
 
     private void OnFirstOrcPickup()
@@ -675,7 +752,7 @@ public class GameManager : MonoBehaviour
             {
                 float xpValue = value * PlayerUpgrades.Data.XpValueMul;
                 float xpToColorScale = 2.0f;
-                int colorIdx = Mathf.Min(xpColors.Length, (int)(xpValue / xpToColorScale));
+                int colorIdx = Mathf.Min(xpColors.Length - 1, (int)(xpValue / xpToColorScale));
                 pickup.GetComponent<SpriteRenderer>().color = xpColors[colorIdx];
             }
             pickup.SetActive(true);
@@ -690,7 +767,7 @@ public class GameManager : MonoBehaviour
             OnFirstOrcPickup();
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
-
+        PlayerScript.AddHp(PlayerUpgrades.Data.RescueDuckHp, alwaysShow: true);
         ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, value: 1, forceScale: 2.0f);
         ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 2, value: 1, forceScale: 1.1f);
     }
@@ -814,6 +891,7 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         Application.targetFrameRate = 60;
+        floorDefaultColor = Floor.color;
         SortLayerTopEffects = SortingLayer.NameToID("TopEffects");
         LayerPlayer = LayerMask.NameToLayer("Player");
         LayerEnemyProjectile = LayerMask.NameToLayer("EnemyProjectile");
@@ -852,10 +930,9 @@ public class GameManager : MonoBehaviour
         
         SaveGame.Load();
 
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic);
-        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx);
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
 
-        StartCoroutine(ServerColdStart());
         ShowTitle();
         StartCoroutine(GameStateCo());
     }
@@ -891,7 +968,7 @@ public class GameManager : MonoBehaviour
         if (DebugValues.Count == 0)
             return;
 
-        float y = 50.0f;
+        float y = 150.0f;
         GUI.contentColor = Color.white;
         foreach (var pair in DebugValues)
         {
