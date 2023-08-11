@@ -34,7 +34,7 @@ class CorpseMagnet : MonoBehaviour
             if (dist2 > 0.1f)
             {
                 Vector3 move = dir;
-                corpses_[i].transform.position += move * Time.deltaTime;
+                corpses_[i].transform.position += move * GameManager.Instance.GameDeltaTime;
             }
         }
     }

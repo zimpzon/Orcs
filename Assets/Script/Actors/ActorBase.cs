@@ -242,7 +242,7 @@ public class ActorBase : MonoBehaviour
             speed *= Mathf.Clamp(slowEffect, 0.6f, 0.9f);
         }
 
-        position_ += moveVec * speed * slowmotionModifier_ * Time.deltaTime;
+        position_ += moveVec * speed * slowmotionModifier_ * GameManager.Instance.GameDeltaTime;
 
         Vector3 scale = scale_;
         scale.x = moveVec.x < 0 ? -scale.x : scale.x;
@@ -357,8 +357,8 @@ public class ActorBase : MonoBehaviour
             }
 
             Vector3 diff = force_ * 25.0f;
-            force_ -= diff * Time.deltaTime;
-            position_ += force_ * Time.deltaTime * 60;
+            force_ -= diff * GameManager.Instance.GameDeltaTime;
+            position_ += force_ * GameManager.Instance.GameDeltaTime * 60;
             transform_.position = position_;
         }
 
@@ -392,13 +392,13 @@ public class ActorBase : MonoBehaviour
 
         if (!IsDead && !isFrozen_)
         {
-            animationController_.Tick(Time.deltaTime, renderer_, Animations);
+            animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, Animations);
         }
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (IsDead ? 10000 : 0);
 
         const float RegenTime = 1.0f;
-        slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + Time.deltaTime / RegenTime);
+        slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + GameManager.Instance.GameDeltaTime / RegenTime);
     }
 
     public void SetSlowmotion(float amount = 0.0f)
@@ -490,7 +490,7 @@ public class ActorBase : MonoBehaviour
             Vector3 cloudPos = pos + Vector3.down * 0.25f;
 
             material_.SetFloat(flashParamId_, flashAmount);
-            flashAmount += Time.deltaTime * 1.0f;
+            flashAmount += GameManager.Instance.GameDeltaTime * 1.0f;
             GameManager.Instance.MakeFlash(pos, 2.0f);
             GameManager.Instance.MakeSpawnPoof(cloudPos, 1);
             yield return new WaitForSeconds(0.2f);
@@ -569,7 +569,7 @@ public class ActorBase : MonoBehaviour
 
         while (GameManager.Instance.GameTime < maxTime)
         {
-            float delta = Time.deltaTime;
+            float delta = GameManager.Instance.GameDeltaTime;
 
             material_.SetFloat(flashParamId_, flashAmount);
             flashAmount += delta * 2;

@@ -15,7 +15,7 @@ public enum ShopItemType
     DoubleMoney,
     EnemyMoneyDrop,
     KillXpChanceMul,
-    DoubleTime,
+    TimeScale,
 
     UnlockPoisonDagger,
     BurstOfFrost,
@@ -95,7 +95,8 @@ public static class ShopItems
             var go = (GameObject)GameObject.Instantiate(protoScript.gameObject, parent, instantiateInWorldSpace: false);
             var script = go.GetComponent<ShopItemScript>();
             script.ItemType = item.ItemType;
-            script.OnClickCallback = OnBuy;
+            script.OnBuyClickCallback = OnBuy;
+            script.OnRefundClickCallback = OnRefund;
             Scripts.Add(script);
         }
     }
@@ -108,6 +109,30 @@ public static class ShopItems
             var shopItem = Items.First(i => i.ItemType == bought.ItemType);
             shopItem.Apply(bought);
         }
+    }
+
+    private static void OnRefund(ShopItemType itemType)
+    {
+        var item = Items.Where(i => i.ItemType == itemType).First();
+
+        SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
+        if (bought == null)
+            return;
+
+        int refunded = 0;
+        while (bought.Level > 0)
+        {
+            int price = item.GetPrice(bought.Level - 1);
+            refunded += price;
+            SaveGame.Members.Money += price;
+            bought.Level--;
+        }
+
+        SaveGame.Members.MoneySpentInShop -= refunded;
+        SaveGame.Members.BoughtItems[itemType] = bought;
+
+        UpdateBoughtItems();
+        GameManager.Instance.OnItemBought(itemType);
     }
 
     private static void OnBuy(ShopItemType itemType)
@@ -140,15 +165,15 @@ public static class ShopItems
             int price = item.GetPrice(bought.Level);
             bool canAfford = price <= SaveGame.Members.Money;
             bool isMaxLevel = bought.Level >= item.MaxLevel;
-            bool disableBuyButton = !canAfford || isMaxLevel;
+            bool enableBuyButton = canAfford && !isMaxLevel;
+            bool enableRefundButton = level > 0;
 
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
             script.Description.text = item.GetDescription(level);
             script.Level.text = item.GetLevelText(level);
             script.ButtonText.text = isMaxLevel ? "MAX" : item.GetButtonText(level);
-            script.SetIsMaxed(isMaxLevel);
-            script.SetDisableButton(disableBuyButton);
+            script.SetButtonStates(enableBuyButton, enableRefundButton);
         }
     }
 

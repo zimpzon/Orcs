@@ -207,11 +207,11 @@ public class PlayerScript : MonoBehaviour
 
             if (!isMoving_)
             {
-                animationController_.Tick(Time.deltaTime, renderer_, IdleSprites);
+                animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, IdleSprites);
             }
             else
             {
-                animationController_.Tick(Time.deltaTime, renderer_, RunSprites);
+                animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, RunSprites);
             }
             yield return null;
         }
@@ -361,13 +361,13 @@ public class PlayerScript : MonoBehaviour
 
         float speed = PlayerUpgrades.Data.BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
 
-        speed *= Time.deltaTime;
+        speed *= GameManager.Instance.GameDeltaTime;
 
         Vector3 newMoveVec_ = Vector3.left * (left * speed) + Vector3.right * (right * speed) + Vector3.up * (up * speed) + Vector3.down * (down * speed);
         if (newMoveVec_ == Vector3.zero)
         {
             const float Damp = 12.0f;
-            moveVec_ *= 1.0f - (Time.deltaTime * Damp);
+            moveVec_ *= 1.0f - (GameManager.Instance.GameDeltaTime * Damp);
             if (moveVec_.sqrMagnitude < 0.0001f)
                 moveVec_ = Vector3.zero;
         }
@@ -467,12 +467,12 @@ public class PlayerScript : MonoBehaviour
             playerPos_ += moveVec_;
 
         if (!isDead_)
-            playerPos_ += force_ * Time.deltaTime * 60;
+            playerPos_ += force_ * GameManager.Instance.GameDeltaTime * 60;
 
         playerPos_.z = 0;
         playerPos_ = GameManager.Instance.ClampToBounds(playerPos_, renderer_.sprite);
         trans_.position = playerPos_;
-        force_ *= 1.0f - (20.0f * Time.deltaTime);
+        force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
         CheckControls();
         UpdateOverheadText();

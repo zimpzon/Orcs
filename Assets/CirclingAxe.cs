@@ -45,7 +45,7 @@ public class CirclingAxe : MonoBehaviour, IKillableObject
         }
 
         lastPos_ = trans_.position;
-        var newPos = lastPos_ + dir_ * speed_ * Time.deltaTime;
+        var newPos = lastPos_ + dir_ * speed_ * GameManager.Instance.GameDeltaTime;
         if (newPos.x <= GameManager.Instance.ArenaBounds.xMin || newPos.x >= GameManager.Instance.ArenaBounds.xMax)
             dir_.x *= -1;
 
@@ -53,7 +53,7 @@ public class CirclingAxe : MonoBehaviour, IKillableObject
             dir_.y *= -1;
 
         trans_.position = newPos;
-        trans_.Rotate(0, 0, -angleLocal * Time.deltaTime, Space.Self);
+        trans_.Rotate(0, 0, -angleLocal * GameManager.Instance.GameDeltaTime, Space.Self);
     }
 
     public void Kill()

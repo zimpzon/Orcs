@@ -14,27 +14,29 @@ public class ShopItemScript : MonoBehaviour
     public Text Level;
     public Text ButtonText;
     public Button BuyButton;
+    public Button RefundButton;
 
-    public void OnClick()
+    public void OnBuyClick()
     {
-        OnClickCallback?.Invoke(ItemType);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
+        OnBuyClickCallback?.Invoke(ItemType);
     }
 
-    public void Awake()
+    public void OnRefundClick()
     {
-        SetIsMaxed(false);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
+        OnRefundClickCallback?.Invoke(ItemType);
     }
 
-    public void SetIsMaxed(bool maxed)
+    public void SetButtonStates(bool enableBuyButton, bool enableRefundButton)
     {
-        GetComponent<Image>().color = maxed ? MaxedBackgroundColor : DefaultBackgroundColor;
+        BuyButton.GetComponent<Image>().color = enableBuyButton ? DefaultButtonBackgroundColor : DisabledButtonBackgroundColor;
+        BuyButton.enabled = enableBuyButton;
+
+        RefundButton.GetComponent<Image>().color = enableRefundButton ? DefaultButtonBackgroundColor : DisabledButtonBackgroundColor;
+        RefundButton.enabled = enableRefundButton;
     }
 
-    public void SetDisableButton(bool disable)
-    {
-        BuyButton.GetComponent<Image>().color = disable ? DisabledButtonBackgroundColor : DefaultButtonBackgroundColor;
-        BuyButton.enabled = !disable;
-    }
-
-    public Action<ShopItemType> OnClickCallback;
+    public Action<ShopItemType> OnBuyClickCallback;
+    public Action<ShopItemType> OnRefundClickCallback;
 }

@@ -34,7 +34,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             for (int i = 0; i < count; ++i)
             {
                 var enemy = BlackboardScript.EnemyOverlap[i];
-                enemy.AddForce((trans_.position - enemy.transform.position).normalized * Time.deltaTime * 3.0f);
+                enemy.AddForce((trans_.position - enemy.transform.position).normalized * GameManager.Instance.GameDeltaTime * 3.0f);
             }
         }
 
@@ -49,10 +49,10 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             trans_.position = new Vector2(x + swayX, y + swayY);
 
             trans_.rotation = Quaternion.Euler(0.0f, 0.0f, degrees_);
-            degrees_ += rotationspeed * Time.deltaTime;
+            degrees_ += rotationspeed * GameManager.Instance.GameDeltaTime;
 
             var dirPlayer = (GameManager.Instance.PlayerScript.transform.position - trans_.position).normalized;
-            trans_.position += dirPlayer * speed * Time.deltaTime;
+            trans_.position += dirPlayer * speed * GameManager.Instance.GameDeltaTime;
 
             SuckEnemies();
 
@@ -75,7 +75,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             trans_.position = p + new Vector3(x, y) * t;
 
             trans_.rotation = Quaternion.Euler(0.0f, 0.0f, degrees_);
-            degrees_ += rotationspeed * Time.deltaTime;
+            degrees_ += rotationspeed * GameManager.Instance.GameDeltaTime;
 
             SuckEnemies();
 

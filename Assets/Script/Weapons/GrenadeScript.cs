@@ -72,7 +72,7 @@ public class GrenadeScript : MonoBehaviour
 
         while (Time.time < fuseT1)
         {
-            float delta = Time.deltaTime;
+            float delta = GameManager.Instance.GameDeltaTime;
 
             Vector3 showPos = pos;
             showPos.y += offsetY;
@@ -91,7 +91,7 @@ public class GrenadeScript : MonoBehaviour
                 velocityY = -velocityY * 0.5f;
             }
 
-            pos += dir * speed * Time.deltaTime;
+            pos += dir * speed * GameManager.Instance.GameDeltaTime;
             speed *= 1.0f - (5.0f * delta);
 
             yield return null;

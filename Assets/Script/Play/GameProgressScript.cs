@@ -6,6 +6,7 @@ public class GameProgressScript : MonoBehaviour
 {
     public static GameProgressScript Instance;
 
+    public Canvas SelectionCanvas;
     public Text TextControls;
     public Text TextHowTo;
     public Text TextScore;

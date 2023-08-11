@@ -34,9 +34,9 @@ namespace Assets.Script.Actors.Spawning
             ActorTypeEnum actorType,
             TimeSpan startTime,
             TimeSpan endTime,
-            int maintainCount,
-            float maintainCountIncreasePerSec,
-            int spawnCountPerTick,
+            int startingCount,
+            int endCount,
+            int maxSpawnCountPerTick,
             float timeBetweenTicks,
             bool outsideScreen,
             SpawnDirection dir)
@@ -71,15 +71,17 @@ namespace Assets.Script.Actors.Spawning
                 }
             }
 
-            float extraSpawns = 0;
+            float runTimeSec = (float)(endTime - startTime).TotalSeconds;
+            float countToBeAdded = endCount - startingCount;
 
             while (GameManager.Instance.GameTime < endTimeSec)
             {
-                extraSpawns += maintainCountIncreasePerSec * Time.deltaTime;
+                float t = (GameManager.Instance.GameTime - startTimeSec) / runTimeSec;
+                float currentMaintainCount = startingCount + t * countToBeAdded;
 
-                if (alive.Count < maintainCount + extraSpawns)
+                if (alive.Count < currentMaintainCount)
                 {
-                    for (int i = 0; i < spawnCountPerTick && alive.Count < maintainCount + extraSpawns; i++)
+                    for (int i = 0; i < maxSpawnCountPerTick && alive.Count < currentMaintainCount; i++)
                     {
                         var spawn = ActorCache.Instance.GetActor(actorType);
                         float offset = 1.0f;
@@ -98,9 +100,10 @@ namespace Assets.Script.Actors.Spawning
 
                     if (timeBetweenTicks != 0.0)
                         yield return wait;
-                }
+               }
 
                 RemoveDead();
+                GameManager.SetDebugOutput(actorType.ToString(), alive.Count);
                 yield return null;
             }
         }

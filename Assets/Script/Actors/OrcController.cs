@@ -65,7 +65,7 @@ public class OrcController : MonoBehaviour
                 break;
 
             MeleeWeapon.rotation = Quaternion.Euler(0.0f, 0.0f, degrees);
-            degrees -= 1500 * flipX * Time.deltaTime;
+            degrees -= 1500 * flipX * GameManager.Instance.GameDeltaTime;
             yield return null;
         }
 
@@ -204,6 +204,6 @@ public class OrcController : MonoBehaviour
         arrow_.localPosition = arrowPos;
 
         if (distanceToTarget_ > 0.1f)
-            trans_.position += targetDir_ * RunSpeed * Time.deltaTime;
+            trans_.position += targetDir_ * RunSpeed * GameManager.Instance.GameDeltaTime;
     }
 }

@@ -12,6 +12,7 @@ public class UpgradeData
     public float BaseCritChance = 0.05f;
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
+    public float TimeScale = 1.0f;
 
     // gold
     public float MoneyDoubleChance = 0.05f;
@@ -30,7 +31,7 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 5.0f;
+    public float BaseMoveSpeed = 4.0f;
     public float MoveSpeedMul = 1.0f;
 
     public int RescueDuckHp = 5;
@@ -39,7 +40,7 @@ public class UpgradeData
     public float MagicMissileBaseDamage = 40.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileBaseBulletCd = 0.15f;
-    public float MagicMissileBaseCd = 1.5f;
+    public float MagicMissileBaseCd = 2.0f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileBaseRange = 2.5f;
     public float MagicMissileRangeMul = 1.0f;

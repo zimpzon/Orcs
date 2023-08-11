@@ -32,31 +32,31 @@ public class Chapter1Controller : MonoBehaviour
 
     IEnumerator RunSpawnEvents()
     {
-        RunAll(Chapter1Minute1.GetEvents());
+        RunAll(Chapter1Minute01.GetEvents());
 
         while (GameManager.Instance.GameTime < 60)
             yield return null;
 
-        RunAll(Chapter1Minute2.GetEvents());
+        RunAll(Chapter1Minute03.GetEvents());
 
         while (GameManager.Instance.GameTime < 120)
             yield return null;
 
-        RunAll(Chapter1Minute3.GetEvents());
+        RunAll(Chapter1Minute06.GetEvents());
 
         while (GameManager.Instance.GameTime < 180)
             yield return null;
 
-        RunAll(Chapter1Minute4.GetEvents());
+        RunAll(Chapter1Minute10.GetEvents());
 
         while (GameManager.Instance.GameTime < 240)
             yield return null;
+
+        RunAll(Chapter1Minute14.GetEvents());
     }
 
     IEnumerator RunInternal()
     {
-        StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 4, 57), () => SpawnUtil.FleeAllActors()));
-
         var info = new GameInfo
         {
             Text = "CHAPTER 1\n\nSkeleton Skirmish",
@@ -64,7 +64,7 @@ public class Chapter1Controller : MonoBehaviour
             Duration = 4.0f,
             FadeInDuration = 0.5f,
             FadeOutDuration = 2.0f,
-            FontSize = 13,
+            FontSize = 15,
             Position = Vector2.up * -100,
         };
 

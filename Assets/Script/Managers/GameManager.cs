@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
     const float XpPerLevelMultiplier = 1.2f;
-    const float ChapterTime = 60 * 5;
+    const float ChapterTime = 60 * 15;
     const float BaseXpToLevel = 14;
 
     public static GameManager Instance;
@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public Text TextLevel;
     public Text TextHp;
     public Text TextTime;
+    public Text TextTimeScale;
     public Text TextRoundKills;
     public Text TextRoundGold;
     public Text TextUser;
@@ -86,6 +87,7 @@ public class GameManager : MonoBehaviour
     public float TimeSinceStartup;
     public bool PauseGameTime;
     public float GameTime;
+    public float GameDeltaTime;
 
     [NonSerialized] public GameModeData LatestGameModeData = new ();
     [NonSerialized] public GameModeData CurrentGameModeData;
@@ -189,9 +191,10 @@ public class GameManager : MonoBehaviour
         UpdateMoneyLabels();
     }
 
-    public void OnButtonResetProgress()
+    public void ResetAllProgress()
     {
-        PlayMenuSound();
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerDie);
+
         float VolumeMaster = SaveGame.Members.VolumeMaster;
         float VolumeMusic = SaveGame.Members.VolumeMusic;
         float VolumeSfx = SaveGame.Members.VolumeSfx;
@@ -215,6 +218,7 @@ public class GameManager : MonoBehaviour
         GameState = State.Intro_Shop;
         EnablePanel(PanelShop, true);
         ShopItems.UpdateBoughtItems();
+        resetAllCodeIdx = 0;
     }
 
     void UpdateMoneyLabels()
@@ -223,6 +227,11 @@ public class GameManager : MonoBehaviour
     }
 
     static int BuyCount = 0;
+
+    public void OnItemRefunded(ShopItemType _)
+    {
+        UpdateMoneyLabels();
+    }
 
     public void OnItemBought(ShopItemType itemType)
     {
@@ -302,6 +311,11 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Shop)
             {
+                if (Input.GetKey(KeyCode.R) && Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.LeftControl))
+                {
+                    ResetAllProgress();
+                }
+
                 if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.RightShift))
                 {
                     SaveGame.Members.Money += 500;
@@ -372,7 +386,7 @@ public class GameManager : MonoBehaviour
                         yield return Pause();
                 }
 
-                float delta = Time.deltaTime;
+                float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
                 yield return null;
             }
@@ -606,14 +620,18 @@ public class GameManager : MonoBehaviour
             return;
 
         GameTime = 0.0001f;
+        GameDeltaTime = 0.0f;
+
         ActorBase.ResetClosestEnemy();
-        //Cursor.visible = false;
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
         ShopItems.ApplyToPlayerUpgrades();
         UpgradeChoices.InitChoices();
         ResetPickups();
         InitXpText();
+
+        TextTimeScale.enabled = PlayerUpgrades.Data.TimeScale > 1;
+        TextTimeScale.text = $"{+(int)Math.Round((PlayerUpgrades.Data.TimeScale - 1) * 100)}%";
 
         CanvasIntro.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(false);
@@ -644,7 +662,7 @@ public class GameManager : MonoBehaviour
 
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
 
-    int codeIdx = 0;
+    int resetAllCodeIdx = 0;
 
     void LateUpdate()
     {
@@ -655,17 +673,23 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         TimeSinceStartup = Time.realtimeSinceStartup;
-        if (!PauseGameTime)
-            GameTime += Time.deltaTime * 2;
-
-        if (Input.GetKey(Code[codeIdx]))
+        if (PauseGameTime)
         {
-            codeIdx++;
-            if (codeIdx == Code.Length)
+            GameDeltaTime = 0;
+        }
+        else
+        {
+            GameDeltaTime = Time.deltaTime * PlayerUpgrades.Data.TimeScale;
+            GameTime += GameDeltaTime;
+        }
+
+        if (GameState == State.Intro_Shop && Input.GetKeyDown(Code[resetAllCodeIdx]))
+        {
+            resetAllCodeIdx++;
+            if (resetAllCodeIdx == Code.Length)
             {
-                codeIdx = 0;
-                SaveGame.ResetAll();
-                SaveGame.Save();
+                resetAllCodeIdx = 0;
+                ResetAllProgress();
                 return;
             }
         }
@@ -968,7 +992,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
+        //return;
         SetDebugOutput("OnGUI enabled", Time.time);
 
         if (DebugValues.Count == 0)
