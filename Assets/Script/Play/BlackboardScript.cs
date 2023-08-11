@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static PositionUtility;
 
 namespace Assets.Script
 {
@@ -31,6 +32,25 @@ namespace Assets.Script
             }
 
             DeadEnemies.Clear();
+        }
+
+        public static Vector2 ClosestPointOnEdge(Vector2 pos)
+        {
+            float distToTop = GameManager.ArenaBounds.yMax - pos.y;
+            float distToBottom = pos.y - GameManager.ArenaBounds.yMin;
+            float distToLeft = pos.x - GameManager.ArenaBounds.xMin;
+            float distToRight = GameManager.ArenaBounds.xMax - pos.x;
+
+            // Determine which edge is the closest
+            float minDist = Mathf.Min(Mathf.Min(distToTop, distToBottom), Mathf.Min(distToLeft, distToRight));
+
+            if (minDist == distToTop)
+                return new Vector2(pos.x, GameManager.ArenaBounds.yMax);
+            if (minDist == distToBottom)
+                return new Vector2(pos.x, GameManager.ArenaBounds.yMin);
+            if (minDist == distToLeft)
+                return new Vector2(GameManager.ArenaBounds.xMin, pos.y);
+            return new Vector2(GameManager.ArenaBounds.xMax, pos.y);
         }
 
         //public static bool CheckOverlap(Vector3 posA, Vector3 posB, float rad)

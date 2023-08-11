@@ -46,10 +46,10 @@ public class CirclingAxe : MonoBehaviour, IKillableObject
 
         lastPos_ = trans_.position;
         var newPos = lastPos_ + dir_ * speed_ * GameManager.Instance.GameDeltaTime;
-        if (newPos.x <= GameManager.Instance.ArenaBounds.xMin || newPos.x >= GameManager.Instance.ArenaBounds.xMax)
+        if (newPos.x <= GameManager.ArenaBounds.xMin || newPos.x >= GameManager.ArenaBounds.xMax)
             dir_.x *= -1;
 
-        if (newPos.y <= GameManager.Instance.ArenaBounds.yMin || newPos.y >= GameManager.Instance.ArenaBounds.yMax)
+        if (newPos.y <= GameManager.ArenaBounds.yMin || newPos.y >= GameManager.ArenaBounds.yMax)
             dir_.y *= -1;
 
         trans_.position = newPos;

@@ -8,19 +8,15 @@ class CoResult<T>
 
 public static class PositionUtility
 {
-    public static float Top = 8;
-    public static float Bottom = -Top;
-    public static float Left = -12.5f;
-    public static float Right = -Left;
-    public static Vector2 TopMidOut = new(0, Top + 2);
-    public static Vector2 BottomMidOut = new(0, Bottom - 2);
-    public static Vector2 LeftMidOut = new(Left - 2, 0);
-    public static Vector2 RightMidOut = new(Right + 2, 0);
+    public static Vector2 TopMidOut = new(0, GameManager.ArenaBounds.yMax + 2);
+    public static Vector2 BottomMidOut = new(0, GameManager.ArenaBounds.yMin - 2);
+    public static Vector2 LeftMidOut = new(GameManager.ArenaBounds.xMin - 2, 0);
+    public static Vector2 RightMidOut = new(GameManager.ArenaBounds.xMax + 2, 0);
 
-    public static Vector2 TopLeftOut = new(Left - 2, Top + 2);
-    public static Vector2 TopRightOut = new(Right + 2, Top + 2);
-    public static Vector2 BottomLeftOut = new(Left - 2, Bottom - 2);
-    public static Vector2 BottomRightOut = new(Right + 2, Bottom - 2);
+    public static Vector2 TopLeftOut = new(GameManager.ArenaBounds.xMin - 2, GameManager.ArenaBounds.yMin + 2);
+    public static Vector2 TopRightOut = new(GameManager.ArenaBounds.xMax + 2, GameManager.ArenaBounds.yMin + 2);
+    public static Vector2 BottomLeftOut = new(GameManager.ArenaBounds.xMin - 2, GameManager.ArenaBounds.yMin - 2);
+    public static Vector2 BottomRightOut = new(GameManager.ArenaBounds.xMax + 2, GameManager.ArenaBounds.yMin - 2);
 
     public enum SpawnDirection { Top, Bottom, Left, Right, TopOrBottom, LeftOrRight, Inside, Any };
     public enum GroupFormation { Circle, Line };

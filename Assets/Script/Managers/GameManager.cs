@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     public int SpriteFlashParamId;
     public int SpriteFlashColorParamId;
-    public Rect ArenaBounds = new ();
+    public static Rect ArenaBounds = new ();
     [NonSerialized] public float TextUnlockBasePos;
 
     static Dictionary<string, string> DebugValues = new ();
@@ -941,7 +941,7 @@ public class GameManager : MonoBehaviour
         float halfX = arenaWidth / 2;
         float halfY = arenaHeight / 2;
 
-        ArenaBounds = new Rect(-halfX, -halfY, halfX * 2, halfY * 2);
+        ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
 
         TextFps.enabled = false;
 
@@ -963,8 +963,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsInsideBounds(Vector3 pos, Sprite sprite)
     {
-        float halfH = sprite.bounds.extents.y;
-        float halfW = sprite.bounds.extents.x;
+        float halfH = sprite.bounds.extents.y / 2;
+        float halfW = sprite.bounds.extents.x / 2;
         Rect sizeAdjustedBounds = Rect.MinMaxRect(ArenaBounds.xMin + halfW, ArenaBounds.yMin + halfH * 2, ArenaBounds.xMax - halfW, ArenaBounds.yMax - halfH);
         return sizeAdjustedBounds.Contains(pos);
     }
@@ -977,10 +977,10 @@ public class GameManager : MonoBehaviour
 
     public Vector3 ClampToBounds(Vector3 pos, Sprite sprite)
     {
-        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y / 2;
-        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x / 2;
+        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y;
+        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x;
         pos.x = Mathf.Clamp(pos.x, ArenaBounds.xMin + halfW, ArenaBounds.xMax - halfW);
-        pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + halfH * 2, ArenaBounds.yMax - halfH); // Pivot is at head so * 2 for bottom
+        pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + halfH, ArenaBounds.yMax - halfH);
         return pos;
     }
 

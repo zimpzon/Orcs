@@ -113,6 +113,9 @@ public class PlayerScript : MonoBehaviour
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         OverheadText.enabled = false;
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
+
+        nextPoof_ = 0;
+        accumulated_ = 0;
     }
 
     private void Start()
@@ -232,7 +235,7 @@ public class PlayerScript : MonoBehaviour
         else
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 1.0f, $"immortal", Color.white, speed: 0.1f, timeToLive: 0.2f, fontStyle: FontStyles.Normal);
 
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, 4.0f);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, pitch: 4.0f);
 
         FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"-{(int)damage:0}", Color.blue, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
         if (Hp <= 0)
@@ -434,6 +437,55 @@ public class PlayerScript : MonoBehaviour
             Hp = MaxHp;
     }
 
+    float nextPoof_;
+    float accumulated_;
+
+    void CheckDistanceToEdge()
+    {
+        var closestEdgePoint = (Vector3)BlackboardScript.ClosestPointOnEdge(trans_.position);
+        // total hack for cloud being partially out of screen at top
+        if (closestEdgePoint.y > 5)
+            closestEdgePoint.y -= 0.5f;
+
+        float distance = Vector2.Distance(closestEdgePoint, trans_.position);
+
+        GameManager.SetDebugOutput("dist", distance);
+
+        const float MinDistance = 1.2f;
+        const float DischargeTime = 2.0f;
+
+        if (distance < MinDistance)
+        {
+            accumulated_ += GameManager.Instance.GameDeltaTime * 1;
+            if (accumulated_ > DischargeTime)
+            {
+                var force = (trans_.position - closestEdgePoint).normalized * (MinDistance - distance) * 0.4f;
+                GameManager.SetDebugOutput("force", force);
+                GameManager.Instance.MakeFlash(trans_.position, 1.0f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, pitch: 4.0f);
+                AddForce(force);
+                accumulated_ = 0;
+            }
+        }
+        else if (distance > MinDistance)
+        {
+            accumulated_ -= GameManager.Instance.GameDeltaTime;
+            if (accumulated_ < 0)
+                accumulated_ = 0;
+        }
+
+        if (accumulated_ > 0 && GameManager.Instance.GameTime > nextPoof_)
+        {
+            nextPoof_ = GameManager.Instance.GameTime + 0.2f;
+            GameManager.Instance.MakeSpawnPoof(closestEdgePoint, 2);
+        }
+
+        GameManager.SetDebugOutput("dist", distance);
+        GameManager.SetDebugOutput("acc", accumulated_);
+
+        Debug.DrawLine(trans_.position, closestEdgePoint, Color.cyan);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -447,9 +499,6 @@ public class PlayerScript : MonoBehaviour
 
         if (GameManager.Instance.PauseGameTime)
             return;
-
-        GameManager.SetDebugOutput("lastRegenTick_", lastRegenTick_);
-        GameManager.SetDebugOutput("perTick", PlayerUpgrades.Data.BaseHealthRegenSec + PlayerUpgrades.Data.HealthRegenSecAdd);
 
         if (GameManager.Instance.GameTime > lastRegenTick_ + 1.0f)
         {
@@ -474,6 +523,7 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
+        CheckDistanceToEdge();
         CheckControls();
         UpdateOverheadText();
     }

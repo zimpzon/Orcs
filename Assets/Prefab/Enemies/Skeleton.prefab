@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: aac744948436b494490682169eb6d443, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72a59b848cc82da408a8a3b6afb3035e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -96,7 +96,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &-410699779951129675
@@ -127,7 +127,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animations: []
+  Animations:
+  - {fileID: 21300000, guid: 72a59b848cc82da408a8a3b6afb3035e, type: 3}
+  - {fileID: 21300000, guid: 64f150af65cfa054e8c5b33179e474e0, type: 3}
+  - {fileID: 21300000, guid: a3ae762ff1f37ec43ae127325fa389f1, type: 3}
+  - {fileID: 21300000, guid: 7f4613e5e87df8a4bb873e409f7250f9, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
   Speed: 1
@@ -140,5 +144,5 @@ MonoBehaviour:
   XpValue: 1
   XpCount: 1
   GoldCount: 0
-  ActorType: 0
+  ActorType: 28
   BaseHp: 0

@@ -15,9 +15,10 @@ namespace Assets.Script.Actors.Spawning
             for (int i = 0; i < allEnemies.Length; ++i)
             {
                 var actor = allEnemies[i];
-                var actorPos = actor.transform.position;
+                var actorPos = (Vector2)actor.transform.position;
 
-                var target = actorPos.y < 0 ? Vector3.down : Vector3.up;
+                var target = BlackboardScript.ClosestPointOnEdge(actorPos);
+                //var target = actorPos.y < 0 ? Vector3.down : Vector3.up;
                 actor.SetForcedTarget(actorPos + target, despawnAtDestination: true, breakAtDamage: false, ActorForcedTargetType.Direction);
             }
         }
