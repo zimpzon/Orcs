@@ -42,7 +42,7 @@ public class UpgradeData
     public float MagicMissileBaseBulletCd = 0.15f;
     public float MagicMissileBaseCd = 2.0f;
     public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileBaseRange = 2.5f;
+    public float MagicMissileBaseRange = 2.2f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;

@@ -523,7 +523,7 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
-        CheckDistanceToEdge();
+        //CheckDistanceToEdge();
         CheckControls();
         UpdateOverheadText();
     }

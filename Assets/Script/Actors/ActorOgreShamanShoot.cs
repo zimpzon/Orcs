@@ -83,7 +83,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
                 }
 
                 nextShoot = GameManager.Instance.GameTime + cd;
-                cd = 1 + Random.value;
+                cd = 3 + Random.value * 0.25f;
             }
 
             yield return null;

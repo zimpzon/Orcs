@@ -34,22 +34,26 @@ public class Chapter1Controller : MonoBehaviour
     {
         RunAll(Chapter1Minute01.GetEvents());
 
-        while (GameManager.Instance.GameTime < 60)
+        const float Min3 = 60 * 3;
+        while (GameManager.Instance.GameTime < Min3)
             yield return null;
 
         RunAll(Chapter1Minute03.GetEvents());
 
-        while (GameManager.Instance.GameTime < 120)
+        const float Min6 = 60 * 6;
+        while (GameManager.Instance.GameTime < Min6)
             yield return null;
 
         RunAll(Chapter1Minute06.GetEvents());
 
-        while (GameManager.Instance.GameTime < 180)
+        const float Min10 = 60 * 10;
+        while (GameManager.Instance.GameTime < Min10)
             yield return null;
 
         RunAll(Chapter1Minute10.GetEvents());
 
-        while (GameManager.Instance.GameTime < 240)
+        const float Min14 = 60 * 14;
+        while (GameManager.Instance.GameTime < Min14)
             yield return null;
 
         RunAll(Chapter1Minute14.GetEvents());

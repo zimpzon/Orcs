@@ -135,14 +135,14 @@ MonoBehaviour:
   CanBeFrozen: 1
   CanBePoisened: 1
   Speed: 1
-  AvoidCrowds: 1
+  AvoidCrowds: 0
   CrowdScanRadius: 1
   CrowdMaxNearby: 3
   CrowdOutOfTheWayRange: 2.5
   IsBoss: 0
-  Mass: 1
-  XpValue: 1
-  XpCount: 1
+  Mass: 2
+  XpValue: 4
+  XpCount: 8
   GoldCount: 0
   ActorType: 6
   BaseHp: 100

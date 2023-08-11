@@ -10,43 +10,6 @@ public static class ChoicesWeapon
         {
             new Choice
             {
-                Title = $"{Name}, damage (1)",
-                Description = "Does <color=#00ff00>10%</color> more damage",
-                Apply = () =>
-                {
-                    PlayerUpgrades.Data.MagicMissileDamageMul += 0.1f;
-                },
-                NextLevel = new Choice
-                {
-                    Title = $"{Name}, damage (2)",
-                    Description = "Does <color=#00ff00>10%</color> more damage",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.MagicMissileDamageMul += 0.1f;
-                    },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, damage (3)",
-                        Description = "Does <color=#00ff00>15%</color> more damage",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.MagicMissileDamageMul += 0.15f;
-                        },
-                        NextLevel = new Choice
-                        {
-                            Title = $"{Name}, damage (4)",
-                            Description = "Does <color=#00ff00>20%</color> more damage",
-                            Apply = () =>
-                            {
-                                PlayerUpgrades.Data.MagicMissileDamageMul += 0.2f;
-                            },
-                        },
-                    }
-                }
-            },
-
-            new Choice
-            {
                 Title = $"{Name}, range (1)",
                 Description = "Throw <color=#00ff00>20%</color> farther",
                 Apply = () =>

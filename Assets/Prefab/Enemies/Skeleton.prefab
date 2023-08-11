@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3030390007288362797}
-  - component: {fileID: 3030390007288362799}
   - component: {fileID: 3030390007288362796}
   - component: {fileID: -410699779951129675}
   - component: {fileID: 6621889289370319539}
+  - component: {fileID: 4416953463048785456}
   m_Layer: 12
   m_Name: Skeleton
   m_TagString: Untagged
@@ -35,18 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3030390007288362799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3030390007288362794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &3030390007288362796
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -134,15 +122,27 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7f4613e5e87df8a4bb873e409f7250f9, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 1
+  Speed: 2.8
   AvoidCrowds: 1
-  CrowdScanRadius: 1
-  CrowdMaxNearby: 3
-  CrowdOutOfTheWayRange: 2.5
+  CrowdScanRadius: 0.25
+  CrowdMaxNearby: 1
+  CrowdOutOfTheWayRange: 2
   IsBoss: 0
-  Mass: 1
-  XpValue: 1
+  Mass: 2
+  XpValue: 3
   XpCount: 1
   GoldCount: 0
   ActorType: 28
-  BaseHp: 0
+  BaseHp: 180
+--- !u!114 &4416953463048785456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030390007288362794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

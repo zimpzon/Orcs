@@ -100,7 +100,11 @@ public class GameManager : MonoBehaviour
 
     public int SpriteFlashParamId;
     public int SpriteFlashColorParamId;
-    public static Rect ArenaBounds = new ();
+    public static Rect ArenaBounds = new();
+    public static Rect TopRect = new();
+    public static Rect BottomRect = new();
+    public static Rect LeftRect = new();
+    public static Rect RightRect = new();
     [NonSerialized] public float TextUnlockBasePos;
 
     static Dictionary<string, string> DebugValues = new ();
@@ -118,8 +122,7 @@ public class GameManager : MonoBehaviour
     float currentXp_ = 0;
     float currentLevel_ = 1;
     float roundStartTime_;
-
-    KeyCode menuBackKey_ = KeyCode.Escape;
+    float chapterCountdown_;
 
     public void SliderMasterChanged()
     {
@@ -265,7 +268,7 @@ public class GameManager : MonoBehaviour
             return true;
         }
 
-        return Input.GetKeyDown(menuBackKey_) || Input.GetKeyDown(KeyCode.Backspace);
+        return Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace);
     }
 
     IEnumerator GameStateCo()
@@ -337,11 +340,11 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
-                float runTime = GameTime;
-
-                int secondsLeft = (int)(ChapterTime - runTime + 0.5f);
+                int secondsLeft = (int)(chapterCountdown_ + 0.5f);
                 if (secondsLeft != lastSecondsLeft)
                 {
+                    // HACKZ
+                    secondsLeft = 60 * 15 - secondsLeft;
                     TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
                     lastSecondsLeft = secondsLeft;
                     if (secondsLeft <= 0)
@@ -621,6 +624,7 @@ public class GameManager : MonoBehaviour
 
         GameTime = 0.0001f;
         GameDeltaTime = 0.0f;
+        chapterCountdown_ = ChapterTime;
 
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
@@ -679,8 +683,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            GameDeltaTime = Time.deltaTime * PlayerUpgrades.Data.TimeScale;
+            if (Input.GetKeyDown(KeyCode.T) && Input.GetKey(KeyCode.RightShift))
+            {
+                chapterCountdown_ -= 30;
+                GameTime += 30;
+            }
+
+            GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
             GameTime += GameDeltaTime;
+    
+            if (SaveGame.RoundScore > 0)
+                chapterCountdown_ -= GameDeltaTime;
         }
 
         if (GameState == State.Intro_Shop && Input.GetKeyDown(Code[resetAllCodeIdx]))
@@ -736,7 +749,7 @@ public class GameManager : MonoBehaviour
         }
 
         ThrowPickups(AutoPickUpType.Money, actor.transform.position, actor.GoldCount, value: 1, forceScale: 1.0f);
-        ThrowPickups(AutoPickUpType.Xp, actor.transform.position, amount: actor.XpCount, value: actor.XpValue, forceScale: 0.01f);
+        ThrowPickups(AutoPickUpType.Xp, actor.transform.position, amount: actor.XpCount, value: actor.XpValue, forceScale: 1.0f);
     }
 
     private void OnFirstOrcPickup()
@@ -941,7 +954,13 @@ public class GameManager : MonoBehaviour
         float halfX = arenaWidth / 2;
         float halfY = arenaHeight / 2;
 
+        const float Size = 3;
         ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
+        TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
+        BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);
+
+        LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, Size, ArenaBounds.height);
+        RightRect = new Rect(ArenaBounds.xMax - Size, ArenaBounds.y, Size, ArenaBounds.height);
 
         TextFps.enabled = false;
 

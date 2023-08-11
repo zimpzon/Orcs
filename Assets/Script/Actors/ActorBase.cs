@@ -9,7 +9,7 @@ public enum ActorTypeEnum
     None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
     OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
     OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
-    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton,
+    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy,
 };
 
 public enum ActorForcedTargetType { Absolute, Direction };

@@ -89,28 +89,19 @@ public static class ChoicesPlayer
             new Choice
             {
                 Title = $"{Name}, defense (1)",
-                Description = "Take <color=#00ff00>10%</color> less damage",
+                Description = "Take <color=#00ff00>20%</color> less damage",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
+                    PlayerUpgrades.Data.HealthDefenseMul -= 0.2f;
                 },
                 NextLevel = new Choice
                 {
-                Title = $"{Name}, defense (2)",
-                    Description = "Take <color=#00ff00>10%</color> less damage",
+                    Title = $"{Name}, defense (2)",
+                    Description = "Take <color=#00ff00>20%</color> less damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
+                        PlayerUpgrades.Data.HealthDefenseMul -= 0.2f;
                     },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, defense (3)",
-                        Description = "Take <color=#00ff00>10%</color> less damage",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.HealthDefenseMul -= 0.1f;
-                        },
-                    }
                 }
             },
 

@@ -141,8 +141,8 @@ MonoBehaviour:
   CrowdOutOfTheWayRange: 2.5
   IsBoss: 0
   Mass: 1
-  XpValue: 1
-  XpCount: 1
+  XpValue: 2
+  XpCount: 10
   GoldCount: 0
   ActorType: 4
   BaseHp: 250

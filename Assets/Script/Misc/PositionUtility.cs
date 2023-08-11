@@ -31,6 +31,13 @@ public static class PositionUtility
         return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
     }
 
+    public static Vector2 GetPointInsideRect(Rect r)
+    {
+        float x = Random.Range(r.xMin + 0.5f, r.xMax - 0.5f);
+        float y = Random.Range(r.yMax - 0.5f, r.yMin + 0.5f);
+        return new Vector2(x, y);
+    }
+
     public static Vector3 GetPointInsideArena(float maxOffsetX = 1.0f, float maxOffsetY = 1.0f)
     {
         Vector3 point = Vector3.zero;
