@@ -94,7 +94,7 @@ public class AudioManager : MonoBehaviour
         PlayClip(clip, volumeScale, randomPitch);
     }
 
-    public void PlayClip(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f)
+    public void PlayClip(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false)
     {
         const int maxInstances = 1;
 
@@ -103,6 +103,7 @@ public class AudioManager : MonoBehaviour
         if (selectedSource != null)
         {
             // Replace an existing source
+            selectedSource.ignoreListenerPause = ignoreListenerPause;
             selectedSource.Stop();
             selectedSource.clip = clip;
             selectedSource.pitch = pitch;

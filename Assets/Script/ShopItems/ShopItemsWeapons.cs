@@ -44,7 +44,7 @@ public static class ShopItemsWeapons
                 ItemType = ShopItemType.MachinegunBulletsPerRound,
                 Title = $"{Name}, Salvo",
                 Description = "<color=#00ff00>+#VALUE</color> more knives per rank",
-                BasePrice = 50,
+                BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 8,
                 Value = 0.5f,
@@ -59,7 +59,7 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.WeaponTripleShot,
                 Title = $"{Name}, Dagger storm",
-                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing 20% damage",
+                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing <color=#00ff00>10%</color> damage",
                 BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,

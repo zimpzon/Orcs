@@ -35,3 +35,4 @@ MonoBehaviour:
   SaberHit: {fileID: 8300000, guid: 41a77d9029a153547a2dcc54cdfa9638, type: 3}
   Chainsaw: {fileID: 8300000, guid: 5d8050daa1e0dba40bbfc86b360321dd, type: 3}
   MoneyPickup: {fileID: 8300000, guid: 7248dd3c7b46ee1449ba935c2181b945, type: 3}
+  LevelUp: {fileID: 8300000, guid: e3b752cb6a10fa44f82a30a353f8de3a, type: 3}

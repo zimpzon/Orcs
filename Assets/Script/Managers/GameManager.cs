@@ -481,6 +481,7 @@ public class GameManager : MonoBehaviour
         UpgradeChoice4.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
 
         AudioListener.pause = true;
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.5f, pitch: 1.0f, ignoreListenerPause: true);
 
         Time.timeScale = 0.0f;
         PauseGameTime = true;

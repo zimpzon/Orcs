@@ -1,3 +1,4 @@
+using Assets.Script;
 using System.Collections.Generic;
 
 public static class ChoicesPlayer
@@ -8,6 +9,16 @@ public static class ChoicesPlayer
 
         return new List<Choice>
         {
+            new Choice
+            {
+                Title = "Complete heal",
+                Description = "Immediately heal to full life",
+                Apply = () =>
+                {
+                    float missingHp = BlackboardScript.PlayerScript.MaxHp - BlackboardScript.PlayerScript.Hp;
+                    BlackboardScript.PlayerScript.AddHp(missingHp, alwaysShow: true);
+                },
+            },
             new Choice
             {
                 Title = $"{Name}, max life (1)",

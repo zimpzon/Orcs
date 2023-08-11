@@ -83,10 +83,8 @@ public class PlayerScript : MonoBehaviour
     {
         float newMaxHp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         float hpAdded = newMaxHp - MaxHp;
-        Hp += hpAdded;
         MaxHp = newMaxHp;
-        if (Hp > MaxHp)
-            Hp = MaxHp;
+        AddHp(hpAdded, alwaysShow: true);
     }
 
     public void ResetAll()
@@ -192,7 +190,7 @@ public class PlayerScript : MonoBehaviour
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.8f;
 
-                damage *= 0.20f;
+                damage *= 0.10f;
 
                 for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
                 {
