@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 {
-    public Color FrozenColor = Color.cyan;
-
     const float Force = 1.0f;
 
     public static BurstOfFrost Instance;
@@ -45,35 +43,35 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 
     void SetNextBurst()
     {
-        nextBurst_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.BurstOfFrostBaseCd * PlayerUpgrades.Data.BurstOfFrostCdMul;
+        nextBurst_ = G.D.GameTime + PlayerUpgrades.Data.BurstOfFrostBaseCd * PlayerUpgrades.Data.BurstOfFrostCdMul;
     }
 
     void Update()
     {
-        if (GameManager.Instance.GameTime > nextBurst_ && !isBursting_)
+        if (G.D.GameTime > nextBurst_ && !isBursting_)
         {
             if (!PlayerUpgrades.Data.BurstOfFrostEnabledInRound)
                 return;
 
             isBursting_ = true;
-            burstStartTime_ = GameManager.Instance.GameTime;
+            burstStartTime_ = G.D.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
             renderer_.transform.localScale = Vector2.one * scale * 1.5f;
             GameManager.Instance.MakeFlash(transform.position, 3.0f);
-            snowflakes_.Emit(20);
+            snowflakes_.Emit(12);
         }
 
         if (isBursting_)
         {
             const float BurstTime = 0.1f;
-            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - GameManager.Instance.GameTime) / BurstTime);
+            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - G.D.GameTime) / BurstTime);
             baseColor_.a = baseAlpha_ + t * 0.15f;
             renderer_.color = baseColor_;
 
             if (t >= 1.0f)
             {
                 isBursting_ = false;
-                nextBurst_ = GameManager.Instance.GameTime + 1.0f;
+                SetNextBurst();
                 baseColor_.a = baseAlpha_;
                 renderer_.color = baseColor_;
 
@@ -94,7 +92,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
                 continue;
 
             if (Random.value < PlayerUpgrades.Data.BurstOfFrostBaseFreezeChance * PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul)
-                enemy.OnFreeze(FrozenColor, PlayerUpgrades.Data.BurstOfFrostBaseFreezeTime * PlayerUpgrades.Data.BurstOfFrostFreezeTimeMul);
+                enemy.OnFreeze(G.D.BurstOfFrostColor, PlayerUpgrades.Data.BurstOfFrostBaseFreezeTime * PlayerUpgrades.Data.BurstOfFrostFreezeTimeMul);
 
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;

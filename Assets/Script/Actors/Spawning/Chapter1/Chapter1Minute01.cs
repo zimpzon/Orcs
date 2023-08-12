@@ -12,7 +12,7 @@ public static class Chapter1Minute01
             ActorTypeEnum.OgreEdgy,
             startTime: new TimeSpan(0, 0, 30),
             endTime: new TimeSpan(0, 14, 50),
-            startingCount: 5,
+            startingCount: 8,
             endCount: 15,
             maxSpawnCountPerTick: 5,
             timeBetweenTicks: 1.5f,

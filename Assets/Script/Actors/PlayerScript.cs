@@ -27,7 +27,6 @@ public class PlayerScript : MonoBehaviour
     float flipX_;
     bool isDead_ = true;
     float playerScale_ = 2.0f;
-    bool isShooting_;
     float nextFire_ = float.MaxValue;
     float shotsLeft_ = 0;
     int flashParamId_;
@@ -95,6 +94,7 @@ public class PlayerScript : MonoBehaviour
         foreach (var toggleEffect in toggleEffects)
             toggleEffect.Disable();
 
+        nextFire_ = 0;
         immunityEnd_ = 0;
         shotsLeft_ = 0;
         lastRegenTick_ = 0;
@@ -113,7 +113,7 @@ public class PlayerScript : MonoBehaviour
         accumulated_ = 0;
     }
 
-    private void Start()
+    public void StartGame()
     {
         ResetAll();
         StartCoroutine(Think());
@@ -139,8 +139,8 @@ public class PlayerScript : MonoBehaviour
 
     void SetNextFire()
     {
-        float FireCd = PlayerUpgrades.Data.MagicMissileBaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
-        nextFire_ = GameManager.Instance.GameTime + FireCd;
+        float FireCd = PlayerUpgrades.Data.IsRambo ? 0.15f : PlayerUpgrades.Data.MagicMissileBaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
+        nextFire_ = G.D.GameTime + FireCd;
     }
 
     IEnumerator Think()
@@ -148,12 +148,9 @@ public class PlayerScript : MonoBehaviour
         while (true)
         {
             if (GameManager.Instance.GameState != GameManager.State.Playing)
-            {
-                yield return null;
-                continue;
-            }
+                yield break;
 
-            if (GameManager.Instance.GameTime > nextFire_)
+            if (G.D.GameTime > nextFire_)
             {
                 RefreshBulletCount();
                 nextFire_ = float.MaxValue;
@@ -164,7 +161,6 @@ public class PlayerScript : MonoBehaviour
             if (!hasBullets)
             {
                 // Stop firing
-                isShooting_ = false;
                 Weapon.StopFire();
             }
             else if (hasBullets && Weapon.GetCdLeft() <= 0.0f)
@@ -172,8 +168,6 @@ public class PlayerScript : MonoBehaviour
                 shotsLeft_ -= 1;
                 if (shotsLeft_ >= 1)
                     SetNextFire();
-
-                isShooting_ = true;
 
                 float recoil;
                 var fireDir = lookDir_;
@@ -187,18 +181,21 @@ public class PlayerScript : MonoBehaviour
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.8f;
 
-                damage *= 0.10f;
-
-                for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
+                if (!PlayerUpgrades.Data.IsRambo)
                 {
-                    var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+                    damage *= 0.10f;
 
-                    var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+                    for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
+                    {
+                        var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
+                        Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+
+                        var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
+                        Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+                    }
                 }
 
-                AddForce(lookDir_ * -recoil);
+                AddForce(lookDir_ * recoil * 1);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
             }
@@ -211,6 +208,7 @@ public class PlayerScript : MonoBehaviour
             {
                 animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, RunSprites);
             }
+
             yield return null;
         }
     }
@@ -376,10 +374,10 @@ public class PlayerScript : MonoBehaviour
 
         isMoving_ = moveVec_ != Vector3.zero;
 
-        if (ActorBase.PlayerClosestEnemy != null)
-            lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
-        else
-            lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
+        //if (ActorBase.PlayerClosestEnemy != null)
+        //    lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
+        //else
+        lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
 
         if (moveVec_.x != 0.0f)
         {
@@ -393,15 +391,22 @@ public class PlayerScript : MonoBehaviour
         force_ += f;
     }
 
-    void UpdateOverheadText()
+    void UpdateRambo()
     {
-        bool isRambo = Weapon != null && Weapon.Type == WeaponType.Rambo;
-        if (isShooting_ && isRambo)
+        bool ramboEnded = PlayerUpgrades.Data.IsRambo && G.D.GameTime > PlayerUpgrades.Data.RamboEndTime;
+        if (ramboEnded)
         {
-            OverheadText.text = "AAAARGH!";
+            PlayerUpgrades.Data.IsRambo = false;
+            OverheadText.text = "";
+        }
+
+        bool ramboActive = PlayerUpgrades.Data.IsRambo && PlayerUpgrades.Data.RamboEndTime > G.D.GameTime;
+        if (ramboActive)
+        {
+            OverheadText.text = "CHARGE!";
             OverheadText.enabled = true;
 
-            Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 0.5f + ((Vector3)RndUtil.RandomInsideUnitCircle() * 0.07f));
+            Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 1.2f + ((Vector3)RndUtil.RandomInsideUnitCircle() * 0.07f));
             overheadTextTrans_.anchoredPosition = uiPos;
             Color col = Color.HSVToRGB(Random.value * 0.3f, 1.0f, 1.0f);
             OverheadText.color = col;
@@ -474,11 +479,6 @@ public class PlayerScript : MonoBehaviour
             nextPoof_ = GameManager.Instance.GameTime + 0.2f;
             GameManager.Instance.MakeSpawnPoof(closestEdgePoint, 2);
         }
-
-        GameManager.SetDebugOutput("dist", distance);
-        GameManager.SetDebugOutput("acc", accumulated_);
-
-        Debug.DrawLine(trans_.position, closestEdgePoint, Color.cyan);
     }
 
     void Update()
@@ -490,6 +490,12 @@ public class PlayerScript : MonoBehaviour
         {
             immortal_ = !immortal_;
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.RightShift))
+        {
+            PlayerUpgrades.Data.IsRambo = true;
+            PlayerUpgrades.Data.RamboEndTime = G.D.GameTime + 5;
         }
 
         if (GameManager.Instance.PauseGameTime)
@@ -520,6 +526,6 @@ public class PlayerScript : MonoBehaviour
 
         //CheckDistanceToEdge();
         CheckControls();
-        UpdateOverheadText();
+        UpdateRambo();
     }
 }

@@ -60,7 +60,7 @@ public class GrenadeScript : MonoBehaviour
         float downForce = -15.0f;
         float speed = 4.0f * force;
 
-        float fuseT0 = Time.time;
+        float fuseT0 = G.D.GameTime;
         float fuseT1 = fuseT0 + FuseTime;
         Vector3 dir = (to - from).normalized;
         Vector3 pos = from;
@@ -70,7 +70,7 @@ public class GrenadeScript : MonoBehaviour
         audioSource_.volume = 0.5f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
 
-        while (Time.time < fuseT1)
+        while (G.D.GameTime < fuseT1)
         {
             float delta = GameManager.Instance.GameDeltaTime;
 
@@ -78,7 +78,7 @@ public class GrenadeScript : MonoBehaviour
             showPos.y += offsetY;
             trans_.position = showPos;
             bombRenderer_.sortingOrder = (Mathf.RoundToInt(trans_.position.y * 100f));
-            bombMaterial_.SetFloat(flashParamId_, (Mathf.Sin((Time.time * 15) + 1.0f) * 0.5f) * 0.75f);
+            bombMaterial_.SetFloat(flashParamId_, (Mathf.Sin((G.D.GameTime * 15) + 1.0f) * 0.5f) * 0.75f);
 
             offsetY += velocityY * delta;
             velocityY += downForce * delta;

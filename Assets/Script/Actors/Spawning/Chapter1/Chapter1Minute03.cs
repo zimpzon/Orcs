@@ -9,6 +9,15 @@ public static class Chapter1Minute03
 {
     public static IEnumerable<IEnumerator> GetEvents()
     {
+        yield return SpawnUtil.Swarm(
+                ActorTypeEnum.OgreBandana,
+                startTime: new TimeSpan(0, 4, 0),
+                endTime: new TimeSpan(0, 6, 0),
+                spawnCountPerTick: 2,
+                timeBetweenTicks: 5,
+                outsideScreen: true,
+                SpawnDirection.Any);
+
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreLarge,
                 startTime: new TimeSpan(0, 3, 15),
@@ -58,13 +67,18 @@ public static class Chapter1Minute03
                 startTime: new TimeSpan(0, 3, 0),
                 endTime: new TimeSpan(0, 6, 0),
                 spawnCountPerTick: 1,
-                timeBetweenTicks: 2,
+                timeBetweenTicks: 5,
                 outsideScreen: true,
                 SpawnDirection.Any);
 
-        var yAdjust = Vector2.up * 2;
+        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,
+            time: new TimeSpan(0, 3, 30), TopMidOut - Vector2.left * 5, BottomMidOut - Vector2.left * 2, ActorForcedTargetType.Direction, w: 4, h: 2, stepX: 1, stepY: 1, pivotX: 0.5f, pivotY: 0.5f, skewX: 0.75f);
+
+        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,
+            time: new TimeSpan(0, 3, 30), TopMidOut + Vector2.left * 5, BottomMidOut + Vector2.left * 2, ActorForcedTargetType.Direction, w: 4, h: 2, stepX: 1, stepY: 1, pivotX: 0.5f, pivotY: 0.5f, skewX: -0.75f);
+
         yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreShaman, despawnAtDestination: true, breakFreeAtDamage: true,
-           time: new TimeSpan(0, 5, 10), RightMidOut + yAdjust, LeftMidOut, ActorForcedTargetType.Direction, w: 4, h: 6, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.2f, skewY: 0.2f);
+           time: new TimeSpan(0, 5, 10), RightMidOut, LeftMidOut, ActorForcedTargetType.Direction, w: 2, h: 2, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.2f, skewY: 0.2f);
 
         yield break;
     }

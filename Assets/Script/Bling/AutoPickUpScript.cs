@@ -34,7 +34,7 @@ public class AutoPickUpScript : MonoBehaviour
         direction.Normalize();
         sqrAttractDistance_ = AttractDistance * AttractDistance;
         
-        float time = Time.time;
+        float time = G.D.GameTime;
         float randomValue = forceScale * 0.1f;
         force_ = direction * (Random.value * randomValue + ThrowForce) * forceScale_;
 
@@ -52,8 +52,8 @@ public class AutoPickUpScript : MonoBehaviour
         if (GameManager.Instance.GameTime < throwStartTime_)
             return;
 
-        float dt = Time.deltaTime;
-        float time = Time.time;
+        float dt = G.D.GameDeltaTime;
+        float time = G.D.GameTime;
         var myPos = transform_.position;
 
         var playerPos = G.D.PlayerPos + Vector3.up * 0.3f;

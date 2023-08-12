@@ -6,7 +6,7 @@ public class WeaponRambo : WeaponBase
 
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
+        lastFire_ = G.D.GameTime;
         recoil = 0.0f;
         Color color = new Color(0.8f, 0.6f, 0.1f);
 

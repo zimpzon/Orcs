@@ -22,7 +22,7 @@ public static class ChoicesPlayer
             new Choice
             {
                 Title = $"{Name}, max life (1)",
-                Description = "<color=#00ff00>+20%</color> base max life",
+                Description = "<color=#00ff00>+20%</color> max life",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.HealthMul += 0.2f;
@@ -31,7 +31,7 @@ public static class ChoicesPlayer
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, max life (2)",
-                    Description = "<color=#00ff00>+20%</color> base max life",
+                    Description = "<color=#00ff00>+20%</color> max life",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.HealthMul += 0.2f;
@@ -40,7 +40,7 @@ public static class ChoicesPlayer
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, max life (3)",
-                        Description = "<color=#00ff00>+30%</color> base max life",
+                        Description = "<color=#00ff00>+30%</color> max life",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.HealthMul += 0.3f;
@@ -49,7 +49,7 @@ public static class ChoicesPlayer
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, max life (4)",
-                            Description = "<color=#00ff00>+30%</color> base max life",
+                            Description = "<color=#00ff00>+30%</color> max life",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.HealthMul += 0.3f;

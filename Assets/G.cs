@@ -10,6 +10,7 @@ public class G : MonoBehaviour
     public Color DeflectedProjectileColor;
     public Color DefaultButtonBackgroundColor;
     public Color DisabledButtonBackgroundColor;
+    public Color BurstOfFrostColor;
     [NonSerialized] public string UpgradePositiveColorHex;
     [NonSerialized] public string UpgradeNegativeColorHex;
     [NonSerialized] public string UpgradeNeutralColorHex;

@@ -18,7 +18,6 @@ namespace Assets.Script.Actors.Spawning
                 var actorPos = (Vector2)actor.transform.position;
 
                 var target = BlackboardScript.ClosestPointOnEdge(actorPos);
-                //var target = actorPos.y < 0 ? Vector3.down : Vector3.up;
                 actor.SetForcedTarget(actorPos + target, despawnAtDestination: true, breakAtDamage: false, ActorForcedTargetType.Direction);
             }
         }

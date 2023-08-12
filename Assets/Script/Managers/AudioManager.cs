@@ -80,7 +80,7 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        RepeatingSawblade.Update(Time.deltaTime);
+        RepeatingSawblade.Update(G.D.GameDeltaTime);
     }
 
     public void SetVolume(float volume)

@@ -1,3 +1,5 @@
+using Assets.Script.Actors.Spawning;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using static PositionUtility;
@@ -6,6 +8,53 @@ public static class Chapter1Minute14
 {
     public static IEnumerable<IEnumerator> GetEvents()
     {
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreShamanStaff,
+            startTime: new TimeSpan(0, 14, 0),
+            endTime: new TimeSpan(0, 15, 0),
+            startingCount: 3,
+            endCount: 3,
+            maxSpawnCountPerTick: 1,
+            timeBetweenTicks: 4.0f,
+            outsideScreen: true,
+            SpawnDirection.Any);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+                ActorTypeEnum.OgreSmall,
+                startTime: new TimeSpan(0, 14, 10),
+                endTime: new TimeSpan(0, 15, 0),
+                startingCount: 3,
+                endCount: 3,
+                maxSpawnCountPerTick: 10,
+                timeBetweenTicks: 1.2f,
+                outsideScreen: true,
+                SpawnDirection.Any);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+                ActorTypeEnum.Ogre,
+                startTime: new TimeSpan(0, 14, 10),
+                endTime: new TimeSpan(0, 15, 0),
+                startingCount: 2,
+                endCount: 2,
+                maxSpawnCountPerTick: 10,
+                timeBetweenTicks: 3.0f,
+                outsideScreen: true,
+                SpawnDirection.Any);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+                ActorTypeEnum.Skeleton,
+                startTime: new TimeSpan(0, 14, 10),
+                endTime: new TimeSpan(0, 15, 0),
+                startingCount: 2,
+                endCount: 2,
+                maxSpawnCountPerTick: 1,
+                timeBetweenTicks: 5.0f,
+                outsideScreen: true,
+                SpawnDirection.Any);
+
+        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,
+            time: new TimeSpan(0, 14, 5), LeftMidOut, RightMidOut, ActorForcedTargetType.Direction, w: 2, h: 16, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.0f, skewX: 0.0f);
+
         yield break;
     }
 }

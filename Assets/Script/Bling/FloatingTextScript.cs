@@ -27,7 +27,7 @@ public class FloatingTextScript : MonoBehaviour, IKillableObject
         transform_.position = position;
         position_ = position;
         speed_ = speed;
-        dieTime_ = Time.time + timeToLive;
+        dieTime_ = G.D.GameTime + timeToLive;
     }
 
     public void Die()
@@ -37,10 +37,10 @@ public class FloatingTextScript : MonoBehaviour, IKillableObject
 
     void Update()
     {
-        position_.y += Time.deltaTime * speed_;
+        position_.y += G.D.GameDeltaTime * speed_;
         transform_.position = position_;
 
-        if (Time.time >= dieTime_)
+        if (G.D.GameTime >= dieTime_)
             Die();
     }
 

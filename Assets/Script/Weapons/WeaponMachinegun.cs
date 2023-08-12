@@ -6,7 +6,7 @@ public class WeaponMachinegun : WeaponBase
 
     public override void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
+        lastFire_ = G.D.GameTime;
         recoil = 0.01f;
         IsPrimary = true;
         Color color = new (256 / 255.0f, 248 / 255.0f, 220 / 255.0f, 1.0f);
@@ -32,6 +32,13 @@ public class WeaponMachinegun : WeaponBase
         basic.Speed = PlayerUpgrades.Data.MagicMissileBaseSpeed * PlayerUpgrades.Data.MagicMissileSpeedMul + Random.value;
         basic.Damage = damage;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileBaseRange * PlayerUpgrades.Data.MagicMissileRangeMul;
+
+        if (PlayerUpgrades.Data.IsRambo)
+        {
+            basic.MaxDistance *= 5;
+            basic.SwayFactor = 0.2f;
+        }
+
         basic.Radius = 0.3f;
 
         basic.Position = point;

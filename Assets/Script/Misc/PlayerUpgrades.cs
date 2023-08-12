@@ -33,6 +33,8 @@ public class UpgradeData
     public float HealthDefenseMul = 1.0f;
     public float BaseMoveSpeed = 4.0f;
     public float MoveSpeedMul = 1.0f;
+    public bool IsRambo = false;
+    public float RamboEndTime = 0;
 
     public int RescueDuckHp = 5;
 
@@ -77,7 +79,7 @@ public class UpgradeData
 
     public bool BurstOfFrostBought = false;
     public bool BurstOfFrostEnabledInRound = false;
-    public float BurstOfFrostBaseCd = 1.0f;
+    public float BurstOfFrostBaseCd = 1.3f;
     public float BurstOfFrostCdMul = 1.0f;
     public float BurstOfFrostBaseRange = 2.0f;
     public float BurstOfFrostRangeMul = 1.0f;

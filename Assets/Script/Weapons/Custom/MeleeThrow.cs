@@ -23,7 +23,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
     {
         float speed = 0;
 
-        float now = GameManager.Instance.GameTime;
+        float now = G.D.GameTime;
         float suckingEndtime = now + 5.0f;
 
         const int MaxSuck = 15;
@@ -40,7 +40,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
 
         while (now < suckingEndtime)
         {
-            now = GameManager.Instance.GameTime;
+            now = G.D.GameTime;
 
             float x = Mathf.Sin(now * 1.5f) * 2 + startPos_.x;
             float y = Mathf.Cos(now * 1.5f) * 2 + startPos_.y;
@@ -49,10 +49,10 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             trans_.position = new Vector2(x + swayX, y + swayY);
 
             trans_.rotation = Quaternion.Euler(0.0f, 0.0f, degrees_);
-            degrees_ += rotationspeed * GameManager.Instance.GameDeltaTime;
+            degrees_ += rotationspeed * G.D.GameDeltaTime;
 
             var dirPlayer = (G.D.PlayerPos - trans_.position).normalized;
-            trans_.position += dirPlayer * speed * GameManager.Instance.GameDeltaTime;
+            trans_.position += dirPlayer * speed * G.D.GameDeltaTime;
 
             SuckEnemies();
 
@@ -92,7 +92,6 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             enemy.ApplyDamage(damage_, dir, 1.5f);
         }
 
-        //float dist = Vector3.Distance(GameManager.Instance.PlayerScript.transform.position, trans_.position);
         GameManager.Instance.MakePoof(trans_.position, 5, 1.0f);
         GameManager.Instance.MakeFlash(trans_.position, 5.0f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LivingBombExplode, 0.75f);

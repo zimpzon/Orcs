@@ -8,34 +8,45 @@ public static class Chapter1Minute10
 {
     public static IEnumerable<IEnumerator> GetEvents()
     {
-        yield return SpawnUtil.SpawnAndMaintain(
-               ActorTypeEnum.OgreLarge,
-               startTime: new TimeSpan(0, 10, 0),
-               endTime: new TimeSpan(0, 14, 0),
-               startingCount: 1,
-               endCount: 1,
-               maxSpawnCountPerTick: 1,
-               timeBetweenTicks: 15.0f,
-               outsideScreen: true,
-               SpawnDirection.Any);
+        yield return SpawnUtil.Swarm(
+                ActorTypeEnum.OgreBandana,
+                startTime: new TimeSpan(0, 10, 10),
+                endTime: new TimeSpan(0, 14, 0),
+                spawnCountPerTick: 1,
+                timeBetweenTicks: 5,
+                outsideScreen: true,
+                SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 10, 0),
             endTime: new TimeSpan(0, 14, 0),
-            startingCount: 3,
-            endCount: 3,
+            startingCount: 2,
+            endCount: 2,
             maxSpawnCountPerTick: 1,
-            timeBetweenTicks: 15.0f,
+            timeBetweenTicks: 8.0f,
             outsideScreen: true,
             SpawnDirection.Any);
 
-        yield return SpawnUtil.Swarm(
-                ActorTypeEnum.Ogre,
-                startTime: new TimeSpan(0, 10, 0),
+        yield return SpawnUtil.SpawnAndMaintain(
+                ActorTypeEnum.OgreSmall,
+                startTime: new TimeSpan(0, 10, 10),
                 endTime: new TimeSpan(0, 14, 0),
-                spawnCountPerTick: 3,
-                timeBetweenTicks: 1,
+                startingCount: 5,
+                endCount: 5,
+                maxSpawnCountPerTick: 10,
+                timeBetweenTicks: 1.2f,
+                outsideScreen: true,
+                SpawnDirection.Any);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+                ActorTypeEnum.Ogre,
+                startTime: new TimeSpan(0, 10, 10),
+                endTime: new TimeSpan(0, 14, 0),
+                startingCount: 12,
+                endCount: 12,
+                maxSpawnCountPerTick: 10,
+                timeBetweenTicks: 3.0f,
                 outsideScreen: true,
                 SpawnDirection.Any);
 
@@ -43,21 +54,19 @@ public static class Chapter1Minute10
                 ActorTypeEnum.Skeleton,
                 startTime: new TimeSpan(0, 10, 10),
                 endTime: new TimeSpan(0, 14, 0),
-                startingCount: 1,
-                endCount: 2,
+                startingCount: 2,
+                endCount: 4,
                 maxSpawnCountPerTick: 1,
-                timeBetweenTicks: 5.5f,
+                timeBetweenTicks: 10.0f,
                 outsideScreen: true,
                 SpawnDirection.Any);
 
-        yield return SpawnUtil.SpawnAndMaintain(
-                ActorTypeEnum.OgreBandana,
-                startTime: new TimeSpan(0, 10, 10),
+        yield return SpawnUtil.Swarm(
+                ActorTypeEnum.Ogre,
+                startTime: new TimeSpan(0, 10, 0),
                 endTime: new TimeSpan(0, 14, 0),
-                startingCount: 20,
-                endCount: 25,
-                maxSpawnCountPerTick: 1,
-                timeBetweenTicks: 1.0f,
+                spawnCountPerTick: 2,
+                timeBetweenTicks: 5,
                 outsideScreen: true,
                 SpawnDirection.Any);
 

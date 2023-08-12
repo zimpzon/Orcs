@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
     const float XpPerLevelMultiplier = 1.2f;
-    const float ChapterTime = 60 * 15;
     const float BaseXpToLevel = 14;
 
     public static GameManager Instance;
@@ -27,7 +26,6 @@ public class GameManager : MonoBehaviour
 
     public LeanTween Tween;
     public Text TextGameInfo;
-    public Text TextWin;
     public Text TextLevel;
     public Text TextHp;
     public Text TextTime;
@@ -42,6 +40,7 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer FloorFilter;
     Color floorDefaultColor;
     public Button ButtonPlay;
+    public TextMeshProUGUI ButtonRefundAmount;
     public string ColorLocked;
     public string ColorUnlocked;
     public ShopItemScript ShopItemProto;
@@ -60,7 +59,6 @@ public class GameManager : MonoBehaviour
     public Canvas CanvasGameOverDefault;
     public GameModeEnum GameMode;
 
-    public TextBlinkScript TextFloatingWeapon;
     public ParticleSystem FlyingBlood;
     public ParticleSystem BloodDrops;
     public ParticleSystem FloorBlood;
@@ -110,7 +108,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
 
-    public int lastSecondsLeft = 0;
+    public int lastGameSeconds = 0;
     int lastHp_ = 0;
     int lastMaxHp_ = 0;
     float xpToLevel_;
@@ -120,7 +118,7 @@ public class GameManager : MonoBehaviour
     float currentXp_ = 0;
     float currentLevel_ = 1;
     float roundStartTime_;
-    float chapterCountdown_;
+    float chapterTime_;
 
     public void SliderMasterChanged()
     {
@@ -146,10 +144,10 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.SetVolume(value * SaveGame.Members.VolumeMaster);
         if (!skipNextsfxVolumeChangeFeedback_)
         {
-            if (Time.time > sfxVolumeChangeLastFeedback_)
+            if (G.D.GameTime > sfxVolumeChangeLastFeedback_)
             {
                 AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerMachinegunFire);
-                sfxVolumeChangeLastFeedback_ = Time.time + 0.1f;
+                sfxVolumeChangeLastFeedback_ = G.D.GameTime + 0.1f;
             }
         }
         SaveGame.Members.VolumeSfx = value;
@@ -225,6 +223,7 @@ public class GameManager : MonoBehaviour
     void UpdateMoneyLabels()
     {
         TextShopMoney.text = $"${SaveGame.Members.Money}";
+        ButtonRefundAmount.text = $"(${SaveGame.Members.MoneySpentInShop})";
     }
 
     static int BuyCount = 0;
@@ -338,15 +337,11 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
-                int secondsLeft = (int)(chapterCountdown_ + 0.5f);
-                if (secondsLeft != lastSecondsLeft)
+                int gameSeconds = (int)(chapterTime_ + 0.5f);
+                if (gameSeconds != lastGameSeconds)
                 {
-                    // HACKZ
-                    secondsLeft = 60 * 15 - secondsLeft;
-                    TextTime.text = $"{secondsLeft / 60:00}:{secondsLeft % 60:00}";
-                    lastSecondsLeft = secondsLeft;
-                    if (secondsLeft <= 0)
-                        TextWin.enabled = true;
+                    TextTime.text = $"{gameSeconds / 60:00}:{gameSeconds % 60:00}";
+                    lastGameSeconds = gameSeconds;
                 }
 
                 int hpLeft = (int)(G.D.PlayerScript.Hp + 0.5f);
@@ -530,7 +525,7 @@ public class GameManager : MonoBehaviour
             { "level", (int)currentLevel_ },
             { "gold", SaveGame.RoundGold },
             { "kills", SaveGame.RoundKills },
-            { "seconds_left", lastSecondsLeft },
+            { "game_seconds", lastGameSeconds },
         };
         Playfab.PlayerEvent(Playfab.GameOverEvent, props);
 
@@ -548,11 +543,10 @@ public class GameManager : MonoBehaviour
         dic[Playfab.KillsStat] = SaveGame.RoundKills;
         dic[Playfab.ScoreStat] = SaveGame.RoundScore;
         dic[Playfab.RoundsCompletedStat] = Rounds;
-        dic[Playfab.SecondsLeftStat] = lastSecondsLeft;
+        dic[Playfab.SecondsLeftStat] = lastGameSeconds;
         dic[Playfab.TotalSeconds] = SaveGame.Members.TotalSeconds;
 
         Playfab.PlayerStat(dic);
-        TextFloatingWeapon.Clear();
 
         GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
@@ -629,7 +623,7 @@ public class GameManager : MonoBehaviour
 
         GameTime = 0.0001f;
         GameDeltaTime = 0.0f;
-        chapterCountdown_ = ChapterTime;
+        chapterTime_ = 0;
 
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
@@ -640,7 +634,7 @@ public class GameManager : MonoBehaviour
         InitXpText();
 
         TextTimeScale.enabled = PlayerUpgrades.Data.TimeScale > 1;
-        TextTimeScale.text = $"{+(int)Math.Round((PlayerUpgrades.Data.TimeScale - 1) * 100)}%";
+        TextTimeScale.text = $"+{(int)Math.Round((PlayerUpgrades.Data.TimeScale - 1) * 100)}%";
 
         CanvasIntro.gameObject.SetActive(false);
         CanvasDead.gameObject.SetActive(false);
@@ -651,12 +645,11 @@ public class GameManager : MonoBehaviour
         RoundUnlockCount = 0;
         roundStartTime_ = Time.time;
         G.D.PlayerScript.SetPlayerPos(Vector3.zero);
+        G.D.PlayerScript.StartGame();
         Orc.SetPosition(Vector3.up * 3, startingGame: true);
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
-
-        //StartCoroutine(Server.Instance.UpdateStat("RoundStarted", 1));
     }
 
     void ClearParticles()
@@ -690,22 +683,20 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.T) && Input.GetKey(KeyCode.RightShift))
             {
-                chapterCountdown_ -= 30;
+                chapterTime_ += 30;
                 GameTime += 30;
             }
 
             if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
             {
                 ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
-                chapterCountdown_ -= 30;
-                GameTime += 30;
             }
 
             GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
             GameTime += GameDeltaTime;
     
             if (SaveGame.RoundScore > 0)
-                chapterCountdown_ -= GameDeltaTime;
+                chapterTime_ += GameDeltaTime;
         }
 
         if (GameState == State.Intro_Shop && Input.GetKeyDown(Code[resetAllCodeIdx]))
@@ -1024,7 +1015,7 @@ public class GameManager : MonoBehaviour
     void OnGUI()
     {
         //return;
-        SetDebugOutput("OnGUI enabled", Time.time);
+        SetDebugOutput("OnGUI enabled", G.D.GameTime);
 
         if (DebugValues.Count == 0)
             return;

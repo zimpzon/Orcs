@@ -114,7 +114,7 @@ public class OrcController : MonoBehaviour
         arrow_.gameObject.SetActive(!isGhost);
         GetComponent<SpriteRenderer>().color = isGhost ? GhostColor : baseColor_;
         GetComponent<Collider2D>().enabled = !isGhost;
-        reviveTime_ = Time.time + PlayerUpgrades.Data.OrcReviveTime * PlayerUpgrades.Data.OrcReviveTimeMul;
+        reviveTime_ = G.D.GameTime + PlayerUpgrades.Data.OrcReviveTime * PlayerUpgrades.Data.OrcReviveTimeMul;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -140,7 +140,7 @@ public class OrcController : MonoBehaviour
         {
             while (pickedUp_)
             {
-                if (Time.time > reviveTime_)
+                if (G.D.GameTime > reviveTime_)
                 {
                     pickedUp_ = false;
                     MakeGhost(false);
@@ -165,9 +165,9 @@ public class OrcController : MonoBehaviour
                 if (!chasePlayer_)
                     lookAt_ = target_;
 
-                if (Time.time > nextMeleeSwing)
+                if (G.D.GameTime > nextMeleeSwing)
                 {
-                    nextMeleeSwing = Time.time + MeleeCd;
+                    nextMeleeSwing = G.D.GameTime + MeleeCd;
                     StartCoroutine(SwingMeleeCo(lookAt_));
                     float YodaRadius = 2.0f;
                     _ = WeaponSword.Swing(trans_.position, damage: 0.0f, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
@@ -200,7 +200,7 @@ public class OrcController : MonoBehaviour
         distanceToTarget_ = targetVec_.magnitude;
 
         Vector3 arrowPos = arrow_.localPosition;
-        arrowPos.y = 1.0f + Mathf.Sin(Time.time * 8) * 0.25f;
+        arrowPos.y = 1.0f + Mathf.Sin(G.D.GameTime * 8) * 0.25f;
         arrow_.localPosition = arrowPos;
 
         if (distanceToTarget_ > 0.1f)

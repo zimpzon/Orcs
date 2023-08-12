@@ -11,7 +11,7 @@ public class WeaponStaff2 : WeaponBase
 
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
+        lastFire_ = G.D.GameTime;
         recoil = 0.0f;
         Color color = Color.white;
         Vector3 worldMuzzle = weaponTrans.TransformPoint(Muzzle);

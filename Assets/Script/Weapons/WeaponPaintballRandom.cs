@@ -16,7 +16,7 @@ public class WeaponPaintballRandom : WeaponBase
 
     public override void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
+        lastFire_ = G.D.GameTime;
         recoil = 0.0f;
         Color color = PoisonDaggers.Instance.Color;
 

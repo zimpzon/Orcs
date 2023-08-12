@@ -65,7 +65,8 @@ public class WeaponBase
 
     public float GetCdLeft()
     {
-        return Mathf.Max(0.0f, (lastFire_ - Time.time) + PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul);
+        float cd = PlayerUpgrades.Data.IsRambo ? 0.1f : PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul;
+        return Mathf.Max(0.0f, (lastFire_ - G.D.GameTime) + cd);
     }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)

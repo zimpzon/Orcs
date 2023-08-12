@@ -16,7 +16,7 @@ public class WeaponPaintball : WeaponBase
 
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
-        lastFire_ = Time.time;
+        lastFire_ = G.D.GameTime;
         recoil = 0.0f;
         Color color = Color.HSVToRGB(UnityEngine.Random.value, 1.0f, 1.0f);
 

@@ -162,7 +162,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
     {
         removeListBasic_.Clear();
 
-        float time = Time.time;
+        float time = G.D.GameTime;
         for (int i = 0; i < basicProjectiles_.Count; ++i)
         {
             var p = basicProjectiles_[i];
@@ -302,12 +302,12 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 }
 
                 if (p.RotationSpeed > 0.0f)
-                    p.SpriteInfo.Transform.rotation = Quaternion.Euler(0.0f, 0.0f, Time.time * (p.CurrentTarget == null ? p.RotationSpeed : p.RotationSpeedWhenStuck));
+                    p.SpriteInfo.Transform.rotation = Quaternion.Euler(0.0f, 0.0f, G.D.GameTime * (p.CurrentTarget == null ? p.RotationSpeed : p.RotationSpeedWhenStuck));
 
                 if (p.SwayFactor > 0.0f)
                 {
                     Vector3 perpendicular = new Vector3(-p.Direction.y, p.Direction.x, 0).normalized;
-                    p.SpriteInfo.Transform.position = p.Position + (Mathf.Sin(Time.time * 10) * p.SwayFactor * perpendicular);
+                    p.SpriteInfo.Transform.position = p.Position + (Mathf.Sin(G.D.GameTime * 10) * p.SwayFactor * perpendicular);
                 }
                 else
                 {

@@ -39,7 +39,7 @@ public static class ChoicesPoison
             new Choice
             {
                 Title = $"{Name}, range (1)",
-                Description = "Throw <color=#00ff00>10%</color> farther",
+                Description = "Range <color=#00ff00>+10%</color>",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.PaintballRangeMul += 0.1f;
@@ -47,7 +47,7 @@ public static class ChoicesPoison
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, range (2)",
-                    Description = "Throw <color=#00ff00>10%</color> farther",
+                    Description = "Range <color=#00ff00>+10%</color>",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballRangeMul += 0.1f;
@@ -55,7 +55,7 @@ public static class ChoicesPoison
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, range (3)",
-                        Description = "Throw <color=#00ff00>15%</color> farther",
+                        Description = "Range <color=#00ff00>+15%</color>",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.PaintballRangeMul += 0.15f;
@@ -63,7 +63,7 @@ public static class ChoicesPoison
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, range (4)",
-                            Description = "Throw <color=#00ff00>15%</color> farther",
+                            Description = "Range <color=#00ff00>+15%</color>",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.PaintballRangeMul += 0.15f;
