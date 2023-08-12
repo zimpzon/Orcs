@@ -20,10 +20,14 @@ public class AudioData : ScriptableObject
     public AudioClip OrcHorn;
     public AudioClip UnarmedBlast;
     public AudioClip Victory;
-    public AudioClip ChargerWarning;
+    public AudioClip ZombieGroan;
     public AudioClip SaberSwing;
     public AudioClip SaberHit;
     public AudioClip Chainsaw;
     public AudioClip MoneyPickup;
     public AudioClip LevelUp;
+    public AudioClip SqueakyDie;
+    public AudioClip ShortDeepBump;
+    public AudioClip SoftShoot;
+    public AudioClip Oink;
 }

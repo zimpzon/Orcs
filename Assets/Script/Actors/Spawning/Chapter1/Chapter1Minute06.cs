@@ -81,6 +81,9 @@ public static class Chapter1Minute06
                 outsideScreen: true,
                 SpawnDirection.Any);
 
+        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,
+            time: new TimeSpan(0, 0, 5), LeftMidOut, RightMidOut, ActorForcedTargetType.Direction, w: 4, h: 16, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.0f);
+
         yield break;
     }
 }

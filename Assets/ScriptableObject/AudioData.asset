@@ -30,9 +30,13 @@ MonoBehaviour:
   OrcHorn: {fileID: 8300000, guid: 29bcefeb61c74e2408c57551916c49cb, type: 3}
   UnarmedBlast: {fileID: 8300000, guid: 1cc6045347c7cec438c30a8da9c9ed98, type: 3}
   Victory: {fileID: 8300000, guid: 26ff9cd1b2d04f043b8aea9bb24be4ff, type: 3}
-  ChargerWarning: {fileID: 8300000, guid: 0d3e6dd0f2e0c8942a0caac398459d14, type: 3}
+  ZombieGroan: {fileID: 8300000, guid: 0d3e6dd0f2e0c8942a0caac398459d14, type: 3}
   SaberSwing: {fileID: 8300000, guid: 73bbed54cac374445b311c941719c0c6, type: 3}
   SaberHit: {fileID: 8300000, guid: 41a77d9029a153547a2dcc54cdfa9638, type: 3}
   Chainsaw: {fileID: 8300000, guid: 5d8050daa1e0dba40bbfc86b360321dd, type: 3}
   MoneyPickup: {fileID: 8300000, guid: 7248dd3c7b46ee1449ba935c2181b945, type: 3}
   LevelUp: {fileID: 8300000, guid: e3b752cb6a10fa44f82a30a353f8de3a, type: 3}
+  SqueakyDie: {fileID: 8300000, guid: 27d7ff6e5aac9164aadf9481a66933e3, type: 3}
+  ShortDeepBump: {fileID: 8300000, guid: 4d6265526b24b364f9c923de946d2ba7, type: 3}
+  SoftShoot: {fileID: 8300000, guid: 1232cfa754c5a4b46933ee40da4403ac, type: 3}
+  Oink: {fileID: 8300000, guid: ee937f8df3d096e4592dcb44a3177021, type: 3}

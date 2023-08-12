@@ -80,11 +80,10 @@ public class Chapter1Controller : MonoBehaviour
 
         yield return StartCoroutine(Warning(new TimeSpan(0, 5, 0), "The air thickens", ColorAfterFirstWarning, FilterAfterFirstWarning));
         yield return StartCoroutine(Warning(new TimeSpan(0, 10, 40), "The dead grow uneasy", ColorAfterSecondWarning, FilterAfterSecondWarning));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 14, 50), "A horrible smell arises", ColorAfterFinalWarning, FilterAfterFinalWarning));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 15, 2), "actually he is not here yet, sorry.\nworking on it! hope you had fun anyways", ColorAfterFinalWarning, FilterAfterFinalWarning));
+        yield return StartCoroutine(Warning(new TimeSpan(0, 14, 50), "A horrible smell draws closer", ColorAfterFinalWarning, FilterAfterFinalWarning));
+        yield return StartCoroutine(Warning(new TimeSpan(0, 15, 8), "GAME OVER\nfor now, boss is work in progress", ColorAfterFinalWarning, FilterAfterFinalWarning));
 
-        yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 13, 57), () => SpawnUtil.FleeAllActors()));
-        yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 50), () => SpawnUtil.FleeAllActors()));
+        yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 55), () => SpawnUtil.FleeAllActors()));
 
         while (true)
             yield return null;

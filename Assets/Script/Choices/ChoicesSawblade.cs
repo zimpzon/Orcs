@@ -40,42 +40,42 @@ public static class ChoicesSawblade
             new Choice
             {
                 Title = $"{Name}, Durability (1)",
-                Description = "Sawblade is <color=#00ff00>10%</color> more durable",
+                Description = "Sawblade is <color=#00ff00>30%</color> more durable",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.1f;
+                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, Speed (1)",
-                    Description = "<color=#00ff00>-10%</color> time between sawblades",
+                    Description = "<color=#00ff00>+20%</color> shorter cooldown",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.SawBladeCdMul -= 0.1f;
+                        PlayerUpgrades.Data.SawBladeCdMul -= 0.2f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, Durability (2)",
-                        Description = "Sawblade is <color=#00ff00>15%</color> more durable",
+                        Description = "Sawblade is <color=#00ff00>30%</color> more durable",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.SawBladeDurabilityMul += 0.15f;
+                            PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, Speed (2)",
-                            Description = "<color=#00ff00>-10%</color> time between sawblades",
+                            Description = "<color=#00ff00>+20%</color> shorter cooldown",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.SawBladeCdMul -= 0.1f;
+                                PlayerUpgrades.Data.SawBladeCdMul -= 0.2f;
                             },
                             NextLevel = new Choice
                             {
                                 Title = $"{Name}, Durability (3)",
-                                Description = "Sawblade is <color=#00ff00>20%</color> more durable",
+                                Description = "Sawblade is <color=#00ff00>30%</color> more durable",
                                 Apply = () =>
                                 {
-                                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.2f;
+                                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                                 },
                             }
                         }

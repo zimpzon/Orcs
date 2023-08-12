@@ -71,9 +71,9 @@ public class UpgradeData
 
     public bool SawBladeBought = false;
     public bool SawBladeEnabledInRound = false;
-    public float SawBladeMaxDamage = 200;
+    public float SawBladeMaxDamage = 250;
     public float SawBladeDurabilityMul = 1.0f;
-    public float SawBladeMaxDistance = 25;
+    public float SawBladeMaxDistance = 35;
     public float SawBladeBaseCd = 6.0f;
     public float SawBladeCdMul = 1.0f;
 

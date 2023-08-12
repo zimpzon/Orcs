@@ -48,7 +48,7 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, speed (1)",
-                Description = "<color=#00ff00>+8%</color> cooldown reduction",
+                Description = "<color=#00ff00>+8%</color> shorter cooldown",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
@@ -56,7 +56,7 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, speed (2)",
-                    Description = "<color=#00ff00>+8%</color> cooldown reduction",
+                    Description = "<color=#00ff00>+8%</color> shorter cooldown",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
@@ -64,7 +64,7 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, speed (3)",
-                        Description = "<color=#00ff00>+8%</color> cooldown reduction",
+                        Description = "<color=#00ff00>+8%</color> shorter cooldown",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
@@ -72,7 +72,7 @@ public static class ChoicesWeapon
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, speed (4)",
-                            Description = "<color=#00ff00>+8%</color> cooldown reduction",
+                            Description = "<color=#00ff00>+8%</color> reduction cooldown",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;

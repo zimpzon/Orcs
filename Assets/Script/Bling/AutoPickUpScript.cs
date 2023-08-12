@@ -77,15 +77,21 @@ public class AutoPickUpScript : MonoBehaviour
 
         if (diff.sqrMagnitude < sqrPickupDistance_ && time > throwEndTime_)
         {
-            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup);
             if (Type == AutoPickUpType.Money)
             {
-                SaveGame.Members.Money++;
-                SaveGame.RoundGold++;
+                SaveGame.Members.Money += Value;
+                SaveGame.RoundGold += Value;
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup);
             }
             else if (Type == AutoPickUpType.Xp)
             {
-                GameManager.Instance.AddXp(1);
+                float t = 1 - ((GameManager.Instance.xpToLevel - GameManager.Instance.currentXp) / GameManager.Instance.xpToLevel);
+                const float pitchMin = 1.0f;
+                const float pitchMax = 1.0f;
+                float pitch = (pitchMax - pitchMin) * t + pitchMin;
+                GameManager.Instance.AddXp(Value);
+                float volume = 0.8f + t * 0.0f;
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volume, pitch);
             }
 
             Die();

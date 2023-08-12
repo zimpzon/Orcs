@@ -569,6 +569,9 @@ public class ActorBase : MonoBehaviour
 
         while (GameManager.Instance.GameTime < maxTime)
         {
+            while (GameManager.Instance.PauseGameTime)
+                yield return null;
+
             float delta = GameManager.Instance.GameDeltaTime;
 
             material_.SetFloat(flashParamId_, flashAmount);

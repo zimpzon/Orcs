@@ -24,7 +24,7 @@ namespace Assets.Script.Actors.Spawning
 
         public static IEnumerator ActionAtTime(TimeSpan time, Action action)
         {
-            while (GameManager.Instance.GameTime < time.TotalSeconds)
+            while (G.D.GameTime < time.TotalSeconds)
                 yield return null;
 
             action();

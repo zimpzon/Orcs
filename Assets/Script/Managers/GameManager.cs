@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Script.Actors.Spawning;
 
 public enum GameModeEnum { Undeads };
 
@@ -111,11 +112,11 @@ public class GameManager : MonoBehaviour
     public int lastGameSeconds = 0;
     int lastHp_ = 0;
     int lastMaxHp_ = 0;
-    float xpToLevel_;
+    [NonSerialized] public float xpToLevel;
     int lastXpShown_ = 0;
     int lastKillsShown_ = 0;
     int lastGoldShown_ = 0;
-    float currentXp_ = 0;
+    [NonSerialized] public float currentXp = 0;
     float currentLevel_ = 1;
     float roundStartTime_;
     float chapterTime_;
@@ -146,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             if (G.D.GameTime > sfxVolumeChangeLastFeedback_)
             {
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerMachinegunFire);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Oink);
                 sfxVolumeChangeLastFeedback_ = G.D.GameTime + 0.1f;
             }
         }
@@ -353,11 +354,11 @@ public class GameManager : MonoBehaviour
                     lastMaxHp_ = maxHp;
                 }
 
-                if (currentXp_ != lastXpShown_)
+                if (currentXp != lastXpShown_)
                 {
-                    float pct = Math.Min(100, (currentXp_ / (float)xpToLevel_) * 100);
+                    float pct = Math.Min(100, (currentXp / xpToLevel) * 100);
                     TextLevel.text = $"LEVEL {currentLevel_} ({pct:0.0}%)";
-                    lastXpShown_ = (int)currentXp_;
+                    lastXpShown_ = (int)currentXp;
                 }
 
                 if (SaveGame.RoundKills != lastKillsShown_)
@@ -372,7 +373,7 @@ public class GameManager : MonoBehaviour
                     lastGoldShown_ = SaveGame.RoundGold;
                 }
 
-                while (currentXp_ >= xpToLevel_)
+                while (currentXp >= xpToLevel)
                     yield return LevelUp();
 
                 if (GoBack())
@@ -487,8 +488,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        currentXp_ -= xpToLevel_;
-        xpToLevel_ = (int)(xpToLevel_ * XpPerLevelMultiplier);
+        currentXp -= xpToLevel;
+        xpToLevel = (int)(xpToLevel * XpPerLevelMultiplier);
         currentLevel_++;
 
         PauseGameTime = false;
@@ -503,8 +504,8 @@ public class GameManager : MonoBehaviour
 
     public void ShowingHowToPlay()
     {
-        currentXp_ = 0;
-        xpToLevel_ = BaseXpToLevel;
+        currentXp = 0;
+        xpToLevel = BaseXpToLevel;
         currentLevel_ = 1;
     }
 
@@ -687,16 +688,25 @@ public class GameManager : MonoBehaviour
                 GameTime += 30;
             }
 
+            SetDebugOutput("gameTime", GameTime);
             if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
             {
                 ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
             }
 
+            if (Input.GetKeyDown(KeyCode.F) && Input.GetKey(KeyCode.RightShift))
+            {
+                SpawnUtil.FleeAllActors();
+            }
+
+
             GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
-            GameTime += GameDeltaTime;
-    
+
             if (SaveGame.RoundScore > 0)
+            {
                 chapterTime_ += GameDeltaTime;
+                GameTime += GameDeltaTime;
+            }
         }
 
         if (GameState == State.Intro_Shop && Input.GetKeyDown(Code[resetAllCodeIdx]))
@@ -762,7 +772,7 @@ public class GameManager : MonoBehaviour
 
     public void AddXp(int amount)
     {
-        currentXp_ += amount;
+        currentXp += amount;
     }
 
     void ResetPickups()
@@ -787,7 +797,11 @@ public class GameManager : MonoBehaviour
         {
             var pickup = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);
             pickup.transform.position = pos;
-            pickup.GetComponent<AutoPickUpScript>().Throw(UnityEngine.Random.insideUnitCircle, forceScale);
+            
+            var pickupScript = pickup.GetComponent<AutoPickUpScript>();
+            pickupScript.Value = value;
+            pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale);
+
             if (pickupType == AutoPickUpType.Xp)
             {
                 float xpValue = value * PlayerUpgrades.Data.XpValueMul;
@@ -1014,7 +1028,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", G.D.GameTime);
 
         if (DebugValues.Count == 0)

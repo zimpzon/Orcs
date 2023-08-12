@@ -23,12 +23,12 @@ public static class PositionUtility
 
     public static SpawnDirection GetRandomDirOutside()
     {
-        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Inside); // TODO PEE: Not pretty. Pick one BEFORE .Inside.
+        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Inside); // TODO PEE: Not pretty. Any has to be last.
     }
 
     public static SpawnDirection GetRandomDirAny()
     {
-        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Pick one BEFORE .Any.
+        return (SpawnDirection)UnityEngine.Random.Range(0, (int)SpawnDirection.Any); // TODO PEE: Not pretty. Any has to be last.
     }
 
     public static Vector2 GetPointInsideRect(Rect r)
@@ -93,10 +93,10 @@ public static class PositionUtility
             dir = fromPos.x > fromPos.y ? SpawnDirection.Right : SpawnDirection.Bottom;
         }
 
-        return GetPointOutsideScreen(dir, offset: 1.0f, maxDistFromCenter: 3.0f);
+        return GetPointOutsideScreen(dir, offset: 1.0f);
     }
 
-    public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset, float maxDistFromCenter = 1.0f)
+    public static Vector3 GetPointOutsideScreen(SpawnDirection dir, float offset)
     {
         if (dir == SpawnDirection.Any)
         {
@@ -105,16 +105,16 @@ public static class PositionUtility
 
         if (dir == SpawnDirection.LeftOrRight)
         {
-            dir = UnityEngine.Random.value < 0.5f ? SpawnDirection.Left : SpawnDirection.Right;
+            dir = Random.value < 0.5f ? SpawnDirection.Left : SpawnDirection.Right;
         }
         else if (dir == SpawnDirection.TopOrBottom)
         {
-            dir = UnityEngine.Random.value < 0.5f ? SpawnDirection.Top : SpawnDirection.Bottom;
+            dir = Random.value < 0.5f ? SpawnDirection.Top : SpawnDirection.Bottom;
         }
 
-        Rect scr = AspectUtility.screenRelativeRect;
+        Rect scr = GameManager.ArenaBounds;
         float x = 0.0f; float y = 0.0f; float offsetX = 0.0f; float offsetY = 0.0f;
-        float rnd = UnityEngine.Random.Range(-0.55f, 0.55f) * maxDistFromCenter;
+        float rnd = Random.Range(-0.55f, 0.55f);
         switch (dir)
         {
             case SpawnDirection.Top:     x = 0.5f + rnd; y = 1.0f; offsetY =  offset; break;
@@ -123,7 +123,8 @@ public static class PositionUtility
             case SpawnDirection.Right:   x = 1.0f; y = 0.5f + rnd; offsetX =  offset; break;
         }
 
-        Vector3 point = new Vector3(scr.xMin + scr.width * x + offsetX, scr.yMin + scr.height * y + offsetY, 0.0f);
+        Vector3 point = new (scr.xMin + scr.width * x + offsetX, scr.yMin + scr.height * y + offsetY, 0.0f);
+        //Debug.DrawLine(point, Vector3.zero, Color.cyan, 1000);
         return point;
     }
 

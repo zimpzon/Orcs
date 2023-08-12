@@ -40,7 +40,6 @@ public class WeaponBase
     static WeaponNone None = new WeaponNone();
     static WeaponHorn Horn;
     static WeaponStaff Staff;
-    static WeaponStaff2 Staff2;
     static WeaponPaintball Paintball;
     static WeaponPaintballRandom PaintballRandom;
     static WeaponRambo Rambo;
@@ -62,12 +61,6 @@ public class WeaponBase
 
     protected float lastFire_;
     public bool IsPrimary = false;
-
-    public float GetCdLeft()
-    {
-        float cd = PlayerUpgrades.Data.IsRambo ? 0.1f : PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul;
-        return Mathf.Max(0.0f, (lastFire_ - G.D.GameTime) + cd);
-    }
 
     public Vector3 GetMuzzlePoint(Transform weaponTrans)
     {

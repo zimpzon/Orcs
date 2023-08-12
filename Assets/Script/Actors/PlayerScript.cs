@@ -13,7 +13,6 @@ public class PlayerScript : MonoBehaviour
     public float Hp;
     public float MaxHp;
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
-    //[System.NonSerialized] public Vector3 LatestLeftRightUpDown;
 
     [System.NonSerialized] public Vector3 CursorPos;
     [System.NonSerialized] public bool IsInRound;
@@ -27,7 +26,7 @@ public class PlayerScript : MonoBehaviour
     float flipX_;
     bool isDead_ = true;
     float playerScale_ = 2.0f;
-    float nextFire_ = float.MaxValue;
+    float nextFire_;
     float shotsLeft_ = 0;
     int flashParamId_;
     int flashColorParamId_;
@@ -37,6 +36,7 @@ public class PlayerScript : MonoBehaviour
     Material material_;
     float immunityEnd_;
     bool immortal_;
+    float timeNextRound_;
 
     public bool RoundComplete;
     public bool UpgradesActive = false;
@@ -85,6 +85,8 @@ public class PlayerScript : MonoBehaviour
 
     public void ResetAll()
     {
+        StopAllCoroutines();
+
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         UpdateMaxHp(isReset: true);
 
@@ -94,6 +96,8 @@ public class PlayerScript : MonoBehaviour
         foreach (var toggleEffect in toggleEffects)
             toggleEffect.Disable();
 
+        nextBlood_ = 0;
+        timeNextRound_ = 0;
         nextFire_ = 0;
         immunityEnd_ = 0;
         shotsLeft_ = 0;
@@ -139,6 +143,9 @@ public class PlayerScript : MonoBehaviour
 
     void SetNextFire()
     {
+        if (isDead_ || SaveGame.RoundScore == 0)
+            return;
+
         float FireCd = PlayerUpgrades.Data.IsRambo ? 0.15f : PlayerUpgrades.Data.MagicMissileBaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
         nextFire_ = G.D.GameTime + FireCd;
     }
@@ -147,8 +154,8 @@ public class PlayerScript : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.GameState != GameManager.State.Playing)
-                yield break;
+            if (GameManager.Instance.GameState != GameManager.State.Playing || isDead_ || SaveGame.RoundScore == 0)
+                yield return null;
 
             if (G.D.GameTime > nextFire_)
             {
@@ -163,8 +170,11 @@ public class PlayerScript : MonoBehaviour
                 // Stop firing
                 Weapon.StopFire();
             }
-            else if (hasBullets && Weapon.GetCdLeft() <= 0.0f)
+            else if (hasBullets && G.D.GameTime > timeNextRound_)
             {
+                float roundCd = PlayerUpgrades.Data.IsRambo ? 0.1f : PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul;
+                timeNextRound_ = G.D.GameTime + roundCd;
+
                 shotsLeft_ -= 1;
                 if (shotsLeft_ >= 1)
                     SetNextFire();
@@ -437,6 +447,19 @@ public class PlayerScript : MonoBehaviour
             Hp = MaxHp;
     }
 
+    float nextBlood_;
+
+    void CheckLowHealth()
+    {
+        if (Hp > 80 || Time.time < nextBlood_)
+            return;
+
+        GameManager.Instance.TriggerBlood(trans_.position, amount: 20, floorBloodRnd: 0.1f);
+
+        float cd = Mathf.Max(Hp / 400, 0.03f);
+        nextBlood_ = Time.time + cd;
+    }
+
     float nextPoof_;
     float accumulated_;
 
@@ -483,6 +506,7 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        GameManager.SetDebugOutput("next", nextFire_);
         if (isDead_)
             return;
 
@@ -525,6 +549,7 @@ public class PlayerScript : MonoBehaviour
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
         //CheckDistanceToEdge();
+        CheckLowHealth();
         CheckControls();
         UpdateRambo();
     }
