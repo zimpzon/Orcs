@@ -20,7 +20,7 @@ public static class ChoicesMeleeThrow
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Black magic that sucks in enemies",
+                    Description = "Magic that sucks in and slightly damages enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MeleeThrowEnabledInRound = true;
@@ -41,7 +41,7 @@ public static class ChoicesMeleeThrow
             new Choice
             {
                 Title = $"{Name}, Speed (1)",
-                Description = "<color=#00ff00>-10%</color> shorter cooldown",
+                Description = "<color=#00ff00>+10%</color> shorter cooldown",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MeleeThrowCdMul -= 0.1f;
@@ -49,7 +49,7 @@ public static class ChoicesMeleeThrow
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, Speed (2)",
-                    Description = "<color=#00ff00>-10%</color> shorter cooldown",
+                    Description = "<color=#00ff00>+10%</color> shorter cooldown",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MeleeThrowCdMul -= 0.1f;
@@ -57,10 +57,10 @@ public static class ChoicesMeleeThrow
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, Speed (3)",
-                        Description = "<color=#00ff00>-15%</color> shorter cooldown",
+                        Description = "<color=#00ff00>+10%</color> shorter cooldown",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MeleeThrowCdMul -= 0.15f;
+                            PlayerUpgrades.Data.MeleeThrowCdMul -= 0.1f;
                         },
                     }
                 }

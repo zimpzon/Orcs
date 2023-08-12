@@ -1,11 +1,12 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UpgradeChoiceScript : MonoBehaviour
 {
     public Text TextHeader;
-    public Text TextDescription;
+    public TextMeshProUGUI TextDescription;
 
     Choice choice_;
     bool wasSelected_;

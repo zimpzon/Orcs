@@ -156,7 +156,7 @@ public class OrcController : MonoBehaviour
 
             if (chasePlayer_)
             {
-                lookAt_ = GameManager.Instance.PlayerTrans.position;
+                lookAt_ = G.D.PlayerPos;
                 target_ = playerPos_;
             }
 
@@ -181,7 +181,7 @@ public class OrcController : MonoBehaviour
             }
             else if (State == OrcState.Default)
             {
-                lookAt_ = GameManager.Instance.PlayerTrans.position;
+                lookAt_ = G.D.PlayerPos;
             }
 
             yield return null;
@@ -192,7 +192,7 @@ public class OrcController : MonoBehaviour
     {
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
-        playerPos_ = GameManager.Instance.PlayerTrans.position;
+        playerPos_ = G.D.PlayerPos;
         distanceToPlayer_ = BlackboardScript.DistanceToPlayer(trans_.position);
         playerIsClose_ = distanceToPlayer_ < 3.0f;
         targetVec_ = target_ - trans_.position;

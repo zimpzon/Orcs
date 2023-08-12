@@ -20,7 +20,7 @@ public static class ChoicesBurstOfFrost
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "A burst of cold around you, freezing enemies",
+                    Description = "A burst of cold with chance to freeze nearby enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.BurstOfFrostEnabledInRound = true;
@@ -40,7 +40,7 @@ public static class ChoicesBurstOfFrost
             new Choice
             {
                 Title = $"{Name}, radius (1)",
-                Description = "Gets <color=#00ff00>10%</color> increased radius",
+                Description = "<color=#00ff00>10%</color> radius",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.BurstOfFrostRangeMul += 0.1f;
@@ -48,7 +48,7 @@ public static class ChoicesBurstOfFrost
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, radius (2)",
-                    Description = "Gets <color=#00ff00>10%</color> increased radius",
+                    Description = "<color=#00ff00>10%</color> radius",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.BurstOfFrostRangeMul += 0.1f;
@@ -56,7 +56,7 @@ public static class ChoicesBurstOfFrost
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, radius (3)",
-                        Description = "Gets <color=#00ff00>10%</color> increased radius",
+                        Description = "<color=#00ff00>10%</color> radius",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.BurstOfFrostRangeMul += 0.1f;
@@ -84,10 +84,10 @@ public static class ChoicesBurstOfFrost
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, freeze (3)",
-                        Description = "<color=#00ff00>+10%</color> chance to freeze",
+                        Description = "<color=#00ff00>+5%</color> chance to freeze",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.1f;
+                            PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.05f;
                         },
                     }
                 },

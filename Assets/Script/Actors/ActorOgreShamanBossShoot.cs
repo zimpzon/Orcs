@@ -22,7 +22,7 @@ public class ActorOgreShamanBossShoot : MonoBehaviour
         if (actorBase_.Hp <= 0.0f)
             return;
 
-        Vector2 direction = BlackboardScript.PlayerTrans.position - actorBase_.transform.position;
+        Vector2 direction = G.D.PlayerPos - actorBase_.transform.position;
         direction.Normalize();
         direction = RndUtil.RandomSpread(direction, 1.0f);
 

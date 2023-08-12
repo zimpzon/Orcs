@@ -47,7 +47,7 @@ public static class PositionUtility
             float y = Random.Range(-0.4f, 0.4f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
-            bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
+            bool notOnTopOfPlayer = Vector3.Distance(point, G.D.PlayerPos) > 2.0f;
             if (notOnTopOfPlayer)
                 break;
         }
@@ -63,7 +63,7 @@ public static class PositionUtility
             float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
             Rect scr = AspectUtility.screenRelativeRect;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
-            bool notOnTopOfPlayer = Vector3.Distance(point, GameManager.Instance.PlayerTrans.position) > 2.0f;
+            bool notOnTopOfPlayer = Vector3.Distance(point, G.D.PlayerPos) > 2.0f;
             if (notOnTopOfPlayer)
                 break;
         }

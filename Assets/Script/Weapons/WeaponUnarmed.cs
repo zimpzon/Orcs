@@ -7,7 +7,7 @@ public class WeaponUnarmed : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        var pos = GameManager.Instance.PlayerTrans.position;
+        var pos = G.D.PlayerPos;
         const float Radius = 5.0f;
         GameManager.Instance.MakeFlash(pos, Radius * 5f);
         GameManager.Instance.MakePoof(pos, 1, Radius * 1f);

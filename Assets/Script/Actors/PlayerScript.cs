@@ -68,9 +68,6 @@ public class PlayerScript : MonoBehaviour
         overheadTextTrans_ = OverheadText.GetComponent<RectTransform>();
 
         shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
-
-        BlackboardScript.PlayerScript = this;
-        BlackboardScript.PlayerTrans = trans_;
     }
 
     public void SetPlayerPos(Vector3 pos)
@@ -79,18 +76,18 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
     }
 
-    public void UpdateMaxHp()
+    public void UpdateMaxHp(bool isReset = false)
     {
         float newMaxHp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         float hpAdded = newMaxHp - MaxHp;
         MaxHp = newMaxHp;
-        AddHp(hpAdded, alwaysShow: true);
+        AddHp(hpAdded, alwaysShow: !isReset);
     }
 
     public void ResetAll()
     {
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
-        UpdateMaxHp();
+        UpdateMaxHp(isReset: true);
 
         IsInRound = false;
 
@@ -486,8 +483,8 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-            BlackboardScript.DestroyAllEnemies();
+        if (isDead_)
+            return;
 
         if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.RightShift))
         {

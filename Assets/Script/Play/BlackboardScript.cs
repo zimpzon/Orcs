@@ -5,8 +5,6 @@ namespace Assets.Script
 {
     class BlackboardScript
     {
-        public static PlayerScript PlayerScript;
-        public static Transform PlayerTrans;
         public static List<ActorBase> DeadEnemies = new ();
         static Collider2D[] RawEnemyOverlap = new Collider2D[200];
         public static ActorBase[] EnemyOverlap = new ActorBase[200];
@@ -136,7 +134,7 @@ namespace Assets.Script
 
         public static float DistanceToPlayer(Vector3 pos)
         {
-            return Mathf.Abs(Vector3.Distance(GameManager.Instance.PlayerTrans.position, pos));
+            return Mathf.Abs(Vector3.Distance(G.D.PlayerPos, pos));
         }
 
         public static int GetEnemies(Vector3 pos, float radius)

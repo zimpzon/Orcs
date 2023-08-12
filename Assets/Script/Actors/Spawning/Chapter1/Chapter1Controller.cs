@@ -1,4 +1,3 @@
-using Assets.Script.Actors.Spawning;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +5,8 @@ using UnityEngine;
 
 public class Chapter1Controller : MonoBehaviour
 {
-    public Color Chapter1Color;
+    public Color Chapter1TextColor;
+    public Color ColorAtStart;
     public Color ColorAfterFirstWarning;
     public Color FilterAfterFirstWarning;
     public Color ColorAfterSecondWarning;
@@ -64,7 +64,7 @@ public class Chapter1Controller : MonoBehaviour
         var info = new GameInfo
         {
             Text = "CHAPTER 1\n\nSkeleton Skirmish",
-            Color = Chapter1Color,
+            Color = Chapter1TextColor,
             Duration = 4.0f,
             FadeInDuration = 0.5f,
             FadeOutDuration = 2.0f,
@@ -72,9 +72,10 @@ public class Chapter1Controller : MonoBehaviour
             Position = Vector2.up * -100,
         };
 
-        StartCoroutine(RunSpawnEvents());
-
         GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
+        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, 0.5f);
+
+        StartCoroutine(RunSpawnEvents());
 
         yield return StartCoroutine(Warning(new TimeSpan(0, 2, 30), "you sense danger far away", ColorAfterFirstWarning, FilterAfterFirstWarning));
         yield return StartCoroutine(Warning(new TimeSpan(0, 3, 40), "you armor has goosebumps", ColorAfterSecondWarning, FilterAfterSecondWarning));

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 public static class ChoicesWeapon
 {
+    public const string Name = "Your trusty knife";
+
     public static List<Choice> GetWeaponChoices()
     {
-        const string Name = "Your trusty knife";
-
         return new List<Choice>
         {
             new Choice
@@ -48,34 +48,34 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, speed (1)",
-                Description = "<color=#00ff00>-10%</color> time between knives",
+                Description = "<color=#00ff00>+8%</color> cooldown reduction",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
+                    PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, speed (2)",
-                    Description = "<color=#00ff00>-10%</color> time between knives",
+                    Description = "<color=#00ff00>+8%</color> cooldown reduction",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
+                        PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, speed (3)",
-                        Description = "<color=#00ff00>-10%</color> time between knives",
+                        Description = "<color=#00ff00>+8%</color> cooldown reduction",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileCdMul -= 0.1f;
+                            PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, speed (4)",
-                            Description = "<color=#00ff00>-5%</color> time between knives",
+                            Description = "<color=#00ff00>+8%</color> cooldown reduction",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.05f;
+                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
                             },
                         }
                     }
@@ -85,7 +85,7 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, salvo (1)",
-                Description = "<color=#00ff00>+0.4</color> more knives per round",
+                Description = "<color=#00ff00>+0.4</color> more knives",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
@@ -93,7 +93,7 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, salvo (2)",
-                    Description = "<color=#00ff00>+0.4%</color> more knives per round",
+                    Description = "<color=#00ff00>+0.4%</color> more knives",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
@@ -101,7 +101,7 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, salvo (3)",
-                        Description = "<color=#00ff00>+0.4%</color> more knives per round",
+                        Description = "<color=#00ff00>+0.4%</color> more knives",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
@@ -109,7 +109,7 @@ public static class ChoicesWeapon
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, salvo (4)",
-                            Description = "<color=#00ff00>+0.4%</color> more knives per round",
+                            Description = "<color=#00ff00>+0.4%</color> more knives",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;

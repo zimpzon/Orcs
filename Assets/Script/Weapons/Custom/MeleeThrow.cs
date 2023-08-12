@@ -51,7 +51,7 @@ public class MeleeThrow : MonoBehaviour, IKillableObject
             trans_.rotation = Quaternion.Euler(0.0f, 0.0f, degrees_);
             degrees_ += rotationspeed * GameManager.Instance.GameDeltaTime;
 
-            var dirPlayer = (GameManager.Instance.PlayerScript.transform.position - trans_.position).normalized;
+            var dirPlayer = (G.D.PlayerPos - trans_.position).normalized;
             trans_.position += dirPlayer * speed * GameManager.Instance.GameDeltaTime;
 
             SuckEnemies();

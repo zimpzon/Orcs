@@ -29,7 +29,7 @@ public class CirclingAxeController : MonoBehaviour, IPlayerToggleEfffect
 
         float damage = PlayerUpgrades.Data.CirclingAxeBaseDamage * PlayerUpgrades.Data.CirclingAxeDamageMul;
         float speed = PlayerUpgrades.Data.CirclingAxeBaseSpeed * PlayerUpgrades.Data.CirclingAxeSpeedMul;
-        axe.transform.position = GameManager.Instance.PlayerScript.transform.position;
+        axe.transform.position = G.D.PlayerPos;
         axe.gameObject.SetActive(true);
 
         var dir = RndUtil.RandomInsideUnitCircle().normalized;

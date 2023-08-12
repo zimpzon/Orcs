@@ -183,9 +183,22 @@ public static class ShopItems
         {
             new ShopItem
             {
+                ItemType = ShopItemType.TimeScale,
+                Title = "Fast Forward",
+                Description = $"Time passes <color=#afff00>10%</color> faster per rank",
+                BasePrice = 1,
+                PriceMultiplier = 1,
+                MaxLevel = 3,
+                Apply = (BoughtItem bought) =>
+                {
+                    PlayerUpgrades.Data.TimeScale += 0.1f * bought.Level;
+                }
+            },
+            new ShopItem
+            {
                 ItemType = ShopItemType.DamageAll,
                 Title = "Damage",
-                Description = "Increase all damage by <color=#00ff00>+#VALUE%</color> per rank.",
+                Description = "All: <color=#00ff00>+#VALUE%</color> damage per rank",
                 BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 3,

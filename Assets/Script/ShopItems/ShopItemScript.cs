@@ -6,8 +6,6 @@ public class ShopItemScript : MonoBehaviour
 {
     public Color DefaultBackgroundColor;
     public Color MaxedBackgroundColor;
-    public Color DefaultButtonBackgroundColor;
-    public Color DisabledButtonBackgroundColor;
     public ShopItemType ItemType;
     public Text Title;
     public Text Description;
@@ -30,10 +28,10 @@ public class ShopItemScript : MonoBehaviour
 
     public void SetButtonStates(bool enableBuyButton, bool enableRefundButton)
     {
-        BuyButton.GetComponent<Image>().color = enableBuyButton ? DefaultButtonBackgroundColor : DisabledButtonBackgroundColor;
+        BuyButton.GetComponent<Image>().color = enableBuyButton ? G.D.DefaultButtonBackgroundColor : G.D.DisabledButtonBackgroundColor;
         BuyButton.enabled = enableBuyButton;
 
-        RefundButton.GetComponent<Image>().color = enableRefundButton ? DefaultButtonBackgroundColor : DisabledButtonBackgroundColor;
+        RefundButton.GetComponent<Image>().color = enableRefundButton ? G.D.DefaultButtonBackgroundColor : G.D.DisabledButtonBackgroundColor;
         RefundButton.enabled = enableRefundButton;
     }
 

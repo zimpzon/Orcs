@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
     public OrcController Orc;
     public int SortLayerTopEffects;
     public State GameState;
-    public Transform PlayerTrans;
-    public PlayerScript PlayerScript;
     public Canvas CanvasIntro;
     public Canvas CanvasGame;
     public Canvas CanvasDead;
@@ -351,11 +349,11 @@ public class GameManager : MonoBehaviour
                         TextWin.enabled = true;
                 }
 
-                int hpLeft = (int)(PlayerScript.Hp + 0.5f);
-                int maxHp = (int)(PlayerScript.MaxHp + 0.5f);
+                int hpLeft = (int)(G.D.PlayerScript.Hp + 0.5f);
+                int maxHp = (int)(G.D.PlayerScript.MaxHp + 0.5f);
                 if (hpLeft != lastHp_ || maxHp != lastMaxHp_)
                 {
-                    TextHp.text = $"{hpLeft}/{PlayerScript.MaxHp} HP";
+                    TextHp.text = $"{hpLeft}/{G.D.PlayerScript.MaxHp} HP";
                     lastHp_ = hpLeft;
                     lastMaxHp_ = maxHp;
                 }
@@ -387,6 +385,9 @@ public class GameManager : MonoBehaviour
                     PauseGameTime = true;
                     while (PauseGameTime)
                         yield return Pause();
+
+                    if (!G.D.PlayerScript.RoundComplete)
+                        MakeFlash(G.D.PlayerPos, 5.0f);
                 }
 
                 float delta = GameDeltaTime;
@@ -398,12 +399,12 @@ public class GameManager : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    PlayerScript.RoundComplete = true;
+                    G.D.PlayerScript.RoundComplete = true;
                     ShowTitle(autoStartGame: true);
                 }
                 else if (GoBack())
                 {
-                    PlayerScript.RoundComplete = true;
+                    G.D.PlayerScript.RoundComplete = true;
                     ShowTitle();
                 }
 
@@ -427,7 +428,7 @@ public class GameManager : MonoBehaviour
     public void PauseQuitToMenu()
     {
         Unpause();
-        PlayerScript.RoundComplete = true;
+        G.D.PlayerScript.RoundComplete = true;
         ShowTitle(autoStartGame: false);
     }
 
@@ -501,7 +502,8 @@ public class GameManager : MonoBehaviour
         SetChoicesVisible(false);
 
         AudioListener.pause = false;
-        Explosions.Push(PlayerScript.transform.position, 4.0f, 1.0f);
+        Explosions.Push(G.D.PlayerPos, 4.0f, 1.0f);
+        MakeFlash(G.D.PlayerPos, 5.0f);
     }
 
     public void ShowingHowToPlay()
@@ -514,7 +516,7 @@ public class GameManager : MonoBehaviour
     public void HidingHowToPlay()
     {
         roundStartTime_ = GameTime;
-        PlayerScript.UpgradesActive = true;
+        G.D.PlayerScript.UpgradesActive = true;
     }
 
     public void ShowGameOver()
@@ -587,13 +589,15 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Intro)
             return;
 
+        LeanTween.color(Floor.gameObject, floorDefaultColor, 1.0f);
+
         Floor.color = floorDefaultColor;
         FloorFilter.color = Color.clear;
 
         Time.timeScale = 1.0f;
         PanelSettings.SetActive(false);
         ProjectileManager.Instance.StopAll();
-        PlayerScript.ResetAll();
+        G.D.PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
         GameProgressScript.Instance.Stop();
         Orc.ResetAll();
@@ -646,7 +650,7 @@ public class GameManager : MonoBehaviour
         GameState = State.Playing;
         RoundUnlockCount = 0;
         roundStartTime_ = Time.time;
-        PlayerScript.SetPlayerPos(Vector3.zero);
+        G.D.PlayerScript.SetPlayerPos(Vector3.zero);
         Orc.SetPosition(Vector3.up * 3, startingGame: true);
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
@@ -686,6 +690,13 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.T) && Input.GetKey(KeyCode.RightShift))
             {
+                chapterCountdown_ -= 30;
+                GameTime += 30;
+            }
+
+            if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
+            {
+                ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
                 chapterCountdown_ -= 30;
                 GameTime += 30;
             }
@@ -755,7 +766,7 @@ public class GameManager : MonoBehaviour
 
     private void OnFirstOrcPickup()
     {
-        PlayerScript.OnInitialPickup(WeaponType.Machinegun);
+        G.D.PlayerScript.OnInitialPickup(WeaponType.Machinegun);
     }
 
     public void AddXp(int amount)
@@ -805,7 +816,7 @@ public class GameManager : MonoBehaviour
             OnFirstOrcPickup();
 
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
-        PlayerScript.AddHp(PlayerUpgrades.Data.RescueDuckHp, alwaysShow: true);
+        G.D.PlayerScript.AddHp(PlayerUpgrades.Data.RescueDuckHp, alwaysShow: true);
         ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, value: 1, forceScale: 2.0f);
         ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 2, value: 1, forceScale: 1.1f);
     }
@@ -858,7 +869,7 @@ public class GameManager : MonoBehaviour
 
     public void EmitFlame(Vector3 pos, float size = 1.0f)
     {
-        Debug.Log("NOT IMPLEMENTED");
+        Debug.LogError("NOT IMPLEMENTED");
     }
 
     public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)

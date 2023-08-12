@@ -294,7 +294,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         p.Direction = Vector3.Reflect(p.Direction, dir) * 3;
                         float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
                         p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
-                        p.Color = new Color(0.8f, 1.0f, 1.0f);
+                        p.Color = G.D.DeflectedProjectileColor;
                         p.SpriteInfo.Renderer.color = p.Color;
                         p.Type = ProjectileType.HarmsEnemies;
                         p.SpriteInfo.Transform.gameObject.layer = LayerFromProjectileType(p.Type);

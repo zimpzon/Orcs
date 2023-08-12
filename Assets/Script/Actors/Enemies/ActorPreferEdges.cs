@@ -19,7 +19,7 @@ public class ActorPreferEdges : MonoBehaviour
     void OnEnable()
     {
         myRect_ = null;
-        target_ = BlackboardScript.PlayerTrans.position;
+        target_ = G.D.PlayerPos;
 
         StartCoroutine(Think());
     }
@@ -50,7 +50,7 @@ public class ActorPreferEdges : MonoBehaviour
             }
 
             if (myRect_ == null)
-                target_ = BlackboardScript.PlayerTrans.position;
+                target_ = G.D.PlayerPos;
 
             yield return null;
         }

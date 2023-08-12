@@ -28,7 +28,7 @@ public class ActorDefaultWalker : MonoBehaviour
 
         while (true)
         {
-            target_ = GameManager.Instance.PlayerTrans.position;
+            target_ = G.D.PlayerTrans.position;
             yield return null;
         }
     }

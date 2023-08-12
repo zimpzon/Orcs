@@ -15,6 +15,7 @@ public class AutoPickUpScript : MonoBehaviour
     float forceScale_ = 1.0f;
     float throwEndTime_;
     Transform transform_;
+    SpriteRenderer spriteRenderer_;
     float sqrPickupDistance_;
     Vector3 force_;
     float throwStartTime_;
@@ -23,6 +24,7 @@ public class AutoPickUpScript : MonoBehaviour
     private void Awake()
     {
         transform_ = transform;
+        spriteRenderer_ = GetComponent<SpriteRenderer>();
         sqrPickupDistance_ = PickupDistance * PickupDistance;
     }
 
@@ -54,7 +56,7 @@ public class AutoPickUpScript : MonoBehaviour
         float time = Time.time;
         var myPos = transform_.position;
 
-        var playerPos = GameManager.Instance.PlayerTrans.position + Vector3.up * 0.3f;
+        var playerPos = G.D.PlayerPos + Vector3.up * 0.3f;
         var diff = playerPos - myPos;
 
         if (diff.sqrMagnitude < sqrAttractDistance_ && time > throwEndTime_)
@@ -67,6 +69,8 @@ public class AutoPickUpScript : MonoBehaviour
         if (forceMagnitude > 0.1f)
         {
             var newPos = myPos + force_ * dt;
+            newPos = GameManager.Instance.ClampToBounds(newPos, spriteRenderer_.sprite);
+
             transform_.position = newPos;
             force_ *= 1.0f - dt * Drag;
         }

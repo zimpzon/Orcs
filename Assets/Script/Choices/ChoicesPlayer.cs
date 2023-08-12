@@ -15,8 +15,8 @@ public static class ChoicesPlayer
                 Description = "Immediately heal to full life",
                 Apply = () =>
                 {
-                    float missingHp = BlackboardScript.PlayerScript.MaxHp - BlackboardScript.PlayerScript.Hp;
-                    BlackboardScript.PlayerScript.AddHp(missingHp, alwaysShow: true);
+                    float missingHp = G.D.PlayerScript.MaxHp - G.D.PlayerScript.Hp;
+                    G.D.PlayerScript.AddHp(missingHp, alwaysShow: true);
                 },
             },
             new Choice
@@ -26,7 +26,7 @@ public static class ChoicesPlayer
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.HealthMul += 0.2f;
-                    GameManager.Instance.PlayerScript.UpdateMaxHp();
+                    G.D.PlayerScript.UpdateMaxHp();
                 },
                 NextLevel = new Choice
                 {
@@ -35,7 +35,7 @@ public static class ChoicesPlayer
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.HealthMul += 0.2f;
-                        GameManager.Instance.PlayerScript.UpdateMaxHp();
+                        G.D.PlayerScript.UpdateMaxHp();
                     },
                     NextLevel = new Choice
                     {
@@ -44,7 +44,7 @@ public static class ChoicesPlayer
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.HealthMul += 0.3f;
-                            GameManager.Instance.PlayerScript.UpdateMaxHp();
+                            G.D.PlayerScript.UpdateMaxHp();
                         },
                         NextLevel = new Choice
                         {
@@ -53,7 +53,7 @@ public static class ChoicesPlayer
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.HealthMul += 0.3f;
-                                GameManager.Instance.PlayerScript.UpdateMaxHp();
+                                G.D.PlayerScript.UpdateMaxHp();
                             },
                         }
                     },
@@ -83,7 +83,7 @@ public static class ChoicesPlayer
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.HealthRegenSecAdd += 1.0f;
-                        },
+                        },  
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, recovery (4)",
