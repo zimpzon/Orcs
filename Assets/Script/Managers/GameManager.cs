@@ -15,9 +15,10 @@ public class GameManager : MonoBehaviour
 {
     public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
 
-    const float XpPerLevelMultiplier = 1.2f;
+    const float XpPerLevelMultiplier = 1.5f;
     const float BaseXpToLevel = 14;
 
+    public string GameVersion;
     public static GameManager Instance;
     public bool UnlockAllGameModes;
     public bool UnlockAllWeapons;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     public Color[] xpColors = new Color[] { };
 
     public LeanTween Tween;
+    public Text TextVersion;
     public Text TextGameInfo;
     public Text TextLevel;
     public Text TextHp;
@@ -312,12 +314,12 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Intro_Shop)
             {
-                if (Input.GetKey(KeyCode.R) && Input.GetKey(KeyCode.RightShift) && Input.GetKey(KeyCode.LeftControl))
+                if (G.GetCheatKey(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift) && G.GetCheatKey(KeyCode.LeftControl))
                 {
                     ResetAllProgress();
                 }
 
-                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.RightShift))
+                if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
                 {
                     SaveGame.Members.Money += 500;
                     ShopItems.UpdateBoughtItems();
@@ -682,19 +684,28 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.T) && Input.GetKey(KeyCode.RightShift))
+            if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightShift))
             {
                 chapterTime_ += 30;
                 GameTime += 30;
             }
 
-            SetDebugOutput("gameTime", GameTime);
-            if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.RightShift))
+            if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
             {
                 ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
             }
 
-            if (Input.GetKeyDown(KeyCode.F) && Input.GetKey(KeyCode.RightShift))
+            if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                PlayerUpgrades.Data.TimeScale += 0.1f;
+            }
+
+            if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                PlayerUpgrades.Data.TimeScale -= 0.1f;
+            }
+
+            if (G.GetCheatKeyDown(KeyCode.F) && G.GetCheatKey(KeyCode.RightShift))
             {
                 SpawnUtil.FleeAllActors();
             }
@@ -941,6 +952,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        TextVersion.text = GameVersion;
         Playfab.Login();
 
         Instance = this;
@@ -971,7 +983,7 @@ public class GameManager : MonoBehaviour
         float halfX = arenaWidth / 2;
         float halfY = arenaHeight / 2;
 
-        const float Size = 3;
+        const float Size = 2;
         ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
         TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
         BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);

@@ -16,7 +16,7 @@ public enum ActorForcedTargetType { Absolute, Direction };
 
 public class ActorBase : MonoBehaviour
 {
-    const float IgnoreCrowdsWhenCloseToPlayer = 1.5f;
+    const float IgnoreCrowdsWhenCloseToPlayer = 2.0f;
     const float PaintBallTickTime = 1.0f;
 
     public Sprite[] Animations;

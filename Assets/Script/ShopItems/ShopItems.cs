@@ -185,7 +185,7 @@ public static class ShopItems
             {
                 ItemType = ShopItemType.TimeScale,
                 Title = "Fast Forward",
-                Description = $"Time passes <color=#afff00>10%</color> faster per rank",
+                Description = $"Time passes <color=#afff00>10%</color> faster per rank, can be lowered in pause menu",
                 BasePrice = 1,
                 PriceMultiplier = 1,
                 MaxLevel = 3,

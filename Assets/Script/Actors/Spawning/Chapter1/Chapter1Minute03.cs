@@ -15,7 +15,6 @@ public static class Chapter1Minute03
                 endTime: new TimeSpan(0, 6, 0),
                 spawnCountPerTick: 2,
                 timeBetweenTicks: 5,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -26,7 +25,6 @@ public static class Chapter1Minute03
                 endCount: 1,
                 maxSpawnCountPerTick: 1,
                 timeBetweenTicks: 30.0f,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -37,7 +35,6 @@ public static class Chapter1Minute03
             endCount: 1,
             maxSpawnCountPerTick: 1,
             timeBetweenTicks: 5.0f,
-            outsideScreen: true,
             SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -45,21 +42,19 @@ public static class Chapter1Minute03
                 startTime: new TimeSpan(0, 3, 10),
                 endTime: new TimeSpan(0, 6, 0),
                 startingCount: 10,
-                endCount: 20,
+                endCount: 15,
                 maxSpawnCountPerTick: 5,
                 timeBetweenTicks: 1.2f,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,
                 startTime: new TimeSpan(0, 3, 10),
                 endTime: new TimeSpan(0, 6, 0),
-                startingCount: 10,
-                endCount: 10,
+                startingCount: 30,
+                endCount: 40,
                 maxSpawnCountPerTick: 10,
                 timeBetweenTicks: 2.0f,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.Swarm(
@@ -67,8 +62,7 @@ public static class Chapter1Minute03
                 startTime: new TimeSpan(0, 3, 0),
                 endTime: new TimeSpan(0, 6, 0),
                 spawnCountPerTick: 1,
-                timeBetweenTicks: 5,
-                outsideScreen: true,
+                timeBetweenTicks: 2,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,

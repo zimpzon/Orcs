@@ -1,5 +1,4 @@
-﻿using Assets.Script;
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -112,9 +111,6 @@ public class PlayerScript : MonoBehaviour
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         OverheadText.enabled = false;
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
-
-        nextPoof_ = 0;
-        accumulated_ = 0;
     }
 
     public void StartGame()
@@ -460,63 +456,19 @@ public class PlayerScript : MonoBehaviour
         nextBlood_ = Time.time + cd;
     }
 
-    float nextPoof_;
-    float accumulated_;
-
-    void CheckDistanceToEdge()
-    {
-        var closestEdgePoint = (Vector3)BlackboardScript.ClosestPointOnEdge(trans_.position);
-        // total hack for cloud being partially out of screen at top
-        if (closestEdgePoint.y > 5)
-            closestEdgePoint.y -= 0.5f;
-
-        float distance = Vector2.Distance(closestEdgePoint, trans_.position);
-
-        GameManager.SetDebugOutput("dist", distance);
-
-        const float MinDistance = 1.2f;
-        const float DischargeTime = 2.0f;
-
-        if (distance < MinDistance)
-        {
-            accumulated_ += GameManager.Instance.GameDeltaTime * 1;
-            if (accumulated_ > DischargeTime)
-            {
-                var force = (trans_.position - closestEdgePoint).normalized * (MinDistance - distance) * 0.4f;
-                GameManager.SetDebugOutput("force", force);
-                GameManager.Instance.MakeFlash(trans_.position, 1.0f);
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, pitch: 4.0f);
-                AddForce(force);
-                accumulated_ = 0;
-            }
-        }
-        else if (distance > MinDistance)
-        {
-            accumulated_ -= GameManager.Instance.GameDeltaTime;
-            if (accumulated_ < 0)
-                accumulated_ = 0;
-        }
-
-        if (accumulated_ > 0 && GameManager.Instance.GameTime > nextPoof_)
-        {
-            nextPoof_ = GameManager.Instance.GameTime + 0.2f;
-            GameManager.Instance.MakeSpawnPoof(closestEdgePoint, 2);
-        }
-    }
-
     void Update()
     {
         GameManager.SetDebugOutput("next", nextFire_);
         if (isDead_)
             return;
 
-        if (Input.GetKeyDown(KeyCode.X) && Input.GetKey(KeyCode.RightShift))
+        if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightShift))
         {
             immortal_ = !immortal_;
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.RightShift))
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
         {
             PlayerUpgrades.Data.IsRambo = true;
             PlayerUpgrades.Data.RamboEndTime = G.D.GameTime + 5;
@@ -548,7 +500,6 @@ public class PlayerScript : MonoBehaviour
         trans_.position = playerPos_;
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
-        //CheckDistanceToEdge();
         CheckLowHealth();
         CheckControls();
         UpdateRambo();

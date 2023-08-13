@@ -136,9 +136,9 @@ MonoBehaviour:
   CanBePoisened: 1
   Speed: 1
   AvoidCrowds: 1
-  CrowdScanRadius: 1
-  CrowdMaxNearby: 3
-  CrowdOutOfTheWayRange: 2.5
+  CrowdScanRadius: 2
+  CrowdMaxNearby: 2
+  CrowdOutOfTheWayRange: 1.5
   IsBoss: 0
   Mass: 1
   XpValue: 2

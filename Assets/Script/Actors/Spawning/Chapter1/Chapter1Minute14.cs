@@ -12,11 +12,10 @@ public static class Chapter1Minute14
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 14, 0),
             endTime: new TimeSpan(0, 15, 0),
-            startingCount: 3,
-            endCount: 3,
-            maxSpawnCountPerTick: 1,
-            timeBetweenTicks: 4.0f,
-            outsideScreen: true,
+            startingCount: 5,
+            endCount: 5,
+            maxSpawnCountPerTick: 3,
+            timeBetweenTicks: 5.0f,
             SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -27,18 +26,16 @@ public static class Chapter1Minute14
                 endCount: 15,
                 maxSpawnCountPerTick: 10,
                 timeBetweenTicks: 3.0f,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Skeleton,
                 startTime: new TimeSpan(0, 14, 10),
                 endTime: new TimeSpan(0, 15, 0),
-                startingCount: 3,
-                endCount: 3,
+                startingCount: 5,
+                endCount: 5,
                 maxSpawnCountPerTick: 1,
                 timeBetweenTicks: 4.0f,
-                outsideScreen: true,
                 SpawnDirection.Any);
 
         yield break;

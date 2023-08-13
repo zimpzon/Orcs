@@ -466,8 +466,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 630143962}
   - {fileID: 351174291}
+  - {fileID: 630143962}
   - {fileID: 314191379}
   - {fileID: 2050918442}
   - {fileID: 490968841}
@@ -5961,8 +5961,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7505,6 +7505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f7a569188214341be830692c6ab86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameVersion: V0.81 (TEA)
   UnlockAllGameModes: 0
   UnlockAllWeapons: 0
   UnlockAllHeroes: 0
@@ -7516,6 +7517,7 @@ MonoBehaviour:
   - {r: 0.7075472, g: 0.0026699367, b: 0.6111252, a: 1}
   - {r: 1, g: 0.62350357, b: 0, a: 1}
   Tween: {fileID: 351174292}
+  TextVersion: {fileID: 528353530}
   TextGameInfo: {fileID: 1091293915}
   TextLevel: {fileID: 579286863}
   TextHp: {fileID: 230499594}
@@ -7688,7 +7690,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 61565181}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &351174292
 MonoBehaviour:
@@ -13811,7 +13813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.44117647, g: 0.44117647, b: 0.44117647, a: 1}
+  m_Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14203,7 +14205,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 61565181}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &630143963
 MonoBehaviour:
@@ -51492,7 +51494,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Save The Pirate Ducks!
+  m_Text: Save The Ducks!
 --- !u!222 &2141176487
 CanvasRenderer:
   m_ObjectHideFlags: 0

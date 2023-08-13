@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public static class ChoicesBabyOrc
 {
-    public const string Name = "Pirate duck";
+    public const string Name = "StarDucks";
 
     public static List<Choice> GetBabyOrcChoices()
     {
@@ -11,7 +11,7 @@ public static class ChoicesBabyOrc
             new Choice
             {
                 Title = $"{Name}, first aid (1)",
-                Description = $"<color=#00ff00>+15</color> more life when rescuing a {Name}",
+                Description = $"<color=#00ff00>+15</color> more life when rescuing a duck",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.RescueDuckHp += 15;
@@ -19,7 +19,7 @@ public static class ChoicesBabyOrc
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, first aid (2)",
-                    Description = $"<color=#00ff00>+15</color> more life when rescuing a {Name}",
+                    Description = $"<color=#00ff00>+15</color> more life when rescuing a duck",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.RescueDuckHp += 15;

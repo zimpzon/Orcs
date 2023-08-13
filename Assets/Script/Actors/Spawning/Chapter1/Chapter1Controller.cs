@@ -64,7 +64,7 @@ public class Chapter1Controller : MonoBehaviour
     {
         var info = new GameInfo
         {
-            Text = "CHAPTER 1\n\nSkeleton Skirmish",
+            Text = "Skeleton Skirmish",
             Color = Chapter1TextColor,
             Duration = 4.0f,
             FadeInDuration = 0.5f,

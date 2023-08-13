@@ -32,6 +32,16 @@ public class G : MonoBehaviour
         return $"<color=#{r:X2}{g:X2}{b:X2}{a:X2}>";
     }
 
+    public static bool GetCheatKeyDown(KeyCode code)
+    {
+        return Input.GetKeyDown(code);
+    }
+
+    public static bool GetCheatKey(KeyCode code)
+    {
+        return Input.GetKey(code);
+    }
+
     private void Awake()
     {
         D = this;

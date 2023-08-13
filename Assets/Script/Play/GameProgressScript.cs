@@ -27,7 +27,7 @@ public class GameProgressScript : MonoBehaviour
     {
         TextScore.enabled = true;
 
-        TextHowTo.text = "Save The Pirate Ducks";
+        TextHowTo.text = "Save The Ducks";
 
         TextControls.enabled = true;
         TextHowTo.enabled = true;

@@ -38,7 +38,6 @@ namespace Assets.Script.Actors.Spawning
             int endCount,
             int maxSpawnCountPerTick,
             float timeBetweenTicks,
-            bool outsideScreen,
             SpawnDirection dir)
         {
             List<ActorBase> alive = new();
@@ -85,11 +84,7 @@ namespace Assets.Script.Actors.Spawning
                     {
                         var spawn = ActorCache.Instance.GetActor(actorType);
                         float offset = 1.0f;
-                        Vector3 pos;
-                        if (outsideScreen)
-                            pos = GetPointOutsideScreen(dir, offset);
-                        else
-                            pos = GetPointInsideArena(1.0f, 1.0f);
+                        Vector3 pos = GetPointOutsideScreen(dir, offset);
 
                         spawn.transform.position = pos;
                         spawn.SetActive(true);
@@ -114,7 +109,6 @@ namespace Assets.Script.Actors.Spawning
             TimeSpan endTime,
             int spawnCountPerTick,
             float timeBetweenTicks,
-            bool outsideScreen,
             SpawnDirection dir)
         {
             var wait = new WaitForSeconds(timeBetweenTicks);
@@ -133,11 +127,7 @@ namespace Assets.Script.Actors.Spawning
                 {
                     var spawn = ActorCache.Instance.GetActor(actorType);
                     float offset = 1.0f;
-                    Vector3 pos;
-                    if (outsideScreen)
-                        pos = GetPointOutsideScreen(dir, offset);
-                    else
-                        pos = GetPointInsideArena(1.0f, 1.0f);
+                    Vector3 pos = GetPointOutsideScreen(dir, offset);
 
                     spawn.transform.position = pos;
                     spawn.SetActive(true);
@@ -152,7 +142,6 @@ namespace Assets.Script.Actors.Spawning
         public static IEnumerator Single(
             ActorTypeEnum actorType,
             TimeSpan time,
-            bool outsideScreen,
             SpawnDirection dir)
         {
             float startTimeSec = (float)time.TotalSeconds;
@@ -162,11 +151,7 @@ namespace Assets.Script.Actors.Spawning
 
             var spawn = ActorCache.Instance.GetActor(actorType);
             float offset = 1.0f;
-            Vector3 pos;
-            if (outsideScreen)
-                pos = GetPointOutsideScreen(dir, offset);
-            else
-                pos = GetPointInsideArena(1.0f, 1.0f);
+            Vector3 pos = GetPointOutsideScreen(dir, offset);
 
             spawn.transform.position = pos;
             spawn.SetActive(true);
