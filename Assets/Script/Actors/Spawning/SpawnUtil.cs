@@ -142,7 +142,7 @@ namespace Assets.Script.Actors.Spawning
         public static IEnumerator Single(
             ActorTypeEnum actorType,
             TimeSpan time,
-            SpawnDirection dir)
+            SpawnDirection dir = SpawnDirection.Any)
         {
             float startTimeSec = (float)time.TotalSeconds;
 

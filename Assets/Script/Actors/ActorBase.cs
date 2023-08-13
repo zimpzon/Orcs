@@ -49,7 +49,7 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public bool IsFullyReady = false;
     [System.NonSerialized] public bool UseSpawnParticles = false;
 
-    [System.NonSerialized] public static ActorBase PlayerClosestEnemy;
+    [System.NonSerialized] public static Transform PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
     [System.NonSerialized] public float RadiusBody = 0.4f;
@@ -384,7 +384,7 @@ public class ActorBase : MonoBehaviour
                 distanceToPlayer_ = BlackboardScript.DistanceToPlayer(position_);
                 if (distanceToPlayer_ < PlayerDistanceToClosestEnemy)
                 {
-                    PlayerClosestEnemy = this;
+                    PlayerClosestEnemy = transform_;
                     PlayerDistanceToClosestEnemy = distanceToPlayer_;
                 }
             }

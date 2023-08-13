@@ -33,31 +33,46 @@ public class Chapter1Controller : MonoBehaviour
 
     IEnumerator RunSpawnEvents()
     {
-        RunAll(Chapter1Minute01.GetEvents());
+        if (G.D.GameTime < 5)
+            RunAll(Chapter1Minute01.GetEvents());
 
         const float Min3 = 60 * 3;
         while (GameManager.Instance.GameTime < Min3)
             yield return null;
 
-        RunAll(Chapter1Minute03.GetEvents());
+        if (G.D.GameTime < Min3 + 5)
+            RunAll(Chapter1Minute03.GetEvents());
+
 
         const float Min6 = 60 * 6;
         while (GameManager.Instance.GameTime < Min6)
             yield return null;
 
-        RunAll(Chapter1Minute06.GetEvents());
+        if (G.D.GameTime < Min6 + 5)
+            RunAll(Chapter1Minute06.GetEvents());
+
 
         const float Min10 = 60 * 10;
         while (GameManager.Instance.GameTime < Min10)
             yield return null;
 
-        RunAll(Chapter1Minute10.GetEvents());
+        if (G.D.GameTime < Min10 + 5)
+            RunAll(Chapter1Minute10.GetEvents());
+
 
         const float Min14 = 60 * 14;
         while (GameManager.Instance.GameTime < Min14)
             yield return null;
 
-        RunAll(Chapter1Minute14.GetEvents());
+        if (G.D.GameTime < Min14 + 5)
+            RunAll(Chapter1Minute14.GetEvents());
+
+
+        const float Min15 = 60 * 15;
+        while (GameManager.Instance.GameTime < Min15)
+            yield return null;
+
+        RunAll(Chapter1Minute15.GetEvents());
     }
 
     IEnumerator RunInternal()
@@ -73,8 +88,11 @@ public class Chapter1Controller : MonoBehaviour
             Position = Vector2.up * -100,
         };
 
-        GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
-        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, 0.5f);
+        if (G.D.GameTime < 30)
+        {
+            GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
+            LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, time: 0.5f);
+        }
 
         StartCoroutine(RunSpawnEvents());
 
@@ -91,8 +109,11 @@ public class Chapter1Controller : MonoBehaviour
 
     IEnumerator Warning(TimeSpan showTime, string text, Color endColor, Color endFilter)
     {
-        while (GameManager.Instance.GameTime < showTime.TotalSeconds)
+        while (G.D.GameTime < showTime.TotalSeconds)
             yield return null;
+
+        if (G.D.GameTime > showTime.TotalSeconds + 5)
+            yield break;
 
         const float TextTime = 10.0f;
         var info = new GameInfo

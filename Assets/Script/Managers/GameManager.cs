@@ -690,6 +690,12 @@ public class GameManager : MonoBehaviour
                 GameTime += 30;
             }
 
+            if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                chapterTime_ += 60 * 15;
+                GameTime += 60 * 15;
+            }
+
             if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
             {
                 ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
@@ -1040,7 +1046,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        return;
+        //return;
         SetDebugOutput("OnGUI enabled", G.D.GameTime);
 
         if (DebugValues.Count == 0)

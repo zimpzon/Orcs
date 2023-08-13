@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,7 +50,25 @@ public class PlayerScript : MonoBehaviour
 
     SpriteRenderer shadowRenderer_;
 
-    AnimationController animationController_ = new AnimationController();
+    AnimationController animationController_ = new ();
+
+    bool isPuppet_;
+    Vector3 puppetDst_;
+    Vector2 puppetLookDir_;
+    [NonSerialized] public bool isAtPuppetTarget;
+
+    public void SetPuppet(Vector3 destination, Vector2 lookDir)
+    {
+        isPuppet_ = true;
+        puppetDst_ = destination;
+        puppetLookDir_ = lookDir;
+        isAtPuppetTarget = false;
+    }
+
+    public void StopPuppet()
+    {
+        isPuppet_ = false;
+    }
 
     private void Awake()
     {
@@ -85,6 +104,8 @@ public class PlayerScript : MonoBehaviour
     public void ResetAll()
     {
         StopAllCoroutines();
+
+        isPuppet_ = false;
 
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         UpdateMaxHp(isReset: true);
@@ -150,7 +171,7 @@ public class PlayerScript : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.GameState != GameManager.State.Playing || isDead_ || SaveGame.RoundScore == 0)
+            if (GameManager.Instance.GameState != GameManager.State.Playing || isDead_ || isPuppet_ || SaveGame.RoundScore == 0)
                 yield return null;
 
             if (G.D.GameTime > nextFire_)
@@ -204,15 +225,6 @@ public class PlayerScript : MonoBehaviour
                 AddForce(lookDir_ * recoil * 1);
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
-            }
-
-            if (!isMoving_)
-            {
-                animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, IdleSprites);
-            }
-            else
-            {
-                animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, RunSprites);
             }
 
             yield return null;
@@ -350,7 +362,7 @@ public class PlayerScript : MonoBehaviour
 
     void CheckControls()
     {
-        if (isDead_)
+        if (isDead_ || isPuppet_)
             return;
 
         if (GameManager.Instance.GameState != GameManager.State.Playing)
@@ -458,9 +470,10 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        GameManager.SetDebugOutput("next", nextFire_);
         if (isDead_)
             return;
+
+        animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, isMoving_ ? RunSprites : IdleSprites);
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightShift))
         {
@@ -489,11 +502,20 @@ public class PlayerScript : MonoBehaviour
 
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
-        if (isMoving_ && !isDead_)
+        if (isPuppet_)
+        {
+            moveVec_ = (puppetDst_ - playerPos_).normalized * G.D.GameDeltaTime;
+            flipX_ = puppetLookDir_.x < 0 ? -1 : 1;
             playerPos_ += moveVec_;
+        }
+        else
+        {
+            if (isMoving_ && !isDead_)
+                playerPos_ += moveVec_;
 
-        if (!isDead_)
-            playerPos_ += force_ * GameManager.Instance.GameDeltaTime * 60;
+            if (!isDead_)
+                playerPos_ += 60 * GameManager.Instance.GameDeltaTime * force_;
+        }
 
         playerPos_.z = 0;
         playerPos_ = GameManager.Instance.ClampToBounds(playerPos_, renderer_.sprite);
