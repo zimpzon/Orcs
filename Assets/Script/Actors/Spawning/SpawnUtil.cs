@@ -76,7 +76,7 @@ namespace Assets.Script.Actors.Spawning
             while (GameManager.Instance.GameTime < endTimeSec)
             {
                 float t = (GameManager.Instance.GameTime - startTimeSec) / runTimeSec;
-                float currentMaintainCount = startingCount + t * countToBeAdded;
+                float currentMaintainCount = (float)Math.Round(startingCount + t * countToBeAdded);
 
                 if (alive.Count < currentMaintainCount)
                 {

@@ -12,21 +12,53 @@ public static class Chapter1Minute01
             ActorTypeEnum.OgreEdgy,
             startTime: new TimeSpan(0, 0, 5),
             endTime: new TimeSpan(0, 14, 50),
-            startingCount: 12,
-            endCount: 20,
+            startingCount: 4,
+            endCount: 7,
             maxSpawnCountPerTick: 5,
             timeBetweenTicks: 1.5f,
-            SpawnDirection.Any);
+            SpawnDirection.Top);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Right);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 4,
+            endCount: 7,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Bottom);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Left);
+
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
                 endTime: new TimeSpan(0, 3, 0),
-                startingCount: 10,
-                endCount: 30,
+                startingCount: 3,
+                endCount: 5,
                 maxSpawnCountPerTick: 10,
                 timeBetweenTicks: 1.2f,
-                SpawnDirection.Any);
+                SpawnDirection.Left);
+
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,

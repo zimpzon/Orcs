@@ -426,7 +426,7 @@ public class PlayerScript : MonoBehaviour
 
             Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 1.2f + ((Vector3)RndUtil.RandomInsideUnitCircle() * 0.07f));
             overheadTextTrans_.anchoredPosition = uiPos;
-            Color col = Color.HSVToRGB(Random.value * 0.3f, 1.0f, 1.0f);
+            Color col = Color.HSVToRGB(UnityEngine.Random.value * 0.3f, 1.0f, 1.0f);
             OverheadText.color = col;
         }
     }

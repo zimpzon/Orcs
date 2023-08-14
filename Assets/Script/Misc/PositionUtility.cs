@@ -8,15 +8,16 @@ class CoResult<T>
 
 public static class PositionUtility
 {
-    public static Vector2 TopMidOut = new(0, GameManager.ArenaBounds.yMax + 2);
-    public static Vector2 BottomMidOut = new(0, GameManager.ArenaBounds.yMin - 2);
-    public static Vector2 LeftMidOut = new(GameManager.ArenaBounds.xMin - 2, 0);
-    public static Vector2 RightMidOut = new(GameManager.ArenaBounds.xMax + 2, 0);
+    const float EdgeAreaSize = 1.8f;
+    public static Vector2 TopMidOut = new(0, GameManager.ArenaBounds.yMax + EdgeAreaSize);
+    public static Vector2 BottomMidOut = new(0, GameManager.ArenaBounds.yMin - EdgeAreaSize);
+    public static Vector2 LeftMidOut = new(GameManager.ArenaBounds.xMin - EdgeAreaSize, 0);
+    public static Vector2 RightMidOut = new(GameManager.ArenaBounds.xMax + EdgeAreaSize, 0);
 
-    public static Vector2 TopLeftOut = new(GameManager.ArenaBounds.xMin - 2, GameManager.ArenaBounds.yMin + 2);
-    public static Vector2 TopRightOut = new(GameManager.ArenaBounds.xMax + 2, GameManager.ArenaBounds.yMin + 2);
-    public static Vector2 BottomLeftOut = new(GameManager.ArenaBounds.xMin - 2, GameManager.ArenaBounds.yMin - 2);
-    public static Vector2 BottomRightOut = new(GameManager.ArenaBounds.xMax + 2, GameManager.ArenaBounds.yMin - 2);
+    public static Vector2 TopLeftOut = new(GameManager.ArenaBounds.xMin - EdgeAreaSize, GameManager.ArenaBounds.yMin + EdgeAreaSize);
+    public static Vector2 TopRightOut = new(GameManager.ArenaBounds.xMax + EdgeAreaSize, GameManager.ArenaBounds.yMin + EdgeAreaSize);
+    public static Vector2 BottomLeftOut = new(GameManager.ArenaBounds.xMin - EdgeAreaSize, GameManager.ArenaBounds.yMin - EdgeAreaSize);
+    public static Vector2 BottomRightOut = new(GameManager.ArenaBounds.xMax + EdgeAreaSize, GameManager.ArenaBounds.yMin - EdgeAreaSize);
 
     public enum SpawnDirection { Top, Bottom, Left, Right, TopOrBottom, LeftOrRight, Inside, Any };
     public enum GroupFormation { Circle, Line };
