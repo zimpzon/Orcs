@@ -4,25 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chapter1Controller : MonoBehaviour
+public class Chapter1Controller : MonoBehaviour, IKillableObject
 {
+    public ActorReaperBoss Boss;
+    public GameObject Hounds;
+    public GameObject BossObjects;
+    public GameObject SawbladeProto;
+    public float HoundsHiddenX = 14;
+    public float HoundsShownX = 12.2f;
+
     public Color Chapter1TextColor;
     public Color ColorAtStart;
-    public Color ColorAfterFirstWarning;
-    public Color FilterAfterFirstWarning;
-    public Color ColorAfterSecondWarning;
-    public Color FilterAfterSecondWarning;
-    public Color ColorAfterFinalWarning;
-    public Color FilterAfterFinalWarning;
+    public Color FilterAtStart;
+    public Color ColorBoss;
+    public Color FilterBoss;
+    public Color ColorHounds;
+    public Color FilterHounds;
+
+    public void Kill()
+    {
+        BossObjects.SetActive(false);
+    }
 
     public void Run()
     {
         StartCoroutine(RunInternal());
-    }
-
-    public void Stop()
-    {
-        StopAllCoroutines();
     }
 
     void RunAll(IEnumerable<IEnumerator> coList)
@@ -68,11 +74,12 @@ public class Chapter1Controller : MonoBehaviour
             RunAll(Chapter1Minute14.GetEvents());
 
 
-        const float Min15 = 60 * 15;
-        while (GameManager.Instance.GameTime < Min15)
+        const float BossTime = 60 * 15;
+        while (GameManager.Instance.GameTime < BossTime)
             yield return null;
 
-        RunAll(Chapter1Minute15.GetEvents());
+        BossObjects.SetActive(true);
+        yield return Chapter1BossBattle.Run(this);
     }
 
     IEnumerator RunInternal()
@@ -96,10 +103,9 @@ public class Chapter1Controller : MonoBehaviour
 
         StartCoroutine(RunSpawnEvents());
 
-        yield return StartCoroutine(Warning(new TimeSpan(0, 5, 0), "The air thickens", ColorAfterFirstWarning, FilterAfterFirstWarning));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 10, 40), "The dead grow uneasy", ColorAfterSecondWarning, FilterAfterSecondWarning));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 14, 50), "A horrible smell draws closer", ColorAfterFinalWarning, FilterAfterFinalWarning));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 15, 8), "GAME OVER\nfor now, boss is work in progress", ColorAfterFinalWarning, FilterAfterFinalWarning));
+        yield return StartCoroutine(Warning(new TimeSpan(0, 5, 0), "The air thickens", ColorAtStart, FilterAtStart));
+        yield return StartCoroutine(Warning(new TimeSpan(0, 10, 40), "The dead grow uneasy", ColorAtStart, FilterAtStart));
+        yield return StartCoroutine(Warning(new TimeSpan(0, 14, 50), "A horrible smell draws closer", ColorAtStart, FilterAtStart));
 
         yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 55), () => SpawnUtil.FleeAllActors()));
 

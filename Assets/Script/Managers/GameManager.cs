@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     public Color[] xpColors = new Color[] { };
 
+    public GameObject Chapter1;
     public LeanTween Tween;
     public Text TextVersion;
     public Text TextGameInfo;
@@ -121,7 +122,6 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float currentXp = 0;
     float currentLevel_ = 1;
     float roundStartTime_;
-    float chapterTime_;
 
     public void SliderMasterChanged()
     {
@@ -340,7 +340,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Playing)
             {
-                int gameSeconds = (int)(chapterTime_ + 0.5f);
+                int gameSeconds = (int)GameTime;
                 if (gameSeconds != lastGameSeconds)
                 {
                     TextTime.text = $"{gameSeconds / 60:00}:{gameSeconds % 60:00}";
@@ -592,6 +592,7 @@ public class GameManager : MonoBehaviour
         FloorFilter.color = Color.clear;
 
         Time.timeScale = 1.0f;
+        Chapter1.SetActive(false);
         PanelSettings.SetActive(false);
         ProjectileManager.Instance.StopAll();
         G.D.PlayerScript.ResetAll();
@@ -626,8 +627,13 @@ public class GameManager : MonoBehaviour
 
         GameTime = 0.0001f;
         GameDeltaTime = 0.0f;
-        chapterTime_ = 0;
 
+        {
+            GameTime = 60 * 15;
+            Debug.LogWarning("HACKZ, STARTING AT BOSS");
+        }
+
+        Orc.Enable(true);
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
@@ -686,13 +692,11 @@ public class GameManager : MonoBehaviour
         {
             if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightShift))
             {
-                chapterTime_ += 30;
                 GameTime += 30;
             }
 
             if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightShift))
             {
-                chapterTime_ += 60 * 15;
                 GameTime += 60 * 15;
             }
 
@@ -721,7 +725,6 @@ public class GameManager : MonoBehaviour
 
             if (SaveGame.RoundScore > 0)
             {
-                chapterTime_ += GameDeltaTime;
                 GameTime += GameDeltaTime;
             }
         }

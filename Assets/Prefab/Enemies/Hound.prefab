@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7806083319826730038}
+  - component: {fileID: 7806083319826730032}
   - component: {fileID: 7806083319826730039}
   - component: {fileID: 7927373448605877365}
   - component: {fileID: 1316344112072341451}
-  - component: {fileID: 2094033955129274223}
   m_Layer: 12
-  m_Name: OgreEdgy
+  m_Name: Hound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,12 +29,24 @@ Transform:
   m_GameObject: {fileID: 7806083319826730037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -9.28, y: 1.46, z: 0}
-  m_LocalScale: {x: 1.25, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7806083319826730032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7806083319826730037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &7806083319826730039
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -77,7 +89,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d00c517de5cc415468f63327b9af77ff, type: 3}
-  m_Color: {r: 0.554, g: 0.53227454, b: 0.53010195, a: 1}
+  m_Color: {r: 1, g: 0.98337924, b: 0.851, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -122,8 +134,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c714b5e5cf73e8b4fa0fe4cfa2684628, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 0.8
-  AvoidCrowds: 0
+  Speed: 0.7
+  AvoidCrowds: 1
   CrowdScanRadius: 1
   CrowdMaxNearby: 2
   CrowdOutOfTheWayRange: 4
@@ -132,17 +144,5 @@ MonoBehaviour:
   XpValue: 3
   XpCount: 1
   GoldCount: 0
-  ActorType: 29
-  BaseHp: 1000
---- !u!114 &2094033955129274223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7806083319826730037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681f2f3d5e911d54abb7200663ad364c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  ActorType: 2
+  BaseHp: 120

@@ -59,7 +59,7 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.WeaponTripleShot,
                 Title = $"{Name}, Dagger storm",
-                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing <color=#00ff00>10%</color> damage",
+                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing <color=#00ff00>5%</color> damage",
                 BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,

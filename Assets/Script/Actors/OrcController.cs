@@ -42,7 +42,7 @@ public class OrcController : MonoBehaviour
         baseColor_ = renderer_.color;
     }
 
-    private void Start()
+    private void OnEnable()
     {
         ResetAll();
         StartCoroutine(Think());
@@ -188,8 +188,29 @@ public class OrcController : MonoBehaviour
         }
     }
 
+    public void Enable(bool isActive)
+    {
+        if (isActive && !gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+            G.D.OrcEnabled = true;
+        }
+        else if (!isActive && gameObject.activeSelf)
+        {
+            StopAllCoroutines();
+            gameObject.SetActive(false);
+            G.D.OrcEnabled = false;
+        }
+    }
+
     void Update()
     {
+        if (G.D.OrcEnabled && enabled)
+        {
+            // go away when disabled
+            gameObject.SetActive(false);
+        }
+
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
         playerPos_ = G.D.PlayerPos;

@@ -52,22 +52,36 @@ public class PlayerScript : MonoBehaviour
 
     AnimationController animationController_ = new ();
 
-    bool isPuppet_;
+    [NonSerialized] public bool IsPuppet;
+    bool puppetMoveToBegin_;
     Vector3 puppetDst_;
     Vector2 puppetLookDir_;
     [NonSerialized] public bool isAtPuppetTarget;
 
     public void SetPuppet(Vector3 destination, Vector2 lookDir)
     {
-        isPuppet_ = true;
+        IsPuppet = true;
         puppetDst_ = destination;
         puppetLookDir_ = lookDir;
         isAtPuppetTarget = false;
     }
 
-    public void StopPuppet()
+    public void StopPuppet(bool moveToBegin)
     {
-        isPuppet_ = false;
+        if (moveToBegin)
+        {
+            puppetMoveToBegin_ = true;
+            OverheadText.text = "move to begin";
+            OverheadText.enabled = true;
+            OverheadText.color = Color.white;
+            return;
+        }
+
+        OverheadText.enabled = false;
+        puppetMoveToBegin_ = false;
+        IsPuppet = false;
+        isAtPuppetTarget = false;
+        puppetDst_ = Vector3.zero;
     }
 
     private void Awake()
@@ -105,16 +119,14 @@ public class PlayerScript : MonoBehaviour
     {
         StopAllCoroutines();
 
-        isPuppet_ = false;
+        IsPuppet = false;
 
         Hp = PlayerUpgrades.Data.BaseHealth * PlayerUpgrades.Data.HealthMul;
         UpdateMaxHp(isReset: true);
 
         IsInRound = false;
 
-        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
-        foreach (var toggleEffect in toggleEffects)
-            toggleEffect.Disable();
+        DisableToggledEffects();
 
         nextBlood_ = 0;
         timeNextRound_ = 0;
@@ -140,6 +152,20 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(Think());
     }
 
+    public void DisableToggledEffects()
+    {
+        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
+        foreach (var toggleEffect in toggleEffects)
+            toggleEffect.Disable();
+    }
+
+    public void TryEnableToggledEffects()
+    {
+        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
+        foreach (var toggleEffect in toggleEffects)
+            toggleEffect.TryEnable();
+    }
+
     public void OnInitialPickup(WeaponType type)
     {
         Weapon = WeaponBase.GetWeapon(type);
@@ -148,9 +174,7 @@ public class PlayerScript : MonoBehaviour
 
         IsInRound = true;
 
-        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
-        foreach (var toggleEffect in toggleEffects)
-            toggleEffect.TryEnable();
+        TryEnableToggledEffects();
     }
 
     void RefreshBulletCount()
@@ -171,8 +195,10 @@ public class PlayerScript : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.GameState != GameManager.State.Playing || isDead_ || isPuppet_ || SaveGame.RoundScore == 0)
-                yield return null;
+            yield return null;
+
+            if (GameManager.Instance.GameState != GameManager.State.Playing || isDead_ || IsPuppet || SaveGame.RoundScore == 0)
+                continue;
 
             if (G.D.GameTime > nextFire_)
             {
@@ -206,11 +232,11 @@ public class PlayerScript : MonoBehaviour
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out recoil);
 
                 const float anglePerShot = 20;
-                const float multiDaggerScale = 0.8f;
+                const float multiDaggerScale = 0.5f;
 
                 if (!PlayerUpgrades.Data.IsRambo)
                 {
-                    damage *= 0.10f;
+                    damage *= 0.05f;
 
                     for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
                     {
@@ -226,8 +252,6 @@ public class PlayerScript : MonoBehaviour
                 const float RecoilScreenShakeFactor = 2.0f;
                 GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
             }
-
-            yield return null;
         }
     }
 
@@ -362,7 +386,7 @@ public class PlayerScript : MonoBehaviour
 
     void CheckControls()
     {
-        if (isDead_ || isPuppet_)
+        if (isDead_ || (IsPuppet && !puppetMoveToBegin_))
             return;
 
         if (GameManager.Instance.GameState != GameManager.State.Playing)
@@ -387,15 +411,19 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
+            if (puppetMoveToBegin_)
+            {
+                StopPuppet(moveToBegin: false);
+            }
             moveVec_ = newMoveVec_;
         }
 
         isMoving_ = moveVec_ != Vector3.zero;
 
-        //if (ActorBase.PlayerClosestEnemy != null)
-        //    lookDir_ = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
-        //else
-        lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
+        if (IsPuppet)
+            lookDir_ = puppetLookDir_;
+        else
+            lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
 
         if (moveVec_.x != 0.0f)
         {
@@ -473,7 +501,9 @@ public class PlayerScript : MonoBehaviour
         if (isDead_)
             return;
 
-        animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, isMoving_ ? RunSprites : IdleSprites);
+        var sprites = isMoving_ && !isAtPuppetTarget ? RunSprites : IdleSprites;
+
+        animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, sprites);
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightShift))
         {
@@ -502,11 +532,21 @@ public class PlayerScript : MonoBehaviour
 
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
-        if (isPuppet_)
+        if (IsPuppet)
         {
-            moveVec_ = (puppetDst_ - playerPos_).normalized * G.D.GameDeltaTime;
+            float distanceToTarget = Vector2.Distance(playerPos_, puppetDst_);
+
+            const float PuppetMaxSpeed = 5.0f;
+            const float PuppetMinSpeed = 0.5f;
+
+            float puppetSpeed = Math.Min(PuppetMaxSpeed, distanceToTarget * 4);
+            puppetSpeed = Math.Max(PuppetMinSpeed, puppetSpeed);
+
+            moveVec_ = (puppetDst_ - playerPos_).normalized * G.D.GameDeltaTime * puppetSpeed;
             flipX_ = puppetLookDir_.x < 0 ? -1 : 1;
             playerPos_ += moveVec_;
+
+            isAtPuppetTarget = distanceToTarget < 0.1f;
         }
         else
         {

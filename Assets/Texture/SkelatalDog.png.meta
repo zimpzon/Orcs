@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -42,9 +42,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -70,7 +70,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -115,7 +115,1141 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SkelatalDog_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 321
+        width: 55
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87e1e5fd7f9ac2c4e869557827eef8d3
+      internalID: 1533021371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_1
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 321
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c5cbbd6b7e128341af7f6d246b12e43
+      internalID: 112111352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_2
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 321
+        width: 57
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f92024571ae60334496a4e7ea08532cc
+      internalID: -2128943220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_3
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 321
+        width: 57
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d01839676ab905348b4c805d791cf1cc
+      internalID: -500462552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_4
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 321
+        width: 55
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65c6cf6c6b0319e4b85079dd2318a241
+      internalID: 1100043733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_5
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 321
+        width: 55
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f463d9de35a9e3a4aae36eb16cc75aa7
+      internalID: -197996748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_6
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 321
+        width: 59
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83bcb819016cf4a469012e89cc400aad
+      internalID: -1356403862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_7
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 321
+        width: 59
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32713efa5bb9c594c87ab213889ef063
+      internalID: -464650106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_8
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 321
+        width: 59
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a384d470e483f54eb806186c45b7173
+      internalID: -1017556531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_9
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 257
+        width: 57
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 217204ced4430664cb2a3824d51d3059
+      internalID: -1855478458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_10
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 257
+        width: 57
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cdac11e4bfc7f74db94b3871c55f1c6
+      internalID: 1061736157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_11
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 257
+        width: 57
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02e3cef445e5b7541983dde16b3c350c
+      internalID: 757114183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_12
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 257
+        width: 57
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 609d01e58d15bd349a122436e30c4206
+      internalID: -894769291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_13
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 257
+        width: 55
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eeaa4a550572272478f3b0b61f918d18
+      internalID: -668735228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_14
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 257
+        width: 55
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0c38a81eea5468418a4b9ffa96b926d
+      internalID: -208749355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_15
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 257
+        width: 55
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0b8dcfb0ddfc56438c5adeb08b8cf73
+      internalID: 285052654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_16
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 257
+        width: 50
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4d0b28c848516348995c4ffe0df2c7b
+      internalID: -1139034328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_17
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 257
+        width: 45
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfa753d885e618c46938db21e92a5615
+      internalID: -235871657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_18
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 193
+        width: 56
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd124c328215e2443b91c28137566cd8
+      internalID: -90420369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_19
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 193
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87073479a546511449467706ad22a173
+      internalID: 447903148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_20
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 193
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6ec035020efac542a42fc9b5e818cb7
+      internalID: 888806079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_21
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 193
+        width: 57
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d46924099800e44d88202457045f443
+      internalID: -1134830312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_22
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 193
+        width: 55
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d9e35172e7c35e46b34e660dce2dddf
+      internalID: -1416314198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_23
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 193
+        width: 55
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a23d3ad3ac3ba9b4f9a330e5c47ed701
+      internalID: 436716967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_24
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 193
+        width: 58
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 487515a3b6ec2a04789bb9e8f91883a5
+      internalID: -890037029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_25
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 193
+        width: 58
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db7fdab9ddd388b4396c488492f7f97c
+      internalID: 230480530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_26
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 193
+        width: 58
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23aa0d657584a7547aee10e742d45ebf
+      internalID: -140432222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_27
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 129
+        width: 57
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b276a33e95c22b240847b57228253bfe
+      internalID: -1133589148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_28
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 129
+        width: 57
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e110cc68b711cb448cc46dbb2c441c4
+      internalID: -2033261722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_29
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 129
+        width: 57
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9b9c507f2771a341a5c31e5d6f023d8
+      internalID: 70727881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_30
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 129
+        width: 56
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2707c08cd3197b4fa38c4503b10d2ca
+      internalID: 293217456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_31
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 129
+        width: 51
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4af8ca083b31795469643500ee314dcc
+      internalID: 152664487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_32
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 129
+        width: 45
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecd8c6015da3d8b43b966fbad457b083
+      internalID: 1679606697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_33
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 129
+        width: 58
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de5586a013643874fa64de94bfe1273e
+      internalID: -2136844560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_34
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 129
+        width: 58
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60b17a970824f2e47b28742b17d038a4
+      internalID: 204062524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_35
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 129
+        width: 58
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15216646cfee08644960a1b7b811d415
+      internalID: 1685306030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_36
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 65
+        width: 59
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75b55a28fcffaf747aba21c7328fd32d
+      internalID: -424913804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_37
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 65
+        width: 59
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b0d0067e55e5d64f941194b39c8d3af
+      internalID: -113566299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_38
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 65
+        width: 59
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 417bd1acb3d293a478062aa2d58af615
+      internalID: 791319801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_39
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 65
+        width: 56
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74f81dbdc0369be4eaa1cbefcbf70678
+      internalID: -1119384195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_40
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 65
+        width: 57
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68bb30020d979e7478db55f7b4b25eb0
+      internalID: -1550164282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_41
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 65
+        width: 57
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1db5c30ee8b8fbd45bda0463020efd21
+      internalID: -1834920838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_42
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 64
+        width: 58
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6e2c3734e6c4104e85d50b5808eed5b
+      internalID: 254570166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_43
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 64
+        width: 58
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa6ddf9b206df9b429add3c517c6818a
+      internalID: -1457124997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_44
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 64
+        width: 58
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8d643bd78fb0f0449721bdfe068605f
+      internalID: 316020315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_45
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 1
+        width: 55
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29060bee382125a4a8dc0650c9a8b6e9
+      internalID: -139692209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_46
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 1
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 917b47591ce9ffb4c92842c0c9818ee9
+      internalID: 1528441620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_47
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 1
+        width: 57
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b49b2c66121a0c46bfcf20223afbfc4
+      internalID: -820627936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_48
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 1
+        width: 56
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b0a5aed61b2cde4797544e0c773e4de
+      internalID: -1596428989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_49
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 1
+        width: 51
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ff6ff6faa463804dadd6fae816881a6
+      internalID: -1939631080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_50
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 1
+        width: 45
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 861ecba4be88bec49af7815c86f01a4c
+      internalID: -100674306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_51
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 0
+        width: 58
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b85c7a77ecd114348848e93986052d1c
+      internalID: -858781591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_52
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 0
+        width: 58
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9900fefafcb3fee41b6ddc53c0e4e50f
+      internalID: -1696317029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SkelatalDog_53
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 0
+        width: 58
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2a76c9adf57b6f47831ca813e0998b0
+      internalID: -1804847449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -126,7 +1260,61 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SkelatalDog_1: 112111352
+      SkelatalDog_28: -2033261722
+      SkelatalDog_37: -113566299
+      SkelatalDog_40: -1550164282
+      SkelatalDog_5: -197996748
+      SkelatalDog_12: -894769291
+      SkelatalDog_43: -1457124997
+      SkelatalDog_21: -1134830312
+      SkelatalDog_23: 436716967
+      SkelatalDog_39: -1119384195
+      SkelatalDog_10: 1061736157
+      SkelatalDog_50: -100674306
+      SkelatalDog_18: -90420369
+      SkelatalDog_20: 888806079
+      SkelatalDog_17: -235871657
+      SkelatalDog_19: 447903148
+      SkelatalDog_27: -1133589148
+      SkelatalDog_31: 152664487
+      SkelatalDog_32: 1679606697
+      SkelatalDog_48: -1596428989
+      SkelatalDog_51: -858781591
+      SkelatalDog_25: 230480530
+      SkelatalDog_3: -500462552
+      SkelatalDog_9: -1855478458
+      SkelatalDog_24: -890037029
+      SkelatalDog_33: -2136844560
+      SkelatalDog_47: -820627936
+      SkelatalDog_29: 70727881
+      SkelatalDog_14: -208749355
+      SkelatalDog_11: 757114183
+      SkelatalDog_7: -464650106
+      SkelatalDog_13: -668735228
+      SkelatalDog_46: 1528441620
+      SkelatalDog_22: -1416314198
+      SkelatalDog_4: 1100043733
+      SkelatalDog_26: -140432222
+      SkelatalDog_2: -2128943220
+      SkelatalDog_53: -1804847449
+      SkelatalDog_36: -424913804
+      SkelatalDog_8: -1017556531
+      SkelatalDog_42: 254570166
+      SkelatalDog_30: 293217456
+      SkelatalDog_52: -1696317029
+      SkelatalDog_0: 1533021371
+      SkelatalDog_49: -1939631080
+      SkelatalDog_38: 791319801
+      SkelatalDog_6: -1356403862
+      SkelatalDog_41: -1834920838
+      SkelatalDog_44: 316020315
+      SkelatalDog_34: 204062524
+      SkelatalDog_15: 285052654
+      SkelatalDog_16: -1139034328
+      SkelatalDog_35: 1685306030
+      SkelatalDog_45: -139692209
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

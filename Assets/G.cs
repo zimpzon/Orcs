@@ -23,6 +23,8 @@ public class G : MonoBehaviour
     [NonSerialized] public float GameDeltaTime;
     [NonSerialized] public Vector3 PlayerPos;
 
+    [NonSerialized] public bool OrcEnabled;
+
     string ColorToHex(Color color)
     {
         int r = Mathf.RoundToInt(color.r * 255.0f);

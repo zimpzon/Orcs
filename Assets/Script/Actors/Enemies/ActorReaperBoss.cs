@@ -1,11 +1,13 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class ActorReaperBoss : MonoBehaviour
 {
+    public TextMeshPro OverheadText;
+
     public float FloatSpeed = 4;
     public float FloatScale = 0.1f;
-    public float FloatOffset = 0.1f;
 
     public float SpriteMinScaleY = 0.9f;
     public float SpriteMaxScaleY = 1.0f;
@@ -23,15 +25,33 @@ public class ActorReaperBoss : MonoBehaviour
 
     void OnEnable()
     {
-        trans_.position = Vector2.zero + Vector2.up * 2 + Vector2.right * 2;
-        gameObject.SetActive(true);
-
+        OverheadText.text = string.Empty;
         StartCoroutine(Think());
     }
 
     IEnumerator Think()
     {
         yield return null;
+    }
+
+    public IEnumerator Speak(string text, float pause)
+    {
+        OverheadText.text = text;
+        OverheadText.maxVisibleCharacters = 0;
+
+        var letterDelay = new WaitForSeconds(0.05f);
+        while (OverheadText.maxVisibleCharacters < text.Length)
+        {
+            if (OverheadText.maxVisibleCharacters++ % 2 == 0)
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ShortDeepBump, volumeScale: 0.5f, pitch: 1.2f + Random.value * 1.0f);
+
+            yield return letterDelay;
+        }
+
+        // stop clip early
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Ackack, volumeScale: 0.05f, pitch: 0.05f);
+
+        yield return new WaitForSeconds(pause);
     }
 
     private void Update()
@@ -41,10 +61,11 @@ public class ActorReaperBoss : MonoBehaviour
 
         float y = (Mathf.Sin(Time.time * FloatSpeed) + 1); // 0 - 2
         y *= FloatScale;
-        y -= -FloatOffset;
-        var pos = BodyTransform.position;
-        pos.y = -y;
-        BodyTransform.position = pos;
+        y -= 0.07f;
+
+        var pos = BodyTransform.localPosition;
+        pos.y = y;
+        BodyTransform.localPosition = pos;
 
         var scale = BodyTransform.localScale;
         float scaleY = (Mathf.Sin(Time.time * SpriteScaleSpeed) + 1) * 0.5f; // 0 - 1

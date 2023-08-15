@@ -40,3 +40,4 @@ MonoBehaviour:
   ShortDeepBump: {fileID: 8300000, guid: 4d6265526b24b364f9c923de946d2ba7, type: 3}
   SoftShoot: {fileID: 8300000, guid: 1232cfa754c5a4b46933ee40da4403ac, type: 3}
   Oink: {fileID: 8300000, guid: ee937f8df3d096e4592dcb44a3177021, type: 3}
+  Ackack: {fileID: 8300000, guid: 0b01e53531135764b831d7d7b5e54a73, type: 3}

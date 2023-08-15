@@ -30,4 +30,5 @@ public class AudioData : ScriptableObject
     public AudioClip ShortDeepBump;
     public AudioClip SoftShoot;
     public AudioClip Oink;
+    public AudioClip Ackack;
 }

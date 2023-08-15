@@ -20,7 +20,6 @@ public class GameProgressScript : MonoBehaviour
     public void Stop()
     {
         StopAllCoroutines();
-        GetComponent<Chapter1Controller>().Stop();
     }
 
     IEnumerator Run(GameModeEnum gameMode)
@@ -45,7 +44,8 @@ public class GameProgressScript : MonoBehaviour
         TextHowToPause.enabled = false;
 
         // only one gamemode for now
-        GetComponent<Chapter1Controller>().Run();
+        GameManager.Instance.Chapter1.SetActive(true);
+        GameManager.Instance.Chapter1.GetComponent<Chapter1Controller>().Run();
     }
 
     private void Awake()
