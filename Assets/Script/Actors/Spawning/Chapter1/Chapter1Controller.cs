@@ -10,8 +10,10 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     public GameObject Hounds;
     public GameObject BossObjects;
     public GameObject SawbladeProto;
+    public HpBarScript HpBar;
     public float HoundsHiddenX = 14;
     public float HoundsShownX = 12.2f;
+    public Vector2 BossOffsetY = Vector2.up * 1;
 
     public Color Chapter1TextColor;
     public Color ColorAtStart;
@@ -23,11 +25,14 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     public void Kill()
     {
-        BossObjects.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void Run()
     {
+        gameObject.SetActive(true);
+        BossObjects.SetActive(false);
+
         StartCoroutine(RunInternal());
     }
 
@@ -79,7 +84,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
             yield return null;
 
         BossObjects.SetActive(true);
-        yield return Chapter1BossBattle.Run(this);
+        yield return Chapter1BossIntro.Run(this);
+        yield return Chapter1BossFight.Run(this);
     }
 
     IEnumerator RunInternal()

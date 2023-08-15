@@ -982,6 +982,7 @@ public class GameManager : MonoBehaviour
 
         CurrentGameModeData = GameModeDataNursery;
 
+        KillKillableObjects();
         SetChoicesVisible(false);
 
         var bounds = GetComponent<BoxCollider2D>();

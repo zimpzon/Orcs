@@ -34,7 +34,7 @@ public class ActorReaperBoss : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator Speak(string text, float pause)
+    public IEnumerator Speak(string text, float pause, bool sound = true)
     {
         OverheadText.text = text;
         OverheadText.maxVisibleCharacters = 0;
