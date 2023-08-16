@@ -17,12 +17,68 @@ public static class Chapter1BossUtil
             yield return null;
     }
 
-    public static IEnumerator FireballSpiral(Transform boss)
+    public static IEnumerator FollowPlayer(ActorReaperBoss Boss)
     {
+        const float BossSpeed = 2.0f;
+        while (true)
+        {
+            float chaseEnd = G.D.GameTime + Random.value * 1;
+            while (G.D.GameTime < chaseEnd)
+            {
+                float distance = Vector2.Distance(Boss.transform.position, G.D.PlayerPos);
+                if (distance > 1.0f)
+                {
+                    var bossPos = Boss.transform.position;
+                    var direction = G.D.PlayerPos.x < bossPos.x ? Vector2.left : Vector2.right;
+
+                    bossPos.x += (direction * G.D.GameDeltaTime * BossSpeed).x;
+                    Boss.transform.position = bossPos;
+                }
+
+                yield return null;
+            }
+
+            float pauseEnd = G.D.GameTime + Random.value * 3;
+            while (G.D.GameTime < pauseEnd)
+            {
+                yield return null;
+            }
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator Bombard(ActorReaperBoss Boss, AcidFlaskScript flaskProto)
+    {
+        yield return Boss.Speak("Flaskapult Detonare!", pause: 1, sound: false);
+        yield return Boss.Speak("", pause: 0, sound: false);
+
+        Boss.Fly();
+        yield return new WaitForSeconds(1);
+
+        for (int i = 0; i < 15; ++i)
+        {
+            var flask = GameObject.Instantiate(flaskProto.gameObject).GetComponent<AcidFlaskScript>();
+            flask.transform.position = Boss.BodyTransform.position;
+            flask.Throw(G.D.PlayerPos + (Vector3)Random.insideUnitCircle * 3);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        Boss.Land();
+    }
+
+    public static IEnumerator FireballSpiral(Transform boss, float time)
+    {
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("PyroCircum  Vortex!", pause: 1, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("", pause: 0, sound: false);
+
         var delay = new WaitForSeconds(0.1f);
 
         float angle = 0;
-        while (true)
+        float endTime = G.D.GameTime + time;
+
+        while (G.D.GameTime < endTime)
         {
             Vector2 direction = MathUtil.DegreeToVector2(angle);
             angle += G.D.GameDeltaTime * 1500;
@@ -35,7 +91,7 @@ public static class Chapter1BossUtil
             basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
             basic.Type = ProjectileManager.ProjectileType.HarmsPlayer;
 
-            basic.Speed = 5.0f;
+            basic.Speed = 3.0f;
             basic.Damage = 50.0f;
             basic.MaxDistance = 20.0f;
             basic.Radius = 0.3f;

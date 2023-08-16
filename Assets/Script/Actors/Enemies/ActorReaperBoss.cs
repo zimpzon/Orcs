@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class ActorReaperBoss : MonoBehaviour
+public class ActorReaperBoss : MonoBehaviour, IKillableObject
 {
     public TextMeshPro OverheadText;
 
@@ -17,21 +17,77 @@ public class ActorReaperBoss : MonoBehaviour
     public Transform BodyTransform;
 
     Transform trans_;
+    const float FlyMaxHeight = 1.5f;
+    const float FlySpeed = 2;
+    float flyOffset_;
+    bool isFlying_;
+
+    public void Fly()
+    {
+        isFlying_ = true;
+        GameManager.Instance.MakePoof(trans_.position, 4, 0.5f);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerThrowBomb);
+    }
+
+    public void Land()
+    {
+        isFlying_ = false;
+    }
+
+    public void Kill()
+    {
+        Reset();
+        StopAllCoroutines();
+    }
+
+    void Reset()
+    {
+        flyOffset_ = 0;
+        isFlying_ = false;
+    }
+
+    void OnDisable()
+    {
+        Kill();
+    }
 
     void Awake()
     {
         trans_ = transform;
     }
-
     void OnEnable()
     {
+        Reset();
         OverheadText.text = string.Empty;
         StartCoroutine(Think());
     }
 
     IEnumerator Think()
     {
-        yield return null;
+        while (true)
+        {
+            if (isFlying_ && flyOffset_ < FlyMaxHeight)
+            {
+                flyOffset_ += FlySpeed * G.D.GameDeltaTime;
+            }
+
+            GameManager.SetDebugOutput("flyOffset_", flyOffset_);
+
+            if (!isFlying_ && flyOffset_ > 0)
+            {
+                flyOffset_ -= FlySpeed * G.D.GameDeltaTime;
+                flyOffset_ = Mathf.Max(0, flyOffset_);
+
+                if (flyOffset_ == 0)
+                {
+                    GameManager.Instance.MakePoof(trans_.position, 4, 1.0f);
+                    GameManager.Instance.MakeFlash(trans_.position, 4.0f);
+                    Explosions.Push(trans_.position, radius: 1.5f, force: 2.0f);
+                }
+            }
+
+            yield return null;
+        }
     }
 
     public IEnumerator Speak(string text, float pause, bool sound = true)
@@ -62,6 +118,7 @@ public class ActorReaperBoss : MonoBehaviour
         float y = (Mathf.Sin(Time.time * FloatSpeed) + 1); // 0 - 2
         y *= FloatScale;
         y -= 0.07f;
+        y += flyOffset_;
 
         var pos = BodyTransform.localPosition;
         pos.y = y;

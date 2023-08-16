@@ -9,7 +9,7 @@ public enum ActorTypeEnum
     None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
     OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
     OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
-    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy,
+    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy, ReaperBoss,
 };
 
 public enum ActorForcedTargetType { Absolute, Direction };
@@ -152,7 +152,6 @@ public class ActorBase : MonoBehaviour
 
     public void Start()
     {
-        gameObject.layer = GameManager.Instance.LayerNeutral;
         massInverse_ = 1.0f / Mass;
     }
 
@@ -326,6 +325,12 @@ public class ActorBase : MonoBehaviour
                 GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec * PlayerUpgrades.Data.PaintballDamagePerSecMul, Vector3.zero, 0.01f);
                 nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
             }
+        }
+
+        if (IsBoss)
+        {
+            CheckPainted();
+            return;
         }
 
         if (!isFrozen_)

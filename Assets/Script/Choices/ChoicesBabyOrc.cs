@@ -11,18 +11,18 @@ public static class ChoicesBabyOrc
             new Choice
             {
                 Title = $"{Name}, first aid (1)",
-                Description = $"<color=#00ff00>+15</color> more life when rescuing a duck",
+                Description = $"<color=#00ff00>+10</color> more life when rescuing a duck",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.RescueDuckHp += 15;
+                    PlayerUpgrades.Data.RescueDuckHp += 10;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, first aid (2)",
-                    Description = $"<color=#00ff00>+15</color> more life when rescuing a duck",
+                    Description = $"<color=#00ff00>+10</color> more life when rescuing a duck",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.RescueDuckHp += 15;
+                        PlayerUpgrades.Data.RescueDuckHp += 10;
                     },
                 }
             },

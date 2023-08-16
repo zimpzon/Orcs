@@ -633,7 +633,6 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("HACKZ, STARTING AT BOSS");
         }
 
-        Orc.Enable(true);
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();

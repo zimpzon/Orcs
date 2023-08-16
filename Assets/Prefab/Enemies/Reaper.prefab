@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 758594163}
   - component: {fileID: 758594164}
-  m_Layer: 12
+  - component: {fileID: 1504938865}
+  m_Layer: 9
   m_Name: Scythe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,6 +86,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1504938865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758594162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b342bae084d5b964ea2ca45a1a3d7776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 0
 --- !u!1 &92178614228718637
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057948281607103755}
   - component: {fileID: 3653218436188634118}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DropShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +194,7 @@ GameObject:
   - component: {fileID: 5186620034711364416}
   - component: {fileID: 8301894600470966078}
   - component: {fileID: 6658657880474636512}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: ParticlesFloat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5001,7 +5015,7 @@ GameObject:
   - component: {fileID: 3338036817574643434}
   - component: {fileID: 714229163384155134}
   - component: {fileID: 1695977167234382389}
-  m_Layer: 12
+  m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5047,9 +5061,9 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7120233939534951472}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -5070,7 +5084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7045998163918743425}
   - component: {fileID: 445100047}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Reaper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5086,7 +5100,7 @@ RectTransform:
   m_GameObject: {fileID: 7806083319826730037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1015051112325372110}
@@ -5097,8 +5111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -9.28, y: 1.46}
-  m_SizeDelta: {x: 2, y: 1}
+  m_AnchoredPosition: {x: -13.257792, y: 2.2065}
+  m_SizeDelta: {x: 0.4089, y: 0.5762}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &445100047
 MonoBehaviour:
@@ -5131,7 +5145,7 @@ GameObject:
   - component: {fileID: 1015051112325372110}
   - component: {fileID: 617362561609660889}
   - component: {fileID: 3294254096969106425}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5156,7 +5170,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.00007534, y: 0.276}
-  m_SizeDelta: {x: 0.5, y: 0.2}
+  m_SizeDelta: {x: 0.6, y: 0.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &617362561609660889
 MeshRenderer:
@@ -5304,7 +5318,9 @@ GameObject:
   - component: {fileID: 3534557455486596684}
   - component: {fileID: 3119305536701850306}
   - component: {fileID: 1129739666}
-  m_Layer: 12
+  - component: {fileID: 6232149411389642218}
+  - component: {fileID: 2046561744}
+  m_Layer: 11
   m_Name: BodySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5319,7 +5335,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8342785986981798466}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.07, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5393,6 +5409,54 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.04}
+  m_Offset: {x: 0, y: -0.01}
   m_Size: {x: 0.11, y: 0.31}
   m_Direction: 0
+--- !u!114 &6232149411389642218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8342785986981798466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8ddd7c1c939b84d9933b272f252873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animations: []
+  CanBeFrozen: 0
+  CanBePoisened: 1
+  Speed: 1
+  AvoidCrowds: 0
+  CrowdScanRadius: 1
+  CrowdMaxNearby: 3
+  CrowdOutOfTheWayRange: 2.5
+  IsBoss: 1
+  Mass: 1
+  XpValue: 1
+  XpCount: 1
+  GoldCount: 100
+  ActorType: 30
+  BaseHp: 5000
+--- !u!50 &2046561744
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8342785986981798466}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

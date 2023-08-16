@@ -188,21 +188,6 @@ public class OrcController : MonoBehaviour
         }
     }
 
-    public void Enable(bool isActive)
-    {
-        if (isActive && !gameObject.activeSelf)
-        {
-            gameObject.SetActive(true);
-            G.D.OrcEnabled = true;
-        }
-        else if (!isActive && gameObject.activeSelf)
-        {
-            StopAllCoroutines();
-            gameObject.SetActive(false);
-            G.D.OrcEnabled = false;
-        }
-    }
-
     void Update()
     {
         if (G.D.OrcEnabled && enabled)

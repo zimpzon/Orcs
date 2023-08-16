@@ -22,6 +22,7 @@ public class G : MonoBehaviour
     [NonSerialized] public float GameTime;
     [NonSerialized] public float GameDeltaTime;
     [NonSerialized] public Vector3 PlayerPos;
+    public Vector3 PlayerCenterOffset;
 
     [NonSerialized] public bool OrcEnabled;
 

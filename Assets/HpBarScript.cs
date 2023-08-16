@@ -2,31 +2,35 @@ using UnityEngine;
 
 public class HpBarScript : MonoBehaviour, IKillableObject
 {
-    public Transform HpBar;
+    public Transform ForegroundSprite;
+    public ActorBase Owner;
     public float HiddenY;
     public float ShownY;
 
-    void Awake()
-    {
-        Kill();
-    }
+    public Transform FillTransform;
 
     public void Kill()
     {
         gameObject.SetActive(false);
-        LeanTween.moveLocalY(HpBar.gameObject, HiddenY, 0);
+        LeanTween.moveLocalY(gameObject, HiddenY, 0);
     }
 
     public void Show()
     {
         gameObject.SetActive(true);
-        LeanTween.moveLocalY(HpBar.gameObject, ShownY, 0.5f);
+        LeanTween.moveLocalY(gameObject, ShownY, 0.5f);
         SetHp(0, 100);
     }
 
     public void SetHp(float current, float max)
     {
-        var scale = HpBar.transform.localScale;
+        var scale = FillTransform.localScale;
         scale.x = current / max;
+        FillTransform.localScale = scale;
+    }
+
+    void Update()
+    {
+        SetHp(Owner.Hp, Owner.BaseHp);
     }
 }

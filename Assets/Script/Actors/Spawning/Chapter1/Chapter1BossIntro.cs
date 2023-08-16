@@ -6,7 +6,7 @@ public static class Chapter1BossIntro
 {
     static Chapter1Controller C;
 
-    public static IEnumerator Run(Chapter1Controller controller)
+    public static IEnumerator Run(Chapter1Controller controller, bool skipIntroduction)
     {
         C = controller;
 
@@ -17,12 +17,11 @@ public static class Chapter1BossIntro
 
         SpawnUtil.FleeAllActors();
         G.D.PlayerScript.SetPuppet(Vector3.zero, Vector2.right);
-        GameManager.Instance.Orc.Enable(false);
 
         C.Boss.transform.position = PositionUtility.RightMidOut;
         C.Boss.gameObject.SetActive(true);
 
-        yield return IntroduceBoss(skip: true);
+        yield return IntroduceBoss(skip: skipIntroduction);
 
         yield break;
     }

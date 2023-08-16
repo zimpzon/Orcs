@@ -10,6 +10,9 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     public GameObject Hounds;
     public GameObject BossObjects;
     public GameObject SawbladeProto;
+    public ParticleSystem Acid;
+    public ParticleSystem AcidSpawnEffect;
+    public AcidFlaskScript AcidFlaskProto;
     public HpBarScript HpBar;
     public float HoundsHiddenX = 14;
     public float HoundsShownX = 12.2f;
@@ -83,8 +86,12 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         while (GameManager.Instance.GameTime < BossTime)
             yield return null;
 
+        // disable orc
+        GameManager.Instance.Orc.ResetAll();
+
         BossObjects.SetActive(true);
-        yield return Chapter1BossIntro.Run(this);
+        yield return Chapter1BossIntro.Run(this, skipIntroduction: false);
+
         yield return Chapter1BossFight.Run(this);
     }
 
