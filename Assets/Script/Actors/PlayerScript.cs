@@ -66,7 +66,7 @@ public class PlayerScript : MonoBehaviour
         isAtPuppetTarget = false;
     }
 
-    public void StopPuppet(bool moveToBegin)
+    public void StopPuppet(bool moveToBegin = false)
     {
         if (moveToBegin)
         {
@@ -257,7 +257,7 @@ public class PlayerScript : MonoBehaviour
 
     public void DamagePlayer(float damage)
     {
-        if (isDead_)
+        if (isDead_ || IsPuppet)
             return;
 
         if (GameManager.Instance.GameTime < immunityEnd_)

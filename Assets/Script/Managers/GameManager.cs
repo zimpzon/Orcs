@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public LeanTween Tween;
     public Text TextVersion;
     public Text TextGameInfo;
+    public GameInfoViewer TextGameInfoViewer;
     public Text TextLevel;
     public Text TextHp;
     public Text TextTime;
@@ -572,7 +573,7 @@ public class GameManager : MonoBehaviour
 
     static int Rounds = 0;
 
-    void KillKillableObjects()
+    public void KillKillableObjects()
     {
         var killables = FindObjectsOfType<MonoBehaviour>().OfType<IKillableObject>();
         foreach (var killable in killables)
@@ -982,8 +983,6 @@ public class GameManager : MonoBehaviour
         SpriteFlashColorParamId = Shader.PropertyToID("_FlashColor");
 
         CurrentGameModeData = GameModeDataNursery;
-
-        KillKillableObjects();
         SetChoicesVisible(false);
 
         var bounds = GetComponent<BoxCollider2D>();
@@ -1051,7 +1050,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", G.D.GameTime);
 
         if (DebugValues.Count == 0)

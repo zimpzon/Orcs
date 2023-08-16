@@ -10,6 +10,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     public GameObject Hounds;
     public GameObject BossObjects;
     public GameObject SawbladeProto;
+    public GameObject Confetti;
+
     public ParticleSystem Acid;
     public ParticleSystem AcidSpawnEffect;
     public AcidFlaskScript AcidFlaskProto;
@@ -29,6 +31,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     public void Kill()
     {
         StopAllCoroutines();
+        Confetti.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -99,6 +102,24 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
             yield return null;
 
         StopAllCoroutines();
+
+        var info = new GameInfo
+        {
+            Text = "Congratulations!\n\n\nYou have defeated Super Knight - Man in Steel\n\n\nUse the menu to return to title screen",
+            Color = Color.green,
+            Duration = 60.0f,
+            FadeInDuration = 0.5f,
+            FadeOutDuration = 2.0f,
+            FontSize = 10,
+            Position = Vector2.up * -100,
+        };
+
+        GameManager.Instance.TextGameInfoViewer.Show(info);
+
+        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, 4);
+        LeanTween.color(GameManager.Instance.FloorFilter.gameObject, FilterAtStart, 4);
+
+        Confetti.SetActive(true);
     }
 
     IEnumerator RunInternal()
@@ -121,10 +142,6 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         }
 
         StartCoroutine(RunSpawnEvents());
-
-        yield return StartCoroutine(Warning(new TimeSpan(0, 5, 0), "The air thickens", ColorAtStart, FilterAtStart));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 10, 40), "The dead grow uneasy", ColorAtStart, FilterAtStart));
-        yield return StartCoroutine(Warning(new TimeSpan(0, 14, 50), "A horrible smell draws closer", ColorAtStart, FilterAtStart));
 
         yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 55), () => SpawnUtil.FleeAllActors()));
 

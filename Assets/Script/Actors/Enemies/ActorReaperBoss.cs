@@ -16,6 +16,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     public SpriteRenderer BodyRenderer;
     public Transform BodyTransform;
+    public Transform ScytheTransform;
     public CapsuleCollider2D Collider;
     public ActorBase Actor;
 
@@ -67,6 +68,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         isFlying_ = false;
         FightComplete = false;
         inDeathSequence_ = false;
+        Collider.enabled = true;
     }
 
     void OnDisable()
@@ -112,9 +114,6 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
             yield return letterDelay;
         }
-
-        // stop clip early
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Ackack, volumeScale: 0.05f, pitch: 0.05f);
 
         yield return new WaitForSeconds(pause);
     }
@@ -169,7 +168,9 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     IEnumerator DeathSequence()
     {
-        StartCoroutine(Chapter1BossUtil.ThrowGold(this));
+        Collider.enabled = false;
+        GameManager.Instance.Orc.ResetAll();
+
         yield return Chapter1BossUtil.DeathSequence(this);
 
         FightComplete = true;
@@ -178,7 +179,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     private void Update()
     {
-        if (inDeathSequence_)
+        if (inDeathSequence_ || FightComplete)
             return;
 
         if (Actor.IsDead)

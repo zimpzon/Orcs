@@ -39,6 +39,7 @@ public class GameInfoViewer : MonoBehaviour, IKillableObject
 
     public void Show(GameInfo info)
     {
+        Debug.Log("show");
         var finalColor = (info.Color ?? defaultInfo_.Color).Value;
         hiddenColor = finalColor;
         hiddenColor.a = 0;

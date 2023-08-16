@@ -5095,6 +5095,7 @@ MonoBehaviour:
   SpriteScaleSpeed: 3
   BodyRenderer: {fileID: 3119305536701850306}
   BodyTransform: {fileID: 3534557455486596684}
+  ScytheTransform: {fileID: 758594163}
   Collider: {fileID: 1129739666}
   Actor: {fileID: 6232149411389642218}
 --- !u!1 &8259368612372169466
@@ -5225,8 +5226,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.3
-  m_fontSizeBase: 0.3
+  m_fontSize: 0.4
+  m_fontSizeBase: 0.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5399,7 +5400,7 @@ MonoBehaviour:
   Mass: 1
   XpValue: 1
   XpCount: 1
-  GoldCount: 100
+  GoldCount: 0
   ActorType: 30
   BaseHp: 100
 --- !u!50 &2046561744

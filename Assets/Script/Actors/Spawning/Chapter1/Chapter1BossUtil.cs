@@ -20,35 +20,35 @@ public static class Chapter1BossUtil
 
     public static IEnumerator ThrowGold(ActorReaperBoss boss)
     {
-        float wait = 1.0f;
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 10; i++)
         {
-            GameManager.Instance.ThrowPickups(AutoPickUpType.Money, boss.BodyTransform.position, 1, 1, forceScale: UnityEngine.Random.value * 1 + 0.5f);
-            yield return new WaitForSeconds(wait);
+            for (int k = 0; k < 10; ++k)
+                GameManager.Instance.ThrowPickups(AutoPickUpType.Money, boss.BodyTransform.position, 1, 1, forceScale: UnityEngine.Random.value * 1 + 0.5f);
 
-            wait -= G.D.GameDeltaTime * 0.2f;
-
-            if (wait < 0.1f)
-                wait = 0.1f;
+            yield return new WaitForSeconds(0.25f);
         }
     }
 
     public static IEnumerator DeathSequence(ActorReaperBoss boss)
     {
+        PlayerUpgrades.Data.MagicMissileCdMul = 9999;
+
         MusicManagerScript.Instance.StopMusic();
         yield return new WaitForSeconds(1.0f);
 
-        yield return boss.Speak("I can't move!", 1.0f);
-        yield return boss.Speak("What have you done??", 1.0f);
-        yield return boss.Speak("My hounds will avenge me!", 1.0f);
+        yield return boss.Speak("I can't move!", 1.5f);
+        yield return boss.Speak("What have you done??", 1.5f);
+        yield return boss.Speak("My hounds will avenge me!", 1.5f);
         yield return boss.Speak("...", 0.5f);
-        yield return boss.Speak("Forget I said that", 1.0f);
+        yield return boss.Speak("Forget I said that", 1.5f);
         yield return boss.Speak("", 0.0f);
 
         float a = 1.0f;
         var baseCol = boss.BodyRenderer.color;
         float nextPoof = 0;
         var poofBase = boss.BodyTransform.position;
+
+        boss.StartCoroutine(ThrowGold(boss));
 
         while (a > 0)
         {
@@ -61,16 +61,24 @@ public static class Chapter1BossUtil
             if (G.D.GameTime > nextPoof)
             {
                 var pos = poofBase;
-                pos.y += UnityEngine.Random.value * 2;
-                pos.x += UnityEngine.Random.value;
-                GameManager.Instance.MakePoof(boss.BodyTransform.position, 3, 0.5f);
-                GameManager.Instance.MakeFlash(boss.BodyTransform.position, 0.5f);
+                pos.y += UnityEngine.Random.value * 3;
+                pos.x += UnityEngine.Random.value * 2;
+                GameManager.Instance.MakePoof(boss.BodyTransform.position, 3, 2.0f);
+                GameManager.Instance.MakeFlash(boss.BodyTransform.position, 2.0f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.75f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.SqueakyDie, volumeScale: 0.7f, pitch: UnityEngine.Random.value * 0.5f + 0.5f);
 
-                nextPoof = G.D.GameTime + 0.25f;
+                nextPoof = G.D.GameTime + UnityEngine.Random.value * 0.2f + 0.35f;
             }
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(1.0f);
+        LeanTween.move(boss.ScytheTransform.gameObject, boss.ScytheTransform.position + Vector3.down * 1.25f, 0.5f).setEaseInQuart();
+        LeanTween.rotate(boss.ScytheTransform.gameObject, Vector3.forward * 405, 0.5f).setEaseInQuart();
+
+        yield return new WaitForSeconds(1.0f);
     }
 
     public static IEnumerator SpawnArmy(ActorReaperBoss boss)
@@ -79,7 +87,7 @@ public static class Chapter1BossUtil
         yield return boss.GetComponent<ActorReaperBoss>().Speak("The best!", pause: 0.5f, sound: false);
         yield return boss.GetComponent<ActorReaperBoss>().Speak("The strongest!", pause: 0.5f, sound: false);
         yield return boss.GetComponent<ActorReaperBoss>().Speak("The fastest!", pause: 0.5f, sound: false);
-        yield return boss.GetComponent<ActorReaperBoss>().Speak("The most handsome!", pause: 0.5f, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("The deadest!", pause: 0.5f, sound: false);
         yield return boss.GetComponent<ActorReaperBoss>().Speak("", pause: 0, sound: false);
 
         yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreSmall, despawnAtDestination: false, breakFreeAtDamage: false,
