@@ -5953,16 +5953,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AcidFlask
       objectReference: {fileID: 0}
-    - target: {fileID: 683057600281781906, guid: f0867548e39204947a0f0736fe067214,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1344938774592044939, guid: f0867548e39204947a0f0736fe067214,
-        type: 3}
-      propertyPath: Acid
-      value: 
-      objectReference: {fileID: 1275801767}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0867548e39204947a0f0736fe067214, type: 3}
 --- !u!4 &171444402 stripped
@@ -44589,13 +44579,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 331860857}
     m_Modifications:
-    - target: {fileID: 445100047, guid: 04e91e8b1ba3f9d4fa38cd6b3745e7e9, type: 3}
-      propertyPath: FloatScale
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 445100047, guid: 04e91e8b1ba3f9d4fa38cd6b3745e7e9, type: 3}
-      propertyPath: SpriteMinScaleY
-      value: 0.9
+    - target: {fileID: 6232149411389642218, guid: 04e91e8b1ba3f9d4fa38cd6b3745e7e9,
+        type: 3}
+      propertyPath: GoldCount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7045998163918743425, guid: 04e91e8b1ba3f9d4fa38cd6b3745e7e9,
         type: 3}

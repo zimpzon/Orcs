@@ -31,7 +31,7 @@ public class OrcController : MonoBehaviour
     float reviveTime_;
 
     const float MeleeCd = 1.5f;
-    const float RunSpeed = 2.0f;
+    const float RunSpeed = 0.25f;
 
     void Awake()
     {

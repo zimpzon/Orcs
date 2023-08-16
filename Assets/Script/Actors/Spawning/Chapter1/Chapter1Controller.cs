@@ -28,6 +28,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     public void Kill()
     {
+        StopAllCoroutines();
         gameObject.SetActive(false);
     }
 
@@ -90,9 +91,14 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         GameManager.Instance.Orc.ResetAll();
 
         BossObjects.SetActive(true);
-        yield return Chapter1BossIntro.Run(this, skipIntroduction: false);
+        yield return Chapter1BossIntro.Run(this, skipIntroduction: true);
 
-        yield return Chapter1BossFight.Run(this);
+        Boss.StartFight(this);
+
+        while (!Boss.FightComplete)
+            yield return null;
+
+        StopAllCoroutines();
     }
 
     IEnumerator RunInternal()

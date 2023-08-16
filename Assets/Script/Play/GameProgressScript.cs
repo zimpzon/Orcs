@@ -20,6 +20,7 @@ public class GameProgressScript : MonoBehaviour
     public void Stop()
     {
         StopAllCoroutines();
+        //GameManager.Instance.Chapter1.GetComponent<Chapter1Controller>().Kill();
     }
 
     IEnumerator Run(GameModeEnum gameMode)

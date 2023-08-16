@@ -586,6 +586,9 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Intro)
             return;
 
+        KillKillableObjects();
+        GameManager.Instance.Chapter1.GetComponent<Chapter1Controller>().Kill();
+
         LeanTween.color(Floor.gameObject, floorDefaultColor, 1.0f);
 
         Floor.color = floorDefaultColor;
@@ -602,7 +605,6 @@ public class GameManager : MonoBehaviour
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
-        KillKillableObjects();
 
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);

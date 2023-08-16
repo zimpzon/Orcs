@@ -163,7 +163,7 @@ namespace Assets.Script.Actors.Spawning
             ActorTypeEnum actorType,
             bool despawnAtDestination,
             bool breakFreeAtDamage,
-            TimeSpan time,
+            TimeSpan? time,
             Vector2 fromPos,
             Vector2 target,
             ActorForcedTargetType targetType,
@@ -176,10 +176,13 @@ namespace Assets.Script.Actors.Spawning
             float skewX = 0,
             float skewY = 0)
         {
-            float startTimeSec = (float)time.TotalSeconds;
+            if (time.HasValue)
+            {
+                float startTimeSec = (float)time.Value.TotalSeconds;
 
-            while (GameManager.Instance.GameTime < startTimeSec)
-                yield return null;
+                while (GameManager.Instance.GameTime < startTimeSec)
+                    yield return null;
+            }
 
             FormationUtil.GetFormation(w, h, stepX, stepY, pivotX, pivotY, skewX, skewY, posList);
 

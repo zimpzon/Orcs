@@ -312,6 +312,8 @@ public class ActorBase : MonoBehaviour
 
     public void LateUpdate()
     {
+        IsDead = Hp <= 0.0f;
+
         if (GameManager.Instance.GameTime > flashEndTime_)
             material_.SetFloat(flashParamId_, 0.0f);
 
@@ -324,6 +326,16 @@ public class ActorBase : MonoBehaviour
             {
                 GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec * PlayerUpgrades.Data.PaintballDamagePerSecMul, Vector3.zero, 0.01f);
                 nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
+            }
+        }
+
+        if (!IsDead)
+        {
+            distanceToPlayer_ = Vector2.Distance(transform_.position, G.D.PlayerPos);
+            if (distanceToPlayer_ < PlayerDistanceToClosestEnemy)
+            {
+                PlayerClosestEnemy = transform_;
+                PlayerDistanceToClosestEnemy = distanceToPlayer_;
             }
         }
 
@@ -377,22 +389,10 @@ public class ActorBase : MonoBehaviour
 
         position_.z = 0;
 
-        IsDead = Hp <= 0.0f;
-
         if (IsFullyReady)
         {
             if (!hasForcedDestination_)
                 position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
-
-            if (!IsDead)
-            {
-                distanceToPlayer_ = BlackboardScript.DistanceToPlayer(position_);
-                if (distanceToPlayer_ < PlayerDistanceToClosestEnemy)
-                {
-                    PlayerClosestEnemy = transform_;
-                    PlayerDistanceToClosestEnemy = distanceToPlayer_;
-                }
-            }
         }
 
         if (!IsDead && !isFrozen_)
@@ -462,7 +462,8 @@ public class ActorBase : MonoBehaviour
             Hp = 0;
             GameManager.Instance.OnEnemyKill(this);
             StopAllCoroutines();
-            StartCoroutine(DieAnimation(direction, forceModifier));
+            if (!IsBoss)
+                StartCoroutine(DieAnimation(direction, forceModifier));
         }
         else
         {
@@ -630,6 +631,9 @@ public class ActorBase : MonoBehaviour
 
     public void ReturnToCache()
     {
+        if (IsBoss)
+            return;
+
         Reset(init: false);
         ActorCache.Instance.ReturnObject(gameObject);
     }

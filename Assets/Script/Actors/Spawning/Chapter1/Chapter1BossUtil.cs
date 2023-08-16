@@ -1,3 +1,4 @@
+using Assets.Script.Actors.Spawning;
 using Assets.Script.Misc;
 using System.Collections;
 using UnityEngine;
@@ -17,34 +18,115 @@ public static class Chapter1BossUtil
             yield return null;
     }
 
+    public static IEnumerator ThrowGold(ActorReaperBoss boss)
+    {
+        float wait = 1.0f;
+        for (int i = 0; i < 100; i++)
+        {
+            GameManager.Instance.ThrowPickups(AutoPickUpType.Money, boss.BodyTransform.position, 1, 1, forceScale: UnityEngine.Random.value * 1 + 0.5f);
+            yield return new WaitForSeconds(wait);
+
+            wait -= G.D.GameDeltaTime * 0.2f;
+
+            if (wait < 0.1f)
+                wait = 0.1f;
+        }
+    }
+
+    public static IEnumerator DeathSequence(ActorReaperBoss boss)
+    {
+        MusicManagerScript.Instance.StopMusic();
+        yield return new WaitForSeconds(1.0f);
+
+        yield return boss.Speak("I can't move!", 1.0f);
+        yield return boss.Speak("What have you done??", 1.0f);
+        yield return boss.Speak("My hounds will avenge me!", 1.0f);
+        yield return boss.Speak("...", 0.5f);
+        yield return boss.Speak("Forget I said that", 1.0f);
+        yield return boss.Speak("", 0.0f);
+
+        float a = 1.0f;
+        var baseCol = boss.BodyRenderer.color;
+        float nextPoof = 0;
+        var poofBase = boss.BodyTransform.position;
+
+        while (a > 0)
+        {
+            baseCol.a = a;
+            boss.BodyRenderer.color = baseCol;
+            a -= G.D.GameDeltaTime * 0.2f;
+            if (a < 0)
+                a = 0;
+
+            if (G.D.GameTime > nextPoof)
+            {
+                var pos = poofBase;
+                pos.y += UnityEngine.Random.value * 2;
+                pos.x += UnityEngine.Random.value;
+                GameManager.Instance.MakePoof(boss.BodyTransform.position, 3, 0.5f);
+                GameManager.Instance.MakeFlash(boss.BodyTransform.position, 0.5f);
+
+                nextPoof = G.D.GameTime + 0.25f;
+            }
+
+            yield return null;
+        }
+    }
+
+    public static IEnumerator SpawnArmy(ActorReaperBoss boss)
+    {
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("HAHA! Reinforcements are coming!", pause: 1, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("The best!", pause: 0.5f, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("The strongest!", pause: 0.5f, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("The fastest!", pause: 0.5f, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("The most handsome!", pause: 0.5f, sound: false);
+        yield return boss.GetComponent<ActorReaperBoss>().Speak("", pause: 0, sound: false);
+
+        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreSmall, despawnAtDestination: false, breakFreeAtDamage: false,
+            time: null, PositionUtility.LeftMidOut + Vector2.up * 0.5f, Vector2.zero + Vector2.right * 10, ActorForcedTargetType.Absolute, w: 4, h: 15, stepX: 1, stepY: 1, pivotX: 0.5f, pivotY: 0.5f);
+    }
+
     public static IEnumerator FollowPlayer(ActorReaperBoss Boss)
     {
-        const float BossSpeed = 2.0f;
+        const float BossSpeed = 1.0f;
         while (true)
         {
-            float chaseEnd = G.D.GameTime + Random.value * 1;
+            float chaseEnd = G.D.GameTime + UnityEngine.Random.value * 1;
             while (G.D.GameTime < chaseEnd)
             {
                 float distance = Vector2.Distance(Boss.transform.position, G.D.PlayerPos);
-                if (distance > 1.0f)
-                {
-                    var bossPos = Boss.transform.position;
-                    var direction = G.D.PlayerPos.x < bossPos.x ? Vector2.left : Vector2.right;
+                if (distance < 1.0f)
+                    break;
 
-                    bossPos.x += (direction * G.D.GameDeltaTime * BossSpeed).x;
-                    Boss.transform.position = bossPos;
-                }
+                var bossPos = Boss.transform.position;
+                var direction = G.D.PlayerPos.x < bossPos.x ? Vector2.left : Vector2.right;
+
+                bossPos.x += (direction * G.D.GameDeltaTime * BossSpeed).x;
+                Boss.transform.position = bossPos;
 
                 yield return null;
             }
 
-            float pauseEnd = G.D.GameTime + Random.value * 3;
+            float pauseEnd = G.D.GameTime + UnityEngine.Random.value * 3;
             while (G.D.GameTime < pauseEnd)
             {
                 yield return null;
             }
 
             yield return null;
+        }
+    }
+
+    public static IEnumerator ThrowFlasks(ActorReaperBoss Boss, AcidFlaskScript flaskProto)
+    {
+        var delay = new WaitForSeconds(2);
+        while (true)
+        {
+            yield return delay;
+
+            var flask = GameObject.Instantiate(flaskProto.gameObject).GetComponent<AcidFlaskScript>();
+            flask.transform.position = Boss.BodyTransform.position;
+            flask.Throw(G.D.PlayerPos + (Vector3)UnityEngine.Random.insideUnitCircle * 2, speed: 10);
         }
     }
 
@@ -60,7 +142,7 @@ public static class Chapter1BossUtil
         {
             var flask = GameObject.Instantiate(flaskProto.gameObject).GetComponent<AcidFlaskScript>();
             flask.transform.position = Boss.BodyTransform.position;
-            flask.Throw(G.D.PlayerPos + (Vector3)Random.insideUnitCircle * 3);
+            flask.Throw(G.D.PlayerPos + (Vector3)UnityEngine.Random.insideUnitCircle * 3, speed: 14);
 
             yield return new WaitForSeconds(0.5f);
         }

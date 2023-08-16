@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -15,18 +16,35 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     public SpriteRenderer BodyRenderer;
     public Transform BodyTransform;
+    public CapsuleCollider2D Collider;
+    public ActorBase Actor;
 
     Transform trans_;
     const float FlyMaxHeight = 1.5f;
     const float FlySpeed = 2;
     float flyOffset_;
     bool isFlying_;
+    bool inDeathSequence_;
+    [NonSerialized] public bool FightComplete;
+
+    void Awake()
+    {
+        trans_ = transform;
+    }
+
+    void OnEnable()
+    {
+        Reset();
+        OverheadText.text = string.Empty;
+        StartCoroutine(Think());
+    }
 
     public void Fly()
     {
         isFlying_ = true;
         GameManager.Instance.MakePoof(trans_.position, 4, 0.5f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerThrowBomb);
+        Collider.enabled = false;
     }
 
     public void Land()
@@ -42,24 +60,18 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     void Reset()
     {
+        StopAllCoroutines();
+        OverheadText.text = "";
+        FightComplete = false;
         flyOffset_ = 0;
         isFlying_ = false;
+        FightComplete = false;
+        inDeathSequence_ = false;
     }
 
     void OnDisable()
     {
         Kill();
-    }
-
-    void Awake()
-    {
-        trans_ = transform;
-    }
-    void OnEnable()
-    {
-        Reset();
-        OverheadText.text = string.Empty;
-        StartCoroutine(Think());
     }
 
     IEnumerator Think()
@@ -71,8 +83,6 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
                 flyOffset_ += FlySpeed * G.D.GameDeltaTime;
             }
 
-            GameManager.SetDebugOutput("flyOffset_", flyOffset_);
-
             if (!isFlying_ && flyOffset_ > 0)
             {
                 flyOffset_ -= FlySpeed * G.D.GameDeltaTime;
@@ -80,9 +90,8 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
                 if (flyOffset_ == 0)
                 {
-                    GameManager.Instance.MakePoof(trans_.position, 4, 1.0f);
-                    GameManager.Instance.MakeFlash(trans_.position, 4.0f);
-                    Explosions.Push(trans_.position, radius: 1.5f, force: 2.0f);
+                    Explosions.Push(trans_.position, radius: 3.5f, force: 2.0f);
+                    Collider.enabled = true;
                 }
             }
 
@@ -98,8 +107,8 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         var letterDelay = new WaitForSeconds(0.05f);
         while (OverheadText.maxVisibleCharacters < text.Length)
         {
-            if (OverheadText.maxVisibleCharacters++ % 2 == 0)
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ShortDeepBump, volumeScale: 0.5f, pitch: 1.2f + Random.value * 1.0f);
+            if (OverheadText.maxVisibleCharacters++ % 2 == 0 && sound)
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ShortDeepBump, volumeScale: 0.5f, pitch: 1.2f + UnityEngine.Random.value * 1.0f);
 
             yield return letterDelay;
         }
@@ -110,12 +119,80 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         yield return new WaitForSeconds(pause);
     }
 
+    Chapter1Controller C;
+
+    public void StartFight(Chapter1Controller controller)
+    {
+        C = controller;
+        StartCoroutine(Fight());
+    }
+
+    public IEnumerator Fight()
+    {
+        C.HpBar.Show();
+
+        // enable player
+        G.D.PlayerScript.StopPuppet(moveToBegin: true);
+        G.D.PlayerScript.TryEnableToggledEffects();
+
+        while (G.D.PlayerScript.IsPuppet)
+            yield return null;
+
+        GameManager.Instance.Orc.SetPosition(PositionUtility.GetPointInsideArena(), startingGame: true);
+        PlayerUpgrades.Data.OrcReviveTimeMul *= 3.0f;
+
+        const float BossSpeed = 5.0f;
+
+        yield return Chapter1BossUtil.MoveBoss(transform, Vector2.zero + C.BossOffsetY, BossSpeed);
+
+        StartCoroutine(Chapter1BossUtil.FollowPlayer(this));
+        StartCoroutine(Chapter1BossUtil.ThrowFlasks(this, C.AcidFlaskProto));
+
+        bool armySpawned = false;
+
+        while (true)
+        {
+            GameManager.Instance.Orc.SetChasePlayer(chase: true);
+
+            yield return Chapter1BossUtil.FireballSpiral(transform, 5.0f);
+            yield return new WaitForSeconds(5.0f);
+            yield return Chapter1BossUtil.Bombard(this, C.AcidFlaskProto);
+            yield return new WaitForSeconds(5.0f);
+
+            if (!armySpawned)
+            {
+                armySpawned = true;
+                yield return Chapter1BossUtil.SpawnArmy(this);
+            }
+        }
+    }
+
+    IEnumerator DeathSequence()
+    {
+        StartCoroutine(Chapter1BossUtil.ThrowGold(this));
+        yield return Chapter1BossUtil.DeathSequence(this);
+
+        FightComplete = true;
+        inDeathSequence_ = false;
+    }
+
     private void Update()
     {
-        ActorBase.PlayerClosestEnemy = trans_;
-        ActorBase.PlayerDistanceToClosestEnemy = Vector2.Distance(trans_.position, G.D.PlayerPos);
+        if (inDeathSequence_)
+            return;
 
-        float y = (Mathf.Sin(Time.time * FloatSpeed) + 1); // 0 - 2
+        if (Actor.IsDead)
+        {
+            StopAllCoroutines();
+            StartCoroutine(DeathSequence());
+            var bodyPos = BodyTransform.localPosition;
+            bodyPos.y = 0;
+            BodyTransform.localPosition = bodyPos;
+            inDeathSequence_ = true;
+            return;
+        }
+
+        float y = (Mathf.Sin(Time.time * FloatSpeed) + 1); // 0 - 2,
         y *= FloatScale;
         y -= 0.07f;
         y += flyOffset_;
@@ -128,6 +205,8 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         float scaleY = (Mathf.Sin(Time.time * SpriteScaleSpeed) + 1) * 0.5f; // 0 - 1
         float range = SpriteMaxScaleY - SpriteMinScaleY;
         scale.y = SpriteMinScaleY + scaleY * range;
+        float playerDir = trans_.position.x - G.D.PlayerPos.x < 0 ? -1 : 1;
+        scale.x = playerDir;
         BodyTransform.localScale = scale;
     }
 }

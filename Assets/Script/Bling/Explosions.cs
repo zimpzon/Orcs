@@ -43,7 +43,6 @@ public static class Explosions
         {
             ActorBase enemy = BlackboardScript.EnemyOverlap[i];
             enemy.AddForce((enemy.transform.position - pos) * 0.25f);
-            //            enemy.Explode(2.0f + Random.value * 2);
         }
 
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
