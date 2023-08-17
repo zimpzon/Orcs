@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public class ChestScript : MonoBehaviour
+public class ChestScript : MonoBehaviour, IKillableObject
 {
     public bool IsLarge = false;
+
+    public void Kill()
+    {
+        GameObject.Destroy(this.gameObject);
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -15,12 +20,12 @@ public class ChestScript : MonoBehaviour
             xpValue = 25;
         }
 
-        GameManager.Instance.MakePoof(transform.position, 4, 2.5f);
-        GameManager.Instance.MakeFlash(transform.position, 5);
+        GameManager.Instance.MakePoof(transform.position, 4, 1.5f);
+        GameManager.Instance.MakeFlash(transform.position, 2);
         GameManager.Instance.ThrowPickups(AutoPickUpType.Money, transform.position,money, 1, 2.0f);
         GameManager.Instance.ThrowPickups(AutoPickUpType.Xp, transform.position, 20, xpValue, forceScale: 8.0f);
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 5; ++i)
             SawBladeController.I.Throw();
 
         GameObject.Destroy(this.gameObject);

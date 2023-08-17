@@ -23,10 +23,11 @@ public class G : MonoBehaviour
     public Transform PlayerTrans;
 
     // Dynamic
-    [NonSerialized] public float GameTime;
-    [NonSerialized] public float GameDeltaTime;
     [NonSerialized] public Vector3 PlayerPos;
     public Vector3 PlayerCenterOffset;
+
+    public float GameTime => GameManager.Instance.GameTime;
+    public float GameDeltaTime => GameManager.Instance.GameDeltaTime;
 
     string ColorToHex(Color color)
     {
@@ -59,7 +60,5 @@ public class G : MonoBehaviour
     private void Update()
     {
         D.PlayerPos = PlayerTrans.position;
-        GameTime = GameManager.Instance.GameTime;
-        GameDeltaTime = GameManager.Instance.GameDeltaTime;
     }
 }

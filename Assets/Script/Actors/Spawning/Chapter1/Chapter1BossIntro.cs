@@ -76,7 +76,6 @@ public static class Chapter1BossIntro
 
             var repeatingClip = AudioManager.Instance.RepeatingSawblade;
             repeatingClip.StartClip(AudioManager.Instance.AudioData.Chainsaw, volumeScale: 0.8f);
-            Debug.Log(C.Boss.BodyTransform.localScale);
 
             yield return new WaitForSeconds(3.0f);
 
@@ -84,7 +83,6 @@ public static class Chapter1BossIntro
 
             LeanTween.color(GameManager.Instance.Floor.gameObject, C.ColorBoss, 2.5f);
             LeanTween.color(GameManager.Instance.FloorFilter.gameObject, C.FilterBoss, 2.5f);
-            Debug.Log(C.Boss.BodyTransform.localScale);
 
             yield return C.Boss.Speak("...", 3.0f);
             yield return C.Boss.Speak("", 0.0f);

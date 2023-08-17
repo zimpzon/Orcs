@@ -450,7 +450,6 @@ public class ActorBase : MonoBehaviour
 
     public void ApplyDamage(float amount, Vector3 direction, float forceModifier)
     {
-        Debug.Log($"{Hp} - {amount} (base: {BaseHp})");
         if (amount > 0)
         {
             Hp -= amount;

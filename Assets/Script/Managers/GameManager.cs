@@ -602,6 +602,9 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Intro)
             return;
 
+        GameTime = 0.0001f;
+        GameDeltaTime = 0.0f;
+
         KillKillableObjects();
         GameManager.Instance.Chapter1.GetComponent<Chapter1Controller>().Kill();
 
@@ -644,9 +647,6 @@ public class GameManager : MonoBehaviour
     {
         if (GameState == State.Playing)
             return;
-
-        GameTime = 0.0001f;
-        GameDeltaTime = 0.0f;
 
         //{
         //    GameTime = 60 * 13;

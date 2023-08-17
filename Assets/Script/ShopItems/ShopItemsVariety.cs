@@ -12,7 +12,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.SpawnChest,
                 Title = "Duck's Treasure",
-                Description = $"Spawn a small or a large treasure chest at 5:00",
+                Description = $"A large or a small treasure chest will show up at 5:00",
                 BasePrice = 100,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>

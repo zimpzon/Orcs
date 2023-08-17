@@ -1,40 +1,23 @@
 using System;
 using UnityEngine;
 
-public class ChestManagerScript : MonoBehaviour, IPlayerToggleEfffect
+public class ChestManagerScript : MonoBehaviour, IKillableObject
 {
     public Transform ChestProto;
+    bool hasSpawned_ = false;
+    float spawnTime_ = 60 * 5;
 
-    TimeSpan nextCheck_;
-    bool enabled_;
-
-    public void Disable()
+    public void Kill()
     {
-        enabled_ = false;
-    }
-
-    public void TryEnable()
-    {
-        if (!PlayerUpgrades.Data.SpawnChestUnlocked)
-            return;
-
-        enabled_ = true;
-        SetNextCheck();
-    }
-
-    void SetNextCheck()
-    {
-        var now = TimeSpan.FromSeconds(G.D.GameTime);
-        nextCheck_ = now.Add(TimeSpan.FromSeconds(10));
-        //nextCheck_ = new TimeSpan(0, now.Minutes + 1, 2);
+        hasSpawned_ = false;
     }
 
     void Update()
     {
-        if (!enabled_)
+        if (!PlayerUpgrades.Data.SpawnChestUnlocked || hasSpawned_)
             return;
 
-        if (G.D.GameTime > nextCheck_.TotalSeconds)
+        if (G.D.GameTime > spawnTime_)
         {
             bool isLarge = UnityEngine.Random.value > 0.5f;
 
@@ -45,8 +28,7 @@ public class ChestManagerScript : MonoBehaviour, IPlayerToggleEfffect
             if (!isLarge)
                 chest.transform.localScale *= 0.5f;
 
-            GameManager.Instance.MakePoof(transform.position, 4, 2.5f);
-            GameManager.Instance.MakeFlash(transform.position, 5);
+            GameManager.Instance.MakePoof(chest.transform.position, 4, 1.5f);
 
             var info = new GameInfo
             {
@@ -55,13 +37,13 @@ public class ChestManagerScript : MonoBehaviour, IPlayerToggleEfffect
                 Duration = 2.5f,
                 FadeInDuration = 0.5f,
                 FadeOutDuration = 1.0f,
-                FontSize = 10,
+                FontSize = 8,
                 Position = Vector2.up * -100,
             };
 
             GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
 
-            SetNextCheck();
+            hasSpawned_ = true;
         }
     }
 }
