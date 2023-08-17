@@ -38,6 +38,8 @@ public class SaveGameMembers
     public int EnemiesKilled;
     public int PlayerDeaths;
     public int SecondsPlayed;
+    public int Chapter1BossStarted;
+    public int Chapter1BossKilled;
 
     public bool IsMaxCounter(GameCounter counter)
     {

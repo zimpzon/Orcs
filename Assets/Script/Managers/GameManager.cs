@@ -549,6 +549,8 @@ public class GameManager : MonoBehaviour
         dic[Playfab.RoundsCompletedStat] = Rounds;
         dic[Playfab.SecondsLeftStat] = lastGameSeconds;
         dic[Playfab.TotalSeconds] = SaveGame.Members.TotalSeconds;
+        dic[Playfab.ChapterBossStartedStat] = SaveGame.Members.Chapter1BossStarted;
+        dic[Playfab.ChapterBossKilledStat] = SaveGame.Members.Chapter1BossKilled;
 
         Playfab.PlayerStat(dic);
 
@@ -632,7 +634,7 @@ public class GameManager : MonoBehaviour
         GameDeltaTime = 0.0f;
 
         {
-            GameTime = 60 * 15;
+            GameTime = 60 * 14;
             Debug.LogWarning("HACKZ, STARTING AT BOSS");
         }
 

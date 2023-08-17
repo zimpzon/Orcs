@@ -97,12 +97,14 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         // disable orc
         GameManager.Instance.Orc.ResetAll();
 
+        SaveGame.Members.Chapter1BossStarted++;
+
         Boss = Instantiate(BossProto);
         Boss.gameObject.SetActive(true);
         HpBar.Owner = Boss.BodyTransform.GetComponent<ActorBase>();
 
         BossObjects.SetActive(true);
-        yield return Chapter1BossIntro.Run(this, skipIntroduction: true);
+        yield return Chapter1BossIntro.Run(this, skipIntroduction: false);
 
         G.D.PlayerScript.TryEnableToggledEffects();
         Boss.StartFight(this);

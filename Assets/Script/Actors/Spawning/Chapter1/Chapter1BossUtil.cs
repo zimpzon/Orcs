@@ -31,6 +31,8 @@ public static class Chapter1BossUtil
 
     public static IEnumerator DeathSequence(ActorReaperBoss boss)
     {
+        SaveGame.Members.Chapter1BossKilled++;
+
         PlayerUpgrades.Data.MagicMissileCdMul = 9999;
 
         MusicManagerScript.Instance.StopMusic();

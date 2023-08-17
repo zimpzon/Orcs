@@ -21,6 +21,8 @@ public static class Playfab
     public const string KillsStat = "round_kills";
     public const string SecondsLeftStat = "round_seconds_left";
     public const string TotalSeconds = "total_seconds";
+    public const string ChapterBossStartedStat = "chapter_1_boss_started";
+    public const string ChapterBossKilledStat = "chapter_1_boss_killed";
 
     const string Version = "1.0";
 
