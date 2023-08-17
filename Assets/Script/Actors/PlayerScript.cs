@@ -66,14 +66,22 @@ public class PlayerScript : MonoBehaviour
         isAtPuppetTarget = false;
     }
 
+    void SetOverheadText(string text, Color col)
+    {
+        Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 1.2f);
+        overheadTextTrans_.anchoredPosition = uiPos;
+        OverheadText.text = text;
+        OverheadText.color = col;
+        OverheadText.enabled = true;
+    }
+
     public void StopPuppet(bool moveToBegin = false)
     {
         if (moveToBegin)
         {
             puppetMoveToBegin_ = true;
-            OverheadText.text = "move to begin";
-            OverheadText.enabled = true;
-            OverheadText.color = Color.white;
+
+            SetOverheadText("move to begin", Color.white);
             return;
         }
 
@@ -273,7 +281,7 @@ public class PlayerScript : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, pitch: 4.0f);
 
         FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"-{(int)damage:0}", Color.blue, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
-        if (Hp <= 0)
+        if (Mathf.RoundToInt(Hp) <= 0)
         {
             Hp = 0;
             isDead_ = true;
@@ -420,10 +428,7 @@ public class PlayerScript : MonoBehaviour
 
         isMoving_ = moveVec_ != Vector3.zero;
 
-        if (IsPuppet)
-            lookDir_ = puppetLookDir_;
-        else
-            lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
+        lookDir_ = flipX_ < 0 ? Vector2.left : Vector2.right;
 
         if (moveVec_.x != 0.0f)
         {
@@ -443,7 +448,7 @@ public class PlayerScript : MonoBehaviour
         if (ramboEnded)
         {
             PlayerUpgrades.Data.IsRambo = false;
-            OverheadText.text = "";
+            OverheadText.enabled = false;
         }
 
         bool ramboActive = PlayerUpgrades.Data.IsRambo && PlayerUpgrades.Data.RamboEndTime > G.D.GameTime;
@@ -454,6 +459,7 @@ public class PlayerScript : MonoBehaviour
 
             Vector2 uiPos = GameManager.Instance.UiPositionFromWorld(trans_.position + Vector3.up * 1.2f + ((Vector3)RndUtil.RandomInsideUnitCircle() * 0.07f));
             overheadTextTrans_.anchoredPosition = uiPos;
+
             Color col = Color.HSVToRGB(UnityEngine.Random.value * 0.3f, 1.0f, 1.0f);
             OverheadText.color = col;
         }
@@ -543,7 +549,6 @@ public class PlayerScript : MonoBehaviour
             puppetSpeed = Math.Max(PuppetMinSpeed, puppetSpeed);
 
             moveVec_ = (puppetDst_ - playerPos_).normalized * G.D.GameDeltaTime * puppetSpeed;
-            flipX_ = puppetLookDir_.x < 0 ? -1 : 1;
             playerPos_ += moveVec_;
 
             isAtPuppetTarget = distanceToTarget < 0.1f;

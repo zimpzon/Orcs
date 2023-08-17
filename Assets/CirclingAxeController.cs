@@ -15,7 +15,8 @@ public class CirclingAxeController : MonoBehaviour, IPlayerToggleEfffect
 
     public void TryEnable()
     {
-        return;
+        enabled_ = true;
+        nextThrow_ = 0;
     }
 
     void SetNextThrow()
@@ -38,10 +39,7 @@ public class CirclingAxeController : MonoBehaviour, IPlayerToggleEfffect
 
     void Update()
     {
-        if (!enabled_ && PlayerUpgrades.Data.CirclingAxeEnabled)
-            enabled_ = true;
-
-        if (!enabled_ || !PlayerUpgrades.Data.CirclingAxeEnabled || SaveGame.RoundScore == 0)
+        if (!enabled_ || !PlayerUpgrades.Data.CirclingAxeEnabled)
             return;
 
         if (GameManager.Instance.GameTime > nextThrow_)

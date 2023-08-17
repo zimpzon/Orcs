@@ -27,6 +27,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     public Color FilterBoss;
     public Color ColorHounds;
     public Color FilterHounds;
+    public Color ColorWon;
+    public Color FilterWon;
 
     public void Kill()
     {
@@ -96,12 +98,15 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         BossObjects.SetActive(true);
         yield return Chapter1BossIntro.Run(this, skipIntroduction: true);
 
+        G.D.PlayerScript.TryEnableToggledEffects();
         Boss.StartFight(this);
 
         while (!Boss.FightComplete)
             yield return null;
 
         StopAllCoroutines();
+
+        G.D.PlayerScript.DisableToggledEffects();
 
         var info = new GameInfo
         {
@@ -116,8 +121,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         GameManager.Instance.TextGameInfoViewer.Show(info);
 
-        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, 4);
-        LeanTween.color(GameManager.Instance.FloorFilter.gameObject, FilterAtStart, 4);
+        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorWon, 3);
+        LeanTween.color(GameManager.Instance.FloorFilter.gameObject, FilterWon, 3);
 
         Confetti.SetActive(true);
     }
@@ -143,7 +148,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         StartCoroutine(RunSpawnEvents());
 
-        yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 55), () => SpawnUtil.FleeAllActors()));
+        yield return StartCoroutine(SpawnUtil.ActionAtTime(new TimeSpan(0, 14, 45), () => SpawnUtil.FleeAllActors()));
 
         while (true)
             yield return null;

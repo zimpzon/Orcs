@@ -17,6 +17,7 @@ public static class Chapter1BossIntro
 
         SpawnUtil.FleeAllActors();
         G.D.PlayerScript.SetPuppet(Vector3.zero, Vector2.right);
+        G.D.PlayerScript.DisableToggledEffects();
 
         C.Boss.transform.position = PositionUtility.RightMidOut;
         C.Boss.gameObject.SetActive(true);
@@ -68,13 +69,14 @@ public static class Chapter1BossIntro
 
             LeanTween.moveX(C.Hounds, C.HoundsHiddenX, 0.25f);
 
-            C.Boss.BodyTransform.LeanScaleX(-C.Boss.BodyTransform.localScale.x, 0);
+            C.Boss.ForcedScaleX = -1;
             G.D.PlayerScript.OverheadText.enabled = false;
 
             yield return new WaitForSeconds(1.0f);
 
             var repeatingClip = AudioManager.Instance.RepeatingSawblade;
             repeatingClip.StartClip(AudioManager.Instance.AudioData.Chainsaw, volumeScale: 0.8f);
+            Debug.Log(C.Boss.BodyTransform.localScale);
 
             yield return new WaitForSeconds(3.0f);
 
@@ -82,11 +84,12 @@ public static class Chapter1BossIntro
 
             LeanTween.color(GameManager.Instance.Floor.gameObject, C.ColorBoss, 2.5f);
             LeanTween.color(GameManager.Instance.FloorFilter.gameObject, C.FilterBoss, 2.5f);
+            Debug.Log(C.Boss.BodyTransform.localScale);
 
             yield return C.Boss.Speak("...", 3.0f);
             yield return C.Boss.Speak("", 0.0f);
 
-            C.Boss.BodyTransform.LeanScaleX(-C.Boss.BodyTransform.localScale.x, 0);
+            C.Boss.ForcedScaleX = null;
 
             MusicManagerScript.Instance.PlayGameMusic(GameManager.Instance.CurrentGameModeData.Music);
         }

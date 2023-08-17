@@ -79,6 +79,8 @@ public static class Chapter1BossUtil
         LeanTween.rotate(boss.ScytheTransform.gameObject, Vector3.forward * 405, 0.5f).setEaseInQuart();
 
         yield return new WaitForSeconds(1.0f);
+
+        MusicManagerScript.Instance.PlayGameMusic(GameManager.Instance.CurrentGameModeData.Music);
     }
 
     public static IEnumerator SpawnArmy(ActorReaperBoss boss)

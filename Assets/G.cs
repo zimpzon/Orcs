@@ -4,6 +4,10 @@ using UnityEngine;
 public class G : MonoBehaviour
 {
     public static G D;
+
+    public static void Dbg(object key, object value)
+        => GameManager.SetDebugOutput(key.ToString(), value);
+
     public Color UpgradePositiveColor;
     public Color UpgradeNegativeColor;
     public Color UpgradeNeutralColor;
@@ -23,8 +27,6 @@ public class G : MonoBehaviour
     [NonSerialized] public float GameDeltaTime;
     [NonSerialized] public Vector3 PlayerPos;
     public Vector3 PlayerCenterOffset;
-
-    [NonSerialized] public bool OrcEnabled;
 
     string ColorToHex(Color color)
     {

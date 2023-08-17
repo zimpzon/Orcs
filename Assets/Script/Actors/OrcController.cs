@@ -29,6 +29,8 @@ public class OrcController : MonoBehaviour
     Vector3 lookAt_;
     Color baseColor_;
     float reviveTime_;
+    float nextMeleeSwing_;
+    bool isActive_;
 
     const float MeleeCd = 1.5f;
     const float RunSpeed = 0.25f;
@@ -91,6 +93,7 @@ public class OrcController : MonoBehaviour
 
     public void SetPosition(Vector3 pos, bool startingGame = false)
     {
+        isActive_ = true;
         startPos_ = pos;
         trans_.position = pos;
         target_ = trans_.position;
@@ -100,11 +103,13 @@ public class OrcController : MonoBehaviour
 
     public void ResetAll()
     {
+        isActive_ = false;
         chasePlayer_ = false;
         State = OrcState.Default;
         pickedUp_ = false;
         target_ = trans_.position;
         MeleeWeapon.gameObject.SetActive(false);
+        nextMeleeSwing_ = 0;
         Hide();
         MakeGhost(true);
     }
@@ -134,8 +139,6 @@ public class OrcController : MonoBehaviour
 
     IEnumerator Think()
     {
-        float nextMeleeSwing = 0.0f;
-
         while (true)
         {
             while (pickedUp_)
@@ -165,9 +168,9 @@ public class OrcController : MonoBehaviour
                 if (!chasePlayer_)
                     lookAt_ = target_;
 
-                if (G.D.GameTime > nextMeleeSwing)
+                if (G.D.GameTime > nextMeleeSwing_)
                 {
-                    nextMeleeSwing = G.D.GameTime + MeleeCd;
+                    nextMeleeSwing_ = G.D.GameTime + MeleeCd;
                     StartCoroutine(SwingMeleeCo(lookAt_));
                     float YodaRadius = 2.0f;
                     _ = WeaponSword.Swing(trans_.position, damage: 0.0f, YodaRadius, AudioManager.Instance.AudioData.SaberHit, AudioManager.Instance.AudioData.SaberSwing, out _);
@@ -190,12 +193,6 @@ public class OrcController : MonoBehaviour
 
     void Update()
     {
-        if (G.D.OrcEnabled && enabled)
-        {
-            // go away when disabled
-            gameObject.SetActive(false);
-        }
-
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
 
         playerPos_ = G.D.PlayerPos;

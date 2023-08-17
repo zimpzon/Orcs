@@ -11,7 +11,7 @@ public static class Chapter1Minute14
         yield return SpawnUtil.SpawnAndMaintain(
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 14, 0),
-            endTime: new TimeSpan(0, 15, 0),
+            endTime: new TimeSpan(0, 14, 44),
             startingCount: 5,
             endCount: 5,
             maxSpawnCountPerTick: 3,
@@ -21,7 +21,7 @@ public static class Chapter1Minute14
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreBandana,
                 startTime: new TimeSpan(0, 14, 10),
-                endTime: new TimeSpan(0, 15, 0),
+                endTime: new TimeSpan(0, 14, 44),
                 startingCount: 10,
                 endCount: 15,
                 maxSpawnCountPerTick: 10,
@@ -31,7 +31,7 @@ public static class Chapter1Minute14
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Skeleton,
                 startTime: new TimeSpan(0, 14, 10),
-                endTime: new TimeSpan(0, 15, 0),
+                endTime: new TimeSpan(0, 14, 44),
                 startingCount: 5,
                 endCount: 5,
                 maxSpawnCountPerTick: 1,

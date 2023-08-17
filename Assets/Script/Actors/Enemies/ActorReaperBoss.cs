@@ -20,6 +20,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
     public CapsuleCollider2D Collider;
     public ActorBase Actor;
 
+    Color bodyBaseColor_;
     Transform trans_;
     const float FlyMaxHeight = 1.5f;
     const float FlySpeed = 2;
@@ -27,10 +28,12 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
     bool isFlying_;
     bool inDeathSequence_;
     [NonSerialized] public bool FightComplete;
+    [NonSerialized] public float? ForcedScaleX;
 
     void Awake()
     {
         trans_ = transform;
+        bodyBaseColor_ = BodyRenderer.color;
     }
 
     void OnEnable()
@@ -56,6 +59,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
     public void Kill()
     {
         Reset();
+        Actor.Reset(init: false);
         StopAllCoroutines();
     }
 
@@ -69,6 +73,8 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         FightComplete = false;
         inDeathSequence_ = false;
         Collider.enabled = true;
+        ForcedScaleX = null;
+        BodyRenderer.color = bodyBaseColor_;
     }
 
     void OnDisable()
@@ -207,7 +213,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         float range = SpriteMaxScaleY - SpriteMinScaleY;
         scale.y = SpriteMinScaleY + scaleY * range;
         float playerDir = trans_.position.x - G.D.PlayerPos.x < 0 ? -1 : 1;
-        scale.x = playerDir;
+        scale.x = ForcedScaleX.HasValue ? ForcedScaleX.Value : playerDir;
         BodyTransform.localScale = scale;
     }
 }

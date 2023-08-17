@@ -1,9 +1,12 @@
+using TMPro;
 using UnityEngine;
 
 public class HpBarScript : MonoBehaviour, IKillableObject
 {
     public Transform ForegroundSprite;
     public ActorBase Owner;
+    public Transform ScaleRoot;
+    public TextMeshPro HpText;
     public float HiddenY;
     public float ShownY;
 
@@ -27,6 +30,7 @@ public class HpBarScript : MonoBehaviour, IKillableObject
         var scale = FillTransform.localScale;
         scale.x = current / max;
         FillTransform.localScale = scale;
+        HpText.text = $"{Mathf.RoundToInt(current)}/{Mathf.RoundToInt(max)}";
     }
 
     void Update()
