@@ -339,6 +339,8 @@ public class ActorBase : MonoBehaviour
             }
         }
 
+        G.Dbg("isDead", IsDead);
+
         if (IsBoss)
         {
             CheckPainted();
@@ -448,6 +450,7 @@ public class ActorBase : MonoBehaviour
 
     public void ApplyDamage(float amount, Vector3 direction, float forceModifier)
     {
+        Debug.Log($"{Hp} - {amount} (base: {BaseHp})");
         if (amount > 0)
         {
             Hp -= amount;

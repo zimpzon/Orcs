@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b14fa84ac9351e74d9bc5bd75c46db01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  I: {fileID: 0}
   ForegroundSprite: {fileID: 8484007865995367065}
-  Owner: {fileID: 0}
   ScaleRoot: {fileID: 4262518475333761629}
   HpText: {fileID: 4612092457563666123}
   HiddenY: -9

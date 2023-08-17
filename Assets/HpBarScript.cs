@@ -1,16 +1,23 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class HpBarScript : MonoBehaviour, IKillableObject
 {
+    public HpBarScript I;
     public Transform ForegroundSprite;
-    public ActorBase Owner;
+    [NonSerialized] public ActorBase Owner;
     public Transform ScaleRoot;
     public TextMeshPro HpText;
     public float HiddenY;
     public float ShownY;
 
     public Transform FillTransform;
+
+    void Awake()
+    {
+        I = this;
+    }
 
     public void Kill()
     {
@@ -35,6 +42,7 @@ public class HpBarScript : MonoBehaviour, IKillableObject
 
     void Update()
     {
-        SetHp(Owner.Hp, Owner.BaseHp);
+        if (Owner != null)
+            SetHp(Owner.Hp, Owner.BaseHp);
     }
 }

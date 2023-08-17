@@ -76,7 +76,8 @@ public static class Chapter1BossUtil
 
         yield return new WaitForSeconds(1.0f);
         LeanTween.move(boss.ScytheTransform.gameObject, boss.ScytheTransform.position + Vector3.down * 1.25f, 0.5f).setEaseInQuart();
-        LeanTween.rotate(boss.ScytheTransform.gameObject, Vector3.forward * 405, 0.5f).setEaseInQuart();
+        
+        LeanTween.rotateZ(boss.ScytheTransform.gameObject, 48, 0.5f).setEaseInQuart();
 
         yield return new WaitForSeconds(1.0f);
 

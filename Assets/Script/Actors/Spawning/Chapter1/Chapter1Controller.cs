@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class Chapter1Controller : MonoBehaviour, IKillableObject
 {
-    public ActorReaperBoss Boss;
+    public ActorReaperBoss BossProto;
+    [NonSerialized]public ActorReaperBoss Boss;
+
     public GameObject Hounds;
     public GameObject BossObjects;
     public GameObject SawbladeProto;
@@ -94,6 +96,10 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         // disable orc
         GameManager.Instance.Orc.ResetAll();
+
+        Boss = Instantiate(BossProto);
+        Boss.gameObject.SetActive(true);
+        HpBar.Owner = Boss.BodyTransform.GetComponent<ActorBase>();
 
         BossObjects.SetActive(true);
         yield return Chapter1BossIntro.Run(this, skipIntroduction: true);

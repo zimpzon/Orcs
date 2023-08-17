@@ -58,9 +58,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
     public void Kill()
     {
-        Reset();
-        Actor.Reset(init: false);
-        StopAllCoroutines();
+        GameObject.Destroy(this.gameObject);
     }
 
     void Reset()
@@ -75,11 +73,6 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         Collider.enabled = true;
         ForcedScaleX = null;
         BodyRenderer.color = bodyBaseColor_;
-    }
-
-    void OnDisable()
-    {
-        Kill();
     }
 
     IEnumerator Think()

@@ -570,5 +570,10 @@ public class PlayerScript : MonoBehaviour
         CheckLowHealth();
         CheckControls();
         UpdateRambo();
+
+        if (IsPuppet)
+        {
+            renderer_.flipX = puppetLookDir_.x < 0 ? true : false;
+        }
     }
 }
