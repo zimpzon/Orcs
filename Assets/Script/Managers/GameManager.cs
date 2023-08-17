@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     public int LayerNeutral;
     public int LayerXpPill;
     public int LayerOrc;
+    public int LayerChest;
     public float TimeSinceStartup;
     public bool PauseGameTime;
     public float GameTime;
@@ -541,16 +542,19 @@ public class GameManager : MonoBehaviour
         int roundSeconds = Mathf.RoundToInt(roundTime);
         SaveGame.Members.TotalSeconds += roundSeconds;
 
+        if (roundSeconds > SaveGame.Members.MaxSecondsReached)
+            SaveGame.Members.MaxSecondsReached = roundSeconds;
+
         var dic = new Dictionary<string, int>();
         dic[Playfab.GoldStat] = SaveGame.RoundGold;
         dic[Playfab.LevelStat] = (int)currentLevel_;
         dic[Playfab.KillsStat] = SaveGame.RoundKills;
-        dic[Playfab.ScoreStat] = SaveGame.RoundScore;
         dic[Playfab.RoundsCompletedStat] = Rounds;
         dic[Playfab.SecondsLeftStat] = lastGameSeconds;
         dic[Playfab.TotalSeconds] = SaveGame.Members.TotalSeconds;
         dic[Playfab.ChapterBossStartedStat] = SaveGame.Members.Chapter1BossStarted;
         dic[Playfab.ChapterBossKilledStat] = SaveGame.Members.Chapter1BossKilled;
+        dic[Playfab.MaxSecondsReached] = SaveGame.Members.MaxSecondsReached;
 
         Playfab.PlayerStat(dic);
 
@@ -584,6 +588,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void KillOnStartGameKillableObjects()
+    {
+        var killables = FindObjectsOfType<MonoBehaviour>().OfType<IOnStartGameKillableObject>();
+        foreach (var killable in killables)
+        {
+            killable.StartingGame();
+        }
+    }
+
     public void ShowTitle(bool autoStartGame = false)
     {
         if (GameState == State.Intro)
@@ -608,6 +621,8 @@ public class GameManager : MonoBehaviour
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
+
+        ShopItems.UpdateBoughtItems();
 
         ClearParticles();
         CanvasIntro.gameObject.SetActive(true);
@@ -638,6 +653,7 @@ public class GameManager : MonoBehaviour
         //    Debug.LogWarning("HACKZ, STARTING AT BOSS");
         //}
 
+        KillOnStartGameKillableObjects();
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
@@ -829,7 +845,7 @@ public class GameManager : MonoBehaviour
             if (pickupType == AutoPickUpType.Xp)
             {
                 float xpValue = value * PlayerUpgrades.Data.XpValueMul;
-                float xpToColorScale = 2.0f;
+                float xpToColorScale = 4.0f;
                 int colorIdx = Mathf.Min(xpColors.Length - 1, (int)(xpValue / xpToColorScale));
                 pickup.GetComponent<SpriteRenderer>().color = xpColors[colorIdx];
             }

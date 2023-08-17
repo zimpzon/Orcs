@@ -329,7 +329,7 @@ public class PlayerScript : MonoBehaviour
     void CheckCollision(Collision2D col)
     {
         int layer = col.gameObject.layer;
-        if (isDead_ || layer == GameManager.Instance.LayerPlayerProjectile || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc)
+        if (isDead_ || layer == GameManager.Instance.LayerPlayerProjectile || layer == GameManager.Instance.LayerNeutral || layer == GameManager.Instance.LayerOrc || layer == GameManager.Instance.LayerChest)
             return;
 
         var actor = col.gameObject.GetComponent<ActorBase>();

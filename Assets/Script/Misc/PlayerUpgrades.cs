@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UpgradeData
@@ -13,6 +14,9 @@ public class UpgradeData
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
+    public bool SpawnChestUnlocked = true;
+    public float SpawnChestChance = 0.1f;
+    public TimeSpan SpawnChestUnlockCriteria_GameTime = new TimeSpan(0, 5, 0);
 
     // gold
     public float MoneyDoubleChance = 0.05f;

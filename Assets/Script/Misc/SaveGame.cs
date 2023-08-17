@@ -33,6 +33,7 @@ public class SaveGameMembers
     public int SelectedHero;
     public string UserId;
 
+    public int MaxSecondsReached;
     public int TotalSeconds;
     public int OrcsSaved;
     public int EnemiesKilled;

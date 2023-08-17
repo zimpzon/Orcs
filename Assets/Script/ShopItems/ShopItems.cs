@@ -21,6 +21,7 @@ public enum ShopItemType
     BurstOfFrost,
     Sawblade,
     MeleeThrow,
+    SpawnChest,
 }
 
 [Serializable]
@@ -42,16 +43,17 @@ public class ShopItem
     public int MaxLevel = 5;
     public float Value = 1;
     public float ValueScale = 1;
+    public bool IsLocked;
 
     public int GetPrice(int level) => (int)(BasePrice * Math.Pow(PriceMultiplier, level));
     public Func<int, string> GetButtonText;
     public Func<int, string> GetTitle;
     public Func<int, string> GetDescription;
     public Func<int, string> GetLevelText;
+    public Func<ShopItem, string> Customize;
     public Action<BoughtItem> Apply;
 
     readonly StringBuilder sb_ = new ();
-
     public ShopItem()
     {
         GetButtonText = (int level) => $"${GetPrice(level)}";
@@ -97,6 +99,7 @@ public static class ShopItems
             script.ItemType = item.ItemType;
             script.OnBuyClickCallback = OnBuy;
             script.OnRefundClickCallback = OnRefund;
+
             Scripts.Add(script);
         }
     }
@@ -165,14 +168,23 @@ public static class ShopItems
             int price = item.GetPrice(bought.Level);
             bool canAfford = price <= SaveGame.Members.Money;
             bool isMaxLevel = bought.Level >= item.MaxLevel;
-            bool enableBuyButton = canAfford && !isMaxLevel;
+            bool enableBuyButton = canAfford && !isMaxLevel && !item.IsLocked;
             bool enableRefundButton = level > 0;
 
             var script = Scripts[i];
             script.Title.text = item.GetTitle(level);
-            script.Description.text = item.GetDescription(level);
+            script.Title.color = item.IsLocked ? G.D.UpgradeNegativeColor : G.D.UpgradePositiveColor;
+
+            script.Description.text = item.Customize?.Invoke(item) ?? item.GetDescription(level);
+
             script.Level.text = item.GetLevelText(level);
-            script.ButtonText.text = isMaxLevel ? "MAX" : item.GetButtonText(level);
+            if (isMaxLevel)
+                script.ButtonText.text = "MAX";
+            else if (item.IsLocked)
+                script.ButtonText.text = "LOCKED";
+            else
+                script.ButtonText.text = item.GetButtonText(level);
+
             script.SetButtonStates(enableBuyButton, enableRefundButton);
         }
     }
@@ -214,7 +226,7 @@ public static class ShopItems
         Items.AddRange(ShopItemsWeapons.GetWeaponItems());
         Items.AddRange(ShopItemsMoneyXp.GetMoneyXpItems());
         Items.AddRange(ShopItemsUnlock.GetUnlockItems());
-        Items.AddRange(ShopItemsProgress.GeProgressItems());
+        Items.AddRange(ShopItemsVariety.GetVarietyItems());
 
         foreach (var item in Items)
             item.Description = item.Description.Replace("#VALUE", item.Value.ToString());

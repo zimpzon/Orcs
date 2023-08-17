@@ -67,6 +67,9 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
                 enemy.OnPaintballHit(Color, slowTime);
             }
 
+            GameManager.Instance.MakeFlash(transform.position, 3);
+            GameManager.Instance.MakePoof(transform.position, 4, 1.0f);
+
             SetNextUpdate();
         }
     }

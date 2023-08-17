@@ -16,13 +16,13 @@ public static class Playfab
     public const string ItemsBoughtStat = "items_bought";
     public const string RoundsCompletedStat = "rounds_completed";
     public const string GoldStat = "round_gold";
-    public const string ScoreStat = "round_score";
     public const string LevelStat = "round_level";
     public const string KillsStat = "round_kills";
     public const string SecondsLeftStat = "round_seconds_left";
     public const string TotalSeconds = "total_seconds";
     public const string ChapterBossStartedStat = "chapter_1_boss_started";
     public const string ChapterBossKilledStat = "chapter_1_boss_killed";
+    public const string MaxSecondsReached = "max_seconds_reached";
 
     const string Version = "1.0";
 

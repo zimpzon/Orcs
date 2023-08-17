@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class SawBladeController : MonoBehaviour, IPlayerToggleEfffect
 {
+    public static SawBladeController I;
+
     public Color Color;
 
     bool enabled_;
     float nextThrow_;
+
+    void Awake()
+    {
+        I = this;
+    }
 
     public void Disable()
     {
@@ -26,6 +33,12 @@ public class SawBladeController : MonoBehaviour, IPlayerToggleEfffect
         nextThrow_ = GameManager.Instance.GameTime + PlayerUpgrades.Data.SawBladeBaseCd * PlayerUpgrades.Data.SawBladeCdMul;
     }
 
+    public void Throw()
+    {
+        var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
+        sawblades.Eject(transform.position, RndUtil.RandomInsideUnitCircle(), Color, weaponScale: 1.0f);
+    }
+
     void Update()
     {
         if (!enabled_ || !PlayerUpgrades.Data.SawBladeEnabledInRound)
@@ -33,9 +46,7 @@ public class SawBladeController : MonoBehaviour, IPlayerToggleEfffect
 
         if (GameManager.Instance.GameTime > nextThrow_)
         {
-            var sawblades = WeaponBase.GetWeapon(WeaponType.Sawblade);
-            sawblades.Eject(transform.position, RndUtil.RandomInsideUnitCircle(), Color, weaponScale: 1.0f);
-
+            Throw();
             SetNextThrow();
         }
     }
