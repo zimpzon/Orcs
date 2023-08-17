@@ -131,7 +131,6 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
 
         // enable player
         G.D.PlayerScript.StopPuppet(moveToBegin: true);
-        G.D.PlayerScript.TryEnableToggledEffects();
 
         while (G.D.PlayerScript.IsPuppet)
             yield return null;
@@ -140,6 +139,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         PlayerUpgrades.Data.OrcReviveTimeMul *= 3.0f;
 
         const float BossSpeed = 5.0f;
+        G.D.PlayerScript.TryEnableToggledEffects();
 
         yield return Chapter1BossUtil.MoveBoss(transform, Vector2.zero + C.BossOffsetY, BossSpeed);
 

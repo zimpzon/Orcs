@@ -7783,7 +7783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f7a569188214341be830692c6ab86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameVersion: V0.82 (TEA)
+  GameVersion: V0.83 (TEA)
   UnlockAllGameModes: 0
   UnlockAllWeapons: 0
   UnlockAllHeroes: 0

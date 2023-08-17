@@ -633,10 +633,10 @@ public class GameManager : MonoBehaviour
         GameTime = 0.0001f;
         GameDeltaTime = 0.0f;
 
-        {
-            GameTime = 60 * 14;
-            Debug.LogWarning("HACKZ, STARTING AT BOSS");
-        }
+        //{
+        //    GameTime = 60 * 13;
+        //    Debug.LogWarning("HACKZ, STARTING AT BOSS");
+        //}
 
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
@@ -1052,7 +1052,7 @@ public class GameManager : MonoBehaviour
 
     void OnGUI()
     {
-        //return;
+        return;
         SetDebugOutput("OnGUI enabled", G.D.GameTime);
 
         if (DebugValues.Count == 0)

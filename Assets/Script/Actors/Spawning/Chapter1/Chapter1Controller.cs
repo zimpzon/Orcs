@@ -94,8 +94,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         while (GameManager.Instance.GameTime < BossTime)
             yield return null;
 
-        // disable orc
         GameManager.Instance.Orc.ResetAll();
+        G.D.PlayerScript.DisableToggledEffects();
 
         SaveGame.Members.Chapter1BossStarted++;
 
@@ -106,7 +106,6 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         BossObjects.SetActive(true);
         yield return Chapter1BossIntro.Run(this, skipIntroduction: false);
 
-        G.D.PlayerScript.TryEnableToggledEffects();
         Boss.StartFight(this);
 
         while (!Boss.FightComplete)
