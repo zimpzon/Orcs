@@ -332,6 +332,7 @@ public class GameManager : MonoBehaviour
                 {
                     SaveGame.Members.EnemiesKilled = G.D.CosmeticArmorKills;
                     SaveGame.Members.MaxSecondsReached = 60 * 15;
+                    SaveGame.Members.Chapter1BossStarted = 1;
                     ShopItems.UpdateBoughtItems();
                     UpdateMoneyLabels();
                 }
@@ -665,7 +666,6 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
         PlayerUpgrades.ResetAll();
-        ShopItems.ApplyToPlayerUpgrades();
         UpgradeChoices.InitChoices();
         ResetPickups();
         InitXpText();

@@ -510,12 +510,12 @@ public class PlayerScript : MonoBehaviour
         if (isDead_)
             return;
 
-        bool useIdle = isMoving_ && !isAtPuppetTarget;
+        bool isRunning = isMoving_ && !isAtPuppetTarget;
         Sprite[] sprites;
-        if (G.D.CosmeticArmorUnlocked())
-            sprites = useIdle ? IdleSpritesKing : RunSpritesKing;
+        if (PlayerUpgrades.Data.CosmeticKing)
+            sprites = isRunning ? RunSpritesKing : IdleSpritesKing;
         else
-            sprites = useIdle ? IdleSprites : RunSprites;
+            sprites = isRunning ? RunSprites : IdleSprites;
 
         animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, sprites);
 

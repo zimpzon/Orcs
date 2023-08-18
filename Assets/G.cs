@@ -10,7 +10,7 @@ public class G : MonoBehaviour
 
     public int CosmeticArmorKills = 10000;
     public bool CosmeticArmorUnlocked()
-        => SaveGame.Members.EnemiesKilled > CosmeticArmorKills;
+        => SaveGame.Members.EnemiesKilled >= CosmeticArmorKills;
 
     public Color UpgradePositiveColor;
     public Color UpgradeNegativeColor;

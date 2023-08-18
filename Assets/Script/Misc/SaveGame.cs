@@ -34,7 +34,6 @@ public class SaveGameMembers
     public string UserId;
 
     public int MaxSecondsReached;
-    public bool Chapter1BossReached;
     public int TotalSeconds;
     public int OrcsSaved;
     public int EnemiesKilled;

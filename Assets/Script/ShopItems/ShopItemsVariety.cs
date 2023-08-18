@@ -45,7 +45,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerA,
                 Title = "Time Traveller A",
-                Description = $"Start game at {ColorTimePositive(new TimeSpan(0, 3, 0))}",
+                Description = $"Skip to {ColorTimePositive(new TimeSpan(0, 3, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -72,7 +72,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerB,
                 Title = "Time Traveller B",
-                Description = $"Start game at {ColorTimePositive(new TimeSpan(0, 6, 0))}",
+                Description = $"Skip to {ColorTimePositive(new TimeSpan(0, 6, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -99,7 +99,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerC,
                 Title = "Time Traveller C",
-                Description = $"Start game at {ColorTimePositive(new TimeSpan(0, 10, 0))}",
+                Description = $"Skip to {ColorTimePositive(new TimeSpan(0, 10, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -108,7 +108,7 @@ public static class ShopItemsVariety
                 },
                 Customize = (shopItem) =>
                 {
-                    shopItem.IsLocked = !SaveGame.Members.Chapter1BossReached;
+                    shopItem.IsLocked = SaveGame.Members.Chapter1BossStarted <= 0;
 
                     if (shopItem.IsLocked)
                     {
@@ -131,7 +131,7 @@ public static class ShopItemsVariety
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
-                    // cosmetics also show on titlescreen so much be checked whereever used
+                    PlayerUpgrades.Data.CosmeticKing = true;
                 },
                 Customize = (shopItem) =>
                 {

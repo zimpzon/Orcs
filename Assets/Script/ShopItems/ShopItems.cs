@@ -192,6 +192,8 @@ public static class ShopItems
 
             script.SetButtonStates(enableBuyButton, enableRefundButton);
         }
+
+        ApplyToPlayerUpgrades();
     }
 
     static ShopItems()
