@@ -67,8 +67,8 @@ public static class Chapter1BossUtil
                 pos.x += UnityEngine.Random.value * 2;
                 GameManager.Instance.MakePoof(boss.BodyTransform.position, 3, 2.0f);
                 GameManager.Instance.MakeFlash(boss.BodyTransform.position, 2.0f);
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.75f);
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.SqueakyDie, volumeScale: 0.7f, pitch: UnityEngine.Random.value * 0.5f + 0.5f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 1.0f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.SqueakyDie, volumeScale: 1.0f, pitch: UnityEngine.Random.value * 0.5f + 0.5f);
 
                 nextPoof = G.D.GameTime + UnityEngine.Random.value * 0.2f + 0.35f;
             }

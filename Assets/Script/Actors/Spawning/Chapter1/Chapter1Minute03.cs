@@ -39,7 +39,7 @@ public static class Chapter1Minute03
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
-                startTime: new TimeSpan(0, 3, 10),
+                startTime: new TimeSpan(0, 3, 0),
                 endTime: new TimeSpan(0, 5, 30),
                 startingCount: 10,
                 endCount: 15,
@@ -49,7 +49,7 @@ public static class Chapter1Minute03
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,
-                startTime: new TimeSpan(0, 3, 10),
+                startTime: new TimeSpan(0, 3, 0),
                 endTime: new TimeSpan(0, 5, 30),
                 startingCount: 30,
                 endCount: 40,

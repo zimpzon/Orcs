@@ -13,7 +13,7 @@ public class WeaponSword : WeaponBase
 
         int aliveCount = BlackboardScript.GetEnemies(where, radius);
         var clip = aliveCount == 0 ? clipMiss : clipHit;
-        AudioManager.Instance.PlayClipWithRandomPitch(clip, volumeScale: 0.25f);
+        AudioManager.Instance.PlayClipWithRandomPitch(clip, volumeScale: 0.2f);
         for (int i = 0; i < aliveCount; ++i)
         {
             ActorBase enemy = BlackboardScript.EnemyOverlap[i];

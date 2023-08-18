@@ -48,38 +48,34 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, speed (1)",
-                Description = $"<color=#00ff00>+8%</color> shorter cooldown, {G.D.UpgradeNegativeColorHex}-8%</color> range",
+                Description = $"<color=#00ff00>+8%</color> shorter cooldown",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
-                    PlayerUpgrades.Data.MagicMissileRangeMul -= 0.08f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, speed (2)",
-                    Description = $"<color=#00ff00>+8%</color> shorter cooldown, {G.D.UpgradeNegativeColorHex}-8%</color> range",
+                    Description = $"<color=#00ff00>+8%</color> shorter cooldown",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
-                        PlayerUpgrades.Data.MagicMissileRangeMul -= 0.08f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, speed (3)",
-                        Description = $"<color=#00ff00>+8%</color> shorter cooldown, {G.D.UpgradeNegativeColorHex}-8%</color> range",
+                        Description = $"<color=#00ff00>+8%</color> shorter cooldown",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
-                            PlayerUpgrades.Data.MagicMissileRangeMul -= 0.08f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, speed (4)",
-                            Description = $"<color=#00ff00>+8%</color> shorter cooldown, {G.D.UpgradeNegativeColorHex}-8%</color> range",
+                            Description = $"<color=#00ff00>+8%</color> shorter cooldown",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
-                                PlayerUpgrades.Data.MagicMissileRangeMul -= 0.08f;
                             },
                         }
                     }
@@ -89,38 +85,34 @@ public static class ChoicesWeapon
             new Choice
             {
                 Title = $"{Name}, salvo (1)",
-                Description = $"<color=#00ff00>+0.4</color> more knives, {G.D.UpgradeNegativeColorHex}-4%</color> longer cooldown",
+                Description = $"<color=#00ff00>+0.4</color> more knives",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
-                    PlayerUpgrades.Data.MagicMissileCdMul += 0.04f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, salvo (2)",
-                    Description = $"<color=#00ff00>+0.4</color> more knives, {G.D.UpgradeNegativeColorHex}-4%</color> longer cooldown",
+                    Description = $"<color=#00ff00>+0.4</color> more knives",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
-                        PlayerUpgrades.Data.MagicMissileCdMul += 0.04f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, salvo (3)",
-                        Description = $"<color=#00ff00>+0.4</color> more knives, {G.D.UpgradeNegativeColorHex}-4%</color> longer cooldown",
+                        Description = $"<color=#00ff00>+0.4</color> more knives",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
-                            PlayerUpgrades.Data.MagicMissileCdMul += 0.04f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, salvo (4)",
-                            Description = $"<color=#00ff00>+0.4</color> more knives, {G.D.UpgradeNegativeColorHex}-4%</color> longer cooldown",
+                            Description = $"<color=#00ff00>+0.4</color> more knives",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
-                                PlayerUpgrades.Data.MagicMissileCdMul += 0.04f;
                             },
                         }
                     }

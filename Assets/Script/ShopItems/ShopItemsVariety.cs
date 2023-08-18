@@ -22,6 +22,9 @@ public static class ShopItemsVariety
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
+                    if (bought.Level <= 0)
+                        return;
+
                     PlayerUpgrades.Data.SpawnChestUnlocked = true;
                     PlayerUpgrades.Data.SpawnChestChance = bought.Value * bought.ValueScale * bought.Level;
                 },
@@ -50,7 +53,12 @@ public static class ShopItemsVariety
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
-                    PlayerUpgrades.Data.GameStartTime = new TimeSpan(0, 3, 0);
+                    if (bought.Level <= 0)
+                        return;
+
+                    var time = new TimeSpan(0, 3, 0);
+                    if (PlayerUpgrades.Data.GameStartTime < time)
+                        PlayerUpgrades.Data.GameStartTime = time;
                 },
                 Customize = (shopItem) =>
                 {
@@ -77,7 +85,12 @@ public static class ShopItemsVariety
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
-                    PlayerUpgrades.Data.GameStartTime = new TimeSpan(0, 6, 0);
+                    if (bought.Level <= 0)
+                        return;
+
+                    var time = new TimeSpan(0, 6, 0);
+                    if (PlayerUpgrades.Data.GameStartTime < time)
+                        PlayerUpgrades.Data.GameStartTime = time;
                 },
                 Customize = (shopItem) =>
                 {
@@ -104,7 +117,12 @@ public static class ShopItemsVariety
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
                 {
-                    PlayerUpgrades.Data.GameStartTime = new TimeSpan(0, 10, 0);
+                    if (bought.Level <= 0)
+                        return;
+
+                    var time = new TimeSpan(0, 10, 0);
+                    if (PlayerUpgrades.Data.GameStartTime < time)
+                        PlayerUpgrades.Data.GameStartTime = time;
                 },
                 Customize = (shopItem) =>
                 {
@@ -125,13 +143,14 @@ public static class ShopItemsVariety
             new ShopItem
             {
                 ItemType = ShopItemType.CosmeticArmor,
-                Title = "It's good to be the king!",
+                Title = "It's good to be king!",
                 Description = $"Get what you deserve",
                 BasePrice = 1,
                 MaxLevel = 1,
+                IsCosmetic = true,
                 Apply = (BoughtItem bought) =>
                 {
-                    PlayerUpgrades.Data.CosmeticKing = true;
+                    PlayerUpgrades.Data.CosmeticKing = bought.Level > 0;
                 },
                 Customize = (shopItem) =>
                 {
@@ -140,7 +159,34 @@ public static class ShopItemsVariety
                     if (shopItem.IsLocked)
                     {
                         var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
-                        return $"(Cosmetic)\n\nKIll a total of {G.D.UpgradeNeutralColorHex}{G.D.CosmeticArmorKills}</color> enemies\n\nCurrent: {G.D.UpgradeNeutralColorHex}{SaveGame.Members.EnemiesKilled}</color>";
+                        return $"KIll a total of {G.D.UpgradeNeutralColorHex}{G.D.CosmeticArmorKills}</color> enemies\n\nCurrent: {G.D.UpgradeNeutralColorHex}{SaveGame.Members.EnemiesKilled}</color>";
+                    }
+                    else
+                    {
+                        return shopItem.Description;
+                    }
+                }
+            },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.CosmeticHearts,
+                Title = "Heart Attack",
+                Description = $"Let it all out",
+                BasePrice = 1,
+                MaxLevel = 1,
+                IsCosmetic = true,
+                Apply = (BoughtItem bought) =>
+                {
+                    PlayerUpgrades.Data.CosmeticHearts = bought.Level > 0;
+                },
+                Customize = (shopItem) =>
+                {
+                    shopItem.IsLocked = SaveGame.Members.OrcsSaved < G.D.CosmeticHeartsSaves;
+
+                    if (shopItem.IsLocked)
+                    {
+                        return $"Save a total of {G.D.UpgradeNeutralColorHex}{G.D.CosmeticHeartsSaves}</color> ducks\n\nCurrent: {G.D.UpgradeNeutralColorHex}{SaveGame.Members.OrcsSaved}</color>";
                     }
                     else
                     {

@@ -109,7 +109,7 @@ public class ActorReaperBoss : MonoBehaviour, IKillableObject
         while (OverheadText.maxVisibleCharacters < text.Length)
         {
             if (OverheadText.maxVisibleCharacters++ % 2 == 0 && sound)
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ShortDeepBump, volumeScale: 0.5f, pitch: 1.2f + UnityEngine.Random.value * 1.0f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.ShortDeepBump, volumeScale: 0.8f, pitch: 1.2f + UnityEngine.Random.value * 1.0f);
 
             yield return letterDelay;
         }

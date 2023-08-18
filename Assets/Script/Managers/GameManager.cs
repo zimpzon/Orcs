@@ -236,23 +236,31 @@ public class GameManager : MonoBehaviour
     public void OnItemRefunded(ShopItemType _)
     {
         UpdateMoneyLabels();
+        ShopItems.UpdateBoughtItems();
     }
 
     public void OnItemBought(ShopItemType itemType)
     {
         UpdateMoneyLabels();
-
         BuyCount++;
 
-        var props = new Dictionary<string, object>
-        {
-            { "type", itemType.ToString() },
-            { "goldLeft", (int)SaveGame.Members.Money },
-            { "goldSpent", (int)SaveGame.Members.MoneySpentInShop },
-        };
+        // we can do better then this, maybe send it all combined, this is spam
+        //try
+        //{
+        //    var props = new Dictionary<string, object>
+        //    {
+        //        { "type", itemType.ToString() },
+        //        { "goldLeft", (int)SaveGame.Members.Money },
+        //        { "goldSpent", (int)SaveGame.Members.MoneySpentInShop },
+        //    };
 
-        Playfab.PlayerEvent(Playfab.ItemBoughtEvent, props);
-        Playfab.PlayerStat(Playfab.ItemsBoughtStat, BuyCount);
+        //    Playfab.PlayerEvent(Playfab.ItemBoughtEvent, props);
+        //    Playfab.PlayerStat(Playfab.ItemsBoughtStat, BuyCount);
+        //}
+        //catch(Exception)
+        //{
+        //    // this can happen if the player 
+        //}
     }
 
     static bool BackButtonClicked = false;
@@ -491,7 +499,7 @@ public class GameManager : MonoBehaviour
         UpgradeChoice4.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
 
         AudioListener.pause = true;
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.5f, pitch: 1.0f, ignoreListenerPause: true);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.75f, pitch: 1.0f, ignoreListenerPause: true);
 
         Time.timeScale = 0.0f;
         PauseGameTime = true;
@@ -545,7 +553,7 @@ public class GameManager : MonoBehaviour
 
         Rounds++;
 
-        TextGameInfo.gameObject.SetActive(false);
+        TextGameInfo.text = "";
 
         float roundTime = GameTime - roundStartTime_;
         int roundSeconds = Mathf.RoundToInt(roundTime);
@@ -657,16 +665,14 @@ public class GameManager : MonoBehaviour
         if (GameState == State.Playing)
             return;
 
-        //{
-        //    GameTime = 60 * 13;
-        //    Debug.LogWarning("HACKZ, STARTING AT BOSS");
-        //}
-
         KillOnStartGameKillableObjects();
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
-        PlayerUpgrades.ResetAll();
+
+        ShopItems.ApplyToPlayerUpgrades();
+
         UpgradeChoices.InitChoices();
+
         ResetPickups();
         InitXpText();
 
@@ -684,6 +690,14 @@ public class GameManager : MonoBehaviour
         G.D.PlayerScript.SetPlayerPos(Vector3.zero);
         G.D.PlayerScript.StartGame();
         Orc.SetPosition(Vector3.up * 3, startingGame: true);
+
+        if (PlayerUpgrades.Data.GameStartTime > TimeSpan.Zero)
+            GameTime = (float)PlayerUpgrades.Data.GameStartTime.TotalSeconds;
+
+        //{
+        //    GameTime = 60 * 13;
+        //    Debug.LogWarning("HACKZ, STARTING AT BOSS");
+        //}
 
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
         GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
@@ -871,7 +885,9 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
         G.D.PlayerScript.AddHp(PlayerUpgrades.Data.RescueDuckHp, alwaysShow: true);
         ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, value: 1, forceScale: 2.0f);
-        ThrowPickups(AutoPickUpType.Money, pos, 2 + SaveGame.RoundScore / 2, value: 1, forceScale: 1.1f);
+
+        int money = 2 + (int)(GameTime / 30.0f) + SaveGame.RoundScore / 4;
+        ThrowPickups(AutoPickUpType.Money, pos, money, value: 1, forceScale: 1.1f);
     }
 
     private void InitXpText()
@@ -1078,6 +1094,8 @@ public class GameManager : MonoBehaviour
     {
         return;
         SetDebugOutput("OnGUI enabled", G.D.GameTime);
+        SetDebugOutput("speed", PlayerUpgrades.Data.TimeScale);
+        SetDebugOutput("start", PlayerUpgrades.Data.GameStartTime);
 
         if (DebugValues.Count == 0)
             return;

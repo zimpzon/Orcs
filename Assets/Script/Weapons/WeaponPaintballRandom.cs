@@ -21,7 +21,7 @@ public class WeaponPaintballRandom : WeaponBase
         Color color = PoisonDaggers.Instance.Color;
 
         GameManager.Instance.MakeFlash(point);
-        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.1f);
+        AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.4f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();

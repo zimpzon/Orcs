@@ -56,46 +56,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     IEnumerator RunSpawnEvents()
     {
-        // The edgy gauards must always be there, no matter when game starts
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 4,
-            endCount: 7,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Top);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 3,
-            endCount: 5,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Right);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 4,
-            endCount: 7,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Bottom);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 3,
-            endCount: 5,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Left);
+        // The edgy gauards must always be there, no matter where game starts
+        RunAll(Chapter1Minute01.EdgyGuards());
 
         if (G.D.GameTime < 5)
             RunAll(Chapter1Minute01.GetEvents());
@@ -178,9 +140,13 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     IEnumerator RunInternal()
     {
+        string text = "Skeleton Skirmish";
+        if (PlayerUpgrades.Data.GameStartTime != TimeSpan.Zero)
+            text += $"\n\nstarting at {PlayerUpgrades.Data.GameStartTime}";
+
         var info = new GameInfo
         {
-            Text = "Skeleton Skirmish",
+            Text = text,
             Color = Chapter1TextColor,
             Duration = 4.0f,
             FadeInDuration = 0.5f,
@@ -189,11 +155,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
             Position = Vector2.up * -100,
         };
 
-        if (G.D.GameTime < 30)
-        {
-            GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
-            LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, time: 0.5f);
-        }
+        GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
+        LeanTween.color(GameManager.Instance.Floor.gameObject, ColorAtStart, time: 0.5f);
 
         StartCoroutine(RunSpawnEvents());
 

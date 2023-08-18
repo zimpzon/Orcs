@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class ChoicesMeleeThrow
 {
@@ -20,7 +21,7 @@ public static class ChoicesMeleeThrow
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Magic that sucks in and slightly damages enemies",
+                    Description = $"Sucks in and damages enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.MeleeThrowEnabledInRound = true;

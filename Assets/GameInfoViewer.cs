@@ -64,12 +64,13 @@ public class GameInfoViewer : MonoBehaviour, IKillableObject
 
         if (GameManager.Instance.GameTime >= hideTime_)
         {
-            void OnComplete()
+           enabled = false;
+           void OnComplete()
             {
                 text_.text = "";
-                enabled_ = false;
                 hideTime_ = float.MaxValue;
             }
+
             LeanTween.textColor(text_.rectTransform, hiddenColor, fadeOutDuration_).setOnComplete(OnComplete);
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,9 @@ public class ShopItemScript : MonoBehaviour
     public Color DefaultBackgroundColor;
     public Color MaxedBackgroundColor;
     public ShopItemType ItemType;
-    public Text Title;
-    public Text Description;
+    public TextMeshProUGUI Title;
+    public TextMeshProUGUI Description;
+    public TextMeshProUGUI ExtraInfo;
     public Text Level;
     public Text ButtonText;
     public Button BuyButton;

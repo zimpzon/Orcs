@@ -82,8 +82,6 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 
     public void Burst(Vector3 pos, float radius, float force, float damage = 0)
     {
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.SaberHit, volumeScale: 0.1f, pitch: 0.5f);
-
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);
         for (int i = 0; i < aliveCount; ++i)
         {

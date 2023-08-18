@@ -26,6 +26,7 @@ public enum ShopItemType
     TimeTravellerB,
     TimeTravellerC,
     CosmeticArmor,
+    CosmeticHearts,
 }
 
 [Serializable]
@@ -48,6 +49,7 @@ public class ShopItem
     public float Value = 1;
     public float ValueScale = 1;
     public bool IsLocked;
+    public bool IsCosmetic;
 
     public int GetPrice(int level) => (int)(BasePrice * Math.Pow(PriceMultiplier, level));
     public Func<int, string> GetButtonText;
@@ -110,6 +112,8 @@ public static class ShopItems
 
     public static void ApplyToPlayerUpgrades()
     {
+        PlayerUpgrades.ResetAll();
+
         foreach(var pair in SaveGame.Members.BoughtItems)
         {
             var bought = pair.Value;
@@ -189,6 +193,8 @@ public static class ShopItems
                 script.ButtonText.text = "LOCKED";
             else
                 script.ButtonText.text = item.GetButtonText(level);
+
+            script.ExtraInfo.enabled = item.IsCosmetic;
 
             script.SetButtonStates(enableBuyButton, enableRefundButton);
         }

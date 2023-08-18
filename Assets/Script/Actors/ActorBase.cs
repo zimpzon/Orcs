@@ -304,7 +304,7 @@ public class ActorBase : MonoBehaviour
         isPainted_ = true;
 
         // add a little rnd so aoe poisened enemies don't look so synchronized
-        float rnd = UnityEngine.Random.value * 0.3f;
+        float rnd = UnityEngine.Random.value * 0.2f;
         nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime + rnd;
 
         paintColor_ = color;

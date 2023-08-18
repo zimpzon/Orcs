@@ -9,7 +9,7 @@ public static class ChoicesCirclingAxe
             new Choice
             {
                 Title = "Axe (1)",
-                Description = "Throw long range axes",
+                Description = "Damages and briefly slows enemies",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.CirclingAxeEnabled = true;

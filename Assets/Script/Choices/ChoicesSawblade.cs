@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class ChoicesSawblade
 {
@@ -20,7 +21,7 @@ public static class ChoicesSawblade
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "A devastating sawblade",
+                    Description = $"Sticks to targets and slices",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.SawBladeEnabledInRound = true;

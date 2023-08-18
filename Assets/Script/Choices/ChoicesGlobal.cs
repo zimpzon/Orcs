@@ -39,29 +39,26 @@ public static class ChoicesGlobal
             new Choice
             {
                 Title = $"{NameCrit}, chance (1)",
-                Description = $"All: Critical hits <color=#00ff00>+10%</color> chance, {ChoicesWeapon.Name} {G.D.UpgradeNegativeColorHex}-10%</color> damage",
+                Description = $"All: Critical hits <color=#00ff00>+8%</color> chance",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.BaseCritChance += 0.1f;
-                    PlayerUpgrades.Data.MagicMissileDamageMul -= 0.15f;
+                    PlayerUpgrades.Data.BaseCritChance += 0.08f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{NameCrit}, chance (2)",
-                    Description = $"All: Critical hits <color=#00ff00>+10%</color> chance, {ChoicesWeapon.Name} {G.D.UpgradeNegativeColorHex}-10%</color> damage",
+                    Description = $"All: Critical hits <color=#00ff00>+8%</color> chance",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.BaseCritChance += 0.1f;
-                        PlayerUpgrades.Data.MagicMissileDamageMul -= 0.1f;
+                        PlayerUpgrades.Data.BaseCritChance += 0.08f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{NameCrit}, chance (3)",
-                        Description = $"All: Critical hits <color=#00ff00>+10%</color> chance, {ChoicesWeapon.Name} {G.D.UpgradeNegativeColorHex}-10%</color> damage",
+                        Description = $"All: Critical hits <color=#00ff00>+8%</color> chance",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.BaseCritChance += 0.1f;
-                            PlayerUpgrades.Data.MagicMissileDamageMul -= 0.1f;
+                            PlayerUpgrades.Data.BaseCritChance += 0.08f;
                         },
                     }
                 }

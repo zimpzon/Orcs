@@ -9,8 +9,12 @@ public class G : MonoBehaviour
         => GameManager.SetDebugOutput(key.ToString(), value);
 
     public int CosmeticArmorKills = 10000;
-    public bool CosmeticArmorUnlocked()
-        => SaveGame.Members.EnemiesKilled >= CosmeticArmorKills;
+    //public bool CosmeticArmorUnlocked()
+    //    => SaveGame.Members.EnemiesKilled >= CosmeticArmorKills;
+
+    public int CosmeticHeartsSaves = 100;
+    //public bool CosmeticHeartsUnlocked()
+    //    => SaveGame.Members.OrcsSaved >= CosmeticHeartsSaves;
 
     public Color UpgradePositiveColor;
     public Color UpgradeNegativeColor;

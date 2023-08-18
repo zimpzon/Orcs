@@ -13,6 +13,7 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSpritesKing;
     public Sprite[] IdleSpritesKing;
 
+    public ParticleSystem Hearts;
     public float Hp;
     public float MaxHp;
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
@@ -40,6 +41,7 @@ public class PlayerScript : MonoBehaviour
     float immunityEnd_;
     bool immortal_;
     float timeNextRound_;
+    float nextHeart_;
 
     public bool RoundComplete;
     public bool UpgradesActive = false;
@@ -151,6 +153,7 @@ public class PlayerScript : MonoBehaviour
         isMoving_ = false;
         force_ = Vector3.zero;
         moveVec_ = Vector3.zero;
+        nextHeart_ = 0;
         SetPlayerPos(basePos_);
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         OverheadText.enabled = false;
@@ -243,7 +246,7 @@ public class PlayerScript : MonoBehaviour
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out recoil);
 
                 const float anglePerShot = 20;
-                const float multiDaggerScale = 0.5f;
+                const float multiDaggerScale = 0.75f;
 
                 if (!PlayerUpgrades.Data.IsRambo)
                 {
@@ -348,7 +351,9 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator EndGame(bool victory)
     {
+        yield return null;
         yield return new WaitForEndOfFrame();
+        Hp = 0;
 
         isDead_ = true;
         SetFlash(false);
@@ -505,12 +510,27 @@ public class PlayerScript : MonoBehaviour
         nextBlood_ = Time.time + cd;
     }
 
+    void CheckHearts()
+    {
+        if (GameManager.Instance.GameState != GameManager.State.Playing || !PlayerUpgrades.Data.CosmeticHearts)
+            return;
+
+        if (G.D.GameTime > nextHeart_)
+        {
+            Hearts.Emit(1);
+            nextHeart_ = G.D.GameTime + 0.05f + UnityEngine.Random.value * 0.05f;
+        }
+    }
+
     void Update()
     {
         if (isDead_)
             return;
 
         bool isRunning = isMoving_ && !isAtPuppetTarget;
+        if (isRunning)
+            CheckHearts();
+
         Sprite[] sprites;
         if (PlayerUpgrades.Data.CosmeticKing)
             sprites = isRunning ? RunSpritesKing : IdleSpritesKing;

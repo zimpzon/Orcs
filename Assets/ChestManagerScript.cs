@@ -16,7 +16,8 @@ public class ChestManagerScript : MonoBehaviour, IKillableObject
         if (!PlayerUpgrades.Data.SpawnChestUnlocked || hasSpawned_)
             return;
 
-        if (G.D.GameTime > spawnTime_)
+        // do not spawn chest when skipping minutes at start
+        if (G.D.GameTime > spawnTime_ && G.D.GameTime < spawnTime_ + 30)
         {
             bool isLarge = UnityEngine.Random.value > 0.5f;
 

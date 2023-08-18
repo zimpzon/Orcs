@@ -50,4 +50,47 @@ public static class Chapter1Minute01
         yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreBandanaGun, despawnAtDestination: true, breakFreeAtDamage: false,
             time: new TimeSpan(0, 1, 30), LeftMidOut, RightMidOut, ActorForcedTargetType.Direction, w: 3, h: 2, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.2f);
     }
+
+    public static IEnumerable<IEnumerator> EdgyGuards()
+    {
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 4,
+            endCount: 7,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Top);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Right);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 4,
+            endCount: 7,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Bottom);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Left);
+    }
 }

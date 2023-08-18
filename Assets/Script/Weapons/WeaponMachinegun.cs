@@ -15,7 +15,7 @@ public class WeaponMachinegun : WeaponBase
         {
             // lol hack for multiple daggers
             GameManager.Instance.MakeFlash(point);
-            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.2f, pitch: 1.2f);
+            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.5f, pitch: 1.2f);
         }
 
         float spreadFactor = 40f; // Increase this to limit spread (unit circle is moved further away)

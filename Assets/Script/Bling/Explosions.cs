@@ -11,7 +11,7 @@ public static class Explosions
             GameManager.Instance.MakeFlash(pos, radius * 1f);
             GameManager.Instance.MakePoof(pos, 1, radius * 0.25f);
             GameManager.Instance.ShakeCamera(0.2f);
-            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.5f);
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.8f);
         }
 
         int aliveCount = BlackboardScript.GetEnemies(pos, radius);

@@ -17,8 +17,9 @@ public class UpgradeData
     public bool SpawnChestUnlocked = true;
     public float SpawnChestChance = 0.1f;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
-    public TimeSpan GameStartTime = new(0, 0, 0);
+    public TimeSpan GameStartTime = TimeSpan.Zero;
     public bool CosmeticKing = false;
+    public bool CosmeticHearts = false;
 
     // gold
     public float MoneyDoubleChance = 0.05f;
@@ -63,7 +64,7 @@ public class UpgradeData
     public float MeleeThrowBasePower = 8.0f;
     public float MeleeThrowDrag = 8.0f;
     public float MeleeThrowPowerMul = 1.0f;
-    public float MeleeThrowBaseDamage = 20.0f;
+    public float MeleeThrowBaseDamage = 80.0f;
     public float MeleeThrowBaseCd = 15.0f;
     public float MeleeThrowCdMul = 1.0f;
     public bool MeleeThrowLeft = true;
@@ -77,7 +78,7 @@ public class UpgradeData
 
     public bool SawBladeBought = false;
     public bool SawBladeEnabledInRound = false;
-    public float SawBladeMaxDamage = 250;
+    public float SawBladeMaxDamage = 500;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 35;
     public float SawBladeBaseCd = 6.0f;
@@ -105,7 +106,7 @@ public class UpgradeData
     public float PaintballCd = 3.0f;
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 12;
-    public float PaintballBaseDamagePerSec = 30.0f;
+    public float PaintballBaseDamagePerSec = 50.0f;
     public float PaintballDamagePerSecMul = 1.0f;
 
     // circling axe

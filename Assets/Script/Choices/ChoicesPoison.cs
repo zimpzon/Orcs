@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class ChoicesPoison
 {
@@ -20,7 +21,7 @@ public static class ChoicesPoison
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Poisons enemies",
+                    Description = $"Slows and damages enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballActiveInRound = true;
@@ -113,7 +114,7 @@ public static class ChoicesPoison
             new Choice
             {
                 Title = $"{Name}, amount (1)",
-                Description = "<color=#00ff00>+4</color> knives thrown",
+                Description = "<color=#00ff00>+4</color> daggers thrown",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.PaintballCount += 4;
@@ -121,7 +122,7 @@ public static class ChoicesPoison
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, amount (2)",
-                    Description = "<color=#00ff00>+4</color> knives thrown",
+                    Description = "<color=#00ff00>+4</color> daggers thrown",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballCount += 4;
@@ -129,7 +130,7 @@ public static class ChoicesPoison
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, amount (3)",
-                        Description = "<color=#00ff00>+4</color> knives thrown",
+                        Description = "<color=#00ff00>+4</color> daggers thrown",
                         Apply = () =>
                         {
                             PlayerUpgrades.Data.PaintballCount += 4;
@@ -137,7 +138,7 @@ public static class ChoicesPoison
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, amount (4)",
-                            Description = "<color=#00ff00>+4</color> knives thrown",
+                            Description = "<color=#00ff00>+4</color> daggers thrown",
                             Apply = () =>
                             {
                                 PlayerUpgrades.Data.PaintballCount += 4;

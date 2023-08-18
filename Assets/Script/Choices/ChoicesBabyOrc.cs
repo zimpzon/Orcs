@@ -30,7 +30,7 @@ public static class ChoicesBabyOrc
             new Choice
             {
                 Title = $"{Name}, Knightsaber (1)",
-                Description = "Knightsaber pushes nearby enemies, deflected projectiles become yours",
+                Description = "Pushes enemies near the duck",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.OrcJedisEnabled = true;
