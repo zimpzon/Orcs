@@ -9,6 +9,27 @@ namespace Assets.Script.Actors.Spawning
 {
     public static class SpawnUtil
     {
+        public static IEnumerator Message(TimeSpan showTime, string text, Color color, int fontSize = 8, float duration = 3)
+        {
+            while (G.D.GameTime < showTime.TotalSeconds)
+                yield return null;
+
+            if (G.D.GameTime > showTime.TotalSeconds + 5)
+                yield break;
+
+            var info = new GameInfo
+            {
+                Text = text,
+                Duration = duration,
+                FadeInDuration = 0.25f,
+                FadeOutDuration = 2.0f,
+                FontSize = fontSize,
+                Color = color,
+            };
+
+            GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
+        }
+
         public static void FleeAllActors()
         {
             var allEnemies = BlackboardScript.GetAllEnemies();
@@ -30,6 +51,12 @@ namespace Assets.Script.Actors.Spawning
             action();
         }
 
+        class Maintained
+        {
+            public ActorBase Actor;
+            public int ETag;
+        }
+
         public static IEnumerator SpawnAndMaintain(
             ActorTypeEnum actorType,
             TimeSpan startTime,
@@ -40,7 +67,7 @@ namespace Assets.Script.Actors.Spawning
             float timeBetweenTicks,
             SpawnDirection dir)
         {
-            List<ActorBase> alive = new();
+            List<Maintained> alive = new();
 
             var wait = new WaitForSeconds(timeBetweenTicks);
 
@@ -57,7 +84,8 @@ namespace Assets.Script.Actors.Spawning
                     bool removed = false;
                     for (int i = 0; i < alive.Count; ++i)
                     {
-                        if (alive[i].IsDead)
+                        var m = alive[i];
+                        if (m.Actor.IsDead || m.Actor.ETag != m.ETag)
                         {
                             alive.RemoveAt(i);
                             removed = true;
@@ -88,7 +116,9 @@ namespace Assets.Script.Actors.Spawning
 
                         spawn.transform.position = pos;
                         spawn.SetActive(true);
-                        alive.Add(spawn.GetComponent<ActorBase>());
+
+                        var actor = spawn.GetComponent<ActorBase>();
+                        alive.Add(new Maintained { Actor = actor, ETag = actor.ETag });
                     }
 
                     RemoveDead();

@@ -32,7 +32,7 @@ namespace Assets.Script.Enemies
         {
             if (!Caches.TryGetValue(actorType, out var cache))
             {
-                var prefab = EnemyPrefabs.Enemies.Where(e => e.GetComponent<ActorBase>().ActorType == actorType)?.FirstOrDefault();
+                var prefab = EnemyPrefabs.Enemies.Where(e => e.GetComponent<ActorBase>()?.ActorType == actorType)?.FirstOrDefault();
                 if (prefab == null)
                     Debug.LogError($"ActorType {actorType} not found in scriptable object Enemies");
 

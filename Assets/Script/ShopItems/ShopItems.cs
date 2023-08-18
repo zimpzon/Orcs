@@ -22,6 +22,10 @@ public enum ShopItemType
     Sawblade,
     MeleeThrow,
     SpawnChest,
+    TimeTravellerA,
+    TimeTravellerB,
+    TimeTravellerC,
+    CosmeticArmor,
 }
 
 [Serializable]
@@ -172,10 +176,11 @@ public static class ShopItems
             bool enableRefundButton = level > 0;
 
             var script = Scripts[i];
-            script.Title.text = item.GetTitle(level);
-            script.Title.color = item.IsLocked ? G.D.UpgradeNegativeColor : G.D.UpgradePositiveColor;
 
             script.Description.text = item.Customize?.Invoke(item) ?? item.GetDescription(level);
+
+            script.Title.text = item.GetTitle(level);
+            script.Title.color = item.IsLocked ? G.D.UpgradeNeutralColor : G.D.UpgradePositiveColor;
 
             script.Level.text = item.GetLevelText(level);
             if (isMaxLevel)

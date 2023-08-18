@@ -10,6 +10,9 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
 
+    public Sprite[] RunSpritesKing;
+    public Sprite[] IdleSpritesKing;
+
     public float Hp;
     public float MaxHp;
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
@@ -507,7 +510,12 @@ public class PlayerScript : MonoBehaviour
         if (isDead_)
             return;
 
-        var sprites = isMoving_ && !isAtPuppetTarget ? RunSprites : IdleSprites;
+        bool useIdle = isMoving_ && !isAtPuppetTarget;
+        Sprite[] sprites;
+        if (G.D.CosmeticArmorUnlocked())
+            sprites = useIdle ? IdleSpritesKing : RunSpritesKing;
+        else
+            sprites = useIdle ? IdleSprites : RunSprites;
 
         animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, sprites);
 

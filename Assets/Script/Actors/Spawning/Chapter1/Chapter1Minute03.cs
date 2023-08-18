@@ -12,7 +12,7 @@ public static class Chapter1Minute03
         yield return SpawnUtil.Swarm(
                 ActorTypeEnum.OgreBandana,
                 startTime: new TimeSpan(0, 4, 0),
-                endTime: new TimeSpan(0, 6, 0),
+                endTime: new TimeSpan(0, 5, 30),
                 spawnCountPerTick: 2,
                 timeBetweenTicks: 5,
                 SpawnDirection.Any);
@@ -20,7 +20,7 @@ public static class Chapter1Minute03
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreLarge,
                 startTime: new TimeSpan(0, 3, 15),
-                endTime: new TimeSpan(0, 6, 0),
+                endTime: new TimeSpan(0, 5, 30),
                 startingCount: 1,
                 endCount: 1,
                 maxSpawnCountPerTick: 1,
@@ -40,7 +40,7 @@ public static class Chapter1Minute03
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 3, 10),
-                endTime: new TimeSpan(0, 6, 0),
+                endTime: new TimeSpan(0, 5, 30),
                 startingCount: 10,
                 endCount: 15,
                 maxSpawnCountPerTick: 5,
@@ -50,7 +50,7 @@ public static class Chapter1Minute03
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.Ogre,
                 startTime: new TimeSpan(0, 3, 10),
-                endTime: new TimeSpan(0, 6, 0),
+                endTime: new TimeSpan(0, 5, 30),
                 startingCount: 30,
                 endCount: 40,
                 maxSpawnCountPerTick: 10,
@@ -60,7 +60,7 @@ public static class Chapter1Minute03
         yield return SpawnUtil.Swarm(
                 ActorTypeEnum.Ogre,
                 startTime: new TimeSpan(0, 3, 0),
-                endTime: new TimeSpan(0, 6, 0),
+                endTime: new TimeSpan(0, 5, 30),
                 spawnCountPerTick: 1,
                 timeBetweenTicks: 2,
                 SpawnDirection.Any);
@@ -73,6 +73,17 @@ public static class Chapter1Minute03
 
         yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OgreShaman, despawnAtDestination: true, breakFreeAtDamage: true,
            time: new TimeSpan(0, 5, 10), RightMidOut, LeftMidOut, ActorForcedTargetType.Direction, w: 2, h: 2, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.2f, skewY: 0.2f);
+
+        yield return SpawnUtil.Message(new TimeSpan(0, 5, 48), "the flapping of wings draws closer", G.D.UpgradePositiveColor);
+        yield return SpawnUtil.ActionAtTime(new TimeSpan(0, 5, 40), () => SpawnUtil.FleeAllActors());
+
+        yield return SpawnUtil.Swarm(
+            ActorTypeEnum.BatWhite,
+            startTime: new TimeSpan(0, 5, 54),
+            endTime: new TimeSpan(0, 6, 8),
+            spawnCountPerTick: 20,
+            timeBetweenTicks: 1,
+            SpawnDirection.Any);
 
         yield break;
     }

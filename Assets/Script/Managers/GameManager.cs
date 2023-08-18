@@ -328,6 +328,14 @@ public class GameManager : MonoBehaviour
                     UpdateMoneyLabels();
                 }
 
+                if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightShift))
+                {
+                    SaveGame.Members.EnemiesKilled = G.D.CosmeticArmorKills;
+                    SaveGame.Members.MaxSecondsReached = 60 * 15;
+                    ShopItems.UpdateBoughtItems();
+                    UpdateMoneyLabels();
+                }
+
                 if (GoBack())
                 {
                     PlayMenuSound();

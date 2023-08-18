@@ -9,7 +9,8 @@ public enum ActorTypeEnum
     None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
     OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
     OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
-    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy, ReaperBoss,
+    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy, ReaperBoss, BatWhite, BatRed,
+    SpikyBall,
 };
 
 public enum ActorForcedTargetType { Absolute, Direction };
@@ -28,6 +29,7 @@ public class ActorBase : MonoBehaviour
     public int CrowdMaxNearby = 3;
     public float CrowdOutOfTheWayRange = 2.5f;
 
+    public int ETag = 0;
     public bool IsBoss = false;
     public float Mass = 1.0f;
     public int XpValue = 1;
@@ -635,6 +637,8 @@ public class ActorBase : MonoBehaviour
     {
         if (IsBoss)
             return;
+
+        ETag++;
 
         Reset(init: false);
         ActorCache.Instance.ReturnObject(gameObject);

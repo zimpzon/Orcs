@@ -3,11 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PositionUtility;
 
 public class Chapter1Controller : MonoBehaviour, IKillableObject
 {
     public ActorReaperBoss BossProto;
-    [NonSerialized]public ActorReaperBoss Boss;
+    [NonSerialized] public ActorReaperBoss Boss;
 
     public GameObject Hounds;
     public GameObject BossObjects;
@@ -55,6 +56,47 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     IEnumerator RunSpawnEvents()
     {
+        // The edgy gauards must always be there, no matter when game starts
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 4,
+            endCount: 7,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Top);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Right);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 4,
+            endCount: 7,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Bottom);
+
+        yield return SpawnUtil.SpawnAndMaintain(
+            ActorTypeEnum.OgreEdgy,
+            startTime: new TimeSpan(0, 0, 5),
+            endTime: new TimeSpan(0, 14, 50),
+            startingCount: 3,
+            endCount: 5,
+            maxSpawnCountPerTick: 5,
+            timeBetweenTicks: 1.5f,
+            SpawnDirection.Left);
+
         if (G.D.GameTime < 5)
             RunAll(Chapter1Minute01.GetEvents());
 
@@ -159,29 +201,5 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         while (true)
             yield return null;
-    }
-
-    IEnumerator Warning(TimeSpan showTime, string text, Color endColor, Color endFilter)
-    {
-        while (G.D.GameTime < showTime.TotalSeconds)
-            yield return null;
-
-        if (G.D.GameTime > showTime.TotalSeconds + 5)
-            yield break;
-
-        const float TextTime = 10.0f;
-        var info = new GameInfo
-        {
-            Text = text,
-            Duration = TextTime,
-            FadeInDuration = 0.25f,
-            FadeOutDuration = 2.0f,
-            FontSize = 10,
-        };
-
-        GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
-
-        LeanTween.color(GameManager.Instance.Floor.gameObject, endColor, TextTime * 0.5f);
-        LeanTween.color(GameManager.Instance.FloorFilter.gameObject, endFilter, TextTime * 0.5f);
     }
 }

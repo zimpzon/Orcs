@@ -9,22 +9,6 @@ public static class ShopItemsWeapons
         {
             new ShopItem
             {
-                ItemType = ShopItemType.WeaponRange,
-                Title = $"{Name}, Range",
-                Description = $"Increase range of {Name} by <color=#00ff00>+#VALUE%</color> per rank",
-                BasePrice = 25,
-                PriceMultiplier = 2.0f,
-                MaxLevel = 5,
-                Value = 10,
-                ValueScale = 0.01f,
-                Apply = (bought ) =>
-                {
-                    PlayerUpgrades.Data.MagicMissileRangeMul += bought.Level * bought.Value * bought.ValueScale;
-                }
-            },
-
-            new ShopItem
-            {
                 ItemType = ShopItemType.WeaponCd,
                 Title = $"{Name}, Speed",
                 Description = $"<color=#00ff00>#VALUE%</color> less time between attacks",
@@ -52,6 +36,22 @@ public static class ShopItemsWeapons
                 Apply = (bought ) =>
                 {
                     PlayerUpgrades.Data.MagicMissileBulletsAdd += bought.Level * (int)bought.Value;
+                }
+            },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.WeaponRange,
+                Title = $"{Name}, Range",
+                Description = $"Increase range of {Name} by <color=#00ff00>+#VALUE%</color> per rank",
+                BasePrice = 25,
+                PriceMultiplier = 2.0f,
+                MaxLevel = 5,
+                Value = 10,
+                ValueScale = 0.01f,
+                Apply = (bought ) =>
+                {
+                    PlayerUpgrades.Data.MagicMissileRangeMul += bought.Level * bought.Value * bought.ValueScale;
                 }
             },
 

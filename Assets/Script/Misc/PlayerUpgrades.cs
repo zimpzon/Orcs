@@ -16,7 +16,9 @@ public class UpgradeData
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = true;
     public float SpawnChestChance = 0.1f;
-    public TimeSpan SpawnChestUnlockCriteria_GameTime = new TimeSpan(0, 5, 0);
+    public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
+    public TimeSpan GameStartTime = new(0, 0, 0);
+    public bool CosmeticKing = false;
 
     // gold
     public float MoneyDoubleChance = 0.05f;

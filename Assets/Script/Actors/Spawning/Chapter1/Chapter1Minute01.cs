@@ -9,47 +9,6 @@ public static class Chapter1Minute01
     public static IEnumerable<IEnumerator> GetEvents()
     {
         yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 4,
-            endCount: 7,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Top);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 3,
-            endCount: 5,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Right);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 4,
-            endCount: 7,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Bottom);
-
-        yield return SpawnUtil.SpawnAndMaintain(
-            ActorTypeEnum.OgreEdgy,
-            startTime: new TimeSpan(0, 0, 5),
-            endTime: new TimeSpan(0, 14, 50),
-            startingCount: 3,
-            endCount: 5,
-            maxSpawnCountPerTick: 5,
-            timeBetweenTicks: 1.5f,
-            SpawnDirection.Left);
-
-
-        yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,
                 startTime: new TimeSpan(0, 0, 0),
                 endTime: new TimeSpan(0, 3, 0),

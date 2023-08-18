@@ -8,6 +8,10 @@ public class G : MonoBehaviour
     public static void Dbg(object key, object value)
         => GameManager.SetDebugOutput(key.ToString(), value);
 
+    public int CosmeticArmorKills = 10000;
+    public bool CosmeticArmorUnlocked()
+        => SaveGame.Members.EnemiesKilled > CosmeticArmorKills;
+
     public Color UpgradePositiveColor;
     public Color UpgradeNegativeColor;
     public Color UpgradeNeutralColor;

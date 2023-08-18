@@ -30,7 +30,6 @@ public class OrcController : MonoBehaviour
     Color baseColor_;
     float reviveTime_;
     float nextMeleeSwing_;
-    bool isActive_;
 
     const float MeleeCd = 1.5f;
     const float RunSpeed = 0.25f;
@@ -93,7 +92,6 @@ public class OrcController : MonoBehaviour
 
     public void SetPosition(Vector3 pos, bool startingGame = false)
     {
-        isActive_ = true;
         startPos_ = pos;
         trans_.position = pos;
         target_ = trans_.position;
@@ -103,7 +101,6 @@ public class OrcController : MonoBehaviour
 
     public void ResetAll()
     {
-        isActive_ = false;
         chasePlayer_ = false;
         State = OrcState.Default;
         pickedUp_ = false;
@@ -203,7 +200,7 @@ public class OrcController : MonoBehaviour
         distanceToTarget_ = targetVec_.magnitude;
 
         Vector3 arrowPos = arrow_.localPosition;
-        arrowPos.y = 1.0f + Mathf.Sin(G.D.GameTime * 8) * 0.25f;
+        arrowPos.y = 1.0f + Mathf.Sin(Time.time * 8) * 0.25f;
         arrow_.localPosition = arrowPos;
 
         if (distanceToTarget_ > 0.1f)
