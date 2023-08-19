@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -166,17 +168,23 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(Think());
     }
 
+    List<IPlayerToggleEfffect> toggles_;
+
     public void DisableToggledEffects()
     {
-        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
-        foreach (var toggleEffect in toggleEffects)
+        if (toggles_ == null)
+            toggles_ = FindObjectsOfType<MonoBehaviour>().OfType<IPlayerToggleEfffect>().ToList();
+
+        foreach (var toggleEffect in toggles_)
             toggleEffect.Disable();
     }
 
     public void TryEnableToggledEffects()
     {
-        var toggleEffects = GetComponentsInChildren<IPlayerToggleEfffect>();
-        foreach (var toggleEffect in toggleEffects)
+        if (toggles_ == null)
+            toggles_ = FindObjectsOfType<MonoBehaviour>().OfType<IPlayerToggleEfffect>().ToList();
+
+        foreach (var toggleEffect in toggles_)
             toggleEffect.TryEnable();
     }
 

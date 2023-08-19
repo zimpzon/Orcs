@@ -126,14 +126,15 @@ MonoBehaviour:
   AvoidCrowds: 1
   CrowdScanRadius: 1
   CrowdMaxNearby: 1
-  CrowdOutOfTheWayRange: 4
+  CrowdOutOfTheWayRange: 1
+  CacheReviveCount: 0
   IsBoss: 0
   Mass: 1
   XpValue: 1
   XpCount: 1
   GoldCount: 0
   ActorType: 32
-  BaseHp: 3
+  BaseHp: 15
 --- !u!114 &4416953463048785456
 MonoBehaviour:
   m_ObjectHideFlags: 0

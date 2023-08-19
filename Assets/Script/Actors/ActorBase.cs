@@ -29,7 +29,7 @@ public class ActorBase : MonoBehaviour
     public int CrowdMaxNearby = 3;
     public float CrowdOutOfTheWayRange = 2.5f;
 
-    public int ETag = 0;
+    public int CacheReviveCount = 0;
     public bool IsBoss = false;
     public float Mass = 1.0f;
     public int XpValue = 1;
@@ -90,6 +90,8 @@ public class ActorBase : MonoBehaviour
     protected bool isFrozen_;
     protected bool isLivingBomb_;
     [NonSerialized] public bool IsSpawning = true;
+    [NonSerialized] public int UniqueId;
+    static int UniqueIdCounter = 1;
 
     float paintEnd_;
     Color paintColor_;
@@ -133,6 +135,7 @@ public class ActorBase : MonoBehaviour
 
     public void Awake()
     {
+        UniqueId = UniqueIdCounter++;
         TimeBorn = GameManager.Instance.GameTime;
         transform_ = this.transform;
 
@@ -340,8 +343,6 @@ public class ActorBase : MonoBehaviour
                 PlayerDistanceToClosestEnemy = distanceToPlayer_;
             }
         }
-
-        G.Dbg("isDead", IsDead);
 
         if (IsBoss)
         {
@@ -638,7 +639,7 @@ public class ActorBase : MonoBehaviour
         if (IsBoss)
             return;
 
-        ETag++;
+        CacheReviveCount++;
 
         Reset(init: false);
         ActorCache.Instance.ReturnObject(gameObject);

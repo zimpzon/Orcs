@@ -64,7 +64,7 @@ public class GameInfoViewer : MonoBehaviour, IKillableObject
 
         if (GameManager.Instance.GameTime >= hideTime_)
         {
-           enabled = false;
+           enabled_ = false;
            void OnComplete()
             {
                 text_.text = "";

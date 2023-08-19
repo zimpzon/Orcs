@@ -45,18 +45,18 @@ public static class ShopItemsUnlock
                 }
             },
 
-            new ShopItem
-            {
-                ItemType = ShopItemType.MeleeThrow,
-                Title = ChoicesMeleeThrow.Name,
-                Description = $"You may now discover {ChoicesMeleeThrow.Name} on your journey",
-                BasePrice = 300,
-                MaxLevel = 1,
-                Apply = (BoughtItem bought) =>
-                {
-                    PlayerUpgrades.Data.MeleeThrowBought = true;
-                }
-            },
+            //new ShopItem
+            //{
+            //    ItemType = ShopItemType.MeleeThrow,
+            //    Title = ChoicesMeleeThrow.Name,
+            //    Description = $"You may now discover {ChoicesMeleeThrow.Name} on your journey",
+            //    BasePrice = 300,
+            //    MaxLevel = 1,
+            //    Apply = (BoughtItem bought) =>
+            //    {
+            //        PlayerUpgrades.Data.MeleeThrowBought = true;
+            //    }
+            //},
 
         };
     }

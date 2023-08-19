@@ -49,6 +49,9 @@ public class WeaponMachinegun : WeaponBase
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
         basic.Force = 0.5f;
+        basic.JumpToNearbyTarget = PlayerUpgrades.Data.MagicMissileJumpDamageMul > 0;
+        basic.JumpDamageMul = PlayerUpgrades.Data.MagicMissileJumpDamageMul;
+        basic.DieOnCollision = !basic.JumpToNearbyTarget;
 
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);

@@ -14,6 +14,13 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
+        float volume = 0.0f;
+        if (G.D.GameTime > NextNoise)
+        {
+            volume = 0.05f;
+            NextNoise = G.D.GameTime + 15;
+        }
+
         basic.Speed = 5.0f * weaponScale;
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
@@ -24,7 +31,7 @@ public class WeaponSawblade : WeaponBase
         basic.ReflectOnEdges = true;
         basic.CollisionSound = AudioManager.Instance.AudioData.Chainsaw;
         basic.StickySoundRepeater = AudioManager.Instance.RepeatingSawblade;
-        basic.Volume = 0.3f;
+        basic.Volume = volume;
         basic.RotationSpeed = 360.0f * 2;
         basic.RotationSpeedWhenStuck = 360.0f * 6;
         basic.StickToTarget = true;
@@ -47,6 +54,8 @@ public class WeaponSawblade : WeaponBase
         ProjectileManager.Instance.Fire(basic);
     }
 
+    static float NextNoise;
+
     public override void Fire(Transform weaponTrans, Vector3 direction, int sortingLayer, out float recoil)
     {
         lastFire_ = G.D.GameTime;
@@ -61,6 +70,7 @@ public class WeaponSawblade : WeaponBase
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
 
+        basic.Volume = 0.02f;
         basic.Speed = 5.0f;
         basic.Damage = 2.0f;
         basic.DamageFalloffDistance = 0.0f;

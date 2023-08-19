@@ -59,14 +59,14 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         // The edgy gauards must always be there, no matter where game starts
         RunAll(Chapter1Minute01.EdgyGuards());
 
-        if (G.D.GameTime < 5)
+        if (G.D.GameTime < 20)
             RunAll(Chapter1Minute01.GetEvents());
 
         const float Min3 = 60 * 3;
         while (GameManager.Instance.GameTime < Min3)
             yield return null;
 
-        if (G.D.GameTime < Min3 + 5)
+        if (G.D.GameTime < Min3 + 20)
             RunAll(Chapter1Minute03.GetEvents());
 
 
@@ -74,7 +74,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         while (GameManager.Instance.GameTime < Min6)
             yield return null;
 
-        if (G.D.GameTime < Min6 + 5)
+        if (G.D.GameTime < Min6 + 20)
             RunAll(Chapter1Minute06.GetEvents());
 
 
@@ -82,7 +82,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         while (GameManager.Instance.GameTime < Min10)
             yield return null;
 
-        if (G.D.GameTime < Min10 + 5)
+        if (G.D.GameTime < Min10 + 20)
             RunAll(Chapter1Minute10.GetEvents());
 
 
@@ -90,7 +90,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         while (GameManager.Instance.GameTime < Min14)
             yield return null;
 
-        if (G.D.GameTime < Min14 + 5)
+        if (G.D.GameTime < Min14 + 20)
             RunAll(Chapter1Minute14.GetEvents());
 
 

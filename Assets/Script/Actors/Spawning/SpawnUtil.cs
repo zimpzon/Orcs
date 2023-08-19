@@ -85,7 +85,7 @@ namespace Assets.Script.Actors.Spawning
                     for (int i = 0; i < alive.Count; ++i)
                     {
                         var m = alive[i];
-                        if (m.Actor.IsDead || m.Actor.ETag != m.ETag)
+                        if (m.Actor.IsDead || m.Actor.CacheReviveCount != m.ETag)
                         {
                             alive.RemoveAt(i);
                             removed = true;
@@ -118,7 +118,7 @@ namespace Assets.Script.Actors.Spawning
                         spawn.SetActive(true);
 
                         var actor = spawn.GetComponent<ActorBase>();
-                        alive.Add(new Maintained { Actor = actor, ETag = actor.ETag });
+                        alive.Add(new Maintained { Actor = actor, ETag = actor.CacheReviveCount });
                     }
 
                     RemoveDead();

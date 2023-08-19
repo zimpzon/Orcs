@@ -27,6 +27,7 @@ public enum ShopItemType
     TimeTravellerC,
     CosmeticArmor,
     CosmeticHearts,
+    WeaponJump,
 }
 
 [Serializable]
@@ -210,7 +211,7 @@ public static class ShopItems
             {
                 ItemType = ShopItemType.TimeScale,
                 Title = "Fast Forward",
-                Description = $"Time passes <color=#afff00>10%</color> faster per rank, can be lowered in pause menu",
+                Description = $"Time passes <color=#00ff00>10%</color> faster per rank, can be lowered in pause menu",
                 BasePrice = 1,
                 PriceMultiplier = 1,
                 MaxLevel = 3,

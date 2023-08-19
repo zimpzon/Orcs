@@ -15,7 +15,7 @@ public static class ShopItemsWeapons
                 BasePrice = 30,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 6,
-                Value = 8,
+                Value = 10,
                 ValueScale = 0.01f,
                 Apply = (bought ) =>
                 {
@@ -31,7 +31,7 @@ public static class ShopItemsWeapons
                 BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 8,
-                Value = 0.5f,
+                Value = 0.6f,
                 ValueScale = 1,
                 Apply = (bought ) =>
                 {
@@ -59,7 +59,7 @@ public static class ShopItemsWeapons
             {
                 ItemType = ShopItemType.WeaponTripleShot,
                 Title = $"{Name}, Dagger storm",
-                Description = $"Throw <color=#00ff00>2</color> more daggers per rank, each doing <color=#00ff00>5%</color> damage",
+                Description = $"Throw <color=#00ff00>2</color> secondary knives per rank, each doing <color=#00ff00>5%</color> damage",
                 BasePrice = 100,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 5,
@@ -71,6 +71,21 @@ public static class ShopItemsWeapons
                 }
             },
 
+            new ShopItem
+            {
+                ItemType = ShopItemType.WeaponJump,
+                Title = $"{Name}, Seek",
+                Description = $"Continue to nearby targets doing <color=#00ff00>6%</color> damage per rank",
+                BasePrice = 100,
+                PriceMultiplier = 2.0f,
+                MaxLevel = 5,
+                Value = 6.0f,
+                ValueScale = 0.01f,
+                Apply = (bought ) =>
+                {
+                    PlayerUpgrades.Data.MagicMissileJumpDamageMul += bought.Value * bought.ValueScale * bought.Level;
+                }
+            },
         };
     }
 }

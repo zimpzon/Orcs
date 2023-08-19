@@ -14,6 +14,16 @@ public class ActorOgreShamanBossShoot : MonoBehaviour
     void OnEnable()
     {
         StartCoroutine(Think());
+        StartCoroutine(Move());
+    }
+
+    IEnumerator Move()
+    {
+        while (!actorBase_.IsFullyReady)
+            yield return null;
+
+        actorBase_.SetForcedTarget(Vector2.zero, despawnAtDestination: false, breakAtDamage: false, targetType: ActorForcedTargetType.Absolute);
+        yield return null;
     }
 
     void Shoot()
@@ -32,7 +42,7 @@ public class ActorOgreShamanBossShoot : MonoBehaviour
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsPlayer;
 
-        basic.Speed = 5.0f;
+        basic.Speed = 3.5f;
         basic.Damage = 50.0f;
         basic.MaxDistance = 20.0f;
         basic.Radius = 0.3f;
@@ -66,7 +76,7 @@ public class ActorOgreShamanBossShoot : MonoBehaviour
         {
             if (actorBase_.IsFullyReady && GameManager.Instance.GameTime > nextShoot)
             {
-                int projectileCount = 2;
+                int projectileCount = 5;
 
                 for (int i = 0; i < projectileCount; ++i)
                 {

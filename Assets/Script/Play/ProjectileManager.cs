@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static ProjectileManager;
 
 public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager.Basic>
 {
@@ -22,6 +23,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
         public void Reset()
         {
+            PreviousJumpTargets.Clear();
             SpriteInfo.Renderer = null;
             SpriteInfo.Transform = null;
             Position = Vector3.zero;
@@ -58,6 +60,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             Volume = 1.0f;
         }
 
+        public List<ActorBase> PreviousJumpTargets = new (5);
         public ProjectileInfo SpriteInfo;
         public Vector3 Position;
         public Color Color;
@@ -82,6 +85,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public bool ReflectOnEdges;
         public float RotationSpeed;
         public float RotationSpeedWhenStuck;
+        public bool JumpToNearbyTarget;
+        public float JumpDamageMul;
         public bool StickToTarget;
         public float StickyDamageCd;
         public float StickyDamageTimeNext;
@@ -218,7 +223,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 1.5f);
+                        var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 2.5f);
 
                         bool hasNearbyEnemy = closestEnemy != null;
                         if (hasNearbyEnemy)
@@ -247,8 +252,21 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                     // Find enemies hit by projectile
                     if (BlackboardScript.GetEnemies(p.Position, p.Radius) > 0)
                     {
+                        bool alreadyVisited = false;
                         const int IdxFirst = 0;
                         ActorBase enemy = BlackboardScript.EnemyOverlap[IdxFirst];
+                        if (p.PreviousJumpTargets.Count > 0)
+                        {
+                            for (int j = 0; j < p.PreviousJumpTargets.Count; ++j)
+                            {
+                                if (p.PreviousJumpTargets[j].UniqueId == enemy.UniqueId)
+                                {
+                                    alreadyVisited = true;
+                                    break;
+                                }
+                            }
+                        }
+
                         if (p.StickToTarget)
                         {
                             // Begin sticking to target
@@ -268,7 +286,28 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         }
                         else
                         {
-                            GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
+                            if (!alreadyVisited)
+                            {
+                                bool isFirstHit = p.PreviousJumpTargets.Count == 0;
+                                if (!isFirstHit)
+                                    damage *= p.JumpDamageMul;
+
+                                GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
+
+                                if (p.JumpToNearbyTarget)
+                                {
+                                    p.PreviousJumpTargets.Add(enemy);
+                                    var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
+
+                                    bool hasNearbyEnemy = closestEnemy != null;
+                                    if (hasNearbyEnemy)
+                                    {
+                                        p.Direction = (closestEnemy.transform.position - p.Position).normalized;
+                                        float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                                        p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+                                    }
+                                }
+                            }
                         }
 
                         if (p.DieOnCollision)

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class ChoicesPoison
 {
     static Action<List<Choice>> delayedAdd_;
-    public const string Name = "Dagger of Pestilence";
+    public const string Name = "Venon Vortex";
 
     public static List<Choice> GetPoisonChoices(Action<List<Choice>> delayedAdd)
     {
@@ -21,7 +20,7 @@ public static class ChoicesPoison
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = $"Slows and damages enemies",
+                    Description = $"Damages and slows enemies",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballActiveInRound = true;
@@ -40,111 +39,21 @@ public static class ChoicesPoison
             new Choice
             {
                 Title = $"{Name}, range (1)",
-                Description = "Range <color=#00ff00>+10%</color>",
+                Description = "Range <color=#00ff00>+30%</color>, damage <color=#00ff00>+10%</color>",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PaintballRangeMul += 0.1f;
-                },
-                NextLevel = new Choice
-                {
-                    Title = $"{Name}, range (2)",
-                    Description = "Range <color=#00ff00>+10%</color>",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.PaintballRangeMul += 0.1f;
-                    },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, range (3)",
-                        Description = "Range <color=#00ff00>+15%</color>",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.PaintballRangeMul += 0.15f;
-                        },
-                        NextLevel = new Choice
-                        {
-                            Title = $"{Name}, range (4)",
-                            Description = "Range <color=#00ff00>+15%</color>",
-                            Apply = () =>
-                            {
-                                PlayerUpgrades.Data.PaintballRangeMul += 0.15f;
-                            },
-                        }
-                    }
-                }
-            },
-
-            new Choice
-            {
-                Title = $"{Name}, damage (1)",
-                Description = "Does <color=#00ff00>10%</color> more damage/sec",
-                Apply = () =>
-                {
+                    PlayerUpgrades.Data.PaintballRangeMul += 0.3f;
                     PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.1f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = $"{Name}, damage (2)",
-                    Description = "Does <color=#00ff00>10%</color> more damage/sec",
+                    Title = $"{Name}, range (2)",
+                Description = "Range <color=#00ff00>+30%</color>, damage <color=#00ff00>+10%</color>",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.1f;
+                        PlayerUpgrades.Data.PaintballRangeMul += 0.3f;
+                    PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.1f;
                     },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, damage (3)",
-                        Description = "Does <color=#00ff00>15%</color> more damage/sec",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.15f;
-                        },
-                        NextLevel = new Choice
-                        {
-                            Title = $"{Name}, damage (4)",
-                            Description = "Does <color=#00ff00>20%</color> more damage/sec",
-                            Apply = () =>
-                            {
-                                PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.2f;
-                            },
-                        }
-                    }
-                }
-            },
-
-            new Choice
-            {
-                Title = $"{Name}, amount (1)",
-                Description = "<color=#00ff00>+4</color> daggers thrown",
-                Apply = () =>
-                {
-                    PlayerUpgrades.Data.PaintballCount += 4;
-                },
-                NextLevel = new Choice
-                {
-                    Title = $"{Name}, amount (2)",
-                    Description = "<color=#00ff00>+4</color> daggers thrown",
-                    Apply = () =>
-                    {
-                        PlayerUpgrades.Data.PaintballCount += 4;
-                    },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, amount (3)",
-                        Description = "<color=#00ff00>+4</color> daggers thrown",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.PaintballCount += 4;
-                        },
-                        NextLevel = new Choice
-                        {
-                            Title = $"{Name}, amount (4)",
-                            Description = "<color=#00ff00>+4</color> daggers thrown",
-                            Apply = () =>
-                            {
-                                PlayerUpgrades.Data.PaintballCount += 4;
-                            },
-                        }
-                    }
                 }
             },
         };

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class ChoicesSawblade
 {
     static Action<List<Choice>> delayedAdd_;
-    public const string Name = "Saw of Sacrilege";
+    public const string Name = "Cutter Comet";
 
     public static List<Choice> GetSawbladeChoices(Action<List<Choice>> delayedAdd)
     {
@@ -40,46 +39,34 @@ public static class ChoicesSawblade
         {
             new Choice
             {
-                Title = $"{Name}, Durability (1)",
-                Description = "Sawblade is <color=#00ff00>30%</color> more durable",
+                Title = $"{Name}, Mayhem (1)",
+                Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
                 Apply = () =>
                 {
+                    float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
+                    PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
                     PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                 },
                 NextLevel = new Choice
                 {
-                    Title = $"{Name}, Speed (1)",
-                    Description = "<color=#00ff00>+20%</color> shorter cooldown",
+                    Title = $"{Name}, Mayhem (2)",
+                    Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.SawBladeCdMul -= 0.2f;
+                        float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
+                        PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
+                        PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                     },
                     NextLevel = new Choice
                     {
-                        Title = $"{Name}, Durability (2)",
-                        Description = "Sawblade is <color=#00ff00>30%</color> more durable",
+                        Title = $"{Name}, Mayhem (3)",
+                        Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
                         Apply = () =>
                         {
+                            float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
+                            PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
                             PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
                         },
-                        NextLevel = new Choice
-                        {
-                            Title = $"{Name}, Speed (2)",
-                            Description = "<color=#00ff00>+20%</color> shorter cooldown",
-                            Apply = () =>
-                            {
-                                PlayerUpgrades.Data.SawBladeCdMul -= 0.2f;
-                            },
-                            NextLevel = new Choice
-                            {
-                                Title = $"{Name}, Durability (3)",
-                                Description = "Sawblade is <color=#00ff00>30%</color> more durable",
-                                Apply = () =>
-                                {
-                                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
-                                },
-                            }
-                        }
                     }
                 }
             },

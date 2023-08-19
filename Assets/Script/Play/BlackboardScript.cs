@@ -159,7 +159,7 @@ namespace Assets.Script
             return Physics2D.OverlapCircleNonAlloc(pos, radius, RawEnemyOverlap, 1 << GameManager.Instance.LayerEnemy);
         }
 
-        public static ActorBase GetIdxClosestEnemy(Vector3 pos, float radius)
+        public static ActorBase GetIdxClosestEnemy(Vector3 pos, float radius, List<ActorBase> skipList = null)
         {
             int count = Physics2D.OverlapCircleNonAlloc(pos, radius, RawEnemyOverlap, 1 << GameManager.Instance.LayerEnemy);
 
@@ -172,11 +172,27 @@ namespace Assets.Script
 
                 if (enemy != null && enemy.Hp > 0)
                 {
-                    float distance = Vector3.Distance(pos, enemy.transform.position);
-                    if (distance < closestDist)
+                    bool isSkipped = false;
+                    if (skipList != null)
                     {
-                        closestDist = distance;
-                        closestEnemy = enemy;
+                        for (int j = 0; j < skipList.Count; ++j)
+                        {
+                            if (skipList[j].UniqueId == enemy.UniqueId)
+                            {
+                                isSkipped = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!isSkipped)
+                    {
+                        float distance = Vector3.Distance(pos, enemy.transform.position);
+                        if (distance < closestDist)
+                        {
+                            closestDist = distance;
+                            closestEnemy = enemy;
+                        }
                     }
                 }
             }

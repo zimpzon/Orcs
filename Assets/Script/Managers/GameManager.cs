@@ -419,7 +419,7 @@ public class GameManager : MonoBehaviour
                     G.D.PlayerScript.RoundComplete = true;
                     ShowTitle(autoStartGame: true);
                 }
-                else if (GoBack())
+                else if (GoBack() || G.D.PlayerScript.RoundComplete == true)
                 {
                     G.D.PlayerScript.RoundComplete = true;
                     ShowTitle();
@@ -430,6 +430,12 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void GameOverPanelBackButtonClicked()
+    {
+        // this should break the while (GameState == State.Dead) loop
+        G.D.PlayerScript.RoundComplete = true;
     }
 
     void SetChoicesVisible(bool visible)
@@ -499,7 +505,7 @@ public class GameManager : MonoBehaviour
         UpgradeChoice4.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
 
         AudioListener.pause = true;
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.75f, pitch: 1.0f, ignoreListenerPause: true);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.3f, pitch: 0.9f, ignoreListenerPause: true);
 
         Time.timeScale = 0.0f;
         PauseGameTime = true;
@@ -944,17 +950,18 @@ public class GameManager : MonoBehaviour
     public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)
     {
         FlyingBlood.transform.position = pos;
-        int rangeFrom = Mathf.RoundToInt(10 * amount);
+        int rangeFrom = Mathf.RoundToInt(2 * amount);
         if (rangeFrom > 8)
             rangeFrom = 8;
-        FlyingBlood.Emit(UnityEngine.Random.Range(rangeFrom, rangeFrom + 5));
+
+        FlyingBlood.Emit(UnityEngine.Random.Range(rangeFrom, rangeFrom + 2));
 
         BloodDrops.transform.position = pos;
-        BloodDrops.Emit(Mathf.RoundToInt(1 + (0.25f * amount)));
+        BloodDrops.Emit(Mathf.RoundToInt(1 + (0.1f * amount)));
 
         if (UnityEngine.Random.value <= floorBloodRnd)
         {
-            int bloodAmount = Mathf.RoundToInt(1 + (0.25f * amount));
+            int bloodAmount = Mathf.RoundToInt(1 + (0.1f * amount));
             if (bloodAmount > 8)
                 bloodAmount = 8;
 
@@ -985,13 +992,16 @@ public class GameManager : MonoBehaviour
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
     {
         amount *= PlayerUpgrades.Data.DamageMul;
+        if (amount < 1)
+            amount = 1;
+
         bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;
         if (isCrit)
             amount *= PlayerUpgrades.Data.CritValueMul;
 
         enemy.ApplyDamage(amount, direction, forceModifier);
 
-        MakeFlash(enemy.transform.position, 1.5f);
+        //MakeFlash(enemy.transform.position, 0.5f);
 
         string text = string.Concat("-", ((int)(amount + 0.5f)).ToString());
 

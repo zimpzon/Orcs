@@ -3,18 +3,13 @@ using UnityEngine;
 
 public class UpgradeData
 {
-    public class CounterClass
-    {
-        public float PaintballTimer;
-    }
-
     // global
     public float DamageMul = 1.0f;
     public float BaseCritChance = 0.05f;
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
-    public bool SpawnChestUnlocked = true;
+    public bool SpawnChestUnlocked = false;
     public float SpawnChestChance = 0.1f;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
@@ -46,7 +41,7 @@ public class UpgradeData
     public int RescueDuckHp = 5;
 
     // weapons
-    public float MagicMissileBaseDamage = 40.0f;
+    public float MagicMissileBaseDamage = 45.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileBaseBulletCd = 0.15f;
     public float MagicMissileBaseCd = 2.0f;
@@ -55,8 +50,9 @@ public class UpgradeData
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
-    public float MagicMissileBaseBullets = 4;
+    public float MagicMissileBaseBullets = 5;
     public float MagicMissileBulletsAdd = 0.0f;
+    public float MagicMissileJumpDamageMul = 0.0f;
     public int MagicMissileMultiShots = 0;
 
     public bool MeleeThrowBought = false;
@@ -90,14 +86,14 @@ public class UpgradeData
     public float BurstOfFrostCdMul = 1.0f;
     public float BurstOfFrostBaseRange = 2.0f;
     public float BurstOfFrostRangeMul = 1.0f;
-    public float BurstOfFrostBaseFreezeChance = 0.7f;
+    public float BurstOfFrostBaseFreezeChance = 0.8f;
     public float BurstOfFrostFreezeChanceMul = 1.0f;
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;
 
     public bool PaintballBought = false;
     public bool PaintballActiveInRound = false;
-    public float PaintballBaseRange = 3.0f;
+    public float PaintballBaseRange = 2.5f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
     public float PaintballBaseSlowMul = 0.9f; // slow amount at mass = 1
@@ -106,7 +102,7 @@ public class UpgradeData
     public float PaintballCd = 3.0f;
     public float PaintballCdMul = 1.0f;
     public int PaintballCount = 12;
-    public float PaintballBaseDamagePerSec = 50.0f;
+    public float PaintballBaseDamagePerSec = 25.0f;
     public float PaintballDamagePerSecMul = 1.0f;
 
     // circling axe
@@ -126,8 +122,6 @@ public class UpgradeData
 
     public bool OrcJedisEnabled = false;
     public float OrcJediKnockBackForceMul = 1.0f;
-
-    public CounterClass Counters = new ();
 }
 
 public class PlayerUpgrades : MonoBehaviour

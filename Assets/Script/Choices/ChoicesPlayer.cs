@@ -1,4 +1,3 @@
-using Assets.Script;
 using System.Collections.Generic;
 
 public static class ChoicesPlayer
