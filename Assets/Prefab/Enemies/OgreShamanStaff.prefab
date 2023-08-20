@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d928ce3c11d70c64bb1d53d75810bac8, type: 3}
-  m_Color: {r: 0.96325487, g: 1, b: 0.851, a: 1}
+  m_Color: {r: 0.764151, g: 0.71812797, b: 0.2559185, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -121,16 +121,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7f1a4e4f34421874a9e14c631c84f83c, type: 3}
   - {fileID: 21300000, guid: b123c4bda63b43348a2cf36431b0ad48, type: 3}
   - {fileID: 21300000, guid: 592294bf3f8e2474a9fe3c4c1223a490, type: 3}
-  CanBeFrozen: 1
+  CanBeFrozen: 0
   CanBePoisened: 1
-  Speed: 0.75
+  Speed: 1
   AvoidCrowds: 1
   CrowdScanRadius: 1
-  CrowdMaxNearby: 3
-  CrowdOutOfTheWayRange: 2.5
+  CrowdMaxNearby: 1
+  CrowdOutOfTheWayRange: 1
+  CacheReviveCount: 0
   IsBoss: 0
   Mass: 0.5
-  XpValue: 1
+  XpValue: 5
   XpCount: 5
   GoldCount: 0
   ActorType: 7

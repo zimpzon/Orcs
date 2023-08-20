@@ -147,7 +147,7 @@ public class WeaponBase
                     PaintballRandom = new WeaponPaintballRandom();
                     PaintballRandom.Type = WeaponType.PaintBallRandom;
                     PaintballRandom.Scale = new Vector3(1.5f, 4.0f, 1.0f);
-                    PaintballRandom.BulletSprite = SpriteData.Instance.PlayerDagger;
+                    PaintballRandom.BulletSprite = SpriteData.Instance.IcyShamanProjectile;
                     PaintballRandom.Muzzle = new Vector3(0.0f, 0.0f, 0.0f);
                     PaintballRandom.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
                     PaintballRandom.MoveSpeedModifier = 1.0f;

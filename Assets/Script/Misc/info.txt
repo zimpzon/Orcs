@@ -1,7 +1,30 @@
-﻿Upload:
-  unity play
-  itch io
-  newgrounds
+﻿FIRST RULE OF SUPER KNIGHT:
+  DO NOT RELEASE EARLY OUT OF BOREDOM OR BURNOUT! THIS DESTROYS ALL THE WORK!
+    Core gameplay is FUN. DO NOT GIVE UP, POSTPONE!
+  DO IT AS A HOBBY, RELAX!!! DO NOT RELEASE OMG OMG OMG
+
+UNLOCK info after round
+ list of not unlocked: { action<bool>, name }
+ loop list, SHOW!
+
+
+title page swag
+SWAG!!! more satisfying kills in the beginning? other has nice skellie die sound, satisfying
+
+
+CHOICE: Spawn a chest (if unlocked)
+LESSEN XP requirements after a certain level. XP drops does not keep up?
+BUG:
+  KNIFE IS SILENT
+
+  no enemies showing up at 00:00 (had correct color)
+  NO COLOR change at 00:00 (but had enemies I think)
+  such related, much wow
+
+
+OMG OMG valu and valueScale saved in save game, so changing them in code has no effect!
+
+Cutter Comet should be unlock
 
 CAM: 8.4
 
@@ -10,64 +33,13 @@ right:  12,5
 top:     8,0
 bottom: -8,0
 
-CHAPTERS
---------
-first duck: ui to select chapter? and speed per chapter? x1, x2, x3, x4. GOLD IS DOUBLED WITH SPEED??
-BOSS must be cool or get out. Phases. Talk?
-
-
-  swirling swords OR shields that clears a path? small one pushes in, large ones out? (SUCK in enemies? need cool thing, move around in some cool way?)
-   SWAG could be a few small circles, then blast aginst player, and right past out of the screen.
-
-  (sawblades) saw of sacrilege (of sadness (for your enemy))
-
-BUGS
-  POISON completely skips some cycles, others has 1 dagger or so. Cache empty??
-  dying WITHOUT seing how!
-  knife count seems wrong when adding % (use non-%?)
-  level up pause while an enemy is flying dead keeps spraying blood.
-  reset of weapons fokked up?
-
-SMART DESIGN
-  MORE COWBELL! flash when enemies die?
-  smaller player hitbox? already tiny.
-  SAW FRONTROW! no unlock? more blood? some flashing and dust?
-  MORE SWAG AND MORE DODGING, need more paths between enemies. groups of enemies could work.
-  DECREASE rewards for repeated choices instead of increase! Encourages diversification!
- the most fun so far is moving between spread out enemies and escaping. Much fun!
-   can this be expanded upon? ablities that carves paths?
  PITCH OF pickup xp increases
- Bosses could cycle through gold, weapon, rambo, starting at a random place.
- VAMPIRE SURVIVORS use simple choices and details on mouseover. And buy button at mouseover menu.
- really need current and new value for choices
- friendly is blue'ish, deadly is red'ish.
- synergies for choices, aha-moments for players, feels good (chance to X on shot + attack speed)
 
-BRAINSTORM
-  AUTO GEN levels. Seed + mobtypes, etc. Then Set up the timeline until EXIT opens!
- sword explodes at furthest point
  +experience upgrade
-LOSE ALL GOLD BUT PERMANENTLY +dam and +gold (buy shop item) (MIGHT ALSO work just with a high price, easier to implement but u dont get the "feeling")
-  background in title screen could have moving enemies.
-  can "ascending" like Cookie Clicker be done? Possibly with new chars? reset all progress and get double gold and xp? could be greyed out button with explanation.
-  enemies that follows paths and just shoots?
-  shield/sword enemies loses items which flies away, and continues as plain enemies.
-  use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
-  chance to deflect projectiles? make 'em blue.
-  hit furthest enemy :)
-  chain-something, lightning...
-  drop stuff that attacks when an enemy is close
-  pool of stuff on the floor
-  ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
-  spawn large stationary enemies? either shooting or just being in the way. Could use avoidance for actors.
-  horn of Orcdor: every 10 seconds the baby orc will walk towards you OR if not picked up for X seconds
 
-SPAWNS
-  background color change for incoming danger! bosses, waves etc.
-   moving wall of big ogres, need to shoot hole (move backwards lolz?)
-   shapes, desired moving target (ex formations)
-   PRIORITY destinations. 100% = ignore player, 50% = half notice range
-  LIKE DIABLO: add icons/colored auras to enemies for easy reuse. High hp, fast, etc.
+  use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
+
+  ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
 
 
 https://www.assetstore.unity3d.com/en/#!/content/29304
@@ -75,52 +47,26 @@ https://www.assetstore.unity3d.com/en/#!/content/40252
 https://www.assetstore.unity3d.com/en/#!/content/27080
 https://www.assetstore.unity3d.com/en/#!/content/28729
 
-Weapons:
-https://www.assetstore.unity3d.com/en/#!/content/53117 
 
 
-small ogre, shield1
-  shield2 are the same with larger (cooler shield) could be later waves)
-  unarmed are the same, just no shield and no weapon
-
-creatures_pack
-
-  Shield1/1/LVL0_: plain
-  Shield1/9/LVL0_: bronze mask, red eyes
-  Shield1/11/LVL0_: white skull mask
-  Shield1/17/LVL0_: full face iron mask
-  Shield1/19/LVL0_: full face iron mask, one red eye
-
-  Shield2/1/LVL0_: plain
-  Shield2/9/LVL0_: bronze mask, red eyes
-  Shield2/11/LVL0_: white skull mask
-  Shield2/17/LVL0_: full face iron mask
-  Shield2/19/LVL0_: full face iron mask, one red eye
-
-  unarmed/1/LVL0_: unarmed, plain
-  unarmed/9/LVL0_: unarmed, bronze mask, red eyes
-  unarmed/11/LVL0_: unarmed, white skull mask
-  unarmed/17/LVL0_: unarmed, full face iron mask
-  unarmed/19/LVL0_: unarmed, full face iron mask, one red eye
-
-Medieval_Warriors_Pack
-  Knight2\Sword\Walking: cool red stuff on head, iron armor
-
-Monsters_Pirates_Pack
-
-  Monster1\Walking: our plain ogre
-  Monster2\Walking\gun: ogre read headband, weapon
-  Monster2\Walking\no_gun: ogre read headband, unarmed
-  Monster3\Walking: skeleton
-  Monster4\Walking\gun: our skellie caster, with staff
-  Monster4\Walking\no_gun: our skellie caster, unarmed
+------------------ FOH FOH FOH ------------------
 
 
-  pirate1\Walking\gun: human pirate, head bandana, gun
-  pirate1\Walking\no_gun: human pirate, head bandana, unarmed
-  pirate2\Walking\gun: red beard, captains hat, gun
-  pirate2\Walking\no_gun: red beard, captains hat, gun
-  pirate3\Walking: red cape, looks important, unarmed
-  pirate4\Walking: a duck...unarmed
-  pirate5\Walking\gun: no shirt, gun
-  pirate5\Walking\no_gun: no shirt, unarmed
+Kyougou:
+
+Not related but a pierce mod would make range on knives a much more desirable stat.
+An alternative to the fan of knives could be a chain effect? Where the knife jumps to the nearest enemy and then you could have more chains for this effect vs more pierce for the fan effect.
+
+
+Edaw:
+
+Burst of frost/dagger storm is what trivializes things once you get a few upgrades. Then any combination of haste, defense, heal (i tend to take the duck heal instead of regen) will make things easy provided you keep an eye on casters. I tend to bum rush them to freeze them. The axe and saw are just gravy, so I only upgrade them when nothing better presents itself. I wasn't impressed with darkness, poison, or lightsaber penguin, so never chose them. I don't have good replacement suggestions but will give it some thought.
+
+The only real threat I find is from casters. Change those fireballs to snowballs, increase fire rate (1.5 maybe), and make them immune to frost (for lore reasons).
+
+Caliane:
+
+Path of exile handles crits well. (it does also have the crit/crit damage problem) but it also smartlydid something else. Crits apply ailments. freeze, burn, shock, stun.
+That would work great here imho. If crits applied a stun, pushback, or bleed effect for example. its way more interesting then just double dipping damage scaling.
+
+

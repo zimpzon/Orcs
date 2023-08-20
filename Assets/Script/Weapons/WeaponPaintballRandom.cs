@@ -20,7 +20,6 @@ public class WeaponPaintballRandom : WeaponBase
         recoil = 0.0f;
         Color color = PoisonDaggers.Instance.Color;
 
-        GameManager.Instance.MakeFlash(point);
         AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.4f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
@@ -44,7 +43,7 @@ public class WeaponPaintballRandom : WeaponBase
         basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
 
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+        basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
         ProjectileManager.Instance.Fire(basic);
     }

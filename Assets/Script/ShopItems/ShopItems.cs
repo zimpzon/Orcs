@@ -141,7 +141,7 @@ public static class ShopItems
         }
 
         SaveGame.Members.MoneySpentInShop -= refunded;
-        SaveGame.Members.BoughtItems[itemType] = bought;
+        SaveGame.Members.BoughtItems.Remove(itemType);
 
         UpdateBoughtItems();
         GameManager.Instance.OnItemBought(itemType);

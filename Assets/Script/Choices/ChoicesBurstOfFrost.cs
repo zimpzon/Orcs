@@ -20,7 +20,7 @@ public static class ChoicesBurstOfFrost
                 new Choice
                 {
                     Title = $"Equip {Name}",
-                    Description = "Chance to freeze nearby enemies",
+                    Description = "Chance to freeze nearby enemies, magic users cannot be frozen",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.BurstOfFrostEnabledInRound = true;

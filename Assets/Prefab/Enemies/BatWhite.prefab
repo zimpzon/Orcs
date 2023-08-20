@@ -127,10 +127,10 @@ MonoBehaviour:
   CrowdScanRadius: 1
   CrowdMaxNearby: 1
   CrowdOutOfTheWayRange: 4
-  ETag: 0
+  CacheReviveCount: 0
   IsBoss: 0
   Mass: 1
-  XpValue: 1
+  XpValue: 3
   XpCount: 1
   GoldCount: 0
   ActorType: 31

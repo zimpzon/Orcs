@@ -9,6 +9,7 @@ public class SpriteData : MonoBehaviour
         Instance = this;
     }
 
+    public Sprite IcyShamanProjectile;
     public Sprite ShamanProjectile;
     public Sprite PlayerDagger;
     public Sprite RoundBullet;

@@ -10,7 +10,7 @@ public enum ActorTypeEnum
     OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
     OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
     PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy, ReaperBoss, BatWhite, BatRed,
-    SpikyBall,
+    SpikyBall, OgreIcyShamanStaff,
 };
 
 public enum ActorForcedTargetType { Absolute, Direction };
