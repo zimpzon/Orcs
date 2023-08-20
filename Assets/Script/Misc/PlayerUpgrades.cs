@@ -10,7 +10,6 @@ public class UpgradeData
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
-    public float SpawnChestChance = 0.1f;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
     public bool CosmeticKing = false;
@@ -93,7 +92,6 @@ public class UpgradeData
 
     public bool PaintballBought = false;
     public bool PaintballActiveInRound = false;
-    public float PaintballBaseRange = 3.5f;
     public float PaintballRangeMul = 1.0f;
     public float PaintballBaseSpeed = 5.0f;
     public float PaintballBaseSlowMul = 0.9f; // slow amount at mass = 1
@@ -101,7 +99,7 @@ public class UpgradeData
     public float PaintballDurationMul = 1.0f;
     public float PaintballCd = 3.0f;
     public float PaintballCdMul = 1.0f;
-    public int PaintballCount = 12;
+    public float PaintballPerSec = 9;
     public float PaintballBaseDamagePerSec = 25.0f;
     public float PaintballDamagePerSecMul = 1.0f;
 

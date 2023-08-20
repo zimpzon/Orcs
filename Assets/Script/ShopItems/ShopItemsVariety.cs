@@ -26,7 +26,6 @@ public static class ShopItemsVariety
                         return;
 
                     PlayerUpgrades.Data.SpawnChestUnlocked = true;
-                    PlayerUpgrades.Data.SpawnChestChance = bought.Value * bought.ValueScale * bought.Level;
                 },
                 Customize = (shopItem) =>
                 {

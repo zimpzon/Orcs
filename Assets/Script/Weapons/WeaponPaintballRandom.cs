@@ -28,7 +28,7 @@ public class WeaponPaintballRandom : WeaponBase
 
         basic.Damage = damage;
         basic.Speed = PlayerUpgrades.Data.PaintballBaseSpeed;
-        basic.MaxDistance = PlayerUpgrades.Data.PaintballBaseRange * PlayerUpgrades.Data.PaintballRangeMul;
+        basic.MaxDistance = 10;
         basic.Radius = 0.3f;
         basic.DieOnCollision = false;
         basic.CustomCounter = 1;

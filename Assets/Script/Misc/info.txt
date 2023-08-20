@@ -12,11 +12,12 @@ title page swag
 SWAG!!! more satisfying kills in the beginning? other has nice skellie die sound, satisfying
 
 
+->>
 CHOICE: Spawn a chest (if unlocked)
 LESSEN XP requirements after a certain level. XP drops does not keep up?
-BUG:
-  KNIFE IS SILENT
+more fitting menus
 
+BUG:
   no enemies showing up at 00:00 (had correct color)
   NO COLOR change at 00:00 (but had enemies I think)
   such related, much wow

@@ -361,7 +361,7 @@ public class ActorBase : MonoBehaviour
             }
             else
             {
-                forcedDistinationReached = IsFullyReady && !GameManager.Instance.IsOutsideBounds(position_);
+                forcedDistinationReached = IsFullyReady && GameManager.Instance.IsOutsideBounds(position_);
             }
 
             if (forcedDistinationReached)

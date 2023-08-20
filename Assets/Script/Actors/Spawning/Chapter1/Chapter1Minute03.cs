@@ -87,7 +87,7 @@ public static class Chapter1Minute03
             ActorTypeEnum.BatWhite,
             startTime: new TimeSpan(0, 5, 54),
             endTime: new TimeSpan(0, 6, 6),
-            spawnCountPerTick: 15,
+            spawnCountPerTick: 18,
             timeBetweenTicks: 1,
             SpawnDirection.Any);
 

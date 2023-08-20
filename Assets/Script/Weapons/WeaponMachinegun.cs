@@ -11,11 +11,11 @@ public class WeaponMachinegun : WeaponBase
         IsPrimary = true;
         Color color = new (256 / 255.0f, 248 / 255.0f, 220 / 255.0f, 1.0f);
 
-        if (scale == 1.0f)
+        if (scale > 0.95f)
         {
             // lol hack for multiple daggers
             GameManager.Instance.MakeFlash(point);
-            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.5f, pitch: 1.2f);
+            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.0f, pitch: 1.2f);
         }
 
         float spreadFactor = 40f; // Increase this to limit spread (unit circle is moved further away)

@@ -38,8 +38,8 @@ public static class ChoicesPoison
         {
             new Choice
             {
-                Title = $"{Name}, range (1)",
-                Description = "Range <color=#00ff00>+30%</color>, damage <color=#00ff00>+10%</color>",
+                Title = $"{Name}, count (1)",
+                Description = "<color=#00ff00>+30%</color> chillflakes, <color=#00ff00>+10%</color> damage",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.PaintballRangeMul += 0.3f;
@@ -47,8 +47,8 @@ public static class ChoicesPoison
                 },
                 NextLevel = new Choice
                 {
-                    Title = $"{Name}, range (2)",
-                Description = "Range <color=#00ff00>+30%</color>, damage <color=#00ff00>+10%</color>",
+                    Title = $"{Name}, count (2)",
+                    Description = "<color=#00ff00>+30%</color> chillflakes, <color=#00ff00>+10%</color> damage",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballRangeMul += 0.3f;

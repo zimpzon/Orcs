@@ -1082,7 +1082,7 @@ public class GameManager : MonoBehaviour
     public bool IsOutsideBounds(Vector3 pos)
     {
         Rect sizeAdjustedBounds = Rect.MinMaxRect(ArenaBounds.xMin - 2, ArenaBounds.yMin - 2, ArenaBounds.xMax + 2, ArenaBounds.yMax + 2);
-        return sizeAdjustedBounds.Contains(pos);
+        return !sizeAdjustedBounds.Contains(pos);
     }
 
     public Vector3 ClampToBounds(Vector3 pos, Sprite sprite)

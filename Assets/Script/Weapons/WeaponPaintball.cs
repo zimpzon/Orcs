@@ -2,7 +2,7 @@
 
 public class WeaponPaintball : WeaponBase
 {
-    const float SlowTime = 3.0f;
+    public const float SlowTime = 3.0f;
     public Sprite BulletSprite;
 
     void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
