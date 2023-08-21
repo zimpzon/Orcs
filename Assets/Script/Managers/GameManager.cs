@@ -861,6 +861,9 @@ public class GameManager : MonoBehaviour
         if (UnityEngine.Random.value < doubleChance)
             amount *= 2;
 
+        if (PlayerUpgrades.Data.GoldXpMultiplierBought)
+            value *= PlayerUpgrades.Data.GoldXpMultiplyValue;
+
         for (int i = 0; i < amount; ++i)
         {
             var pickup = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);

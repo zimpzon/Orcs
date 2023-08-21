@@ -1,4 +1,11 @@
-﻿FIRST RULE OF SUPER KNIGHT:
+﻿GFX
+------
+
+Grey makes colors stand out.
+
+------
+
+FIRST RULE OF SUPER KNIGHT:
   DO NOT RELEASE EARLY OUT OF BOREDOM OR BURNOUT! THIS DESTROYS ALL THE WORK!
     Core gameplay is FUN. DO NOT GIVE UP, POSTPONE!
   DO IT AS A HOBBY, RELAX!!! DO NOT RELEASE OMG OMG OMG
@@ -7,21 +14,26 @@ UNLOCK info after round
  list of not unlocked: { action<bool>, name }
  loop list, SHOW!
 
-
 title page swag
 SWAG!!! more satisfying kills in the beginning? other has nice skellie die sound, satisfying
 
-
 ->>
-CHOICE: Spawn a chest (if unlocked)
-LESSEN XP requirements after a certain level. XP drops does not keep up?
+UNLOCK: 8 min or so, super knife fan damage? something that sounds like you want it, not so cheap.
+STAR WARS intro.
+
+NEVER taking +5 chance to freeze, or the two crits.
+RUNNING out of things to buy? not yet, but prices are getting high, can gold keep up?
+LESSEN XP requirements after a certain level? XP drops does not keep up? (some ex was increased now)
+
 more fitting menus
 
 BUG:
-  no enemies showing up at 00:00 (had correct color)
+ CHILL EFFECT snow gone!
+cannot hear saw?
+FROST RING stays after restart
+  no enemies showing up at 00:00 (had correct color) maybe after restart, not through menu?
   NO COLOR change at 00:00 (but had enemies I think)
   such related, much wow
-
 
 OMG OMG valu and valueScale saved in save game, so changing them in code has no effect!
 

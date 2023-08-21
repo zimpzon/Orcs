@@ -13,6 +13,19 @@ public static class UpgradeChoices
 {
     public static Choice GetRandomChoice()
     {
+        if (CurrentChoices.Count == 0)
+        {
+            return new Choice
+            {
+                Title = "Minor Heal",
+                Description = "Heal for <color=#00ff00>50</color> HP",
+                Apply = () =>
+                {
+                    G.D.PlayerScript.AddHp(50);
+                },
+            };
+        }
+
         int idx = UnityEngine.Random.Range(0, CurrentChoices.Count - 1);
         var result = CurrentChoices[idx];
         CurrentChoices.RemoveAt(idx);

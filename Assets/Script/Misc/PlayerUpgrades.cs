@@ -21,6 +21,9 @@ public class UpgradeData
     public int DropMoneyOnKillMin = 1;
     public int DropMoneyOnKillMax = 3;
 
+    public bool GoldXpMultiplierBought = false;
+    public int GoldXpMultiplyValue = 1;
+
     // xp
     public float XpDoubleChance = 0.05f;
     public float XpValueMul = 1.0f;
@@ -81,9 +84,9 @@ public class UpgradeData
 
     public bool BurstOfFrostBought = false;
     public bool BurstOfFrostEnabledInRound = false;
-    public float BurstOfFrostBaseCd = 1.5f;
+    public float BurstOfFrostBaseCd = 1.4f;
     public float BurstOfFrostCdMul = 1.0f;
-    public float BurstOfFrostBaseRange = 2.0f;
+    public float BurstOfFrostBaseRange = 2.2f;
     public float BurstOfFrostRangeMul = 1.0f;
     public float BurstOfFrostBaseFreezeChance = 0.8f;
     public float BurstOfFrostFreezeChanceMul = 1.0f;

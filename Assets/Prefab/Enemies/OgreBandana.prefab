@@ -142,8 +142,8 @@ MonoBehaviour:
   CacheReviveCount: 0
   IsBoss: 0
   Mass: 2
-  XpValue: 14
-  XpCount: 1
+  XpValue: 18
+  XpCount: 3
   GoldCount: 0
   ActorType: 3
   BaseHp: 300

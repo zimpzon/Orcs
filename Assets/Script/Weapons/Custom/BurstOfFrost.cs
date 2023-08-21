@@ -29,6 +29,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         renderer_.enabled = false;
         isBursting_ = false;
         nextBurst_ = float.MaxValue;
+        renderer_.transform.localScale = Vector3.one * 0.1f; // another hack :p why doesn't it go away when disabled?
     }
 
     public void TryEnable()
@@ -56,7 +57,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             isBursting_ = true;
             burstStartTime_ = G.D.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
-            renderer_.transform.localScale = Vector2.one * scale * 1.5f;
+            renderer_.transform.localScale = Vector2.one * scale;
             GameManager.Instance.MakeFlash(transform.position, 3.0f);
             snowflakes_.Emit(15);
         }

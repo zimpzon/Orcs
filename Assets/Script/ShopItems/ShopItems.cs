@@ -28,6 +28,7 @@ public enum ShopItemType
     CosmeticArmor,
     CosmeticHearts,
     WeaponJump,
+    Abundance,
 }
 
 [Serializable]
