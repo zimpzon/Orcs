@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ActorDefaultWalker : MonoBehaviour
 {
+    [NonSerialized] public bool DoPositionNudging;
+    [NonSerialized] public Vector2 NudgeTowards;
+
     Vector3 moveVec_;
     Vector3 target_;
     ActorBase actorBase_;
@@ -50,7 +54,14 @@ public class ActorDefaultWalker : MonoBehaviour
         moveVec_.x = deltaX;
         moveVec_.y = deltaY;
         moveVec_.z = 0;
+
         moveVec_.Normalize();
+
+        if (DoPositionNudging)
+        {
+            var dir = ((Vector3)NudgeTowards - actorBase_.transform.position).normalized;
+            moveVec_ += dir * 0.25f;
+        }
 
         actorBase_.UpdatePosition(moveVec_, actorBase_.Speed);
     }

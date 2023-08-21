@@ -18,6 +18,7 @@ title page swag
 SWAG!!! more satisfying kills in the beginning? other has nice skellie die sound, satisfying
 
 ->>
+HORIZONTAL weapon to make positioning interesting?
 UNLOCK: 8 min or so, super knife fan damage? something that sounds like you want it, not so cheap.
 STAR WARS intro.
 
@@ -53,12 +54,6 @@ bottom: -8,0
   use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
 
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
-
-
-https://www.assetstore.unity3d.com/en/#!/content/29304
-https://www.assetstore.unity3d.com/en/#!/content/40252
-https://www.assetstore.unity3d.com/en/#!/content/27080
-https://www.assetstore.unity3d.com/en/#!/content/28729
 
 
 

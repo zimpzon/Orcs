@@ -130,11 +130,12 @@ MonoBehaviour:
   CacheReviveCount: 0
   IsBoss: 0
   Mass: 2
-  XpValue: 14
-  XpCount: 3
+  XpValue: 35
+  XpCount: 2
   GoldCount: 0
   ActorType: 28
   BaseHp: 180
+  HasForcedDestination: 0
 --- !u!114 &4416953463048785456
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -222,7 +222,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 2.5f);
+                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.5f);
 
                         bool hasNearbyEnemy = closestEnemy != null;
                         if (hasNearbyEnemy)
@@ -296,7 +296,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 if (p.JumpToNearbyTarget)
                                 {
                                     p.PreviousJumpTargets.Add(enemy);
-                                    var closestEnemy = BlackboardScript.GetIdxClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
+                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
 
                                     bool hasNearbyEnemy = closestEnemy != null;
                                     if (hasNearbyEnemy)

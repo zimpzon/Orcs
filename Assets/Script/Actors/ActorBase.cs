@@ -20,6 +20,7 @@ public class ActorBase : MonoBehaviour
     const float IgnoreCrowdsWhenCloseToPlayer = 2.0f;
     const float PaintBallTickTime = 1.0f;
 
+    [NonSerialized] public bool AlwaysLookAtPlayer;
     public Sprite[] Animations;
     public bool CanBeFrozen = true;
     public bool CanBePoisened = true;
@@ -37,9 +38,9 @@ public class ActorBase : MonoBehaviour
     public int GoldCount = 0;
     public ActorTypeEnum ActorType;
     public float BaseHp;
-    [System.NonSerialized] public float TimeBorn;
-    [System.NonSerialized] public float TimeDied;
-    [System.NonSerialized] public float Hp = 50;
+    [NonSerialized] public float TimeBorn;
+    [NonSerialized] public float TimeDied;
+    [NonSerialized] public float Hp = 50;
 
     public static void ResetClosestEnemy()
     {
@@ -60,7 +61,7 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public bool IsCorpse;
     [System.NonSerialized] public bool IsDead;
 
-    private bool hasForcedDestination_;
+    [NonSerialized] public bool HasForcedDestination;
     private ActorForcedTargetType forcedTargetType_;
     private bool forcedDestinationBreakAtDamage_;
     private Vector3 forcedDestination_;
@@ -125,7 +126,7 @@ public class ActorBase : MonoBehaviour
         slowmotionModifier_ = 1.0f;
         flashEndTime_ = 0.0f;
         force_ = Vector3.zero;
-        hasForcedDestination_ = false;
+        HasForcedDestination = false;
         forcedDestination_ = Vector3.zero;
         despawnAtForcedDestination_ = false;
         forcedDestinationBreakAtDamage_ = true;
@@ -223,7 +224,7 @@ public class ActorBase : MonoBehaviour
             moveVec = (moveVec + centerDir).normalized;
         }
 
-        if (hasForcedDestination_)
+        if (HasForcedDestination)
         {
             if (forcedTargetType_ == ActorForcedTargetType.Absolute)
             {
@@ -249,14 +250,22 @@ public class ActorBase : MonoBehaviour
         position_ += moveVec * speed * slowmotionModifier_ * GameManager.Instance.GameDeltaTime;
 
         Vector3 scale = scale_;
-        scale.x = moveVec.x < 0 ? -scale.x : scale.x;
+        if (AlwaysLookAtPlayer)
+        {
+            var playerDir = G.D.PlayerPos - position_;
+            scale.x = playerDir.x < 0 ? -scale.x : scale.x;
+        }
+        else
+        {
+            scale.x = moveVec.x < 0 ? -scale.x : scale.x;
+        }
 
         transform_.localScale = scale;
     }
 
     public void SetForcedTarget(Vector2 target, bool despawnAtDestination = false, bool breakAtDamage = true, ActorForcedTargetType targetType = ActorForcedTargetType.Absolute)
     {
-        hasForcedDestination_ = true;
+        HasForcedDestination = true;
         forcedTargetType_ = targetType;
         forcedDestination_ = targetType == ActorForcedTargetType.Absolute ? target : (target - (Vector2)position_).normalized;
         despawnAtForcedDestination_ = despawnAtDestination;
@@ -265,7 +274,7 @@ public class ActorBase : MonoBehaviour
 
     void CheckForCrowded()
     {
-        if (!AvoidCrowds || hasForcedDestination_ || GameManager.Instance.GameTime < nextCheckForCrowded_)
+        if (!AvoidCrowds || HasForcedDestination || GameManager.Instance.GameTime < nextCheckForCrowded_)
             return;
 
         // if distance to player is small ignore crowd rules and go for it!
@@ -357,7 +366,7 @@ public class ActorBase : MonoBehaviour
             bool forcedDistinationReached;
             if (forcedTargetType_ == ActorForcedTargetType.Absolute)
             {
-                forcedDistinationReached = hasForcedDestination_ && Vector3.Distance(forcedDestination_, position_) < 0.2f;
+                forcedDistinationReached = HasForcedDestination && Vector3.Distance(forcedDestination_, position_) < 0.2f;
             }
             else
             {
@@ -367,7 +376,7 @@ public class ActorBase : MonoBehaviour
             if (forcedDistinationReached)
             {
                 //FloatingTextSpawner.Instance.Spawn(position_, "reached", Color.cyan);
-                hasForcedDestination_ = false;
+                HasForcedDestination = false;
                 if (despawnAtForcedDestination_)
                 {
                     GameManager.Instance.MakePoof(position_, 3);
@@ -396,7 +405,7 @@ public class ActorBase : MonoBehaviour
 
         if (IsFullyReady)
         {
-            if (!hasForcedDestination_)
+            if (!HasForcedDestination)
                 position_ = GameManager.Instance.ClampToBounds(position_, renderer_.sprite);
         }
 
@@ -445,7 +454,7 @@ public class ActorBase : MonoBehaviour
         if (IsBoss)
             return;
 
-        if (hasForcedDestination_ && !forcedDestinationBreakAtDamage_)
+        if (HasForcedDestination && !forcedDestinationBreakAtDamage_)
             return;
 
         force_ += force;
@@ -459,8 +468,8 @@ public class ActorBase : MonoBehaviour
             GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
         }
 
-        if (hasForcedDestination_ && forcedDestinationBreakAtDamage_)
-           hasForcedDestination_ = false;
+        if (HasForcedDestination && forcedDestinationBreakAtDamage_)
+           HasForcedDestination = false;
 
         if (Hp <= 0.0f)
         {

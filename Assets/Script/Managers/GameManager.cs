@@ -1088,6 +1088,13 @@ public class GameManager : MonoBehaviour
         return !sizeAdjustedBounds.Contains(pos);
     }
 
+    public Vector3 ClampToBounds(Vector3 pos, float margin)
+    {
+        pos.x = Mathf.Clamp(pos.x, ArenaBounds.xMin + margin, ArenaBounds.xMax - margin);
+        pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + margin, ArenaBounds.yMax - margin);
+        return pos;
+    }
+
     public Vector3 ClampToBounds(Vector3 pos, Sprite sprite)
     {
         float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y;
