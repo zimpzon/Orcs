@@ -67,26 +67,26 @@ public static class ChoicesGlobal
             new Choice
             {
                 Title = $"{NameCrit}, damage (1)",
-                Description = "All: Critical hits <color=#00ff00>+20%</color> damage",
+                Description = "All: Critical hits <color=#00ff00>+30%</color> damage",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.CritValueMul += 0.2f;
+                    PlayerUpgrades.Data.CritValueMul += 0.3f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{NameCrit}, damage (2)",
-                        Description = "All: Critical hits <color=#00ff00>+20%</color> damage",
+                        Description = "All: Critical hits <color=#00ff00>+30%</color> damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.CritValueMul += 0.2f;
+                        PlayerUpgrades.Data.CritValueMul += 0.3f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{NameCrit}, damage (3)",
-                        Description = "All: Critical hits <color=#00ff00>+20%</color> damage",
+                        Description = "All: Critical hits <color=#00ff00>+30%</color> damage",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.CritValueMul += 0.2f;
+                            PlayerUpgrades.Data.CritValueMul += 0.3f;
                         },
                     }
                 }

@@ -20,8 +20,8 @@ public static class Chapter1Minute10
                 ActorTypeEnum.OgreLarge,
                 startTime: new TimeSpan(0, 10, 10),
                 endTime: new TimeSpan(0, 14, 0),
-                spawnCountPerTick: 2,
-                timeBetweenTicks: 10,
+                spawnCountPerTick: 1,
+                timeBetweenTicks: 2,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.Swarm(
@@ -36,7 +36,7 @@ public static class Chapter1Minute10
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 10, 0),
             endTime: new TimeSpan(0, 14, 0),
-            startingCount: 3,
+            startingCount: 4,
             endCount: 5,
             maxSpawnCountPerTick: 1,
             timeBetweenTicks: 8.0f,
@@ -76,7 +76,7 @@ public static class Chapter1Minute10
                 ActorTypeEnum.Ogre,
                 startTime: new TimeSpan(0, 10, 0),
                 endTime: new TimeSpan(0, 14, 0),
-                spawnCountPerTick: 2,
+                spawnCountPerTick: 4,
                 timeBetweenTicks: 2,
                 SpawnDirection.Any);
 

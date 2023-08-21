@@ -9,8 +9,8 @@ public static class Chapter1Minute01
 {
     public static IEnumerable<IEnumerator> GetEvents()
     {
-        yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OrcWhiteMask, despawnAtDestination: false, breakFreeAtDamage: false,
-            time: new TimeSpan(0, 0, 0), LeftMidOut, LeftMidOut + Vector2.right * 2, ActorForcedTargetType.Absolute, w: 5, h: 5, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.0f);
+        //yield return SpawnUtil.SpawnFormation(ActorTypeEnum.OrcWhiteMask, despawnAtDestination: false, breakFreeAtDamage: false,
+        //    time: new TimeSpan(0, 0, 0), LeftMidOut, LeftMidOut + Vector2.right * 2, ActorForcedTargetType.Absolute, w: 5, h: 5, stepX: 1, stepY: 1, pivotX: 1, pivotY: 0.5f, skewX: 0.0f);
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreSmall,

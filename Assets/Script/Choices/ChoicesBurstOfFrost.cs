@@ -40,10 +40,10 @@ public static class ChoicesBurstOfFrost
             new Choice
             {
                 Title = $"{Name}, radius (1)",
-                Description = "<color=#00ff00>10%</color> radius",
+                Description = "<color=#00ff00>15%</color> radius",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.BurstOfFrostRangeMul += 0.1f;
+                    PlayerUpgrades.Data.BurstOfFrostRangeMul += 0.15f;
                 },
                 NextLevel = new Choice
                 {
@@ -68,10 +68,10 @@ public static class ChoicesBurstOfFrost
             new Choice
             {
                 Title = $"{Name}, freeze (1)",
-                Description = "<color=#00ff00>+5%</color> chance to freeze",
+                Description = "<color=#00ff00>+8%</color> chance to freeze",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.05f;
+                    PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.08f;
                 },
                 NextLevel = new Choice
                 {
@@ -81,15 +81,6 @@ public static class ChoicesBurstOfFrost
                     {
                         PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.05f;
                     },
-                    NextLevel = new Choice
-                    {
-                        Title = $"{Name}, freeze (3)",
-                        Description = "<color=#00ff00>+5%</color> chance to freeze",
-                        Apply = () =>
-                        {
-                            PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul += 0.05f;
-                        },
-                    }
                 },
             }
         };

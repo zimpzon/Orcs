@@ -22,21 +22,14 @@ HORIZONTAL weapon to make positioning interesting?
 UNLOCK: 8 min or so, super knife fan damage? something that sounds like you want it, not so cheap.
 STAR WARS intro.
 
-NEVER taking +5 chance to freeze, or the two crits.
-RUNNING out of things to buy? not yet, but prices are getting high, can gold keep up?
-LESSEN XP requirements after a certain level? XP drops does not keep up? (some ex was increased now)
-
 more fitting menus
 
 BUG:
- CHILL EFFECT snow gone!
+
 cannot hear saw?
-FROST RING stays after restart
   no enemies showing up at 00:00 (had correct color) maybe after restart, not through menu?
   NO COLOR change at 00:00 (but had enemies I think)
   such related, much wow
-
-OMG OMG valu and valueScale saved in save game, so changing them in code has no effect!
 
 Cutter Comet should be unlock
 
@@ -50,8 +43,6 @@ bottom: -8,0
  PITCH OF pickup xp increases
 
  +experience upgrade
-
-  use forcedDestination to make groups? if not in a group scan for friends, attach them to you and assign an offset they will maintain.
 
   ICONS on choices would help A LOT! Machinegun, orc, explosion for dam or dead ogre? green ogre for poison
 

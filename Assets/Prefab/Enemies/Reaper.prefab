@@ -5377,13 +5377,14 @@ MonoBehaviour:
   CrowdScanRadius: 1
   CrowdMaxNearby: 3
   CrowdOutOfTheWayRange: 2.5
+  CacheReviveCount: 0
   IsBoss: 1
   Mass: 1
   XpValue: 1
   XpCount: 1
   GoldCount: 0
   ActorType: 30
-  BaseHp: 10000
+  BaseHp: 30000
 --- !u!50 &2046561744
 Rigidbody2D:
   serializedVersion: 4

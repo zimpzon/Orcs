@@ -136,6 +136,8 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
         LeanTween.color(GameManager.Instance.FloorFilter.gameObject, FilterWon, 3);
 
         Confetti.SetActive(true);
+
+        SaveGame.Save();
     }
 
     IEnumerator RunInternal()

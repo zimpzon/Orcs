@@ -84,11 +84,11 @@ public class UpgradeData
 
     public bool BurstOfFrostBought = false;
     public bool BurstOfFrostEnabledInRound = false;
-    public float BurstOfFrostBaseCd = 1.4f;
+    public float BurstOfFrostBaseCd = 1.6f;
     public float BurstOfFrostCdMul = 1.0f;
-    public float BurstOfFrostBaseRange = 2.2f;
+    public float BurstOfFrostBaseRange = 1.5f;
     public float BurstOfFrostRangeMul = 1.0f;
-    public float BurstOfFrostBaseFreezeChance = 0.8f;
+    public float BurstOfFrostBaseFreezeChance = 0.65f;
     public float BurstOfFrostFreezeChanceMul = 1.0f;
     public float BurstOfFrostBaseFreezeTime = 2.0f;
     public float BurstOfFrostFreezeTimeMul = 1.0f;

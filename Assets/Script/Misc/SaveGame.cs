@@ -18,9 +18,9 @@ public class SaveGameMembers
 {
     public int Money = 0;
     public int MoneySpentInShop;
-    public Dictionary<ShopItemType, BoughtItem> BoughtItems = new Dictionary<ShopItemType, BoughtItem>();
+    public Dictionary<ShopItemType, SaveGameBoughtItem> SaveGameBoughtItems = new Dictionary<ShopItemType, SaveGameBoughtItem>();
     public ShopItemType[] TempBoughtTypes = new ShopItemType[0];
-    public BoughtItem[] TempBoughtItems = new BoughtItem[0];
+    public SaveGameBoughtItem[] TempBoughtItems = new SaveGameBoughtItem[0];
 
     public int[] Counters = new int[(int)GameCounter.Last];
 
@@ -136,10 +136,10 @@ public static class SaveGame
     public static void Save()
     {
         // workaround for dictionary not serialized
-        Members.TempBoughtTypes = new ShopItemType[Members.BoughtItems.Count];
-        Members.TempBoughtItems = new BoughtItem[Members.BoughtItems.Count];
-        Members.BoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
-        Members.BoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
+        Members.TempBoughtTypes = new ShopItemType[Members.SaveGameBoughtItems.Count];
+        Members.TempBoughtItems = new SaveGameBoughtItem[Members.SaveGameBoughtItems.Count];
+        Members.SaveGameBoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
+        Members.SaveGameBoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
 
         PlayerPrefs.SetString(SaveGameKey, Members.ToJson());
     }
@@ -186,9 +186,9 @@ public static class SaveGame
             }
 
             // workaround for dictionary not serialized
-            Members.BoughtItems.Clear();
+            Members.SaveGameBoughtItems.Clear();
             for (int i = 0; i < Members.TempBoughtTypes.Length; ++i)
-                Members.BoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
+                Members.SaveGameBoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
         }
 
         if (Members == null)

@@ -39,19 +39,19 @@ public static class ChoicesPlayer
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, max life (3)",
-                        Description = "<color=#00ff00>+30%</color> max life",
+                        Description = "<color=#00ff00>+20%</color> max life",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthMul += 0.3f;
+                            PlayerUpgrades.Data.HealthMul += 0.2f;
                             G.D.PlayerScript.UpdateMaxHp();
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, max life (4)",
-                            Description = "<color=#00ff00>+30%</color> max life",
+                            Description = "<color=#00ff00>+20%</color> max life",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.HealthMul += 0.3f;
+                                PlayerUpgrades.Data.HealthMul += 0.2f;
                                 G.D.PlayerScript.UpdateMaxHp();
                             },
                         }
@@ -78,18 +78,18 @@ public static class ChoicesPlayer
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, recovery (3)",
-                        Description = "Heal <color=#00ff00>+1</color> life/sec",
+                        Description = "Heal <color=#00ff00>+0.5</color> life/sec",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.HealthRegenSecAdd += 1.0f;
+                            PlayerUpgrades.Data.HealthRegenSecAdd += 0.5f;
                         },  
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, recovery (4)",
-                            Description = "Heal <color=#00ff00>+1</color> life/sec",
+                            Description = "Heal <color=#00ff00>+0.25</color> life/sec",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.HealthRegenSecAdd += 1.0f;
+                                PlayerUpgrades.Data.HealthRegenSecAdd += 0.25f;
                             },
                         }
                     }
@@ -107,10 +107,10 @@ public static class ChoicesPlayer
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, defense (2)",
-                    Description = "Take <color=#00ff00>20%</color> less damage",
+                    Description = "Take <color=#00ff00>15%</color> less damage",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.HealthDefenseMul -= 0.2f;
+                        PlayerUpgrades.Data.HealthDefenseMul -= 0.15f;
                     },
                 }
             },

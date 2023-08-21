@@ -38,6 +38,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         {
             isBursting_ = false;
             renderer_.enabled = true;
+
             SetNextBurst();
         }
     }
@@ -57,7 +58,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             isBursting_ = true;
             burstStartTime_ = G.D.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
-            renderer_.transform.localScale = Vector2.one * scale;
+            renderer_.transform.localScale = Vector2.one * scale * 2; // range is radius, scale is diameter, so x2
             GameManager.Instance.MakeFlash(transform.position, 3.0f);
             snowflakes_.Emit(15);
         }

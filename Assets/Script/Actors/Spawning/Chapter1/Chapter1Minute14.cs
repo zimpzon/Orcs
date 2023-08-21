@@ -12,18 +12,18 @@ public static class Chapter1Minute14
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 14, 0),
             endTime: new TimeSpan(0, 14, 44),
-            startingCount: 8,
-            endCount: 8,
+            startingCount: 12,
+            endCount: 12,
             maxSpawnCountPerTick: 3,
-            timeBetweenTicks: 5.0f,
+            timeBetweenTicks: 3.0f,
             SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
                 ActorTypeEnum.OgreBandana,
                 startTime: new TimeSpan(0, 14, 10),
                 endTime: new TimeSpan(0, 14, 44),
-                startingCount: 10,
-                endCount: 15,
+                startingCount: 15,
+                endCount: 20,
                 maxSpawnCountPerTick: 10,
                 timeBetweenTicks: 3.0f,
                 SpawnDirection.Any);

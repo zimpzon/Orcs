@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
     public void OnButtonRefund()
     {
         PlayMenuSound();
-        SaveGame.Members.BoughtItems.Clear();
+        SaveGame.Members.SaveGameBoughtItems.Clear();
         SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
         SaveGame.Members.MoneySpentInShop = 0;
         ShopItems.UpdateBoughtItems();

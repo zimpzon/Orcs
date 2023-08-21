@@ -40,6 +40,13 @@ public class BoughtItem
     public float ValueScale;
 }
 
+[Serializable]
+public class SaveGameBoughtItem
+{
+    public ShopItemType ItemType;
+    public int Level;
+}
+
 public class ShopItem
 {
     public ShopItemType ItemType;
@@ -116,10 +123,18 @@ public static class ShopItems
     {
         PlayerUpgrades.ResetAll();
 
-        foreach(var pair in SaveGame.Members.BoughtItems)
+        foreach(var pair in SaveGame.Members.SaveGameBoughtItems)
         {
-            var bought = pair.Value;
-            var shopItem = Items.First(i => i.ItemType == bought.ItemType);
+            var saveGameBought = pair.Value;
+            var shopItem = Items.First(i => i.ItemType == saveGameBought.ItemType);
+
+            var bought = new BoughtItem
+            {
+                ItemType = saveGameBought.ItemType,
+                Level = saveGameBought.Level,
+                Value = shopItem.Value,
+                ValueScale = shopItem.ValueScale,
+            };
             shopItem.Apply(bought);
         }
     }
@@ -128,7 +143,7 @@ public static class ShopItems
     {
         var item = Items.Where(i => i.ItemType == itemType).First();
 
-        SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
+        SaveGame.Members.SaveGameBoughtItems.TryGetValue(itemType, out var bought);
         if (bought == null)
             return;
 
@@ -142,7 +157,7 @@ public static class ShopItems
         }
 
         SaveGame.Members.MoneySpentInShop -= refunded;
-        SaveGame.Members.BoughtItems.Remove(itemType);
+        SaveGame.Members.SaveGameBoughtItems.Remove(itemType);
 
         UpdateBoughtItems();
         GameManager.Instance.OnItemBought(itemType);
@@ -152,17 +167,17 @@ public static class ShopItems
     {
         var item = Items.Where(i => i.ItemType == itemType).First();
 
-        SaveGame.Members.BoughtItems.TryGetValue(itemType, out var bought);
-        bought ??= new BoughtItem { ItemType = itemType, Value = item.Value, ValueScale = item.ValueScale };
+        SaveGame.Members.SaveGameBoughtItems.TryGetValue(itemType, out var saveGameBought);
+        saveGameBought ??= new SaveGameBoughtItem { ItemType = itemType, };
 
-        int price = item.GetPrice(bought.Level);
+        int price = item.GetPrice(saveGameBought.Level);
         if (price > SaveGame.Members.Money)
             return;
 
         SaveGame.Members.Money -= price;
         SaveGame.Members.MoneySpentInShop += price;
-        bought.Level++;
-        SaveGame.Members.BoughtItems[itemType] = bought;
+        saveGameBought.Level++;
+        SaveGame.Members.SaveGameBoughtItems[itemType] = saveGameBought;
         UpdateBoughtItems();
         GameManager.Instance.OnItemBought(itemType);
     }
@@ -172,8 +187,8 @@ public static class ShopItems
         for (int i = 0; i < Items.Count; ++i)
         {
             var item = Items[i];
-            SaveGame.Members.BoughtItems.TryGetValue(item.ItemType, out var bought);
-            bought ??= new BoughtItem { ItemType = item.ItemType };
+            SaveGame.Members.SaveGameBoughtItems.TryGetValue(item.ItemType, out var bought);
+            bought ??= new SaveGameBoughtItem { ItemType = item.ItemType };
             int level = bought.Level;
             int price = item.GetPrice(bought.Level);
             bool canAfford = price <= SaveGame.Members.Money;
