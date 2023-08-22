@@ -141,7 +141,19 @@ public static class SaveGame
         Members.SaveGameBoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
         Members.SaveGameBoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
 
-        PlayerPrefs.SetString(SaveGameKey, Members.ToJson());
+        string json = Members.ToJson();
+        Debug.Log("saving json: " + json);
+
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Debug.Log("saving WEBGL");
+            JsMappings.Save(json);
+        }
+        else
+        {
+            Debug.Log("saving prefs");
+            PlayerPrefs.SetString(SaveGameKey, json);
+        }
     }
 
     const string SaveGameKey = "save.json";
@@ -151,25 +163,24 @@ public static class SaveGame
         return Path.Combine(Application.persistentDataPath, SaveGameKey);
     }
 
-    static void RecoverSaveFromOldFileLocation()
-    {
-        string path = GetPath();
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            PlayerPrefs.SetString(SaveGameKey, json);
-            File.Delete(path);
-        }
-    }
-
     public static void Load()
     {
-        RecoverSaveFromOldFileLocation();
+        Debug.Log("PLATFORM: " + Application.platform);
 
         string prefs = string.Empty;
-        if (PlayerPrefs.HasKey(SaveGameKey))
-            prefs = PlayerPrefs.GetString(SaveGameKey);
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Debug.Log("loading from JS");
+            prefs = JsMappings.Load();
+        }
+        else
+        {
+            Debug.Log("loading from PREFS");
+            if (PlayerPrefs.HasKey(SaveGameKey))
+                prefs = PlayerPrefs.GetString(SaveGameKey);
+        }
 
+        Debug.Log("json = " + prefs);
         if (!string.IsNullOrWhiteSpace(prefs))
         {
             Members = SaveGameMembers.FromJson(prefs);
@@ -191,8 +202,7 @@ public static class SaveGame
                 Members.SaveGameBoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
         }
 
-        if (Members == null)
-            Members = new SaveGameMembers();
+        Members ??= new SaveGameMembers();
 
         if (string.IsNullOrEmpty(Members.UserId))
         {

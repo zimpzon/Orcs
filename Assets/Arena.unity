@@ -18293,7 +18293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.702, g: 0.792756, b: 1, a: 1}
+  m_Color: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -70871,6 +70871,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1919188411}
   - component: {fileID: 1919188412}
+  - component: {fileID: 1919188413}
   m_Layer: 0
   m_Name: GlobalSettings
   m_TagString: Untagged
@@ -70917,6 +70918,18 @@ MonoBehaviour:
   PlayerScript: {fileID: 1038077829}
   PlayerTrans: {fileID: 1038077830}
   PlayerCenterOffset: {x: 0.055, y: -0.15, z: 0}
+--- !u!114 &1919188413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919188410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1ec9930e574f74c867433248cb9f9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1940143546
 GameObject:
   m_ObjectHideFlags: 0
@@ -81468,7 +81481,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Save The Ducks!
+  m_Text: Save The Pirate Ducks!
 --- !u!222 &2141176487
 CanvasRenderer:
   m_ObjectHideFlags: 0

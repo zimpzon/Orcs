@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PositionUtility;
 
 public class Chapter1Controller : MonoBehaviour, IKillableObject
 {
@@ -121,7 +120,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         var info = new GameInfo
         {
-            Text = "Congratulations!\n\n\nYou have defeated Super Knight - Man in Steel\n\n\nUse the menu to return to title screen",
+            Text = "Victory!\n\n\nBrave knight, the ducks are saved and the kingdom rejoices!\n\n\nUse the menu to return to title screen",
             Color = Color.green,
             Duration = 60.0f,
             FadeInDuration = 0.5f,
@@ -142,7 +141,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
     IEnumerator RunInternal()
     {
-        string text = "Skeleton Skirmish";
+        string text = "The Skeletons are here!";
         if (PlayerUpgrades.Data.GameStartTime != TimeSpan.Zero)
             text += $"\n\nstarting at {PlayerUpgrades.Data.GameStartTime}";
 
