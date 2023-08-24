@@ -5,6 +5,7 @@ public class Particles : MonoBehaviour, IKillableObject
     public static Particles I;
 
     public ParticleSystem Acid;
+    public ParticleSystem FireballTail;
 
     private void Awake()
     {

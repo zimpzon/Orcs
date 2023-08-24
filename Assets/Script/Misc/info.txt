@@ -69,3 +69,26 @@ Path of exile handles crits well. (it does also have the crit/crit damage proble
 That would work great here imho. If crits applied a stun, pushback, or bleed effect for example. its way more interesting then just double dipping damage scaling.
 
 
+
+
+Ah, got it! You're looking for innovative or non-standard mechanics that can stand as alternatives to the traditional "critical damage" concept. Let's dive in!
+
+Combo Chain: After a certain number of consecutive hits without getting hit, the player unlocks a powerful attack. It's a reward for skillful play.
+
+Overcharge Meter: Instead of a random chance for critical damage, players charge up a meter with successful hits. When it's full, they can unleash a special attack.
+
+Elemental Surge: Weapons or attacks have elemental properties. When used under specific conditions (e.g., water attack in a rainy environment), they deal extra damage.
+
+Precision Point: Instead of a general critical hit, enemies have weak points that, when targeted, result in increased damage. This requires more skill and attention from the player.
+
+Momentum Mechanic: Damage increases as the player character builds momentum, like running or chaining moves together without interruption.
+
+Risky Reward: The longer the player avoids defense and opts for all-out attacks, the higher the damage multiplier. It resets when the player takes defensive actions.
+
+Tactical Tokens: Players collect tokens or points during combat, which can be strategically spent to enhance an attack or string of attacks.
+
+Environmental Exploit: Using the environment to deal damage, like pushing enemies into fire, water, or off cliffs, could provide enhanced damage.
+
+Adrenaline Boost: As the player's health gets lower, their chances of dealing more damage increase, simulating the desperation of a cornered fighter.
+
+Bond Burst: If there's an ally system, the longer the player character and an ally fight side by side, the stronger their combined attacks become.

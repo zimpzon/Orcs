@@ -57,9 +57,13 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             CurrentTarget = null;
             StickOffset = Vector3.zero;
             Volume = 1.0f;
-        }
+            ParticleSystem = null;
+            ParticleEmitCount = 0;
+            ParticleEmitDelay = 0;
+            ParticleNextEmit = 0;
+    }
 
-        public List<ActorBase> PreviousJumpTargets = new (5);
+    public List<ActorBase> PreviousJumpTargets = new (5);
         public ProjectileInfo SpriteInfo;
         public Vector3 Position;
         public Color Color;
@@ -97,6 +101,11 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float Volume;
         public RepeatingAudioClip StickySoundRepeater;
         public bool MaintainCollisionSound;
+        public ParticleSystem ParticleSystem;
+        public int ParticleEmitCount;
+        public float ParticleEmitDelay;
+        public float ParticleNextEmit;
+
         public Action<Basic, ActorBase, float, Vector3> CustomCollisionResponse;
     }
 
@@ -353,6 +362,13 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 }
 
                 p.DistanceTraveled += frameSpeed;
+            }
+
+            if (p.ParticleSystem && G.D.GameTime > p.ParticleNextEmit)
+            {
+                p.ParticleSystem.transform.position = p.Position;
+                p.ParticleSystem.Emit(p.ParticleEmitCount);
+                p.ParticleNextEmit = G.D.GameTime + p.ParticleEmitDelay;
             }
         }
 

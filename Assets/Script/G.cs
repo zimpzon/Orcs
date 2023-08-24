@@ -46,6 +46,21 @@ public class G : MonoBehaviour
         return $"<color=#{r:X2}{g:X2}{b:X2}{a:X2}>";
     }
 
+    public static bool MoveDownTap()
+        => Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow);
+
+    public static bool MoveUpTap()
+        => Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
+
+    public static bool MoveLeftTap()
+        => Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow);
+
+    public static bool MoveRightTap()
+        => Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow);
+
+    public static bool SelectionTap()
+        => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
+
     public static bool GetCheatKeyDown(KeyCode code)
     {
         return Input.GetKeyDown(code);

@@ -7,7 +7,6 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
     public static PoisonDaggers Instance;
 
     public GameObject ChildRoot;
-    public TextMeshPro Text;
     public ParticleSystem Projectiles;
     public Color Color;
     float nextFire_;
@@ -20,7 +19,6 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
 
     public void Disable()
     {
-        Text.text = "";
         StopAllCoroutines();
 
         var em = Projectiles.emission;
@@ -55,13 +53,11 @@ public class PoisonDaggers : MonoBehaviour, IPlayerToggleEfffect
             float speed = 10.0f;
 
             float textEnd = G.D.GameTime + 3.0f;
-            Text.text = "Chill Tornado!";
             ChildRoot.SetActive(true);
 
             while (G.D.GameTime < textEnd)
                 yield return null;
 
-            Text.text = "";
             Projectiles.Clear();
             var em = Projectiles.emission;
             em.enabled = true;

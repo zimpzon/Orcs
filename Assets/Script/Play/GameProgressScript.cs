@@ -11,6 +11,7 @@ public class GameProgressScript : MonoBehaviour
     public Text TextHowTo;
     public Text TextScore;
     public Text TextHowToPause;
+    public Text TextMission;
 
     public void Begin(GameModeEnum gameMode)
     {
@@ -32,6 +33,7 @@ public class GameProgressScript : MonoBehaviour
         TextControls.enabled = true;
         TextHowTo.enabled = true;
         TextHowToPause.enabled = true;
+        TextMission.enabled = true;
 
         while (SaveGame.RoundScore == 0)
         {
@@ -43,6 +45,7 @@ public class GameProgressScript : MonoBehaviour
         TextControls.enabled = false;
         TextHowTo.enabled = false;
         TextHowToPause.enabled = false;
+        TextMission.enabled = false;
 
         // only one gamemode for now
         GameManager.Instance.Chapter1.SetActive(true);

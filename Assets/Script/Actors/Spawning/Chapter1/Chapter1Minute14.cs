@@ -12,8 +12,8 @@ public static class Chapter1Minute14
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 14, 0),
             endTime: new TimeSpan(0, 14, 44),
-            startingCount: 12,
-            endCount: 12,
+            startingCount: 5,
+            endCount: 5,
             maxSpawnCountPerTick: 3,
             timeBetweenTicks: 3.0f,
             SpawnDirection.Any);

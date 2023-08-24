@@ -49,6 +49,9 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.Color = new Color(1.0f, 1.0f, 1.01f);
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
+        basic.ParticleSystem = Particles.I.FireballTail;
+        basic.ParticleEmitCount = 3;
+        basic.ParticleEmitDelay = 0.05f;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
