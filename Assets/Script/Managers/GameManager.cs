@@ -562,11 +562,12 @@ public class GameManager : MonoBehaviour
         TextGameInfo.text = "";
 
         float roundTime = GameTime - roundStartTime_;
+        Debug.Log(GameTime);
         int roundSeconds = Mathf.RoundToInt(roundTime);
         SaveGame.Members.TotalSeconds += roundSeconds;
 
         if (roundSeconds > SaveGame.Members.MaxSecondsReached)
-            SaveGame.Members.MaxSecondsReached = roundSeconds;
+            SaveGame.Members.MaxSecondsReached = Mathf.RoundToInt(roundSeconds);
 
         var dic = new Dictionary<string, int>();
         dic[Playfab.GoldStat] = SaveGame.RoundGold;
