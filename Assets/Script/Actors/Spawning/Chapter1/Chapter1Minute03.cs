@@ -17,7 +17,7 @@ public static class Chapter1Minute03
                 startTime: new TimeSpan(0, 4, 0),
                 endTime: new TimeSpan(0, 5, 30),
                 spawnCountPerTick: 2,
-                timeBetweenTicks: 5,
+                timeBetweenTicks: 7,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -37,7 +37,7 @@ public static class Chapter1Minute03
             startingCount: 1,
             endCount: 2,
             maxSpawnCountPerTick: 1,
-            timeBetweenTicks: 8.0f,
+            timeBetweenTicks: 12.0f,
             SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -56,8 +56,8 @@ public static class Chapter1Minute03
                 endTime: new TimeSpan(0, 5, 30),
                 startingCount: 15,
                 endCount: 20,
-                maxSpawnCountPerTick: 10,
-                timeBetweenTicks: 2.0f,
+                maxSpawnCountPerTick: 5,
+                timeBetweenTicks: 6.0f,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.Swarm(

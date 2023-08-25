@@ -16,7 +16,7 @@ public static class Chapter1Minute06
                 startTime: new TimeSpan(0, 6, 5),
                 endTime: new TimeSpan(0, 10, 0),
                 spawnCountPerTick: 2,
-                timeBetweenTicks: 3,
+                timeBetweenTicks: 4,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -33,10 +33,10 @@ public static class Chapter1Minute06
             ActorTypeEnum.OgreShamanStaff,
             startTime: new TimeSpan(0, 6, 10),
             endTime: new TimeSpan(0, 10, 0),
-            startingCount: 3,
+            startingCount: 2,
             endCount: 3,
             maxSpawnCountPerTick: 1,
-            timeBetweenTicks: 5.0f,
+            timeBetweenTicks: 8.0f,
             SpawnDirection.Any);
 
         yield return SpawnUtil.SpawnAndMaintain(
@@ -74,7 +74,7 @@ public static class Chapter1Minute06
                 startTime: new TimeSpan(0, 6, 40),
                 endTime: new TimeSpan(0, 10, 0),
                 spawnCountPerTick: 1,
-                timeBetweenTicks: 3,
+                timeBetweenTicks: 4,
                 SpawnDirection.Any);
 
         yield return SpawnUtil.Single(

@@ -21,19 +21,6 @@ public static class ShopItemsUnlock
 
             new ShopItem
             {
-                ItemType = ShopItemType.UnlockPoisonDagger,
-                Title = ChoicesPoison.Name,
-                Description = $"You may now discover {ChoicesPoison.Name} on your journey",
-                BasePrice = 400,
-                MaxLevel = 1,
-                Apply = (BoughtItem bought) =>
-                {
-                    PlayerUpgrades.Data.PaintballBought = true;
-                }
-            },
-
-            new ShopItem
-            {
                 ItemType = ShopItemType.BurstOfFrost,
                 Title = ChoicesBurstOfFrost.Name,
                 Description = $"You may now discover {ChoicesBurstOfFrost.Name} on your journey",
@@ -42,6 +29,19 @@ public static class ShopItemsUnlock
                 Apply = (BoughtItem bought) =>
                 {
                     PlayerUpgrades.Data.BurstOfFrostBought = true;
+                }
+            },
+
+            new ShopItem
+            {
+                ItemType = ShopItemType.UnlockPoisonDagger,
+                Title = ChoicesPoison.Name,
+                Description = $"You may now discover {ChoicesPoison.Name} on your journey",
+                BasePrice = 400,
+                MaxLevel = 1,
+                Apply = (BoughtItem bought) =>
+                {
+                    PlayerUpgrades.Data.PaintballBought = true;
                 }
             },
 

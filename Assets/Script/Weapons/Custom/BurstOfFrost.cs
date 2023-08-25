@@ -6,6 +6,8 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
     const float Force = 1.0f;
 
     public static BurstOfFrost Instance;
+    public ParticleSystem PlayerParticles;
+    public ParticleSystem EnemyParticles;
 
     Color baseColor_;
     float baseAlpha_;
@@ -13,13 +15,11 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
     float nextBurst_;
     bool isBursting_;
     float burstStartTime_;
-    ParticleSystem snowflakes_;
 
     private void Awake()
     {
         Instance = this;
         renderer_ = GetComponent<SpriteRenderer>();
-        snowflakes_ = GetComponent<ParticleSystem>();
         baseColor_ = renderer_.color;
         baseAlpha_ = baseColor_.a;
     }
@@ -59,8 +59,8 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             burstStartTime_ = G.D.GameTime;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
             renderer_.transform.localScale = Vector2.one * scale * 2; // range is radius, scale is diameter, so x2
-            GameManager.Instance.MakeFlash(transform.position, 3.0f);
-            snowflakes_.Emit(15);
+            GameManager.Instance.MakeFlash(transform.position, 4.0f);
+            PlayerParticles.Emit(3);
         }
 
         if (isBursting_)
@@ -92,7 +92,11 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
                 continue;
 
             if (Random.value < PlayerUpgrades.Data.BurstOfFrostBaseFreezeChance * PlayerUpgrades.Data.BurstOfFrostFreezeChanceMul)
+            {
                 enemy.OnFreeze(G.D.BurstOfFrostColor, PlayerUpgrades.Data.BurstOfFrostBaseFreezeTime * PlayerUpgrades.Data.BurstOfFrostFreezeTimeMul);
+                EnemyParticles.transform.position = enemy.transform.position;
+                EnemyParticles.Emit(5);
+            }
 
             var dir = enemy.transform.position - pos;
             float distance = dir.magnitude + 0.0001f;

@@ -9,12 +9,7 @@ public class G : MonoBehaviour
         => GameManager.SetDebugOutput(key.ToString(), value);
 
     public int CosmeticArmorKills = 10000;
-    //public bool CosmeticArmorUnlocked()
-    //    => SaveGame.Members.EnemiesKilled >= CosmeticArmorKills;
-
     public int CosmeticHeartsSaves = 100;
-    //public bool CosmeticHeartsUnlocked()
-    //    => SaveGame.Members.OrcsSaved >= CosmeticHeartsSaves;
 
     public Color UpgradePositiveColor;
     public Color UpgradeNegativeColor;
@@ -36,6 +31,12 @@ public class G : MonoBehaviour
 
     public float GameTime => GameManager.Instance.GameTime;
     public float GameDeltaTime => GameManager.Instance.GameDeltaTime;
+
+    public static string ColorTimeNeutral(TimeSpan time)
+        => $"{D.UpgradeNeutralColorHex}{time.Minutes:00}</color><color=#f0f0f0>:</color>{D.UpgradeNeutralColorHex}{time.Seconds:00}</color>";
+
+    public static string ColorTimePositive(TimeSpan time)
+        => $"{D.UpgradePositiveColorHex}{time.Minutes:00}</color><color=#f0f0f0>:</color>{D.UpgradePositiveColorHex}{time.Seconds:00}</color>";
 
     string ColorToHex(Color color)
     {

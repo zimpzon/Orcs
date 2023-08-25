@@ -6,7 +6,6 @@ public class AutoPickUpScript : MonoBehaviour
 {
     public AutoPickUpType Type;
     public int Value = 1;
-    public float AttractDistance = 5.0f;
     public float PickupDistance = 0.3f;
     public float AttractPower = 20.0f;
     public float ThrowForce = 5.0f;
@@ -32,11 +31,11 @@ public class AutoPickUpScript : MonoBehaviour
     {
         forceScale_ = forceScale;
         direction.Normalize();
-        sqrAttractDistance_ = AttractDistance * AttractDistance;
+        sqrAttractDistance_ = PlayerUpgrades.Data.GoldXpAttractRange * PlayerUpgrades.Data.GoldXpAttractRange;
         
         float time = G.D.GameTime;
         float randomValue = forceScale * 0.1f;
-        force_ = direction * (Random.value * randomValue + ThrowForce) * forceScale_;
+        force_ = (Random.value * randomValue + ThrowForce) * forceScale_ * direction;
 
         throwEndTime_ = time + 0.5f;
         throwStartTime_ = GameManager.Instance.GameTime + 0.05f;

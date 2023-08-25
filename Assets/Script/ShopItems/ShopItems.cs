@@ -29,6 +29,7 @@ public enum ShopItemType
     CosmeticHearts,
     WeaponJump,
     Abundance,
+    PickupRange,
 }
 
 [Serializable]
@@ -256,6 +257,7 @@ public static class ShopItems
         Items.AddRange(ShopItemsWeapons.GetWeaponItems());
         Items.AddRange(ShopItemsMoneyXp.GetMoneyXpItems());
         Items.AddRange(ShopItemsUnlock.GetUnlockItems());
+        Items.AddRange(ShopItemsMeta.GetMetaItems());
         Items.AddRange(ShopItemsVariety.GetVarietyItems());
 
         foreach (var item in Items)

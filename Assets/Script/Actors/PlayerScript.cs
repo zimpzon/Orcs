@@ -15,6 +15,10 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSpritesKing;
     public Sprite[] IdleSpritesKing;
 
+    public SpriteRenderer AuraSprite;
+    public Color AuraLowHpColor;
+    Color auraBaseColor_;
+
     public ParticleSystem Hearts;
     public float Hp;
     public float MaxHp;
@@ -107,6 +111,7 @@ public class PlayerScript : MonoBehaviour
         playerPos_ = trans_.position;
         basePos_ = trans_.position;
 
+        auraBaseColor_ = AuraSprite.color;
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
         material_ = renderer_.material;

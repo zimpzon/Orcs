@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public static class ShopItemsMoneyXp
 {
@@ -41,20 +41,34 @@ public static class ShopItemsMoneyXp
 
             new ShopItem
             {
-                ItemType = ShopItemType.Abundance,
-                Title = "Abundance!\r\n",
-                Description = "Value of all dropped gold and XP <color=#00ff00>TRIPLED</color> per rank",
-                BasePrice = 5000,
-                PriceMultiplier = 2.0f,
-                MaxLevel = 3,
-                Value = 3,
+                ItemType = ShopItemType.PickupRange,
+                Title = "Magnetic Armor",
+                Description = "Attract gold and XP from much further away",
+                BasePrice = 1,
+                PriceMultiplier = 1.0f,
+                MaxLevel = 1,
+                Value = 1,
                 ValueScale = 1f,
                 Apply = (BoughtItem bought) =>
                 {
-                    PlayerUpgrades.Data.GoldXpMultiplierBought = bought.Level > 0;
-                    PlayerUpgrades.Data.GoldXpMultiplyValue = 3 * bought.Level;
+                    if (bought.Level > 0)
+                        PlayerUpgrades.Data.GoldXpAttractRange *= 1.5f;
+                },
+                Customize = (shopItem) =>
+                {
+                    shopItem.IsLocked = SaveGame.Members.MaxSecondsReached < (int)new TimeSpan(0, 6, 0).TotalSeconds;
+
+                    if (shopItem.IsLocked)
+                    {
+                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
+                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 6, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
+                    }
+                    else
+                    {
+                        return shopItem.Description;
+                    }
                 }
             },
-        };
+       };
     }
 }

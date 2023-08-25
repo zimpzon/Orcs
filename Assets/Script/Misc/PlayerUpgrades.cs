@@ -21,12 +21,14 @@ public class UpgradeData
     public int DropMoneyOnKillMin = 1;
     public int DropMoneyOnKillMax = 3;
 
-    public bool GoldXpMultiplierBought = false;
-    public int GoldXpMultiplyValue = 1;
-
     // xp
     public float XpDoubleChance = 0.05f;
     public float XpValueMul = 1.0f;
+
+    // gold & xp
+    public bool GoldXpMultiplierBought = false;
+    public int GoldXpMultiplyValue = 1;
+    public float GoldXpAttractRange = 4;
 
     // player
     public int BaseHealth = 100;
