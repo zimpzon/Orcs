@@ -11,7 +11,7 @@ public static class ShopItemsMeta
                 ItemType = ShopItemType.Abundance,
                 Title = "Abundance!\r\n",
                 Description = "Value of all dropped gold and XP <color=#00ff00>TRIPLED</color> per rank",
-                BasePrice = 5000,
+                BasePrice = 10000,
                 PriceMultiplier = 2.0f,
                 MaxLevel = 3,
                 Value = 3,

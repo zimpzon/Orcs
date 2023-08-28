@@ -11,7 +11,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.SpawnChest,
                 Title = "Duck's Treasure",
-                Description = $"A large or a small treasure chest will show up at {G.ColorTimePositive(new TimeSpan(0, 5, 0))}",
+                Description = $"A large or a small treasure chest will show up at {G.ColorTimePositive(new TimeSpan(0, 15 - 5, 0))}",
                 BasePrice = 100,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -27,7 +27,7 @@ public static class ShopItemsVariety
 
                     if (shopItem.IsLocked)
                     {
-                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
+                        var best = TimeSpan.FromSeconds(60 * 15 - SaveGame.Members.MaxSecondsReached);
                         return $"Reach {G.ColorTimeNeutral(PlayerUpgrades.Data.SpawnChestUnlockCriteria_GameTime)}\n\nBest: {G.ColorTimeNeutral(best)}";
                     }
                     else
@@ -41,7 +41,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerA,
                 Title = "Time Traveller A",
-                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 3, 0))}",
+                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 15 - 3, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -59,8 +59,8 @@ public static class ShopItemsVariety
 
                     if (shopItem.IsLocked)
                     {
-                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
-                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 7, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
+                        var best = TimeSpan.FromSeconds(60 * 15 - SaveGame.Members.MaxSecondsReached);
+                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 15 - 7, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
                     }
                     else
                     {
@@ -73,7 +73,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerB,
                 Title = "Time Traveller B",
-                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 6, 0))}",
+                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 15 - 6, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -91,8 +91,8 @@ public static class ShopItemsVariety
 
                     if (shopItem.IsLocked)
                     {
-                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
-                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 9, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
+                        var best = TimeSpan.FromSeconds(60 * 15 - SaveGame.Members.MaxSecondsReached);
+                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 15 - 9, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
                     }
                     else
                     {
@@ -105,7 +105,7 @@ public static class ShopItemsVariety
             {
                 ItemType = ShopItemType.TimeTravellerC,
                 Title = "Time Traveller C",
-                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 10, 0))}",
+                Description = $"Skip to {G.ColorTimePositive(new TimeSpan(0, 15 - 10, 0))}",
                 BasePrice = 1,
                 MaxLevel = 1,
                 Apply = (BoughtItem bought) =>
@@ -123,8 +123,8 @@ public static class ShopItemsVariety
 
                     if (shopItem.IsLocked)
                     {
-                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
-                        return $"Reach {G.D.UpgradeNeutralColorHex}final boss</color> at {G.ColorTimeNeutral(new TimeSpan(0, 15, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
+                        var best = TimeSpan.FromSeconds(60 * 15 - SaveGame.Members.MaxSecondsReached);
+                        return $"Reach {G.D.UpgradeNeutralColorHex}final boss</color> at {G.ColorTimeNeutral(new TimeSpan(0, 15 - 15, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
                     }
                     else
                     {

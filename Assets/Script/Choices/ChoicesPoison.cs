@@ -39,20 +39,20 @@ public static class ChoicesPoison
             new Choice
             {
                 Title = $"{Name}, count (1)",
-                Description = "<color=#00ff00>+30%</color> chillflakes, <color=#00ff00>+10%</color> damage",
+                Description = "<color=#00ff00>+50%</color> chillflakes, <color=#00ff00>+30%</color> damage",
                 Apply = () =>
                 {
-                    PlayerUpgrades.Data.PaintballRangeMul += 0.3f;
-                    PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.1f;
+                    PlayerUpgrades.Data.PaintballRangeMul += 0.5f;
+                    PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.3f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, count (2)",
-                    Description = "<color=#00ff00>+30%</color> chillflakes, <color=#00ff00>+10%</color> damage",
+                    Description = "<color=#00ff00>+30%</color> chillflakes, <color=#00ff00>+20%</color> damage",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.PaintballRangeMul += 0.3f;
-                    PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.1f;
+                        PlayerUpgrades.Data.PaintballDamagePerSecMul += 0.2f;
                     },
                 }
             },

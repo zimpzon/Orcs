@@ -19,26 +19,26 @@ public static class ChoicesWeapon
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, range (2)",
-                    Description = "Range <color=#00ff00>+20%</color>",
+                    Description = "Range <color=#00ff00>+15%</color>",
                     Apply = () =>
                     {
-                        PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
+                        PlayerUpgrades.Data.MagicMissileRangeMul += 0.15f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, range (3)",
-                        Description = "Range <color=#00ff00>+20%</color>",
+                        Description = "Range <color=#00ff00>+15%</color>",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
+                            PlayerUpgrades.Data.MagicMissileRangeMul += 0.15f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, range (4)",
-                            Description = "Range <color=#00ff00>+20%</color>",
+                            Description = "Range <color=#00ff00>+10%</color>",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileRangeMul += 0.2f;
+                                PlayerUpgrades.Data.MagicMissileRangeMul += 0.1f;
                             },
                         },
                     }
@@ -64,18 +64,18 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, speed (3)",
-                        Description = $"<color=#00ff00>+8%</color> shorter cooldown",
+                        Description = $"<color=#00ff00>+5%</color> shorter cooldown",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
+                            PlayerUpgrades.Data.MagicMissileCdMul -= 0.05f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, speed (4)",
-                            Description = $"<color=#00ff00>+8%</color> shorter cooldown",
+                            Description = $"<color=#00ff00>+5%</color> shorter cooldown",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.08f;
+                                PlayerUpgrades.Data.MagicMissileCdMul -= 0.05f;
                             },
                         }
                     }
@@ -101,18 +101,18 @@ public static class ChoicesWeapon
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, salvo (3)",
-                        Description = $"<color=#00ff00>+0.4</color> more knives",
+                        Description = $"<color=#00ff00>+0.3</color> more knives",
                         Apply = () =>
                         {
-                            PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
+                            PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.3f;
                         },
                         NextLevel = new Choice
                         {
                             Title = $"{Name}, salvo (4)",
-                            Description = $"<color=#00ff00>+0.4</color> more knives",
+                            Description = $"<color=#00ff00>+0.3</color> more knives",
                             Apply = () =>
                             {
-                                PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.4f;
+                                PlayerUpgrades.Data.MagicMissileBulletsAdd += 0.3f;
                             },
                         }
                     }

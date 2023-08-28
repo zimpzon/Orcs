@@ -362,7 +362,10 @@ public class GameManager : MonoBehaviour
                 int gameSeconds = (int)GameTime;
                 if (gameSeconds != lastGameSeconds)
                 {
-                    TextTime.text = $"{gameSeconds / 60:00}:{gameSeconds % 60:00}";
+                    const int maxSeconds = 15 * 60;
+                    int displaySeconds = Mathf.Max(0, maxSeconds - gameSeconds);
+                    TextTime.text = $"{displaySeconds / 60:00}:{displaySeconds % 60:00}";
+
                     lastGameSeconds = gameSeconds;
                 }
 
@@ -694,6 +697,7 @@ public class GameManager : MonoBehaviour
         GameState = State.Playing;
         RoundUnlockCount = 0;
         roundStartTime_ = Time.time;
+        lastGameSeconds = -1;
         G.D.PlayerScript.SetPlayerPos(Vector3.zero);
         G.D.PlayerScript.StartGame();
         Orc.SetPosition(Vector3.up * 3, startingGame: true);

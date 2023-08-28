@@ -28,7 +28,7 @@ public class ChestScript : MonoBehaviour, IKillableObject
         for (int i = 0; i < 5; ++i)
             SawBladeController.I.Throw();
 
-        FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 2, "5 SAWS RELEASED", Color.yellow, speed: 0.5f, timeToLive: 3.5f, TMPro.FontStyles.Bold);
+        FloatingTextSpawner.Instance.Spawn(transform.position + Vector3.up * 2, "5 SAWS RELEASED FROM CHEST", Color.yellow, speed: 0.5f, timeToLive: 3.5f, TMPro.FontStyles.Bold);
         GameObject.Destroy(this.gameObject);
     }
 }

@@ -60,8 +60,8 @@ public static class ShopItemsMoneyXp
 
                     if (shopItem.IsLocked)
                     {
-                        var best = TimeSpan.FromSeconds(SaveGame.Members.MaxSecondsReached);
-                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 6, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
+                        var best = TimeSpan.FromSeconds(60 * 15 - SaveGame.Members.MaxSecondsReached);
+                        return $"Reach {G.ColorTimeNeutral(new TimeSpan(0, 15 - 6, 0))}\n\nBest: {G.ColorTimeNeutral(best)}";
                     }
                     else
                     {

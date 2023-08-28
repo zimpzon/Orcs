@@ -78,7 +78,7 @@ public class UpgradeData
 
     public bool SawBladeBought = false;
     public bool SawBladeEnabledInRound = false;
-    public float SawBladeMaxDamage = 500;
+    public float SawBladeMaxDamage = 250;
     public float SawBladeDurabilityMul = 1.0f;
     public float SawBladeMaxDistance = 35;
     public float SawBladeBaseCd = 6.0f;
@@ -88,7 +88,7 @@ public class UpgradeData
     public bool BurstOfFrostEnabledInRound = false;
     public float BurstOfFrostBaseCd = 1.4f;
     public float BurstOfFrostCdMul = 1.0f;
-    public float BurstOfFrostBaseRange = 1.5f;
+    public float BurstOfFrostBaseRange = 2.0f;
     public float BurstOfFrostRangeMul = 1.0f;
     public float BurstOfFrostBaseFreezeChance = 0.65f;
     public float BurstOfFrostFreezeChanceMul = 1.0f;
@@ -104,19 +104,19 @@ public class UpgradeData
     public float PaintballDurationMul = 1.0f;
     public float PaintballCd = 3.0f;
     public float PaintballCdMul = 1.0f;
-    public float PaintballPerSec = 9;
-    public float PaintballBaseDamagePerSec = 25.0f;
+    public float PaintballPerSec = 12;
+    public float PaintballBaseDamagePerSec = 30.0f;
     public float PaintballDamagePerSecMul = 1.0f;
 
     // circling axe
     public bool CirclingAxeEnabled = false;
     public float CirclingAxeBaseCd = 8.0f;
     public float CirclingAxeCdMul = 1.0f;
-    public float CirclingAxeBaseDamage = 45.0f;
+    public float CirclingAxeBaseDamage = 55.0f;
     public float CirclingAxeDamageMul = 1.0f;
     public float CirclingAxeBaseSpeed = 6.0f;
     public float CirclingAxeSpeedMul = 1.0f;
-    public float CirclingAxeBaseLifetime = 4.0f;
+    public float CirclingAxeBaseLifetime = 4.5f;
     public float CirclingAxeLifetimeMul = 1.0f;
 
     // orc

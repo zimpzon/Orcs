@@ -40,32 +40,32 @@ public static class ChoicesSawblade
             new Choice
             {
                 Title = $"{Name}, Mayhem (1)",
-                Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
+                Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+50%</color> more durable",
                 Apply = () =>
                 {
                     float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
                     PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
-                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
+                    PlayerUpgrades.Data.SawBladeDurabilityMul += 0.5f;
                 },
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, Mayhem (2)",
-                    Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
+                    Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+25%</color> more durable",
                     Apply = () =>
                     {
                         float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
                         PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
-                        PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
+                        PlayerUpgrades.Data.SawBladeDurabilityMul += 0.25f;
                     },
                     NextLevel = new Choice
                     {
                         Title = $"{Name}, Mayhem (3)",
-                        Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+30%</color> more durable",
+                        Description = "<color=#00ff00>+1</color> sawblade, <color=#00ff00>+25%</color> more durable",
                         Apply = () =>
                         {
                             float reciprocal = 1.0f / PlayerUpgrades.Data.SawBladeCdMul;
                             PlayerUpgrades.Data.SawBladeCdMul = 1.0f / (reciprocal + 1);
-                            PlayerUpgrades.Data.SawBladeDurabilityMul += 0.3f;
+                            PlayerUpgrades.Data.SawBladeDurabilityMul += 0.25f;
                         },
                     }
                 }

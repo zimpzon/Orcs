@@ -143,7 +143,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
     {
         string text = "The Skeletons are here!";
         if (PlayerUpgrades.Data.GameStartTime != TimeSpan.Zero)
-            text += $"\n\nstarting at {PlayerUpgrades.Data.GameStartTime}";
+            text += $"\n\nstarting at {TimeSpan.FromMinutes(15) - PlayerUpgrades.Data.GameStartTime}";
 
         var info = new GameInfo
         {

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class GameProgressScript : MonoBehaviour
     public Text TextHowTo;
     public Text TextScore;
     public Text TextHowToPause;
-    public Text TextMission;
+    public TextMeshProUGUI TextMission;
 
     public void Begin(GameModeEnum gameMode)
     {
