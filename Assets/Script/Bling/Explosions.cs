@@ -28,7 +28,7 @@ public static class Explosions
             var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
-            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f);
+            enemy.ApplyDamage((long)damage, push.normalized, forceModifier: 0.01f);
         }
     }
 
@@ -49,7 +49,7 @@ public static class Explosions
         for (int i = 0; i < aliveCount; ++i)
         {
             ActorBase enemy = BlackboardScript.EnemyOverlap[i];
-            enemy.ApplyDamage(damage, enemy.transform.position - pos, forceModifier: 1.0f);
+            enemy.ApplyDamage((long)damage, enemy.transform.position - pos, forceModifier: 1.0f);
         }
 
         for (int i = 0; i < 10; ++i)

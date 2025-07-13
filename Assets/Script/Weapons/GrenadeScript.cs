@@ -117,7 +117,7 @@ public class GrenadeScript : MonoBehaviour
         for (int i = 0; i < aliveCount; ++i)
         {
             ActorBase enemy = BlackboardScript.EnemyOverlap[i];
-            enemy.ApplyDamage(damage, enemy.transform.position - pos, 1.0f);
+            enemy.ApplyDamage((long)damage, enemy.transform.position - pos, 1.0f);
         }
 
         for (int i = 0; i < 3; ++i)

@@ -44,10 +44,10 @@ public static class PositionUtility
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
-            float x = Random.Range(minX - 0.5f, maxX - 0.5f);
-            float y = Random.Range(minY - 0.5f, maxY - 0.5f);
+            float x = Random.Range(minX, maxX);
+            float y = Random.Range(minY, maxY);
             Rect scr = AspectUtility.screenRelativeRect;
-            point = new Vector3(scr.width * x, scr.height * y, 0.0f);
+            point = new Vector3(scr.width * x + scr.xMin, scr.height * y + scr.yMin, 0.0f);
             if (!avoidPlayer)
                 break;
 

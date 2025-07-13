@@ -6,10 +6,10 @@ public class AutoPickUpScript : MonoBehaviour
 {
     public AutoPickUpType Type;
     public int Value = 1;
-    public float PickupDistance = 0.3f;
-    public float AttractPower = 20.0f;
-    public float ThrowForce = 5.0f;
-    public float Drag = 5.0f;
+    float PickupDistance = 0.3f;
+    float AttractPower = 12.0f;
+    float ThrowForce = 5.0f;
+    float Drag = 5.0f;
     
     float forceScale_ = 1.0f;
     float throwEndTime_;
@@ -78,9 +78,7 @@ public class AutoPickUpScript : MonoBehaviour
         {
             if (Type == AutoPickUpType.Money)
             {
-                SaveGame.Members.Money += Value;
-                SaveGame.RoundGold += Value;
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup);
+                G.D.PlayerScript.OnGoldPickedUp(1);
             }
             else if (Type == AutoPickUpType.Xp)
             {

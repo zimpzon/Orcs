@@ -68,11 +68,6 @@ public class MusicManagerScript : MonoBehaviour
         StartCoroutine(Fade(audioSource_.volume, 0.0f));
     }
 
-    public void PlayIntroMusic()
-    {
-        StartCoroutine(Play(IntroMusicClip));
-    }
-
     public void PlayGameMusic(AudioClip clip)
     {
         StartCoroutine(Play(clip));

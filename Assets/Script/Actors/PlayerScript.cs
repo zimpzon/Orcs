@@ -13,8 +13,8 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
 
-    public SpriteRenderer AuraSprite;
     public Color AuraLowHpColor;
+    public TextMeshPro TextGoldAccumulator;
 
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
 
@@ -49,21 +49,6 @@ public class PlayerScript : MonoBehaviour
     SpriteRenderer shadowRenderer_;
     AnimationController animationController_ = new ();
 
-    private void Awake()
-    {
-        trans_ = transform;
-        playerScale_ = trans_.localScale.x; // Assume uniform scale
-        renderer_ = GetComponent<SpriteRenderer>();
-        playerPos_ = trans_.position;
-        basePos_ = playerPos_;
-
-        flashParamId_ = Shader.PropertyToID("_FlashAmount");
-        flashColorParamId_ = Shader.PropertyToID("_FlashColor");
-        material_ = renderer_.material;
-
-        shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
-    }
-
     public void ResetPlayerPos()
     {
         var bounds = GameManager.ArenaBounds;
@@ -80,7 +65,6 @@ public class PlayerScript : MonoBehaviour
 
         DisableToggledEffects();
 
-        nextBlood_ = 0;
         timeNextRound_ = 0;
         nextFire_ = 0;
         immunityEnd_ = 0;
@@ -150,7 +134,7 @@ public class PlayerScript : MonoBehaviour
         {
             yield return null;
 
-            if (GameManager.Instance.GameState != GameManager.State.Playing)
+            if (GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
                 continue;
 
             if (Time.time > nextFire_)
@@ -255,7 +239,7 @@ public class PlayerScript : MonoBehaviour
 
     void DoMovement()
     {
-        if (GameManager.Instance.GameState != GameManager.State.Playing)
+        if (GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
             return;
 
         float speed = PlayerUpgrades.Data.BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
@@ -329,7 +313,61 @@ public class PlayerScript : MonoBehaviour
         force_ += f;
     }
 
-    float nextBlood_;
+    public void OnGoldPickedUp(int count)
+    {
+        float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, pitch: pitch);
+        AddToAccumulatedGold(count);
+    }
+
+    long accumulatedGold = 0;
+    long accumulatedCount = 0;
+    float lastAccumulatedAdd;
+
+    void AddToAccumulatedGold(long amount)
+    {
+        accumulatedGold += amount;
+        accumulatedCount++;
+        lastAccumulatedAdd = G.D.GameTime;
+
+        TextGoldAccumulator.enabled = true;
+        TextGoldAccumulator.text = $"${accumulatedGold}";
+        LeanTween.cancel(TextGoldAccumulator.gameObject);
+        LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one * 0.25f, 0.0f);
+        LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one, 0.5f)
+            .setEase(LeanTweenType.easeOutElastic)
+            .setOvershoot(2.0f);
+    }
+
+    void UpdateGoldAccumulator()
+    {
+        bool hasExpired = lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 1;
+        if (hasExpired)
+        {
+            LeanTween.cancel(TextGoldAccumulator.gameObject);
+            LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.zero, 0.5f);
+
+            lastAccumulatedAdd = -1;
+            accumulatedGold = 0;
+            accumulatedCount = 0;
+        }
+    }
+
+    private void Awake()
+    {
+        TextGoldAccumulator.enabled = false;
+        trans_ = transform;
+        playerScale_ = trans_.localScale.x; // Assume uniform scale
+        renderer_ = GetComponent<SpriteRenderer>();
+        playerPos_ = trans_.position;
+        basePos_ = playerPos_;
+
+        flashParamId_ = Shader.PropertyToID("_FlashAmount");
+        flashColorParamId_ = Shader.PropertyToID("_FlashColor");
+        material_ = renderer_.material;
+
+        shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
+    }
 
     void Update()
     {
@@ -370,5 +408,7 @@ public class PlayerScript : MonoBehaviour
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
         DoMovement();
+
+        UpdateGoldAccumulator();
     }
 }

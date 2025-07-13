@@ -41,7 +41,7 @@ public class ActorBase : MonoBehaviour
     public bool UseSpawnParticles;
     [NonSerialized] public float TimeBorn;
     [NonSerialized] public float TimeDied;
-    [NonSerialized] public float Hp = 50;
+    [NonSerialized] public long Hp = 50;
 
     public static void ResetClosestEnemy()
     {
@@ -98,7 +98,7 @@ public class ActorBase : MonoBehaviour
     Color paintColor_;
     float frozenEnd_;
     Color frozenColor_;
-    float livingBombDamage_;
+    long livingBombDamage_;
     float livingBombEnd_;
     Vector3 scale_;
 
@@ -182,7 +182,7 @@ public class ActorBase : MonoBehaviour
         if (isLivingBomb_)
             return;
 
-        livingBombDamage_ = damage;
+        livingBombDamage_ = (long)damage;
         isLivingBomb_ = true;
 
         const float BombTime = 1.0f;
@@ -460,7 +460,7 @@ public class ActorBase : MonoBehaviour
         force_ += force;
     }
 
-    public void ApplyDamage(float amount, Vector3 direction, float forceModifier)
+    public void ApplyDamage(long amount, Vector3 direction, float forceModifier)
     {
         if (amount > 0)
         {

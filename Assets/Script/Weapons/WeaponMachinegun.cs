@@ -14,7 +14,7 @@ public class WeaponMachinegun : WeaponBase
         if (scale > 0.95f)
         {
             // lol hack for multiple daggers
-            GameManager.Instance.MakeFlash(point);
+            //GameManager.Instance.MakeFlash(point);
             AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.0f, pitch: 1.2f);
         }
 

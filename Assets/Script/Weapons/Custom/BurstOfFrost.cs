@@ -106,7 +106,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
             force = Mathf.Clamp(((radius - distance) / radius) * force, min: force * 0.5f, max: force);
             var push = dir * force;
             enemy.AddForce(push);
-            enemy.ApplyDamage(damage, push.normalized, forceModifier: 0.01f);
+            enemy.ApplyDamage((long)damage, push.normalized, forceModifier: 0.01f);
         }
     }
 }

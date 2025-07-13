@@ -247,7 +247,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             Vector3 damageDirection = (p.StickOffset * -1).normalized;
 
                             float damage = p.Damage;
-                            p.CurrentTarget.ApplyDamage(damage, damageDirection, forceModifier: 0.25f);
+                            p.CurrentTarget.ApplyDamage((long)damage, damageDirection, forceModifier: 0.25f);
                             p.StickyDamageDone += damage;
 
                             GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);

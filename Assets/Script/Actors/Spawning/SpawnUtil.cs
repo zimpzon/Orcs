@@ -10,7 +10,7 @@ namespace Assets.Script.Actors.Spawning
 {
     public static class SpawnUtil
     {
-        public static IEnumerator Message(TimeSpan showTime, string text, Color color, int fontSize = 8, float duration = 3)
+        public static IEnumerator Message(TimeSpan showTime, string text, Color? color = null, int? fontSize = null, float duration = 3)
         {
             while (G.D.GameTime < showTime.TotalSeconds)
                 yield return null;

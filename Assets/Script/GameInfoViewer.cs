@@ -29,27 +29,25 @@ public class GameInfoViewer : MonoBehaviour, IKillableObject
 
         defaultInfo_ = new GameInfo
         {
-            Text = "default",
             Duration = 3.0f,
-
-            Color = text_.color,
-            FontSize = 10,
-            Position = Vector2.up * -140,
         };
         enabled_ = false;
     }
 
     public void Show(GameInfo info)
     {
-        var finalColor = (info.Color ?? defaultInfo_.Color).Value;
+        var finalColor = info.Color.HasValue ? info.Color.Value : text_.color;
         hiddenColor = finalColor;
         hiddenColor.a = 0;
         text_.color = hiddenColor;
 
-        text_.text = info.Text;
-        text_.fontSize = (info.FontSize ?? defaultInfo_.FontSize).Value;
+        if (info.Text is not null)
+            text_.text = info.Text;
+
+        if (info.FontSize is not null)
+            text_.fontSize = info.FontSize.Value;
+
         hideTime_ = GameManager.Instance.GameTime + (info.Duration ?? defaultInfo_.Duration).Value;
-        GetComponent<RectTransform>().anchoredPosition = (info.Position ?? defaultInfo_.Position).Value;
 
         fadeOutDuration_ = (info.FadeOutDuration ?? defaultInfo_.FadeOutDuration).Value;
         float fadeInDuration = (info.FadeInDuration ?? defaultInfo_.FadeInDuration).Value;
