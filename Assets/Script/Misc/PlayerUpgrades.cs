@@ -118,13 +118,6 @@ public class UpgradeData
     public float CirclingAxeSpeedMul = 1.0f;
     public float CirclingAxeBaseLifetime = 4.5f;
     public float CirclingAxeLifetimeMul = 1.0f;
-
-    // orc
-    public float OrcReviveTime = 8.0f;
-    public float OrcReviveTimeMul = 1.0f;
-
-    public bool OrcJedisEnabled = false;
-    public float OrcJediKnockBackForceMul = 1.0f;
 }
 
 public class PlayerUpgrades : MonoBehaviour

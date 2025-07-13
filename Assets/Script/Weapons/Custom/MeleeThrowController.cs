@@ -40,7 +40,7 @@ public class MeleeThrowController : MonoBehaviour, IPlayerToggleEfffect
 
         if (GameManager.Instance.GameTime > nextThrow_)
         {
-            Vector3 location = PositionUtility.GetPointInsideArena(0.9f, 0.9f);
+            Vector3 location = PositionUtility.GetPointInsideArena();
             float damage = PlayerUpgrades.Data.MeleeThrowBaseDamage * PlayerUpgrades.Data.MeleeThrowPowerMul;
             Vector3 scale = Vector3.one * 2.0f;
             if (PlayerUpgrades.Data.MeleeThrowLeft)

@@ -18,9 +18,6 @@ public class SaveGameMembers
 {
     public int Money = 0;
     public int MoneySpentInShop;
-    public Dictionary<ShopItemType, SaveGameBoughtItem> SaveGameBoughtItems = new Dictionary<ShopItemType, SaveGameBoughtItem>();
-    public ShopItemType[] TempBoughtTypes = new ShopItemType[0];
-    public SaveGameBoughtItem[] TempBoughtItems = new SaveGameBoughtItem[0];
 
     public int[] Counters = new int[(int)GameCounter.Last];
 
@@ -135,12 +132,6 @@ public static class SaveGame
 
     public static void Save()
     {
-        // workaround for dictionary not serialized
-        Members.TempBoughtTypes = new ShopItemType[Members.SaveGameBoughtItems.Count];
-        Members.TempBoughtItems = new SaveGameBoughtItem[Members.SaveGameBoughtItems.Count];
-        Members.SaveGameBoughtItems.Keys.CopyTo(Members.TempBoughtTypes, 0);
-        Members.SaveGameBoughtItems.Values.CopyTo(Members.TempBoughtItems, 0);
-
         string json = Members.ToJson();
         Debug.Log("saving json: " + json);
 
@@ -156,7 +147,7 @@ public static class SaveGame
         }
     }
 
-    const string SaveGameKey = "save.json";
+    const string SaveGameKey = "idle-knight-save.json";
 
     static string GetPath()
     {
@@ -195,11 +186,6 @@ public static class SaveGame
                 // Might want to put in a bunch of pladeholders to make this less likely in a release.
                 Debug.Log("New counters detected, expanding array");
             }
-
-            // workaround for dictionary not serialized
-            Members.SaveGameBoughtItems.Clear();
-            for (int i = 0; i < Members.TempBoughtTypes.Length; ++i)
-                Members.SaveGameBoughtItems[Members.TempBoughtTypes[i]] = Members.TempBoughtItems[i];
         }
 
         Members ??= new SaveGameMembers();

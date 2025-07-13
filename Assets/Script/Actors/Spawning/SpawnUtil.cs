@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static PositionUtility;
 
@@ -30,19 +31,6 @@ namespace Assets.Script.Actors.Spawning
             GameManager.Instance.TextGameInfo.GetComponent<GameInfoViewer>().Show(info);
         }
 
-        public static void FleeAllActors()
-        {
-            var allEnemies = BlackboardScript.GetAllEnemies();
-            for (int i = 0; i < allEnemies.Length; ++i)
-            {
-                var actor = allEnemies[i];
-                var actorPos = (Vector2)actor.transform.position;
-
-                var target = BlackboardScript.ClosestPointOnEdge(actorPos);
-                actor.SetForcedTarget(actorPos + target, despawnAtDestination: true, breakAtDamage: false, ActorForcedTargetType.Direction);
-            }
-        }
-
         public static IEnumerator ActionAtTime(TimeSpan time, Action action)
         {
             while (G.D.GameTime < time.TotalSeconds)
@@ -51,145 +39,81 @@ namespace Assets.Script.Actors.Spawning
             action();
         }
 
-        class Maintained
+        public static IEnumerable<ActorBase> Random(ActorTypeEnum actorType, int count)
         {
-            public ActorBase Actor;
-            public int ETag;
-        }
-
-        public static IEnumerator SpawnAndMaintain(
-            ActorTypeEnum actorType,
-            TimeSpan startTime,
-            TimeSpan endTime,
-            int startingCount,
-            int endCount,
-            int maxSpawnCountPerTick,
-            float timeBetweenTicks,
-            SpawnDirection dir)
-        {
-            List<Maintained> alive = new();
-
-            var wait = new WaitForSeconds(timeBetweenTicks);
-
-            float startTimeSec = (float)startTime.TotalSeconds;
-            float endTimeSec = (float)endTime.TotalSeconds;
-
-            while (GameManager.Instance.GameTime < startTimeSec)
-                yield return null;
-
-            void RemoveDead()
+            var points = Enumerable.Range(0, count).Select(i => GetPointInsideArena(minX: 0.2f)).ToList();
+            points = points.OrderBy(p => p.x).ToList();
+            for (int i = 0; i < points.Count; i++)
             {
-                while (true)
-                {
-                    bool removed = false;
-                    for (int i = 0; i < alive.Count; ++i)
-                    {
-                        var m = alive[i];
-                        if (m.Actor.IsDead || m.Actor.CacheReviveCount != m.ETag)
-                        {
-                            alive.RemoveAt(i);
-                            removed = true;
-                            break;
-                        }
-                    }
-
-                    if (!removed)
-                        break;
-                }
-            }
-
-            float runTimeSec = (float)(endTime - startTime).TotalSeconds;
-            float countToBeAdded = endCount - startingCount;
-
-            while (GameManager.Instance.GameTime < endTimeSec)
-            {
-                float t = (GameManager.Instance.GameTime - startTimeSec) / runTimeSec;
-                float currentMaintainCount = (float)Math.Round(startingCount + t * countToBeAdded);
-
-                if (alive.Count < currentMaintainCount)
-                {
-                    for (int i = 0; i < maxSpawnCountPerTick && alive.Count < currentMaintainCount; i++)
-                    {
-                        var spawn = ActorCache.Instance.GetActor(actorType);
-                        float offset = 1.0f;
-                        Vector3 pos = GetPointOutsideScreen(dir, offset);
-
-                        spawn.transform.position = pos;
-                        spawn.SetActive(true);
-
-                        var actor = spawn.GetComponent<ActorBase>();
-                        alive.Add(new Maintained { Actor = actor, ETag = actor.CacheReviveCount });
-                    }
-
-                    RemoveDead();
-
-                    if (timeBetweenTicks != 0.0)
-                        yield return wait;
-               }
-
-                RemoveDead();
-                GameManager.SetDebugOutput(actorType.ToString(), alive.Count);
-                yield return null;
+                var spawn = SpawnActor(actorType);
+                Vector3 pos = points[i];
+                spawn.transform.position = pos;
+                yield return spawn.GetComponent<ActorBase>();
             }
         }
 
-        public static IEnumerator Swarm(
-            ActorTypeEnum actorType,
-            TimeSpan startTime,
-            TimeSpan endTime,
-            int spawnCountPerTick,
-            float timeBetweenTicks,
-            SpawnDirection dir)
+        public static IEnumerable<ActorBase> Single(ActorTypeEnum actorType, Vector2 pos)
         {
-            var wait = new WaitForSeconds(timeBetweenTicks);
-
-            float startTimeSec = (float)startTime.TotalSeconds;
-            float endTimeSec = (float)endTime.TotalSeconds;
-
-            while (GameManager.Instance.GameTime < startTimeSec)
-            {
-                yield return null;
-            }
-
-            while (GameManager.Instance.GameTime < endTimeSec)
-            {
-                for (int i = 0; i < spawnCountPerTick; i++)
-                {
-                    var spawn = ActorCache.Instance.GetActor(actorType);
-                    float offset = 1.0f;
-                    Vector3 pos = GetPointOutsideScreen(dir, offset);
-
-                    spawn.transform.position = pos;
-                    spawn.SetActive(true);
-                }
-
-                yield return wait;
-            }
-
-            yield return null;
-        }
-
-        public static IEnumerator Single(
-            ActorTypeEnum actorType,
-            TimeSpan time,
-            SpawnDirection dir = SpawnDirection.Any)
-        {
-            float startTimeSec = (float)time.TotalSeconds;
-
-            while (GameManager.Instance.GameTime < startTimeSec)
-                yield return null;
-
-            var spawn = ActorCache.Instance.GetActor(actorType);
-            float offset = 1.0f;
-            Vector3 pos = GetPointOutsideScreen(dir, offset);
-
+            var spawn = SpawnActor(actorType);
             spawn.transform.position = pos;
-            spawn.SetActive(true);
+            yield return spawn.GetComponent<ActorBase>();
+        }
+
+        public static IEnumerable<ActorBase> Square(ActorTypeEnum actorType, Vector2 center, int size, float spacing)
+        {
+            // Calculate grid points around center
+            var points = new List<Vector3>();
+
+            int half = size / 2;
+
+            for (int x = -half; x <= half; x++)
+            {
+                for (int y = -half; y <= half; y++)
+                {
+                    Vector3 point = new Vector3(center.x + x * spacing, center.y + y * spacing, 0f);
+                    points.Add(point);
+                }
+            }
+
+            points = points.OrderBy(p => p.x).ToList();
+
+            foreach (var point in points)
+            {
+                var spawn = SpawnActor(actorType);
+                spawn.transform.position = point;
+                yield return spawn.GetComponent<ActorBase>();
+            }
+        }
+
+        public static IEnumerable<ActorBase> Circle(ActorTypeEnum actorType, Vector2 center, float radius, int count)
+        {
+            // Calculate points in a circle around center
+            var points = new List<Vector3>();
+
+            for (int i = 0; i < count; i++)
+            {
+                float angle = i * (360f / count) * Mathf.Deg2Rad;
+                Vector3 point = new Vector3(
+                    center.x + radius * Mathf.Cos(angle),
+                    center.y + radius * Mathf.Sin(angle),
+                    0f
+                );
+                points.Add(point);
+            }
+
+            points = points.OrderBy(p => p.x).ToList();
+
+            foreach (var point in points)
+            {
+                var spawn = SpawnActor(actorType);
+                spawn.transform.position = point;
+                yield return spawn.GetComponent<ActorBase>();
+            }
         }
 
         static readonly List<Vector2> posList = new ();
 
-        public static IEnumerator SpawnFormation(
+        public static IEnumerable<ActorBase> SpawnFormation(
             ActorTypeEnum actorType,
             bool despawnAtDestination,
             bool breakFreeAtDamage,
@@ -218,13 +142,19 @@ namespace Assets.Script.Actors.Spawning
 
             for (int i = 0; i < posList.Count; ++i)
             {
-                var spawn = ActorCache.Instance.GetActor(actorType);
                 Vector2 startPos = fromPos + posList[i];
                 Vector2 endPos = target + posList[i];
+                var spawn = SpawnActor(actorType);
                 spawn.transform.position = startPos;
                 spawn.SetActive(true);
                 spawn.GetComponent<ActorBase>().SetForcedTarget(endPos, despawnAtDestination, breakFreeAtDamage, targetType);
             }
+        }
+
+        private static GameObject SpawnActor(ActorTypeEnum actorType)
+        {
+            var spawn = ActorCache.Instance.GetActor(actorType);
+            return spawn;
         }
     }
 }

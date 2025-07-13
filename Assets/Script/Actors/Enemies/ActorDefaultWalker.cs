@@ -31,21 +31,27 @@ public class ActorDefaultWalker : MonoBehaviour
 
         while (true)
         {
-            target_ = G.D.PlayerTrans.position;
+            float distanceToTarget = (actorBase_.transform.position - target_).sqrMagnitude;
+            if (distanceToTarget < 1)
+            {
+                target_ = GetNewTarget();
+            }
+
             yield return null;
         }
     }
 
     protected virtual Vector3 GetNewTarget()
     {
-        Vector3 result = PositionUtility.GetPointInsideArena(1.0f, 1.0f);
+        //FloatingTextSpawner.Instance.Spawn(actorBase_.transform.position, "new target", Color.yellow);
+        Vector3 result = PositionUtility.GetPointInsideArena();
         return result;
     }
 
     void Update()
     {
         bool dead = actorBase_.Hp <= 0.0f;
-        if (dead)
+        if (dead || actorBase_.IsSpawning)
             return;
 
         float deltaX = target_.x - actorBase_.transform.position.x;
@@ -62,6 +68,8 @@ public class ActorDefaultWalker : MonoBehaviour
             var dir = ((Vector3)NudgeTowards - actorBase_.transform.position).normalized;
             moveVec_ += dir * 0.25f;
         }
+
+        Debug.DrawLine(transform.position, target_, Color.green);
 
         actorBase_.UpdatePosition(moveVec_, actorBase_.Speed);
     }

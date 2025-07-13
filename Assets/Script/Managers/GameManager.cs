@@ -1,19 +1,22 @@
 ﻿using Assets.Script;
 using EZCameraShake;
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Script.Actors.Spawning;
 
 public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
-    public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing, Dead };
+    public enum State { None, Intro, Intro_GameMode, Intro_Shop, Intro_Settings, Playing,
+        Idle_PresentLevel,
+        Idle_Fighting,
+        Idle_WonFight
+    };
 
     const float XpPerLevelMultiplier = 1.5f;
     const float BaseXpToLevel = 14;
@@ -26,15 +29,10 @@ public class GameManager : MonoBehaviour
 
     public Color[] xpColors = new Color[] { };
 
-    public GameObject Chapter1;
     public LeanTween Tween;
     public Text TextVersion;
     public Text TextGameInfo;
     public GameInfoViewer TextGameInfoViewer;
-    public Text TextLevel;
-    public Text TextHp;
-    public Text TextTime;
-    public Text TextTimeScale;
     public Text TextRoundKills;
     public Text TextRoundGold;
     public Text TextUser;
@@ -48,13 +46,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI ButtonRefundAmount;
     public string ColorLocked;
     public string ColorUnlocked;
-    public ShopItemScript ShopItemProto;
     public Transform ShopItemsRoot;
     public Slider SliderMaster;
     public Slider SliderMusic;
     public Slider SliderSfx;
-    public Transform PanelChoices;
-    public Transform PanelPaused;
     public GameObject UpgradeChoice1;
     public GameObject UpgradeChoice2;
     public GameObject UpgradeChoice3;
@@ -62,6 +57,7 @@ public class GameManager : MonoBehaviour
     public GameObject PanelSettings;
     public GameObject PanelShop;
     public Canvas CanvasGameOverDefault;
+    public HpBarScript HpBarScript;
     public GameModeEnum GameMode;
 
     public ParticleSystem FlyingBlood;
@@ -71,7 +67,6 @@ public class GameManager : MonoBehaviour
     public ParticleSystem SpawnPoof;
     public ParticleSystem FlashParticles;
     public ParticleSystem CircleParticles;
-    public OrcController Orc;
     public int SortLayerTopEffects;
     public State GameState;
     public Canvas CanvasIntro;
@@ -166,33 +161,10 @@ public class GameManager : MonoBehaviour
 //        panel.transform.localScale = enable ? Vector3.one : Vector3.zero;
     }
 
-    public void OnButtonSettings()
-    {
-        PlayMenuSound();
-        GameState = State.Intro_Settings;
-
-        SliderMaster.value = SaveGame.Members.VolumeMaster;
-        SliderMusic.value = SaveGame.Members.VolumeMusic;
-        skipNextsfxVolumeChangeFeedback_ = true; // Only play feedback sound when user moves slider, not when setting value once right before shown
-        SliderSfx.value = SaveGame.Members.VolumeSfx;
-
-        EnablePanel(PanelSettings, true);
-    }
-
     public void OnButtonStart()
     {
         PlayMenuSound();
         GameState = State.Intro_GameMode;
-    }
-
-    public void OnButtonRefund()
-    {
-        PlayMenuSound();
-        SaveGame.Members.SaveGameBoughtItems.Clear();
-        SaveGame.Members.Money += SaveGame.Members.MoneySpentInShop;
-        SaveGame.Members.MoneySpentInShop = 0;
-        ShopItems.UpdateBoughtItems();
-        UpdateMoneyLabels();
     }
 
     public void ResetAllProgress()
@@ -211,56 +183,6 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.TotalSeconds = totalSeconds;
 
         SaveGame.Save();
-        ShopItems.UpdateBoughtItems();
-        UpdateMoneyLabels();
-    }
-
-    public void OnButtonShop()
-    {
-        PlayMenuSound();
-        UpdateMoneyLabels();
-        GameState = State.Intro_Shop;
-        EnablePanel(PanelShop, true);
-        ShopItems.UpdateBoughtItems();
-        resetAllCodeIdx = 0;
-    }
-
-    void UpdateMoneyLabels()
-    {
-        TextShopMoney.text = $"${SaveGame.Members.Money}";
-        ButtonRefundAmount.text = $"(${SaveGame.Members.MoneySpentInShop})";
-    }
-
-    static int BuyCount = 0;
-
-    public void OnItemRefunded(ShopItemType _)
-    {
-        UpdateMoneyLabels();
-        ShopItems.UpdateBoughtItems();
-    }
-
-    public void OnItemBought(ShopItemType itemType)
-    {
-        UpdateMoneyLabels();
-        BuyCount++;
-
-        // we can do better then this, maybe send it all combined, this is spam
-        //try
-        //{
-        //    var props = new Dictionary<string, object>
-        //    {
-        //        { "type", itemType.ToString() },
-        //        { "goldLeft", (int)SaveGame.Members.Money },
-        //        { "goldSpent", (int)SaveGame.Members.MoneySpentInShop },
-        //    };
-
-        //    Playfab.PlayerEvent(Playfab.ItemBoughtEvent, props);
-        //    Playfab.PlayerStat(Playfab.ItemsBoughtStat, BuyCount);
-        //}
-        //catch(Exception)
-        //{
-        //    // this can happen if the player 
-        //}
     }
 
     static bool BackButtonClicked = false;
@@ -285,75 +207,19 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            while (GameState == State.Intro)
+            // this is the loop
+            // spawn enemies
+            // run round
+            //   switch level if requested
+            // reward
+
+            var enemies = Chapter1Minute01.GetEnemies();
+            long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
+            HpBarScript.SetHp(totalHitpoints, totalHitpoints);
+
+            foreach (var enemy in enemies)
             {
-                yield return null;
-            }
-
-            while (GameState == State.Intro_GameMode)
-            {
-                if (GoBack())
-                {
-                    PlayMenuSound();
-                    GameState = State.Intro;
-                    break;
-                }
-
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    PlayMenuSound();
-                    StartGame();
-                }
-
-                yield return null;
-            }
-
-            while (GameState == State.Intro_Settings)
-            {
-                if (GoBack())
-                {
-                    PlayMenuSound();
-                    SaveGame.Save();
-                    GameState = State.Intro;
-                    EnablePanel(PanelSettings, false);
-                    break;
-                }
-
-                yield return null;
-            }
-
-            while (GameState == State.Intro_Shop)
-            {
-                if (G.GetCheatKey(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift) && G.GetCheatKey(KeyCode.LeftControl))
-                {
-                    ResetAllProgress();
-                }
-
-                if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
-                {
-                    SaveGame.Members.Money += 500;
-                    ShopItems.UpdateBoughtItems();
-                    UpdateMoneyLabels();
-                }
-
-                if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightShift))
-                {
-                    SaveGame.Members.EnemiesKilled = G.D.CosmeticArmorKills;
-                    SaveGame.Members.MaxSecondsReached = 60 * 15;
-                    SaveGame.Members.Chapter1BossStarted = 1;
-                    ShopItems.UpdateBoughtItems();
-                    UpdateMoneyLabels();
-                }
-
-                if (GoBack())
-                {
-                    PlayMenuSound();
-                    SaveGame.Save();
-                    GameState = State.Intro;
-                    EnablePanel(PanelShop, false);
-                    break;
-                }
-
+                enemy.gameObject.SetActive(true);
                 yield return null;
             }
 
@@ -364,25 +230,8 @@ public class GameManager : MonoBehaviour
                 {
                     const int maxSeconds = 15 * 60;
                     int displaySeconds = Mathf.Max(0, maxSeconds - gameSeconds);
-                    TextTime.text = $"{displaySeconds / 60:00}:{displaySeconds % 60:00}";
 
                     lastGameSeconds = gameSeconds;
-                }
-
-                int hpLeft = (int)(G.D.PlayerScript.Hp + 0.5f);
-                int maxHp = (int)(G.D.PlayerScript.MaxHp + 0.5f);
-                if (hpLeft != lastHp_ || maxHp != lastMaxHp_)
-                {
-                    TextHp.text = $"{hpLeft}/{G.D.PlayerScript.MaxHp} HP";
-                    lastHp_ = hpLeft;
-                    lastMaxHp_ = maxHp;
-                }
-
-                if (currentXp != lastXpShown_)
-                {
-                    float pct = Math.Min(100, (currentXp / xpToLevel) * 100);
-                    TextLevel.text = $"LEVEL {currentLevel_} ({pct:0.0}%)";
-                    lastXpShown_ = (int)currentXp;
                 }
 
                 if (SaveGame.RoundKills != lastKillsShown_)
@@ -397,37 +246,8 @@ public class GameManager : MonoBehaviour
                     lastGoldShown_ = SaveGame.RoundGold;
                 }
 
-                while (currentXp >= xpToLevel)
-                    yield return LevelUp();
-
-                if (GoBack())
-                {
-                    PauseGameTime = true;
-                    while (PauseGameTime)
-                        yield return Pause();
-
-                    if (!G.D.PlayerScript.RoundComplete)
-                        MakeFlash(G.D.PlayerPos, 5.0f);
-                }
-
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
-                yield return null;
-            }
-
-            while (GameState == State.Dead)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    G.D.PlayerScript.RoundComplete = true;
-                    ShowTitle(autoStartGame: true);
-                }
-                else if (GoBack() || G.D.PlayerScript.RoundComplete == true)
-                {
-                    G.D.PlayerScript.RoundComplete = true;
-                    ShowTitle();
-                }
-
                 yield return null;
             }
 
@@ -441,115 +261,8 @@ public class GameManager : MonoBehaviour
         G.D.PlayerScript.RoundComplete = true;
     }
 
-    void SetChoicesVisible(bool visible)
+    public void PlayfabStats()
     {
-        PanelChoices.gameObject.SetActive(visible);
-    }
-
-    public void PauseResume()
-    {
-        Unpause();
-    }
-
-    public void PauseQuitToMenu()
-    {
-        Unpause();
-        G.D.PlayerScript.RoundComplete = true;
-        ShowTitle(autoStartGame: false);
-    }
-
-    private void Unpause()
-    {
-        EnablePanel(PanelPaused.gameObject, false);
-        PauseGameTime = false;
-        Time.timeScale = 1.0f;
-        SetChoicesVisible(false);
-        AudioListener.pause = false;
-    }
-
-    IEnumerator Pause()
-    {
-        PlayMenuSound();
-        EnablePanel(PanelPaused.gameObject, true);
-
-        AudioListener.pause = true;
-
-        Time.timeScale = 0.0f;
-        PauseGameTime = true;
-
-        while (PauseGameTime)
-        {
-            yield return null;
-
-            if (GoBack())
-            {
-                PlayMenuSound();
-                Unpause();
-                yield break;
-            }
-        }
-    }
-
-    IEnumerator LevelUp()
-    {
-        bool selectionDone = false;
-
-        void SelectionCallback(Choice choice)
-        {
-            selectionDone = true;
-            choice.Apply();
-        }
-
-        SetChoicesVisible(true);
-
-        UpgradeChoice1.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
-        UpgradeChoice2.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
-        UpgradeChoice3.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
-        UpgradeChoice4.GetComponent<UpgradeChoiceScript>().SelectionCallback = SelectionCallback;
-
-        AudioListener.pause = true;
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.LevelUp, volumeScale: 0.3f, pitch: 0.9f, ignoreListenerPause: true);
-
-        Time.timeScale = 0.0f;
-        PauseGameTime = true;
-
-        while (!selectionDone)
-        {
-            yield return null;
-        }
-
-        currentXp -= xpToLevel;
-        xpToLevel = (int)(xpToLevel * XpPerLevelMultiplier);
-        currentLevel_++;
-
-        PauseGameTime = false;
-        Time.timeScale = 1.0f;
-
-        SetChoicesVisible(false);
-
-        AudioListener.pause = false;
-        Explosions.Push(G.D.PlayerPos, 4.0f, 1.0f);
-        MakeFlash(G.D.PlayerPos, 5.0f);
-    }
-
-    public void ShowingHowToPlay()
-    {
-        currentXp = 0;
-        xpToLevel = BaseXpToLevel;
-        currentLevel_ = 1;
-    }
-
-    public void HidingHowToPlay()
-    {
-        roundStartTime_ = GameTime;
-        G.D.PlayerScript.UpgradesActive = true;
-    }
-
-    public void ShowGameOver()
-    {
-        if (GameState == State.Dead)
-            return;
-
         var props = new Dictionary<string, object>
         {
             { "score", SaveGame.RoundScore },
@@ -585,23 +298,12 @@ public class GameManager : MonoBehaviour
 
         Playfab.PlayerStat(dic);
 
-        GameProgressScript.Instance.Stop();
         ProjectileManager.Instance.StopAll();
 
         CanvasGameOverDefault.enabled = true;
 
         SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
-
-        CanvasDead.gameObject.SetActive(true);
-        CanvasIntro.gameObject.SetActive(false);
-
-        if (SaveGame.Members.Money < 20)
-            TextGameOverGold.text = $"Go to the shop and spend your... <color=#ffd700>{SaveGame.Members.Money}</color> gold... Nevermind, go collect some more!";
-        else
-            TextGameOverGold.text = $"Go to the shop and spend your <color=#ffd700>{SaveGame.Members.Money}</color> gold!";
-
-        GameState = State.Dead;
     }
 
     static int Rounds = 0;
@@ -624,16 +326,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShowTitle(bool autoStartGame = false)
+    public void ResetGame(bool autoStartGame = false)
     {
-        if (GameState == State.Intro)
-            return;
-
         GameTime = 0.0001f;
         GameDeltaTime = 0.0f;
 
         KillKillableObjects();
-        GameManager.Instance.Chapter1.GetComponent<Chapter1Controller>().Kill();
 
         LeanTween.color(Floor.gameObject, floorDefaultColor, 1.0f);
 
@@ -641,56 +339,30 @@ public class GameManager : MonoBehaviour
         FloorFilter.color = Color.clear;
 
         Time.timeScale = 1.0f;
-        Chapter1.SetActive(false);
         PanelSettings.SetActive(false);
         ProjectileManager.Instance.StopAll();
         G.D.PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
-        GameProgressScript.Instance.Stop();
-        Orc.ResetAll();
         CameraShaker.Instance.ShakeInstances.Clear();
         Camera.main.transform.parent.position = new Vector3(0.0f, 0.0f, -10.0f);
         Camera.main.orthographicSize = 7.68f;
 
-        ShopItems.UpdateBoughtItems();
-
         ClearParticles();
-        CanvasIntro.gameObject.SetActive(true);
-        CanvasGame.gameObject.SetActive(false);
-        CanvasDead.gameObject.SetActive(false);
+        CanvasGame.gameObject.SetActive(true);
 
-        if (autoStartGame)
-        {
-            StartGame();
-        }
-        else
-        {
-            GameState = State.Intro;
-            MusicManagerScript.Instance.PlayIntroMusic();
-        }
+        StartGame();
     }
 
     public void StartGame()
     {
-        if (GameState == State.Playing)
-            return;
-
         KillOnStartGameKillableObjects();
         ActorBase.ResetClosestEnemy();
         SaveGame.ResetRound();
 
-        ShopItems.ApplyToPlayerUpgrades();
-
         UpgradeChoices.InitChoices();
 
         ResetPickups();
-        InitXpText();
 
-        TextTimeScale.enabled = PlayerUpgrades.Data.TimeScale > 1;
-        TextTimeScale.text = $"+{(int)Math.Round((PlayerUpgrades.Data.TimeScale - 1) * 100)}%";
-
-        CanvasIntro.gameObject.SetActive(false);
-        CanvasDead.gameObject.SetActive(false);
         CanvasGame.gameObject.SetActive(true);
         BlackboardScript.DestroyAllCorpses();
         FloorBlood.Clear();
@@ -698,20 +370,14 @@ public class GameManager : MonoBehaviour
         RoundUnlockCount = 0;
         roundStartTime_ = Time.time;
         lastGameSeconds = -1;
-        G.D.PlayerScript.SetPlayerPos(Vector3.zero);
+        xpToLevel = BaseXpToLevel;
+        G.D.PlayerScript.ResetPlayerPos();
         G.D.PlayerScript.StartGame();
-        Orc.SetPosition(Vector3.up * 3, startingGame: true);
 
         if (PlayerUpgrades.Data.GameStartTime > TimeSpan.Zero)
             GameTime = (float)PlayerUpgrades.Data.GameStartTime.TotalSeconds;
 
-        //{
-        //    GameTime = 60 * 13;
-        //    Debug.LogWarning("HACKZ, STARTING AT BOSS");
-        //}
-
         MusicManagerScript.Instance.PlayGameMusic(CurrentGameModeData.Music);
-        GameProgressScript.Instance.Begin(GameModeEnum.Undeads);
     }
 
     void ClearParticles()
@@ -727,87 +393,6 @@ public class GameManager : MonoBehaviour
     KeyCode[] Code = new KeyCode[] { KeyCode.R, KeyCode.E, KeyCode.S, KeyCode.E, KeyCode.T, KeyCode.A, KeyCode.L, KeyCode.L };
 
     int resetAllCodeIdx = 0;
-
-    void LateUpdate()
-    {
-        PruneDeadEnemies();
-        ActorBase.ResetClosestEnemy();
-    }
-
-    void Update()
-    {
-        TimeSinceStartup = Time.realtimeSinceStartup;
-        if (PauseGameTime)
-        {
-            GameDeltaTime = 0;
-        }
-        else
-        {
-            if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                GameTime += 30;
-            }
-
-            if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                GameTime += 60 * 15;
-            }
-
-            if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
-            }
-
-            if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                PlayerUpgrades.Data.TimeScale += 0.1f;
-            }
-
-            if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                PlayerUpgrades.Data.TimeScale -= 0.1f;
-            }
-
-            if (G.GetCheatKeyDown(KeyCode.F) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                SpawnUtil.FleeAllActors();
-            }
-
-
-            GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
-
-            if (SaveGame.RoundScore > 0)
-            {
-                GameTime += GameDeltaTime;
-            }
-        }
-
-        if (GameState == State.Intro_Shop && Input.GetKeyDown(Code[resetAllCodeIdx]))
-        {
-            resetAllCodeIdx++;
-            if (resetAllCodeIdx == Code.Length)
-            {
-                resetAllCodeIdx = 0;
-                ResetAllProgress();
-                return;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            TextFps.enabled = !TextFps.enabled;
-        }
-
-        if (TextFps.enabled)
-        {
-            TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Screen.fullScreen = !Screen.fullScreen;
-        }
-    }
 
     public Vector2 UiPositionFromWorld(Vector3 world)
     {
@@ -836,11 +421,6 @@ public class GameManager : MonoBehaviour
 
         ThrowPickups(AutoPickUpType.Money, actor.transform.position, actor.GoldCount, value: 1, forceScale: 1.0f);
         ThrowPickups(AutoPickUpType.Xp, actor.transform.position, amount: actor.XpCount, value: actor.XpValue, forceScale: 1.0f);
-    }
-
-    private void OnFirstOrcPickup()
-    {
-        G.D.PlayerScript.OnInitialPickup(WeaponType.Machinegun);
     }
 
     public void AddXp(int amount)
@@ -887,26 +467,6 @@ public class GameManager : MonoBehaviour
             }
             pickup.SetActive(true);
         }
-    }
-
-    public void OnOrcPickup(Vector3 pos)
-    {
-        SaveGame.RoundScore++;
-
-        if (SaveGame.RoundScore == 1)
-            OnFirstOrcPickup();
-
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.OrcPickup);
-        G.D.PlayerScript.AddHp(PlayerUpgrades.Data.RescueDuckHp, alwaysShow: true);
-        ThrowPickups(AutoPickUpType.Xp, pos, 1 + SaveGame.RoundScore / 5, value: 1, forceScale: 2.0f);
-
-        int money = 2 + (int)(GameTime / 30.0f) + SaveGame.RoundScore / 4;
-        ThrowPickups(AutoPickUpType.Money, pos, money, value: 1, forceScale: 1.1f);
-    }
-
-    private void InitXpText()
-    {
-        TextLevel.text = $"LEVEL 1 (0%)";
     }
 
     public static void SetDebugOutput(string key, object value)
@@ -1007,76 +567,9 @@ public class GameManager : MonoBehaviour
         if (isCrit)
             amount *= PlayerUpgrades.Data.CritValueMul;
 
-        enemy.ApplyDamage(amount, direction, forceModifier);
-
-        //MakeFlash(enemy.transform.position, 0.5f);
-
-        string text = string.Concat("-", ((int)(amount + 0.5f)).ToString());
-
-        FloatingTextSpawner.Instance.Spawn(
-            enemy.transform.position + Vector3.up * 0.3f,
-            text,
-            isCrit ? Color.yellow : Color.red,
-            speed: isCrit ? 0.4f : 0.25f,
-            timeToLive: 0.5f, isCrit ? FontStyles.Bold : FontStyles.Normal);
-    }
-
-    void Awake()
-    {
-        TextVersion.text = GameVersion;
-        Playfab.Login();
-
-        Instance = this;
-        Application.targetFrameRate = 60;
-        floorDefaultColor = Floor.color;
-        SortLayerTopEffects = SortingLayer.NameToID("TopEffects");
-        LayerPlayer = LayerMask.NameToLayer("Player");
-        LayerEnemyProjectile = LayerMask.NameToLayer("EnemyProjectile");
-        LayerEnemyCorpse = LayerMask.NameToLayer("EnemyCorpse");
-        LayerPlayerProjectile = LayerMask.NameToLayer("PlayerProjectile");
-        LayerEnemy = LayerMask.NameToLayer("Enemy");
-        LayerNeutral = LayerMask.NameToLayer("Neutral");
-        LayerXpPill = LayerMask.NameToLayer("XpPill");
-        LayerOrc = LayerMask.NameToLayer("Orc");
-
-        SpriteFlashParamId = Shader.PropertyToID("_FlashAmount");
-        SpriteFlashColorParamId = Shader.PropertyToID("_FlashColor");
-
-        CurrentGameModeData = GameModeDataNursery;
-        SetChoicesVisible(false);
-
-        var bounds = GetComponent<BoxCollider2D>();
-
-        // adjust arena to be 16:10 since on 16:9 we add black bars left/right
-        float arenaHeight = bounds.size.y;
-        float arenaWidth = arenaHeight * AspectUtility.WantedAspectRatio;
-        float halfX = arenaWidth / 2;
-        float halfY = arenaHeight / 2;
-
-        const float Size = 2;
-        ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
-        TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
-        BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);
-
-        LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, Size, ArenaBounds.height);
-        RightRect = new Rect(ArenaBounds.xMax - Size, ArenaBounds.y, Size, ArenaBounds.height);
-
-        TextFps.enabled = false;
-
-        ShopItems.CreateItemGoList(ShopItemProto, ShopItemsRoot);
-    }
-
-    private void Start()
-    {
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-        
-        SaveGame.Load();
-
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
-        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
-
-        ShowTitle();
-        StartCoroutine(GameStateCo());
+        long intAmount = (long)amount;
+        enemy.ApplyDamage(intAmount, direction, forceModifier);
+        HpBarScript.AddHp((long)-intAmount);
     }
 
     public bool IsInsideBounds(Vector3 pos, Sprite sprite)
@@ -1131,6 +624,110 @@ public class GameManager : MonoBehaviour
         {
             GUI.Label(new Rect(10, y, 1000, 20), string.Format("{0} = {1}", pair.Key, pair.Value));
             y += 20;
+        }
+    }
+
+    void Awake()
+    {
+        TextVersion.text = GameVersion;
+        Playfab.Login();
+
+        Instance = this;
+        Application.targetFrameRate = 60;
+        floorDefaultColor = Floor.color;
+        SortLayerTopEffects = SortingLayer.NameToID("TopEffects");
+        LayerPlayer = LayerMask.NameToLayer("Player");
+        LayerEnemyProjectile = LayerMask.NameToLayer("EnemyProjectile");
+        LayerEnemyCorpse = LayerMask.NameToLayer("EnemyCorpse");
+        LayerPlayerProjectile = LayerMask.NameToLayer("PlayerProjectile");
+        LayerEnemy = LayerMask.NameToLayer("Enemy");
+        LayerNeutral = LayerMask.NameToLayer("Neutral");
+        LayerXpPill = LayerMask.NameToLayer("XpPill");
+        LayerOrc = LayerMask.NameToLayer("Orc");
+
+        SpriteFlashParamId = Shader.PropertyToID("_FlashAmount");
+        SpriteFlashColorParamId = Shader.PropertyToID("_FlashColor");
+
+        CurrentGameModeData = GameModeDataNursery;
+
+        var bounds = GetComponent<BoxCollider2D>();
+
+        float arenaHeight = bounds.size.y;
+        float arenaWidth = arenaHeight * AspectUtility.WantedAspectRatio;
+        float halfX = arenaWidth / 2;
+        float halfY = arenaHeight / 2;
+
+        const float Size = 2;
+        ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
+        TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
+        BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);
+
+        LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, Size, ArenaBounds.height);
+        RightRect = new Rect(ArenaBounds.xMax - Size, ArenaBounds.y, Size, ArenaBounds.height);
+
+        TextFps.enabled = false;
+    }
+
+    private void Start()
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+
+        SaveGame.Load();
+
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
+
+        ResetGame(autoStartGame: true);
+        StartCoroutine(GameStateCo());
+    }
+
+    void LateUpdate()
+    {
+        PruneDeadEnemies();
+        ActorBase.ResetClosestEnemy();
+    }
+
+    void Update()
+    {
+        TimeSinceStartup = Time.realtimeSinceStartup;
+        if (PauseGameTime)
+        {
+            GameDeltaTime = 0;
+        }
+        else
+        {
+            if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
+            }
+
+            if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                PlayerUpgrades.Data.TimeScale += 0.1f;
+            }
+
+            if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
+            {
+                PlayerUpgrades.Data.TimeScale -= 0.1f;
+            }
+
+            GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
+            GameTime += GameDeltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            TextFps.enabled = !TextFps.enabled;
+        }
+
+        if (TextFps.enabled)
+        {
+            TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Screen.fullScreen = !Screen.fullScreen;
         }
     }
 }

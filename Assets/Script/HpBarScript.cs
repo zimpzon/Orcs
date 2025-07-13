@@ -1,48 +1,28 @@
-using System;
 using TMPro;
 using UnityEngine;
 
-public class HpBarScript : MonoBehaviour, IKillableObject
+public class HpBarScript : MonoBehaviour
 {
-    public HpBarScript I;
     public Transform ForegroundSprite;
-    [NonSerialized] public ActorBase Owner;
     public Transform ScaleRoot;
     public TextMeshPro HpText;
-    public float HiddenY;
-    public float ShownY;
-
+    public long CurrentHp = 0;
+    public long MaxHp = 100;
     public Transform FillTransform;
 
-    void Awake()
+    public long AddHp(long amount)
     {
-        I = this;
+        SetHp(CurrentHp + amount, MaxHp);
+        return CurrentHp;
     }
 
-    public void Kill()
+    public void SetHp(long current, long max)
     {
-        gameObject.SetActive(false);
-        LeanTween.moveLocalY(gameObject, HiddenY, 0);
-    }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-        LeanTween.moveLocalY(gameObject, ShownY, 0.5f);
-        SetHp(0, 100);
-    }
-
-    public void SetHp(float current, float max)
-    {
+        CurrentHp = current;
+        MaxHp = max;
         var scale = FillTransform.localScale;
-        scale.x = current / max;
+        scale.x = max == 0 ? 0 : (float)current / max;
         FillTransform.localScale = scale;
-        HpText.text = $"{Mathf.RoundToInt(current)}/{Mathf.RoundToInt(max)}";
-    }
-
-    void Update()
-    {
-        if (Owner != null)
-            SetHp(Owner.Hp, Owner.BaseHp);
+        HpText.text = $"{(long)current}/{(long)max}";
     }
 }

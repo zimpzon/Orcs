@@ -9,7 +9,7 @@ public enum ActorTypeEnum
     None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
     OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
     OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
-    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, OgreEdgy, ReaperBoss, BatWhite, BatRed,
+    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, ReaperBoss, BatWhite, BatRed,
     SpikyBall, OgreIcyShamanStaff,
 };
 
@@ -37,7 +37,8 @@ public class ActorBase : MonoBehaviour
     public int XpCount = 1;
     public int GoldCount = 0;
     public ActorTypeEnum ActorType;
-    public float BaseHp;
+    public long BaseHp;
+    public bool UseSpawnParticles;
     [NonSerialized] public float TimeBorn;
     [NonSerialized] public float TimeDied;
     [NonSerialized] public float Hp = 50;
@@ -50,7 +51,6 @@ public class ActorBase : MonoBehaviour
 
     [System.NonSerialized] public static float Damage = 25.0f;
     [System.NonSerialized] public bool IsFullyReady = false;
-    [System.NonSerialized] public bool UseSpawnParticles = false;
 
     [System.NonSerialized] public static Transform PlayerClosestEnemy;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
@@ -257,7 +257,7 @@ public class ActorBase : MonoBehaviour
         }
         else
         {
-            scale.x = moveVec.x < 0 ? -scale.x : scale.x;
+            scale.x = moveVec.x > 0 ? scale.x : -scale.x;
         }
 
         transform_.localScale = scale;
@@ -278,8 +278,8 @@ public class ActorBase : MonoBehaviour
             return;
 
         // if distance to player is small ignore crowd rules and go for it!
-        if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer && !IsBoss)
-            return;
+        //if (distanceToPlayer_ < IgnoreCrowdsWhenCloseToPlayer && !IsBoss)
+        //    return;
 
         int crowdCount = BlackboardScript.CountEnemies(position_, radius: CrowdScanRadius);
         if (crowdCount > CrowdMaxNearby)
@@ -500,23 +500,27 @@ public class ActorBase : MonoBehaviour
     IEnumerator SpawnAnimCo()
     {
         IsSpawning = true;
-        float endTime = GameManager.Instance.GameTime + 1.0f;
+        float endTime = GameManager.Instance.GameTime + 0.1f;
         material_.SetColor(flashColorParamId_, new Color(0.3f, 0.3f, 0.3f));
-        float flashAmount = 1.0f;
+        
+        Vector3 basePos = transform_.position;
+        Vector3 pos = basePos;
+
+        float flashAmount = 3.0f;
+        material_.SetFloat(flashParamId_, flashAmount);
+        GameManager.Instance.MakeFlash(pos, 1.0f);
+
+        Vector3 cloudPos = pos + Vector3.down * 0.25f;
+        //GameManager.Instance.MakeSpawnPoof(cloudPos, 1);
+
+        yield return new WaitForSeconds(0.1f);
+        material_.SetFloat(flashParamId_, 0.0f);
+
         while (GameManager.Instance.GameTime < endTime)
         {
-            Vector3 basePos = transform_.position;
-            Vector3 pos = basePos;
-            Vector3 cloudPos = pos + Vector3.down * 0.25f;
-
-            material_.SetFloat(flashParamId_, flashAmount);
-            flashAmount += GameManager.Instance.GameDeltaTime * 1.0f;
-            GameManager.Instance.MakeFlash(pos, 2.0f);
-            GameManager.Instance.MakeSpawnPoof(cloudPos, 1);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
-        material_.SetFloat(flashParamId_, 0.0f);
         IsSpawning = false;
     }
 

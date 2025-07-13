@@ -45,18 +45,18 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
 
     void SetNextBurst()
     {
-        nextBurst_ = G.D.GameTime + PlayerUpgrades.Data.BurstOfFrostBaseCd * PlayerUpgrades.Data.BurstOfFrostCdMul;
+        nextBurst_ = Time.time + PlayerUpgrades.Data.BurstOfFrostBaseCd * PlayerUpgrades.Data.BurstOfFrostCdMul;
     }
 
     void Update()
     {
-        if (G.D.GameTime > nextBurst_ && !isBursting_)
+        if (Time.time > nextBurst_ && !isBursting_)
         {
             if (!PlayerUpgrades.Data.BurstOfFrostEnabledInRound)
                 return;
 
             isBursting_ = true;
-            burstStartTime_ = G.D.GameTime;
+            burstStartTime_ = Time.time;
             float scale = PlayerUpgrades.Data.BurstOfFrostBaseRange * PlayerUpgrades.Data.BurstOfFrostRangeMul;
             renderer_.transform.localScale = Vector2.one * scale * 2; // range is radius, scale is diameter, so x2
             GameManager.Instance.MakeFlash(transform.position, 4.0f);
@@ -66,7 +66,7 @@ public class BurstOfFrost : MonoBehaviour, IPlayerToggleEfffect
         if (isBursting_)
         {
             const float BurstTime = 0.1f;
-            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - G.D.GameTime) / BurstTime);
+            float t = Mathf.Clamp01(1.0f - (burstStartTime_ + BurstTime - Time.time) / BurstTime);
             baseColor_.a = baseAlpha_ + t * 0.15f;
             renderer_.color = baseColor_;
 

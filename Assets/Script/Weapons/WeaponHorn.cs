@@ -6,7 +6,6 @@ public class WeaponHorn : WeaponBase
     {
         lastFire_ = Time.time;
         recoil = 0.0f;
-        GameManager.Instance.Orc.SetChasePlayer(true);
         AudioManager.Instance.PlayClipWithRandomPitch(FireAudio);
     }
 }
