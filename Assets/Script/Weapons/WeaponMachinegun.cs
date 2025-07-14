@@ -33,12 +33,6 @@ public class WeaponMachinegun : WeaponBase
         basic.Damage = damage;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileBaseRange * PlayerUpgrades.Data.MagicMissileRangeMul;
 
-        if (PlayerUpgrades.Data.IsRambo)
-        {
-            basic.MaxDistance *= 5;
-            basic.SwayFactor = 0.2f;
-        }
-
         basic.Radius = 0.3f;
 
         basic.Position = point;

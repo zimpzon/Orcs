@@ -115,8 +115,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
     public static ProjectileManager Instance;
 
-    float arenaBoundsX_;
-    float arenaBoundsY_;
+    //float arenaBoundsX_;
+    //float arenaBoundsY_;
     ReusableObject<Basic> projectileCache_;
     List<Basic> basicProjectiles_;
     List<Basic> removeListBasic_;
@@ -127,8 +127,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         projectileCache_ = new ReusableObject<Basic>(300, this);
         basicProjectiles_ = new List<Basic>();
         removeListBasic_ = new List<Basic>(50);
-        arenaBoundsY_ = Camera.main.orthographicSize;
-        arenaBoundsX_ = arenaBoundsY_ * AspectUtility.WantedAspectRatio;
+        //arenaBoundsY_ = Camera.main.orthographicSize;
+        //arenaBoundsX_ = arenaBoundsY_ * AspectUtility.WantedAspectRatio;
     }
 
     public Basic CreateObject()

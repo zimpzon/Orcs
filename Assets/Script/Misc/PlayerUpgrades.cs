@@ -28,7 +28,7 @@ public class UpgradeData
     // gold & xp
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
-    public float GoldXpAttractRange = 8;
+    public float GoldXpAttractRange = 5;
 
     // player
     public int BaseHealth = 100;
@@ -37,25 +37,27 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 6.0f;
+    public float BaseMoveSpeed = 2.0f;
     public float MoveSpeedMul = 1.0f;
-    public bool IsRambo = false;
-    public float RamboEndTime = 0;
-
-    public int RescueDuckHp = 5;
 
     // weapons
-    public float MagicMissileBaseDamage = 45.0f;
+    public float MagicMissileBaseDamage = 40.0f;
     public float MagicMissileDamageMul = 1.0f;
-    public float MagicMissileBaseBulletCd = 0.15f;
-    public float MagicMissileBaseCd = 2.0f;
+    public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
+
+    public float MagicMissileBaseBulletCd = 0.25f;
+
+    public float MagicMissileBaseCd = 1.0f;
     public float MagicMissileCdMul = 1.0f;
+    public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
+
     public float MagicMissileBaseRange = 3.0f;
     public float MagicMissileRangeMul = 1.0f;
-    public float MagicMissileBaseSpeed = 8.0f;
+    public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
+
+    public float MagicMissileBaseSpeed = 5.0f;
     public float MagicMissileSpeedMul = 1.0f;
-    public float MagicMissileBaseBullets = 5;
-    public float MagicMissileBulletsAdd = 0.0f;
+
     public float MagicMissileJumpDamageMul = 0.0f;
     public int MagicMissileMultiShots = 0;
 

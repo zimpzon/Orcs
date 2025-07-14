@@ -39,14 +39,14 @@ public static class PositionUtility
         return new Vector2(x, y);
     }
 
-    public static Vector3 GetPointInsideArena(float minX = 0, float minY = 0, float maxX = 1, float maxY = 1, bool avoidPlayer = true)
+    public static Vector3 GetPointInsideArena(float minX = 0.1f, float minY = 0.1f, float maxX = 0.9f, float maxY = 0.9f, bool avoidPlayer = true)
     {
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)
         {
             float x = Random.Range(minX, maxX);
             float y = Random.Range(minY, maxY);
-            Rect scr = AspectUtility.screenRelativeRect;
+            Rect scr = GameManager.ArenaBounds;
             point = new Vector3(scr.width * x + scr.xMin, scr.height * y + scr.yMin, 0.0f);
             if (!avoidPlayer)
                 break;
@@ -65,7 +65,7 @@ public static class PositionUtility
         {
             float x = Random.Range(-0.5f, 0.5f) * maxOffsetX;
             float y = Random.Range(-0.5f, 0.5f) * maxOffsetY;
-            Rect scr = AspectUtility.screenRelativeRect;
+            Rect scr = GameManager.ArenaBounds;
             point = new Vector3(scr.width * x, scr.height * y, 0.0f);
             bool notOnTopOfPlayer = Vector3.Distance(point, G.D.PlayerPos) > 2.0f;
             if (notOnTopOfPlayer)

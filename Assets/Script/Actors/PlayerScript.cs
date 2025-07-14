@@ -30,7 +30,6 @@ public class PlayerScript : MonoBehaviour
     float flipX_;
     float playerScale_ = 2.0f;
     float nextFire_;
-    float shotsLeft_ = 0;
     int flashParamId_;
     int flashColorParamId_;
     float flashEndTime_;
@@ -68,7 +67,6 @@ public class PlayerScript : MonoBehaviour
         timeNextRound_ = 0;
         nextFire_ = 0;
         immunityEnd_ = 0;
-        shotsLeft_ = 0;
         UpgradesActive = false;
         shadowRenderer_.enabled = true;
         isMoving_ = false;
@@ -117,15 +115,10 @@ public class PlayerScript : MonoBehaviour
         TryEnableToggledEffects();
     }
 
-    void RefreshBulletCount()
-    {
-        shotsLeft_ += PlayerUpgrades.Data.MagicMissileBaseBullets + PlayerUpgrades.Data.MagicMissileBulletsAdd;
-    }
-
     void SetNextFire()
     {
-        float FireCd = PlayerUpgrades.Data.IsRambo ? 0.15f : PlayerUpgrades.Data.MagicMissileBaseCd * PlayerUpgrades.Data.MagicMissileCdMul;
-        nextFire_ = Time.time + FireCd;
+        float FireCd = PlayerUpgrades.Data.MagicMissileEffectiveCd;
+        nextFire_ = G.D.GameTime + FireCd;
     }
 
     IEnumerator Think()
@@ -137,55 +130,40 @@ public class PlayerScript : MonoBehaviour
             if (GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
                 continue;
 
-            if (Time.time > nextFire_)
+            bool hasCloseEnemy = false;
+            Vector2 vecToClosestEnemy = Vector2.right;
+
+            if (ActorBase.PlayerClosestEnemy is not null)
             {
-                RefreshBulletCount();
-                nextFire_ = float.MaxValue;
+                vecToClosestEnemy = ActorBase.PlayerClosestEnemy.transform.position - trans_.position;
+                float distanceClosest = vecToClosestEnemy.magnitude;
+                hasCloseEnemy = distanceClosest <= PlayerUpgrades.Data.MagicMissileEffectiveRange;
             }
 
-            bool hasBullets = (int)shotsLeft_ > 0;
-
-            if (!hasBullets || ActorBase.PlayerClosestEnemy == null)
+            if (G.D.GameTime > nextFire_ && hasCloseEnemy)
             {
-                // Stop firing
-                Weapon.StopFire();
-            }
-            else if (hasBullets && Time.time > timeNextRound_)
-            {
-                float roundCd = PlayerUpgrades.Data.IsRambo ? 0.1f : PlayerUpgrades.Data.MagicMissileBaseBulletCd * PlayerUpgrades.Data.MagicMissileCdMul;
-                timeNextRound_ = Time.time + roundCd;
-
-                shotsLeft_ -= 1;
-                if (shotsLeft_ >= 1)
-                    SetNextFire();
+                SetNextFire();
 
                 float recoil;
-                var fireDir = lookDir_;
-                if (ActorBase.PlayerClosestEnemy != null)
-                {
-                    // here closest
-                    fireDir = (ActorBase.PlayerClosestEnemy.transform.position - trans_.position).normalized;
-                }
+                var fireDir = vecToClosestEnemy.normalized;
 
-                float damage = PlayerUpgrades.Data.MagicMissileBaseDamage * PlayerUpgrades.Data.MagicMissileDamageMul;
+                float damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
 
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out recoil);
 
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.75f;
 
-                if (!PlayerUpgrades.Data.IsRambo)
+                damage *= 0.05f;
+
+                // Multishot
+                for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
                 {
-                    damage *= 0.05f;
+                    var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
 
-                    for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
-                    {
-                        var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
-                        Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
-
-                        var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
-                        Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
-                    }
+                    var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
+                    Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
                 }
 
                 AddForce(lookDir_ * recoil * 1);
@@ -332,6 +310,7 @@ public class PlayerScript : MonoBehaviour
 
         TextGoldAccumulator.enabled = true;
         TextGoldAccumulator.text = $"${accumulatedGold}";
+
         LeanTween.cancel(TextGoldAccumulator.gameObject);
         LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one * 0.25f, 0.0f);
         LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one, 0.5f)
@@ -341,11 +320,14 @@ public class PlayerScript : MonoBehaviour
 
     void UpdateGoldAccumulator()
     {
-        bool hasExpired = lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 1;
+        bool hasExpired = lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 0.25f;
         if (hasExpired)
         {
             LeanTween.cancel(TextGoldAccumulator.gameObject);
             LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.zero, 0.5f);
+
+            long multiplier = 1 + accumulatedCount / 10;
+            // TODO: do something with multiplier?
 
             lastAccumulatedAdd = -1;
             accumulatedGold = 0;
@@ -382,12 +364,6 @@ public class PlayerScript : MonoBehaviour
         {
             immortal_ = !immortal_;
             FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
-        }
-
-        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            PlayerUpgrades.Data.IsRambo = true;
-            PlayerUpgrades.Data.RamboEndTime = Time.time + 5;
         }
 
         if (GameManager.Instance.PauseGameTime)

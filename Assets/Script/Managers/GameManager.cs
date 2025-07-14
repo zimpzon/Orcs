@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     public Color[] xpColors = new Color[] { };
 
+    public BoxCollider2D ArenaBoundsCollider;
     public LeanTween Tween;
     public Text TextVersion;
     public Text TextGameInfo;
@@ -34,17 +35,11 @@ public class GameManager : MonoBehaviour
     public Text TextUser;
     public Text TextShopMoney;
     public Text TextFps;
-    public TextMeshProUGUI TextGo;
     public Text TextClock;
     public SpriteRenderer Floor;
-    public SpriteRenderer FloorFilter;
     Color floorDefaultColor;
-    public Button ButtonPlay;
-    public TextMeshProUGUI ButtonRefundAmount;
     public string ColorLocked;
     public string ColorUnlocked;
-    public Transform ShopItemsRoot;
-    public Canvas CanvasGameOverDefault;
     public HpBarScript HpBarScript;
     public GameModeEnum GameMode;
 
@@ -253,8 +248,6 @@ public class GameManager : MonoBehaviour
 
         ProjectileManager.Instance.StopAll();
 
-        CanvasGameOverDefault.enabled = true;
-
         SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
     }
@@ -287,7 +280,6 @@ public class GameManager : MonoBehaviour
         LeanTween.color(Floor.gameObject, floorDefaultColor, 1.0f);
 
         Floor.color = floorDefaultColor;
-        FloorFilter.color = Color.clear;
 
         Time.timeScale = 1.0f;
         CameraShaker.Instance.ShakeInstances.Clear();
@@ -587,7 +579,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         TextGameInfo.text = "";
-        TextVersion.text = GameVersion;
         Playfab.Login();
 
         Instance = this;
@@ -608,20 +599,33 @@ public class GameManager : MonoBehaviour
 
         CurrentGameModeData = GameModeDataNursery;
 
-        var bounds = GetComponent<BoxCollider2D>();
+        //float arenaHeight = bounds.size.y;
+        //float arenaWidth = arenaHeight * AspectUtility.WantedAspectRatio;
+        //float halfX = arenaWidth / 2;
+        //float halfY = arenaHeight / 2;
 
-        float arenaHeight = bounds.size.y;
-        float arenaWidth = arenaHeight * AspectUtility.WantedAspectRatio;
-        float halfX = arenaWidth / 2;
-        float halfY = arenaHeight / 2;
+        //const float Size = 2;
+        //ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
+        //TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
+        //BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);
 
-        const float Size = 2;
-        ArenaBounds = new Rect(-halfX + 0.5f, -halfY + 0.35f, halfX * 2 - 1.0f, halfY * 2 - 0.5f);
-        TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - Size, ArenaBounds.width, Size);
-        BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, Size);
+        //LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, Size, ArenaBounds.height);
+        //RightRect = new Rect(ArenaBounds.xMax - Size, ArenaBounds.y, Size, ArenaBounds.height);
 
-        LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, Size, ArenaBounds.height);
-        RightRect = new Rect(ArenaBounds.xMax - Size, ArenaBounds.y, Size, ArenaBounds.height);
+        var bounds = ArenaBoundsCollider.bounds;
+
+        const float BorderSize = 2;
+        ArenaBounds = new Rect(
+            ArenaBoundsCollider.transform.position.x - bounds.extents.x,
+            ArenaBoundsCollider.transform.position.y - bounds.extents.y,
+            bounds.extents.x * 2,
+            bounds.extents.y * 2);
+
+        TopRect = new Rect(ArenaBounds.x, ArenaBounds.yMax - BorderSize, ArenaBounds.width, BorderSize);
+        BottomRect = new Rect(ArenaBounds.x, ArenaBounds.yMin, ArenaBounds.width, BorderSize);
+
+        LeftRect = new Rect(ArenaBounds.x, ArenaBounds.y, BorderSize, ArenaBounds.height);
+        RightRect = new Rect(ArenaBounds.xMax - BorderSize, ArenaBounds.y, BorderSize, ArenaBounds.height);
 
         TextFps.enabled = false;
     }
