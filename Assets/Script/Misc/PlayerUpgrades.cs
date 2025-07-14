@@ -37,25 +37,25 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 2.0f;
+    public float BaseMoveSpeed = 6.0f;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 40.0f;
+    public float MagicMissileBaseDamage = 5.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
     public float MagicMissileBaseBulletCd = 0.25f;
 
-    public float MagicMissileBaseCd = 1.0f;
+    public float MagicMissileBaseCd = 0.20f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
-    public float MagicMissileBaseRange = 3.0f;
+    public float MagicMissileBaseRange = 5.0f;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
 
-    public float MagicMissileBaseSpeed = 5.0f;
+    public float MagicMissileBaseSpeed = 8.0f;
     public float MagicMissileSpeedMul = 1.0f;
 
     public float MagicMissileJumpDamageMul = 0.0f;

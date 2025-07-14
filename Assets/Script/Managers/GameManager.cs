@@ -30,12 +30,10 @@ public class GameManager : MonoBehaviour
     public Text TextVersion;
     public Text TextGameInfo;
     public GameInfoViewer TextGameInfoViewer;
-    public Text TextRoundKills;
-    public Text TextRoundGold;
     public Text TextUser;
-    public Text TextShopMoney;
     public Text TextFps;
     public Text TextClock;
+    public Text TextGold;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -142,7 +140,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //  
+    int round = 0;
+    // main loop
     IEnumerator GameStateCo()
     {
         while (true)
@@ -151,7 +150,11 @@ public class GameManager : MonoBehaviour
 
             G.D.PlayerScript.StartGame();
 
-            var enemies = EnemySpawner.GetEnemies();
+            round++;
+            if (round > EnemySpawner.MaxRound)
+                round = 1;
+
+            var enemies = EnemySpawner.GetEnemies(1);
             long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
@@ -365,6 +368,23 @@ public class GameManager : MonoBehaviour
             int amount = UnityEngine.Random.Range(PlayerUpgrades.Data.DropMoneyOnKillMin, PlayerUpgrades.Data.DropMoneyOnKillMax + 1);
             ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount, value: 1, forceScale: 1.0f);
         }
+    }
+
+    long goldAmount = 0;
+    public void AddGold(long amount)
+    {
+        if (amount >= 25)
+        {
+            amount *= 2;
+        }
+
+        goldAmount += amount;
+        TextGold.text = $"${goldAmount}";
+        LeanTween.cancel(TextGold.gameObject);
+        LeanTween.scale(TextGold.gameObject, Vector3.one * 0.25f, 0.0f);
+        LeanTween.scale(TextGold.gameObject, Vector3.one, 0.5f)
+            .setEase(LeanTweenType.easeOutElastic)
+            .setOvershoot(2.0f);
     }
 
     public void AddXp(int amount)

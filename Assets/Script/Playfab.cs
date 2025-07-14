@@ -68,7 +68,7 @@ public static class Playfab
         {
             LoginRes = result;
             DisplayStatus = "logged in";
-            GameManager.Instance.TextUser.text = DisplayStatus;
+            //GameManager.Instance.TextUser.text = DisplayStatus;
             Debug.Log($"login successful, id: {result.PlayFabId}, created: {result.NewlyCreated}");
         }
 

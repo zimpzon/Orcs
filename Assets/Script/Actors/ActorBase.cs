@@ -465,7 +465,7 @@ public class ActorBase : MonoBehaviour
         if (amount > 0)
         {
             Hp -= amount;
-            GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
+            //GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
         }
 
         if (HasForcedDestination && forcedDestinationBreakAtDamage_)
@@ -627,8 +627,8 @@ public class ActorBase : MonoBehaviour
             if (stoppedMoving)
                 break;
 
-            if (GameManager.Instance.GameTime < bloodEndTime)
-                GameManager.Instance.TriggerBlood(pos, 0.1f);
+            //if (GameManager.Instance.GameTime < bloodEndTime)
+            //    GameManager.Instance.TriggerBlood(pos, 0.1f);
 
             yield return null;
         }

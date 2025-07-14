@@ -250,7 +250,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.CurrentTarget.ApplyDamage((long)damage, damageDirection, forceModifier: 0.25f);
                             p.StickyDamageDone += damage;
 
-                            GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
+                            //GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
                             p.StickyDamageTimeNext = GameManager.Instance.GameTime + p.StickyDamageCd;
                         }
                     }

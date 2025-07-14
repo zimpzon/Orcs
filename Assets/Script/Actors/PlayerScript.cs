@@ -320,18 +320,21 @@ public class PlayerScript : MonoBehaviour
 
     void UpdateGoldAccumulator()
     {
-        bool hasExpired = lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 0.25f;
+        bool hasExpired =
+            accumulatedGold >= 25 ||
+            (lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 0.25f);
+
         if (hasExpired)
         {
             LeanTween.cancel(TextGoldAccumulator.gameObject);
             LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.zero, 0.5f);
 
-            long multiplier = 1 + accumulatedCount / 10;
-            // TODO: do something with multiplier?
+            GameManager.Instance.AddGold(accumulatedGold);
 
             lastAccumulatedAdd = -1;
             accumulatedGold = 0;
             accumulatedCount = 0;
+
         }
     }
 
