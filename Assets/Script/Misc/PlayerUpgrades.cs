@@ -12,8 +12,6 @@ public class UpgradeData
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
-    public bool CosmeticKing = false;
-    public bool CosmeticHearts = false;
 
     // gold
     public float MoneyDoubleChance = 0.05f;
@@ -28,7 +26,7 @@ public class UpgradeData
     // gold & xp
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
-    public float GoldXpAttractRange = 5;
+    public float GoldXpAttractRange = 4 * GameManager.Instance.ArenaScale;
 
     // player
     public int BaseHealth = 100;
@@ -37,21 +35,19 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 6.0f;
+    public float BaseMoveSpeed = 10.0f * GameManager.Instance.ArenaScale;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 5.0f;
+    public float MagicMissileBaseDamage = 20.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
-    public float MagicMissileBaseBulletCd = 0.25f;
-
-    public float MagicMissileBaseCd = 0.20f;
+    public float MagicMissileBaseCd = 1.0f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
-    public float MagicMissileBaseRange = 5.0f;
+    public float MagicMissileBaseRange = 4.0f * GameManager.Instance.ArenaScale;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
 
@@ -82,7 +78,7 @@ public class UpgradeData
     public bool SawBladeEnabledInRound = false;
     public float SawBladeMaxDamage = 250;
     public float SawBladeDurabilityMul = 1.0f;
-    public float SawBladeMaxDistance = 35;
+    public float SawBladeMaxDistance = 35 * GameManager.Instance.ArenaScale;
     public float SawBladeBaseCd = 6.0f;
     public float SawBladeCdMul = 1.0f;
 
@@ -116,7 +112,7 @@ public class UpgradeData
     public float CirclingAxeCdMul = 1.0f;
     public float CirclingAxeBaseDamage = 55.0f;
     public float CirclingAxeDamageMul = 1.0f;
-    public float CirclingAxeBaseSpeed = 6.0f;
+    public float CirclingAxeBaseSpeed = 6.0f * GameManager.Instance.ArenaScale;
     public float CirclingAxeSpeedMul = 1.0f;
     public float CirclingAxeBaseLifetime = 4.5f;
     public float CirclingAxeLifetimeMul = 1.0f;
@@ -126,7 +122,8 @@ public class PlayerUpgrades : MonoBehaviour
 {
     public static PlayerUpgrades Instance;
 
-    public static UpgradeData Data = new ();
+    //public static UpgradeData Data = new();
+    public static UpgradeData Data;
 
     public static void ResetAll()
     {
@@ -136,5 +133,6 @@ public class PlayerUpgrades : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
+        Data = new();
+}
 }

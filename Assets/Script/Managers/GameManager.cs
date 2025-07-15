@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,6 +65,9 @@ public class GameManager : MonoBehaviour
     public bool PauseGameTime;
     public float GameTime;
     public float GameDeltaTime;
+    public float ArenaScale => ArenaRoot.transform.localScale.x;
+    public GameObject ArenaRoot;
+
     int livingEnemyCount;
 
     [NonSerialized] public GameModeData LatestGameModeData = new ();
@@ -121,7 +123,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoText(string text, float delay = 1.0f)
+    IEnumerator ShowInfoText(string text, float delay = 1.5f)
     {
         TextGameInfo.text = text;
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
@@ -384,7 +386,7 @@ public class GameManager : MonoBehaviour
         LeanTween.scale(TextGold.gameObject, Vector3.one * 0.25f, 0.0f);
         LeanTween.scale(TextGold.gameObject, Vector3.one, 0.5f)
             .setEase(LeanTweenType.easeOutElastic)
-            .setOvershoot(2.0f);
+            .setOvershoot(0.5f);
     }
 
     public void AddXp(int amount)

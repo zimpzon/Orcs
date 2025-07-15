@@ -51,7 +51,7 @@ public class ActorDefaultWalker : MonoBehaviour
     void Update()
     {
         bool dead = actorBase_.Hp <= 0.0f;
-        if (dead || actorBase_.IsSpawning)
+        if (dead || actorBase_.IsSpawning || GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
             return;
 
         float deltaX = target_.x - actorBase_.transform.position.x;

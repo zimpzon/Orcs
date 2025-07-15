@@ -19,6 +19,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
 {
     public static ProjectileCache Instance;
 
+    public GameObject ObjectsParent;
     public GameObject SpritePrefab;
 
     ReusableObject<ProjectileInfo> sprites_;
@@ -32,6 +33,7 @@ public class ProjectileCache : MonoBehaviour, IObjectFactory<ProjectileInfo>
     {
         var go = Instantiate(SpritePrefab);
         ProjectileInfo result = new (go);
+        result.Transform.parent = ObjectsParent.transform;
         result.Transform.gameObject.SetActive(false);
         return result;
     }

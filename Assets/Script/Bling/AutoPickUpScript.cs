@@ -6,7 +6,7 @@ public class AutoPickUpScript : MonoBehaviour
 {
     public AutoPickUpType Type;
     public int Value = 1;
-    float PickupDistance = 0.3f;
+    float PickupDistance = 0.2f;
     float AttractPower = 12.0f;
     float ThrowForce = 5.0f;
     float Drag = 5.0f;
@@ -29,7 +29,9 @@ public class AutoPickUpScript : MonoBehaviour
 
     public void Throw(Vector3 direction, float forceScale)
     {
+        forceScale *= GameManager.Instance.ArenaScale; ;
         forceScale_ = forceScale;
+
         direction.Normalize();
         sqrAttractDistance_ = PlayerUpgrades.Data.GoldXpAttractRange * PlayerUpgrades.Data.GoldXpAttractRange;
         

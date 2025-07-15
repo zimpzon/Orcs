@@ -35,9 +35,7 @@ public class PlayerScript : MonoBehaviour
     float flashEndTime_;
     bool flashActive_;
     Material material_;
-    float immunityEnd_;
     bool immortal_;
-    float timeNextRound_;
 
     public bool RoundComplete;
     public bool UpgradesActive = false;
@@ -53,6 +51,7 @@ public class PlayerScript : MonoBehaviour
         var bounds = GameManager.ArenaBounds;
         var mid = bounds.center;
         playerPos_ = new Vector2(bounds.xMin + 2, mid.y);
+        //playerPos_ = bounds.center;
         trans_.position = playerPos_;
     }
 
@@ -64,9 +63,7 @@ public class PlayerScript : MonoBehaviour
 
         DisableToggledEffects();
 
-        timeNextRound_ = 0;
         nextFire_ = 0;
-        immunityEnd_ = 0;
         UpgradesActive = false;
         shadowRenderer_.enabled = true;
         isMoving_ = false;

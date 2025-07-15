@@ -12,6 +12,8 @@ namespace Assets.Script.Enemies
             public List<GameObject> Objects = new();
         }
 
+        public GameObject ObjectsParent;
+
         public static ActorCache Instance;
 
         public EnemyPrefabs EnemyPrefabs;
@@ -70,7 +72,11 @@ namespace Assets.Script.Enemies
             {
                 var newObject = Instantiate(prefab);
                 newObject.SetActive(false);
-                //newObject.transform.position = Vector3.left * (100 + Random.value * 100);
+
+                var originalScale = newObject.transform.localScale;
+                newObject.transform.SetParent(ObjectsParent.transform, worldPositionStays: true);
+                newObject.transform.localScale = originalScale;
+
                 cacheEntry.Objects.Add(newObject);
             }
         }

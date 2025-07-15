@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using PlayFab.DataModels;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GoCache : MonoBehaviour
 {
+    public GameObject ObjectsParent;
     public GameObject Prefab;
     public string Name;
 
@@ -31,7 +33,12 @@ public class GoCache : MonoBehaviour
     {
         var newInstance = (GameObject)Instantiate(Prefab);
         newInstance.transform.position = Vector3.left * (10000 + Random.value * 10000); // Whoops, why are they still in the physics system when active = false? Have to hide them.
+
+        var originalScale = newInstance.transform.localScale;
+        newInstance.transform.SetParent(ObjectsParent.transform, worldPositionStays: true);
+        newInstance.transform.localScale = originalScale;
         newInstance.SetActive(false);
+
         cachedObjects.Add(newInstance);
     }
 
