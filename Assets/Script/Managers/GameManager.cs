@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoText(string text, float delay = 1.5f)
+    IEnumerator ShowInfoText(string text, float delay = 0.75f)
     {
         TextGameInfo.text = text;
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
@@ -383,8 +383,8 @@ public class GameManager : MonoBehaviour
         goldAmount += amount;
         TextGold.text = $"${goldAmount}";
         LeanTween.cancel(TextGold.gameObject);
-        LeanTween.scale(TextGold.gameObject, Vector3.one * 0.25f, 0.0f);
-        LeanTween.scale(TextGold.gameObject, Vector3.one, 0.5f)
+        LeanTween.scale(TextGold.gameObject, Vector3.one, 0.0f);
+        LeanTween.scale(TextGold.gameObject, Vector3.one * 1.2f, 0.5f)
             .setEase(LeanTweenType.easeOutElastic)
             .setOvershoot(0.5f);
     }
@@ -462,6 +462,7 @@ public class GameManager : MonoBehaviour
 
     public void MakeCircle(Vector3 pos, float size = 1.0f)
     {
+        pos.z = 0;
         CircleParticles.transform.position = pos;
         var main = CircleParticles.main;
         main.startSize = size;
@@ -712,6 +713,30 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             Screen.fullScreen = !Screen.fullScreen;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            PlayerUpgrades.Data.BaseMoveSpeed += Input.GetKey(KeyCode.LeftShift) ? 1f : -1f;
+            Debug.Log("BaseMoveSpeed : " + PlayerUpgrades.Data.BaseMoveSpeed);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            PlayerUpgrades.Data.MagicMissileBaseCd += Input.GetKey(KeyCode.LeftShift) ? -0.25f : 0.25f;
+            Debug.Log("MagicMissileBaseCd : " + PlayerUpgrades.Data.MagicMissileBaseCd);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            PlayerUpgrades.Data.MagicMissileBaseDamage += Input.GetKey(KeyCode.LeftShift) ? 10f : -10f;
+            Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
+            saw.Eject(Vector2.zero, Vector2.right, Color.white, 1.0f);
         }
     }
 }

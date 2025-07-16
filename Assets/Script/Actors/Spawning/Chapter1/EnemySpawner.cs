@@ -1,7 +1,5 @@
 using Assets.Script.Actors.Spawning;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class EnemySpawner
 {
@@ -13,14 +11,14 @@ public static class EnemySpawner
 
         //yield return SpawnUtil.Circle(ActorTypeEnum.OgreSmall, Vector2.zero, radius: 3, count: 10);
 
-        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 3))
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 2))
             yield return go;
-
-        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, 1))
-        //    yield return go;
 
         foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 10))
             yield return go;
+
+        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 10))
+        //    yield return go;
 
         //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreShamanStaff, 1))
         //    yield return go;

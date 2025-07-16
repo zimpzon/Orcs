@@ -13,6 +13,9 @@ public class UpgradeData
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
 
+    // click
+    public long ClickPower = 10;
+
     // gold
     public float MoneyDoubleChance = 0.05f;
     public float DropMoneyOnKillChance = 0.1f;
@@ -26,7 +29,7 @@ public class UpgradeData
     // gold & xp
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
-    public float GoldXpAttractRange = 4 * GameManager.Instance.ArenaScale;
+    public float GoldXpAttractRange = 3f * GameManager.Instance.ArenaScale;
 
     // player
     public int BaseHealth = 100;
@@ -35,11 +38,11 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 10.0f * GameManager.Instance.ArenaScale;
+    public float BaseMoveSpeed = 3.0f * GameManager.Instance.ArenaScale;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 20.0f;
+    public float MagicMissileBaseDamage = 10.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
@@ -47,7 +50,7 @@ public class UpgradeData
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
-    public float MagicMissileBaseRange = 4.0f * GameManager.Instance.ArenaScale;
+    public float MagicMissileBaseRange = 6.0f * GameManager.Instance.ArenaScale;
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
 

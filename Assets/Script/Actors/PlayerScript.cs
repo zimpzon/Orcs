@@ -146,7 +146,10 @@ public class PlayerScript : MonoBehaviour
 
                 float damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
 
-                Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.0f, GameManager.Instance.SortLayerTopEffects, out recoil);
+                Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.5f, GameManager.Instance.SortLayerTopEffects, out recoil);
+
+                // TODO: Gold per knife
+                GameManager.Instance.AddGold(1);
 
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.75f;
@@ -306,7 +309,7 @@ public class PlayerScript : MonoBehaviour
         lastAccumulatedAdd = G.D.GameTime;
 
         TextGoldAccumulator.enabled = true;
-        TextGoldAccumulator.text = $"${accumulatedGold}";
+        TextGoldAccumulator.text = $"{accumulatedCount}";
 
         LeanTween.cancel(TextGoldAccumulator.gameObject);
         LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one * 0.25f, 0.0f);
@@ -317,8 +320,10 @@ public class PlayerScript : MonoBehaviour
 
     void UpdateGoldAccumulator()
     {
+        const int CountBonus = 20;
+
         bool hasExpired =
-            accumulatedGold >= 25 ||
+            accumulatedGold >= CountBonus ||
             (lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 0.25f);
 
         if (hasExpired)
@@ -326,7 +331,20 @@ public class PlayerScript : MonoBehaviour
             LeanTween.cancel(TextGoldAccumulator.gameObject);
             LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.zero, 0.5f);
 
-            GameManager.Instance.AddGold(accumulatedGold);
+            if (accumulatedCount >= CountBonus)
+            {
+                accumulatedGold *= 2;
+
+                FloatingTextSpawner.Instance.Spawn(
+                    playerPos_ + Vector3.up * 0.75f,
+                    $"X2",
+                    Color.red,
+                    speed: 2.0f,
+                    timeToLive: 1.0f,
+                    fontStyle: TMPro.FontStyles.Bold);
+
+                GameManager.Instance.AddGold(accumulatedGold);
+            }
 
             lastAccumulatedAdd = -1;
             accumulatedGold = 0;

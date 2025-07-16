@@ -13,7 +13,7 @@ public class WeaponMachinegun : WeaponBase
 
         if (scale > 0.95f)
         {
-            // lol hack for multiple daggers
+            // lol hack for multiple daggers so only main dagger plays sound
             //GameManager.Instance.MakeFlash(point);
             AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.0f, pitch: 1.2f);
         }
@@ -43,6 +43,9 @@ public class WeaponMachinegun : WeaponBase
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
         basic.Force = 0.5f;
+        basic.ParticleSystem = Particles.I.KnifeTrail;
+        basic.ParticleEmitCount = 1;
+        basic.ParticleEmitDelay = 0.01f;
         basic.JumpToNearbyTarget = PlayerUpgrades.Data.MagicMissileJumpDamageMul > 0;
         basic.JumpDamageMul = PlayerUpgrades.Data.MagicMissileJumpDamageMul;
         basic.DieOnCollision = !basic.JumpToNearbyTarget;
