@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
     public float GameDeltaTime;
     public float ArenaScale => ArenaRoot.transform.localScale.x;
     public GameObject ArenaRoot;
+    public int CurrentRound = 1;
+    public int MaxRound = 10;
 
     int livingEnemyCount;
 
@@ -112,18 +114,16 @@ public class GameManager : MonoBehaviour
         float VolumeMaster = SaveGame.Members.VolumeMaster;
         float VolumeMusic = SaveGame.Members.VolumeMusic;
         float VolumeSfx = SaveGame.Members.VolumeSfx;
-        int totalSeconds = SaveGame.Members.TotalSeconds;
 
         SaveGame.Members = new ();
         SaveGame.Members.VolumeMaster = VolumeMaster;
         SaveGame.Members.VolumeMusic = VolumeMusic;
         SaveGame.Members.VolumeSfx = VolumeSfx;
-        SaveGame.Members.TotalSeconds = totalSeconds;
 
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoText(string text, float delay = 0.75f)
+    IEnumerator ShowInfoText(string text, float delay = 1.0f)
     {
         TextGameInfo.text = text;
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
@@ -140,6 +140,17 @@ public class GameManager : MonoBehaviour
             TextClock.text = $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
             previousSecondsLeft = seconds;
         }
+    }
+
+    void ShowRoundText()
+    {
+        FloatingTextSpawner.Instance.Spawn(
+            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y + 2),
+            $"ROUND {CurrentRound}/{MaxRound}",
+            Color.yellow,
+            speed: 0.05f,
+            timeToLive: 3.0f,
+            fontStyle: TMPro.FontStyles.Italic);
     }
 
     int round = 0;
@@ -162,6 +173,7 @@ public class GameManager : MonoBehaviour
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
 
             yield return ShowInfoText("ROUND START!");
+            ShowRoundText();
 
             foreach (var enemy in enemies)
             {
@@ -218,14 +230,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayfabStats()
     {
-        var props = new Dictionary<string, object>
-        {
-            { "score", SaveGame.RoundScore },
-            { "level", (int)currentLevel_ },
-            { "gold", SaveGame.RoundGold },
-            { "kills", SaveGame.RoundKills },
-        };
-        Playfab.PlayerEvent(Playfab.GameOverEvent, props);
+        Playfab.PlayerEvent(Playfab.GameOverEvent, new Dictionary<string, object>());
 
         Rounds++;
 
@@ -234,26 +239,14 @@ public class GameManager : MonoBehaviour
         float roundTime = GameTime - roundStartTime_;
 
         int roundSeconds = Mathf.RoundToInt(roundTime);
-        SaveGame.Members.TotalSeconds += roundSeconds;
-
-        if (GameTime > SaveGame.Members.MaxSecondsReached)
-            SaveGame.Members.MaxSecondsReached = Mathf.RoundToInt(GameTime);
 
         var dic = new Dictionary<string, int>();
-        dic[Playfab.GoldStat] = SaveGame.RoundGold;
-        dic[Playfab.LevelStat] = (int)currentLevel_;
-        dic[Playfab.KillsStat] = SaveGame.RoundKills;
-        dic[Playfab.RoundsCompletedStat] = Rounds;
-        dic[Playfab.TotalSeconds] = SaveGame.Members.TotalSeconds;
-        dic[Playfab.ChapterBossStartedStat] = SaveGame.Members.Chapter1BossStarted;
-        dic[Playfab.ChapterBossKilledStat] = SaveGame.Members.Chapter1BossKilled;
-        dic[Playfab.MaxSecondsReached] = SaveGame.Members.MaxSecondsReached;
+        //dic[Playfab.GoldStat] = SaveGame.RoundGold;
 
         Playfab.PlayerStat(dic);
 
         ProjectileManager.Instance.StopAll();
 
-        SaveGame.UpdateFromRound(roundSeconds, reset: true);
         SaveGame.Save();
     }
 
@@ -310,7 +303,6 @@ public class GameManager : MonoBehaviour
     {
         KillOnStartGameKillableObjects();
         ActorBase.ResetClosestEnemy();
-        SaveGame.ResetRound();
 
         ResetPickups();
 
@@ -358,28 +350,9 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
-    public void OnEnemyKill(ActorBase actor)
-    {
-        SaveGame.RoundKills++;
-
-        // temp
-        ThrowPickups(AutoPickUpType.Money, actor.transform.position, 3, value: 1, forceScale: 3.0f);
-
-        if (UnityEngine.Random.value < PlayerUpgrades.Data.DropMoneyOnKillChance)
-        {
-            int amount = UnityEngine.Random.Range(PlayerUpgrades.Data.DropMoneyOnKillMin, PlayerUpgrades.Data.DropMoneyOnKillMax + 1);
-            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount, value: 1, forceScale: 1.0f);
-        }
-    }
-
     long goldAmount = 0;
     public void AddGold(long amount)
     {
-        if (amount >= 25)
-        {
-            amount *= 2;
-        }
-
         goldAmount += amount;
         TextGold.text = $"${goldAmount}";
         LeanTween.cancel(TextGold.gameObject);
@@ -405,7 +378,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, int value, float forceScale = 1.0f)
+    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, int value, float forceScale = 1.0f, float coinScale = 1.0f)
     {
         for (int i = 0; i < amount; ++i)
         {
@@ -414,7 +387,7 @@ public class GameManager : MonoBehaviour
             
             var pickupScript = pickup.GetComponent<AutoPickUpScript>();
             pickupScript.Value = value;
-            pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale);
+            pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale, coinScale);
 
             if (pickupType == AutoPickUpType.Xp)
             {
@@ -476,25 +449,18 @@ public class GameManager : MonoBehaviour
 
     public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)
     {
-        FlyingBlood.transform.position = pos;
-        int rangeFrom = Mathf.RoundToInt(2 * amount);
-        if (rangeFrom > 8)
-            rangeFrom = 8;
+        float rnd = UnityEngine.Random.value;
+        if (rnd < 0.8f)
+            return;
 
-        FlyingBlood.Emit(UnityEngine.Random.Range(rangeFrom, rangeFrom + 2));
+        //FlyingBlood.transform.position = pos;
+        //FlyingBlood.Emit(1);
 
-        BloodDrops.transform.position = pos;
-        BloodDrops.Emit(Mathf.RoundToInt(1 + (0.1f * amount)));
+        //BloodDrops.transform.position = pos;
+        //BloodDrops.Emit(1);
 
-        if (UnityEngine.Random.value <= floorBloodRnd)
-        {
-            int bloodAmount = Mathf.RoundToInt(1 + (0.1f * amount));
-            if (bloodAmount > 8)
-                bloodAmount = 8;
-
-            FloorBlood.transform.position = pos;
-            FloorBlood.Emit(bloodAmount);
-        }
+        FloorBlood.transform.position = pos;
+        FloorBlood.Emit(1);
     }
 
     public void RegisterEnemyDied(ActorBase enemy)
@@ -516,6 +482,19 @@ public class GameManager : MonoBehaviour
     Vector3 rotInf = new Vector3(0, 0, 0);
     float magn = 1.0f, rough = 10, fadeIn = 0.5f, fadeOut = 0.5f;
 
+    public void OnEnemyKill(ActorBase actor)
+    {
+        int goldCount = UnityEngine.Random.Range(actor.GoldCountMin, actor.GoldCountMax);
+        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: goldCount, value: 1, forceScale: 2.0f);
+
+        bool wasLastEnemy = --livingEnemyCount == 0;
+        if (wasLastEnemy)
+        {
+            // Last enemy killed
+            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 3, value: 1, forceScale: 2.0f, coinScale: 2.0f);
+        }
+    }
+
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
     {
         amount *= PlayerUpgrades.Data.DamageMul;
@@ -533,14 +512,7 @@ public class GameManager : MonoBehaviour
         long overkill = enemy.Hp - intAmount;
         bool isDead = enemy.IsDead;
         enemy.ApplyDamage(intAmount, direction, forceModifier);
-        bool wasKilled = !isDead && enemy.Hp <= 0;
-        if (wasKilled)
-        {
-            if (--livingEnemyCount == 0)
-            {
-                ThrowPickups(AutoPickUpType.Money, enemy.transform.position, amount: 20, value: 1, forceScale: 2.0f);
-            }
-        }
+
         HpBarScript.AddHp((long)-intAmount);
     }
 

@@ -7,13 +7,14 @@ public class AutoPickUpScript : MonoBehaviour
     public AutoPickUpType Type;
     public int Value = 1;
     float PickupDistance = 0.2f;
-    float AttractPower = 12.0f;
+    float AttractPower = 22.0f;
     float ThrowForce = 5.0f;
     float Drag = 5.0f;
     
     float forceScale_ = 1.0f;
     float throwEndTime_;
     Transform transform_;
+    Vector2 _baseScale;
     SpriteRenderer spriteRenderer_;
     float sqrPickupDistance_;
     Vector3 force_;
@@ -23,13 +24,15 @@ public class AutoPickUpScript : MonoBehaviour
     private void Awake()
     {
         transform_ = transform;
+        // Total hack because localScale became zero immediately, even if wasn't to begin with, wtf?
+        _baseScale = Vector2.one * 2;
         spriteRenderer_ = GetComponent<SpriteRenderer>();
         sqrPickupDistance_ = PickupDistance * PickupDistance;
     }
 
-    public void Throw(Vector3 direction, float forceScale)
+    public void Throw(Vector3 direction, float forceScale, float coinScale = 1.0f)
     {
-        forceScale *= GameManager.Instance.ArenaScale; ;
+        forceScale *= GameManager.Instance.ArenaScale;
         forceScale_ = forceScale;
 
         direction.Normalize();
@@ -41,10 +44,13 @@ public class AutoPickUpScript : MonoBehaviour
 
         throwEndTime_ = time + 0.5f;
         throwStartTime_ = GameManager.Instance.GameTime + 0.05f;
+
+        transform.localScale = _baseScale * coinScale;
     }
 
     public void Die()
     {
+        transform.localScale = _baseScale;
         PickUpManagerScript.Instance.ReturnPickUpToCache(Type, gameObject);
     }
 

@@ -11,10 +11,10 @@ public static class EnemySpawner
 
         //yield return SpawnUtil.Circle(ActorTypeEnum.OgreSmall, Vector2.zero, radius: 3, count: 10);
 
-        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 2))
-            yield return go;
+        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 1))
+        //    yield return go;
 
-        foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 10))
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 1))
             yield return go;
 
         //foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 10))

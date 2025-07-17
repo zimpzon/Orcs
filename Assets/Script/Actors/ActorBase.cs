@@ -17,7 +17,6 @@ public enum ActorForcedTargetType { Absolute, Direction };
 
 public class ActorBase : MonoBehaviour
 {
-    const float IgnoreCrowdsWhenCloseToPlayer = 2.0f;
     const float PaintBallTickTime = 1.0f;
 
     [NonSerialized] public bool AlwaysLookAtPlayer;
@@ -35,7 +34,8 @@ public class ActorBase : MonoBehaviour
     public float Mass = 1.0f;
     public int XpValue = 1;
     public int XpCount = 1;
-    public int GoldCount = 0;
+    public int GoldCountMin = 0;
+    public int GoldCountMax = 1;
     public ActorTypeEnum ActorType;
     public long BaseHp;
     public bool UseSpawnParticles;
@@ -68,7 +68,7 @@ public class ActorBase : MonoBehaviour
     protected bool despawnAtForcedDestination_;
 
     protected GameModeData GameMode;
-    protected float DecayTime = 10.0f;
+    protected float DecayTime = 1.0f;
     protected AnimationController animationController_ = new AnimationController();
 
     protected Vector3 position_;
@@ -484,11 +484,8 @@ public class ActorBase : MonoBehaviour
             float force = Mathf.Clamp(amount * 0.2f, 0.1f, 3.0f);
             AddForce(direction * (force * 0.2f * massInverse_ * forceModifier));
 
-            if (amount > 0.01f)
-            {
-                material_.SetFloat(flashParamId_, 0.75f);
-                flashEndTime_ = GameManager.Instance.GameTime + 0.03f;
-            }
+            material_.SetFloat(flashParamId_, 2.0f);
+            flashEndTime_ = GameManager.Instance.GameTime + 0.1f;
         }
     }
 
@@ -627,8 +624,8 @@ public class ActorBase : MonoBehaviour
             if (stoppedMoving)
                 break;
 
-            //if (GameManager.Instance.GameTime < bloodEndTime)
-            //    GameManager.Instance.TriggerBlood(pos, 0.1f);
+            if (GameManager.Instance.GameTime < bloodEndTime)
+                GameManager.Instance.TriggerBlood(pos, 0.1f);
 
             yield return null;
         }

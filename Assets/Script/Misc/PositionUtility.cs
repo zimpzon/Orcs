@@ -39,7 +39,7 @@ public static class PositionUtility
         return new Vector2(x, y);
     }
 
-    public static Vector3 GetPointInsideArena(float minX = 0.1f, float minY = 0.1f, float maxX = 0.9f, float maxY = 0.9f, bool avoidPlayer = true)
+    public static Vector3 GetPointInsideArena(float minX = 0.05f, float minY = 0.05f, float maxX = 0.95f, float maxY = 0.95f, bool avoidPlayer = true)
     {
         Vector3 point = Vector3.zero;
         for (int i = 0; i < 5; ++i)

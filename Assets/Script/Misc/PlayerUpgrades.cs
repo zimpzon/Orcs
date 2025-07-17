@@ -29,7 +29,7 @@ public class UpgradeData
     // gold & xp
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
-    public float GoldXpAttractRange = 3f * GameManager.Instance.ArenaScale;
+    public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
 
     // player
     public int BaseHealth = 100;

@@ -69,7 +69,7 @@ public class ActorDefaultWalker : MonoBehaviour
             moveVec_ += dir * 0.25f;
         }
 
-        Debug.DrawLine(transform.position, target_, Color.green);
+        //Debug.DrawLine(transform.position, target_, Color.green);
 
         actorBase_.UpdatePosition(moveVec_, actorBase_.Speed);
     }

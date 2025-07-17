@@ -7,6 +7,8 @@ public class Particles : MonoBehaviour, IKillableObject
     public ParticleSystem Acid;
     public ParticleSystem FireballTail;
     public ParticleSystem KnifeTrail;
+    public ParticleSystem ClickTrail;
+    public ParticleSystem RoundCompleteParticles;
 
     private void Awake()
     {
