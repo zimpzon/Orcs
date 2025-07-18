@@ -5,8 +5,8 @@ static class RndUtil
     public static Vector2 RandomInsideUnitCircle()
     {
         // TODO PEE: insideUnitCircle always returns 0, 0 in Unity 2018.1 beta
-        return new Vector2((Random.value * 2) - 1, (Random.value * 2) - 1);
-//        return Random.insideUnitCircle;
+        //return new Vector2((Random.value * 2) - 1, (Random.value * 2) - 1);
+        return Random.insideUnitCircle;
     }
 
     public static Vector2 RandomInsideUnitCircleDiagonals()

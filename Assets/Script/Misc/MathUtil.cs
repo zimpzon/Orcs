@@ -1,9 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Script.Misc
 {
     public static class MathUtil
     {
+        public static string FormatLongNumber(long number)
+        {
+            if (number >= 1_000_000_000_000_000_000) return (number / 1_000_000_000_000_000_000D).ToString("0.##") + "Qn"; // Quintillion
+            if (number >= 1_000_000_000_000_000) return (number / 1_000_000_000_000_000D).ToString("0.##") + "Q";  // Quadrillion
+            if (number >= 1_000_000_000_000) return (number / 1_000_000_000_000D).ToString("0.##") + "T";  // Trillion
+            if (number >= 1_000_000_000) return (number / 1_000_000_000D).ToString("0.##") + "B";  // Billion
+            if (number >= 1_000_000) return (number / 1_000_000D).ToString("0.##") + "M";  // Million
+            if (number >= 1_000) return (number / 1_000D).ToString("0.##") + "K";  // Thousand
+            return number.ToString();
+        }
+
         public static Vector2 RadianToVector2(float radian)
         {
             return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));

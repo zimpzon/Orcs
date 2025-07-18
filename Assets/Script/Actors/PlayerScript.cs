@@ -148,8 +148,7 @@ public class PlayerScript : MonoBehaviour
 
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.5f, GameManager.Instance.SortLayerTopEffects, out recoil);
 
-                // TODO: Gold per knife
-                GameManager.Instance.AddGold(1);
+                GameManager.Instance.AddMoney(PlayerUpgrades.Data.GoldPerKnifeThrown);
 
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.75f;
@@ -291,66 +290,20 @@ public class PlayerScript : MonoBehaviour
         force_ += f;
     }
 
+    long accumulatedCount = 0;
+    float lastAccumulatedAdd;
+
     public void OnGoldPickedUp(int count)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, pitch: pitch);
-        AddToAccumulatedGold(count);
-    }
-
-    long accumulatedGold = 0;
-    long accumulatedCount = 0;
-    float lastAccumulatedAdd;
-
-    void AddToAccumulatedGold(long amount)
-    {
-        accumulatedGold += amount;
         accumulatedCount++;
-        lastAccumulatedAdd = G.D.GameTime;
 
-        TextGoldAccumulator.enabled = true;
-        TextGoldAccumulator.text = $"{accumulatedCount}";
-
-        LeanTween.cancel(TextGoldAccumulator.gameObject);
-        LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one * 0.25f, 0.0f);
-        LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.one, 0.5f)
-            .setEase(LeanTweenType.easeOutElastic)
-            .setOvershoot(2.0f);
-    }
-
-    void UpdateGoldAccumulator()
-    {
-        const int CountBonus = 20;
-
-        bool hasExpired =
-            accumulatedGold >= CountBonus ||
-            (lastAccumulatedAdd > 0 && G.D.GameTime > lastAccumulatedAdd + 0.25f);
-
-        if (hasExpired)
-        {
-            LeanTween.cancel(TextGoldAccumulator.gameObject);
-            LeanTween.scale(TextGoldAccumulator.gameObject, Vector3.zero, 0.5f);
-
-            if (accumulatedCount >= CountBonus)
-            {
-                accumulatedGold *= 2;
-
-                FloatingTextSpawner.Instance.Spawn(
-                    playerPos_ + Vector3.up * 0.75f,
-                    $"X2",
-                    Color.red,
-                    speed: 2.0f,
-                    timeToLive: 1.0f,
-                    fontStyle: TMPro.FontStyles.Bold);
-
-                GameManager.Instance.AddGold(accumulatedGold);
-            }
-
-            lastAccumulatedAdd = -1;
-            accumulatedGold = 0;
+        if (G.D.GameTime > lastAccumulatedAdd + 0.25f)
             accumulatedCount = 0;
 
-        }
+        lastAccumulatedAdd = G.D.GameTime;
+        GameManager.Instance.AddGold(count);
     }
 
     private void Awake()
@@ -402,7 +355,5 @@ public class PlayerScript : MonoBehaviour
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
         DoMovement();
-
-        UpdateGoldAccumulator();
     }
 }

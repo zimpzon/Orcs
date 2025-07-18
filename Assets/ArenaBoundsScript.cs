@@ -1,4 +1,5 @@
 using Assets.Script;
+using Assets.Script.Misc;
 using UnityEngine;
 
 public class ArenaBoundsScript : MonoBehaviour
@@ -22,7 +23,9 @@ public class ArenaBoundsScript : MonoBehaviour
         float distance = direction.magnitude;
         direction.Normalize();
 
-        long damage = PlayerUpgrades.Data.ClickPower;
+        Trails.DrawJaggedTrail(mouseWorldPos, closestEnemy.transform.position);
+
+        long damage = PlayerUpgrades.Data.ClickDamage;
 
         GameManager.Instance.DamageEnemy(closestEnemy, damage, direction, 1.0f);
 
@@ -36,14 +39,6 @@ public class ArenaBoundsScript : MonoBehaviour
 
         GameManager.Instance.MakePoof(mouseWorldPos, 2, 1.0f);
         GameManager.Instance.MakeCircle(mouseWorldPos, 1);
-
-        float trail = distance;
-        while (trail > 0)
-        {
-            Particles.I.ClickTrail.transform.position = mouseWorldPos + direction * trail;
-            Particles.I.ClickTrail.Emit(1);
-            trail -= 0.1f;
-        }
     }
 
     // Update is called once per frame

@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using Assets.Script.Misc;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public enum GameCounter {
+public enum GameCounter
+{
+    DamageClicks,
     //Player_Death,
     //Kill_Any, Kill_Small, Kill_BigWalker, Kill_Caster,
     //unlocked_paintball,
@@ -16,17 +19,70 @@ public enum GameCounter {
 
 public class SaveGameMembers
 {
-    public int Money = 0;
-    public int MoneySpentInShop;
+    // Stats
+    public long CountDamageClicks = 0;
 
+    // Values
+    public CalculatedValue ClickDamageProgress = new CalculatedValue
+    {
+        BaseValue = 5,
+        BaseValueAdd = 1,
+    };
+
+    public CalculatedValue MoneyPerCoinProgress = new CalculatedValue
+    {
+        BaseValue = 1,
+        BaseValueCountMul = 1.2,
+    };
+
+    public CalculatedValue EnemyHpProgress = new CalculatedValue
+    {
+        BaseValue = 100,
+        BaseValueCountMul = 1.2,
+    };
+
+    public CalculatedValue KnifeDamageProgress = new CalculatedValue
+    {
+        BaseValue = 10,
+        BaseValueCountMul = 1.2,
+    };
+
+    public HardcodedValue KnifeCdProgress = new HardcodedValue
+    {
+        Values = new List<HardcodedValue.Item>
+        {
+            new() { RequiredLevel = 1, Value = 2.0f },
+            new() { RequiredLevel = 2, Value = 1.5f },
+            new() { RequiredLevel = 3, Value = 1.0f },
+            new() { RequiredLevel = 5, Value = 0.8f },
+            new() { RequiredLevel = 8, Value = 0.6f },
+            new() { RequiredLevel = 12, Value = 0.4f },
+            new() { RequiredLevel = 20, Value = 0.2f },
+            new() { RequiredLevel = 30, Value = 0.1f },
+            new() { RequiredLevel = 50, Value = 0.05f },
+        }
+    };
+
+    public CalculatedValue KnifeGoldPerThrow = new CalculatedValue
+    {
+        BaseValue = 1,
+        BaseValueAdd = 2,
+    };
+
+    // Game
+    public long Money = 0;
+    public long CurrentLevel = 1;
+    public long AscendLevel = 1;
+    public long MaxCompletedLevel = 1;
+    public long SecondsPerRound = 30;
+
+    // Settings
     public int Version;
     public float VolumeMaster = 1.0f;
     public float VolumeMusic = 0.7f;
     public float VolumeSfx = 1.0f;
     public int SelectedHero;
     public string UserId;
-
-    public int SecondsPlayed;
 
     public string ToJson()
     {

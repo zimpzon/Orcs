@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,12 +28,13 @@ public class GameManager : MonoBehaviour
     public BoxCollider2D ArenaBoundsCollider;
     public LeanTween Tween;
     public Text TextVersion;
-    public Text TextGameInfo;
-    public GameInfoViewer TextGameInfoViewer;
     public Text TextUser;
     public Text TextFps;
-    public Text TextClock;
-    public Text TextGold;
+    public TextMeshProUGUI TextGameInfo;
+    public TextMeshProUGUI TextClock;
+    public TextMeshProUGUI TextRound;
+    public TextMeshProUGUI TextLevel;
+    public TextMeshProUGUI TextMoney;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -110,7 +112,7 @@ public class GameManager : MonoBehaviour
     public void ResetAllProgress()
     {
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerDie);
-
+        
         float VolumeMaster = SaveGame.Members.VolumeMaster;
         float VolumeMusic = SaveGame.Members.VolumeMusic;
         float VolumeSfx = SaveGame.Members.VolumeSfx;
@@ -123,7 +125,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoText(string text, float delay = 1.0f)
+    IEnumerator ShowInfoText(string text, float delay = 2.0f)
     {
         TextGameInfo.text = text;
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
@@ -159,6 +161,8 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
+            SetMoneyText();
+
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -350,16 +354,32 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
-    long goldAmount = 0;
+    void SetMoneyText(bool withEffect = false)
+    {
+        TextMoney.text = $"${SaveGame.Members.Money}";
+    }
+
     public void AddGold(long amount)
     {
-        goldAmount += amount;
-        TextGold.text = $"${goldAmount}";
-        LeanTween.cancel(TextGold.gameObject);
-        LeanTween.scale(TextGold.gameObject, Vector3.one, 0.0f);
-        LeanTween.scale(TextGold.gameObject, Vector3.one * 1.2f, 0.5f)
-            .setEase(LeanTweenType.easeOutElastic)
-            .setOvershoot(0.5f);
+        long moneyAdded = amount * PlayerUpgrades.Data.MoneyPerGold;
+        AddMoney(moneyAdded);
+
+        Vector2 playerPos = G.D.PlayerPos;
+        Vector2 textPos = playerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle();
+
+        FloatingTextSpawner.Instance.Spawn(
+            textPos,
+            $"${moneyAdded}",
+            Color.yellow,
+            speed: 2.0f,
+            timeToLive: 1.0f,
+            fontStyle: TMPro.FontStyles.Bold);
+    }
+
+    public void AddMoney(long amount)
+    {
+        SaveGame.Members.Money += amount;
+        SetMoneyText(true);
     }
 
     public void AddXp(int amount)
@@ -378,7 +398,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, int value, float forceScale = 1.0f, float coinScale = 1.0f)
+    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, int value, float forceScale = 1.0f, bool isLargeCoin = false)
     {
         for (int i = 0; i < amount; ++i)
         {
@@ -387,7 +407,7 @@ public class GameManager : MonoBehaviour
             
             var pickupScript = pickup.GetComponent<AutoPickUpScript>();
             pickupScript.Value = value;
-            pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale, coinScale);
+            pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale, isLargeCoin);
 
             if (pickupType == AutoPickUpType.Xp)
             {
@@ -484,14 +504,14 @@ public class GameManager : MonoBehaviour
 
     public void OnEnemyKill(ActorBase actor)
     {
-        int goldCount = UnityEngine.Random.Range(actor.GoldCountMin, actor.GoldCountMax);
-        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: goldCount, value: 1, forceScale: 2.0f);
+        //int goldCount = UnityEngine.Random.Range(actor.GoldCountMin, actor.GoldCountMax);
+        //ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: goldCount, value: 1, isLargeCoin: false);
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
         {
             // Last enemy killed
-            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 3, value: 1, forceScale: 2.0f, coinScale: 2.0f);
+            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 3, value: 1, forceScale: 4.0f, isLargeCoin: true);
         }
     }
 

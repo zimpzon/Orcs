@@ -13,25 +13,32 @@ public class AutoPickUpScript : MonoBehaviour
     
     float forceScale_ = 1.0f;
     float throwEndTime_;
-    Transform transform_;
     Vector2 _baseScale;
     SpriteRenderer spriteRenderer_;
     float sqrPickupDistance_;
     Vector3 force_;
     float throwStartTime_;
     float sqrAttractDistance_;
+    bool _initComplete;
 
     private void Awake()
     {
-        transform_ = transform;
         // Total hack because localScale became zero immediately, even if wasn't to begin with, wtf?
-        _baseScale = Vector2.one * 2;
-        spriteRenderer_ = GetComponent<SpriteRenderer>();
         sqrPickupDistance_ = PickupDistance * PickupDistance;
     }
 
-    public void Throw(Vector3 direction, float forceScale, float coinScale = 1.0f)
+    private void Init()
     {
+        _baseScale = transform.localScale;
+        spriteRenderer_ = GetComponent<SpriteRenderer>();
+        _initComplete = true;
+    }
+
+    public void Throw(Vector3 direction, float forceScale, bool isLargeCoin = false)
+    {
+        if (!_initComplete)
+            Init();
+
         forceScale *= GameManager.Instance.ArenaScale;
         forceScale_ = forceScale;
 
@@ -45,7 +52,7 @@ public class AutoPickUpScript : MonoBehaviour
         throwEndTime_ = time + 0.5f;
         throwStartTime_ = GameManager.Instance.GameTime + 0.05f;
 
-        transform.localScale = _baseScale * coinScale;
+        transform.localScale = _baseScale * (isLargeCoin ? 1.2f : 0.6f);
     }
 
     public void Die()
@@ -61,7 +68,7 @@ public class AutoPickUpScript : MonoBehaviour
 
         float dt = G.D.GameDeltaTime;
         float time = G.D.GameTime;
-        var myPos = transform_.position;
+        var myPos = transform.position;
 
         var playerPos = G.D.PlayerPos + Vector3.up * 0.3f;
         var diff = playerPos - myPos;
@@ -78,7 +85,7 @@ public class AutoPickUpScript : MonoBehaviour
             var newPos = myPos + force_ * dt;
             newPos = GameManager.Instance.ClampToBounds(newPos, spriteRenderer_.sprite);
 
-            transform_.position = newPos;
+            transform.position = newPos;
             force_ *= 1.0f - dt * Drag;
         }
 

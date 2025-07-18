@@ -14,7 +14,7 @@ public class UpgradeData
     public TimeSpan GameStartTime = TimeSpan.Zero;
 
     // click
-    public long ClickPower = 10;
+    public long ClickDamage = 10;
 
     // gold
     public float MoneyDoubleChance = 0.05f;
@@ -30,6 +30,8 @@ public class UpgradeData
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
+    public long MoneyPerGold = 1;
+    public long GoldPerKnifeThrown = 0;
 
     // player
     public int BaseHealth = 100;
@@ -38,7 +40,7 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 3.0f * GameManager.Instance.ArenaScale;
+    public float BaseMoveSpeed = 6.0f * GameManager.Instance.ArenaScale;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
@@ -46,7 +48,7 @@ public class UpgradeData
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
-    public float MagicMissileBaseCd = 1.0f;
+    public float MagicMissileBaseCd = 0.2f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
