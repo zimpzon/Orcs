@@ -40,7 +40,7 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 6.0f * GameManager.Instance.ArenaScale;
+    public float BaseMoveSpeed = 3.0f * GameManager.Instance.ArenaScale;
     public float MoveSpeedMul = 1.0f;
 
     // weapons
@@ -48,7 +48,7 @@ public class UpgradeData
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
-    public float MagicMissileBaseCd = 0.2f;
+    public float MagicMissileBaseCd = 2.0f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 

@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Enemies;
+using Assets.Script.Upgrades;
 using EZCameraShake;
 using System;
 using System.Collections;
@@ -161,8 +162,6 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            SetMoneyText();
-
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -379,7 +378,6 @@ public class GameManager : MonoBehaviour
     public void AddMoney(long amount)
     {
         SaveGame.Members.Money += amount;
-        SetMoneyText(true);
     }
 
     public void AddXp(int amount)
@@ -650,6 +648,7 @@ public class GameManager : MonoBehaviour
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
         SaveGame.Load();
+        UpgradeManager.Instance.UpdateAllUpgrades();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
@@ -664,8 +663,16 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
+    long _prevMoney = -1;
+
     void Update()
     {
+        if (SaveGame.Members.Money != _prevMoney)
+        {
+            SetMoneyText();
+            _prevMoney = SaveGame.Members.Money;
+        }
+
         TimeSinceStartup = Time.realtimeSinceStartup;
         if (PauseGameTime)
         {
@@ -673,9 +680,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
+            if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
             {
-                ThrowPickups(AutoPickUpType.Xp, Vector2.zero, 20, 10);
+                SaveGame.Members.Money += 10;
             }
 
             if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
