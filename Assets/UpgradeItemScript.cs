@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class UpgradeItemScript : MonoBehaviour
@@ -51,6 +50,16 @@ public class UpgradeItemScript : MonoBehaviour
             LevelLabel.text = $"{level}/{maxLevel}";
         }
         _latestPrice = level;
+    }
+
+    private void OnMouseEnter()
+    {
+        Debug.DrawLine(Input.mousePosition, Vector2.zero, Color.green, 2.0f);
+    }
+
+    private void OnMouseExit()
+    {
+        Debug.DrawLine(Input.mousePosition, Vector2.zero, Color.magenta, 2.0f);
     }
 
     void Update()

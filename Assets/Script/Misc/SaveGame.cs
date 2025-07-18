@@ -23,8 +23,8 @@ public class SaveGameMembers
     // Upgrades
     public long LevelClickDamage = 0;
     public long LevelGoldPerKnifeThrown = 0;
-    public long LevelKnifeDamage = 0;
     public long LevelKnifeCooldown = 0;
+    public long LevelKnifeDamage = 0;
 
     // Game
     public long Money = 0;
