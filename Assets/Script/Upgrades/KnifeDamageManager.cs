@@ -3,23 +3,23 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class ClickDamageManager
+    public static class KnifeDamageManager
     {
         public static string GetText()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Damage per click.");
+            sb.AppendLine("Damage done by each knife.");
             sb.AppendLine("");
             sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelClickDamage)}</color>");
+            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage):0.0}</color>");
             sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelClickDamage + 1)}</color>");
+            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage + 1):0.0}</color>");
             return sb.ToString();
         }
 
         public static long PriceForNext()
         {
-            return 10 + (long)Math.Pow(SaveGame.Members.LevelClickDamage, 2.5f);
+            return 10 + (long)Math.Pow(SaveGame.Members.LevelKnifeDamage, 2.8f);
         }
 
         public static void UpdateAll()
@@ -28,20 +28,21 @@ namespace Assets.Script.Upgrades
             UpdateUi();
         }
 
+        private static float ValueForLevel(long level)
+            => 10 + level * 1.5f;
+
+
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.ClickDamage = ValueForLevel(SaveGame.Members.LevelClickDamage);
+            PlayerUpgrades.Data.MagicMissileBaseDamage = ValueForLevel(SaveGame.Members.LevelKnifeDamage);
         }
-
-        private static long ValueForLevel(long level)
-            => 10 + level;
 
         public static void UpdateUi()
         {
             long priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.ClickDamage.SetCanAfford(canAfford, priceForNext, SaveGame.Members.LevelClickDamage);
+            UpgradeManager.Instance.KnifeDamage.SetCanAfford(canAfford, priceForNext, SaveGame.Members.LevelKnifeDamage);
         }
     }
 }

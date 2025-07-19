@@ -15,6 +15,31 @@ public class UpgradeManager : MonoBehaviour
         ClickDamageManager.UpdateAll();
         GoldPerKnifeThrowManager.UpdateAll();
         KnifeCdManager.UpdateAll();
+        KnifeDamageManager.UpdateAll();
+    }
+
+    public string GetText(UpgradeItemScript upgradeUiScript)
+    {
+        if (upgradeUiScript == ClickDamage)
+        {
+            return ClickDamageManager.GetText();
+        }
+        else if (upgradeUiScript == GoldPerKnife)
+        {
+            return GoldPerKnifeThrowManager.GetText();
+        }
+        else if (upgradeUiScript == KnifeDamage)
+        {
+            return KnifeDamageManager.GetText();
+        }
+        else if (upgradeUiScript == KnifeCd)
+        {
+            return KnifeCdManager.GetText();
+        }
+        else
+        {
+            return $"unknown UpgradeItemScript: {upgradeUiScript.name}";
+        }
     }
 
     public void UpdateUpgradeUiButtons()
@@ -22,6 +47,7 @@ public class UpgradeManager : MonoBehaviour
         ClickDamageManager.UpdateUi();
         GoldPerKnifeThrowManager.UpdateUi();
         KnifeCdManager.UpdateUi();
+        KnifeDamageManager.UpdateUi();
     }
 
     public void OnBuyClickDamage()
