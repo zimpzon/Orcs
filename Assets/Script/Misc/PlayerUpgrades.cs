@@ -32,6 +32,7 @@ public class UpgradeData
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
     public long MoneyPerGold = 1;
     public long GoldPerKnifeThrown = 0;
+    public long GoldPerRoundAdd = 0;
 
     // player
     public int BaseHealth = 100;
@@ -41,14 +42,14 @@ public class UpgradeData
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
     public float BaseMoveSpeed = 3.0f * GameManager.Instance.ArenaScale;
-    public float MoveSpeedMul = 1.0f;
+    public float MoveSpeedAdd = 0.0f;
 
     // weapons
-    public float MagicMissileBaseDamage = 10.0f;
+    public float MagicMissileBaseDamage = 3.0f;
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
-    public float MagicMissileBaseCd = 2.0f;
+    public float MagicMissileBaseCd = 0.1f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
@@ -56,7 +57,7 @@ public class UpgradeData
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
 
-    public float MagicMissileBaseSpeed = 8.0f;
+    public float MagicMissileBaseSpeed = 10.0f;
     public float MagicMissileSpeedMul = 1.0f;
 
     public float MagicMissileJumpDamageMul = 0.0f;

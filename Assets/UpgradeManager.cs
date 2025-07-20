@@ -9,6 +9,8 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript GoldPerKnife;
     public UpgradeItemScript KnifeDamage;
     public UpgradeItemScript KnifeCd;
+    public UpgradeItemScript HeroRunspeed;
+    public UpgradeItemScript GoldPerRound;
 
     public void UpdateAllUpgrades()
     {
@@ -16,6 +18,8 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateAll();
         KnifeCdManager.UpdateAll();
         KnifeDamageManager.UpdateAll();
+        HeroRunSpeedManager.UpdateAll();
+        GoldPerRoundManager.UpdateAll();
     }
 
     public string GetText(UpgradeItemScript upgradeUiScript)
@@ -36,38 +40,69 @@ public class UpgradeManager : MonoBehaviour
         {
             return KnifeCdManager.GetText();
         }
+        else if (upgradeUiScript == HeroRunspeed)
+        {
+            return HeroRunSpeedManager.GetText();
+        }
+        else if (upgradeUiScript == GoldPerRound)
+        {
+            return GoldPerRoundManager.GetText();
+        }
         else
         {
             return $"unknown UpgradeItemScript: {upgradeUiScript.name}";
         }
     }
 
-    public void UpdateUpgradeUiButtons()
+    public void UpdateUpgradeUi()
     {
         ClickDamageManager.UpdateUi();
         GoldPerKnifeThrowManager.UpdateUi();
         KnifeCdManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
+        HeroRunSpeedManager.UpdateUi();
+        GoldPerRoundManager.UpdateUi();
     }
 
     public void OnBuyClickDamage()
     {
-        SaveGame.Members.Money -= ClickDamageManager.PriceForNext();
-        SaveGame.Members.LevelClickDamage++;
+        ClickDamageManager.OnBuy();
+        ClickDamage.SetPopupText();
         UpdateAllUpgrades();
     }
 
     public void OnBuyGoldPerKnife()
     {
-        SaveGame.Members.Money -= GoldPerKnifeThrowManager.PriceForNext();
-        SaveGame.Members.LevelGoldPerKnifeThrown++;
+        GoldPerKnifeThrowManager.OnBuy();
+        GoldPerKnife.SetPopupText();
         UpdateAllUpgrades();
     }
 
     public void OnBuyKnifeCooldown()
     {
-        SaveGame.Members.Money -= ClickDamageManager.PriceForNext();
-        SaveGame.Members.LevelKnifeCooldown++;
+        KnifeCdManager.OnBuy();
+        KnifeCd.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
+    public void OnBuyKnifeDamage()
+    {
+        KnifeDamageManager.OnBuy();
+        KnifeDamage.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
+    public void OnBuyHeroRunspeed()
+    {
+        HeroRunSpeedManager.OnBuy();
+        HeroRunspeed.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
+    public void OnBuyGoldPerRound()
+    {
+        GoldPerRoundManager.OnBuy();
+        GoldPerRound.SetPopupText();
         UpdateAllUpgrades();
     }
 
@@ -78,6 +113,6 @@ public class UpgradeManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateUpgradeUiButtons();
+        UpdateUpgradeUi();
     }
 }

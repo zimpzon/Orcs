@@ -25,6 +25,8 @@ public class SaveGameMembers
     public long LevelGoldPerKnifeThrown = 0;
     public long LevelKnifeCooldown = 0;
     public long LevelKnifeDamage = 0;
+    public long LevelHeroRunspeed = 0;
+    public long LevelGoldPerRoundAdd = 0;
 
     // Game
     public long Money = 0;

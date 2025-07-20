@@ -20,6 +20,7 @@ public class AutoPickUpScript : MonoBehaviour
     float throwStartTime_;
     float sqrAttractDistance_;
     bool _initComplete;
+    bool _isLarge;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class AutoPickUpScript : MonoBehaviour
         if (!_initComplete)
             Init();
 
+        _isLarge = isLargeCoin;
         forceScale *= GameManager.Instance.ArenaScale;
         forceScale_ = forceScale;
 
@@ -49,7 +51,7 @@ public class AutoPickUpScript : MonoBehaviour
         float randomValue = forceScale * 0.1f;
         force_ = (Random.value * randomValue + ThrowForce) * forceScale_ * direction;
 
-        throwEndTime_ = time + 0.5f;
+        throwEndTime_ = time + 1.0f;
         throwStartTime_ = GameManager.Instance.GameTime + 0.05f;
 
         transform.localScale = _baseScale * (isLargeCoin ? 1.2f : 0.6f);
@@ -93,7 +95,7 @@ public class AutoPickUpScript : MonoBehaviour
         {
             if (Type == AutoPickUpType.Money)
             {
-                G.D.PlayerScript.OnGoldPickedUp(1);
+                G.D.PlayerScript.OnGoldPickedUp(_isLarge, Value);
             }
             else if (Type == AutoPickUpType.Xp)
             {

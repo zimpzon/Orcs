@@ -3,23 +3,23 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class KnifeDamageManager
+    public static class GoldPerRoundManager
     {
         public static string GetText()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Damage done by each dagger.");
+            sb.AppendLine("Extra gold received after completing a round.");
             sb.AppendLine("");
             sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage):0.0}</color>");
+            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd)}</color>");
             sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage + 1):0.0}</color>");
+            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd + 1)}</color>");
             return sb.ToString();
         }
 
         public static long PriceForNext()
         {
-            return 25 + (long)Math.Pow(SaveGame.Members.LevelKnifeDamage, 2.5f);
+            return 50 + (long)Math.Pow(SaveGame.Members.LevelGoldPerRoundAdd, 2.5f);
         }
 
         public static void UpdateAll()
@@ -29,11 +29,11 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 10 + (10 * level);
+            => level * 10;
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.MagicMissileBaseDamage = ValueForLevel(SaveGame.Members.LevelKnifeDamage);
+            PlayerUpgrades.Data.GoldPerRoundAdd = ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd);
         }
 
         public static void OnBuy()
@@ -43,7 +43,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             SaveGame.Members.Money -= priceForNext;
-            SaveGame.Members.LevelKnifeDamage++;
+            SaveGame.Members.LevelGoldPerRoundAdd++;
         }
 
         public static void UpdateUi()
@@ -51,7 +51,7 @@ namespace Assets.Script.Upgrades
             long priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.KnifeDamage.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeDamage);
+            UpgradeManager.Instance.GoldPerRound.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelGoldPerRoundAdd);
         }
     }
 }

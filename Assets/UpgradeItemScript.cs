@@ -1,3 +1,4 @@
+using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,12 +14,12 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     long _latestPrice = -1;
     long _latestLevel = -1;
 
-    public void SetCanAfford(bool canAfford, long priceNext, long currentLevel)
+    public void UpdateUi(bool canAfford, long priceNext, long currentLevel, long maxLevel = -1)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
         SetPrice(priceNext);
-        SetLevel(currentLevel);
+        SetLevel(currentLevel, maxLevel);
     }
 
     void SetPrice(long price)
@@ -47,12 +48,17 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             LevelLabel.text = $"{level}/{maxLevel}";
         }
-        _latestPrice = level;
+        _latestLevel = level;
+    }
+
+    public void SetPopupText()
+    {
+        PopupManagerScript.Instance.SetText(UpgradeManager.Instance.GetText(this));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        PopupManagerScript.Instance.SetText(UpgradeManager.Instance.GetText(this));
+        SetPopupText();
         PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
     }
 

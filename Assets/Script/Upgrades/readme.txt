@@ -1,11 +1,18 @@
+TODO
+  1) why would we ever level up? -> add level requirements on upgrades.
+  1.1) 5K damage in 20 seconds! Bonus gold: 12345
+  2) enemies that provide other bonuses like throwing gold
+  3) much better bonus for completion
+
+
 When adding a new upgrade:
 
 Add prefab to scroll area
-Create file Upgrades/[new name]Manager.cs
-Fill it in like the other managers
+Create file Upgrades/[new name]Manager.cs, fill it in like the other managers
 Update UpgradeManager with this new Upgrades/[new name]Manager.cs
-Drag new script to UpdateManager
-Add button click event to added prefab, call OnBuy[new name]
+Create UpgradeManager UpdateUpgradeUi, OnBuy, etc.
+Drag the prefab (script) to UpdateManagers new 
+Add button click event on added prefab, call OnBuy[new name]
 
 flow:
 

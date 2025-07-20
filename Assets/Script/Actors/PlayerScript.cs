@@ -13,9 +13,6 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
 
-    public Color AuraLowHpColor;
-    public TextMeshPro TextGoldAccumulator;
-
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
 
     [System.NonSerialized] public Vector3 CursorPos;
@@ -219,7 +216,7 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
             return;
 
-        float speed = PlayerUpgrades.Data.BaseMoveSpeed * PlayerUpgrades.Data.MoveSpeedMul;
+        float speed = PlayerUpgrades.Data.BaseMoveSpeed + PlayerUpgrades.Data.MoveSpeedAdd;
 
         speed *= GameManager.Instance.GameDeltaTime;
 
@@ -293,7 +290,7 @@ public class PlayerScript : MonoBehaviour
     long accumulatedCount = 0;
     float lastAccumulatedAdd;
 
-    public void OnGoldPickedUp(int count)
+    public void OnGoldPickedUp(bool isLargeCoin, int value)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, pitch: pitch);
@@ -303,12 +300,11 @@ public class PlayerScript : MonoBehaviour
             accumulatedCount = 0;
 
         lastAccumulatedAdd = G.D.GameTime;
-        GameManager.Instance.AddGold(count);
+        GameManager.Instance.AddGold(isLargeCoin, value);
     }
 
     private void Awake()
     {
-        TextGoldAccumulator.enabled = false;
         trans_ = transform;
         playerScale_ = trans_.localScale.x; // Assume uniform scale
         renderer_ = GetComponent<SpriteRenderer>();

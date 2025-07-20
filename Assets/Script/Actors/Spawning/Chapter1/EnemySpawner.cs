@@ -14,11 +14,11 @@ public static class EnemySpawner
         //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, 1))
         //    yield return go;
 
-        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 2))
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 3))
             yield return go;
 
-        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 3))
-        //    yield return go;
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 3))
+            yield return go;
 
         //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreShamanStaff, 1))
         //    yield return go;

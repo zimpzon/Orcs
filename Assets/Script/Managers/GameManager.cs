@@ -1,6 +1,5 @@
 ﻿using Assets.Script;
 using Assets.Script.Enemies;
-using Assets.Script.Upgrades;
 using EZCameraShake;
 using System;
 using System.Collections;
@@ -17,6 +16,7 @@ public class GameManager : MonoBehaviour
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime };
 
     const float BaseXpToLevel = 14;
+    const int RoundTimeSeconds = 30;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -33,9 +33,9 @@ public class GameManager : MonoBehaviour
     public Text TextFps;
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
-    public TextMeshProUGUI TextRound;
     public TextMeshProUGUI TextLevel;
     public TextMeshProUGUI TextMoney;
+    public TextMeshProUGUI TextHowToClick;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoText(string text, float delay = 2.0f)
+    IEnumerator ShowInfoText(string text, float delay = 1.0f)
     {
         TextGameInfo.text = text;
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
@@ -134,29 +134,23 @@ public class GameManager : MonoBehaviour
         LeanTween.scale(TextGameInfo.gameObject, Vector3.zero, 0.25f);
     }
 
-    int previousSecondsLeft = 0;
+    int _secondsLeft = 0;
+    int _previousSecondsLeft = 0;
+
     void ShowSecondsLeft(int seconds)
     {
-        if (seconds != previousSecondsLeft)
+        if (seconds != _previousSecondsLeft)
         {
             var timeSpan = TimeSpan.FromSeconds(seconds);
             TextClock.text = $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
-            previousSecondsLeft = seconds;
+            _previousSecondsLeft = seconds;
+            _secondsLeft = seconds;
         }
     }
 
-    void ShowRoundText()
-    {
-        FloatingTextSpawner.Instance.Spawn(
-            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y + 2),
-            $"ROUND {CurrentRound}/{MaxRound}",
-            Color.yellow,
-            speed: 0.05f,
-            timeToLive: 3.0f,
-            fontStyle: TMPro.FontStyles.Italic);
-    }
-
     int round = 0;
+    long _roundTotalHp = -1;
+
     // main loop
     IEnumerator GameStateCo()
     {
@@ -165,6 +159,7 @@ public class GameManager : MonoBehaviour
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
+            ShowSecondsLeft(RoundTimeSeconds);
 
             round++;
             if (round > EnemySpawner.MaxRound)
@@ -174,10 +169,10 @@ public class GameManager : MonoBehaviour
             long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
+            _roundTotalHp = totalHitpoints;
 
             yield return ShowInfoText("ROUND START!");
-            ShowRoundText();
-
+            
             foreach (var enemy in enemies)
             {
                 enemy.gameObject.SetActive(true);
@@ -185,7 +180,7 @@ public class GameManager : MonoBehaviour
             }
 
             float roundStartTime = G.D.GameTime;
-            float roundEndTime = roundStartTime + 60;
+            float roundEndTime = roundStartTime + RoundTimeSeconds;
 
             GameState = State.Idle_Fighting;
 
@@ -295,7 +290,7 @@ public class GameManager : MonoBehaviour
 
     void PrepareForNewRound()
     {
-        KillKillableObjects();
+        //KillKillableObjects();
         ProjectileManager.Instance.StopAll();
         G.D.PlayerScript.ResetAll();
         BlackboardScript.DestroyAllEnemies();
@@ -358,9 +353,10 @@ public class GameManager : MonoBehaviour
         TextMoney.text = $"${SaveGame.Members.Money}";
     }
 
-    public void AddGold(long amount)
+    public void AddGold(bool isLargeCoin, int value)
     {
-        long moneyAdded = amount * PlayerUpgrades.Data.MoneyPerGold;
+        long moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
+
         AddMoney(moneyAdded);
 
         Vector2 playerPos = G.D.PlayerPos;
@@ -500,16 +496,62 @@ public class GameManager : MonoBehaviour
     Vector3 rotInf = new Vector3(0, 0, 0);
     float magn = 1.0f, rough = 10, fadeIn = 0.5f, fadeOut = 0.5f;
 
+    long CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
+    {
+        // 100% time left = 100% gold, 0% time left = 75% gold.
+        float timefraction = (secondsLeft + 0.0001f) / totalSeconds;
+        float penaltyMul = Mathf.Lerp(0.75f, 1.0f, timefraction);
+
+        const float HpToGoldPct = 0.05f;
+        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
+        if (goldWon <= 0) goldWon = 1;
+
+        return goldWon;
+    }
+
+    void OnLastEnemyKilled(ActorBase lastEnemy)
+    {
+        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, _roundTotalHp);
+        goldWon += PlayerUpgrades.Data.GoldPerRoundAdd;
+
+        ThrowGoldSplit(goldWon, lastEnemy.transform.position);
+
+        FloatingTextSpawner.Instance.Spawn(
+            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4),
+            $"{_roundTotalHp} dam in {RoundTimeSeconds - _secondsLeft} sec, {goldWon}G",
+            Color.white,
+            speed: 0.01f,
+            timeToLive: 3.0f,
+            fontStyle: TMPro.FontStyles.Bold);
+    }
+
     public void OnEnemyKill(ActorBase actor)
     {
         //int goldCount = UnityEngine.Random.Range(actor.GoldCountMin, actor.GoldCountMax);
-        //ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: goldCount, value: 1, isLargeCoin: false);
+        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 1, value: 1, isLargeCoin: false);
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
         {
-            // Last enemy killed
-            ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 3, value: 1, forceScale: 4.0f, isLargeCoin: true);
+            OnLastEnemyKilled(actor);
+        }
+    }
+
+    void ThrowGoldSplit(long goldWon, Vector3 position, bool isLargeCoin = true)
+    {
+        if (goldWon <= 0)
+            return;
+
+        // Smooth scale: 1 coin at low amounts, 20 at 1000 or more
+        int coinCount = Mathf.Clamp(Mathf.RoundToInt(goldWon / 50f), 1, 20);
+
+        long baseValue = goldWon / coinCount;
+        long remainder = goldWon % coinCount;
+
+        for (int i = 0; i < coinCount; i++)
+        {
+            long value = baseValue + (i < remainder ? 1 : 0);
+            ThrowPickups(AutoPickUpType.Money, position, amount: 1, (int)value, forceScale: 4.0f, isLargeCoin);
         }
     }
 
@@ -667,6 +709,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        TextHowToClick.enabled = SaveGame.Members.CountDamageClicks < 5;
+
         if (SaveGame.Members.Money != _prevMoney)
         {
             SetMoneyText();
@@ -682,7 +726,7 @@ public class GameManager : MonoBehaviour
         {
             if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
             {
-                SaveGame.Members.Money += 10;
+                SaveGame.Members.Money += 10000;
             }
 
             if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))

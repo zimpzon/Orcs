@@ -34,14 +34,24 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 10 + level;
+            => 5 + level;
+
+        public static void OnBuy()
+        {
+            long priceForNext = PriceForNext();
+            if (priceForNext > SaveGame.Members.Money)
+                return;
+
+            SaveGame.Members.Money -= priceForNext;
+            SaveGame.Members.LevelClickDamage++;
+        }
 
         public static void UpdateUi()
         {
             long priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.ClickDamage.SetCanAfford(canAfford, priceForNext, SaveGame.Members.LevelClickDamage);
+            UpgradeManager.Instance.ClickDamage.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelClickDamage);
         }
     }
 }
