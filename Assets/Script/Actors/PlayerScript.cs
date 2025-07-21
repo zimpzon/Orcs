@@ -216,7 +216,7 @@ public class PlayerScript : MonoBehaviour
         if (GameManager.Instance.GameState != GameManager.State.Idle_Fighting)
             return;
 
-        float speed = PlayerUpgrades.Data.BaseMoveSpeed + PlayerUpgrades.Data.MoveSpeedAdd;
+        float speed = PlayerUpgrades.Data.MoveSpeedEffective;
 
         speed *= GameManager.Instance.GameDeltaTime;
 

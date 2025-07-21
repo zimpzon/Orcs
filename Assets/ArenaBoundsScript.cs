@@ -35,7 +35,7 @@ public class ArenaBoundsScript : MonoBehaviour
         else
         {
             target = closestEnemy.transform.position;
-         }
+        }
 
         var direction = target - mouseWorldPos;
         float distance = direction.magnitude;

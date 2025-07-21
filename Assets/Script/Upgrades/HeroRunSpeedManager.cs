@@ -17,9 +17,15 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
+        private static float ValueForLevel(long level)
+            => 3 + 0.1f * level;
+
+        public static double PassiveIncome()
+            => 3 * SaveGame.Members.LevelHeroRunspeed;
+
         public static long PriceForNext()
         {
-            return 30 + (long)Math.Pow(SaveGame.Members.LevelHeroRunspeed, 2.5f);
+            return 500 + (long)Math.Pow(SaveGame.Members.LevelHeroRunspeed, 2.5f);
         }
 
         public static void UpdateAll()
@@ -28,10 +34,8 @@ namespace Assets.Script.Upgrades
             UpdateUi();
         }
 
-        private static float ValueForLevel(long level)
-            => 3 + 0.1f * level;
-
         public static void UpdatePlayerUpgrades()
+
         {
             PlayerUpgrades.Data.MoveSpeedAdd = ValueForLevel(SaveGame.Members.LevelHeroRunspeed);
         }

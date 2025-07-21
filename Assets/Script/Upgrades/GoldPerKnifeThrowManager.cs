@@ -17,9 +17,15 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
+        private static long ValueForLevel(long level)
+            => level;
+
+        public static double PassiveIncome()
+            => 6 * SaveGame.Members.LevelGoldPerKnifeThrown;
+
         public static long PriceForNext()
         {
-            return 25 + (long)Math.Pow(SaveGame.Members.LevelGoldPerKnifeThrown, 2.5f);
+            return 5000 + (long)Math.Pow(SaveGame.Members.LevelGoldPerKnifeThrown, 2.5f);
         }
 
         public static void UpdateAll()
@@ -27,9 +33,6 @@ namespace Assets.Script.Upgrades
             UpdatePlayerUpgrades();
             UpdateUi();
         }
-
-        private static long ValueForLevel(long level)
-            => level;
 
         public static void UpdatePlayerUpgrades()
         {

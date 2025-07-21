@@ -54,6 +54,18 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
+    public double GetTotalPassiveIncome()
+    {
+        double result = 0;
+        result += ClickDamageManager.PassiveIncome();
+        result += GoldPerKnifeThrowManager.PassiveIncome();
+        result += KnifeCdManager.PassiveIncome();
+        result += KnifeDamageManager.PassiveIncome();
+        result += HeroRunSpeedManager.PassiveIncome();
+        result += GoldPerRoundManager.PassiveIncome();
+        return result;
+    }
+
     public void UpdateUpgradeUi()
     {
         ClickDamageManager.UpdateUi();

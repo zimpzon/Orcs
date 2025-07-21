@@ -30,7 +30,7 @@ public class UpgradeData
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
-    public long MoneyPerGold = 1;
+    public long MoneyPerGold = 4;
     public long GoldPerKnifeThrown = 0;
     public long GoldPerRoundAdd = 0;
 
@@ -41,8 +41,9 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 3.0f * GameManager.Instance.ArenaScale;
+    public float BaseMoveSpeed = 3.0f;
     public float MoveSpeedAdd = 0.0f;
+    public float MoveSpeedEffective => (BaseMoveSpeed + MoveSpeedAdd)  * GameManager.Instance.ArenaScale;
 
     // weapons
     public float MagicMissileBaseDamage = 3.0f;
@@ -53,12 +54,13 @@ public class UpgradeData
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
-    public float MagicMissileBaseRange = 6.0f * GameManager.Instance.ArenaScale;
+    public float MagicMissileBaseRange = 6.0f;
     public float MagicMissileRangeMul = 1.0f;
-    public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul;
+    public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul * GameManager.Instance.ArenaScale;
 
     public float MagicMissileBaseSpeed = 10.0f;
     public float MagicMissileSpeedMul = 1.0f;
+    public float MagicMissileEffectiveSpeed => MagicMissileBaseSpeed * MagicMissileSpeedMul * GameManager.Instance.ArenaScale;
 
     public float MagicMissileJumpDamageMul = 0.0f;
     public int MagicMissileMultiShots = 0;

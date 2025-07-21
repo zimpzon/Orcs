@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Enemies;
+using Assets.Script.Misc;
 using EZCameraShake;
 using System;
 using System.Collections;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
+    const int MinSecondsLeftForNextlevel = 20;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextLevel;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextHowToClick;
+    public TextMeshProUGUI TextPassiveIncome;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -156,6 +159,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
+            TextLevel.text = $"LEVEL {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -165,7 +169,7 @@ public class GameManager : MonoBehaviour
             if (round > EnemySpawner.MaxRound)
                 round = 1;
 
-            var enemies = EnemySpawner.GetEnemies(1);
+            var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel);
             long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
@@ -205,6 +209,13 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_WonFight)
             {
+                bool readyForNextRound = _secondsLeft >= MinSecondsLeftForNextlevel;
+                if (readyForNextRound)
+                {
+                    yield return ShowInfoText("LEVEL UP", delay: 2);
+                    yield return new WaitForSeconds(0.25f);
+                    SaveGame.Members.ArenaLevel++;
+                }
                 yield return null;
                 GameState = State.Idle_PresentLevel;
             }
@@ -219,7 +230,8 @@ public class GameManager : MonoBehaviour
                     ActorCache.Instance.ReturnObject(enemy.gameObject);
                 }
 
-                yield return ShowInfoText("OUT OF TIME", delay: 2);
+                SaveGame.Members.ArenaLevel--;
+                yield return ShowInfoText("OUT OF TIME, LEVEL DOWN", delay: 2);
                 yield return new WaitForSeconds(0.25f);
             }
             yield return null;
@@ -346,11 +358,6 @@ public class GameManager : MonoBehaviour
     void PlayMenuSound()
     {
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
-    }
-
-    void SetMoneyText(bool withEffect = false)
-    {
-        TextMoney.text = $"${SaveGame.Members.Money}";
     }
 
     public void AddGold(bool isLargeCoin, int value)
@@ -502,7 +509,7 @@ public class GameManager : MonoBehaviour
         float timefraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = Mathf.Lerp(0.75f, 1.0f, timefraction);
 
-        const float HpToGoldPct = 0.05f;
+        const float HpToGoldPct = 0.25f;
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
         if (goldWon <= 0) goldWon = 1;
 
@@ -705,17 +712,45 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
-    long _prevMoney = -1;
+    double _prevMoney = -1;
+    double _prevPassiveIncome;
+    float _nextPassiveIncomeUpdate;
+
+    void UpdatePassiveIncome()
+    {
+        if (G.D.GameTime < _nextPassiveIncomeUpdate)
+            return;
+
+        const float UpdatesPerSec = 10;
+        float updateDelay = 1.0f / UpdatesPerSec;
+        _nextPassiveIncomeUpdate = G.D.GameTime + updateDelay;
+
+        float incomeFactor = 1.0f / UpdatesPerSec;
+        double totalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
+
+        SaveGame.Members.Money += totalPassiveIncome * incomeFactor;
+        if (Math.Abs(_prevPassiveIncome - totalPassiveIncome) > 0.000)
+        {
+            TextPassiveIncome.text = $"{totalPassiveIncome} per second";
+            _prevPassiveIncome = totalPassiveIncome;
+        }
+    }
+
+    void UpdateMoneyText()
+    {
+        if (Math.Abs(SaveGame.Members.Money - _prevMoney) < 0.0001f)
+            return;
+
+        _prevMoney = SaveGame.Members.Money;
+        TextMoney.text = $"${MathUtil.FormatLongNumber((long)SaveGame.Members.Money)}";
+    }
 
     void Update()
     {
         TextHowToClick.enabled = SaveGame.Members.CountDamageClicks < 5;
 
-        if (SaveGame.Members.Money != _prevMoney)
-        {
-            SetMoneyText();
-            _prevMoney = SaveGame.Members.Money;
-        }
+        UpdatePassiveIncome();
+        UpdateMoneyText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
         if (PauseGameTime)

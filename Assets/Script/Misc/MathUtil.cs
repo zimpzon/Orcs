@@ -7,12 +7,12 @@ namespace Assets.Script.Misc
     {
         public static string FormatLongNumber(long number)
         {
-            if (number >= 1_000_000_000_000_000_000) return (number / 1_000_000_000_000_000_000D).ToString("0.##") + "Qn"; // Quintillion
-            if (number >= 1_000_000_000_000_000) return (number / 1_000_000_000_000_000D).ToString("0.##") + "Q";  // Quadrillion
-            if (number >= 1_000_000_000_000) return (number / 1_000_000_000_000D).ToString("0.##") + "T";  // Trillion
-            if (number >= 1_000_000_000) return (number / 1_000_000_000D).ToString("0.##") + "B";  // Billion
-            if (number >= 1_000_000) return (number / 1_000_000D).ToString("0.##") + "M";  // Million
-            if (number >= 1_000) return (number / 1_000D).ToString("0.##") + "K";  // Thousand
+            if (number >= 1_000_000_000_000_000_000) return (number / 1_000_000_000_000_000_000D).ToString("0.00") + "Qn"; // Quintillion
+            if (number >= 1_000_000_000_000_000) return (number / 1_000_000_000_000_000D).ToString("0.00") + "Q";  // Quadrillion
+            if (number >= 1_000_000_000_000) return (number / 1_000_000_000_000D).ToString("0.00") + "T";  // Trillion
+            if (number >= 1_000_000_000) return (number / 1_000_000_000D).ToString("0.00") + "B";  // Billion
+            if (number >= 1_000_000) return (number / 1_000_000D).ToString("0.00") + "M";  // Million
+            if (number >= 1_000) return (number / 1_000D).ToString("0.00") + "K";  // Thousand
             return number.ToString();
         }
 

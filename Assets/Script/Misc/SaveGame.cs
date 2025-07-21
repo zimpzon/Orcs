@@ -5,14 +5,6 @@ using UnityEngine;
 public enum GameCounter
 {
     DamageClicks,
-    //Player_Death,
-    //Kill_Any, Kill_Small, Kill_BigWalker, Kill_Caster,
-    //unlocked_paintball,
-    //Score_Nursery_Sum, Score_Earth_Sum, Score_Wind_Sum, Score_Fire_Sum, Score_Storm_Sum, score_Harmony_Sum, Score_Any_Sum,
-    //Max_First,
-    //Max_Score_Nursery, Max_Score_Earth, Max_Score_Wind, Max_Score_Fire, Max_Score_Storm, Max_score_Harmony, Max_Score_Any,
-    //Max_Last,
-    //unlocked_sniper, unlocked_slug, unlocked_rambo, unlocked_staff, unlocked_staff2, unlocked_orcs_revenge, Last
 };
 
 public class SaveGameMembers
@@ -28,8 +20,10 @@ public class SaveGameMembers
     public long LevelHeroRunspeed = 0;
     public long LevelGoldPerRoundAdd = 0;
 
+    public long ArenaLevel = 1;
+
     // Game
-    public long Money = 0;
+    public double Money = 0;
     public long CurrentLevel = 1;
     public long AscendLevel = 1;
 

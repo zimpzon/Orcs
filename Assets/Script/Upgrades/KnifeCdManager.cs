@@ -17,22 +17,25 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
+        private static float ValueForLevel(long level)
+        {
+            float value = 1.0f - level * 0.05f;
+            value = Math.Clamp(value, 0.1f, 100);
+            return value;
+        }
+
+        public static double PassiveIncome()
+            => 4 * SaveGame.Members.LevelKnifeCooldown;
+
         public static long PriceForNext()
         {
-            return 100 + (long)Math.Pow(SaveGame.Members.LevelKnifeCooldown, 2.5f);
+            return 500 + (long)Math.Pow(SaveGame.Members.LevelKnifeCooldown, 2.5f);
         }
 
         public static void UpdateAll()
         {
             UpdatePlayerUpgrades();
             UpdateUi();
-        }
-
-        private static float ValueForLevel(long level)
-        {
-            float value = 1.0f - level * 0.05f;
-            value = Math.Clamp(value, 0.1f, 100);
-            return value;
         }
 
         public static void UpdatePlayerUpgrades()
