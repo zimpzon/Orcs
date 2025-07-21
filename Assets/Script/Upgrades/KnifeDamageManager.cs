@@ -7,25 +7,38 @@ namespace Assets.Script.Upgrades
     {
         public static string GetText()
         {
+            long level = SaveGame.Members.LevelKnifeDamage;
+            double baseIncome = BaseIncome();
+            double totalIncome = PassiveIncome();
+            long currentValue = ValueForLevel(level);
+            long nextValue = ValueForLevel(level + 1);
+
             var sb = new StringBuilder();
-            sb.AppendLine("Damage done by each dagger.");
+
+            sb.AppendLine("<size=+4><b><color=yellow>Dagger Damage</color></b></size>");
             sb.AppendLine("");
-            sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage):0.0}</color>");
-            sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeDamage + 1):0.0}</color>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine("");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Current damage: <color=yellow>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{(nextValue.ToString())}</color>");
+
             return sb.ToString();
         }
 
         private static long ValueForLevel(long level)
             => 10 + (10 * level);
 
+        private static double BaseIncome() => 8;
+
         public static double PassiveIncome()
-            => 2 * SaveGame.Members.LevelKnifeDamage;
+            => BaseIncome() * SaveGame.Members.LevelKnifeDamage;
 
         public static long PriceForNext()
         {
-            return 150 + (long)Math.Pow(SaveGame.Members.LevelKnifeDamage, 2.5f);
+            return (long)(1100 * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage));
         }
 
         public static void UpdateAll()

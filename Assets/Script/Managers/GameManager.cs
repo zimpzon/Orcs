@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
-    const int MinSecondsLeftForNextlevel = 20;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -159,15 +158,13 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            TextLevel.text = $"LEVEL {SaveGame.Members.ArenaLevel}";
+            TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
             ShowSecondsLeft(RoundTimeSeconds);
 
             round++;
-            if (round > EnemySpawner.MaxRound)
-                round = 1;
 
             var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel);
             long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
@@ -209,13 +206,11 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_WonFight)
             {
-                bool readyForNextRound = _secondsLeft >= MinSecondsLeftForNextlevel;
-                if (readyForNextRound)
-                {
-                    yield return ShowInfoText("LEVEL UP", delay: 2);
-                    yield return new WaitForSeconds(0.25f);
-                    SaveGame.Members.ArenaLevel++;
-                }
+                // Last enemy already threw round gold, NOT done here
+
+                yield return ShowInfoText("NEXT ARENA!", delay: 2);
+                yield return new WaitForSeconds(0.25f);
+                SaveGame.Members.ArenaLevel++;
                 yield return null;
                 GameState = State.Idle_PresentLevel;
             }
@@ -224,14 +219,16 @@ public class GameManager : MonoBehaviour
             {
                 GameState = State.Idle_PresentLevel;
 
+                // We didn't kill all enemies so present gold in the middle
+                PresentRoundGold(Vector2.zero);
+
                 foreach (var enemy in enemies)
                 {
                     enemy.gameObject.SetActive(true);
                     ActorCache.Instance.ReturnObject(enemy.gameObject);
                 }
 
-                SaveGame.Members.ArenaLevel--;
-                yield return ShowInfoText("OUT OF TIME, LEVEL DOWN", delay: 2);
+                yield return ShowInfoText("ROUND COMPLETE", delay: 2);
                 yield return new WaitForSeconds(0.25f);
             }
             yield return null;
@@ -505,31 +502,35 @@ public class GameManager : MonoBehaviour
 
     long CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
     {
-        // 100% time left = 100% gold, 0% time left = 75% gold.
-        float timefraction = (secondsLeft + 0.0001f) / totalSeconds;
-        float penaltyMul = Mathf.Lerp(0.75f, 1.0f, timefraction);
-
+        float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
+        float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
         const float HpToGoldPct = 0.25f;
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
         if (goldWon <= 0) goldWon = 1;
-
         return goldWon;
+    }
+
+    void PresentRoundGold(Vector2 position)
+    {
+        float damageDone = _roundTotalHp - HpBarScript.CurrentHp;
+
+        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, (long)damageDone);
+        goldWon += PlayerUpgrades.Data.GoldPerRoundAdd;
+
+        ThrowGoldSplit(goldWon, position);
+
+        FloatingTextSpawner.Instance.Spawn(
+            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4),
+            $"{damageDone} dam in {RoundTimeSeconds - _secondsLeft} sec, {goldWon}G",
+            Color.white,
+            speed: 0.05f,
+            timeToLive: 2.0f,
+            fontStyle: TMPro.FontStyles.Bold);
     }
 
     void OnLastEnemyKilled(ActorBase lastEnemy)
     {
-        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, _roundTotalHp);
-        goldWon += PlayerUpgrades.Data.GoldPerRoundAdd;
-
-        ThrowGoldSplit(goldWon, lastEnemy.transform.position);
-
-        FloatingTextSpawner.Instance.Spawn(
-            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4),
-            $"{_roundTotalHp} dam in {RoundTimeSeconds - _secondsLeft} sec, {goldWon}G",
-            Color.white,
-            speed: 0.01f,
-            timeToLive: 3.0f,
-            fontStyle: TMPro.FontStyles.Bold);
+        PresentRoundGold(lastEnemy.transform.position);
     }
 
     public void OnEnemyKill(ActorBase actor)
@@ -564,6 +565,9 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
     {
+        if (enemy.Hp <= 0)
+            return;
+
         amount *= PlayerUpgrades.Data.DamageMul;
         if (amount < 1)
             amount = 1;
@@ -713,8 +717,8 @@ public class GameManager : MonoBehaviour
     }
 
     double _prevMoney = -1;
-    double _prevPassiveIncome;
-    float _nextPassiveIncomeUpdate;
+    double _prevPassiveIncome = -1;
+    float _nextPassiveIncomeUpdate = -1;
 
     void UpdatePassiveIncome()
     {

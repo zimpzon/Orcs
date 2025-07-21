@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
@@ -14,12 +15,12 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     long _latestPrice = -1;
     long _latestLevel = -1;
 
-    public void UpdateUi(bool canAfford, long priceNext, long currentLevel, long maxLevel = -1)
+    public void UpdateUi(bool canAfford, long priceNext, long currentLevel)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
         SetPrice(priceNext);
-        SetLevel(currentLevel, maxLevel);
+        SetLevel(currentLevel);
     }
 
     void SetPrice(long price)
@@ -27,11 +28,11 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (price == _latestPrice)
             return;
 
-        PriceLabel.text = $"${price}";
+        PriceLabel.text = $"${MathUtil.FormatLongNumber(price)}";
         _latestPrice = price;
     }
 
-    void SetLevel(long level, long maxLevel = -1)
+    void SetLevel(long level)
     {
         if (level == _latestLevel)
             return;
@@ -40,13 +41,9 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             LevelLabel.text = "";
         }
-        else if (maxLevel == -1)
-        {
-            LevelLabel.text = $"{level}";
-        }
         else
         {
-            LevelLabel.text = $"{level}/{maxLevel}";
+            LevelLabel.text = $"{level}";
         }
         _latestLevel = level;
     }

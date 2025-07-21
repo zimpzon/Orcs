@@ -7,29 +7,44 @@ namespace Assets.Script.Upgrades
     {
         public static string GetText()
         {
+            long level = SaveGame.Members.LevelKnifeCooldown;
+            double baseIncome = BaseIncome();
+            double totalIncome = PassiveIncome();
+            float currentValue = ValueForLevel(level);
+            float nextValue = ValueForLevel(level + 1);
+
             var sb = new StringBuilder();
-            sb.AppendLine("Cooldown between each dagger in seconds.");
+
+            sb.AppendLine("<size=+4><b><color=yellow>Dagger Cooldown</color></b></size>");
             sb.AppendLine("");
-            sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeCooldown):0.00}</color>");
-            sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelKnifeCooldown + 1):0.00}</color>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine("");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Current CD: <color=yellow>{currentValue:0.00}s</color>");
+            sb.AppendLine($"<color=#dddddd>Level: <color=yellow>{level} / {MaxLevel}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{(level >= MaxLevel ? "max reached" : $"{nextValue:0.00}s")}</color>");
+
             return sb.ToString();
         }
+
+        private const int MaxLevel = 20;
 
         private static float ValueForLevel(long level)
         {
             float value = 1.0f - level * 0.05f;
-            value = Math.Clamp(value, 0.1f, 100);
-            return value;
+            return Math.Clamp(value, 0.1f, 100f);
         }
 
+        private static double BaseIncome() => 250;
+
         public static double PassiveIncome()
-            => 4 * SaveGame.Members.LevelKnifeCooldown;
+            => BaseIncome() * SaveGame.Members.LevelKnifeCooldown;
 
         public static long PriceForNext()
         {
-            return 500 + (long)Math.Pow(SaveGame.Members.LevelKnifeCooldown, 2.5f);
+            return (long)(130_000 * Math.Pow(1.15, SaveGame.Members.LevelClickDamage));
         }
 
         public static void UpdateAll()
@@ -45,6 +60,9 @@ namespace Assets.Script.Upgrades
 
         public static void OnBuy()
         {
+            if (SaveGame.Members.LevelKnifeCooldown >= MaxLevel)
+                return;
+
             long priceForNext = PriceForNext();
             if (priceForNext > SaveGame.Members.Money)
                 return;
@@ -58,7 +76,7 @@ namespace Assets.Script.Upgrades
             long priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeCooldown, maxLevel: 20);
+            UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeCooldown);
         }
     }
 }

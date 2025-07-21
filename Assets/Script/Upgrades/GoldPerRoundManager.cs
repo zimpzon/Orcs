@@ -7,25 +7,38 @@ namespace Assets.Script.Upgrades
     {
         public static string GetText()
         {
+            long level = SaveGame.Members.LevelGoldPerRoundAdd;
+            double baseIncome = BaseIncome();
+            double totalIncome = PassiveIncome();
+            long currentValue = ValueForLevel(level);
+            long nextValue = ValueForLevel(level + 1);
+
             var sb = new StringBuilder();
-            sb.AppendLine("Extra gold received after completing a round.");
+
+            sb.AppendLine("<size=+4><b><color=yellow>Gold Per Round</color></b></size>");
             sb.AppendLine("");
-            sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd)}</color>");
-            sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd + 1)}</color>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine("");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Current bonus: <color=yellow>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{nextValue}</color>");
+
             return sb.ToString();
         }
 
         private static long ValueForLevel(long level)
             => level * 10;
 
+        private static double BaseIncome() => 750;
+
         public static double PassiveIncome()
-            => 5 * SaveGame.Members.LevelGoldPerRoundAdd;
+            => BaseIncome() * SaveGame.Members.LevelGoldPerRoundAdd;
 
         public static long PriceForNext()
         {
-            return 1500 + (long)Math.Pow(SaveGame.Members.LevelGoldPerRoundAdd, 2.5f);
+            return (long)(1_400_000 * Math.Pow(1.15, SaveGame.Members.LevelGoldPerRoundAdd));
         }
 
         public static void UpdateAll()

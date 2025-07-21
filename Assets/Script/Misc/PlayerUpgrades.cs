@@ -30,7 +30,7 @@ public class UpgradeData
     public bool GoldXpMultiplierBought = false;
     public int GoldXpMultiplyValue = 1;
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
-    public long MoneyPerGold = 4;
+    public long MoneyPerGold = 1;
     public long GoldPerKnifeThrown = 0;
     public long GoldPerRoundAdd = 0;
 

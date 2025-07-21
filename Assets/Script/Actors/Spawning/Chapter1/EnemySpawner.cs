@@ -4,33 +4,72 @@ using UnityEngine;
 
 public static class EnemySpawner
 {
-    public static int MaxRound = 3;
-
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
-        const long HpPerLevelBase = 200;
-        long hpTargetForRound = HpPerLevelBase * level;
+        const long MaxEnemies = 100;
+        long HpPerLevel = 50;
+        long HpBase = 100;
 
-        // All spawns should stay within Rect ArenaBounds.
-        Rect bounds = GameManager.ArenaBounds;
-        long hpBat = 20;
-        long hpOgreSmall = 50;
-        long hpOgreLarge = 1000;
+        // Enemy hp will only increase every X levels or we will just see
+        // the same lone enemy getting more and more Hp.
+        long levelBucket = (level / 100) * 100 + 1;
+        long hpTargetForRound = (HpPerLevel * level) + HpBase;
+        long hpBat = 20 * levelBucket + (level * 2);
+        long hpOgreSmall = 50 * levelBucket + (level * 5);
+        long hpOgreLarge = 1000 * levelBucket + (level * 100);
 
-        // Examples:
-        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, 3))
-        //    yield return go;
+        long remainingHp = hpTargetForRound;
+        long totalEnemies = 0;
 
-        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, 3))
-        //    yield return go;
+        // Try spawning OgreLarge first (highest HP)
+        long ogreLargeCount = remainingHp / hpOgreLarge;
 
-        //foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, 3))
-        //    yield return go;
+        // Randomly remove some of this size to dynamically get more of the smaller ones
+        ogreLargeCount -= Random.Range(0, (int)ogreLargeCount / 5);
 
-        //foreach (var go in SpawnUtil.Square(ActorTypeEnum.OgreSmall, Vector2.zero, size: 3, spacing: 1))
-        //    yield return go;
+        if (ogreLargeCount + totalEnemies > MaxEnemies)
+        {
+            ogreLargeCount = MaxEnemies - totalEnemies;
+        }
+        totalEnemies += ogreLargeCount;
+        remainingHp -= ogreLargeCount * hpOgreLarge;
 
-        //foreach (var go in SpawnUtil.Circle(ActorTypeEnum.BatRed, Vector2.zero, radius: 3, count: 10))
-        //    yield return go;
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, (int)ogreLargeCount))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpOgreLarge;
+            yield return go;
+        }
+
+        // Then try OgreSmall
+        long ogreSmallCount = remainingHp / hpOgreSmall;
+
+        // Randomly remove some of this size to dynamically get more of the smaller ones
+        ogreSmallCount -= Random.Range(0, (int)ogreSmallCount / 5);
+
+        if (ogreSmallCount + totalEnemies > MaxEnemies)
+        {
+            ogreSmallCount = MaxEnemies - totalEnemies;
+        }
+        totalEnemies += ogreSmallCount;
+        remainingHp -= ogreSmallCount * hpOgreSmall;
+
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, (int)ogreSmallCount))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpOgreSmall;
+            yield return go;
+        }
+
+        // Finally use Bats to fill remaining HP
+        long batCount = remainingHp / hpBat;
+        if (batCount + totalEnemies > MaxEnemies)
+        {
+            batCount = MaxEnemies - totalEnemies;
+        }
+
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, (int)batCount))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpBat;
+            yield return go;
+        }
     }
 }

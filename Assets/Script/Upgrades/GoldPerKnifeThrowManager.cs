@@ -7,25 +7,38 @@ namespace Assets.Script.Upgrades
     {
         public static string GetText()
         {
+            long level = SaveGame.Members.LevelGoldPerKnifeThrown;
+            double baseIncome = BaseIncome();
+            double totalIncome = PassiveIncome();
+            long currentValue = ValueForLevel(level);
+            long nextValue = ValueForLevel(level + 1);
+
             var sb = new StringBuilder();
-            sb.AppendLine("Gold earned for each dagger thrown.");
+
+            sb.AppendLine("<size=+4><b><color=yellow>Gold Per Dagger</color></b></size>");
             sb.AppendLine("");
-            sb.AppendLine("Current:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerKnifeThrown)}</color>");
-            sb.AppendLine("Next:");
-            sb.AppendLine($"    <color=#ffff00>{ValueForLevel(SaveGame.Members.LevelGoldPerKnifeThrown + 1)}</color>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine("");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Current gold per dagger: <color=yellow>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{nextValue}</color>");
+
             return sb.ToString();
         }
 
         private static long ValueForLevel(long level)
             => level;
 
+        private static double BaseIncome() => 1750;
+
         public static double PassiveIncome()
-            => 6 * SaveGame.Members.LevelGoldPerKnifeThrown;
+            => BaseIncome() * SaveGame.Members.LevelGoldPerKnifeThrown;
 
         public static long PriceForNext()
         {
-            return 5000 + (long)Math.Pow(SaveGame.Members.LevelGoldPerKnifeThrown, 2.5f);
+            return (long)(15_000_000 * Math.Pow(1.15, SaveGame.Members.LevelGoldPerKnifeThrown));
         }
 
         public static void UpdateAll()

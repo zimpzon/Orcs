@@ -15,31 +15,30 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+2>Zap Damage</size>");
+            sb.AppendLine("<size=+4><b><color=yellow>Zap Damage</color></b></size>");
             sb.AppendLine("");
-            sb.AppendLine($"Each level earns <color=#00ffff>${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"Current: <color=#00ffff>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
             sb.AppendLine("");
-            sb.AppendLine($"Current zap damage: <color=#ffff00>{currentValue}</color>");
-            sb.AppendLine($"Next: <color=#ffff00>{(nextValue == -1 ? "max reached" : nextValue)}</color>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Current zap damage: <color=yellow>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{nextValue}</color>");
 
             return sb.ToString();
         }
 
-        private static long ValueMaxLevel(long level)
-            => 3;
-
         private static long ValueForLevel(long level)
-            => level >= ValueMaxLevel(level) ? -1 : 5 + level;
+            => 10 + (1 * level);
 
-        private static double BaseIncome() => 0.1;
+        private static double BaseIncome() => 1;
         
         public static double PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelClickDamage;
 
         public static long PriceForNext()
         {
-            return 30 + (long)Math.Pow(SaveGame.Members.LevelClickDamage, 2.5f);
+            return (long)(100 * Math.Pow(1.15, SaveGame.Members.LevelClickDamage));
         }
 
         public static void UpdateAll()
