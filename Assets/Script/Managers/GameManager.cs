@@ -380,6 +380,11 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.Money += amount;
     }
 
+    public void DeductMoney(long amount)
+    {
+        SaveGame.Members.Money -= amount;
+    }
+
     public void AddXp(int amount)
     {
         currentXp += amount;
@@ -725,7 +730,7 @@ public class GameManager : MonoBehaviour
         if (G.D.GameTime < _nextPassiveIncomeUpdate)
             return;
 
-        const float UpdatesPerSec = 10;
+        const float UpdatesPerSec = 20;
         float updateDelay = 1.0f / UpdatesPerSec;
         _nextPassiveIncomeUpdate = G.D.GameTime + updateDelay;
 
@@ -737,7 +742,27 @@ public class GameManager : MonoBehaviour
         {
             TextPassiveIncome.text = $"{totalPassiveIncome} per second";
             _prevPassiveIncome = totalPassiveIncome;
+            PopText(TextPassiveIncome);
         }
+    }
+
+    void PopText(TextMeshProUGUI text)
+    {
+        var rect = text.rectTransform;
+        LeanTween.cancel(rect);
+        rect.localScale = Vector3.one;
+        text.color = Color.yellow;
+
+        LeanTween.scale(rect, Vector3.one * 1.3f, 0.1f)
+            .setEase(LeanTweenType.easeOutQuad)
+            .setOnComplete(() =>
+            {
+                LeanTween.scale(rect, Vector3.one, 0.3f)
+                    .setEase(LeanTweenType.easeOutBounce);
+            });
+
+        LeanTween.value(gameObject, Color.yellow, Color.white, 0.4f)
+            .setOnUpdate((Color col) => text.color = col);
     }
 
     void UpdateMoneyText()
@@ -746,7 +771,7 @@ public class GameManager : MonoBehaviour
             return;
 
         _prevMoney = SaveGame.Members.Money;
-        TextMoney.text = $"${MathUtil.FormatLongNumber((long)SaveGame.Members.Money)}";
+        TextMoney.text = $"${MathUtil.FormatLongNumber((long)SaveGame.Members.Money, abbreviate: false)}";
     }
 
     void Update()
@@ -765,7 +790,7 @@ public class GameManager : MonoBehaviour
         {
             if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
             {
-                SaveGame.Members.Money += 10000;
+                SaveGame.Members.Money += 1000000;
             }
 
             if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
@@ -795,6 +820,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             Screen.fullScreen = !Screen.fullScreen;
+        }
+
+        // CHEAT
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
+            long damage = PlayerUpgrades.Data.ClickDamage;
+            Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage);
         }
 
         if (Input.GetKeyDown(KeyCode.F1))

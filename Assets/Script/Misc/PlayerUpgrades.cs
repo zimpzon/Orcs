@@ -58,7 +58,7 @@ public class UpgradeData
     public float MagicMissileRangeMul = 1.0f;
     public float MagicMissileEffectiveRange => MagicMissileBaseRange * MagicMissileRangeMul * GameManager.Instance.ArenaScale;
 
-    public float MagicMissileBaseSpeed = 10.0f;
+    public float MagicMissileBaseSpeed = 15.0f;
     public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileEffectiveSpeed => MagicMissileBaseSpeed * MagicMissileSpeedMul * GameManager.Instance.ArenaScale;
 

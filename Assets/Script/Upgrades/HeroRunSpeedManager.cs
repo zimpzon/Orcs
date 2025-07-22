@@ -64,7 +64,7 @@ namespace Assets.Script.Upgrades
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
-            SaveGame.Members.Money -= priceForNext;
+            GameManager.Instance.DeductMoney(priceForNext);
             SaveGame.Members.LevelHeroRunspeed++;
         }
 

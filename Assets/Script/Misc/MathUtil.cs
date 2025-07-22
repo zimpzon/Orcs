@@ -1,29 +1,31 @@
-﻿using System;
-using UnityEngine;
-
-namespace Assets.Script.Misc
+﻿namespace Assets.Script.Misc
 {
     public static class MathUtil
     {
-        public static string FormatLongNumber(long number)
+        public static string FormatLongNumber(long number, bool abbreviate = true)
         {
-            if (number >= 1_000_000_000_000_000_000) return (number / 1_000_000_000_000_000_000D).ToString("0.00") + "Qn"; // Quintillion
-            if (number >= 1_000_000_000_000_000) return (number / 1_000_000_000_000_000D).ToString("0.00") + "Q";  // Quadrillion
-            if (number >= 1_000_000_000_000) return (number / 1_000_000_000_000D).ToString("0.00") + "T";  // Trillion
-            if (number >= 1_000_000_000) return (number / 1_000_000_000D).ToString("0.00") + "B";  // Billion
-            if (number >= 1_000_000) return (number / 1_000_000D).ToString("0.00") + "M";  // Million
-            if (number >= 1_000) return (number / 1_000D).ToString("0.00") + "K";  // Thousand
-            return number.ToString();
+            if (number < 1_000_000)
+                return number.ToString("N0"); // e.g., 123,456
+
+            if (number >= 1_000_000_000_000_000_000)
+                return Format(number, 1_000_000_000_000_000_000D, abbreviate, "Qn", " quadrillion");
+
+            if (number >= 1_000_000_000_000_000)
+                return Format(number, 1_000_000_000_000_000D, abbreviate, "Q", " quadrillion");
+
+            if (number >= 1_000_000_000_000)
+                return Format(number, 1_000_000_000_000D, abbreviate, "T", " trillion");
+
+            if (number >= 1_000_000_000)
+                return Format(number, 1_000_000_000D, abbreviate, "B", " billion");
+
+            return Format(number, 1_000_000D, abbreviate, "M", " million"); // 1,000,000 <= number < 1,000,000,000
         }
 
-        public static Vector2 RadianToVector2(float radian)
+        private static string Format(long number, double divisor, bool abbreviate, string shortSuffix, string longSuffix)
         {
-            return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
-        }
-
-        public static Vector2 DegreeToVector2(float degree)
-        {
-            return RadianToVector2(degree * Mathf.Deg2Rad);
+            double value = number / divisor;
+            return value.ToString("0.000") + (abbreviate ? shortSuffix : longSuffix);
         }
     }
 }

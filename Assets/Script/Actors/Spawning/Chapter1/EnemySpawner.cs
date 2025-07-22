@@ -14,9 +14,16 @@ public static class EnemySpawner
         // the same lone enemy getting more and more Hp.
         long levelBucket = (level / 100) * 100 + 1;
         long hpTargetForRound = (HpPerLevel * level) + HpBase;
-        long hpBat = 20 * levelBucket + (level * 2);
-        long hpOgreSmall = 50 * levelBucket + (level * 5);
-        long hpOgreLarge = 1000 * levelBucket + (level * 100);
+
+        long GetRandomizedHp(long baseHp)
+        {
+            float factor = UnityEngine.Random.Range(0.5f, 1.0f);
+            return (long)(baseHp * factor);
+        }
+
+        long hpBat = GetRandomizedHp(20 * levelBucket + (level * 2));
+        long hpOgreSmall = GetRandomizedHp(50 * levelBucket + (level * 5));
+        long hpOgreLarge = GetRandomizedHp(1000 * levelBucket + (level * 100));
 
         long remainingHp = hpTargetForRound;
         long totalEnemies = 0;
