@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Assets.Script.Upgrades
@@ -15,7 +16,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Zap Damage</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=yellow>Chain Lightning</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Our hero zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
@@ -29,9 +31,14 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 10 + (1 * level);
+        {
+            if (level == 0)
+                return 0;
 
-        private static double BaseIncome() => 1;
+            return 5 + (2 * level);
+        }
+
+        private static double BaseIncome() => 2;
         
         public static double PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelClickDamage;
@@ -49,7 +56,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.ClickDamage = ValueForLevel(SaveGame.Members.LevelClickDamage);
+            PlayerUpgrades.Data.ZapDamage = ValueForLevel(SaveGame.Members.LevelClickDamage);
         }
 
         public static void OnBuy()

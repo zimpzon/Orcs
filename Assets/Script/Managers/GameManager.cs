@@ -1,5 +1,4 @@
 ﻿using Assets.Script;
-using Assets.Script.Enemies;
 using Assets.Script.Misc;
 using EZCameraShake;
 using System;
@@ -36,7 +35,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
     public TextMeshProUGUI TextMoney;
-    public TextMeshProUGUI TextHowToClick;
     public TextMeshProUGUI TextPassiveIncome;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
@@ -150,24 +148,85 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    int round = 0;
     long _roundTotalHp = -1;
+
+    bool TryZapEnemy(Vector2 from, ActorBase enemy)
+    {
+        if (PlayerUpgrades.Data.ZapDamage == 0)
+            return false;
+
+        if (enemy is null)
+            return false;
+
+        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage, floatingDamage: true);
+        if (!success)
+            return false;
+
+        MakeFlash(from, 2.0f);
+        MakePoof(from, 3, 0.5f);
+
+        for (int i = 0; i < 10; ++i)
+        {
+            Particles.I.ClickTrail.transform.position = from + UnityEngine.Random.insideUnitCircle * 0.5f;
+            Particles.I.ClickTrail.Emit(1);
+        }
+
+        return true;
+    }
+
+    const float ZapInterval = 3;
+    float _nextZap;
+    List<ActorBase> _prevZapJumpTargets = new List<ActorBase>();
+
+    void CheckZapping()
+    {
+        if (PlayerUpgrades.Data.ZapDamage > 0 && G.D.GameTime > _nextZap)
+        {
+            _nextZap = G.D.GameTime + ZapInterval;
+            _prevZapJumpTargets.Clear();
+
+            // Try zap player
+            if (TryZapEnemy(G.D.PlayerPos, ActorBase.PlayerClosestEnemyActor))
+            {
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit);
+
+                // Then jump to X nearby targets
+                const int MaxJumps = 2;
+                _prevZapJumpTargets.Add(ActorBase.PlayerClosestEnemyActor);
+
+                var prevEnemy = ActorBase.PlayerClosestEnemyActor;
+                for (int i = 0; i < MaxJumps; ++i)
+                {
+                    var nextEnemy = BlackboardScript.GetClosestEnemy(
+                        prevEnemy.transform.position,
+                        radius: 4.0f,
+                        _prevZapJumpTargets);
+
+                    if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy))
+                        break;
+
+                    _prevZapJumpTargets.Add(nextEnemy);
+                    prevEnemy = nextEnemy;
+                }
+            }
+        }
+    }
 
     // main loop
     IEnumerator GameStateCo()
     {
         while (true)
         {
+            UpdateMoneyText();
+
             TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
             ShowSecondsLeft(RoundTimeSeconds);
 
-            round++;
-
-            var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel);
-            long totalHitpoints = (long)enemies.Sum(a => a.BaseHp);
+            var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
+            long totalHitpoints = enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
             _roundTotalHp = totalHitpoints;
@@ -184,9 +243,12 @@ public class GameManager : MonoBehaviour
             float roundEndTime = roundStartTime + RoundTimeSeconds;
 
             GameState = State.Idle_Fighting;
+            _nextZap = G.D.GameTime + ZapInterval;
 
             while (GameState == State.Idle_Fighting)
             {
+                CheckZapping();
+
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
 
@@ -224,11 +286,10 @@ public class GameManager : MonoBehaviour
 
                 foreach (var enemy in enemies)
                 {
-                    enemy.gameObject.SetActive(true);
-                    ActorCache.Instance.ReturnObject(enemy.gameObject);
+                    enemy.ReturnToCache();
                 }
 
-                yield return ShowInfoText("ROUND COMPLETE", delay: 2);
+                yield return ShowInfoText("ROUND ENDED", delay: 2);
                 yield return new WaitForSeconds(0.25f);
             }
             yield return null;
@@ -535,6 +596,9 @@ public class GameManager : MonoBehaviour
 
     void OnLastEnemyKilled(ActorBase lastEnemy)
     {
+        // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
+        //HpBarScript.SetHp(0, HpBarScript.MaxHp);
+
         PresentRoundGold(lastEnemy.transform.position);
     }
 
@@ -570,26 +634,34 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
     {
-        if (enemy.Hp <= 0)
+        if (enemy.Hp <= 0 || enemy.IsDead)
             return;
 
         amount *= PlayerUpgrades.Data.DamageMul;
         if (amount < 1)
             amount = 1;
 
-        bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;
-        if (isCrit)
-            amount *= PlayerUpgrades.Data.CritValueMul;
-
         long intAmount = (long)amount;
         if (intAmount > enemy.Hp)
             intAmount = enemy.Hp;
 
-        long overkill = enemy.Hp - intAmount;
-        bool isDead = enemy.IsDead;
-        enemy.ApplyDamage(intAmount, direction, forceModifier);
+        enemy.ApplyDamage2(intAmount, direction, forceModifier);
 
         HpBarScript.AddHp((long)-intAmount);
+
+        FloatingTextSpawner.Instance.Spawn(
+            (Vector2)enemy.transform.position + Vector2.up * 0.25f,
+            $"-{intAmount}",
+            Color.red,
+            speed: 0.75f,
+            timeToLive: 1.0f,
+            fontStyle: TMPro.FontStyles.Bold);
+
+        // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
+        //if (HpBarScript.CurrentHp < 0)
+        //{
+        //    HpBarScript.SetHp(0, HpBarScript.MaxHp);
+        //}
     }
 
     public bool IsInsideBounds(Vector3 pos, Sprite sprite)
@@ -776,35 +848,41 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        TextHowToClick.enabled = SaveGame.Members.CountDamageClicks < 5;
-
         UpdatePassiveIncome();
         UpdateMoneyText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
-        if (PauseGameTime)
+        GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
+        GameTime += GameDeltaTime;
+
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            GameDeltaTime = 0;
+            Screen.fullScreen = !Screen.fullScreen;
         }
-        else
+
+
+        // CHEATS
+
+
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
         {
-            if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
-            {
-                SaveGame.Members.Money += 1000000;
-            }
+            ResetAllProgress();
+        }
 
-            if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                PlayerUpgrades.Data.TimeScale += 0.1f;
-            }
+        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
+        {
+            SaveGame.Members.Money += 1000000;
+        }
 
-            if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
-            {
-                PlayerUpgrades.Data.TimeScale -= 0.1f;
-            }
+        if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            PlayerUpgrades.Data.TimeScale += 0.1f;
+        }
 
-            GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
-            GameTime += GameDeltaTime;
+        if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            PlayerUpgrades.Data.TimeScale -= 0.1f;
         }
 
         if (Input.GetKeyDown(KeyCode.I))
@@ -817,16 +895,10 @@ public class GameManager : MonoBehaviour
             TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Screen.fullScreen = !Screen.fullScreen;
-        }
-
-        // CHEAT
         if (Input.GetKeyDown(KeyCode.Z))
         {
             var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
-            long damage = PlayerUpgrades.Data.ClickDamage;
+            long damage = PlayerUpgrades.Data.ZapDamage;
             Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage);
         }
 

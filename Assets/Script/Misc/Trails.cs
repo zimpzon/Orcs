@@ -25,7 +25,7 @@ namespace Assets.Script.Misc
                 Vector2 position = from + direction * trail + jaggedOffset;
 
                 Particles.I.ClickTrail.transform.position = position;
-                Particles.I.ClickTrail.Emit(1);
+                Particles.I.ClickTrail.Emit(2);
                 trail -= 0.1f;
             }
         }
@@ -79,7 +79,7 @@ namespace Assets.Script.Misc
                         float segmentT = (float)j / segmentSteps;
                         Vector2 position = Vector2.Lerp(previousPosition, currentPosition, segmentT);
 
-                        if (Random.value > 0.7)
+                        if (Random.value > 0.2)
                         {
                             Particles.I.ClickTrail.transform.position = position;
                             Particles.I.ClickTrail.Emit(1);

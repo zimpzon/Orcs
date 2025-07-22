@@ -4,13 +4,11 @@ using UnityEngine;
 
 public enum GameCounter
 {
-    DamageClicks,
 };
 
 public class SaveGameMembers
 {
     // Stats
-    public long CountDamageClicks = 0;
 
     // Upgrades
     public long LevelClickDamage = 0;
@@ -23,11 +21,12 @@ public class SaveGameMembers
     public long ArenaLevel = 1;
 
     // Game
-    public double Money = 0;
+    public double Money = 100;
+
     public long CurrentLevel = 1;
     public long AscendLevel = 1;
 
-    // Settings
+    // Settingsf
     public int Version;
     public float VolumeMaster = 1.0f;
     public float VolumeMusic = 0.7f;

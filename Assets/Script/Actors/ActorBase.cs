@@ -46,6 +46,7 @@ public class ActorBase : MonoBehaviour
     public static void ResetClosestEnemy()
     {
         PlayerClosestEnemy = null;
+        PlayerClosestEnemyActor = null;
         PlayerDistanceToClosestEnemy = float.MaxValue;
     }
 
@@ -53,6 +54,7 @@ public class ActorBase : MonoBehaviour
     [System.NonSerialized] public bool IsFullyReady = false;
 
     [System.NonSerialized] public static Transform PlayerClosestEnemy;
+    [System.NonSerialized] public static ActorBase PlayerClosestEnemyActor;
     [System.NonSerialized] public static float PlayerDistanceToClosestEnemy;
 
     [System.NonSerialized] public float RadiusBody = 0.4f;
@@ -349,6 +351,7 @@ public class ActorBase : MonoBehaviour
             if (distanceToPlayer_ < PlayerDistanceToClosestEnemy)
             {
                 PlayerClosestEnemy = transform_;
+                PlayerClosestEnemyActor = this;
                 PlayerDistanceToClosestEnemy = distanceToPlayer_;
             }
         }
@@ -461,6 +464,12 @@ public class ActorBase : MonoBehaviour
     }
 
     public void ApplyDamage(long amount, Vector3 direction, float forceModifier)
+    {
+        // Deprecated
+        throw new NotImplementedException("deprecacated, must always be called from GameManager.DamageEnemy.");
+    }
+
+    public void ApplyDamage2(long amount, Vector3 direction, float forceModifier)
     {
         if (amount > 0)
         {

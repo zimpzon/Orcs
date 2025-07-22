@@ -29,12 +29,15 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
-        private const int MaxLevel = 20;
+        private const int MaxLevel = 19;
+        private const double EndValueValue = 0.05;
+        private const double StartValue = 1;
 
         private static float ValueForLevel(long level)
         {
-            float value = 1.0f - level * 0.05f;
-            return Math.Clamp(value, 0.1f, 100f);
+            double Step = (StartValue - EndValueValue) / MaxLevel;
+            double value = StartValue - level * Step;
+            return (float)value;
         }
 
         private static double BaseIncome() => 250;

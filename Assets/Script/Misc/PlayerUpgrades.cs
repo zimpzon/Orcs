@@ -5,7 +5,7 @@ public class UpgradeData
 {
     // global
     public float DamageMul = 1.0f;
-    public float BaseCritChance = 0.05f;
+    public float BaseCritChance = 0.00f;
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
@@ -13,8 +13,8 @@ public class UpgradeData
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
 
-    // click
-    public long ClickDamage = 10;
+    // Zap
+    public long ZapDamage = 0;
 
     // gold
     public float MoneyDoubleChance = 0.05f;

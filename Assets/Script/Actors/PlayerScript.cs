@@ -37,7 +37,6 @@ public class PlayerScript : MonoBehaviour
     public bool RoundComplete;
     public bool UpgradesActive = false;
 
-    Vector3 basePos_;
     [System.NonSerialized] public WeaponBase Weapon;
 
     SpriteRenderer shadowRenderer_;
@@ -237,7 +236,7 @@ public class PlayerScript : MonoBehaviour
             if (distanceToClosest > 4)
                 chase_ = true;
 
-            if (distanceToClosest < 0.25f)
+            if (distanceToClosest < 0.75f)
             {
                 chase_ = false;
                 chaseSwitch_ = Time.time + 0.5f + UnityEngine.Random.value * 0.5f;
@@ -309,7 +308,6 @@ public class PlayerScript : MonoBehaviour
         playerScale_ = trans_.localScale.x; // Assume uniform scale
         renderer_ = GetComponent<SpriteRenderer>();
         playerPos_ = trans_.position;
-        basePos_ = playerPos_;
 
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
