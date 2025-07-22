@@ -39,6 +39,17 @@ public static class PositionUtility
         return new Vector2(x, y);
     }
 
+    public static bool IsPointInsideArena(Vector3 point)
+    {
+        Rect arena = GameManager.ArenaBounds;
+
+        float normalizedX = (point.x - arena.xMin) / arena.width;
+        float normalizedY = (point.y - arena.yMin) / arena.height;
+
+        return normalizedX >= 0.05f && normalizedX <= 0.95f &&
+               normalizedY >= 0.05f && normalizedY <= 0.95f;
+    }
+
     public static Vector3 GetPointInsideArena(float minX = 0.05f, float minY = 0.05f, float maxX = 0.95f, float maxY = 0.95f, bool avoidPlayer = true)
     {
         Vector3 point = Vector3.zero;

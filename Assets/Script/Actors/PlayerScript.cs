@@ -236,7 +236,7 @@ public class PlayerScript : MonoBehaviour
             if (distanceToClosest > 4)
                 chase_ = true;
 
-            if (distanceToClosest < 0.75f)
+            if (distanceToClosest < 1.5f)
             {
                 chase_ = false;
                 chaseSwitch_ = Time.time + 0.5f + UnityEngine.Random.value * 0.5f;
@@ -244,7 +244,7 @@ public class PlayerScript : MonoBehaviour
 
             if (chase_ && distanceToClosest > 1.0f)
             {
-                if (distanceToClosest > 2.0f)
+                if (distanceToClosest > 2.5f)
                 {
                     newMoveVec = toClosest.normalized * speed;
                 }

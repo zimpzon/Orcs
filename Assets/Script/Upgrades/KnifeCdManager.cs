@@ -31,7 +31,7 @@ namespace Assets.Script.Upgrades
 
         private const int MaxLevel = 19;
         private const double EndValueValue = 0.05;
-        private const double StartValue = 1;
+        private const double StartValue = 0.5;
 
         private static float ValueForLevel(long level)
         {
@@ -47,7 +47,7 @@ namespace Assets.Script.Upgrades
 
         public static long PriceForNext()
         {
-            return (long)(130_000 * Math.Pow(1.15, SaveGame.Members.LevelClickDamage));
+            return (long)(12_000 * Math.Pow(1.15, SaveGame.Members.LevelKnifeCooldown));
         }
 
         public static void UpdateAll()

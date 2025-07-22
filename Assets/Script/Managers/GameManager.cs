@@ -126,6 +126,36 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
+    IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
+    {
+        var go = TextGameInfo.gameObject;
+        var canvasGroup = go.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = go.AddComponent<CanvasGroup>();
+
+        TextGameInfo.text = text;
+        TextGameInfo.color = Color.yellow;
+        canvasGroup.alpha = 1;
+        go.transform.localScale = Vector3.zero;
+
+        LeanTween.cancel(go);
+
+        // Pop in with punch-like bounce
+        LeanTween.scale(go, Vector3.one * 1.2f, 0.1f)
+            .setEaseOutQuad()
+            .setOnComplete(() =>
+            {
+                LeanTween.scale(go, Vector3.one, 0.1f).setEaseInQuad();
+            });
+
+        yield return new WaitForSeconds(delay);
+
+        // Fade out and scale down
+        LeanTween.alphaCanvas(canvasGroup, 0f, 0.3f);
+        LeanTween.scale(go, Vector3.zero, 0.3f).setEase(LeanTweenType.easeInBack);
+        yield return new WaitForSeconds(0.35f);
+    }
+
     IEnumerator ShowInfoText(string text, float delay = 1.0f)
     {
         TextGameInfo.text = text;
@@ -231,7 +261,8 @@ public class GameManager : MonoBehaviour
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
             _roundTotalHp = totalHitpoints;
 
-            yield return ShowInfoText("ROUND START!");
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.NewRound);
+            yield return ShowInfoTextFlashy("ROUND START!");
             
             foreach (var enemy in enemies)
             {
@@ -269,8 +300,7 @@ public class GameManager : MonoBehaviour
             while (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here
-
-                yield return ShowInfoText("NEXT ARENA!", delay: 2);
+                yield return ShowInfoTextFlashy("NEXT ARENA!", delay: 1);
                 yield return new WaitForSeconds(0.25f);
                 SaveGame.Members.ArenaLevel++;
                 yield return null;
@@ -289,8 +319,8 @@ public class GameManager : MonoBehaviour
                     enemy.ReturnToCache();
                 }
 
-                yield return ShowInfoText("ROUND ENDED", delay: 2);
-                yield return new WaitForSeconds(0.25f);
+                yield return ShowInfoTextFlashy("ROUND ENDED", delay: 1);
+                yield return new WaitForSeconds(0.5f);
             }
             yield return null;
         }
@@ -533,15 +563,14 @@ public class GameManager : MonoBehaviour
 
     public void TriggerBlood(Vector3 pos, float amount, float floorBloodRnd = 1.0f)
     {
-        float rnd = UnityEngine.Random.value;
-        if (rnd < 0.8f)
+        if (!PositionUtility.IsPointInsideArena(pos))
             return;
 
-        //FlyingBlood.transform.position = pos;
-        //FlyingBlood.Emit(1);
+        FlyingBlood.transform.position = pos;
+        FlyingBlood.Emit(1);
 
-        //BloodDrops.transform.position = pos;
-        //BloodDrops.Emit(1);
+        BloodDrops.transform.position = pos;
+        BloodDrops.Emit(1);
 
         FloorBlood.transform.position = pos;
         FloorBlood.Emit(1);
@@ -645,9 +674,11 @@ public class GameManager : MonoBehaviour
         if (intAmount > enemy.Hp)
             intAmount = enemy.Hp;
 
-        enemy.ApplyDamage2(intAmount, direction, forceModifier);
+        enemy.ApplyDamage2(intAmount, direction, forceModifier * 1.5f);
 
         HpBarScript.AddHp((long)-intAmount);
+
+        MakeCircle(enemy.transform.position, 1.0f);
 
         FloatingTextSpawner.Instance.Spawn(
             (Vector2)enemy.transform.position + Vector2.up * 0.25f,

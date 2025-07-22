@@ -38,7 +38,7 @@ namespace Assets.Script.Upgrades
 
         public static long PriceForNext()
         {
-            return (long)(1_400_000 * Math.Pow(1.15, SaveGame.Members.LevelGoldPerRoundAdd));
+            return (long)(130_000 * Math.Pow(1.15, SaveGame.Members.LevelGoldPerRoundAdd));
         }
 
         public static void UpdateAll()

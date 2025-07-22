@@ -41,7 +41,7 @@ public class UpgradeData
     public float HealthRegenSecAdd = 0.0f;
     public float OnDamageTimeImmune = 0.2f;
     public float HealthDefenseMul = 1.0f;
-    public float BaseMoveSpeed = 3.0f;
+    public float BaseMoveSpeed = 4.0f;
     public float MoveSpeedAdd = 0.0f;
     public float MoveSpeedEffective => (BaseMoveSpeed + MoveSpeedAdd)  * GameManager.Instance.ArenaScale;
 

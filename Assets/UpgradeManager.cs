@@ -9,7 +9,6 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript GoldPerKnife;
     public UpgradeItemScript KnifeDamage;
     public UpgradeItemScript KnifeCd;
-    public UpgradeItemScript HeroRunspeed;
     public UpgradeItemScript GoldPerRound;
 
     public void UpdateAllUpgrades()
@@ -18,7 +17,6 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateAll();
         KnifeCdManager.UpdateAll();
         KnifeDamageManager.UpdateAll();
-        HeroRunSpeedManager.UpdateAll();
         GoldPerRoundManager.UpdateAll();
     }
 
@@ -39,10 +37,6 @@ public class UpgradeManager : MonoBehaviour
         else if (upgradeUiScript == KnifeCd)
         {
             return KnifeCdManager.GetText();
-        }
-        else if (upgradeUiScript == HeroRunspeed)
-        {
-            return HeroRunSpeedManager.GetText();
         }
         else if (upgradeUiScript == GoldPerRound)
         {
@@ -101,13 +95,6 @@ public class UpgradeManager : MonoBehaviour
     {
         KnifeDamageManager.OnBuy();
         KnifeDamage.SetPopupText();
-        UpdateAllUpgrades();
-    }
-
-    public void OnBuyHeroRunspeed()
-    {
-        HeroRunSpeedManager.OnBuy();
-        HeroRunspeed.SetPopupText();
         UpdateAllUpgrades();
     }
 

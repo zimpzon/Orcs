@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
         }
 
         private const int MaxLevel = 50;
-        private const double StartValue = 3.0;
+        private const double StartValue = 4.0;
         private const double EndValue = 8.0;
 
         private static float ValueForLevel(long level)
@@ -79,7 +79,7 @@ namespace Assets.Script.Upgrades
             long priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.HeroRunspeed.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelHeroRunspeed);
+            //UpgradeManager.Instance.HeroRunspeed.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelHeroRunspeed);
         }
     }
 }
