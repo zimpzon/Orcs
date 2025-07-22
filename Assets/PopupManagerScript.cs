@@ -15,11 +15,11 @@ public class PopupManagerScript : MonoBehaviour
         Vector3[] corners = new Vector3[4];
         hoveredRect.GetWorldCorners(corners);
 
-        // corners[1] is top-left
-        Vector3 topLeftWorld = corners[1];
+        // corners[2] is top-right
+        Vector3 topRightWorld = corners[2];
 
-        // Convert the top-left world position to screen coordinates
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, topLeftWorld);
+        // Convert the top-right world position to screen coordinates
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, topRightWorld);
 
         // Get the width of the popup in screen space
         RectTransform popupRectTransform = PopupRoot.GetComponent<RectTransform>();
@@ -32,7 +32,7 @@ public class PopupManagerScript : MonoBehaviour
         float hoveredHeight = hoveredRect.rect.height * scaleFactor;
 
         Vector2 popupPos = screenPoint;
-        popupPos.x -= popupWidth * 0.5f;
+        popupPos.x += popupWidth * 0.5f; // Changed to place popup to the right
         popupPos.y -= hoveredHeight * 0.5f;
 
         Show(popupPos);
