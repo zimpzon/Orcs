@@ -11,7 +11,7 @@ namespace Assets.Script.Misc
             LeanTween.cancel(ArenaBoundsScript.Instance.LineRenderer.gameObject);
             LeanTween.value(
                 ArenaBoundsScript.Instance.LineRenderer.gameObject,
-                ArenaBoundsScript.Instance.LineRendererBaseWidth, to: 0.0f, time: 0.35f)
+                ArenaBoundsScript.Instance.LineRendererBaseWidth, to: 0.0f, time: 0.5f)
                 .setOnUpdate((float val) =>
                 {
                     ArenaBoundsScript.Instance.LineRenderer.startWidth = val;
@@ -28,7 +28,7 @@ namespace Assets.Script.Misc
                 return false;
 
             var direction = (to - from).normalized;
-            GameManager.Instance.DamageEnemy(actor, damage, direction, 1.0f);
+            GameManager.Instance.DamageEnemy(actor, damage, direction, 1.5f);
 
             if (floatingDamage)
             {

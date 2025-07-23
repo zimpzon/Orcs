@@ -158,6 +158,17 @@ public static class PositionUtility
         }
     }
 
+    /// <summary>
+    /// Returns a random point on the unit circle (distance 1 from origin) in 2D space.
+    /// </summary>
+    public static Vector2 RandomPointOnUnitCircle()
+    {
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+        float x = Mathf.Cos(angle);
+        float y = Mathf.Sin(angle);
+        return new Vector2(x, y);
+    }
+
     public static void GetRandomInsideCircle(int count, float radius, Vector3 center, List<Vector3> list)
     {
         list.Clear();

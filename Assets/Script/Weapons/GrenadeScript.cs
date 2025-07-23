@@ -5,9 +5,8 @@ using UnityEngine;
 public class GrenadeScript : MonoBehaviour
 {
     public static float Cd = 1.5f;
-    public static float FuseTime = 3.0f;
+    public static float FuseTime = 1.5f;
     public const float DefaultRadius = 3.5f;
-    public const float DefaultDamage = 280.0f;
 
     SpriteRenderer bombRenderer_;
     SpriteRenderer shadowRenderer_;
@@ -42,7 +41,7 @@ public class GrenadeScript : MonoBehaviour
         Hide();
     }
 
-    public void Throw(Vector3 from, Vector3 to, float radius = DefaultRadius, float damage = DefaultDamage)
+    public void Throw(Vector3 from, Vector3 to, float damage, float radius = DefaultRadius)
     {
         StopAllCoroutines();
         StartCoroutine(ThrowCo(from, to, radius, damage));
@@ -102,9 +101,11 @@ public class GrenadeScript : MonoBehaviour
         audioSource_.clip = AudioManager.Instance.AudioData.BombExplode;
         audioSource_.volume = 0.25f * AudioManager.Instance.MasterVolume;
         audioSource_.Play();
-        GameManager.Instance.MakeFlash(pos, radius * 2.0f);
-        GameManager.Instance.MakePoof(pos, 2, radius * 2.05f);
+
         GameManager.Instance.ShakeCamera(1.0f);
+        GameManager.Instance.MakeFlash(pos, 1.0f);
+        GameManager.Instance.MakeCircle(pos, 2.0f);
+        GameManager.Instance.MakePoof(pos, 3, 2.0f);
 
         int deadCount = BlackboardScript.GetDeadEnemies(pos, radius);
         for (int i = 0; i < deadCount; ++i)
@@ -117,18 +118,19 @@ public class GrenadeScript : MonoBehaviour
         for (int i = 0; i < aliveCount; ++i)
         {
             ActorBase enemy = BlackboardScript.EnemyOverlap[i];
-            enemy.ApplyDamage((long)damage, enemy.transform.position - pos, 1.0f);
+            GameManager.Instance.DamageEnemy(enemy, damage, enemy.transform.position - pos, 1.0f);
         }
 
-        for (int i = 0; i < 3; ++i)
-        {
-            Vector2 rnd = RndUtil.RandomInsideUnitCircle() * radius * 0.2f;
-            Vector3 flamePos = pos;
-            flamePos.x += rnd.x;
-            flamePos.y += rnd.y;
-            GameManager.Instance.EmitFlame(flamePos, Random.value + 0.5f);
-            yield return null;
-        }
+        //for (int i = 0; i < 3; ++i)
+        //{
+
+        //    Vector2 rnd = RndUtil.RandomInsideUnitCircle() * radius * 0.2f;
+        //    Vector3 flamePos = pos;
+        //    flamePos.x += rnd.x;
+        //    flamePos.y += rnd.y;
+        //    GameManager.Instance.EmitFlame(flamePos, Random.value + 0.5f);
+        //    yield return null;
+        //}
 
         Hide();
     }

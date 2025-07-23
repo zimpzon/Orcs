@@ -16070,6 +16070,7 @@ MonoBehaviour:
   SpawnPoof: {fileID: 131337908}
   FlashParticles: {fileID: 964444407}
   CircleParticles: {fileID: 2020906204}
+  Grenade: {fileID: 824311155}
   SortLayerTopEffects: -876150407
   GameState: 0
   CanvasIntro: {fileID: 0}
@@ -42937,7 +42938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1297950401
 Transform:
   m_ObjectHideFlags: 0
@@ -54510,7 +54511,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 3
-      minScalar: 1
+      minScalar: 2.5
       maxCurve:
         serializedVersion: 2
         m_Curve:

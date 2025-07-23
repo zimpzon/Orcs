@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public ParticleSystem SpawnPoof;
     public ParticleSystem FlashParticles;
     public ParticleSystem CircleParticles;
+    public GrenadeScript Grenade;
     public int SortLayerTopEffects;
     public State GameState;
     public Canvas CanvasIntro;
@@ -667,6 +668,8 @@ public class GameManager : MonoBehaviour
     {
         if (enemy.Hp <= 0 || enemy.IsDead)
             return;
+
+        direction = direction.normalized;
 
         amount *= PlayerUpgrades.Data.DamageMul;
         if (amount < 1)

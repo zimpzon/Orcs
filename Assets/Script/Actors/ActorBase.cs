@@ -70,7 +70,7 @@ public class ActorBase : MonoBehaviour
     protected bool despawnAtForcedDestination_;
 
     protected GameModeData GameMode;
-    protected float DecayTime = 1.0f;
+    protected float DecayTime = 4.0f;
     protected AnimationController animationController_ = new AnimationController();
 
     protected Vector3 position_;
@@ -461,6 +461,11 @@ public class ActorBase : MonoBehaviour
             return;
 
         force_ += force;
+    }
+
+    public void Stun()
+    {
+
     }
 
     public void ApplyDamage(long amount, Vector3 direction, float forceModifier)

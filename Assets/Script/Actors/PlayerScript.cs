@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Assets.Script.Misc;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI.Extensions.Examples;
 
 // NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour
@@ -316,12 +318,22 @@ public class PlayerScript : MonoBehaviour
         shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
     }
 
+    float _nextGrendade = -1;
+
     void Update()
     {
         bool isRunning = isMoving_;
 
         Sprite[] sprites;
         sprites = isRunning ? RunSprites : IdleSprites;
+
+        //if (G.D.GameTime > _nextGrendade)
+        //{
+        //    var from = G.D.PlayerPos;
+        //    var to = from + (Vector3)PositionUtility.RandomPointOnUnitCircle() * 5;
+        //    GameManager.Instance.Grenade.Throw(from, to, PlayerUpgrades.Data.MagicMissileEffectiveDamage);
+        //    _nextGrendade = G.D.GameTime + 6.0f;
+        //}
 
         animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, sprites);
 
