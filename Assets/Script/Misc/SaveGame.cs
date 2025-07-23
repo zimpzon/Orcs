@@ -18,10 +18,10 @@ public class SaveGameMembers
     public long LevelHeroRunspeed = 0;
     public long LevelGoldPerRoundAdd = 0;
 
-    public long ArenaLevel = 1;
-
     // Game
+    public long ArenaLevel = 1;
     public double Money = 100;
+    public long Gold = 0;
 
     public long CurrentLevel = 1;
     public long AscendLevel = 1;

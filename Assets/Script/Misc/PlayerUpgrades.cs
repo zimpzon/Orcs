@@ -50,7 +50,7 @@ public class UpgradeData
     public float MagicMissileDamageMul = 1.0f;
     public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
 
-    public float MagicMissileBaseCd = 0.1f;
+    public float MagicMissileBaseCd = 0.5f;
     public float MagicMissileCdMul = 1.0f;
     public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 

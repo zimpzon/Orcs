@@ -10,9 +10,20 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Button BuyButton;
     public TextMeshProUGUI PriceLabel;
     public TextMeshProUGUI LevelLabel;
+    public Color HighlightColor;
 
+    Image _background;
+    Color _baseColor;
+    Color _colorTarget;
     long _latestPrice = -1;
     long _latestLevel = -1;
+
+    private void Awake()
+    {
+        _background = GetComponent<Image>();
+        _baseColor = _background.color;
+    }
+
 
     public void UpdateUi(bool canAfford, long priceNext, long currentLevel)
     {
@@ -54,12 +65,14 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _background.color = HighlightColor;
         SetPopupText();
         PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        _background.color = _baseColor;
         PopupManagerScript.Instance.Hide();
     }
 }

@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
+    public TextMeshProUGUI TextGold;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public SpriteRenderer Floor;
@@ -248,6 +249,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             UpdateMoneyText();
+            UpdateGoldText();
 
             TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
@@ -300,9 +302,9 @@ public class GameManager : MonoBehaviour
             while (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here
-                yield return ShowInfoTextFlashy("NEXT ARENA!", delay: 1);
-                yield return new WaitForSeconds(0.25f);
                 SaveGame.Members.ArenaLevel++;
+                yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}", delay: 1);
+                yield return new WaitForSeconds(0.25f);
                 yield return null;
                 GameState = State.Idle_PresentLevel;
             }
@@ -319,7 +321,7 @@ public class GameManager : MonoBehaviour
                     enemy.ReturnToCache();
                 }
 
-                yield return ShowInfoTextFlashy("ROUND ENDED", delay: 1);
+                yield return ShowInfoTextFlashy("TIME OUT", delay: 1);
                 yield return new WaitForSeconds(0.5f);
             }
             yield return null;
@@ -450,6 +452,8 @@ public class GameManager : MonoBehaviour
 
     public void AddGold(bool isLargeCoin, int value)
     {
+        SaveGame.Members.Gold += isLargeCoin ? 2 : 1;
+
         long moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
 
         AddMoney(moneyAdded);
@@ -625,9 +629,7 @@ public class GameManager : MonoBehaviour
 
     void OnLastEnemyKilled(ActorBase lastEnemy)
     {
-        // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
-        //HpBarScript.SetHp(0, HpBarScript.MaxHp);
-
+        HpBarScript.SetHp(0, HpBarScript.MaxHp);
         PresentRoundGold(lastEnemy.transform.position);
     }
 
@@ -689,10 +691,10 @@ public class GameManager : MonoBehaviour
             fontStyle: TMPro.FontStyles.Bold);
 
         // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
-        //if (HpBarScript.CurrentHp < 0)
-        //{
-        //    HpBarScript.SetHp(0, HpBarScript.MaxHp);
-        //}
+        if (HpBarScript.CurrentHp < 0)
+        {
+            HpBarScript.SetHp(0, HpBarScript.MaxHp);
+        }
     }
 
     public bool IsInsideBounds(Vector3 pos, Sprite sprite)
@@ -856,7 +858,7 @@ public class GameManager : MonoBehaviour
         rect.localScale = Vector3.one;
         text.color = Color.yellow;
 
-        LeanTween.scale(rect, Vector3.one * 1.3f, 0.1f)
+        LeanTween.scale(rect, Vector3.one * 1.5f, 0.1f)
             .setEase(LeanTweenType.easeOutQuad)
             .setOnComplete(() =>
             {
@@ -877,10 +879,21 @@ public class GameManager : MonoBehaviour
         TextMoney.text = $"${MathUtil.FormatLongNumber((long)SaveGame.Members.Money, abbreviate: false)}";
     }
 
+    long _prevGold = -1;
+    void UpdateGoldText()
+    {
+        if (SaveGame.Members.Gold == _prevGold)
+            return;
+
+        _prevGold = SaveGame.Members.Gold;
+        TextGold.text = $"{MathUtil.FormatLongNumber(SaveGame.Members.Gold, abbreviate: false)} gold";
+    }
+
     void Update()
     {
         UpdatePassiveIncome();
         UpdateMoneyText();
+        UpdateGoldText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);

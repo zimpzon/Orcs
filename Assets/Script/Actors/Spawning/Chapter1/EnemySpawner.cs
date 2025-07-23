@@ -7,12 +7,12 @@ public static class EnemySpawner
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
         const long MaxEnemies = 100;
-        long HpPerLevel = 50;
-        long HpBase = 100;
+        long HpPerLevel = 150;
+        long HpBase = 50;
 
         if (level <= 4)
         {
-            HpPerLevel = 20;
+            HpPerLevel = 50;
             HpBase = 0;
         }
 

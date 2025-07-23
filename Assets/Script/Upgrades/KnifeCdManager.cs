@@ -18,20 +18,20 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><b><color=yellow>Dagger Cooldown</color></b></size>");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=#00e0ff>{{${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=#00e0ff>{{${totalIncome:F1}</color>/sec.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current CD: <color=yellow>{currentValue:0.00}s</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=yellow>{level} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{(level >= MaxLevel ? "max reached" : $"{nextValue:0.00}s")}</color>");
+            sb.AppendLine($"<color=#dddddd>Current CD: <color=green>{currentValue:0.00}s</color>");
+            sb.AppendLine($"<color=#dddddd>Level: <color=green>{level} / {MaxLevel}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=green>{(level >= MaxLevel ? "max reached" : $"{nextValue:0.00}s")}</color>");
 
             return sb.ToString();
         }
 
-        private const int MaxLevel = 19;
+        private const int MaxLevel = 20;
         private const double EndValueValue = 0.05;
-        private const double StartValue = 0.5;
+        private const double StartValue = 0.4;
 
         private static float ValueForLevel(long level)
         {

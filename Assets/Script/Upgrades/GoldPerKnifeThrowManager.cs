@@ -18,12 +18,12 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><b><color=yellow>Gold Per Dagger</color></b></size>");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=yellow>${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=yellow>${totalIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=#00e0ff>{{${baseIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=#00e0ff>{{${totalIncome:F1}</color>/sec.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current gold per dagger: <color=yellow>{currentValue}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=yellow>{nextValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Current gold per dagger: <color=green>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=green>{nextValue}</color>");
 
             return sb.ToString();
         }

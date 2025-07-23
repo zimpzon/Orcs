@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6936863, g: 0.7569463, b: 0.9607843, a: 1}
+  m_Color: {r: 0.934, g: 0.8532542, b: 0.62111, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -354,6 +354,7 @@ MonoBehaviour:
   BuyButton: {fileID: 4655588472839690571}
   PriceLabel: {fileID: 8735675063525337174}
   LevelLabel: {fileID: 615192009212399493}
+  HighlightColor: {r: 0.93333334, g: 0.9037, b: 0.8148, a: 1}
 --- !u!61 &8519207974197435268
 BoxCollider2D:
   m_ObjectHideFlags: 0

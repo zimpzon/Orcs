@@ -15,7 +15,7 @@ public class WeaponMachinegun : WeaponBase
         {
             // lol hack for multiple daggers so only main dagger plays sound
             //GameManager.Instance.MakeFlash(point);
-            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 1.0f, pitch: 1.2f);
+            AudioManager.Instance.PlayClip(FireAudio, volumeScale: 0.3f, pitch: 1.2f);
         }
 
         float spreadFactor = 40f; // Increase this to limit spread (unit circle is moved further away)
