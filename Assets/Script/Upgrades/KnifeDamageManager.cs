@@ -40,7 +40,7 @@ namespace Assets.Script.Upgrades
 
         public static long PriceForNext()
         {
-            return (long)(1100 * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage));
+            return (long)(500 * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage));
         }
 
         public static void UpdateAll()

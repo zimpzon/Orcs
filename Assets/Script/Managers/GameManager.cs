@@ -357,7 +357,7 @@ public class GameManager : MonoBehaviour
                     enemy.ReturnToCache();
                 }
 
-                yield return ShowInfoTextFlashy("TIMEOUT", delay: 1);
+                yield return ShowInfoTextFlashy("OUT OF TIME", delay: 1);
                 yield return new WaitForSeconds(0.5f);
             }
             yield return null;

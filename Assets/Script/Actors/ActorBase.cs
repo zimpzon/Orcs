@@ -650,7 +650,7 @@ public class ActorBase : MonoBehaviour
         StartCoroutine(Decay(DecayTime));
     }
 
-    bool explodeCorpse = true;
+    bool explodeCorpse = false;
 
     IEnumerator Decay(float delay)
     {

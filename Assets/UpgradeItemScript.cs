@@ -14,7 +14,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     Image _background;
     Color _baseColor;
-    Color _colorTarget;
+    bool _isHovering;
     long _latestPrice = -1;
     long _latestLevel = -1;
 
@@ -65,6 +65,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _isHovering = true;
         _background.color = HighlightColor;
         SetPopupText();
         PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
@@ -72,7 +73,19 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        _isHovering = false;
         _background.color = _baseColor;
         PopupManagerScript.Instance.Hide();
+    }
+
+    float _nextUpdate;
+
+    void Update()
+    {
+        if (_isHovering && G.D.GameTime > _nextUpdate)
+        {
+            SetPopupText();
+            _nextUpdate = G.D.GameTime + 0.1f;
+        }
     }
 }

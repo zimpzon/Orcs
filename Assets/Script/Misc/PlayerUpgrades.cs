@@ -62,7 +62,7 @@ public class UpgradeData
     public float MagicMissileEffectiveSpeed => MagicMissileBaseSpeed * MagicMissileSpeedMul * GameManager.Instance.ArenaScale;
 
     public float MagicMissileJumpDamageMul = 0.0f;
-    public int MagicMissileMultiShots = 1;
+    public int MagicMissileMultiShots = 0;
 
     public bool MeleeThrowBought = false;
     public bool MeleeThrowEnabledInRound = false;
