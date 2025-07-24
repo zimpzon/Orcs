@@ -9,24 +9,32 @@ public enum GameCounter
 public class SaveGameMembers
 {
     // Stats
+    public Decimal256 TotalIncomeClickDamage;
+    public Decimal256 TotalIncomeGoldPerKnifeThrow;
+    public Decimal256 TotalIncomeKnifeCd;
+    public Decimal256 TotalIncomeKnifeDamage;
+    public Decimal256 TotalIncomeGoldPerRound;
+
+    public Decimal256 TotalIncomeArena;
+    public Decimal256 TotalIncomePassive;
 
     // Upgrades
     public long LevelClickDamage = 0;
     public long LevelGoldPerKnifeThrown = 0;
-    public long LevelKnifeCooldown = 0;
+    public long LevelKnifeCd = 0;
     public long LevelKnifeDamage = 0;
-    public long LevelHeroRunspeed = 0;
     public long LevelGoldPerRoundAdd = 0;
+
+    public long ArenaGoldMultiplier = 1;
 
     // Game
     public long ArenaLevel = 1;
-    public double Money = 100;
-    public long Gold = 0;
+    public Decimal256 Money = 100;
 
     public long CurrentLevel = 1;
     public long AscendLevel = 1;
 
-    // Settingsf
+    // Settings
     public int Version;
     public float VolumeMaster = 1.0f;
     public float VolumeMusic = 0.7f;

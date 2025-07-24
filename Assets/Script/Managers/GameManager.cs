@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
-    public TextMeshProUGUI TextGold;
+    public TextMeshProUGUI TextArenaTotalIncome;
+    public TextMeshProUGUI TextPassiveTotalIncome;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public SpriteRenderer Floor;
@@ -210,37 +211,71 @@ public class GameManager : MonoBehaviour
     float _nextZap;
     List<ActorBase> _prevZapJumpTargets = new List<ActorBase>();
 
+    void ShakeArenaBackground()
+    {
+        RectTransform rt = ArenaBoundsCollider.GetComponent<RectTransform>();
+        Vector3 originalPos = rt.anchoredPosition;
+
+        LeanTween.value(rt.gameObject, 0f, 1f, time: 0.1f)
+            .setOnUpdate((float val) =>
+            {
+                float shakeStrength = 0.075f;
+                rt.anchoredPosition = originalPos + (Vector3)UnityEngine.Random.insideUnitCircle * shakeStrength;
+            })
+            .setOnComplete(() =>
+            {
+                rt.anchoredPosition = originalPos;
+            });
+    }
+
     void CheckZapping()
     {
         if (PlayerUpgrades.Data.ZapDamage > 0 && G.D.GameTime > _nextZap)
         {
-            _nextZap = G.D.GameTime + ZapInterval;
-            _prevZapJumpTargets.Clear();
-
-            // Try zap player
-            if (TryZapEnemy(G.D.PlayerPos, ActorBase.PlayerClosestEnemyActor))
+            var firstTarget = ActorBase.PlayerClosestEnemyActor;
+            if (firstTarget != null)
             {
+                var direction = (firstTarget.transform.position - G.D.PlayerPos).normalized;
+                G.D.PlayerScript.AddForce(-direction * 0.5f);
+
                 AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit);
+                ShakeArenaBackground();
 
-                // Then jump to X nearby targets
-                const int MaxJumps = 2;
-                _prevZapJumpTargets.Add(ActorBase.PlayerClosestEnemyActor);
-
-                var prevEnemy = ActorBase.PlayerClosestEnemyActor;
-                for (int i = 0; i < MaxJumps; ++i)
-                {
-                    var nextEnemy = BlackboardScript.GetClosestEnemy(
-                        prevEnemy.transform.position,
-                        radius: 4.0f,
-                        _prevZapJumpTargets);
-
-                    if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy))
-                        break;
-
-                    _prevZapJumpTargets.Add(nextEnemy);
-                    prevEnemy = nextEnemy;
-                }
+                _nextZap = G.D.GameTime + ZapInterval;
+                StartCoroutine(ZapChainCoroutine(firstTarget));
             }
+        }
+    }
+
+    IEnumerator ZapChainCoroutine(ActorBase firstTarget)
+    {
+        _prevZapJumpTargets.Clear();
+
+        if (!TryZapEnemy(G.D.PlayerPos, firstTarget))
+            yield break;
+
+        _prevZapJumpTargets.Add(firstTarget);
+        var prevEnemy = firstTarget;
+
+        const int MaxJumps = 2;
+        const float JumpDelay = 0.001f;
+
+        for (int i = 0; i < MaxJumps; ++i)
+        {
+            yield return new WaitForSeconds(JumpDelay);
+
+            var nextEnemy = BlackboardScript.GetClosestEnemy(
+                prevEnemy.transform.position,
+                radius: 4.0f,
+                _prevZapJumpTargets);
+
+            if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy))
+                break;
+
+            GameManager.Instance.ShakeCamera(1.0f);
+
+            _prevZapJumpTargets.Add(nextEnemy);
+            prevEnemy = nextEnemy;
         }
     }
 
@@ -250,7 +285,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             UpdateMoneyText();
-            UpdateGoldText();
+            UpdateTotalIncomeArenaText();
 
             TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
@@ -453,9 +488,8 @@ public class GameManager : MonoBehaviour
 
     public void AddGold(bool isLargeCoin, int value)
     {
-        SaveGame.Members.Gold += isLargeCoin ? 2 : 1;
-
         long moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
+        SaveGame.Members.TotalIncomeArena += moneyAdded * SaveGame.Members.ArenaGoldMultiplier;
 
         AddMoney(moneyAdded);
 
@@ -471,14 +505,14 @@ public class GameManager : MonoBehaviour
             fontStyle: TMPro.FontStyles.Bold);
     }
 
-    public void AddMoney(long amount)
+    public void AddMoney(Decimal256 amount)
     {
-        SaveGame.Members.Money += amount;
+        SaveGame.Members.Money.Add(amount);
     }
 
-    public void DeductMoney(long amount)
+    public void DeductMoney(Decimal256 amount)
     {
-        SaveGame.Members.Money -= amount;
+        SaveGame.Members.Money.Subtract(amount);
     }
 
     public void AddXp(int amount)
@@ -604,7 +638,7 @@ public class GameManager : MonoBehaviour
     {
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
-        const float HpToGoldPct = 0.25f;
+        const float HpToGoldPct = 0.1f;
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
         if (goldWon <= 0) goldWon = 1;
         return goldWon;
@@ -615,7 +649,6 @@ public class GameManager : MonoBehaviour
         float damageDone = _roundTotalHp - HpBarScript.CurrentHp;
 
         long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, (long)damageDone);
-        goldWon += PlayerUpgrades.Data.GoldPerRoundAdd;
 
         ThrowGoldSplit(goldWon, position);
 
@@ -829,26 +862,36 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
-    double _prevMoney = -1;
-    double _prevPassiveIncome = -1;
-    float _nextPassiveIncomeUpdate = -1;
+    Decimal256 _prevMoney = 999999;
+    Decimal256 _prevPassiveIncome = 999999;
+    float _timePrevPassiveIncomeUpdate = -1f;
+    float _deltaRealTime = 0f;
+
+    public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
     void UpdatePassiveIncome()
     {
-        if (G.D.GameTime < _nextPassiveIncomeUpdate)
+        float currentTime = G.D.RealTime;
+
+        if (_timePrevPassiveIncomeUpdate < 0f)
+        {
+            _timePrevPassiveIncomeUpdate = currentTime;
+            _deltaRealTime = 0f;
+            return;
+        }
+
+        _deltaRealTime = currentTime - _timePrevPassiveIncomeUpdate;
+        if (_deltaRealTime <= 0f)
             return;
 
-        const float UpdatesPerSec = 20;
-        float updateDelay = 1.0f / UpdatesPerSec;
-        _nextPassiveIncomeUpdate = G.D.GameTime + updateDelay;
+        _timePrevPassiveIncomeUpdate = currentTime;
 
-        float incomeFactor = 1.0f / UpdatesPerSec;
-        double totalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
+        Decimal256 totalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
+        SaveGame.Members.Money += totalPassiveIncome * (Decimal256)_deltaRealTime;
 
-        SaveGame.Members.Money += totalPassiveIncome * incomeFactor;
-        if (Math.Abs(_prevPassiveIncome - totalPassiveIncome) > 0.000)
+        if (_prevPassiveIncome != totalPassiveIncome)
         {
-            TextPassiveIncome.text = $"{totalPassiveIncome} per second";
+            TextPassiveIncome.text = $"{Format256.Format(totalPassiveIncome)} per second";
             _prevPassiveIncome = totalPassiveIncome;
             PopText(TextPassiveIncome);
         }
@@ -875,28 +918,39 @@ public class GameManager : MonoBehaviour
 
     void UpdateMoneyText()
     {
-        if (Math.Abs(SaveGame.Members.Money - _prevMoney) < 0.0001f)
+        if (SaveGame.Members.Money == _prevMoney)
             return;
 
         _prevMoney = SaveGame.Members.Money;
-        TextMoney.text = $"${MathUtil.FormatLongNumber((long)SaveGame.Members.Money, abbreviate: false)}";
+        TextMoney.text = $"${Format256.Format(SaveGame.Members.Money, abbreviate: false)}";
     }
 
-    long _prevGold = -1;
-    void UpdateGoldText()
+    Decimal256 _prevTotalIncomeArena = 999999;
+    void UpdateTotalIncomeArenaText()
     {
-        if (SaveGame.Members.Gold == _prevGold)
+        if (SaveGame.Members.TotalIncomeArena == _prevTotalIncomeArena)
             return;
 
-        _prevGold = SaveGame.Members.Gold;
-        TextGold.text = $"{MathUtil.FormatLongNumber(SaveGame.Members.Gold, abbreviate: false)} gold";
+        _prevTotalIncomeArena = SaveGame.Members.TotalIncomeArena;
+        TextArenaTotalIncome.text = $"Arena earned: ${Format256.Format(SaveGame.Members.TotalIncomeArena, abbreviate: false)}";
+    }
+
+    Decimal256 _prevTotalIncomePassive = 999999;
+    void UpdateTotalIncomePassiveText()
+    {
+        if (SaveGame.Members.TotalIncomePassive == _prevTotalIncomePassive)
+            return;
+
+        _prevTotalIncomePassive = SaveGame.Members.TotalIncomePassive;
+        TextPassiveTotalIncome.text = $"Passive earned: ${Format256.Format(SaveGame.Members.TotalIncomePassive, abbreviate: false)}";
     }
 
     void Update()
     {
         UpdatePassiveIncome();
         UpdateMoneyText();
-        UpdateGoldText();
+        UpdateTotalIncomeArenaText();
+        UpdateTotalIncomePassiveText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);

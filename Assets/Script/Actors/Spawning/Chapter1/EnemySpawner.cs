@@ -7,77 +7,70 @@ public static class EnemySpawner
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
         const long MaxEnemies = 100;
-        long HpPerLevel = 150;
-        long HpBase = 50;
+        double HpLevelScaling = 1.15;
+        long HpBase = 40;
+        long HpBasePerLevel = 60;
 
-        if (level <= 4)
+        long hpTargetForRound = (long)(HpBase + ((level - 1) * HpBasePerLevel) + Math.Pow(HpLevelScaling, level + 5));
+
+        // Base HP values (do NOT scale arbitrarily)
+        long hpBat = 20;
+        long hpOgreSmall = 50;
+        long hpOgreLarge = 1000;
+
+        long remainingHp = hpTargetForRound;
+        long totalEnemies = 0;
+
+        // Optional: prevent large ogres if budget is too low
+        bool allowLarge = hpTargetForRound >= hpOgreLarge;
+
+        // 1. Large Ogres
+        long clampedLarge = 0;
+        if (allowLarge)
         {
-            HpPerLevel = 50;
-            HpBase = 0;
+            clampedLarge = Math.Min(remainingHp / hpOgreLarge, MaxEnemies - totalEnemies);
+            clampedLarge -= UnityEngine.Random.Range(0, 2); // a bit of variation
+            clampedLarge = Math.Max(0, clampedLarge);
+            remainingHp -= clampedLarge * hpOgreLarge;
+            totalEnemies += clampedLarge;
         }
 
-        long hpTargetForRound = (HpPerLevel * level) + HpBase;
-        long baseHpBat = 20;
-        long baseHpOgreSmall = 50;
-        long baseHpOgreLarge = 1000;
+        // 2. Small Ogres
+        long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
+        clampedSmall -= UnityEngine.Random.Range(0, 2);
+        clampedSmall = Math.Max(0, clampedSmall);
+        remainingHp -= clampedSmall * hpOgreSmall;
+        totalEnemies += clampedSmall;
 
-        long hpBat = baseHpBat;
-        long hpOgreSmall = baseHpOgreSmall;
-        long hpOgreLarge = baseHpOgreLarge;
+        // 3. Bats
+        long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
+        clampedBat = Math.Max(0, clampedBat);
+        remainingHp -= clampedBat * hpBat;
+        totalEnemies += clampedBat;
 
-        while (true)
+        // If still nothing spawned, force at least one bat
+        if (totalEnemies == 0)
         {
-            long remainingHp = hpTargetForRound;
-            long totalEnemies = 0;
+            clampedBat = 1;
+            remainingHp -= hpBat;
+        }
 
-            long ogreLargeCount = remainingHp / hpOgreLarge;
-            ogreLargeCount -= UnityEngine.Random.Range(0, (int)(ogreLargeCount / 5) + 1);
-            ogreLargeCount = Math.Max(0, ogreLargeCount);
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, (int)clampedLarge))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpOgreLarge;
+            yield return go;
+        }
 
-            long clampedLarge = Math.Min(ogreLargeCount, MaxEnemies - totalEnemies);
-            totalEnemies += clampedLarge;
-            remainingHp -= clampedLarge * hpOgreLarge;
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, (int)clampedSmall))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpOgreSmall;
+            yield return go;
+        }
 
-            long ogreSmallCount = remainingHp / hpOgreSmall;
-            ogreSmallCount -= UnityEngine.Random.Range(0, (int)(ogreSmallCount / 5) + 1);
-            ogreSmallCount = Math.Max(0, ogreSmallCount);
-
-            long clampedSmall = Math.Min(ogreSmallCount, MaxEnemies - totalEnemies);
-            totalEnemies += clampedSmall;
-            remainingHp -= clampedSmall * hpOgreSmall;
-
-            long batCount = remainingHp / hpBat;
-            long clampedBat = Math.Min(batCount, MaxEnemies - totalEnemies);
-            totalEnemies += clampedBat;
-
-            if (totalEnemies <= MaxEnemies)
-            {
-                // Now safe to yield: calculations done
-                foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreLarge, (int)clampedLarge))
-                {
-                    go.GetComponent<ActorBase>().BaseHp = hpOgreLarge;
-                    yield return go;
-                }
-
-                foreach (var go in SpawnUtil.Random(ActorTypeEnum.OgreSmall, (int)clampedSmall))
-                {
-                    go.GetComponent<ActorBase>().BaseHp = hpOgreSmall;
-                    yield return go;
-                }
-
-                foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, (int)clampedBat))
-                {
-                    go.GetComponent<ActorBase>().BaseHp = hpBat;
-                    yield return go;
-                }
-
-                yield break;
-            }
-
-            // Retry with double HP values
-            hpBat *= 2;
-            hpOgreSmall *= 2;
-            hpOgreLarge *= 2;
+        foreach (var go in SpawnUtil.Random(ActorTypeEnum.BatRed, (int)clampedBat))
+        {
+            go.GetComponent<ActorBase>().BaseHp = hpBat;
+            yield return go;
         }
     }
 }

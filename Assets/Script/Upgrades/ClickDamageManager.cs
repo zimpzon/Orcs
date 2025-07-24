@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Text;
 
 namespace Assets.Script.Upgrades
@@ -9,8 +8,9 @@ namespace Assets.Script.Upgrades
         public static string GetText()
         {
             long level = SaveGame.Members.LevelClickDamage;
-            double baseIncome = BaseIncome();
-            double totalIncome = PassiveIncome();
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeClickDamage;
+            Decimal256 baseIncome = BaseIncome();
+            Decimal256 totalIncome = PassiveIncome();
             long currentValue = ValueForLevel(level);
             long nextValue = ValueForLevel(level + 1);
 
@@ -20,8 +20,9 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#dddddd>Our hero zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=#00e0ff>{{${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=#00e0ff>{{${totalIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=green>${baseIncome:F1}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=green>${totalIncome:F1}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=green>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Current zap damage: <color=green>{currentValue}</color>");
@@ -38,9 +39,9 @@ namespace Assets.Script.Upgrades
             return 5 + (2 * level);
         }
 
-        private static double BaseIncome() => 2;
+        private static Decimal256 BaseIncome() => 0.1M;
         
-        public static double PassiveIncome()
+        public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelClickDamage;
 
         public static long PriceForNext()

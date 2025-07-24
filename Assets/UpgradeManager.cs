@@ -17,7 +17,7 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateAll();
         KnifeCdManager.UpdateAll();
         KnifeDamageManager.UpdateAll();
-        GoldPerRoundManager.UpdateAll();
+        ArenaGoldManager.UpdateAll();
     }
 
     public string GetText(UpgradeItemScript upgradeUiScript)
@@ -40,7 +40,7 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (upgradeUiScript == GoldPerRound)
         {
-            return GoldPerRoundManager.GetText();
+            return ArenaGoldManager.GetText();
         }
         else
         {
@@ -48,16 +48,26 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    public double GetTotalPassiveIncome()
+    public Decimal256 GetTotalPassiveIncome()
     {
-        double result = 0;
-        result += ClickDamageManager.PassiveIncome();
-        result += GoldPerKnifeThrowManager.PassiveIncome();
-        result += KnifeCdManager.PassiveIncome();
-        result += KnifeDamageManager.PassiveIncome();
-        result += HeroRunSpeedManager.PassiveIncome();
-        result += GoldPerRoundManager.PassiveIncome();
-        return result;
+        float incomeFactorPerFrame = GameManager.Instance.GetIncomeFactorPerFrame();
+
+        SaveGame.Members.TotalIncomeClickDamage += ClickDamageManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeGoldPerKnifeThrow += GoldPerKnifeThrowManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeKnifeCd += KnifeCdManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeKnifeDamage += KnifeDamageManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeGoldPerRound += ArenaGoldManager.PassiveIncome() * incomeFactorPerFrame;
+
+        Decimal256 fullSum = 0;
+        fullSum += ClickDamageManager.PassiveIncome();
+        fullSum += GoldPerKnifeThrowManager.PassiveIncome();
+        fullSum += KnifeCdManager.PassiveIncome();
+        fullSum += KnifeDamageManager.PassiveIncome();
+        fullSum += ArenaGoldManager.PassiveIncome();
+
+        SaveGame.Members.TotalIncomePassive += fullSum * incomeFactorPerFrame;
+
+        return fullSum;
     }
 
     public void UpdateUpgradeUi()
@@ -66,8 +76,7 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateUi();
         KnifeCdManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
-        HeroRunSpeedManager.UpdateUi();
-        GoldPerRoundManager.UpdateUi();
+        ArenaGoldManager.UpdateUi();
     }
 
     public void OnBuyClickDamage()
@@ -100,7 +109,7 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyGoldPerRound()
     {
-        GoldPerRoundManager.OnBuy();
+        ArenaGoldManager.OnBuy();
         GoldPerRound.SetPopupText();
         UpdateAllUpgrades();
     }

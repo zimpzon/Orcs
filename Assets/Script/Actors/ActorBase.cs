@@ -653,6 +653,7 @@ public class ActorBase : MonoBehaviour
     IEnumerator Decay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        yield return Explosions.Explode(transform.position, 4.0f, 20);
         StopAllCoroutines();
         BlackboardScript.DeadEnemies.Remove(this);
         ReturnToCache();

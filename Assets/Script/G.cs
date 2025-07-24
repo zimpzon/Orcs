@@ -29,6 +29,7 @@ public class G : MonoBehaviour
     [NonSerialized] public Vector3 PlayerPos;
     public Vector3 PlayerCenterOffset;
 
+    public float RealTime => Time.realtimeSinceStartup;
     public float GameTime => GameManager.Instance.GameTime;
     public float GameDeltaTime => GameManager.Instance.GameDeltaTime;
 

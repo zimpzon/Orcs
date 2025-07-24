@@ -32,7 +32,6 @@ public class UpgradeData
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
     public long MoneyPerGold = 1;
     public long GoldPerKnifeThrown = 0;
-    public long GoldPerRoundAdd = 0;
 
     // player
     public int BaseHealth = 100;

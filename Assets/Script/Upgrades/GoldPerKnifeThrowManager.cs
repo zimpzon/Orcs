@@ -8,8 +8,9 @@ namespace Assets.Script.Upgrades
         public static string GetText()
         {
             long level = SaveGame.Members.LevelGoldPerKnifeThrown;
-            double baseIncome = BaseIncome();
-            double totalIncome = PassiveIncome();
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerKnifeThrow;
+            Decimal256 baseIncome = BaseIncome();
+            Decimal256 totalIncome = PassiveIncome();
             long currentValue = ValueForLevel(level);
             long nextValue = ValueForLevel(level + 1);
 
@@ -18,8 +19,9 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><b><color=yellow>Gold Per Dagger</color></b></size>");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=#00e0ff>{{${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=#00e0ff>{{${totalIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=green>${baseIncome}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=green>${totalIncome}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=green>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Current gold per dagger: <color=green>{currentValue}</color>");
@@ -31,9 +33,9 @@ namespace Assets.Script.Upgrades
         private static long ValueForLevel(long level)
             => level;
 
-        private static double BaseIncome() => 1750;
+        private static Decimal256 BaseIncome() => 260M;
 
-        public static double PassiveIncome()
+        public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelGoldPerKnifeThrown;
 
         public static long PriceForNext()

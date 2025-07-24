@@ -1,11 +1,9 @@
-﻿using Assets.Script.Misc;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI.Extensions.Examples;
 
 // NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour

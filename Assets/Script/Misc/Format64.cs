@@ -1,8 +1,8 @@
 ﻿namespace Assets.Script.Misc
 {
-    public static class MathUtil
+    public static class Format64
     {
-        public static string FormatLongNumber(long number, bool abbreviate = true)
+        public static string Format(long number, bool abbreviate = true)
         {
             if (number < 1_000_000)
                 return number.ToString("N0"); // e.g., 123,456

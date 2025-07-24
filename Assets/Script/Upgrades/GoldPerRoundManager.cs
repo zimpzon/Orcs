@@ -3,37 +3,40 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class GoldPerRoundManager
+    public static class ArenaGoldManager
     {
         public static string GetText()
         {
             long level = SaveGame.Members.LevelGoldPerRoundAdd;
-            double baseIncome = BaseIncome();
-            double totalIncome = PassiveIncome();
-            long currentValue = ValueForLevel(level);
-            long nextValue = ValueForLevel(level + 1);
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerRound;
+            Decimal256 baseIncome = BaseIncome();
+            Decimal256 totalIncome = PassiveIncome();
+            double currentValue = ValueForLevel(level);
+            double nextValue = ValueForLevel(level + 1);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Gold Per Round</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=yellow>Arena gold multiplier</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Gold is worth more.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=#00e0ff>{{${baseIncome:F1}</color>/sec.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=#00e0ff>{{${totalIncome:F1}</color>/sec.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=green>${baseIncome}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=green>${totalIncome}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=green>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current bonus: <color=green>{currentValue}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=green>{nextValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Current gold value: <color=green>{currentValue:F2}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=green>{nextValue:F2}</color>");
 
             return sb.ToString();
         }
 
-        private static long ValueForLevel(long level)
-            => level * 10;
+        private static double ValueForLevel(long level)
+            => level == 0 ? 1 : (1 * MathF.Pow(1.1f, level));
 
-        private static double BaseIncome() => 750;
+        private static Decimal256 BaseIncome() => 47;
 
-        public static double PassiveIncome()
+        public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelGoldPerRoundAdd;
 
         public static long PriceForNext()
@@ -49,7 +52,6 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.GoldPerRoundAdd = ValueForLevel(SaveGame.Members.LevelGoldPerRoundAdd);
         }
 
         public static void OnBuy()

@@ -17,7 +17,7 @@ public class WeaponSawblade : WeaponBase
         float volume = 0.0f;
         if (G.D.GameTime > NextNoise)
         {
-            volume = 0.3f;
+            volume = 0.1f;
             NextNoise = G.D.GameTime + 15;
         }
 

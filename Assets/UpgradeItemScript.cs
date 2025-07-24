@@ -38,7 +38,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (price == _latestPrice)
             return;
 
-        PriceLabel.text = $"${MathUtil.FormatLongNumber(price)}";
+        PriceLabel.text = $"${Format64.Format(price)}";
         _latestPrice = price;
     }
 
