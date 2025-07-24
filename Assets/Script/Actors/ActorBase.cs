@@ -650,10 +650,31 @@ public class ActorBase : MonoBehaviour
         StartCoroutine(Decay(DecayTime));
     }
 
+    bool explodeCorpse = true;
+
     IEnumerator Decay(float delay)
     {
-        yield return new WaitForSeconds(delay);
-        yield return Explosions.Explode(transform.position, 4.0f, 20);
+        if (explodeCorpse)
+        {
+            delay *= 0.15f;
+
+            const float Radius = 3.0f;
+            yield return new WaitForSeconds(delay);
+
+            Explosions.Push(transform.position, Radius, force: 0.5f, PlayerUpgrades.Data.MagicMissileEffectiveDamage, silent: true);
+
+            //Particles.I.ExplosionSpriteSheet.transform.position = transform.position;
+            //Particles.I.ExplosionSpriteSheet.Emit(1);
+            Particles.I.ExplosionSpread.transform.position = transform.position;
+            Particles.I.ExplosionSpread.Emit(60);
+            GameManager.Instance.MakeCircle(transform.position, 2.02f);
+            GameManager.Instance.MakeFlash(transform.position, 1.0f);
+
+            GameManager.Instance.ShakeCamera(1.0f);
+
+            //AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.1f);
+        }
+
         StopAllCoroutines();
         BlackboardScript.DeadEnemies.Remove(this);
         ReturnToCache();

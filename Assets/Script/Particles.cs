@@ -9,6 +9,8 @@ public class Particles : MonoBehaviour, IKillableObject
     public ParticleSystem KnifeTrail;
     public ParticleSystem ClickTrail;
     public ParticleSystem RoundCompleteParticles;
+    public ParticleSystem ExplosionSpriteSheet;
+    public ParticleSystem ExplosionSpread;
 
     private void Awake()
     {

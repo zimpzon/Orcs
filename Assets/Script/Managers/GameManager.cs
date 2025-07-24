@@ -357,7 +357,7 @@ public class GameManager : MonoBehaviour
                     enemy.ReturnToCache();
                 }
 
-                yield return ShowInfoTextFlashy("TIME OUT", delay: 1);
+                yield return ShowInfoTextFlashy("TIMEOUT", delay: 1);
                 yield return new WaitForSeconds(0.5f);
             }
             yield return null;
@@ -747,17 +747,17 @@ public class GameManager : MonoBehaviour
         return !sizeAdjustedBounds.Contains(pos);
     }
 
-    public Vector3 ClampToBounds(Vector3 pos, float margin)
+    public Vector3 ClampToBounds(Vector3 pos, float margin = 0.5f)
     {
         pos.x = Mathf.Clamp(pos.x, ArenaBounds.xMin + margin, ArenaBounds.xMax - margin);
         pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + margin, ArenaBounds.yMax - margin);
         return pos;
     }
 
-    public Vector3 ClampToBounds(Vector3 pos, Sprite sprite)
+    public Vector3 ClampToBounds(Vector3 pos, Sprite sprite, float margin = 0.5f)
     {
-        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y;
-        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x;
+        float halfH = sprite == null ? 0.0f : sprite.bounds.extents.y + margin;
+        float halfW = sprite == null ? 0.0f : sprite.bounds.extents.x + margin;
         pos.x = Mathf.Clamp(pos.x, ArenaBounds.xMin + halfW, ArenaBounds.xMax - halfW);
         pos.y = Mathf.Clamp(pos.y, ArenaBounds.yMin + halfH, ArenaBounds.yMax - halfH);
         return pos;
