@@ -1,4 +1,3 @@
-using Assets.Script.Misc;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,8 +14,8 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     Image _background;
     Color _baseColor;
     bool _isHovering;
-    long _latestPrice = -1;
-    long _latestLevel = -1;
+    Decimal256 _latestPrice = 99999;
+    long _latestLevel = 99999;
 
     private void Awake()
     {
@@ -24,8 +23,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _baseColor = _background.color;
     }
 
-
-    public void UpdateUi(bool canAfford, long priceNext, long currentLevel)
+    public void UpdateUi(bool canAfford, Decimal256 priceNext, long currentLevel)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
@@ -33,12 +31,12 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         SetLevel(currentLevel);
     }
 
-    void SetPrice(long price)
+    void SetPrice(Decimal256 price)
     {
         if (price == _latestPrice)
             return;
 
-        PriceLabel.text = $"${Format64.Format(price)}";
+        PriceLabel.text = $"${Format256.Format(price)}";
         _latestPrice = price;
     }
 
@@ -85,7 +83,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (_isHovering && G.D.GameTime > _nextUpdate)
         {
             SetPopupText();
-            _nextUpdate = G.D.GameTime + 0.1f;
+            _nextUpdate = G.D.GameTime + 0.25f;
         }
     }
 }

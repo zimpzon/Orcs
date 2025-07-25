@@ -13,6 +13,7 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeGoldPerKnifeThrow;
     public Decimal256 TotalIncomeKnifeCd;
     public Decimal256 TotalIncomeKnifeDamage;
+    public Decimal256 TotalIncomeWitchDoctor;
     public Decimal256 TotalIncomeGoldPerRound;
 
     public Decimal256 TotalIncomeArena;
@@ -20,16 +21,15 @@ public class SaveGameMembers
 
     // Upgrades
     public long LevelClickDamage = 0;
-    public long LevelGoldPerKnifeThrown = 0;
     public long LevelKnifeCd = 0;
     public long LevelKnifeDamage = 0;
-    public long LevelGoldPerRoundAdd = 0;
-
-    public long ArenaGoldMultiplier = 1;
+    public long LevelWitchDoctor = 0;
+    public long LevelMoneyPerGold = 0;
+    public long LevelGoldPerKnifeThrown = 0;
 
     // Game
     public long ArenaLevel = 1;
-    public Decimal256 Money = 0;
+    public Decimal256 Money = 50;
 
     public long CurrentLevel = 1;
     public long AscendLevel = 1;

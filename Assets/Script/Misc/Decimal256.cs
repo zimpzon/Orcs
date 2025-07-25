@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Numerics;
-using System.Globalization;
 
 public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
 {
     private static readonly BigInteger MaxValue = (BigInteger.One << 256) - 1;
-    private static readonly BigInteger ScaleFactor = BigInteger.Pow(10, 18); // 18 decimal places
+    private static readonly BigInteger ScaleFactor = BigInteger.Pow(10, 4); // 4 decimal places
     private readonly BigInteger rawValue;
 
     public Decimal256(decimal value)

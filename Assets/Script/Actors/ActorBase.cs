@@ -1,5 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Enemies;
+using Assets.Script.Misc;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -650,13 +651,23 @@ public class ActorBase : MonoBehaviour
         StartCoroutine(Decay(DecayTime));
     }
 
-    bool explodeCorpse = false;
+    bool explodeCorpse = true;
 
     IEnumerator Decay(float delay)
     {
         if (explodeCorpse)
         {
-            delay *= 0.15f;
+            for (int i = 0; i < 20; ++i)
+            {
+                yield return new WaitForSeconds(1.0f);
+                var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: 4.0f, this);
+                if (closest is not null)
+                {
+                    Zapper.TryZapEnemy(transform.position, closest, PlayerUpgrades.Data.ZapDamage);
+                }
+            }
+
+            delay = 1.0f;
 
             const float Radius = 3.0f;
             yield return new WaitForSeconds(delay);

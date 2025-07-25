@@ -3,21 +3,21 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class ArenaGoldManager
+    public static class WitchDoctor
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelMoneyPerGold;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerRound;
+            long level = SaveGame.Members.LevelKnifeDamage;
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeWitchDoctor;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            long currentValue = (long)(ValueForLevel(level) * 100);
-            long nextValue = (long)(ValueForLevel(level + 1) * 100);
+            long currentValue = ValueForLevel(level);
+            long nextValue = ValueForLevel(level + 1);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Gold Value</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Get more $ from gold.");
+            sb.AppendLine("<size=+4><b><color=yellow>Witch Doctor</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -25,23 +25,23 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current gold value: <color=COLOR-ARENA>{currentValue}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{nextValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Current damage: <color=COLOR-ARENA>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}</color>");
 
             return sb.ToString();
         }
 
-        private static double ValueForLevel(long level)
-            => level == 0 ? 1 : (1 * MathF.Pow(1.1f, level));
+        private static long ValueForLevel(long level)
+            => 10 + (4 * level);
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_GoldValue;
+        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_WitchDoctor;
 
         public static Decimal256 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelMoneyPerGold;
+            => BaseIncome() * SaveGame.Members.LevelWitchDoctor;
 
         public static Decimal256 PriceForNext()
         {
-            return (UpgradeProgression.InitialPrice_GoldValue * Math.Pow(1.15, SaveGame.Members.LevelMoneyPerGold));
+            return UpgradeProgression.InitialPrice_WitchDoctor * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage);
         }
 
         public static void UpdateAll()
@@ -52,7 +52,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.MoneyPerGold = ValueForLevel(SaveGame.Members.LevelMoneyPerGold);
+            PlayerUpgrades.Data.MagicMissileBaseDamage = ValueForLevel(SaveGame.Members.LevelKnifeDamage);
         }
 
         public static void OnBuy()
@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelMoneyPerGold++;
+            SaveGame.Members.LevelKnifeDamage++;
         }
 
         public static void UpdateUi()
@@ -70,7 +70,7 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.GoldPerRound.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelMoneyPerGold);
+            UpgradeManager.Instance.KnifeDamage.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeDamage);
         }
     }
 }

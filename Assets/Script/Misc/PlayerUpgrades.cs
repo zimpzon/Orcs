@@ -26,11 +26,9 @@ public class UpgradeData
     public float XpDoubleChance = 0.05f;
     public float XpValueMul = 1.0f;
 
-    // gold & xp
-    public bool GoldXpMultiplierBought = false;
-    public int GoldXpMultiplyValue = 1;
+    // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
-    public long MoneyPerGold = 1;
+    public Decimal256 MoneyPerGold = 2;
     public long GoldPerKnifeThrown = 0;
 
     // player

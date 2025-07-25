@@ -4,8 +4,6 @@ using System.Globalization;
 
 public static class Format256
 {
-    private static readonly BigInteger ScaleFactor = BigInteger.Pow(10, 18); // Match Decimal256's scale factor
-
     private static readonly (BigInteger Threshold, string Short, string Long)[] Suffixes =
     {
         (BigInteger.Pow(10, 63), "Vg", " vigintillion"),
@@ -30,42 +28,101 @@ public static class Format256
         (BigInteger.Pow(10, 6),  "M",  " million")
     };
 
-    public static string Format(Decimal256 number, bool abbreviate = true)
+    public static string FormatWithDecimals(Decimal256 number, bool abbreviate = true)
     {
-        BigInteger raw = number.RawValue; // 18 decimal precision
-        BigInteger whole = raw / ScaleFactor;
-        BigInteger frac = raw % ScaleFactor;
+        BigInteger rawValue = number.RawValue;
+        BigInteger scaleFactor = BigInteger.Pow(10, 4);
 
-        foreach (var (threshold, shortSuffix, longSuffix) in Suffixes)
+        // For numbers < 1000, show with up to 1 decimal place (but not if decimal is 0)
+        if (rawValue < 1000 * scaleFactor)
         {
-            if (whole >= threshold)
-            {
-                // Calculate the scaled value for display
-                decimal value = (decimal)raw / (decimal)(threshold * ScaleFactor);
+            decimal decimalValue = (decimal)rawValue / (decimal)scaleFactor;
 
-                if (value < 100)
-                    return value.ToString("0.0", CultureInfo.InvariantCulture) + (abbreviate ? shortSuffix : longSuffix);
-                else
-                    return Math.Round(value).ToString("N0", CultureInfo.InvariantCulture) + (abbreviate ? shortSuffix : longSuffix);
+            if (decimalValue == Math.Floor(decimalValue))
+            {
+                return ((long)decimalValue).ToString();
+            }
+            else
+            {
+                return decimalValue.ToString("0.0", CultureInfo.InvariantCulture);
             }
         }
 
-        if (whole < 1000)
+        // For numbers >= 1000, show with appropriate precision but no fractional decimals
+        foreach (var (threshold, shortSuffix, longSuffix) in Suffixes)
         {
-            // Show decimal places only if there are meaningful fractional digits
-            string fracStr = frac.ToString().PadLeft(18, '0').TrimEnd('0');
-            if (string.IsNullOrEmpty(fracStr))
-                return whole.ToString();
+            BigInteger scaledThreshold = threshold * scaleFactor;
+            if (rawValue >= scaledThreshold)
+            {
+                // Calculate the scaled down value
+                decimal scaledValue = (decimal)(rawValue / (scaledThreshold / 1000)) / 1000m;
 
-            // Show only the first few decimal places for readability
-            if (fracStr.Length > 2)
-                fracStr = fracStr.Substring(0, 1);
+                // Format with precision but remove any fractional decimals
+                string numberPart;
+                if (scaledValue >= 100)
+                {
+                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                }
+                else if (scaledValue >= 10)
+                {
+                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                }
+                else
+                {
+                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                }
 
-            return $"{whole}.{fracStr}";
+                return numberPart + (abbreviate ? shortSuffix : longSuffix);
+            }
         }
-        else
+
+        // For numbers >= 1000 but < 1M, format as whole number with thousands separators
+        BigInteger wholeValue = rawValue / scaleFactor;
+        return wholeValue.ToString("N0", CultureInfo.InvariantCulture);
+    }
+
+    public static string Format(Decimal256 number, bool abbreviate = true)
+    {
+        BigInteger rawValue = number.RawValue;
+        BigInteger scaleFactor = BigInteger.Pow(10, 4);
+
+        // For numbers < 1000, always show as whole number
+        if (rawValue < 1000 * scaleFactor)
         {
-            return whole.ToString("N0", CultureInfo.InvariantCulture);
+            decimal decimalValue = (decimal)rawValue / (decimal)scaleFactor;
+            return ((long)Math.Round(decimalValue)).ToString();
         }
+
+        // For numbers >= 1M, show with thousands separator but no fractional decimals
+        foreach (var (threshold, shortSuffix, longSuffix) in Suffixes)
+        {
+            BigInteger scaledThreshold = threshold * scaleFactor;
+            if (rawValue >= scaledThreshold)
+            {
+                // Calculate the scaled down value
+                decimal scaledValue = (decimal)(rawValue / (scaledThreshold / 1000)) / 1000m;
+
+                // Format with thousands separator but remove any fractional decimals
+                string numberPart;
+                if (scaledValue >= 100)
+                {
+                    numberPart = scaledValue.ToString("N0", CultureInfo.InvariantCulture);
+                }
+                else if (scaledValue >= 10)
+                {
+                    numberPart = scaledValue.ToString("N1", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                }
+                else
+                {
+                    numberPart = scaledValue.ToString("N2", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                }
+
+                return numberPart + (abbreviate ? shortSuffix : longSuffix);
+            }
+        }
+
+        // For numbers >= 1000 but < 1M, format as whole number with thousands separators
+        BigInteger wholeValue = rawValue / scaleFactor;
+        return wholeValue.ToString("N0", CultureInfo.InvariantCulture);
     }
 }

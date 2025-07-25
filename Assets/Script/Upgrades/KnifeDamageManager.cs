@@ -17,15 +17,16 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Dagger Damage</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Each dagger does more damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=green>${baseIncome}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=green>${totalIncome}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Earned so far: <color=green>${Format256.Format(earnedSoFar)}</color>.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format256.Format(totalIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current damage: <color=green>{currentValue}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=green>{(nextValue.ToString())}</color>");
+            sb.AppendLine($"<color=#dddddd>Current damage: <color=COLOR-ARENA>{currentValue}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}</color>");
 
             return sb.ToString();
         }
@@ -33,14 +34,14 @@ namespace Assets.Script.Upgrades
         private static long ValueForLevel(long level)
             => 10 + (4 * level);
 
-        private static Decimal256 BaseIncome() => 2;
+        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_DaggerDamage;
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelKnifeDamage;
 
-        public static long PriceForNext()
+        public static Decimal256 PriceForNext()
         {
-            return (long)(500 * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage));
+            return UpgradeProgression.InitialPrice_DaggerDamage * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage);
         }
 
         public static void UpdateAll()
@@ -56,7 +57,7 @@ namespace Assets.Script.Upgrades
 
         public static void OnBuy()
         {
-            long priceForNext = PriceForNext();
+            Decimal256 priceForNext = PriceForNext();
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
@@ -66,7 +67,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdateUi()
         {
-            long priceForNext = PriceForNext();
+            Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
             UpgradeManager.Instance.KnifeDamage.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeDamage);

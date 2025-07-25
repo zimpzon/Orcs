@@ -20501,6 +20501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aaaa2b3a5e4c3f49824c48ca66464a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorPassiveValues: {r: 0.2509804, g: 0.8784314, b: 0.8156863, a: 1}
+  ColorArenaValues: {r: 0.4862745, g: 0.9882353, b: 0, a: 1}
   ClickDamage: {fileID: 1703837212}
   GoldPerKnife: {fileID: 2034454687}
   KnifeDamage: {fileID: 1988338383}
@@ -25845,6 +25847,7 @@ MonoBehaviour:
     PlayerMoveSpeedModifier: 1
   SpriteFlashParamId: 0
   SpriteFlashColorParamId: 0
+  ZapTargetIgnoreList: []
 --- !u!61 &351174289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36841,14 +36844,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2392157, g: 0.3137255, b: 0.50980395, a: 1}
+  m_Color: {r: 1, g: 0.90105194, b: 0.599, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 30fea15b87e3ec842bba846fdd660fdf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fa55606fd8021b14c9866d8da6606358, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -62754,7 +62757,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: -1000
   m_Sprite: {fileID: 21300000, guid: 643d31933349bfc48a7a1182e2bf5f84, type: 3}
-  m_Color: {r: 0.2509804, g: 0.32941177, b: 0.53333336, a: 1}
+  m_Color: {r: 0.21079603, g: 0.32001933, b: 0.60400003, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -68796,7 +68799,7 @@ PrefabInstance:
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_Name
-      value: ArenaGold
+      value: GoldValue
       objectReference: {fileID: 0}
     - target: {fileID: 3812576168719002874, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -68841,7 +68844,7 @@ PrefabInstance:
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_text
-      value: Arena Gold
+      value: Gold Value
       objectReference: {fileID: 0}
     - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -78672,8 +78675,8 @@ SpriteRenderer:
   m_SortingLayerID: -937266437
   m_SortingLayer: 1
   m_SortingOrder: -500
-  m_Sprite: {fileID: 21300000, guid: 59973fc1e4a5fff409b6d3b2a1ece834, type: 3}
-  m_Color: {r: 0.1254902, g: 0.18039216, b: 0.32941177, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 27390fae41762c946a695e057de85f68, type: 3}
+  m_Color: {r: 0.70689446, g: 0.7354491, b: 0.8679245, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
@@ -78716,8 +78719,8 @@ RectTransform:
   m_Children:
   - {fileID: 1645730209}
   - {fileID: 1988338380}
-  - {fileID: 90654854}
   - {fileID: 1705899015}
+  - {fileID: 90654854}
   - {fileID: 1416191719}
   m_Father: {fileID: 1034648696}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

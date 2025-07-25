@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     long _roundTotalHp = -1;
 
-    bool TryZapEnemy(Vector2 from, ActorBase enemy)
+    private bool TryZapEnemy(Vector2 from, ActorBase enemy)
     {
         if (PlayerUpgrades.Data.ZapDamage == 0)
             return false;
@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
 
     const float ZapInterval = 3;
     float _nextZap;
-    List<ActorBase> _prevZapJumpTargets = new List<ActorBase>();
+    public List<ActorBase> ZapTargetIgnoreList = new List<ActorBase>();
 
     void ShakeArenaBackground()
     {
@@ -249,12 +249,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ZapChainCoroutine(ActorBase firstTarget)
     {
-        _prevZapJumpTargets.Clear();
+        ZapTargetIgnoreList.Clear();
 
         if (!TryZapEnemy(G.D.PlayerPos, firstTarget))
             yield break;
 
-        _prevZapJumpTargets.Add(firstTarget);
+        ZapTargetIgnoreList.Add(firstTarget);
         var prevEnemy = firstTarget;
 
         const int MaxJumps = 2;
@@ -267,14 +267,14 @@ public class GameManager : MonoBehaviour
             var nextEnemy = BlackboardScript.GetClosestEnemy(
                 prevEnemy.transform.position,
                 radius: 4.0f,
-                _prevZapJumpTargets);
+                ZapTargetIgnoreList);
 
             if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy))
                 break;
 
             GameManager.Instance.ShakeCamera(1.0f);
 
-            _prevZapJumpTargets.Add(nextEnemy);
+            ZapTargetIgnoreList.Add(nextEnemy);
             prevEnemy = nextEnemy;
         }
     }
@@ -282,6 +282,14 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
+        Decimal256 v1 = 1_234_456;
+        Decimal256 v2 = 10.123;
+        Decimal256 v3 = 1000.456;
+
+        string s1 = Format256.Format(v1);
+        string s2 = Format256.Format(v2);
+        string s3 = Format256.Format(v3);
+
         while (true)
         {
             UpdateMoneyText();
@@ -486,10 +494,10 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
-    public void AddGold(bool isLargeCoin, int value)
+    public void AddGold(bool isLargeCoin, Decimal256 value)
     {
-        long moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
-        SaveGame.Members.TotalIncomeArena += moneyAdded * SaveGame.Members.ArenaGoldMultiplier;
+        Decimal256 moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
+        SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
 
@@ -498,7 +506,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             textPos,
-            $"${moneyAdded}",
+            $"${Format256.Format(moneyAdded)}",
             Color.yellow,
             speed: 2.0f,
             timeToLive: 1.0f,
@@ -507,12 +515,12 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(Decimal256 amount)
     {
-        SaveGame.Members.Money.Add(amount);
+        SaveGame.Members.Money += amount;
     }
 
     public void DeductMoney(Decimal256 amount)
     {
-        SaveGame.Members.Money.Subtract(amount);
+        SaveGame.Members.Money -= amount;
     }
 
     public void AddXp(int amount)
@@ -891,7 +899,7 @@ public class GameManager : MonoBehaviour
 
         if (_prevPassiveIncome != totalPassiveIncome)
         {
-            TextPassiveIncome.text = $"{Format256.Format(totalPassiveIncome)} per second";
+            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(totalPassiveIncome)} per second";
             _prevPassiveIncome = totalPassiveIncome;
             PopText(TextPassiveIncome);
         }
@@ -922,7 +930,7 @@ public class GameManager : MonoBehaviour
             return;
 
         _prevMoney = SaveGame.Members.Money;
-        TextMoney.text = $"${Format256.Format(SaveGame.Members.Money, abbreviate: false)}";
+        TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false)}";
     }
 
     Decimal256 _prevTotalIncomeArena = 999999;
@@ -1025,6 +1033,11 @@ public class GameManager : MonoBehaviour
         {
             var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
             saw.Eject(Vector2.zero, Vector2.right, Color.white, 1.0f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            SaveGame.Members.ArenaLevel++;
         }
     }
 }

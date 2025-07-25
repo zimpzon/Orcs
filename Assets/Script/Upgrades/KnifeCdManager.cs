@@ -11,22 +11,23 @@ namespace Assets.Script.Upgrades
             Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeKnifeCd;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            float currentValue = ValueForLevel(level);
-            float nextValue = ValueForLevel(level + 1);
+            long cdReductionNow = (long)(level * (100.0 / MaxLevel));
+            long cdReductionNext = (long)((level + 1) * (100.0 / MaxLevel));
 
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Dagger Cooldown</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Throw daggers faster.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=green>${baseIncome}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=green>${totalIncome}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Earned so far: <color=green>${Format256.Format(earnedSoFar)}</color>.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format256.Format(totalIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current CD: <color=green>{currentValue:0.000}s</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=green>{level} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=green>{(level >= MaxLevel ? "<color=red>max reached" : $"{nextValue:0.000}s")}</color>");
+            sb.AppendLine($"<color=#dddddd>CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
+            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{level} / {MaxLevel}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=red>max reached" : $"{cdReductionNext}%")}</color>");
 
             return sb.ToString();
         }
@@ -37,19 +38,22 @@ namespace Assets.Script.Upgrades
 
         private static float ValueForLevel(long level)
         {
+            if (level > MaxLevel)
+                level = MaxLevel;
+
             double Step = (StartValue - EndValueValue) / MaxLevel;
             double value = StartValue - level * Step;
             return (float)value;
         }
 
-        private static Decimal256 BaseIncome() => 8;
+        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_DaggerCd;
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelKnifeCd;
 
-        public static long PriceForNext()
+        public static Decimal256 PriceForNext()
         {
-            return (long)(5100 * Math.Pow(1.15, SaveGame.Members.LevelKnifeCd));
+            return UpgradeProgression.InitialPrice_DaggerCd * Math.Pow(1.15, SaveGame.Members.LevelKnifeCd);
         }
 
         public static void UpdateAll()
@@ -65,10 +69,7 @@ namespace Assets.Script.Upgrades
 
         public static void OnBuy()
         {
-            if (SaveGame.Members.LevelKnifeCd >= MaxLevel)
-                return;
-
-            long priceForNext = PriceForNext();
+            Decimal256 priceForNext = PriceForNext();
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
@@ -78,7 +79,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdateUi()
         {
-            long priceForNext = PriceForNext();
+            Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
             UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeCd);

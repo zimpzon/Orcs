@@ -11,7 +11,7 @@ namespace Assets.Script.Misc
             LeanTween.cancel(ArenaBoundsScript.Instance.LineRenderer.gameObject);
             LeanTween.value(
                 ArenaBoundsScript.Instance.LineRenderer.gameObject,
-                ArenaBoundsScript.Instance.LineRendererBaseWidth, to: 0.0f, time: 0.5f)
+                ArenaBoundsScript.Instance.LineRendererBaseWidth, to: 0.0f, time: 0.15f)
                 .setOnUpdate((float val) =>
                 {
                     ArenaBoundsScript.Instance.LineRenderer.startWidth = val;

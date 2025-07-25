@@ -5,6 +5,9 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
+    public Color ColorPassiveValues = Color.white;
+    public Color ColorArenaValues = Color.white;
+
     public UpgradeItemScript ClickDamage;
     public UpgradeItemScript GoldPerKnife;
     public UpgradeItemScript KnifeDamage;
@@ -22,30 +25,38 @@ public class UpgradeManager : MonoBehaviour
 
     public string GetText(UpgradeItemScript upgradeUiScript)
     {
+        string text = "";
         if (upgradeUiScript == ClickDamage)
         {
-            return ClickDamageManager.GetText();
+            text = ClickDamageManager.GetText();
         }
         else if (upgradeUiScript == GoldPerKnife)
         {
-            return GoldPerKnifeThrowManager.GetText();
+            text = GoldPerKnifeThrowManager.GetText();
         }
         else if (upgradeUiScript == KnifeDamage)
         {
-            return KnifeDamageManager.GetText();
+            text = KnifeDamageManager.GetText();
         }
         else if (upgradeUiScript == KnifeCd)
         {
-            return KnifeCdManager.GetText();
+            text = KnifeCdManager.GetText();
         }
         else if (upgradeUiScript == GoldPerRound)
         {
-            return ArenaGoldManager.GetText();
+            text = ArenaGoldManager.GetText();
         }
         else
         {
-            return $"unknown UpgradeItemScript: {upgradeUiScript.name}";
+            text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
         }
+
+        string colorPassiveHex = $"#{ColorUtility.ToHtmlStringRGB(ColorPassiveValues)}";
+        string colorArenaHex = $"#{ColorUtility.ToHtmlStringRGB(ColorArenaValues)}";
+        text = text.Replace("COLOR-PASSIVE", colorPassiveHex);
+        text = text.Replace("COLOR-ARENA", colorArenaHex);
+
+        return text;
     }
 
     public Decimal256 GetTotalPassiveIncome()

@@ -159,6 +159,15 @@ namespace Assets.Script
             return Physics2D.OverlapCircleNonAlloc(pos, radius, RawEnemyOverlap, 1 << GameManager.Instance.LayerEnemy);
         }
 
+        static List<ActorBase> ClosestEnemySkipList = new();
+
+        public static ActorBase GetClosestEnemy(Vector3 pos, float radius, ActorBase self, ActorTypeEnum actorType = ActorTypeEnum.None)
+        {
+            ClosestEnemySkipList.Clear();
+            ClosestEnemySkipList.Add(self);
+            return GetClosestEnemy(pos, radius, ClosestEnemySkipList, actorType);
+        }
+
         public static ActorBase GetClosestEnemy(Vector3 pos, float radius, List<ActorBase> skipList = null, ActorTypeEnum actorType = ActorTypeEnum.None)
         {
             int count = Physics2D.OverlapCircleNonAlloc(pos, radius, RawEnemyOverlap, 1 << GameManager.Instance.LayerEnemy);
