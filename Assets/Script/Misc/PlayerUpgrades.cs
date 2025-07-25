@@ -42,14 +42,18 @@ public class UpgradeData
     public float MoveSpeedAdd = 0.0f;
     public float MoveSpeedEffective => (BaseMoveSpeed + MoveSpeedAdd)  * GameManager.Instance.ArenaScale;
 
-    // weapons
-    public float MagicMissileBaseDamage = 3.0f;
-    public float MagicMissileDamageMul = 1.0f;
-    public float MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
+    // Witch doctor
+    public bool WitchDoctorEnabled = false;
+    public double WitchDoctorEffectiveDamage = 0;
 
-    public float MagicMissileBaseCd = 0.5f;
-    public float MagicMissileCdMul = 1.0f;
-    public float MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
+    // weapons
+    public double MagicMissileBaseDamage = 3.0f;
+    public double MagicMissileDamageMul = 1.0f;
+    public double MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
+
+    public double MagicMissileBaseCd = 0.5f;
+    public double MagicMissileCdMul = 1.0f;
+    public double MagicMissileEffectiveCd => MagicMissileBaseCd * MagicMissileCdMul;
 
     public float MagicMissileBaseRange = 6.0f;
     public float MagicMissileRangeMul = 1.0f;
@@ -59,7 +63,7 @@ public class UpgradeData
     public float MagicMissileSpeedMul = 1.0f;
     public float MagicMissileEffectiveSpeed => MagicMissileBaseSpeed * MagicMissileSpeedMul * GameManager.Instance.ArenaScale;
 
-    public float MagicMissileJumpDamageMul = 0.0f;
+    public double MagicMissileJumpDamageMul = 0.0f;
     public int MagicMissileMultiShots = 0;
 
     public bool MeleeThrowBought = false;

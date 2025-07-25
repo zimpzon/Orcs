@@ -651,39 +651,62 @@ public class ActorBase : MonoBehaviour
         StartCoroutine(Decay(DecayTime));
     }
 
-    bool explodeCorpse = true;
+    bool explodeCorpse = false;
 
     IEnumerator Decay(float delay)
     {
-        if (explodeCorpse)
+        if (PlayerUpgrades.Data.WitchDoctorEnabled)
         {
-            for (int i = 0; i < 20; ++i)
+            // Zap a number of close enemies.
+            for (int i = 0; i < 2; ++i)
             {
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(1.5f);
+
                 var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: 4.0f, this);
                 if (closest is not null)
                 {
-                    Zapper.TryZapEnemy(transform.position, closest, PlayerUpgrades.Data.ZapDamage);
+                    if (Zapper.TryZapEnemy(transform.position, closest, PlayerUpgrades.Data.ZapDamage))
+                    {
+                        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.6f, pitch: 1.2f);
+
+                        var direction = (closest.transform.position - transform.position).normalized;
+                        AddForce(direction * -0.1f);
+
+                        GameManager.Instance.MakeFlash(transform.position, size: 1);
+                        GameManager.Instance.MakePoof(transform.position, 2);
+
+                        for (int j = 0; j < 4; ++j)
+                        {
+                            Particles.I.ClickTrail.transform.position = (Vector2)transform.position + UnityEngine.Random.insideUnitCircle * 0.5f;
+                            Particles.I.ClickTrail.Emit(5);
+                        }
+                    }
                 }
             }
 
-            delay = 1.0f;
+            // Delay before explosion.
+            yield return new WaitForSeconds(2.0f);
 
-            const float Radius = 3.0f;
-            yield return new WaitForSeconds(delay);
+            // Explode
+            const float Radius = 2.0f;
 
-            Explosions.Push(transform.position, Radius, force: 0.5f, PlayerUpgrades.Data.MagicMissileEffectiveDamage, silent: true);
+            Explosions.Push(transform.position, Radius, force: 0.5f, (float)PlayerUpgrades.Data.MagicMissileEffectiveDamage, silent: true);
 
-            //Particles.I.ExplosionSpriteSheet.transform.position = transform.position;
-            //Particles.I.ExplosionSpriteSheet.Emit(1);
+            Particles.I.ExplosionSpriteSheet.transform.position = transform.position;
+            Particles.I.ExplosionSpriteSheet.Emit(1);
             Particles.I.ExplosionSpread.transform.position = transform.position;
-            Particles.I.ExplosionSpread.Emit(60);
-            GameManager.Instance.MakeCircle(transform.position, 2.02f);
+            Particles.I.ExplosionSpread.Emit(30);
+            GameManager.Instance.MakeCircle(transform.position, 2.0f);
             GameManager.Instance.MakeFlash(transform.position, 1.0f);
 
             GameManager.Instance.ShakeCamera(1.0f);
 
-            //AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.1f);
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.1f, pitch: 1.2f);
+        }
+        else
+        {
+            // No corpse explosion
+            yield return new WaitForSeconds(delay);
         }
 
         StopAllCoroutines();

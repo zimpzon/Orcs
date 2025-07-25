@@ -110,8 +110,8 @@ public class PlayerScript : MonoBehaviour
 
     void SetNextFire()
     {
-        float FireCd = PlayerUpgrades.Data.MagicMissileEffectiveCd;
-        nextFire_ = G.D.GameTime + FireCd;
+        double FireCd = PlayerUpgrades.Data.MagicMissileEffectiveCd;
+        nextFire_ = G.D.GameTime + (float)FireCd;
     }
 
     IEnumerator Think()
@@ -140,7 +140,7 @@ public class PlayerScript : MonoBehaviour
                 float recoil;
                 var fireDir = vecToClosestEnemy.normalized;
 
-                float damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
+                double damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
 
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.5f, GameManager.Instance.SortLayerTopEffects, out recoil);
 

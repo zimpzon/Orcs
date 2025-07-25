@@ -1,10 +1,3 @@
-TODO
-  1) why would we ever level up? -> add level requirements on upgrades.
-  1.1) 5K damage in 20 seconds! Bonus gold: 12345
-  2) enemies that provide other bonuses like throwing gold
-  3) much better bonus for completion
-
-
 When adding a new upgrade:
 
 Add prefab to scroll area

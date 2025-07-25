@@ -4,7 +4,7 @@ public class WeaponPaintballRandom : WeaponBase
 {
     public Sprite BulletSprite;
 
-    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
+    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, double damage, Vector3 dir)
     {
         float slowTime = PlayerUpgrades.Data.PaintballBaseDuration * PlayerUpgrades.Data.PaintballDurationMul;
         if (other.OnPaintballHit(projectile.Color, slowTime))
@@ -14,7 +14,7 @@ public class WeaponPaintballRandom : WeaponBase
         }
     }
 
-    public override void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil)
+    public override void FireFromPoint(Vector3 point, Vector3 direction, double damage, float scale, int sortingLayer, out float recoil)
     {
         lastFire_ = G.D.GameTime;
         recoil = 0.0f;

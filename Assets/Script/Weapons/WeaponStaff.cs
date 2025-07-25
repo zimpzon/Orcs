@@ -4,7 +4,7 @@ public class WeaponStaff : WeaponBase
 {
     public Sprite BulletSprite;
 
-    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
+    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, double damage, Vector3 dir)
     {
         other.OnLivingBombHit(5.0f);
     }

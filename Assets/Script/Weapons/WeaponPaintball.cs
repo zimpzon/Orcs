@@ -5,7 +5,7 @@ public class WeaponPaintball : WeaponBase
     public const float SlowTime = 3.0f;
     public Sprite BulletSprite;
 
-    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, float damage, Vector3 dir)
+    void OnCollision(ProjectileManager.Basic projectile, ActorBase other, double damage, Vector3 dir)
     {
         if (other.OnPaintballHit(projectile.Color, SlowTime))
         {

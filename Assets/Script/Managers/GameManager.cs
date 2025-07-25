@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
                 var direction = (firstTarget.transform.position - G.D.PlayerPos).normalized;
                 G.D.PlayerScript.AddForce(-direction * 0.5f);
 
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.8f, pitch: 1.1f);
                 ShakeArenaBackground();
 
                 _nextZap = G.D.GameTime + ZapInterval;
@@ -282,13 +282,13 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
-        Decimal256 v1 = 1_234_456;
-        Decimal256 v2 = 10.123;
-        Decimal256 v3 = 1000.456;
+        //Decimal256 v1 = 1_234_456;
+        //Decimal256 v2 = 10.123;
+        //Decimal256 v3 = 1000.456;
 
-        string s1 = Format256.Format(v1);
-        string s2 = Format256.Format(v2);
-        string s3 = Format256.Format(v3);
+        //string s1 = Format256.Format(v1);
+        //string s2 = Format256.Format(v2);
+        //string s3 = Format256.Format(v3);
 
         while (true)
         {
@@ -705,7 +705,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DamageEnemy(ActorBase enemy, float amount, Vector3 direction, float forceModifier)
+    public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier)
     {
         if (enemy.Hp <= 0 || enemy.IsDead)
             return;

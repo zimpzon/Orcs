@@ -12,6 +12,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript GoldPerKnife;
     public UpgradeItemScript KnifeDamage;
     public UpgradeItemScript KnifeCd;
+    public UpgradeItemScript WitchDoctor;
     public UpgradeItemScript GoldPerRound;
 
     public void UpdateAllUpgrades()
@@ -21,6 +22,7 @@ public class UpgradeManager : MonoBehaviour
         KnifeCdManager.UpdateAll();
         KnifeDamageManager.UpdateAll();
         ArenaGoldManager.UpdateAll();
+        WitchDoctorManager.UpdateAll();
     }
 
     public string GetText(UpgradeItemScript upgradeUiScript)
@@ -41,6 +43,10 @@ public class UpgradeManager : MonoBehaviour
         else if (upgradeUiScript == KnifeCd)
         {
             text = KnifeCdManager.GetText();
+        }
+        else if (upgradeUiScript == WitchDoctor)
+        {
+            text = WitchDoctorManager.GetText();
         }
         else if (upgradeUiScript == GoldPerRound)
         {
@@ -67,6 +73,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeGoldPerKnifeThrow += GoldPerKnifeThrowManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeKnifeCd += KnifeCdManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeKnifeDamage += KnifeDamageManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeGoldPerRound += WitchDoctorManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeGoldPerRound += ArenaGoldManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
@@ -74,6 +81,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += GoldPerKnifeThrowManager.PassiveIncome();
         fullSum += KnifeCdManager.PassiveIncome();
         fullSum += KnifeDamageManager.PassiveIncome();
+        fullSum += WitchDoctorManager.PassiveIncome();
         fullSum += ArenaGoldManager.PassiveIncome();
 
         SaveGame.Members.TotalIncomePassive += fullSum * incomeFactorPerFrame;
@@ -87,6 +95,7 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateUi();
         KnifeCdManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
+        WitchDoctorManager.UpdateUi();
         ArenaGoldManager.UpdateUi();
     }
 
@@ -115,6 +124,13 @@ public class UpgradeManager : MonoBehaviour
     {
         KnifeDamageManager.OnBuy();
         KnifeDamage.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
+    public void OnBuyWitchDoctorDamage()
+    {
+        WitchDoctorManager.OnBuy();
+        WitchDoctor.SetPopupText();
         UpdateAllUpgrades();
     }
 

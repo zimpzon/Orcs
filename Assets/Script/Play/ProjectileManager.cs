@@ -9,9 +9,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
     public class Basic
     {
-        public static float CalcDamage(Basic b)
+        public static double CalcDamage(Basic b)
         {
-            float damage = b.Damage;
+            double damage = b.Damage;
             return damage;
         }
 
@@ -70,7 +70,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float Speed;
         public float SwayFactor;
         public float Radius;
-        public float Damage;
+        public double Damage;
         public float Force;
         public bool Blink;
         public Vector3 Direction;
@@ -89,12 +89,12 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float RotationSpeed;
         public float RotationSpeedWhenStuck;
         public bool JumpToNearbyTarget;
-        public float JumpDamageMul;
+        public double JumpDamageMul;
         public bool StickToTarget;
         public float StickyDamageCd;
         public float StickyDamageTimeNext;
-        public float StickyMaxTotalDamage;
-        public float StickyDamageDone;
+        public double StickyMaxTotalDamage;
+        public double StickyDamageDone;
         public Vector3 StickOffset;
         public ActorBase CurrentTarget;
         public AudioClip CollisionSound;
@@ -106,7 +106,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float ParticleEmitDelay;
         public float ParticleNextEmit;
 
-        public Action<Basic, ActorBase, float, Vector3> CustomCollisionResponse;
+        public Action<Basic, ActorBase, double, Vector3> CustomCollisionResponse;
     }
 
     [NonSerialized] public Vector3 DeflectSource;
@@ -246,7 +246,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         {
                             Vector3 damageDirection = (p.StickOffset * -1).normalized;
 
-                            float damage = p.Damage;
+                            double damage = p.Damage;
                             GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f);
                             p.StickyDamageDone += damage;
 
@@ -287,7 +287,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 AudioManager.Instance.PlayClipWithRandomPitch(p.CollisionSound, p.Volume);
                         }
 
-                        float damage = Basic.CalcDamage(p);
+                        double damage = Basic.CalcDamage(p);
                         if (p.CustomCollisionResponse != null)
                         {
                             p.CustomCollisionResponse(p, enemy, damage, p.Direction);

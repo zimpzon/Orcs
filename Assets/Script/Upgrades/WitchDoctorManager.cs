@@ -3,11 +3,11 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class WitchDoctor
+    public static class WitchDoctorManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelKnifeDamage;
+            long level = SaveGame.Members.LevelWitchDoctor;
             Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeWitchDoctor;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
@@ -17,7 +17,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Witch Doctor</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode.");
+            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode. Both deal equal damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -32,7 +32,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 10 + (4 * level);
+            => 100 * level;
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_WitchDoctor;
 
@@ -41,7 +41,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_WitchDoctor * Math.Pow(1.15, SaveGame.Members.LevelKnifeDamage);
+            return UpgradeProgression.InitialPrice_WitchDoctor * Math.Pow(1.15, SaveGame.Members.LevelWitchDoctor);
         }
 
         public static void UpdateAll()
@@ -52,7 +52,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.MagicMissileBaseDamage = ValueForLevel(SaveGame.Members.LevelKnifeDamage);
+            PlayerUpgrades.Data.WitchDoctorEnabled = SaveGame.Members.LevelWitchDoctor > 0;
         }
 
         public static void OnBuy()
@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelKnifeDamage++;
+            SaveGame.Members.LevelWitchDoctor++;
         }
 
         public static void UpdateUi()
@@ -70,7 +70,7 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.KnifeDamage.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeDamage);
+            UpgradeManager.Instance.WitchDoctor.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelWitchDoctor);
         }
     }
 }

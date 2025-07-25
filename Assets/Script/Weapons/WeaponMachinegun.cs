@@ -4,7 +4,7 @@ public class WeaponMachinegun : WeaponBase
 {
     public Sprite BulletSprite;
 
-    public override void FireFromPoint(Vector3 point, Vector3 direction, float damage, float scale, int sortingLayer, out float recoil)
+    public override void FireFromPoint(Vector3 point, Vector3 direction, double damage, float scale, int sortingLayer, out float recoil)
     {
         lastFire_ = G.D.GameTime;
         recoil = 0.01f;
