@@ -7,11 +7,7 @@ using UnityEngine;
 
 public enum ActorTypeEnum
 {
-    None, Any, Ogre, OgreBandana, OgreBandanaGun, OgreLarge, OgreShaman, OgreShamanStaff, OgreShamanStaffLarge,
-    OgreSmall, OrcBronze, OrcBronzeShield, OrcIron, OrcIronCyclops, OrcIronCyclopsShield, OrcIronShield, OrcPlain,
-    OrcPlainShield, OrcWhiteMask, OrcWhiteMaskShield, PirateBandana, PirateBandanaGun, PirateDuck, PirateFancyGun,
-    PirateNoShirt, PirateNoShirtGun, PirateRedBeard, PirateRedBeardGun, Skeleton, ReaperBoss, BatWhite, BatRed,
-    SpikyBall, OgreIcyShamanStaff,
+    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven,
 };
 
 public enum ActorForcedTargetType { Absolute, Direction };

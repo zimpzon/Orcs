@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8927190047970369836}
-  - component: {fileID: 8927190047970369838}
   - component: {fileID: 8927190047970369837}
   - component: {fileID: -8830689696543854000}
   - component: {fileID: 7499275510118087119}
+  - component: {fileID: -4436555721554759568}
   m_Layer: 12
-  m_Name: OgreLarge
+  m_Name: HeroChaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,18 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8927190047970369838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8927190047970369811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18288ad9f7b2aee4ea3ee4dabd557874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &8927190047970369837
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1973305054, guid: 43c33340fe8436745b395e7f20e39069, type: 3}
+  m_Sprite: {fileID: 997622750, guid: d52e6daed7ac8c04f82326a2bbf8d471, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -147,17 +135,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animations:
-  - {fileID: -1698117687, guid: 43c33340fe8436745b395e7f20e39069, type: 3}
-  - {fileID: 1579436616, guid: 43c33340fe8436745b395e7f20e39069, type: 3}
-  - {fileID: 1717908213, guid: 43c33340fe8436745b395e7f20e39069, type: 3}
-  - {fileID: 1634327574, guid: 43c33340fe8436745b395e7f20e39069, type: 3}
+  - {fileID: 480714956, guid: d52e6daed7ac8c04f82326a2bbf8d471, type: 3}
+  - {fileID: -1620819083, guid: d52e6daed7ac8c04f82326a2bbf8d471, type: 3}
+  - {fileID: -484407003, guid: d52e6daed7ac8c04f82326a2bbf8d471, type: 3}
+  - {fileID: 1876022596, guid: d52e6daed7ac8c04f82326a2bbf8d471, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 1.2
+  Speed: 0.9
   AvoidCrowds: 1
   CrowdScanRadius: 1
-  CrowdMaxNearby: 3
-  CrowdOutOfTheWayRange: 2.5
+  CrowdMaxNearby: 0
+  CrowdOutOfTheWayRange: 3
   CacheReviveCount: 0
   IsBoss: 0
   Mass: 5
@@ -165,6 +153,18 @@ MonoBehaviour:
   XpCount: 1
   GoldCountMin: 0
   GoldCountMax: 0
-  ActorType: 2
-  BaseHp: 1000
+  ActorType: 5
+  BaseHp: 10000
   UseSpawnParticles: 0
+--- !u!114 &-4436555721554759568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927190047970369811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8439fc1069702c04fa9482ce79a43c37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
