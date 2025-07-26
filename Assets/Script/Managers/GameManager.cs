@@ -1020,7 +1020,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
         {
-            SaveGame.Members.Money += 1000000;
+            SaveGame.Members.Money += 100_000_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))

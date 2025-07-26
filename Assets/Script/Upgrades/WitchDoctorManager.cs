@@ -11,13 +11,13 @@ namespace Assets.Script.Upgrades
             Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeWitchDoctor;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            long currentValue = ValueForLevel(level);
-            long nextValue = ValueForLevel(level + 1);
+            long currentValue = (long)(ValueForLevel(level) * 100.0);
+            long nextValue = (long)(ValueForLevel(level + 1) * 100.0);
 
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Witch Doctor</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode. Both deal equal damage.");
+            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode. Both using zap damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -25,14 +25,14 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current damage: <color=COLOR-ARENA>{currentValue}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}</color>");
+            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>{currentValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}%</color>");
 
             return sb.ToString();
         }
 
-        private static long ValueForLevel(long level)
-            => 100 * level;
+        private static double ValueForLevel(long level)
+            => 1 + 0.25 * (level - 1);
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_WitchDoctor;
 

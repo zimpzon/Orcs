@@ -1,5 +1,14 @@
 using Assets.Script.Upgrades;
+using System;
 using UnityEngine;
+
+public enum UpgradeDisplayStatus
+{
+    NotSet,     // Default value
+    Hidden,     // Parent exists but is locked (== 0)
+    NameOnly,   // Parent is unlocked (> 0), but this item is not purchased
+    FullyShown  // This upgrade is purchased (> 0)
+}
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -15,6 +24,20 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript WitchDoctor;
     public UpgradeItemScript GoldPerKnife;
 
+    public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
+    public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
+
+    public static UpgradeDisplayStatus GetDisplayStatus(long parentLevel, long ourLevel)
+    {
+        if (ourLevel > 0)
+            return UpgradeDisplayStatus.FullyShown;
+
+        if (parentLevel == -1 || parentLevel > 0)
+            return UpgradeDisplayStatus.NameOnly;
+
+        return UpgradeDisplayStatus.Hidden;
+    }
+
     public void UpdateAllUpgrades()
     {
         ClickDamageManager.UpdateAll();
@@ -25,32 +48,72 @@ public class UpgradeManager : MonoBehaviour
         GoldPerKnifeThrowManager.UpdateAll();
     }
 
+    private const string LockedText = "Buy one to see details.";
+
+    private UpgradeDisplayStatus GetUpgradeDisplayStatus(UpgradeItemScript upgradeUiScript)
+    {
+        if (upgradeUiScript == ClickDamage)
+        {
+            return GetDisplayStatus(parentLevel: -1, ourLevel: SaveGame.Members.LevelClickDamage);
+        }
+        else if (upgradeUiScript == KnifeDamage)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelClickDamage, ourLevel: SaveGame.Members.LevelKnifeDamage);
+        }
+        else if (upgradeUiScript == GoldPerRound)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelKnifeDamage, ourLevel: SaveGame.Members.LevelMoneyPerGold);
+        }
+        else if (upgradeUiScript == KnifeCd)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelMoneyPerGold, ourLevel: SaveGame.Members.LevelKnifeCd);
+        }
+        else if (upgradeUiScript == WitchDoctor)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelKnifeCd, ourLevel: SaveGame.Members.LevelWitchDoctor);
+        }
+        else if (upgradeUiScript == GoldPerKnife)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelWitchDoctor, ourLevel: SaveGame.Members.LevelGoldPerKnifeThrown);
+        }
+        else
+        {
+            throw new NotImplementedException(upgradeUiScript.name);
+        }
+    }
+
     public string GetText(UpgradeItemScript upgradeUiScript)
     {
         string text = "";
         if (upgradeUiScript == ClickDamage)
         {
-            text = ClickDamageManager.GetText();
+            var display = GetUpgradeDisplayStatus(ClickDamage);
+            text = display == UpgradeDisplayStatus.FullyShown ? ClickDamageManager.GetText() : LockedText;
         }
         else if (upgradeUiScript == KnifeDamage)
         {
-            text = KnifeDamageManager.GetText();
+            var display = GetUpgradeDisplayStatus(KnifeDamage);
+            text = display == UpgradeDisplayStatus.FullyShown ? KnifeDamageManager.GetText() : LockedText;
         }
         else if (upgradeUiScript == GoldPerRound)
         {
-            text = ArenaGoldManager.GetText();
+            var display = GetUpgradeDisplayStatus(GoldPerRound);
+            text = display == UpgradeDisplayStatus.FullyShown ? ArenaGoldManager.GetText() : LockedText;
         }
         else if (upgradeUiScript == KnifeCd)
         {
-            text = KnifeCdManager.GetText();
+            var display = GetUpgradeDisplayStatus(KnifeCd);
+            text = display == UpgradeDisplayStatus.FullyShown ? KnifeCdManager.GetText() : LockedText;
         }
         else if (upgradeUiScript == WitchDoctor)
         {
-            text = WitchDoctorManager.GetText();
+            var display = GetUpgradeDisplayStatus(WitchDoctor);
+            text = display == UpgradeDisplayStatus.FullyShown ? WitchDoctorManager.GetText() : LockedText;
         }
         else if (upgradeUiScript == GoldPerKnife)
         {
-            text = GoldPerKnifeThrowManager.GetText();
+            var display = GetUpgradeDisplayStatus(ClickDamage);
+            text = display == UpgradeDisplayStatus.FullyShown ? GoldPerKnifeThrowManager.GetText() : LockedText;
         }
         else
         {
@@ -89,8 +152,34 @@ public class UpgradeManager : MonoBehaviour
         return fullSum;
     }
 
+    private void SetIsVisble(UpgradeItemScript upgradeItemScript)
+    {
+        var display = GetUpgradeDisplayStatus(upgradeItemScript);
+        bool showGo = display is (UpgradeDisplayStatus.NameOnly or UpgradeDisplayStatus.FullyShown);
+        bool wasActive = upgradeItemScript.gameObject.activeSelf;
+        bool willBeVisible = showGo;
+
+        upgradeItemScript.gameObject.SetActive(willBeVisible);
+
+        // If it was hidden and now becoming visible, play animation
+        if (!wasActive && willBeVisible)
+        {
+            var t = upgradeItemScript.transform;
+            t.localScale = Vector3.zero; // Start from 0 scale
+            LeanTween.scale(t.gameObject, Vector3.one, 0.3f)
+                .setEaseOutBack(); // You can try other easings too
+        }
+    }
+
     public void UpdateUpgradeUi()
     {
+        SetIsVisble(ClickDamage);
+        SetIsVisble(KnifeDamage);
+        SetIsVisble(GoldPerRound);
+        SetIsVisble(KnifeCd);
+        SetIsVisble(WitchDoctor);
+        SetIsVisble(GoldPerKnife);
+
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
         ArenaGoldManager.UpdateUi();
