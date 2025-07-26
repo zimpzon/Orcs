@@ -8,6 +8,12 @@ public enum GameCounter
 
 public class SaveGameMembers
 {
+    // Time
+    public double TotalGameTimeAccumulated = 0;
+    public double TotalRealTimeAccumulated = 0;
+    public double LastGameTimeSeen = 0;
+    public double LastRealTimeSeen = 0;
+
     // Stats
     public Decimal256 TotalIncomeClickDamage;
     public Decimal256 TotalIncomeGoldPerKnifeThrow;
@@ -29,7 +35,7 @@ public class SaveGameMembers
 
     // Game
     public long ArenaLevel = 1;
-    public Decimal256 Money = 50;
+    public Decimal256 Money = 0;
 
     public long CurrentLevel = 1;
     public long AscendLevel = 1;

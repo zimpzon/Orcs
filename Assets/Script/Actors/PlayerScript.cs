@@ -36,6 +36,7 @@ public class PlayerScript : MonoBehaviour
 
     public bool RoundComplete;
     public bool UpgradesActive = false;
+    public long DaggersThrown = 0;
 
     [System.NonSerialized] public WeaponBase Weapon;
 
@@ -68,6 +69,7 @@ public class PlayerScript : MonoBehaviour
         ResetPlayerPos();
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
+        DaggersThrown = 0;
     }
 
     public void StartGame()
@@ -143,8 +145,7 @@ public class PlayerScript : MonoBehaviour
                 double damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
 
                 Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.5f, GameManager.Instance.SortLayerTopEffects, out recoil);
-
-                GameManager.Instance.AddMoney(PlayerUpgrades.Data.GoldPerKnifeThrown);
+                DaggersThrown++;
 
                 const float anglePerShot = 20;
                 const float multiDaggerScale = 0.75f;
@@ -287,9 +288,9 @@ public class PlayerScript : MonoBehaviour
     }
 
     long accumulatedCount = 0;
-    float lastAccumulatedAdd;
+    double lastAccumulatedAdd;
 
-    public void OnGoldPickedUp(bool isLargeCoin, int value)
+    public void OnGoldPickedUp(bool isLargeCoin, long value)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, pitch: pitch);

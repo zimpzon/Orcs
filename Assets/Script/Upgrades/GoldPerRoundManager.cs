@@ -25,14 +25,14 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current gold value: <color=COLOR-ARENA>{currentValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Gold value: <color=COLOR-ARENA>{currentValue}%</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{nextValue}%</color>");
 
             return sb.ToString();
         }
 
         private static double ValueForLevel(long level)
-            => level == 0 ? 1 : (1 * MathF.Pow(1.1f, level));
+            => 1 + 0.25 * level;
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_GoldValue;
 

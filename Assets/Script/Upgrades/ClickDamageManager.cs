@@ -17,7 +17,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Chain Lightning</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Zap enemies every 3 seconds.");
+            sb.AppendLine("<color=#dddddd>Zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.FormatWithDecimals(baseIncome)}</color> per second.");
@@ -36,7 +36,7 @@ namespace Assets.Script.Upgrades
             if (level == 0)
                 return 0;
 
-            return 5 + (2 * level);
+            return 10 * level;
         }
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_Clickdamage;

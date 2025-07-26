@@ -106,15 +106,15 @@ public static class Format256
                 string numberPart;
                 if (scaledValue >= 100)
                 {
-                    numberPart = scaledValue.ToString("N0", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
                 }
                 else if (scaledValue >= 10)
                 {
-                    numberPart = scaledValue.ToString("N1", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
                 }
                 else
                 {
-                    numberPart = scaledValue.ToString("N2", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
                 }
 
                 return numberPart + (abbreviate ? shortSuffix : longSuffix);

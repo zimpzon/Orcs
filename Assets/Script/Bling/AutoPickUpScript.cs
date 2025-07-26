@@ -5,7 +5,7 @@ public enum AutoPickUpType { Money, Xp, }
 public class AutoPickUpScript : MonoBehaviour
 {
     public AutoPickUpType Type;
-    public int Value = 1;
+    public long Value = 1;
     float PickupDistance = 0.2f;
     float AttractPower = 22.0f;
     float ThrowForce = 5.0f;

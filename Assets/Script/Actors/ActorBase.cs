@@ -658,9 +658,9 @@ public class ActorBase : MonoBehaviour
         if (PlayerUpgrades.Data.WitchDoctorEnabled)
         {
             // Zap a number of close enemies.
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < 1; ++i)
             {
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(0.5f);
 
                 var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: 4.0f, this);
                 if (closest is not null)
@@ -685,7 +685,7 @@ public class ActorBase : MonoBehaviour
             }
 
             // Delay before explosion.
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(0.2f);
 
             // Explode
             const float Radius = 2.0f;

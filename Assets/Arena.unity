@@ -20752,11 +20752,11 @@ MonoBehaviour:
   ColorPassiveValues: {r: 0.2509804, g: 0.8784314, b: 0.8156863, a: 1}
   ColorArenaValues: {r: 0.4862745, g: 0.9882353, b: 0, a: 1}
   ClickDamage: {fileID: 1703837212}
-  GoldPerKnife: {fileID: 2034454687}
   KnifeDamage: {fileID: 1988338383}
+  GoldPerRound: {fileID: 1705899016}
   KnifeCd: {fileID: 1800326011}
   WitchDoctor: {fileID: 805428836}
-  GoldPerRound: {fileID: 1705899016}
+  GoldPerKnife: {fileID: 2034454687}
 --- !u!1 &314191378
 GameObject:
   m_ObjectHideFlags: 0
@@ -42856,8 +42856,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1316038222}
   m_HandleRect: {fileID: 1316038221}
   m_Direction: 3
-  m_Value: 1.0000048
-  m_Size: 0.94639426
+  m_Value: 1.0842822
+  m_Size: 0.5995542
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -63143,7 +63143,7 @@ PrefabInstance:
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3812576168719002874, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -63278,12 +63278,12 @@ PrefabInstance:
     - target: {fileID: 5767378929902888365, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 148.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5767378929902888365, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -618
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5767378929902888365, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -69095,7 +69095,7 @@ PrefabInstance:
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnBuyGoldPerRound
+      value: OnBuyArenaGold
       objectReference: {fileID: 0}
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -78993,8 +78993,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.5, y: -208.0001}
-  m_SizeDelta: {x: 296.2, y: 800}
+  m_AnchoredPosition: {x: -0.5, y: -331.4102}
+  m_SizeDelta: {x: 296.2, y: 1200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1780719014
 MonoBehaviour:

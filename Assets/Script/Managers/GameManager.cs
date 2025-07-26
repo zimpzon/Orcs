@@ -367,6 +367,9 @@ public class GameManager : MonoBehaviour
 
                 yield return ShowInfoTextFlashy("OUT OF TIME", delay: 1);
                 yield return new WaitForSeconds(0.5f);
+
+                // Go back one arena level on timeout
+                SaveGame.Members.ArenaLevel--;
             }
             yield return null;
         }
@@ -523,7 +526,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.Money -= amount;
     }
 
-    public void AddXp(int amount)
+    public void AddXp(long amount)
     {
         currentXp += amount;
     }
@@ -539,7 +542,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, int value, float forceScale = 1.0f, bool isLargeCoin = false)
+    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, long value, float forceScale = 1.0f, bool isLargeCoin = false)
     {
         for (int i = 0; i < amount; ++i)
         {
@@ -658,11 +661,36 @@ public class GameManager : MonoBehaviour
 
         long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, (long)damageDone);
 
+        Vector2 endRoundGoldSummaryPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4);
+
+        bool knifeThrowGoldEnabled = SaveGame.Members.LevelGoldPerKnifeThrown > 0;
+        if (knifeThrowGoldEnabled)
+        {
+            // DaggerDamage * daggersThrown * goldPerDagger
+            long knifeThrownBonus = (long)(
+                PlayerUpgrades.Data.MagicMissileEffectiveDamage *
+                G.D.PlayerScript.DaggersThrown *
+                PlayerUpgrades.Data.GoldPerKnifeThrown);
+
+            if (knifeThrownBonus > 0)
+            {
+                FloatingTextSpawner.Instance.Spawn(
+                    endRoundGoldSummaryPos + Vector2.down * 0.5f,
+                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)})/color>G",
+                    Color.white,
+                    speed: 0.05f,
+                    timeToLive: 2.0f,
+                    fontStyle: TMPro.FontStyles.Bold);
+
+                ThrowGoldSplit(knifeThrownBonus, position);
+            }
+        }
+
         ThrowGoldSplit(goldWon, position);
 
         FloatingTextSpawner.Instance.Spawn(
-            new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4),
-            $"{damageDone} dam in {RoundTimeSeconds - _secondsLeft} sec, {goldWon}G",
+            endRoundGoldSummaryPos,
+            $"{damageDone} dam in {RoundTimeSeconds - _secondsLeft} sec, +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
             timeToLive: 2.0f,
@@ -726,8 +754,9 @@ public class GameManager : MonoBehaviour
 
         MakeCircle(enemy.transform.position, 1.0f);
 
+        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.5f;
         FloatingTextSpawner.Instance.Spawn(
-            (Vector2)enemy.transform.position + Vector2.up * 0.25f,
+            (Vector2)enemy.transform.position + Vector2.up * 0.25f + randomTextOffset,
             $"-{intAmount}",
             Color.red,
             speed: 0.75f,
@@ -953,8 +982,17 @@ public class GameManager : MonoBehaviour
         TextPassiveTotalIncome.text = $"Passive earned: ${Format256.Format(SaveGame.Members.TotalIncomePassive, abbreviate: false)}";
     }
 
+    void UpdateTimeSeen()
+    {
+        SaveGame.Members.TotalGameTimeAccumulated += G.D.GameTime - SaveGame.Members.LastGameTimeSeen;
+        SaveGame.Members.TotalRealTimeAccumulated += G.D.RealTime - SaveGame.Members.LastRealTimeSeen;
+        SaveGame.Members.LastGameTimeSeen = G.D.GameTime;
+        SaveGame.Members.LastRealTimeSeen = G.D.RealTime;
+    }
+
     void Update()
     {
+        UpdateTimeSeen();
         UpdatePassiveIncome();
         UpdateMoneyText();
         UpdateTotalIncomeArenaText();
