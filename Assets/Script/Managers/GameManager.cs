@@ -1,6 +1,7 @@
 ﻿using Assets.Script;
 using Assets.Script.Misc;
 using EZCameraShake;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -499,7 +500,7 @@ public class GameManager : MonoBehaviour
 
     public void AddGold(bool isLargeCoin, Decimal256 value)
     {
-        Decimal256 moneyAdded = value * PlayerUpgrades.Data.MoneyPerGold;
+        Decimal256 moneyAdded = value;
         SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
@@ -649,17 +650,17 @@ public class GameManager : MonoBehaviour
     {
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
-        const float HpToGoldPct = 0.1f;
+        const double HpToGoldPct = 0.1f;
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
         if (goldWon <= 0) goldWon = 1;
-        return goldWon;
+        return (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
     }
 
     void PresentRoundGold(Vector2 position)
     {
-        float damageDone = _roundTotalHp - HpBarScript.CurrentHp;
+        long damageDone = _roundTotalHp - HpBarScript.CurrentHp;
 
-        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, (long)damageDone);
+        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, damageDone);
 
         Vector2 endRoundGoldSummaryPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4);
 
@@ -705,8 +706,8 @@ public class GameManager : MonoBehaviour
 
     public void OnEnemyKill(ActorBase actor)
     {
-        //int goldCount = UnityEngine.Random.Range(actor.GoldCountMin, actor.GoldCountMax);
-        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 1, value: 1, isLargeCoin: false);
+        long value = (long)Math.Ceiling(SaveGame.Members.ArenaLevel * PlayerUpgrades.Data.MoneyPerGold);
+        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 1, value, isLargeCoin: false);
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
