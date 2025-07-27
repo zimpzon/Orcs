@@ -25,7 +25,7 @@ public static class Playfab
 
     public static void Login()
     {
-        PlayFabSettings.TitleId = "A45ED"; // SuperKnight
+        PlayFabSettings.TitleId = "4EE3"; // Haps
 
         void CreateNewId()
         {

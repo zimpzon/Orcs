@@ -25,7 +25,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current damage: <color=COLOR-ARENA>{Format256.Format(currentValue)}</color>");
+            sb.AppendLine($"<color=#dddddd>Current dagger damage: <color=COLOR-ARENA>{Format256.Format(currentValue)}</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}</color>");
 
             return sb.ToString();

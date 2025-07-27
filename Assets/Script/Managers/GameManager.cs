@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
     const int AutoSaveInterval = 10;
-    const int SendStatsInterval = 60;
+    const int SendStatsInterval = 120;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -1026,7 +1026,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePlayFabStats()
     {
-        Playfab.PlayerEvent(Playfab.SendStatsEvent, new Dictionary<string, object>());
+        //Playfab.PlayerEvent(Playfab.SendStatsEvent, new Dictionary<string, object>());
         var dic = new Dictionary<string, int>()
         {
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
