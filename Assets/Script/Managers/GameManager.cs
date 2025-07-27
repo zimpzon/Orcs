@@ -123,10 +123,12 @@ public class GameManager : MonoBehaviour
         float VolumeMusic = SaveGame.Members.VolumeMusic;
         float VolumeSfx = SaveGame.Members.VolumeSfx;
 
-        SaveGame.Members = new ();
+        SaveGame.Members = new();
         SaveGame.Members.VolumeMaster = VolumeMaster;
         SaveGame.Members.VolumeMusic = VolumeMusic;
         SaveGame.Members.VolumeSfx = VolumeSfx;
+
+        SaveGame.Members.SaveKillSwitch_CanSave = true;
 
         SaveGame.Save();
     }

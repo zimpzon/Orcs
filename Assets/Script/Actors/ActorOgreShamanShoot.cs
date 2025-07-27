@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ActorOgreShamanShoot : MonoBehaviour
 {
-    ActorBase actorBase_;
+    PlayerScript _player;
     float cd;
 
     void Awake()
     {
-        actorBase_ = GetComponent<ActorBase>();
+        _player = GetComponent<PlayerScript>();
     }
 
     void OnEnable()
@@ -19,30 +19,34 @@ public class ActorOgreShamanShoot : MonoBehaviour
 
     void Shoot()
     {
-        if (actorBase_.Hp <= 0.0f)
-            return;
+        bool hasCloseTarget = ActorBase.PlayerClosestEnemy is not null;
 
-        Vector2 direction = G.D.PlayerPos - actorBase_.transform.position;
+        Vector2 direction = hasCloseTarget ?
+            ActorBase.PlayerClosestEnemy.transform.position - G.D.PlayerPos :
+            (Vector2)G.D.PlayerPos + Random.insideUnitCircle.normalized;
+
         direction.Normalize();
-        direction = RndUtil.RandomSpread(direction, 3);
+        direction = RndUtil.RandomSpread(direction, 15);
 
         Vector3 muzzlePoint = direction * 0.6f;
-        actorBase_.AddForce(-direction * 0.1f);
+        _player.AddForce(-direction * 0.1f);
 
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
-        basic.Type = ProjectileManager.ProjectileType.HarmsPlayer;
-
+        basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
+        basic.SwayFactor = 0.05f;
         basic.Speed = 4.0f;
         basic.Damage = 100.0f;
         basic.MaxDistance = 15.0f;
+        basic.ReflectOnEdges = true;
         basic.Radius = 0.3f;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 1.0f;
         scale.y = 0.75f;
         scale.z = 1.0f;
+        scale *= 2.0f;
 
-        basic.Position = actorBase_.transform.position + muzzlePoint;
+        basic.Position = (Vector2)_player.transform.position + direction * 0.5f;
         basic.SpriteInfo.Renderer.sprite = SpriteData.Instance.ShamanProjectile;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
         basic.Direction = direction;
@@ -51,7 +55,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.SpriteInfo.Transform.localScale = scale;
         basic.ParticleSystem = Particles.I.FireballTail;
         basic.ParticleEmitCount = 2;
-        basic.ParticleEmitDelay = 0.15f;
+        basic.ParticleEmitDelay = 0.05f;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
@@ -61,27 +65,22 @@ public class ActorOgreShamanShoot : MonoBehaviour
 
     IEnumerator Think()
     {
-        while (!actorBase_.IsFullyReady)
-            yield return null;
+        float nextShoot = 0;
 
-        const float DelayBeforeFirstShoot = 1.0f;
-        float nextShoot = GameManager.Instance.GameTime + DelayBeforeFirstShoot;
-
-        while (!actorBase_.IsDead)
+        while (true)
         {
-            float distanceToPlayer = BlackboardScript.DistanceToPlayer(actorBase_.transform.position);
-            const float MinDistToShoot = 2.0f;
-            if (actorBase_.IsFullyReady && GameManager.Instance.GameTime > nextShoot && distanceToPlayer > MinDistToShoot)
+            bool isActiveArena = GameManager.Instance.GameState == GameManager.State.Idle_Fighting;
+            if (isActiveArena && GameManager.Instance.GameTime > nextShoot)
             {
-                int projectileCount = 2;
+                int projectileCount = 1;
 
                 for (int i = 0; i < projectileCount; ++i)
                 {
-                    if (actorBase_.IsDead)
+                    isActiveArena = GameManager.Instance.GameState == GameManager.State.Idle_Fighting;
+                    if (!isActiveArena)
                         break;
 
                     Shoot();
-                    GameManager.Instance.MakeFlash(actorBase_.transform.position, 1.0f);
                     yield return new WaitForSeconds(0.25f);
                 }
 

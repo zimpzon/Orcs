@@ -16,6 +16,7 @@ static class RndUtil
         return new Vector2(x, y).normalized;
     }
 
+    // Further away means less spread (unit circle is moved further away)
     public static Vector3 RandomSpread(Vector3 direction, float spread = 15)
     {
         Vector3 dir = direction * spread;

@@ -218,6 +218,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         movement = new Vector3(movement.x, -movement.y, 0.0f);
                         p.Direction = new Vector3(p.Direction.x, -p.Direction.y, 0.0f);
                     }
+
+                    float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                    p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
                 }
 
                 p.Position += movement;

@@ -5410,7 +5410,6 @@ Transform:
   - {fileID: 864690771}
   - {fileID: 970346491}
   - {fileID: 1919188411}
-  - {fileID: 773313928}
   - {fileID: 307455536}
   - {fileID: 851841309}
   m_Father: {fileID: 0}
@@ -31792,7 +31791,7 @@ MonoBehaviour:
   ShamanProjectile: {fileID: 21300000, guid: ccb0a7ec93bac9b41b5c0d63fc4c6e31, type: 3}
   PlayerDagger: {fileID: 405790247, guid: d5ea92cf78b4a2645a9b8083ec819f93, type: 3}
   RoundBullet: {fileID: 21300030, guid: 9780b41bcc160d34f98730360ae6d27b, type: 3}
-  Sawblade: {fileID: 21300000, guid: afbad81907cddef4bb79e95722d91bd3, type: 3}
+  Sawblade: {fileID: 21300000, guid: 8d3fef0ff0476b84b829d849ff308bae, type: 3}
 --- !u!114 &630143964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32032,50 +32031,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &773313927
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 773313928}
-  - component: {fileID: 773313929}
-  m_Layer: 0
-  m_Name: Chapter1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &773313928
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 773313927}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 61565181}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &773313929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 773313927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d3b29306d4286b4897c53350c9bf16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &805428836 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6149504713133850933, guid: d54dc8cfc5b0424428b7058dbabecf19,
@@ -42803,6 +42758,7 @@ GameObject:
   - component: {fileID: 1038077832}
   - component: {fileID: 1038077831}
   - component: {fileID: 1038077834}
+  - component: {fileID: 1038077835}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -42985,6 +42941,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92f6532f97738d246998fd29bf2a119e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1038077835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038077828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d8010bc943ce240a4eff7caebc7219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1099459131
