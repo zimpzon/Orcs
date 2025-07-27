@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SaveGameMembers
 {
+    // Prevent overwriting save in case of Members reset (happens in editor on crash on code change).
+    public bool SaveKillSwitch_CanSave = false;
+
     // Time
     public double TotalGameTimeAccumulated = 0;
     public double TotalRealTimeAccumulated = 0;
@@ -71,6 +74,11 @@ public static class SaveGame
 
     public static void Save()
     {
+        if (!Members.SaveKillSwitch_CanSave)
+        {
+            throw new System.Exception("SaveKillSwitch_CanSave is false, Members were reset somehow");
+        }
+
         string json = Members.ToJson();
         Debug.Log("saving json: " + json);
 
@@ -117,6 +125,7 @@ public static class SaveGame
         }
 
         Members ??= new SaveGameMembers();
+        Members.SaveKillSwitch_CanSave = true; // Guard against lost data if Members are reset.
 
         if (string.IsNullOrEmpty(Members.UserId))
         {
