@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
-    const int AutoSaveInterval = 10;
+    const int AutoSaveInterval = 5;
     const int SendStatsInterval = 120;
 
     public string GameVersion;
