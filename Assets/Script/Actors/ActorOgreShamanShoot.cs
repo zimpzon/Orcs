@@ -69,6 +69,12 @@ public class ActorOgreShamanShoot : MonoBehaviour
 
         while (true)
         {
+            if (!PlayerUpgrades.Data.WizardEnabled)
+            {
+                yield return null;
+                continue;
+            }
+
             bool isActiveArena = GameManager.Instance.GameState == GameManager.State.Idle_Fighting;
             if (isActiveArena && GameManager.Instance.GameTime > nextShoot)
             {

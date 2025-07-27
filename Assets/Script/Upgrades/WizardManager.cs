@@ -3,12 +3,12 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class WitchDoctorManager
+    public static class WizardManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelWitchDoctor;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeWitchDoctor;
+            long level = SaveGame.Members.LevelWizard;
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeWizard;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
             long currentValue = (long)(ValueForLevel(level) * 100.0);
@@ -16,8 +16,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Witch Doctor</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Corpses zap nearby enemies, then explode. Both using zap damage.");
+            sb.AppendLine("<size=+4><b><color=yellow>Wizard</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Fireballs using zap damage, well suited for single targets.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -32,16 +32,16 @@ namespace Assets.Script.Upgrades
         }
 
         private static double ValueForLevel(long level)
-            => 1 + 0.25 * (level - 1);
+            => 2 + 0.5 * (level - 1);
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_WitchDoctor;
+        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_Wizard;
 
         public static Decimal256 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelWitchDoctor;
+            => BaseIncome() * SaveGame.Members.LevelWizard;
 
         public static Decimal256 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_WitchDoctor * Math.Pow(1.15, SaveGame.Members.LevelWitchDoctor);
+            return UpgradeProgression.InitialPrice_Wizard * Math.Pow(1.15, SaveGame.Members.LevelWizard);
         }
 
         public static void UpdateAll()
@@ -52,9 +52,9 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.WitchDoctorEnabled = SaveGame.Members.LevelWitchDoctor > 0;
-            PlayerUpgrades.Data.WitchDoctorEffectiveDamage =
-                (long)(PlayerUpgrades.Data.ZapDamage * ValueForLevel(SaveGame.Members.LevelWitchDoctor));
+            PlayerUpgrades.Data.WizardEnabled = SaveGame.Members.LevelWizard > 0;
+            PlayerUpgrades.Data.WizardEffectiveDamage =
+                (long)(PlayerUpgrades.Data.ZapDamage * ValueForLevel(SaveGame.Members.LevelWizard));
         }
 
         public static void OnBuy()
@@ -64,7 +64,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelWitchDoctor++;
+            SaveGame.Members.LevelWizard++;
         }
 
         public static void UpdateUi()
@@ -72,7 +72,7 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.WitchDoctor.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelWitchDoctor);
+            UpgradeManager.Instance.Wizard.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelWizard);
         }
     }
 }

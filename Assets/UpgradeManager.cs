@@ -23,6 +23,8 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript KnifeCd;
     public UpgradeItemScript WitchDoctor;
     public UpgradeItemScript GoldPerKnife;
+    public UpgradeItemScript Hoarder;
+    public UpgradeItemScript Wizard;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -46,6 +48,8 @@ public class UpgradeManager : MonoBehaviour
         KnifeCdManager.UpdateAll();
         WitchDoctorManager.UpdateAll();
         GoldPerKnifeThrowManager.UpdateAll();
+        HoarderManager.UpdateAll();
+        WizardManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -77,6 +81,14 @@ public class UpgradeManager : MonoBehaviour
         else if (upgradeUiScript == GoldPerKnife)
         {
             return GetDisplayStatus(parentLevel: SaveGame.Members.LevelWitchDoctor, ourLevel: SaveGame.Members.LevelGoldPerKnifeThrown);
+        }
+        else if (upgradeUiScript == Hoarder)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelGoldPerKnifeThrown, ourLevel: SaveGame.Members.LevelHoarder);
+        }
+        else if (upgradeUiScript == Wizard)
+        {
+            return GetDisplayStatus(parentLevel: SaveGame.Members.LevelHoarder, ourLevel: SaveGame.Members.LevelWizard);
         }
         else
         {
@@ -114,8 +126,18 @@ public class UpgradeManager : MonoBehaviour
         }
         else if (upgradeUiScript == GoldPerKnife)
         {
-            var display = GetUpgradeDisplayStatus(ClickDamage);
+            var display = GetUpgradeDisplayStatus(GoldPerKnife);
             text = display == UpgradeDisplayStatus.FullyShown ? GoldPerKnifeThrowManager.GetText() : LockedText;
+        }
+        else if (upgradeUiScript == Hoarder)
+        {
+            var display = GetUpgradeDisplayStatus(Hoarder);
+            text = display == UpgradeDisplayStatus.FullyShown ? HoarderManager.GetText() : LockedText;
+        }
+        else if (upgradeUiScript == Wizard)
+        {
+            var display = GetUpgradeDisplayStatus(Wizard);
+            text = display == UpgradeDisplayStatus.FullyShown ? WizardManager.GetText() : LockedText;
         }
         else
         {
@@ -140,6 +162,8 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeKnifeCd += KnifeCdManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeWitchDoctor += WitchDoctorManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeGoldPerKnifeThrow += GoldPerKnifeThrowManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeHoarder += HoarderManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeWizard += WizardManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -148,6 +172,8 @@ public class UpgradeManager : MonoBehaviour
         fullSum += KnifeCdManager.PassiveIncome();
         fullSum += WitchDoctorManager.PassiveIncome();
         fullSum += GoldPerKnifeThrowManager.PassiveIncome();
+        fullSum += HoarderManager.PassiveIncome();
+        fullSum += WizardManager.PassiveIncome();
 
         SaveGame.Members.TotalIncomePassive += fullSum * incomeFactorPerFrame;
 
@@ -163,13 +189,11 @@ public class UpgradeManager : MonoBehaviour
 
         upgradeItemScript.gameObject.SetActive(willBeVisible);
 
-        // If it was hidden and now becoming visible, play animation
         if (!wasActive && willBeVisible)
         {
             var t = upgradeItemScript.transform;
-            t.localScale = Vector3.zero; // Start from 0 scale
-            LeanTween.scale(t.gameObject, Vector3.one, 0.3f)
-                .setEaseOutBack(); // You can try other easings too
+            t.localScale = Vector3.zero;
+            LeanTween.scale(t.gameObject, Vector3.one, 0.3f).setEaseOutBack();
         }
     }
 
@@ -181,6 +205,8 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(KnifeCd);
         SetIsVisble(WitchDoctor);
         SetIsVisble(GoldPerKnife);
+        SetIsVisble(Hoarder);
+        SetIsVisble(Wizard);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -188,6 +214,8 @@ public class UpgradeManager : MonoBehaviour
         KnifeCdManager.UpdateUi();
         WitchDoctorManager.UpdateUi();
         GoldPerKnifeThrowManager.UpdateUi();
+        HoarderManager.UpdateUi();
+        WizardManager.UpdateUi();
     }
 
     public void OnBuyClickDamage()
@@ -232,6 +260,20 @@ public class UpgradeManager : MonoBehaviour
         UpdateAllUpgrades();
     }
 
+    public void OnBuyHoarder()
+    {
+        HoarderManager.OnBuy();
+        Hoarder.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
+    public void OnBuyWizard()
+    {
+        WizardManager.OnBuy();
+        Wizard.SetPopupText();
+        UpdateAllUpgrades();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -240,6 +282,8 @@ public class UpgradeManager : MonoBehaviour
         KnifeCdManager.UpdatePlayerUpgrades();
         WitchDoctorManager.UpdatePlayerUpgrades();
         GoldPerKnifeThrowManager.UpdatePlayerUpgrades();
+        HoarderManager.UpdatePlayerUpgrades();
+        WizardManager.UpdatePlayerUpgrades();
     }
 
     private void Awake()

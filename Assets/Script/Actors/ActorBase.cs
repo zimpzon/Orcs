@@ -659,7 +659,8 @@ public class ActorBase : MonoBehaviour
                 var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: 4.0f, this);
                 if (closest is not null)
                 {
-                    if (Zapper.TryZapEnemy(transform.position, closest, PlayerUpgrades.Data.ZapDamage))
+                    long damage = PlayerUpgrades.Data.WitchDoctorEffectiveDamage;
+                    if (Zapper.TryZapEnemy(transform.position, closest, damage))
                     {
                         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.6f, pitch: 1.2f);
 

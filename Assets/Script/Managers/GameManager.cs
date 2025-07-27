@@ -1038,6 +1038,8 @@ public class GameManager : MonoBehaviour
             { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
             { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
             { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown},
+            { "level_hoarder", (int)SaveGame.Members.LevelHoarder},
+            { "level_wizard", (int)SaveGame.Members.LevelWizard},
         };
 
         Playfab.PlayerStat(dic);

@@ -44,7 +44,11 @@ public class UpgradeData
 
     // Witch doctor
     public bool WitchDoctorEnabled = false;
-    public double WitchDoctorEffectiveDamage = 0;
+    public long WitchDoctorEffectiveDamage = 0;
+
+    // Wizard
+    public bool WizardEnabled = false;
+    public long WizardEffectiveDamage = 0;
 
     // weapons
     public double MagicMissileBaseDamage = 3.0f;

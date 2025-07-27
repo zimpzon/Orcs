@@ -20,6 +20,8 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeKnifeDamage;
     public Decimal256 TotalIncomeWitchDoctor;
     public Decimal256 TotalIncomeGoldPerRound;
+    public Decimal256 TotalIncomeHoarder;
+    public Decimal256 TotalIncomeWizard;
 
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
@@ -31,6 +33,8 @@ public class SaveGameMembers
     public long LevelWitchDoctor = 0;
     public long LevelMoneyPerGold = 0;
     public long LevelGoldPerKnifeThrown = 0;
+    public long LevelHoarder = 0;
+    public long LevelWizard = 0;
 
     // Game
     public long ArenaLevel = 1;

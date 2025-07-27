@@ -8,6 +8,8 @@
         public static Decimal256 InitialPrice_DaggerCd = 42_000;
         public static Decimal256 InitialPrice_WitchDoctor = 530_000;
         public static Decimal256 InitialPrice_GoldPerKnifeThrown = 5_400_000;
+        public static Decimal256 InitialPrice_Hoarder = 11_000_000;
+        public static Decimal256 InitialPrice_Wizard= 22_000_000;
 
         public static Decimal256 BaseIncome_Clickdamage = 0.1;
         public static Decimal256 BaseIncome_DaggerDamage = 1;
@@ -15,5 +17,7 @@
         public static Decimal256 BaseIncome_DaggerCd = 47;
         public static Decimal256 BaseIncome_WitchDoctor = 260;
         public static Decimal256 BaseIncome_GoldPerKnifeThrown = 1400;
+        public static Decimal256 BaseIncome_Hoarder = 2000;
+        public static Decimal256 BaseIncome_Wizard= 3000;
     }
 }
