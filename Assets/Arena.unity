@@ -74089,7 +74089,7 @@ PrefabInstance:
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnBuyGoldPerKnife
+      value: OnBuyWizard
       objectReference: {fileID: 0}
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -79291,7 +79291,7 @@ PrefabInstance:
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnBuyWizard
+      value: OnBuyHoarder
       objectReference: {fileID: 0}
     - target: {fileID: 4655588472839690571, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}

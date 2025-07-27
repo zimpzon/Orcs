@@ -40,6 +40,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             DieTime = 0;
             Type = ProjectileType.HarmsEnemies;
             IsLastFrame = false;
+            OnEndOfLife = null;
             IsFirstFrame = true;
             CustomCounter = 0;
             CustomCollisionResponse = null;
@@ -61,9 +62,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             ParticleEmitCount = 0;
             ParticleEmitDelay = 0;
             ParticleNextEmit = 0;
-    }
+        }
 
-    public List<ActorBase> PreviousJumpTargets = new (5);
+        public List<ActorBase> PreviousJumpTargets = new (5);
         public ProjectileInfo SpriteInfo;
         public Vector3 Position;
         public Color Color;
@@ -81,6 +82,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float DieTime;
         public ProjectileType Type;
         public bool IsLastFrame;
+        public Action<Basic, bool> OnEndOfLife;
         public bool IsFirstFrame;
         public int CustomCounter;
         public bool DieOnCollision;
@@ -195,6 +197,11 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 {
                     p.SpriteInfo.Renderer.color = Color.white;
                     p.IsLastFrame = true;
+
+                    if (p.OnEndOfLife is not null)
+                    {
+                        p.OnEndOfLife(p, false);
+                    }
                 }
 
                 if (p.IsFirstFrame)
@@ -248,7 +255,6 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         if (GameManager.Instance.GameTime > p.StickyDamageTimeNext)
                         {
                             Vector3 damageDirection = (p.StickOffset * -1).normalized;
-
                             double damage = p.Damage;
                             GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f);
                             p.StickyDamageDone += damage;
@@ -299,14 +305,12 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         {
                             if (!alreadyVisited)
                             {
-                                bool isFirstHit = p.PreviousJumpTargets.Count == 0;
-                                if (!isFirstHit)
-                                    damage *= p.JumpDamageMul;
-
                                 GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
+                                p.PreviousJumpTargets.Add(enemy);
 
                                 if (p.JumpToNearbyTarget)
                                 {
+                                    throw new Exception("broken, probably, by this after abuse of this after hitting an enemy: p.PreviousJumpTargets.Add(enemy);");
                                     p.PreviousJumpTargets.Add(enemy);
                                     var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
 
