@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Numerics;
+using UnityEngine;
 
-public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
+[System.Serializable]
+public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISerializationCallbackReceiver
 {
     private static readonly BigInteger MaxValue = (BigInteger.One << 256) - 1;
     private static readonly BigInteger ScaleFactor = BigInteger.Pow(10, 4); // 4 decimal places
-    private readonly BigInteger rawValue;
+
+    [System.NonSerialized]
+    private BigInteger rawValue;
+
+    // For JsonUtility serialization - this will be included in JSON
+    [SerializeField]
+    private string serializedValue;
 
     public Decimal256(decimal value)
     {
         // Multiply first to preserve decimal places, then convert to BigInteger
         rawValue = new BigInteger(value * (decimal)ScaleFactor);
         ValidateRange(rawValue);
+        serializedValue = rawValue.ToString();
     }
 
     public Decimal256(float value)
@@ -20,6 +29,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
         decimal decimalValue = (decimal)value;
         rawValue = new BigInteger(decimalValue * (decimal)ScaleFactor);
         ValidateRange(rawValue);
+        serializedValue = rawValue.ToString();
     }
 
     public Decimal256(double value)
@@ -28,19 +38,55 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
         decimal decimalValue = (decimal)value;
         rawValue = new BigInteger(decimalValue * (decimal)ScaleFactor);
         ValidateRange(rawValue);
+        serializedValue = rawValue.ToString();
     }
 
     private Decimal256(BigInteger raw)
     {
         ValidateRange(raw);
         rawValue = raw;
+        serializedValue = raw.ToString();
+    }
+
+    // Static method to create from serialized string (used by parent class)
+    public static Decimal256 FromSerializedString(string serialized)
+    {
+        if (string.IsNullOrEmpty(serialized))
+            return new Decimal256(0m);
+
+        var parsed = BigInteger.Parse(serialized);
+        return new Decimal256(parsed);
+    }
+
+    // Unity serialization callbacks
+    public void OnBeforeSerialize()
+    {
+        // Ensure serializedValue is up to date before serialization
+        if (rawValue != default(BigInteger))
+        {
+            serializedValue = rawValue.ToString();
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+        // Restore rawValue from serialized string after deserialization
+        if (!string.IsNullOrEmpty(serializedValue))
+        {
+            rawValue = BigInteger.Parse(serializedValue);
+        }
+        else
+        {
+            rawValue = BigInteger.Zero;
+        }
     }
 
     public void Add(Decimal256 other)
     {
         var result = rawValue + other.rawValue;
         ValidateRange(result);
-        SetRaw(result);
+        rawValue = result;
+        serializedValue = result.ToString();
     }
 
     public void Subtract(Decimal256 other)
@@ -48,7 +94,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
         var result = rawValue - other.rawValue;
         if (result < 0)
             throw new OverflowException("Result below 0.");
-        SetRaw(result);
+        rawValue = result;
+        serializedValue = result.ToString();
     }
 
     public void Multiply(Decimal256 other)
@@ -57,7 +104,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
         // Since both values are scaled, we need to divide by the scale factor once
         result = result / ScaleFactor;
         ValidateRange(result);
-        SetRaw(result);
+        rawValue = result;
+        serializedValue = result.ToString();
     }
 
     public void Multiply(float factor)
@@ -66,7 +114,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
         decimal scaledFactor = (decimal)factor * (decimal)ScaleFactor;
         var result = rawValue * new BigInteger(scaledFactor) / ScaleFactor;
         ValidateRange(result);
-        SetRaw(result);
+        rawValue = result;
+        serializedValue = result.ToString();
     }
 
     public static Decimal256 operator +(Decimal256 left, Decimal256 right)
@@ -147,6 +196,9 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
 
     public BigInteger RawValue => rawValue;
 
+    // Property to access the serialized value (useful for debugging)
+    public string SerializedValue => serializedValue;
+
     public override string ToString()
     {
         BigInteger whole = rawValue / ScaleFactor;
@@ -212,13 +264,6 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>
     {
         if (value < 0 || value > MaxValue)
             throw new OverflowException("Value is outside 256-bit unsigned range.");
-    }
-
-    private void SetRaw(BigInteger value)
-    {
-        typeof(Decimal256)
-            .GetField("rawValue", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-            ?.SetValueDirect(__makeref(this), value);
     }
 
     // --- Comparison operators ---

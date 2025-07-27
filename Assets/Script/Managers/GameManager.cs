@@ -1,7 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Misc;
 using EZCameraShake;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
+    const int AutoSaveInterval = 10;
+    const int SendStatsInterval = 60;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -192,7 +193,7 @@ public class GameManager : MonoBehaviour
         if (enemy is null)
             return false;
 
-        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage, floatingDamage: true);
+        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage);
         if (!success)
             return false;
 
@@ -239,7 +240,7 @@ public class GameManager : MonoBehaviour
                 var direction = (firstTarget.transform.position - G.D.PlayerPos).normalized;
                 G.D.PlayerScript.AddForce(-direction * 0.5f);
 
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.8f, pitch: 1.1f);
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 1.0f, pitch: 1.0f);
                 ShakeArenaBackground();
 
                 _nextZap = G.D.GameTime + ZapInterval;
@@ -258,7 +259,7 @@ public class GameManager : MonoBehaviour
         ZapTargetIgnoreList.Add(firstTarget);
         var prevEnemy = firstTarget;
 
-        const int MaxJumps = 2;
+        const int MaxJumps = 3;
         const float JumpDelay = 0.001f;
 
         for (int i = 0; i < MaxJumps; ++i)
@@ -374,28 +375,6 @@ public class GameManager : MonoBehaviour
             }
             yield return null;
         }
-    }
-
-    public void PlayfabStats()
-    {
-        Playfab.PlayerEvent(Playfab.GameOverEvent, new Dictionary<string, object>());
-
-        Rounds++;
-
-        TextGameInfo.text = "";
-
-        float roundTime = GameTime - roundStartTime_;
-
-        int roundSeconds = Mathf.RoundToInt(roundTime);
-
-        var dic = new Dictionary<string, int>();
-        //dic[Playfab.GoldStat] = SaveGame.RoundGold;
-
-        Playfab.PlayerStat(dic);
-
-        ProjectileManager.Instance.StopAll();
-
-        SaveGame.Save();
     }
 
     static int Rounds = 0;
@@ -648,9 +627,10 @@ public class GameManager : MonoBehaviour
 
     long CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
     {
+        const double HpToGoldPct = 0.1 / EnemySpawner.HpScale;
+
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
-        const double HpToGoldPct = 0.1f;
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
         if (goldWon <= 0) goldWon = 1;
         return (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
@@ -689,12 +669,15 @@ public class GameManager : MonoBehaviour
 
         ThrowGoldSplit(goldWon, position);
 
+        long secondsSpent = RoundTimeSeconds - _secondsLeft;
+        long dps = (long)(damageDone / (double)secondsSpent);
+
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"{damageDone} dam in {RoundTimeSeconds - _secondsLeft} sec, +<color=yellow>{Format256.Format(goldWon)}</color>G",
+            $"{damageDone} dam in {secondsSpent} sec ({dps} DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
-            timeToLive: 2.0f,
+            timeToLive: 3.0f,
             fontStyle: TMPro.FontStyles.Bold);
     }
 
@@ -708,6 +691,13 @@ public class GameManager : MonoBehaviour
     {
         long value = (long)Math.Ceiling(SaveGame.Members.ArenaLevel * PlayerUpgrades.Data.MoneyPerGold);
         ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 1, value, isLargeCoin: false);
+
+        if (UnityEngine.Random.value > 0.75)
+        {
+            float pitch = 1.6f + UnityEngine.Random.value * 0.2f;
+            float volume = 0.7f + UnityEngine.Random.value * 0.1f;
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.EnemyDie, volume, pitch);
+        }
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
@@ -746,23 +736,26 @@ public class GameManager : MonoBehaviour
             amount = 1;
 
         long intAmount = (long)amount;
+
+        // Diplay the full damager number, without truncating to enemy health.
+        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.5f;
+        FloatingTextSpawner.Instance.Spawn(
+            (Vector2)enemy.transform.position + Vector2.up * 0.25f + randomTextOffset,
+            $"-{Format64.Format(intAmount)}",
+            Color.red,
+            speed: 0.75f,
+            timeToLive: 1.0f,
+            fontStyle: TMPro.FontStyles.Bold);
+
+        // Now truncate to enemy health.
         if (intAmount > enemy.Hp)
             intAmount = enemy.Hp;
 
         enemy.ApplyDamage2(intAmount, direction, forceModifier * 1.5f);
 
-        HpBarScript.AddHp((long)-intAmount);
+        HpBarScript.AddHp(-intAmount);
 
         MakeCircle(enemy.transform.position, 1.0f);
-
-        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.5f;
-        FloatingTextSpawner.Instance.Spawn(
-            (Vector2)enemy.transform.position + Vector2.up * 0.25f + randomTextOffset,
-            $"-{intAmount}",
-            Color.red,
-            speed: 0.75f,
-            timeToLive: 1.0f,
-            fontStyle: TMPro.FontStyles.Bold);
 
         // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
         if (HpBarScript.CurrentHp < 0)
@@ -826,8 +819,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    bool _firstSaveGameLoadComplete = false;
+
     void Awake()
     {
+        SaveGame.Load();
+        _firstSaveGameLoadComplete = true;
+
         TextGameInfo.text = "";
         Playfab.Login();
 
@@ -884,7 +882,6 @@ public class GameManager : MonoBehaviour
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
-        SaveGame.Load();
         UpgradeManager.Instance.UpdateAllUpgrades();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
@@ -892,6 +889,12 @@ public class GameManager : MonoBehaviour
 
         ResetGame(autoStartGame: true);
         StartCoroutine(GameStateCo());
+    }
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("OnApplicationQuit, saving...");
+        TrySaveGame(forceSave: true);
     }
 
     void LateUpdate()
@@ -991,8 +994,58 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.LastRealTimeSeen = G.D.RealTime;
     }
 
+    float _nextSave;
+
+    public void TrySaveGame(bool forceSave = false)
+    {
+        // Make sure we never save before load, this would wipe existing save game.
+        if (!_firstSaveGameLoadComplete)
+            return;
+
+        if (forceSave || Time.realtimeSinceStartup > _nextSave)
+        {
+            Debug.Log("Saving game...");
+            SaveGame.Save();
+            _nextSave = Time.realtimeSinceStartup + AutoSaveInterval;
+        }
+    }
+
+    float _nextSendStats;
+
+    void TrySendStats()
+    {
+        if (Time.realtimeSinceStartup > _nextSendStats)
+        {
+            Debug.Log("Sending stats...");
+            UpdatePlayFabStats();
+            _nextSendStats = Time.realtimeSinceStartup + SendStatsInterval;
+        }
+    }
+
+    public void UpdatePlayFabStats()
+    {
+        Playfab.PlayerEvent(Playfab.SendStatsEvent, new Dictionary<string, object>());
+        var dic = new Dictionary<string, int>()
+        {
+            { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
+            { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
+            { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
+            { "level_zap", (int)SaveGame.Members.LevelClickDamage },
+            { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
+            { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },
+            { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
+            { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
+            { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown},
+        };
+
+        Playfab.PlayerStat(dic);
+    }
+
     void Update()
     {
+        TrySaveGame();
+        TrySendStats();
+
         UpdateTimeSeen();
         UpdatePassiveIncome();
         UpdateMoneyText();

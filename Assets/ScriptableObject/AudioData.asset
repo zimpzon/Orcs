@@ -34,11 +34,12 @@ MonoBehaviour:
   SaberSwing: {fileID: 8300000, guid: 73bbed54cac374445b311c941719c0c6, type: 3}
   SaberHit: {fileID: 8300000, guid: 41a77d9029a153547a2dcc54cdfa9638, type: 3}
   Chainsaw: {fileID: 8300000, guid: 5d8050daa1e0dba40bbfc86b360321dd, type: 3}
-  MoneyPickup: {fileID: 8300000, guid: 7248dd3c7b46ee1449ba935c2181b945, type: 3}
+  MoneyPickup: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   LevelUp: {fileID: 8300000, guid: e3b752cb6a10fa44f82a30a353f8de3a, type: 3}
   SqueakyDie: {fileID: 8300000, guid: 27d7ff6e5aac9164aadf9481a66933e3, type: 3}
   ShortDeepBump: {fileID: 8300000, guid: 4d6265526b24b364f9c923de946d2ba7, type: 3}
   SoftShoot: {fileID: 8300000, guid: 1232cfa754c5a4b46933ee40da4403ac, type: 3}
   Oink: {fileID: 8300000, guid: ee937f8df3d096e4592dcb44a3177021, type: 3}
   Ackack: {fileID: 8300000, guid: 0b01e53531135764b831d7d7b5e54a73, type: 3}
-  SynthChime: {fileID: 8300000, guid: a914cd99b0b25ed4fb64c26428e5d92b, type: 3}
+  NewRound: {fileID: 0}
+  EnemyDie: {fileID: 8300000, guid: edc67a92862a2de4187e5841552cd230, type: 3}

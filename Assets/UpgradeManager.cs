@@ -46,6 +46,8 @@ public class UpgradeManager : MonoBehaviour
         KnifeCdManager.UpdateAll();
         WitchDoctorManager.UpdateAll();
         GoldPerKnifeThrowManager.UpdateAll();
+
+        GameManager.Instance.TrySaveGame(forceSave: true);
     }
 
     private const string LockedText = "Buy one to see details.";

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class EnemySpawner
 {
+    public const long HpScale = 5;
+
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
         const long MaxEnemies = 100;
@@ -12,16 +14,18 @@ public static class EnemySpawner
         long HpBasePerLevel = 60;
 
         long hpTargetForRound = HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 10);
+        hpTargetForRound *= HpScale;
 
         // Base HP values (do NOT scale arbitrarily)
-        long hpBat = 20;
-        long hpOgreSmall = 50;
-        long hpOgreLarge = 1000;
-        long hpHeroChaser = 10000;
+        long hpBat = 20 * HpScale;
+        long hpOgreSmall = 50 * HpScale;
+        long hpOgreLarge = 1000 * HpScale;
+        long hpHeroChaser = 10_000 * HpScale;
+        long hpRaven = 100_000 * HpScale;
 
-        // Optional: prevent large ogres if budget is too low
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
+        bool allowRaven = hpTargetForRound >= hpRaven;
 
         List<ActorBase> enemies = new();
         int safety = 100;
@@ -31,42 +35,52 @@ public static class EnemySpawner
             long remainingHp = hpTargetForRound;
             enemies.Clear();
 
-            // 1. Hero Chasers
+            // 1. Ravens
+            long clampedRaven = 0;
+            if (allowRaven)
+            {
+                clampedRaven = Math.Min(remainingHp / hpRaven, MaxEnemies - totalEnemies);
+                clampedRaven -= UnityEngine.Random.Range(0, 2);
+                clampedRaven = Math.Max(0, clampedRaven);
+                remainingHp -= clampedRaven * hpRaven;
+                totalEnemies += clampedRaven;
+            }
+
+            // 2. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
                 clampedHeroChaser = Math.Min(remainingHp / hpHeroChaser, MaxEnemies - totalEnemies);
-                clampedHeroChaser -= UnityEngine.Random.Range(0, 2); // a bit of variation
+                clampedHeroChaser -= UnityEngine.Random.Range(0, 2);
                 clampedHeroChaser = Math.Max(0, clampedHeroChaser);
                 remainingHp -= clampedHeroChaser * hpHeroChaser;
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 2. Large Ogres
+            // 3. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
                 clampedLarge = Math.Min(remainingHp / hpOgreLarge, MaxEnemies - totalEnemies);
-                clampedLarge -= UnityEngine.Random.Range(0, 2); // a bit of variation
+                clampedLarge -= UnityEngine.Random.Range(0, 2);
                 clampedLarge = Math.Max(0, clampedLarge);
                 remainingHp -= clampedLarge * hpOgreLarge;
                 totalEnemies += clampedLarge;
             }
 
-            // 3. Small Ogres
+            // 4. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 4. Bats
+            // 5. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
             totalEnemies += clampedBat;
 
-            // If still nothing spawned, force at least one bat
             if (totalEnemies == 0)
             {
                 clampedBat = 1;
@@ -76,6 +90,12 @@ public static class EnemySpawner
             foreach (var actor in SpawnUtil.Random(ActorTypeEnum.HeroChaser, (int)clampedHeroChaser))
             {
                 actor.BaseHp = hpHeroChaser;
+                enemies.Add(actor);
+            }
+
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Raven, (int)clampedRaven))
+            {
+                actor.BaseHp = hpRaven;
                 enemies.Add(actor);
             }
 
@@ -111,17 +131,18 @@ public static class EnemySpawner
                 enemies.Add(actor);
             }
 
-            if (enemies.Count < 100)
+            if (enemies.Count < MaxEnemies)
                 break;
 
-            // We reached maxEnemies, give each more HP and try again.
+            // Increase HP budgets and retry
             hpHeroChaser *= 10;
+            hpRaven *= 10;
             hpOgreLarge *= 10;
             hpOgreSmall *= 10;
             hpBat *= 10;
 
             if (--safety <= 0)
-                throw new Exception($"Tried spawning <100 enemies too many times");
+                throw new Exception("Tried spawning <100 enemies too many times");
         }
 
         foreach (var actor in enemies)

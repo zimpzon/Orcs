@@ -2,7 +2,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public static class Playfab
@@ -10,40 +9,23 @@ public static class Playfab
     public static string playerId;
     public static string DisplayStatus = "not logged in";
     static LoginResult LoginRes;
+    static bool LoginComplete => LoginRes is not null;
 
-    public const string GameOverEvent = "game_over";
-    public const string ItemBoughtEvent = "item_bought";
-    public const string ItemsBoughtStat = "items_bought";
-    public const string RoundsCompletedStat = "rounds_completed";
-    public const string GoldStat = "round_gold";
-    public const string LevelStat = "round_level";
-    public const string KillsStat = "round_kills";
-    public const string SecondsLeftStat = "round_seconds_left";
-    public const string TotalSeconds = "total_seconds";
-    public const string ChapterBossStartedStat = "chapter_1_boss_started";
-    public const string ChapterBossKilledStat = "chapter_1_boss_killed";
-    public const string MaxSecondsReached = "max_seconds_reached";
+    public const string SendStatsEvent = "send_stats_event";
+
+    public const string GameTimeAccumulated = "game_time_accumulated";
+    public const string RealTimeAccumulated = "real_time_accumulated";
+    public const string ArenaLevel = "arena_level";
+    public const string ArenaTotalIncome = "arena_total_income";
+    public const string PassiveTotalIncome = "psssive_total_income";
 
     const string Version = "1.0";
 
     const string PlayerIdKey = "playerId";
 
-    static void RecoverSettingsFromOldFileLocation()
-    {
-        string idPath = Path.Combine(Application.persistentDataPath, PlayerIdKey);
-        if (File.Exists(idPath))
-        {
-            string id = File.ReadAllText(idPath);
-            PlayerPrefs.SetString(PlayerIdKey, id);
-            File.Delete(idPath);
-        }
-    }
-
     public static void Login()
     {
-        PlayFabSettings.TitleId = "A45ED";
-
-        RecoverSettingsFromOldFileLocation();
+        PlayFabSettings.TitleId = "A45ED"; // SuperKnight
 
         void CreateNewId()
         {
@@ -61,7 +43,7 @@ public static class Playfab
         {
             CreateAccount = true,
             CustomId = id,
-            TitleId = "A45ED",
+            TitleId = PlayFabSettings.TitleId,
         };
 
         void Callback(LoginResult result)
@@ -85,6 +67,12 @@ public static class Playfab
 
     public static void PlayerEvent(string eventName, Dictionary<string, object> properties)
     {
+        if (!LoginComplete)
+        {
+            Debug.Log("Cannot send event, login not complete.");
+            return;
+        }
+
         var req = new WriteClientPlayerEventRequest
         {
             Body = properties,
@@ -112,6 +100,12 @@ public static class Playfab
 
     public static void PlayerStat(Dictionary<string, int> stats)
     {
+        if (!LoginComplete)
+        {
+            Debug.Log("Cannot send player stats, login not complete.");
+            return;
+        }
+
         var req = new UpdatePlayerStatisticsRequest
         {
             Statistics = new List<StatisticUpdate>(),

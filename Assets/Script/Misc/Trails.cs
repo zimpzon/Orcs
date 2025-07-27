@@ -79,10 +79,10 @@ namespace Assets.Script.Misc
                         float segmentT = (float)j / segmentSteps;
                         Vector2 position = Vector2.Lerp(previousPosition, currentPosition, segmentT);
 
-                        if (Random.value > 0.2)
+                        if (Random.value > 0.1)
                         {
                             Particles.I.ClickTrail.transform.position = position;
-                            Particles.I.ClickTrail.Emit(1);
+                            Particles.I.ClickTrail.Emit(2);
                         }
                     }
                 }

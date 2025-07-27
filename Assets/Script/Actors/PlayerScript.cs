@@ -39,6 +39,9 @@ public class PlayerScript : MonoBehaviour
     public long DaggersThrown = 0;
 
     [System.NonSerialized] public WeaponBase Weapon;
+    int daggersPerSalvo = 2;
+    float salvoInterval = 0.1f;
+    bool isFiringSalvo = false;
 
     SpriteRenderer shadowRenderer_;
     AnimationController animationController_ = new ();
@@ -70,6 +73,7 @@ public class PlayerScript : MonoBehaviour
         lookDir_ = lookDir_.x < 0.0f ? Vector3.left : Vector3.right;
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
         DaggersThrown = 0;
+        isFiringSalvo = false;
     }
 
     public void StartGame()
@@ -135,38 +139,56 @@ public class PlayerScript : MonoBehaviour
                 hasCloseEnemy = distanceClosest <= PlayerUpgrades.Data.MagicMissileEffectiveRange;
             }
 
-            if (G.D.GameTime > nextFire_ && hasCloseEnemy)
+            if (!isFiringSalvo && G.D.GameTime > nextFire_ && hasCloseEnemy)
             {
-                SetNextFire();
-
-                float recoil;
-                var fireDir = vecToClosestEnemy.normalized;
-
-                double damage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
-
-                Weapon.FireFromPoint(trans_.position, fireDir, damage, scale: 1.5f, GameManager.Instance.SortLayerTopEffects, out recoil);
-                DaggersThrown++;
-
-                const float anglePerShot = 20;
-                const float multiDaggerScale = 0.75f;
-
-                damage *= 0.05f;
-
-                // Multishot
-                for (int i = 1; i < PlayerUpgrades.Data.MagicMissileMultiShots + 1; ++i)
+                if (G.D.GameTime > nextFire_ && hasCloseEnemy)
                 {
-                    var dir1 = Quaternion.AngleAxis(-(i * anglePerShot), Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, dir1, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
-
-                    var dir2 = Quaternion.AngleAxis(+(i * anglePerShot), Vector3.forward) * fireDir;
-                    Weapon.FireFromPoint(trans_.position, dir2, damage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+                    StartCoroutine(FireSalvo(vecToClosestEnemy.normalized));
                 }
-
-                AddForce(lookDir_ * recoil * 1);
-                const float RecoilScreenShakeFactor = 2.0f;
-                GameManager.Instance.ShakeCamera(recoil * RecoilScreenShakeFactor);
             }
         }
+    }
+
+    IEnumerator FireSalvo(Vector2 fireDir)
+    {
+        double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
+        float mainScale = 1.5f;
+        float multiDaggerScale = 0.75f;
+        float anglePerShot = 20f;
+        float totalRecoil = 0;
+
+        isFiringSalvo = true;
+
+        for (int i = 0; i < daggersPerSalvo; i++)
+        {
+            if (ActorBase.PlayerClosestEnemy == null)
+                break;
+
+            float recoil;
+            Weapon.FireFromPoint(trans_.position, fireDir, baseDamage, mainScale, GameManager.Instance.SortLayerTopEffects, out recoil);
+            DaggersThrown++;
+            totalRecoil += recoil;
+
+            // Multishot (same frame)
+            double sideDamage = baseDamage * 0.05f;
+            for (int j = 1; j <= PlayerUpgrades.Data.MagicMissileMultiShots; ++j)
+            {
+                var dir1 = Quaternion.AngleAxis(-j * anglePerShot, Vector3.forward) * fireDir;
+                var dir2 = Quaternion.AngleAxis(+j * anglePerShot, Vector3.forward) * fireDir;
+
+                Weapon.FireFromPoint(trans_.position, dir1, sideDamage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+                Weapon.FireFromPoint(trans_.position, dir2, sideDamage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
+            }
+
+            if (i < daggersPerSalvo - 1)
+                yield return new WaitForSeconds(salvoInterval);
+        }
+
+        isFiringSalvo = false;
+
+        AddForce(lookDir_ * totalRecoil);
+        GameManager.Instance.ShakeCamera(totalRecoil * 2.0f);
+        SetNextFire();
     }
 
     void SetFlash(bool setActive)
@@ -293,7 +315,7 @@ public class PlayerScript : MonoBehaviour
     public void OnGoldPickedUp(bool isLargeCoin, long value)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, pitch: pitch);
+        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volumeScale: 0.7f, pitch: pitch);
         accumulatedCount++;
 
         if (G.D.GameTime > lastAccumulatedAdd + 0.25f)

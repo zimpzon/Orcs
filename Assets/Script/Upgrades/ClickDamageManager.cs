@@ -36,7 +36,7 @@ namespace Assets.Script.Upgrades
             if (level == 0)
                 return 0;
 
-            return 10 * level;
+            return 50 * level;
         }
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_Clickdamage;

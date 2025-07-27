@@ -32,7 +32,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 10 + (4 * level);
+            => 50 + (20 * (level - 1));
 
         private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_DaggerDamage;
 

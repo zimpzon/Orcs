@@ -2,10 +2,6 @@
 using System.IO;
 using UnityEngine;
 
-public enum GameCounter
-{
-};
-
 public class SaveGameMembers
 {
     // Time

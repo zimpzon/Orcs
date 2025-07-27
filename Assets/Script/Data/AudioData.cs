@@ -32,4 +32,5 @@ public class AudioData : ScriptableObject
     public AudioClip Oink;
     public AudioClip Ackack;
     public AudioClip NewRound;
+    public AudioClip EnemyDie;
 }

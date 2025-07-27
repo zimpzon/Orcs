@@ -555,7 +555,7 @@ public class ActorBase : MonoBehaviour
             yield return null;
         }
 
-        const float ExplodeRadius = 3.0f;
+        const float ExplodeRadius = 2.0f;
         AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.LivingBombExplode);
         GameManager.Instance.MakeCircle(transform_.position, ExplodeRadius);
         GameManager.Instance.MakePoof(transform_.position, 2, ExplodeRadius * 0.2f);
@@ -647,8 +647,6 @@ public class ActorBase : MonoBehaviour
         StartCoroutine(Decay(DecayTime));
     }
 
-    bool explodeCorpse = false;
-
     IEnumerator Decay(float delay)
     {
         if (PlayerUpgrades.Data.WitchDoctorEnabled)
@@ -681,7 +679,7 @@ public class ActorBase : MonoBehaviour
             }
 
             // Delay before explosion.
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
 
             // Explode
             const float Radius = 2.0f;
@@ -691,7 +689,7 @@ public class ActorBase : MonoBehaviour
             Particles.I.ExplosionSpriteSheet.transform.position = transform.position;
             Particles.I.ExplosionSpriteSheet.Emit(1);
             Particles.I.ExplosionSpread.transform.position = transform.position;
-            Particles.I.ExplosionSpread.Emit(30);
+            Particles.I.ExplosionSpread.Emit(40);
             GameManager.Instance.MakeCircle(transform.position, 2.0f);
             GameManager.Instance.MakeFlash(transform.position, 1.0f);
 
