@@ -2,7 +2,7 @@
 {
     public static class UpgradeProgression
     {
-        public static Decimal256 InitialPrice_Clickdamage = 10;
+        public static Decimal256 InitialPrice_Clickdamage = 50;
         public static Decimal256 InitialPrice_DaggerDamage = 300;
         public static Decimal256 InitialPrice_GoldValue = 3_100;
         public static Decimal256 InitialPrice_DaggerCd = 42_000;

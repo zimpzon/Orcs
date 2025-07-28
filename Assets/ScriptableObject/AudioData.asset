@@ -24,7 +24,7 @@ MonoBehaviour:
   PlayerDie: {fileID: 8300000, guid: c83ecd703a747f545a93898439aae95f, type: 3}
   BombFuseBurn: {fileID: 8300000, guid: 3be72cdafff40cd4dbb67b6cd35a8947, type: 3}
   BombExplode: {fileID: 8300000, guid: 67ab0d9bbc34b22488bead7bf83ba45e, type: 3}
-  Menu: {fileID: 8300000, guid: d75fc055824d73042b88f3c0cc9d6957, type: 3}
+  Menu: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   EnemyShoot: {fileID: 8300000, guid: fbb53febefedab8469e0fbede6b80ad5, type: 3}
   OrcPickup: {fileID: 8300000, guid: eadd73d07a91f0d4e8a674553ad02f88, type: 3}
   OrcHorn: {fileID: 8300000, guid: 29bcefeb61c74e2408c57551916c49cb, type: 3}
@@ -34,7 +34,7 @@ MonoBehaviour:
   SaberSwing: {fileID: 8300000, guid: 73bbed54cac374445b311c941719c0c6, type: 3}
   SaberHit: {fileID: 8300000, guid: 41a77d9029a153547a2dcc54cdfa9638, type: 3}
   Chainsaw: {fileID: 8300000, guid: 5d8050daa1e0dba40bbfc86b360321dd, type: 3}
-  MoneyPickup: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
+  MoneyPickup: {fileID: 0}
   LevelUp: {fileID: 8300000, guid: e3b752cb6a10fa44f82a30a353f8de3a, type: 3}
   SqueakyDie: {fileID: 8300000, guid: 27d7ff6e5aac9164aadf9481a66933e3, type: 3}
   ShortDeepBump: {fileID: 8300000, guid: 4d6265526b24b364f9c923de946d2ba7, type: 3}

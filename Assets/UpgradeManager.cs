@@ -220,7 +220,7 @@ public class UpgradeManager : MonoBehaviour
 
     void OnItemBought()
     {
-        AudioManager.Instance.PlayClipPriority(AudioManager.Instance.AudioData.Menu);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
         UpdateAllUpgrades();
     }
 

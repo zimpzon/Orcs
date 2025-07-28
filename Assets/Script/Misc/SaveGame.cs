@@ -44,7 +44,7 @@ public class SaveGameMembers
 
     // Game
     public long ArenaLevel = 1;
-    public Decimal256 Money = 0;
+    public Decimal256 Money = 40;
 
     public long CurrentLevel = 1;
     public long AscendLevel = 1;

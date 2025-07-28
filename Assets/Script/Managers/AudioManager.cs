@@ -88,13 +88,17 @@ public class AudioManager : MonoBehaviour
         MasterVolume = volume;
     }
 
-    public void PlayClipWithRandomPitch(AudioClip clip, float volumeScale = 1.0f)
+    public void PlayClipWithRandomPitchForReal(AudioClip clip, float volumeScale = 1.0f)
     {
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
         PlayClip(clip, volumeScale, randomPitch);
     }
 
-    public void PlayClip(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false)
+    public void PlayClipWithRandomPitch(AudioClip clip, float volumeScale = 1.0f)
+    {
+    }
+
+    public void PlayClipForReal(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false)
     {
         const int maxInstances = 1;
 
@@ -110,6 +114,10 @@ public class AudioManager : MonoBehaviour
             selectedSource.volume = AudioManager.Instance.MasterVolume * SaveGame.Members.VolumeSfx * volumeScale;
             selectedSource.Play();
         }
+    }
+
+    public void PlayClip(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false)
+    {
     }
 
     public void StopClip(AudioSource source)
