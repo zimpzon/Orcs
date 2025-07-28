@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Assets.Script.Misc;
+using TMPro;
 using UnityEngine;
 
 public class HpBarScript : MonoBehaviour
@@ -18,11 +19,14 @@ public class HpBarScript : MonoBehaviour
 
     public void SetHp(long current, long max)
     {
+        if (current < 0) current = 0;
+
         CurrentHp = current;
         MaxHp = max;
         var scale = FillTransform.localScale;
         scale.x = max == 0 ? 0 : (float)current / max;
         FillTransform.localScale = scale;
-        HpText.text = $"{(long)current}/{(long)max}";
+        HpText.text = $"{Format256.FormatWithDecimals(current, alwaysThreeDecimalsForLargeNumbers: true)}/{Format256.FormatWithDecimals(max, alwaysThreeDecimalsForLargeNumbers: true)}";
+        //HpText.text = $"{(long)current}/{(long)max}";
     }
 }

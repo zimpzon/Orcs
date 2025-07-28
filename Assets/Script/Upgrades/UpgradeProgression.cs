@@ -9,7 +9,7 @@
         public static Decimal256 InitialPrice_WitchDoctor = 750_000;
         public static Decimal256 InitialPrice_GoldPerKnifeThrown = 10_100_000;
         public static Decimal256 InitialPrice_Hoarder = 30_000_000;
-        public static Decimal256 InitialPrice_Wizard= 80_000_000;
+        public static Decimal256 InitialPrice_Wizard = 80_000_000;
 
         public static Decimal256 BaseIncome_Clickdamage = 0.1;
         public static Decimal256 BaseIncome_DaggerDamage = 1;

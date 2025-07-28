@@ -224,7 +224,7 @@ public class GameManager : MonoBehaviour
         LeanTween.value(rt.gameObject, 0f, 1f, time: 0.1f)
             .setOnUpdate((float val) =>
             {
-                float shakeStrength = 0.075f;
+                float shakeStrength = 0.1f;
                 rt.anchoredPosition = originalPos + (Vector3)UnityEngine.Random.insideUnitCircle * shakeStrength;
             })
             .setOnComplete(() =>
@@ -681,7 +681,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<color=yellow>{damageDone}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{dps}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
+            $"<color=yellow>{Format256.Format(damageDone)}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{Format256.Format(dps)}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
             timeToLive: 4.0f,
@@ -1019,11 +1019,17 @@ public class GameManager : MonoBehaviour
     }
 
     Decimal256 _prevTotalIncomePassive = 999999;
+
+    float _timeNextTotalIncomePassiveUpdate;
     void UpdateTotalIncomePassiveText()
     {
         if (SaveGame.Members.TotalIncomePassive == _prevTotalIncomePassive)
             return;
 
+        if (G.D.GameTime < _timeNextTotalIncomePassiveUpdate)
+            return;
+
+        _timeNextTotalIncomePassiveUpdate = G.D.GameTime + 0.1f;
         _prevTotalIncomePassive = SaveGame.Members.TotalIncomePassive;
         TextPassiveTotalIncome.text = $"Passive earned: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
