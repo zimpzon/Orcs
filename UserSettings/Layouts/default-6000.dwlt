@@ -978,7 +978,7 @@ MonoBehaviour:
   m_WindowGUID: cc27987af1a868c49b0894db9c0f5429
   m_Gizmos: 1
   m_OverrideSceneCullingMask: 6917529027641081856
-  m_SceneIsLit: 1
+  m_SceneIsLit: 0
   m_SceneLighting: 1
   m_2DMode: 1
   m_isRotationLocked: 0
@@ -986,13 +986,13 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 509.06686, y: 830.9059, z: 2.7209587}
+    m_Target: {x: 798.973, y: 510.50766, z: 0.9035491}
     speed: 2
     m_Value: {x: 509.06686, y: 830.9059, z: 2.7209587}
   m_RenderMode: 0
   m_CameraMode:
-    drawMode: 2
-    name: Shaded Wireframe
+    drawMode: 0
+    name: Shaded
     section: Shading Mode
   m_ValidateTrueMetals: 0
   m_DoValidateTrueMetals: 0
@@ -1038,7 +1038,7 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 504.73376
+    m_Target: 686.4757
     speed: 2
     m_Value: 504.73376
   m_Ortho:
@@ -1141,7 +1141,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 210.66663}
     m_SelectedIDs: 127f0000
     m_LastClickedID: 32530
-    m_ExpandedIDs: 000000003a7f00003c7f00003e7f0000407f0000427f0000447f0000467f0000487f00004a7f0000
+    m_ExpandedIDs: 00000000887f00008a7f00008c7f00008e7f0000907f0000927f0000947f0000967f0000987f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1170,7 +1170,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003a7f00003c7f00003e7f0000407f0000427f0000447f0000467f0000487f00004a7f0000
+    m_ExpandedIDs: 00000000887f00008a7f00008c7f00008e7f0000907f0000927f0000947f0000967f0000987f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

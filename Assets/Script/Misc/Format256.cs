@@ -28,7 +28,7 @@ public static class Format256
         (BigInteger.Pow(10, 6),  "M",  " million")
     };
 
-    public static string FormatWithDecimals(Decimal256 number, bool abbreviate = true)
+    public static string FormatWithDecimals(Decimal256 number, bool abbreviate = true, bool alwaysThreeDecimalsForLargeNumbers = false)
     {
         BigInteger rawValue = number.RawValue;
         BigInteger scaleFactor = BigInteger.Pow(10, 4);
@@ -65,11 +65,15 @@ public static class Format256
                 }
                 else if (scaledValue >= 10)
                 {
-                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                    if (!alwaysThreeDecimalsForLargeNumbers)
+                        numberPart = numberPart.TrimEnd('0').TrimEnd('.');
                 }
                 else
                 {
-                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                    if (!alwaysThreeDecimalsForLargeNumbers)
+                        numberPart = numberPart.TrimEnd('0').TrimEnd('.');
                 }
 
                 return numberPart + (abbreviate ? shortSuffix : longSuffix);

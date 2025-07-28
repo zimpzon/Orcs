@@ -153,8 +153,8 @@ public class PlayerScript : MonoBehaviour
     {
         double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
         float mainScale = 1.5f;
-        float multiDaggerScale = 0.75f;
-        float anglePerShot = 20f;
+        float multiDaggerScale = 1.0f;
+        float anglePerShot = 10f;
         float totalRecoil = 0;
 
         isFiringSalvo = true;
@@ -170,7 +170,7 @@ public class PlayerScript : MonoBehaviour
             totalRecoil += recoil;
 
             // Multishot (same frame)
-            double sideDamage = baseDamage * 0.05f;
+            double sideDamage = baseDamage * 0.5f;
             for (int j = 1; j <= PlayerUpgrades.Data.MagicMissileMultiShots; ++j)
             {
                 var dir1 = Quaternion.AngleAxis(-j * anglePerShot, Vector3.forward) * fireDir;

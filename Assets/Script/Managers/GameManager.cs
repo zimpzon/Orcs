@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     const int RoundTimeSeconds = 30;
     const int AutoSaveInterval = 5;
     const int SendStatsInterval = 120;
+    const float MoneyUpdateDelay = 0.02f;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -286,13 +287,17 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
-        //Decimal256 v1 = 1_234_456;
-        //Decimal256 v2 = 10.123;
-        //Decimal256 v3 = 1000.456;
+        Decimal256 v1 = 1_234_456;
+        Decimal256 v2 = 1_000_000;
+        Decimal256 v3 = 2_100_000;
 
-        //string s1 = Format256.Format(v1);
-        //string s2 = Format256.Format(v2);
-        //string s3 = Format256.Format(v3);
+        string s1 = Format256.Format(v1);
+        string s2 = Format256.Format(v2);
+        string s3 = Format256.Format(v3);
+
+        string s4 = Format256.FormatWithDecimals(v1);
+        string s5 = Format256.FormatWithDecimals(v2);
+        string s6 = Format256.FormatWithDecimals(v3);
 
         while (true)
         {
@@ -659,7 +664,7 @@ public class GameManager : MonoBehaviour
             {
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
-                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)})/color>G",
+                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)})</color>G",
                     Color.white,
                     speed: 0.05f,
                     timeToLive: 4.0f,
@@ -975,7 +980,7 @@ public class GameManager : MonoBehaviour
         rect.localScale = Vector3.one;
         text.color = Color.yellow;
 
-        LeanTween.scale(rect, Vector3.one * 1.5f, 0.1f)
+        LeanTween.scale(rect, Vector3.one * 1.1f, 0.1f)
             .setEase(LeanTweenType.easeOutQuad)
             .setOnComplete(() =>
             {
@@ -987,13 +992,20 @@ public class GameManager : MonoBehaviour
             .setOnUpdate((Color col) => text.color = col);
     }
 
+    float _prevMoneyTextNextUpdate = 0f;
+
     void UpdateMoneyText()
     {
         if (SaveGame.Members.Money == _prevMoney)
             return;
 
+        if (G.D.GameTime < _prevMoneyTextNextUpdate)
+            return;
+
+        _prevMoneyTextNextUpdate = G.D.GameTime + MoneyUpdateDelay;
         _prevMoney = SaveGame.Members.Money;
-        TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false)}";
+
+        TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     Decimal256 _prevTotalIncomeArena = 999999;
@@ -1003,7 +1015,7 @@ public class GameManager : MonoBehaviour
             return;
 
         _prevTotalIncomeArena = SaveGame.Members.TotalIncomeArena;
-        TextArenaTotalIncome.text = $"Arena earned: ${Format256.Format(SaveGame.Members.TotalIncomeArena, abbreviate: false)}";
+        TextArenaTotalIncome.text = $"Arena earned: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     Decimal256 _prevTotalIncomePassive = 999999;
@@ -1013,7 +1025,7 @@ public class GameManager : MonoBehaviour
             return;
 
         _prevTotalIncomePassive = SaveGame.Members.TotalIncomePassive;
-        TextPassiveTotalIncome.text = $"Passive earned: ${Format256.Format(SaveGame.Members.TotalIncomePassive, abbreviate: false)}";
+        TextPassiveTotalIncome.text = $"Passive earned: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     void UpdateTimeSeen()
@@ -1106,6 +1118,10 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
         {
             SaveGame.Members.Money += 100_000_000_000;
+        }
+        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            SaveGame.Members.Money = 0;
         }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
