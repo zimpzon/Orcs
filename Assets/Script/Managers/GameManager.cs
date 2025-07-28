@@ -681,7 +681,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"{damageDone} dam in {secondsSpent} sec ({dps} DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
+            $"<color=yellow>{damageDone}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{dps}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
             timeToLive: 4.0f,
