@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Explosions
 {
-    public static void Push(Vector3 pos, float radius, float force, double damage = 0, bool silent = false)
+    public static void Push(Vector3 pos, float radius, float force, ActorDamageSource damageSource, double damage = 0, bool silent = false)
     {
         if (!silent)
         {
@@ -28,7 +28,7 @@ public static class Explosions
             var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
-            GameManager.Instance.DamageEnemy(enemy, damage, push.normalized, forceModifier: 0.01f);
+            GameManager.Instance.DamageEnemy(enemy, damage, push.normalized, forceModifier: 0.01f, damageSource: damageSource);
         }
     }
 

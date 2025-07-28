@@ -10,6 +10,8 @@ public enum ActorTypeEnum
     None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven,
 };
 
+public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard };
+
 public enum ActorForcedTargetType { Absolute, Direction };
 
 public class ActorBase : MonoBehaviour
@@ -330,18 +332,6 @@ public class ActorBase : MonoBehaviour
         if (GameManager.Instance.GameTime > flashEndTime_)
             material_.SetFloat(flashParamId_, 0.0f);
 
-        if (isFrozen_)
-            material_.color = Color.Lerp(Color.white, frozenColor_, 0.6f);
-        else if (isPainted_)
-        {
-            material_.color = Color.Lerp(Color.white, paintColor_, 0.8f);
-            if (GameManager.Instance.GameTime > nextPaintDamage_)
-            {
-                GameManager.Instance.DamageEnemy(this, PlayerUpgrades.Data.PaintballBaseDamagePerSec * PlayerUpgrades.Data.PaintballDamagePerSecMul, Vector3.zero, 0.01f);
-                nextPaintDamage_ = GameManager.Instance.GameTime + PaintBallTickTime;
-            }
-        }
-
         if (!IsDead)
         {
             distanceToPlayer_ = Vector2.Distance(transform_.position, G.D.PlayerPos);
@@ -656,16 +646,16 @@ public class ActorBase : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.5f);
 
-                const float ZapRange = 2.0f;
-                var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: ZapRange, this);
-                if (closest is not null)
+                const float ZapRange = 3.0f;
+                var closestEnemy = BlackboardScript.GetClosestEnemy(transform.position, radius: ZapRange, this);
+                if (closestEnemy is not null)
                 {
                     long damage = PlayerUpgrades.Data.WitchDoctorEffectiveDamage;
-                    if (Zapper.TryZapEnemy(transform.position, closest, damage))
+                    if (Zapper.TryZapEnemy(transform.position, closestEnemy, damage, ActorDamageSource.WitchDoctor))
                     {
                         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.6f, pitch: 1.2f);
 
-                        var direction = (closest.transform.position - transform.position).normalized;
+                        var direction = (closestEnemy.transform.position - transform.position).normalized;
                         AddForce(direction * -0.1f);
 
                         GameManager.Instance.MakeFlash(transform.position, size: 1);
@@ -686,7 +676,13 @@ public class ActorBase : MonoBehaviour
             // Explode
             const float Radius = 2.0f;
 
-            Explosions.Push(transform.position, Radius, force: 0.5f, (float)PlayerUpgrades.Data.MagicMissileEffectiveDamage, silent: true);
+            Explosions.Push(
+                transform.position,
+                Radius,
+                force: 0.5f,
+                damageSource: ActorDamageSource.WitchDoctor,
+                (float)PlayerUpgrades.Data.MagicMissileEffectiveDamage,
+                silent: true);
 
             Particles.I.ExplosionSpriteSheet.transform.position = transform.position;
             Particles.I.ExplosionSpriteSheet.Emit(1);

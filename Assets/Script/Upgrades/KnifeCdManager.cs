@@ -11,8 +11,8 @@ namespace Assets.Script.Upgrades
             Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeKnifeCd;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            long cdReductionNow = (long)(level * (100.0 / MaxLevel));
-            long cdReductionNext = (long)((level + 1) * (100.0 / MaxLevel));
+            long cdReductionNow = (long)(ClampLevel(level) * (100.0 / MaxLevel));
+            long cdReductionNext = (long)((ClampLevel(level + 1)) * (100.0 / MaxLevel));
 
             var sb = new StringBuilder();
 
@@ -26,7 +26,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{level} / {MaxLevel}</color>");
+            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=red>max reached" : $"{cdReductionNext}%")}</color>");
 
             return sb.ToString();
@@ -36,10 +36,12 @@ namespace Assets.Script.Upgrades
         private const double EndValueValue = 0.1;
         private const double StartValue = 0.4;
 
+        private static long ClampLevel(long level)
+            => level > MaxLevel ? MaxLevel : level;
+
         private static float ValueForLevel(long level)
         {
-            if (level > MaxLevel)
-                level = MaxLevel;
+            level = ClampLevel(level);
 
             double Step = (StartValue - EndValueValue) / MaxLevel;
             double value = StartValue - level * Step;

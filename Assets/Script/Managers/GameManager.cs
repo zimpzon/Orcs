@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
 
     long _roundTotalHp = -1;
 
-    private bool TryZapEnemy(Vector2 from, ActorBase enemy)
+    private bool TryZapEnemy(Vector2 from, ActorBase enemy, ActorDamageSource damageSource)
     {
         if (PlayerUpgrades.Data.ZapDamage == 0)
             return false;
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
         if (enemy is null)
             return false;
 
-        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage);
+        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage, damageSource);
         if (!success)
             return false;
 
@@ -232,7 +232,7 @@ public class GameManager : MonoBehaviour
             });
     }
 
-    void CheckZapping()
+    void CheckZapping(ActorDamageSource damageSource)
     {
         if (PlayerUpgrades.Data.ZapDamage > 0 && G.D.GameTime > _nextZap)
         {
@@ -246,16 +246,16 @@ public class GameManager : MonoBehaviour
                 ShakeArenaBackground();
 
                 _nextZap = G.D.GameTime + ZapInterval;
-                StartCoroutine(ZapChainCoroutine(firstTarget));
+                StartCoroutine(ZapChainCoroutine(firstTarget, damageSource));
             }
         }
     }
 
-    IEnumerator ZapChainCoroutine(ActorBase firstTarget)
+    IEnumerator ZapChainCoroutine(ActorBase firstTarget, ActorDamageSource damageSource)
     {
         ZapTargetIgnoreList.Clear();
 
-        if (!TryZapEnemy(G.D.PlayerPos, firstTarget))
+        if (!TryZapEnemy(G.D.PlayerPos, firstTarget, damageSource))
             yield break;
 
         ZapTargetIgnoreList.Add(firstTarget);
@@ -273,7 +273,7 @@ public class GameManager : MonoBehaviour
                 radius: 4.0f,
                 ZapTargetIgnoreList);
 
-            if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy))
+            if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy, damageSource))
                 break;
 
             GameManager.Instance.ShakeCamera(1.0f);
@@ -328,7 +328,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_Fighting)
             {
-                CheckZapping();
+                CheckZapping(ActorDamageSource.ChainZap);
 
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -662,7 +662,7 @@ public class GameManager : MonoBehaviour
                     $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)})/color>G",
                     Color.white,
                     speed: 0.05f,
-                    timeToLive: 2.0f,
+                    timeToLive: 4.0f,
                     fontStyle: TMPro.FontStyles.Bold);
 
                 ThrowGoldSplit(knifeThrownBonus, position);
@@ -679,7 +679,7 @@ public class GameManager : MonoBehaviour
             $"{damageDone} dam in {secondsSpent} sec ({dps} DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
-            timeToLive: 3.0f,
+            timeToLive: 4.0f,
             fontStyle: TMPro.FontStyles.Bold);
     }
 
@@ -726,7 +726,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier)
+    void AddToTotalDamage(ActorDamageSource damageSource, long damage)
+    {
+        switch (damageSource)
+        {
+            case ActorDamageSource.ChainZap:
+                SaveGame.Members.TotalDamageChainZap += damage;
+                break;
+
+            case ActorDamageSource.DaggerThrow:
+                SaveGame.Members.TotalDamageDaggerThrow += damage;
+                break;
+
+            case ActorDamageSource.WitchDoctor:
+                SaveGame.Members.TotalDamageWitchDoctor += damage;
+                break;
+
+            case ActorDamageSource.Wizard:
+                SaveGame.Members.TotalDamageWizard += damage;
+                break;
+
+            default:
+                throw new Exception($"DamageSource {damageSource} cannot be added to any known total");
+        }
+    }
+
+    public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier, ActorDamageSource damageSource)
     {
         if (enemy.Hp <= 0 || enemy.IsDead)
             return;
@@ -752,6 +777,9 @@ public class GameManager : MonoBehaviour
         // Now truncate to enemy health.
         if (intAmount > enemy.Hp)
             intAmount = enemy.Hp;
+
+        // Count total without overkill
+        AddToTotalDamage(damageSource, intAmount);
 
         enemy.ApplyDamage2(intAmount, direction, forceModifier * 1.5f);
 
@@ -1104,7 +1132,7 @@ public class GameManager : MonoBehaviour
         {
             var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
             long damage = PlayerUpgrades.Data.ZapDamage;
-            Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage);
+            Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
         }
 
         if (Input.GetKeyDown(KeyCode.F1))

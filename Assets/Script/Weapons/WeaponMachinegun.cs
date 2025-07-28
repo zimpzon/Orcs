@@ -31,6 +31,7 @@ public class WeaponMachinegun : WeaponBase
 
         basic.Speed = PlayerUpgrades.Data.MagicMissileEffectiveSpeed;
         basic.Damage = damage;
+        basic.DamageSource = ActorDamageSource.DaggerThrow;
         basic.MaxDistance = PlayerUpgrades.Data.MagicMissileEffectiveRange;
 
         basic.Radius = 0.3f;

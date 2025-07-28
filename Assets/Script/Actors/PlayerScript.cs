@@ -229,7 +229,7 @@ public class PlayerScript : MonoBehaviour
         if (actor != null && !actor.IsBoss)
         {
             // Thorns
-            GameManager.Instance.DamageEnemy(actor, 20.0f, (actor.transform.position + trans_.position).normalized, 2.0f);
+            //GameManager.Instance.DamageEnemy(actor, 20.0f, (actor.transform.position + trans_.position).normalized, 2.0f);
         }
     }
 

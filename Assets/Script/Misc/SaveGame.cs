@@ -36,6 +36,12 @@ public class SaveGameMembers
     public long LevelHoarder = 0;
     public long LevelWizard = 0;
 
+    // Damage
+    public Decimal256 TotalDamageChainZap;
+    public Decimal256 TotalDamageDaggerThrow;
+    public Decimal256 TotalDamageWitchDoctor;
+    public Decimal256 TotalDamageWizard;
+
     // Game
     public long ArenaLevel = 1;
     public Decimal256 Money = 0;

@@ -19,7 +19,7 @@ namespace Assets.Script.Misc
                 });
         }
 
-        public static bool TryZapEnemy(Vector2 from, ActorBase actor, long damage)
+        public static bool TryZapEnemy(Vector2 from, ActorBase actor, long damage, ActorDamageSource damageSource)
         {
             Vector2 to = actor is null ? from + (Vector2)Random.insideUnitCircle * 5 : actor.transform.position;
             DoZap(from, to);
@@ -28,7 +28,7 @@ namespace Assets.Script.Misc
                 return false;
 
             var direction = (to - from).normalized;
-            GameManager.Instance.DamageEnemy(actor, damage, direction, 1.5f);
+            GameManager.Instance.DamageEnemy(actor, damage, direction, forceModifier: 1.5f, damageSource: damageSource);
 
             return true;
         }

@@ -34,6 +34,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             Force = 0.25f;
             DamageCd = 0.0f;
             DamageTimeNext = 0.0f;
+            DamageSource = ActorDamageSource.Unkonwn;
             Direction = Vector3.zero;
             MaxDistance = 0.0f;
             DistanceTraveled = 0.0f;
@@ -76,6 +77,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public double Damage;
         public float DamageCd;
         public float DamageTimeNext;
+        public ActorDamageSource DamageSource;
         public float Force;
         public bool Blink;
         public Vector3 Direction;
@@ -260,7 +262,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         {
                             Vector3 damageDirection = (p.StickOffset * -1).normalized;
                             double damage = p.Damage;
-                            GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f);
+                            GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f, p.DamageSource);
                             p.StickyDamageDone += damage;
 
                             GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
@@ -312,7 +314,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 bool offCd = GameManager.Instance.GameTime > p.DamageTimeNext;
                                 if (offCd)
                                 {
-                                    GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
+                                    GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force, p.DamageSource);
                                     p.DamageTimeNext = GameManager.Instance.GameTime + p.DamageCd;
                                 }
 

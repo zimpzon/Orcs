@@ -36,6 +36,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.Speed = 7.0f;
         basic.Damage = PlayerUpgrades.Data.WizardEffectiveDamage;
         basic.DamageCd = DamageTickCd;
+        basic.DamageSource = ActorDamageSource.Wizard;
         basic.MaxDistance = 20.0f;
         basic.ReflectOnEdges = true;
         basic.Radius = 0.3f;
