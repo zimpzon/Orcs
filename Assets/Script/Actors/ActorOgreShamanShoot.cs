@@ -15,6 +15,8 @@ public class ActorOgreShamanShoot : MonoBehaviour
 
     void Shoot()
     {
+        const float DamageTickCd = 0.2f;
+
         bool hasCloseTarget = ActorBase.PlayerClosestEnemy is not null;
 
         Vector2 direction = hasCloseTarget ?
@@ -33,6 +35,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.SwayFactor = 0.05f;
         basic.Speed = 7.0f;
         basic.Damage = PlayerUpgrades.Data.WizardEffectiveDamage;
+        basic.DamageCd = DamageTickCd;
         basic.MaxDistance = 20.0f;
         basic.ReflectOnEdges = true;
         basic.Radius = 0.3f;

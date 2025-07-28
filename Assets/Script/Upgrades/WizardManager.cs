@@ -17,7 +17,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Wizard</color></b></size>");
-            sb.AppendLine("<color=#dddddd>High damage fireballs using zap damage. Excellent for single targets.");
+            sb.AppendLine("<color=#dddddd>High damage fireballs using zap damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");

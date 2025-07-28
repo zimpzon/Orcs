@@ -656,7 +656,8 @@ public class ActorBase : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.5f);
 
-                var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: 4.0f, this);
+                const float ZapRange = 2.0f;
+                var closest = BlackboardScript.GetClosestEnemy(transform.position, radius: ZapRange, this);
                 if (closest is not null)
                 {
                     long damage = PlayerUpgrades.Data.WitchDoctorEffectiveDamage;

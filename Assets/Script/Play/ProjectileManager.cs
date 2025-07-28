@@ -32,6 +32,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             Radius = 0.0f;
             Blink = false;
             Force = 0.25f;
+            DamageCd = 0.0f;
+            DamageTimeNext = 0.0f;
             Direction = Vector3.zero;
             MaxDistance = 0.0f;
             DistanceTraveled = 0.0f;
@@ -72,6 +74,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float SwayFactor;
         public float Radius;
         public double Damage;
+        public float DamageCd;
+        public float DamageTimeNext;
         public float Force;
         public bool Blink;
         public Vector3 Direction;
@@ -305,12 +309,15 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         {
                             if (!alreadyVisited)
                             {
-                                GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
-                                p.PreviousJumpTargets.Add(enemy);
-
-                                if (p.JumpToNearbyTarget)
+                                bool offCd = GameManager.Instance.GameTime > p.DamageTimeNext;
+                                if (offCd)
                                 {
-                                    throw new Exception("broken, probably, by this after abuse of this after hitting an enemy: p.PreviousJumpTargets.Add(enemy);");
+                                    GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force);
+                                    p.DamageTimeNext = GameManager.Instance.GameTime + p.DamageCd;
+                                }
+
+                                if (offCd && p.JumpToNearbyTarget)
+                                {
                                     p.PreviousJumpTargets.Add(enemy);
                                     var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
 
