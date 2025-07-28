@@ -26603,8 +26603,8 @@ Transform:
   m_GameObject: {fileID: 461412771}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: -0.51, z: 0}
-  m_LocalScale: {x: 1, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0.03, y: -0.565, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1038077830}
@@ -26650,11 +26650,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 966854303
-  m_SortingLayer: 3
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7ac7c4c24abf764498e23922da81d5c8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.366}
+  m_SortingLayerID: -1832096683
+  m_SortingLayer: 4
+  m_SortingOrder: -1
+  m_Sprite: {fileID: 21300000, guid: 54e3705f927366540a62b2ead2e080b5, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.32156864}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -63864,7 +63864,7 @@ GameObject:
   - component: {fileID: 1317818711}
   - component: {fileID: 1317818710}
   m_Layer: 5
-  m_Name: TextArenaTotalIncome (1)
+  m_Name: TextAlpha
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
