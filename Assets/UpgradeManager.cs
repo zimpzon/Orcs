@@ -218,60 +218,66 @@ public class UpgradeManager : MonoBehaviour
         WizardManager.UpdateUi();
     }
 
+    void OnItemBought()
+    {
+        AudioManager.Instance.PlayClipPriority(AudioManager.Instance.AudioData.Menu);
+        UpdateAllUpgrades();
+    }
+
     public void OnBuyClickDamage()
     {
         ClickDamageManager.OnBuy();
         ClickDamage.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyKnifeDamage()
     {
         KnifeDamageManager.OnBuy();
         KnifeDamage.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyArenaGold()
     {
         ArenaGoldManager.OnBuy();
         GoldPerRound.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyKnifeCooldown()
     {
         KnifeCdManager.OnBuy();
         KnifeCd.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyWitchDoctorDamage()
     {
         WitchDoctorManager.OnBuy();
         WitchDoctor.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyGoldPerKnife()
     {
         GoldPerKnifeThrowManager.OnBuy();
         GoldPerKnife.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyHoarder()
     {
         HoarderManager.OnBuy();
         Hoarder.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     public void OnBuyWizard()
     {
         WizardManager.OnBuy();
         Wizard.SetPopupText();
-        UpdateAllUpgrades();
+        OnItemBought();
     }
 
     private void UpdatePlayerUpgrades()
