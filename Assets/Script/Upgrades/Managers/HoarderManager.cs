@@ -45,7 +45,13 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_Hoarder;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_Hoarder;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelHoarderX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelHoarder;

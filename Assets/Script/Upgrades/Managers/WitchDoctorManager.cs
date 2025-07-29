@@ -56,7 +56,13 @@ namespace Assets.Script.Upgrades
         private static double ValueForLevel(long level)
             => 1 + 0.5 * (level - 1);
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_WitchDoctor;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_WitchDoctor;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelWitchDoctorX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelWitchDoctor;

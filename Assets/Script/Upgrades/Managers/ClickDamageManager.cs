@@ -61,8 +61,14 @@ namespace Assets.Script.Upgrades
             return 50 * level;
         }
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_Clickdamage;
-        
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_Clickdamage;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelClickDamageX2);
+            return baseIncome;
+        }
+
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelClickDamage;
 

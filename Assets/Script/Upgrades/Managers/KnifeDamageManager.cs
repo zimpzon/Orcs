@@ -56,7 +56,13 @@ namespace Assets.Script.Upgrades
         private static long ValueForLevel(long level)
             => 50 + (20 * (level - 1));
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_DaggerDamage;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_DaggerDamage;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelKnifeDamageX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelKnifeDamage;

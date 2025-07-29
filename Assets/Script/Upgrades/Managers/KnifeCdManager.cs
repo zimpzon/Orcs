@@ -67,7 +67,13 @@ namespace Assets.Script.Upgrades
             return (float)value;
         }
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_DaggerCd;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_DaggerCd;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelKnifeCdX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelKnifeCd;

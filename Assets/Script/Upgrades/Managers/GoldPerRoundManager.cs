@@ -54,14 +54,20 @@ namespace Assets.Script.Upgrades
         private static double ValueForLevel(long level)
             => 1 + 0.25 * level;
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_GoldValue;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_GoldValue;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelMoneyPerGoldX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelMoneyPerGold;
 
         public static Decimal256 PriceForNext()
         {
-            return (UpgradeProgression.InitialPrice_GoldValue * Math.Pow(1.15, SaveGame.Members.LevelMoneyPerGold));
+            return UpgradeProgression.InitialPrice_GoldValue * Math.Pow(1.15, SaveGame.Members.LevelMoneyPerGold);
         }
 
         public static void UpdateAll()

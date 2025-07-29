@@ -60,7 +60,7 @@ namespace Assets.Script.Upgrades
         public static Decimal256 BaseIncome_DaggerCd = 47;
         public static Decimal256 BaseIncome_WitchDoctor = 260;
         public static Decimal256 BaseIncome_GoldPerKnifeThrown = 1400;
-        public static Decimal256 BaseIncome_Hoarder = 7800;
-        public static Decimal256 BaseIncome_Wizard = 44000;
+        public static Decimal256 BaseIncome_Wizard = 7800;
+        public static Decimal256 BaseIncome_Hoarder = 44000;
     }
 }

@@ -54,7 +54,13 @@ namespace Assets.Script.Upgrades
         private static long ValueForLevel(long level)
             => (long)(1 + (level - 1) * 1.1);
 
-        private static Decimal256 BaseIncome() => UpgradeProgression.BaseIncome_GoldPerKnifeThrown;
+        private static Decimal256 BaseIncome()
+        {
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_GoldPerKnifeThrown;
+            // Apply X2 bonuses
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelGoldPerKnifeThrownX2);
+            return baseIncome;
+        }
 
         public static Decimal256 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelGoldPerKnifeThrown;
