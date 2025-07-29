@@ -31,9 +31,6 @@ namespace Assets.Script.Upgrades
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
         {
             Decimal256 result = initialPrice * Math.Pow(10, levelX2);
-
-            // Add 10% to get numbers more like Cookie Clicker :-)
-            result += result * 0.1;
             return result;
         }
 
@@ -54,8 +51,8 @@ namespace Assets.Script.Upgrades
             return (levelX2 - 3) * 50;
         }
 
-        public static Decimal256 BaseIncome_Clickdamage = 0.1;
-        public static Decimal256 BaseIncome_DaggerDamage = 1;
+        public static Decimal256 BaseIncome_Clickdamage = 0.2;
+        public static Decimal256 BaseIncome_DaggerDamage = 2;
         public static Decimal256 BaseIncome_GoldValue = 8;
         public static Decimal256 BaseIncome_DaggerCd = 47;
         public static Decimal256 BaseIncome_WitchDoctor = 260;

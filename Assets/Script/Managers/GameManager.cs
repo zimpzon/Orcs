@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public enum GameModeEnum { Undeads };
@@ -38,8 +37,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
-    public TextMeshProUGUI TextArenaTotalIncome;
-    public TextMeshProUGUI TextPassiveTotalIncome;
+    public TextMeshProUGUI TextTotalIncome;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public SpriteRenderer Floor;
@@ -143,7 +141,6 @@ public class GameManager : MonoBehaviour
             canvasGroup = go.AddComponent<CanvasGroup>();
 
         TextGameInfo.text = text;
-        TextGameInfo.color = Color.yellow;
         canvasGroup.alpha = 1;
         go.transform.localScale = Vector3.zero;
 
@@ -307,7 +304,6 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             UpdateMoneyText();
-            UpdateTotalIncomeArenaText();
 
             TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
@@ -412,7 +408,7 @@ public class GameManager : MonoBehaviour
     public void ResetGame(bool autoStartGame = false)
     {
         GameTime = 0.0001f;
-        GameDeltaTime = 0.0f;
+        GameDeltaTime = 0.001f;
 
         LeanTween.color(Floor.gameObject, floorDefaultColor, 1.0f);
 
@@ -1013,30 +1009,23 @@ public class GameManager : MonoBehaviour
         TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
-    Decimal256 _prevTotalIncomeArena = 999999;
-    void UpdateTotalIncomeArenaText()
+
+    Decimal256 _prevTotalIncome = 999999;
+    float _timeNextTotalIncomeUpdate;
+
+    void UpdateTotalIncomeText()
     {
-        if (SaveGame.Members.TotalIncomeArena == _prevTotalIncomeArena)
+        if (SaveGame.Members.TotalIncomePassive == _prevTotalIncome)
             return;
 
-        _prevTotalIncomeArena = SaveGame.Members.TotalIncomeArena;
-        TextArenaTotalIncome.text = $"Arena earned: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
-    }
-
-    Decimal256 _prevTotalIncomePassive = 999999;
-
-    float _timeNextTotalIncomePassiveUpdate;
-    void UpdateTotalIncomePassiveText()
-    {
-        if (SaveGame.Members.TotalIncomePassive == _prevTotalIncomePassive)
+        if (G.D.GameTime < _timeNextTotalIncomeUpdate)
             return;
 
-        if (G.D.GameTime < _timeNextTotalIncomePassiveUpdate)
-            return;
+        _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
-        _timeNextTotalIncomePassiveUpdate = G.D.GameTime + 0.1f;
-        _prevTotalIncomePassive = SaveGame.Members.TotalIncomePassive;
-        TextPassiveTotalIncome.text = $"Passive earned: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
+        _prevTotalIncome = total;
+        TextTotalIncome.text = $"Total earned: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     void UpdateTimeSeen()
@@ -1104,8 +1093,7 @@ public class GameManager : MonoBehaviour
         UpdateTimeSeen();
         UpdatePassiveIncome();
         UpdateMoneyText();
-        UpdateTotalIncomeArenaText();
-        UpdateTotalIncomePassiveText();
+        UpdateTotalIncomeText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);

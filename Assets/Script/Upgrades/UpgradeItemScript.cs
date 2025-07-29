@@ -12,17 +12,18 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public TextMeshProUGUI PriceLabel;
     public TextMeshProUGUI LevelLabel;
     public Color HighlightColor;
+    public Color CanAffordColor;
+    public Color CannotAffordColor;
 
     Image _background;
-    Color _baseColor;
     bool _isHovering;
     Decimal256 _latestPrice = 99999;
     long _latestLevel = 99999;
+    bool _canAfford;
 
     private void Awake()
     {
         _background = GetComponent<Image>();
-        _baseColor = _background.color;
     }
 
     public void UpdateUi(bool canAfford, bool enableBtnX2, Decimal256 priceNext, long currentLevel)
@@ -35,6 +36,8 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         SetPrice(priceNext);
         SetLevel(currentLevel);
+
+        _canAfford = canAfford;
     }
 
     void SetPrice(Decimal256 price)
@@ -69,7 +72,6 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("ENTER "  +eventData.pointerEnter.name);
         _isHovering = true;
         _background.color = HighlightColor;
         SetPopupText();
@@ -78,9 +80,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("EXIT " + eventData.pointerEnter.name);
         _isHovering = false;
-        _background.color = _baseColor;
         PopupManagerScript.Instance.Hide();
     }
 
@@ -88,6 +88,16 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void Update()
     {
+        //if (_isHovering)
+        //{
+        //    _background.color = HighlightColor;
+        //}
+        //else
+        //{
+        //    _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
+        //}
+        _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
+
         if (_isHovering && G.D.GameTime > _nextUpdate)
         {
             SetPopupText();
