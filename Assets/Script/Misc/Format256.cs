@@ -61,17 +61,17 @@ public static class Format256
                 string numberPart;
                 if (scaledValue >= 100)
                 {
-                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
                 }
                 else if (scaledValue >= 10)
                 {
-                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
                     if (!alwaysThreeDecimalsForLargeNumbers)
                         numberPart = numberPart.TrimEnd('0').TrimEnd('.');
                 }
                 else
                 {
-                    numberPart = scaledValue.ToString("0.000", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
                     if (!alwaysThreeDecimalsForLargeNumbers)
                         numberPart = numberPart.TrimEnd('0').TrimEnd('.');
                 }

@@ -231,9 +231,23 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyClickDamageX2()
+    {
+        ClickDamageManager.OnBuyX2();
+        ClickDamage.SetPopupText();
+        OnItemBought();
+    }
+
     public void OnBuyKnifeDamage()
     {
         KnifeDamageManager.OnBuy();
+        KnifeDamage.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyKnifeDamageX2()
+    {
+        KnifeDamageManager.OnBuyX2();
         KnifeDamage.SetPopupText();
         OnItemBought();
     }
@@ -245,9 +259,23 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyArenaGoldX2()
+    {
+        ArenaGoldManager.OnBuyX2();
+        GoldPerRound.SetPopupText();
+        OnItemBought();
+    }
+
     public void OnBuyKnifeCooldown()
     {
         KnifeCdManager.OnBuy();
+        KnifeCd.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyKnifeCooldownX2()
+    {
+        KnifeCdManager.OnBuyX2();
         KnifeCd.SetPopupText();
         OnItemBought();
     }
@@ -259,9 +287,23 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyWitchDoctorDamageX2()
+    {
+        WitchDoctorManager.OnBuyX2();
+        WitchDoctor.SetPopupText();
+        OnItemBought();
+    }
+
     public void OnBuyGoldPerKnife()
     {
         GoldPerKnifeThrowManager.OnBuy();
+        GoldPerKnife.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyGoldPerKnifeX2()
+    {
+        GoldPerKnifeThrowManager.OnBuyX2();
         GoldPerKnife.SetPopupText();
         OnItemBought();
     }
@@ -273,9 +315,23 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyHoarderX2()
+    {
+        HoarderManager.OnBuyX2();
+        Hoarder.SetPopupText();
+        OnItemBought();
+    }
+
     public void OnBuyWizard()
     {
         WizardManager.OnBuy();
+        Wizard.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyWizardX2()
+    {
+        WizardManager.OnBuyX2();
         Wizard.SetPopupText();
         OnItemBought();
     }

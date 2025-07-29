@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Script.Upgrades.Managers;
+using System;
 using System.Text;
 
 namespace Assets.Script.Upgrades
@@ -14,6 +15,18 @@ namespace Assets.Script.Upgrades
             long cdReductionNow = (long)(ClampLevel(level) * (100.0 / MaxLevel));
             long cdReductionNext = (long)((ClampLevel(level + 1)) * (100.0 / MaxLevel));
 
+            UpgradeManagerHelper.GetX2Calculated(
+                SaveGame.Members.LevelKnifeCd,
+                SaveGame.Members.LevelKnifeCdX2,
+                UpgradeProgression.InitialPrice_DaggerCd_X2,
+                out long x2LevelsBought,
+                out long x2LevelRequirement,
+                out Decimal256 priceX2,
+                out bool x2LevelMet,
+                out bool x2PriceMet,
+                out string colorX2LevelMet,
+                out string colorX2PriceMet);
+
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Dagger Cooldown</color></b></size>");
@@ -23,6 +36,12 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format256.Format(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
+
+            sb.AppendLine("");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income X2</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-PASSIVE>{x2LevelsBought}");
+            sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
+            sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format256.Format(priceX2)}");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
@@ -79,12 +98,26 @@ namespace Assets.Script.Upgrades
             SaveGame.Members.LevelKnifeCd++;
         }
 
+        public static void OnBuyX2()
+        {
+            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_DaggerCd_X2, SaveGame.Members.LevelKnifeCdX2 + 1);
+            if (priceForNext > SaveGame.Members.Money)
+                return;
+
+            GameManager.Instance.DeductMoney(priceForNext);
+            SaveGame.Members.LevelKnifeCdX2++;
+        }
+
         public static void UpdateUi()
         {
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
+            bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
+                SaveGame.Members.LevelKnifeCd,
+                SaveGame.Members.LevelKnifeCdX2,
+                UpgradeProgression.InitialPrice_DaggerCd_X2);
 
-            UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelKnifeCd);
+            UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelKnifeCd);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public enum GameModeEnum { Undeads };
@@ -288,7 +289,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStateCo()
     {
         Decimal256 v1 = 1_234_456;
-        Decimal256 v2 = 1_000_000;
+        Decimal256 v2 = 5_000_000;
         Decimal256 v3 = 2_100_000;
 
         string s1 = Format256.Format(v1);
@@ -298,6 +299,10 @@ public class GameManager : MonoBehaviour
         string s4 = Format256.FormatWithDecimals(v1);
         string s5 = Format256.FormatWithDecimals(v2);
         string s6 = Format256.FormatWithDecimals(v3);
+
+        string s7 = Format256.FormatWithDecimals(v1, alwaysThreeDecimalsForLargeNumbers: true);
+        string s8 = Format256.FormatWithDecimals(v2, alwaysThreeDecimalsForLargeNumbers: true);
+        string s9 = Format256.FormatWithDecimals(v3, alwaysThreeDecimalsForLargeNumbers: true);
 
         while (true)
         {
@@ -664,10 +669,10 @@ public class GameManager : MonoBehaviour
             {
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
-                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)})</color>G",
+                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)}</color>G",
                     Color.white,
                     speed: 0.05f,
-                    timeToLive: 4.0f,
+                    timeToLive: 5.0f,
                     fontStyle: TMPro.FontStyles.Bold);
 
                 ThrowGoldSplit(knifeThrownBonus, position);
@@ -684,7 +689,7 @@ public class GameManager : MonoBehaviour
             $"<color=yellow>{Format256.Format(damageDone)}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{Format256.Format(dps)}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
-            timeToLive: 4.0f,
+            timeToLive: 5.0f,
             fontStyle: TMPro.FontStyles.Bold);
     }
 

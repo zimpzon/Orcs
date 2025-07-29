@@ -7,6 +7,8 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 {
     public RawImage BuyButtonOverlay;
     public Button BuyButton;
+    public RawImage X2ButtonOverlay;
+    public Button X2Button;
     public TextMeshProUGUI PriceLabel;
     public TextMeshProUGUI LevelLabel;
     public Color HighlightColor;
@@ -23,10 +25,14 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _baseColor = _background.color;
     }
 
-    public void UpdateUi(bool canAfford, Decimal256 priceNext, long currentLevel)
+    public void UpdateUi(bool canAfford, bool enableBtnX2, Decimal256 priceNext, long currentLevel)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
+
+        X2ButtonOverlay.enabled = !enableBtnX2;
+        X2Button.interactable = enableBtnX2;
+
         SetPrice(priceNext);
         SetLevel(currentLevel);
     }
@@ -63,6 +69,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("ENTER "  +eventData.pointerEnter.name);
         _isHovering = true;
         _background.color = HighlightColor;
         SetPopupText();
@@ -71,6 +78,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("EXIT " + eventData.pointerEnter.name);
         _isHovering = false;
         _background.color = _baseColor;
         PopupManagerScript.Instance.Hide();

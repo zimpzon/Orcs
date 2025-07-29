@@ -36,6 +36,16 @@ public class SaveGameMembers
     public long LevelHoarder = 0;
     public long LevelWizard = 0;
 
+    // X2
+    public long LevelClickDamageX2 = 0;
+    public long LevelKnifeCdX2 = 0;
+    public long LevelKnifeDamageX2 = 0;
+    public long LevelWitchDoctorX2 = 0;
+    public long LevelMoneyPerGoldX2 = 0;
+    public long LevelGoldPerKnifeThrownX2 = 0;
+    public long LevelHoarderX2 = 0;
+    public long LevelWizardX2 = 0;
+
     // Damage
     public Decimal256 TotalDamageChainZap;
     public Decimal256 TotalDamageDaggerThrow;
@@ -90,16 +100,16 @@ public static class SaveGame
         }
 
         string json = Members.ToJson();
-        Debug.Log("saving json: " + json);
+        //Debug.Log("saving json: " + json);
 
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            Debug.Log("saving WEBGL");
+            //Debug.Log("saving WEBGL");
             JsMappings.Save(json);
         }
         else
         {
-            Debug.Log("saving prefs");
+            //Debug.Log("saving prefs");
             PlayerPrefs.SetString(SaveGameKey, json);
         }
     }

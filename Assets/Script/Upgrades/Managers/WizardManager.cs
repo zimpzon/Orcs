@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Script.Upgrades.Managers;
+using System;
 using System.Text;
 
 namespace Assets.Script.Upgrades
@@ -14,6 +15,18 @@ namespace Assets.Script.Upgrades
             long currentValue = (long)(ValueForLevel(level) * 100.0);
             long nextValue = (long)(ValueForLevel(level + 1) * 100.0);
 
+            UpgradeManagerHelper.GetX2Calculated(
+                SaveGame.Members.LevelWizard,
+                SaveGame.Members.LevelWizardX2,
+                UpgradeProgression.InitialPrice_Wizard_X2,
+                out long x2LevelsBought,
+                out long x2LevelRequirement,
+                out Decimal256 priceX2,
+                out bool x2LevelMet,
+                out bool x2PriceMet,
+                out string colorX2LevelMet,
+                out string colorX2PriceMet);
+
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Wizard</color></b></size>");
@@ -24,6 +37,13 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format256.Format(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
+
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income X2</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-PASSIVE>{x2LevelsBought}");
+            sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
+            sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format256.Format(priceX2)}");
+            sb.AppendLine("");
+
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>{currentValue}%</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}%</color>");
@@ -69,12 +89,27 @@ namespace Assets.Script.Upgrades
             SaveGame.Members.LevelWizard++;
         }
 
+        public static void OnBuyX2()
+        {
+            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_Wizard_X2, SaveGame.Members.LevelWizardX2 + 1);
+            if (priceForNext > SaveGame.Members.Money)
+                return;
+
+            GameManager.Instance.DeductMoney(priceForNext);
+            SaveGame.Members.LevelWizardX2++;
+        }
+
         public static void UpdateUi()
         {
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
 
-            UpgradeManager.Instance.Wizard.UpdateUi(canAfford, priceForNext, SaveGame.Members.LevelWizard);
+            bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
+                SaveGame.Members.LevelWizard,
+                SaveGame.Members.LevelWizardX2,
+                UpgradeProgression.InitialPrice_Wizard_X2);
+
+            UpgradeManager.Instance.Wizard.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelWizard);
         }
     }
 }
