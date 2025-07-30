@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public Text TextVersion;
     public Text TextUser;
     public Text TextFps;
+    public TextMeshProUGUI TextEndOfAlpha;
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
     public GameObject ArenaRoot;
     public int CurrentRound = 1;
     public int MaxRound = 10;
+    public Decimal256 TotalPassiveIncome;
 
     int livingEnemyCount;
 
@@ -963,13 +965,13 @@ public class GameManager : MonoBehaviour
 
         _timePrevPassiveIncomeUpdate = currentTime;
 
-        Decimal256 totalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
-        SaveGame.Members.Money += totalPassiveIncome * (Decimal256)_deltaRealTime;
+        TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
+        SaveGame.Members.Money += TotalPassiveIncome * (Decimal256)_deltaRealTime;
 
-        if (_prevPassiveIncome != totalPassiveIncome)
+        if (_prevPassiveIncome != TotalPassiveIncome)
         {
-            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(totalPassiveIncome)} per second";
-            _prevPassiveIncome = totalPassiveIncome;
+            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(TotalPassiveIncome)} per second";
+            _prevPassiveIncome = TotalPassiveIncome;
             PopText(TextPassiveIncome);
         }
     }
@@ -1072,14 +1074,30 @@ public class GameManager : MonoBehaviour
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
+
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
+            { "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
+
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
+            { "level_knife_damage_x2", (int)SaveGame.Members.LevelKnifeDamageX2 },
+
             { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },
+            { "level_gold_value_x2", (int)SaveGame.Members.LevelMoneyPerGoldX2 },
+
             { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
+            { "level_dagger_cd_x2", (int)SaveGame.Members.LevelKnifeCdX2 },
+
             { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
+            { "level_witchdoctor_x2", (int)SaveGame.Members.LevelWitchDoctorX2 },
+
             { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown},
-            { "level_hoarder", (int)SaveGame.Members.LevelHoarder},
-            { "level_wizard", (int)SaveGame.Members.LevelWizard},
+            { "level_gold_per_dagger_x2", (int)SaveGame.Members.LevelGoldPerKnifeThrownX2},
+
+            { "level_hoarder", (int)SaveGame.Members.LevelHoarder },
+            { "level_hoarder_x2", (int)SaveGame.Members.LevelHoarderX2 },
+
+            { "level_wizard", (int)SaveGame.Members.LevelWizard },
+            { "level_wizard_x2", (int)SaveGame.Members.LevelWizardX2 },
         };
 
         Playfab.PlayerStat(dic);
