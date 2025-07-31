@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: badd153ada9c4994a8147431edd63235
+timeCreated: 1594688123
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175169
+  packageName: UI Modal
+  packageVersion: 1.0
+  assetPath: Assets/UIModal/Scripts/ModalButton.cs
+  uploadId: 380544

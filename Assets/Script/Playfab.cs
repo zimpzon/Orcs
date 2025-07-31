@@ -51,7 +51,10 @@ public static class Playfab
             LoginRes = result;
             DisplayStatus = "logged in";
             //GameManager.Instance.TextUser.text = DisplayStatus;
+
             Debug.Log($"login successful, id: {result.PlayFabId}, created: {result.NewlyCreated}");
+            Debug.Log($"Sending platform info ({Application.platform})");
+            SendPlatformInfo();
         }
 
         void ErrorCallback(PlayFabError result)
@@ -63,6 +66,25 @@ public static class Playfab
         }
 
         PlayFabClientAPI.LoginWithCustomID(req, Callback, ErrorCallback);
+    }
+
+    static void SendPlatformInfo()
+    {
+        var data = new Dictionary<string, string>
+        {
+            { "Platform", Application.platform.ToString() },
+            { "DeviceModel", SystemInfo.deviceModel },
+            { "OS", SystemInfo.operatingSystem },
+            { "UnityVersion", Application.unityVersion },
+        };
+
+        PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest
+        {
+            Data = data,
+            Permission = UserDataPermission.Public // Optional, makes it visible in dashboard
+        },
+        result => Debug.Log("Platform info sent to PlayFab"),
+        error => Debug.LogError("Failed to send platform info: " + error.GenerateErrorReport()));
     }
 
     public static void PlayerEvent(string eventName, Dictionary<string, object> properties)

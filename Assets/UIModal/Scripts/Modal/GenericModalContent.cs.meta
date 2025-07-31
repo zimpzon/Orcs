@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 0908f33e231f437faa76cd62eda03854
+timeCreated: 1594688226
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175169
+  packageName: UI Modal
+  packageVersion: 1.0
+  assetPath: Assets/UIModal/Scripts/Modal/GenericModalContent.cs
+  uploadId: 380544

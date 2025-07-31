@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a7306f08e63c6438bb035b4447e6805b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175169
+  packageName: UI Modal
+  packageVersion: 1.0
+  assetPath: Assets/UIModal/Scripts/ModalManager.cs
+  uploadId: 380544

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6c18aa9b053414f8c9d8f507cdc60faf
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175169
+  packageName: UI Modal
+  packageVersion: 1.0
+  assetPath: Assets/UIModal/Prefabs/GenericModal.prefab
+  uploadId: 380544
