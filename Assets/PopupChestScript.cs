@@ -113,6 +113,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)ForSeconds;
             reward += 100;
 
+            GameManager.Instance.AddMoney(reward);
             SaveGame.Members.ChestsCollected += 1;
 
             FloatingTextSpawner.Instance.Spawn(

@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Assets.Script.Misc
 {
@@ -42,6 +44,26 @@ namespace Assets.Script.Misc
             string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", CultureInfo.InvariantCulture) : value.ToString("0.###", CultureInfo.InvariantCulture);
 
             return formatted + (abbreviate ? shortSuffix : longSuffix);
+        }
+    }
+
+    public class Format
+    {
+        public static string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            var parts = new List<string>();
+
+            if (timeSpan.Days > 0)
+                parts.Add($"{timeSpan.Days} {(timeSpan.Days == 1 ? "day" : "days")}");
+
+            if (timeSpan.Hours > 0)
+                parts.Add($"{timeSpan.Hours} {(timeSpan.Hours == 1 ? "hour" : "hours")}");
+
+            if (timeSpan.Minutes > 0)
+                parts.Add($"{timeSpan.Minutes} {(timeSpan.Minutes == 1 ? "minute" : "minutes")}");
+
+            // If all are zero, return "0 minutes" as a fallback
+            return parts.Count > 0 ? string.Join(", ", parts) : "0 minutes";
         }
     }
 }

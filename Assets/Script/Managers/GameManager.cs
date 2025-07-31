@@ -948,8 +948,28 @@ public class GameManager : MonoBehaviour
 
     public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
+    DateTime _systemTimeLastPassiveUpdate = DateTime.MaxValue;
+    void CheckSystemAwayTime()
+    {
+        var timeSinceLastSeen = DateTime.Now - _systemTimeLastPassiveUpdate;
+        if (timeSinceLastSeen > TimeSpan.FromMinutes(30))
+        {
+            FloatingTextSpawner.Instance.Spawn(
+                Vector2.zero + Vector2.down,
+                $"Away for {Format.FormatTimeSpan(timeSinceLastSeen)}",
+                Color.white,
+                speed: 0.01f,
+                timeToLive: 5.0f,
+                fontStyle: FontStyles.Bold);
+        }
+
+        _systemTimeLastPassiveUpdate = DateTime.Now;
+    }
+
     void UpdatePassiveIncome()
     {
+        CheckSystemAwayTime();
+
         float currentTime = G.D.RealTime;
 
         if (_timePrevPassiveIncomeUpdate < 0f)
@@ -1075,7 +1095,7 @@ public class GameManager : MonoBehaviour
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 
-            { "chests_collected", (int)SaveGame.Members.ChestsCollected},
+            { "chests_collected", (int)SaveGame.Members.ChestsCollected },
 
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
             { "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
