@@ -109,7 +109,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
         {
             Debug.Log("REWARD");
 
-            const long ForSeconds = 100;
+            const long ForSeconds = 110;
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)ForSeconds;
             reward += 100;
 
