@@ -35,69 +35,80 @@ namespace Assets.Script.Misc
 
         public static void DrawJaggedTrail(Vector2 from, Vector2 to, LineRenderer lineRenderer)
         {
-            var direction = to - from;
-            float distance = direction.magnitude;
-            direction.Normalize();
-
-            // Create perpendicular vector for jagged offsets
-            Vector2 perpendicular = new Vector2(-direction.y, direction.x);
-
-            float stepSize = 0.2f;
-            float jaggedIntensity = 0.4f;
-            int numSteps = Mathf.CeilToInt(distance / stepSize);
-            int maxPoints = numSteps + 1;
-
-            // Resize buffer if needed (double size to reduce allocations)
-            if (jaggedTrailPoints.Length < maxPoints)
-                jaggedTrailPoints = new Vector3[maxPoints * 2];
-
-            Vector2 previousPosition = from;
-
-            int pointIndex = 0;
-
-            for (int i = 0; i <= numSteps; i++)
+            // This sometimes gives this error: 'RuntimeError: memory access out of bounds'.
+            // Only seen in WebGL builds. I cannot see the problem, so trying to just catch.
+            // and ignore. I supect browser throttling is involved since I've only seen it 
+            // when returning to the page after a while.
+            try
             {
-                float t = (float)i / numSteps;
-                Vector2 straightPosition = Vector2.Lerp(from, to, t);
 
-                float randomOffset = (Random.value - 0.5f) * jaggedIntensity;
-                Vector2 jaggedOffset = perpendicular * randomOffset;
-                Vector2 currentPosition = straightPosition + jaggedOffset;
+                var direction = to - from;
+                float distance = direction.magnitude;
+                direction.Normalize();
 
-                // Save to buffer directly
-                jaggedTrailPoints[pointIndex++] = new Vector3(currentPosition.x, currentPosition.y, 0);
+                // Create perpendicular vector for jagged offsets
+                Vector2 perpendicular = new Vector2(-direction.y, direction.x);
 
-                // Emit particles
-                if (i > 0)
+                float stepSize = 0.2f;
+                float jaggedIntensity = 0.4f;
+                int numSteps = Mathf.CeilToInt(distance / stepSize);
+                int maxPoints = numSteps + 1;
+
+                // Resize buffer if needed (double size to reduce allocations)
+                if (jaggedTrailPoints.Length < maxPoints)
+                    jaggedTrailPoints = new Vector3[maxPoints * 2];
+
+                Vector2 previousPosition = from;
+
+                int pointIndex = 0;
+
+                for (int i = 0; i <= numSteps; i++)
                 {
-                    Vector2 segmentDirection = (currentPosition - previousPosition).normalized;
-                    float segmentLength = Vector2.Distance(previousPosition, currentPosition);
-                    int segmentSteps = Mathf.CeilToInt(segmentLength / stepSize);
+                    float t = (float)i / numSteps;
+                    Vector2 straightPosition = Vector2.Lerp(from, to, t);
 
-                    for (int j = 1; j <= segmentSteps; j++)
+                    float randomOffset = (Random.value - 0.5f) * jaggedIntensity;
+                    Vector2 jaggedOffset = perpendicular * randomOffset;
+                    Vector2 currentPosition = straightPosition + jaggedOffset;
+
+                    // Save to buffer directly
+                    jaggedTrailPoints[pointIndex++] = new Vector3(currentPosition.x, currentPosition.y, 0);
+
+                    // Emit particles
+                    if (i > 0)
                     {
-                        float segmentT = (float)j / segmentSteps;
-                        Vector2 position = Vector2.Lerp(previousPosition, currentPosition, segmentT);
+                        Vector2 segmentDirection = (currentPosition - previousPosition).normalized;
+                        float segmentLength = Vector2.Distance(previousPosition, currentPosition);
+                        int segmentSteps = Mathf.CeilToInt(segmentLength / stepSize);
 
-                        if (Random.value > 0.1)
+                        for (int j = 1; j <= segmentSteps; j++)
                         {
-                            Particles.I.ClickTrail.transform.position = position;
-                            Particles.I.ClickTrail.Emit(2);
+                            float segmentT = (float)j / segmentSteps;
+                            Vector2 position = Vector2.Lerp(previousPosition, currentPosition, segmentT);
+
+                            if (Random.value > 0.1)
+                            {
+                                Particles.I.ClickTrail.transform.position = position;
+                                Particles.I.ClickTrail.Emit(2);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Particles.I.ClickTrail.transform.position = currentPosition;
-                    Particles.I.ClickTrail.Emit(1);
+                    else
+                    {
+                        Particles.I.ClickTrail.transform.position = currentPosition;
+                        Particles.I.ClickTrail.Emit(1);
+                    }
+
+                    previousPosition = currentPosition;
                 }
 
-                previousPosition = currentPosition;
+                // Set positions using the buffer
+                lineRenderer.positionCount = pointIndex;
+                lineRenderer.SetPositions(jaggedTrailPoints);
             }
-
-            // Set positions using the buffer
-            lineRenderer.positionCount = pointIndex;
-            lineRenderer.SetPositions(jaggedTrailPoints);
+            catch(System.Exception)
+            {
+            }
         }
 
         public static void DrawTrail(Vector2 from, Vector2 to)
