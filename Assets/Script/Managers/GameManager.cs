@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Save();
     }
 
-    IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
+    public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
     {
         var go = TextGameInfo.gameObject;
         var canvasGroup = go.GetComponent<CanvasGroup>();
@@ -190,13 +190,13 @@ public class GameManager : MonoBehaviour
 
     private bool TryZapEnemy(Vector2 from, ActorBase enemy, ActorDamageSource damageSource)
     {
-        if (PlayerUpgrades.Data.ZapDamage == 0)
+        if (PlayerUpgrades.Data.EffectiveZapDamage == 0)
             return false;
 
         if (enemy is null)
             return false;
 
-        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.ZapDamage, damageSource);
+        bool success = Zapper.TryZapEnemy(from, enemy, PlayerUpgrades.Data.EffectiveZapDamage, damageSource);
         if (!success)
             return false;
 
@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour
 
     void CheckZapping(ActorDamageSource damageSource)
     {
-        if (PlayerUpgrades.Data.ZapDamage > 0 && G.D.GameTime > _nextZap)
+        if (PlayerUpgrades.Data.EffectiveZapDamage > 0 && G.D.GameTime > _nextZap)
         {
             var firstTarget = ActorBase.PlayerClosestEnemyActor;
             if (firstTarget != null)
@@ -1075,6 +1075,8 @@ public class GameManager : MonoBehaviour
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 
+            { "chests_collected", (int)SaveGame.Members.ChestsCollected},
+
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
             { "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
 
@@ -1090,14 +1092,20 @@ public class GameManager : MonoBehaviour
             { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
             { "level_witchdoctor_x2", (int)SaveGame.Members.LevelWitchDoctorX2 },
 
-            { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown},
-            { "level_gold_per_dagger_x2", (int)SaveGame.Members.LevelGoldPerKnifeThrownX2},
+            { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown },
+            { "level_gold_per_dagger_x2", (int)SaveGame.Members.LevelGoldPerKnifeThrownX2 },
+
+            { "level_wizard", (int)SaveGame.Members.LevelWizard },
+            { "level_wizard_x2", (int)SaveGame.Members.LevelWizardX2 },
 
             { "level_hoarder", (int)SaveGame.Members.LevelHoarder },
             { "level_hoarder_x2", (int)SaveGame.Members.LevelHoarderX2 },
 
-            { "level_wizard", (int)SaveGame.Members.LevelWizard },
-            { "level_wizard_x2", (int)SaveGame.Members.LevelWizardX2 },
+            { "level_zap_damage", (int)SaveGame.Members.LevelZapDamage },
+            { "level_zap_damage_x2", (int)SaveGame.Members.LevelZapDamageX2 },
+
+            { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
+            { "level_moneymaker_x2", (int)SaveGame.Members.LevelMoneyMakerX2},
         };
 
         Playfab.PlayerStat(dic);
@@ -1134,7 +1142,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
         {
-            SaveGame.Members.Money += 100_000_000_000;
+            SaveGame.Members.Money += 100_000_000_000_000;
         }
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
         {
@@ -1164,7 +1172,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
-            long damage = PlayerUpgrades.Data.ZapDamage;
+            long damage = PlayerUpgrades.Data.EffectiveZapDamage;
             Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
         }
 

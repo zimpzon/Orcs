@@ -4,19 +4,19 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class HoarderManager
+    public static class MoneyMakerManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelHoarder;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeHoarder;
+            long level = SaveGame.Members.LevelMoneyMaker;
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeMoneyMaker;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
 
             UpgradeManagerHelper.GetX2Calculated(
-                SaveGame.Members.LevelHoarder,
-                SaveGame.Members.LevelHoarderX2,
-                UpgradeProgression.InitialPrice_Hoarder_X2,
+                SaveGame.Members.LevelMoneyMaker,
+                SaveGame.Members.LevelMoneyMakerX2,
+                UpgradeProgression.InitialPrice_MoneyMaker_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
                 out Decimal256 priceX2,
@@ -27,8 +27,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Healthy Income</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Steady, healty income.");
+            sb.AppendLine("<size=+4><b><color=yellow>Moneymaker</color></b></size>");
+            sb.AppendLine("<color=#dddddd>More money coming your way.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -47,18 +47,18 @@ namespace Assets.Script.Upgrades
 
         private static Decimal256 BaseIncome()
         {
-            Decimal256 baseIncome = UpgradeProgression.BaseIncome_Hoarder;
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_MoneyMaker;
             // Apply X2 bonuses
-            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelHoarderX2);
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelMoneyMakerX2);
             return baseIncome;
         }
 
         public static Decimal256 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelHoarder;
+            => BaseIncome() * SaveGame.Members.LevelMoneyMaker;
 
         public static Decimal256 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_Hoarder * Math.Pow(1.15, SaveGame.Members.LevelHoarder);
+            return UpgradeProgression.InitialPrice_MoneyMaker * Math.Pow(1.15, SaveGame.Members.LevelMoneyMaker);
         }
 
         public static void UpdateAll()
@@ -79,17 +79,17 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelHoarder++;
+            SaveGame.Members.LevelMoneyMaker++;
         }
 
         public static void OnBuyX2()
         {
-            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_Hoarder_X2, SaveGame.Members.LevelHoarderX2 + 1);
+            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_MoneyMaker_X2, SaveGame.Members.LevelMoneyMakerX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelHoarderX2++;
+            SaveGame.Members.LevelMoneyMakerX2++;
         }
 
         public static void UpdateUi()
@@ -97,11 +97,11 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
-                SaveGame.Members.LevelHoarder,
-                SaveGame.Members.LevelHoarderX2,
-                UpgradeProgression.InitialPrice_Hoarder_X2);
+                SaveGame.Members.LevelMoneyMaker,
+                SaveGame.Members.LevelMoneyMakerX2,
+                UpgradeProgression.InitialPrice_MoneyMaker_X2);
 
-            UpgradeManager.Instance.Hoarder.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelHoarder);
+            UpgradeManager.Instance.MoneyMaker.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelMoneyMaker);
         }
     }
 }

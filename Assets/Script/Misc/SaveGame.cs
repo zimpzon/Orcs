@@ -12,6 +12,7 @@ public class SaveGameMembers
     public double TotalRealTimeAccumulated = 0;
     public double LastGameTimeSeen = 0;
     public double LastRealTimeSeen = 0;
+    public long ChestsCollected = 0;
 
     // Stats
     public Decimal256 TotalIncomeClickDamage;
@@ -22,6 +23,8 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeGoldPerRound;
     public Decimal256 TotalIncomeHoarder;
     public Decimal256 TotalIncomeWizard;
+    public Decimal256 TotalIncomeZapDamage;
+    public Decimal256 TotalIncomeMoneyMaker;
 
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
@@ -35,6 +38,8 @@ public class SaveGameMembers
     public long LevelGoldPerKnifeThrown = 0;
     public long LevelHoarder = 0;
     public long LevelWizard = 0;
+    public long LevelZapDamage = 0;
+    public long LevelMoneyMaker = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -45,6 +50,8 @@ public class SaveGameMembers
     public long LevelGoldPerKnifeThrownX2 = 0;
     public long LevelHoarderX2 = 0;
     public long LevelWizardX2 = 0;
+    public long LevelZapDamageX2 = 0;
+    public long LevelMoneyMakerX2 = 0;
 
     // Damage
     public Decimal256 TotalDamageChainZap;

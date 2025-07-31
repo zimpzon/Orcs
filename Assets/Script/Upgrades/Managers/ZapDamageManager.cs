@@ -4,21 +4,21 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class ClickDamageManager
+    public static class ZapDamageManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelClickDamage;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeClickDamage;
+            long level = SaveGame.Members.LevelZapDamage;
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeZapDamage;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            long currentValue = ValueForLevel(level);
-            long nextValue = ValueForLevel(level + 1);
+            long currentIncrease = (long)((ValueForLevel(level) - 1.0) * 100.0);
+            long nextIncrease = (long)((ValueForLevel(level + 1) - 1.0) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
-                SaveGame.Members.LevelClickDamage,
-                SaveGame.Members.LevelClickDamageX2,
-                UpgradeProgression.InitialPrice_Clickdamage_X2,
+                SaveGame.Members.LevelZapDamage,
+                SaveGame.Members.LevelZapDamageX2,
+                UpgradeProgression.InitialPrice_ZapDamage_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
                 out Decimal256 priceX2,
@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Chain Zapping</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=yellow>Zap Damage</color></b></size>");
             sb.AppendLine("<color=#dddddd>Zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
@@ -45,36 +45,31 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current zap damage: <color=COLOR-ARENA>{Format256.Format(currentValue)}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}</color>");
-            sb.AppendLine("");
-            sb.AppendLine($"<color=#dddddd>Total damage: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalDamageChainZap)}</color>");
+            sb.AppendLine($"<color=#dddddd>Zap damage increase: <color=COLOR-ARENA>{Format256.Format(currentIncrease)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextIncrease)}%</color>");
 
             return sb.ToString();
         }
 
-        private static long ValueForLevel(long level)
+        private static double ValueForLevel(long level)
         {
-            if (level == 0)
-                return 0;
-
-            return 50 * level;
+            return 1.0 + 0.25 * level;
         }
 
         private static Decimal256 BaseIncome()
         {
-            Decimal256 baseIncome = UpgradeProgression.BaseIncome_Clickdamage;
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_ZapDamage;
             // Apply X2 bonuses
-            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelClickDamageX2);
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelZapDamageX2);
             return baseIncome;
         }
 
         public static Decimal256 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelClickDamage;
+            => BaseIncome() * SaveGame.Members.LevelZapDamage;
 
         public static Decimal256 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_Clickdamage * Math.Pow(1.15, SaveGame.Members.LevelClickDamage);
+            return UpgradeProgression.InitialPrice_ZapDamage * Math.Pow(1.15, SaveGame.Members.LevelZapDamage);
         }
 
         public static void UpdateAll()
@@ -85,7 +80,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.BaseZapDamage = ValueForLevel(SaveGame.Members.LevelClickDamage);
+            PlayerUpgrades.Data.ZapDamageUpgrade = ValueForLevel(SaveGame.Members.LevelZapDamage);
         }
 
         public static void OnBuy()
@@ -95,17 +90,17 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelClickDamage++;
+            SaveGame.Members.LevelZapDamage++;
         }
 
         public static void OnBuyX2()
         {
-            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_Clickdamage_X2, SaveGame.Members.LevelClickDamageX2 + 1);
+            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_ZapDamage_X2, SaveGame.Members.LevelZapDamageX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelClickDamageX2++;
+            SaveGame.Members.LevelZapDamageX2++;
         }
 
         public static void UpdateUi()
@@ -113,11 +108,11 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
-                SaveGame.Members.LevelClickDamage,
-                SaveGame.Members.LevelClickDamageX2,
-                UpgradeProgression.InitialPrice_Clickdamage_X2);
+                SaveGame.Members.LevelZapDamage,
+                SaveGame.Members.LevelZapDamageX2,
+                UpgradeProgression.InitialPrice_ZapDamage_X2);
 
-            UpgradeManager.Instance.ClickDamage.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelClickDamage);
+            UpgradeManager.Instance.ZapDamage.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelZapDamage);
         }
     }
 }

@@ -1,38 +1,32 @@
-using PlayFab.ClientModels;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-// cannot figure out how to place randomly as an image. And sprite didn't receive click events... *sigh*
 public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 {
-    public RectTransform imageRect; // Assign this in the Inspector
+    public LayerMask LayersToHit;
     public float margin = 100f;
-    public const float ShowTime = 3;
-    public const float HideTime = 3;
+    public const float ShowTime = 60 * 1;
+    public const float HideTime = 60 * 10;
     public Sprite BaseSprite;
     public Sprite[] Animation;
-    public Image image;
+    public SpriteRenderer _spriteRenderer;
     private bool _wasClicked = false;
+    private ParticleSystem _particles;
 
     private void Awake()
     {
-        image = GetComponent<Image>();
-        imageRect = GetComponent<RectTransform>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        BaseSprite = _spriteRenderer.sprite;
         _wasClicked = false;
+        _particles = GetComponentInChildren<ParticleSystem>();
     }
 
     void Start()
     {
-        image.sprite = BaseSprite;
         StartCoroutine(AnimateCo());
         StartCoroutine(StateCo());
-    }
-
-    private void OnMouseDown()
-    {
-        _wasClicked = true;
     }
 
     IEnumerator AnimateCo()
@@ -42,18 +36,18 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             yield return new WaitForSeconds(2);
             for (int i = 0; i < Animation.Length; i++)
             {
-                image.sprite = Animation[i];
+                _spriteRenderer.sprite = Animation[i];
                 yield return new WaitForSeconds(0.1f);
             }
 
-            image.sprite = BaseSprite;
+            _spriteRenderer.sprite = BaseSprite;
         }
     }
 
     void SetRandomPos()
     {
         var randomPoint = PositionUtility.GetPointInsideArena(0.1f, 0.1f, 0.9f, 0.9f, avoidPlayer: false);
-        transform.position = randomPoint;
+        transform.parent.position = randomPoint;
     }
 
     // hide
@@ -74,11 +68,18 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 _wasClicked = false;
 
                 // Stay hidden.
-                transform.position = Vector2.right * 77777;
-                yield return new WaitForSeconds(HideTime);
+                transform.parent.position = Vector2.right * 77777;
+                Debug.Log("HIDE");
+                _particles.Stop();
+
+                int randomSec = UnityEngine.Random.Range(0, 30);
+                yield return new WaitForSeconds(HideTime + randomSec);
 
                 // Show.
-                //PlaceRandomly();
+                Debug.Log("SHOW");
+                SetRandomPos();
+                _particles.Play();
+                _wasClicked = false;
                 float shownEndTime = G.D.RealTime + ShowTime;
                 bool outOfTime = G.D.RealTime > shownEndTime;
 
@@ -94,33 +95,38 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
                 if (outOfTime)
                 {
+                    Debug.Log("OUT OF TIME");
                     break; // To outermost loop.
                 }
 
                 // Was clicked.
                 DoReward();
-                yield return new WaitForSeconds(2);
                 break; // to outermost loop.
             }
         }
 
         void DoReward()
         {
-            const int ForSeconds = 60;
-            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * ForSeconds;
+            Debug.Log("REWARD");
+
+            const long ForSeconds = 100;
+            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)ForSeconds;
+            reward += 100;
+
+            SaveGame.Members.ChestsCollected += 1;
 
             FloatingTextSpawner.Instance.Spawn(
                 transform.position + Vector3.up * 2,
-                $"$<color=yellow>{Format256.Format(reward)}</color>",
+                $"<size=+1>CHEST COLLECTED</size>\n$<color=yellow>{Format256.Format(reward)}</color>",
                 Color.white,
-                speed: 0.05f,
-                timeToLive: 3.0f,
+                speed: 0.1f,
+                timeToLive: 5.0f,
                 fontStyle: TMPro.FontStyles.Bold);
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("CLICK");
+        _wasClicked = true;
     }
 }

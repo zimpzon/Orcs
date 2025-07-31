@@ -14,7 +14,9 @@ public class UpgradeData
     public TimeSpan GameStartTime = TimeSpan.Zero;
 
     // Zap
-    public long ZapDamage = 0;
+    public long BaseZapDamage = 0;
+    public double ZapDamageUpgrade = 1.0;
+    public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
 
     // gold
     public float MoneyDoubleChance = 0.05f;

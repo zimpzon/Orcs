@@ -82,7 +82,7 @@ namespace Assets.Script.Upgrades
         {
             PlayerUpgrades.Data.WitchDoctorEnabled = SaveGame.Members.LevelWitchDoctor > 0;
             PlayerUpgrades.Data.WitchDoctorEffectiveDamage =
-                (long)(PlayerUpgrades.Data.ZapDamage * ValueForLevel(SaveGame.Members.LevelWitchDoctor));
+                (long)(PlayerUpgrades.Data.EffectiveZapDamage * ValueForLevel(SaveGame.Members.LevelWitchDoctor));
         }
 
         public static void OnBuy()
