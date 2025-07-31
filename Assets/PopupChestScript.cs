@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +8,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
     public float margin = 100f;
     public const float ShowTime = 60 * 1;
     public const float HideTime = 60 * 10;
+    public const int MaxRandomExtraHideTime = 60;
     public Sprite BaseSprite;
     public Sprite[] Animation;
     public SpriteRenderer _spriteRenderer;
@@ -72,7 +72,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 Debug.Log("HIDE");
                 _particles.Stop();
 
-                int randomSec = UnityEngine.Random.Range(0, 30);
+                int randomSec = Random.Range(0, MaxRandomExtraHideTime);
                 yield return new WaitForSeconds(HideTime + randomSec);
 
                 // Show.
@@ -109,8 +109,8 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
         {
             Debug.Log("REWARD");
 
-            const long ForSeconds = 110;
-            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)ForSeconds;
+            long numberOfSeconds = Random.Range(100, 300);
+            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
             reward += 100;
 
             GameManager.Instance.AddMoney(reward);
@@ -118,7 +118,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
             FloatingTextSpawner.Instance.Spawn(
                 transform.position + Vector3.up * 2,
-                $"<size=+1>CHEST COLLECTED</size>\n$<color=yellow>{Format256.Format(reward)}</color>",
+                $"<size=+1>CHEST COLLECTED</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format256.Format(reward)}</color>",
                 Color.white,
                 speed: 0.1f,
                 timeToLive: 5.0f,
