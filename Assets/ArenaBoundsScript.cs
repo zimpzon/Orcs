@@ -1,11 +1,23 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ArenaBoundsScript : MonoBehaviour
+public class ArenaBoundsScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static ArenaBoundsScript Instance;
 
+    public GameObject GameVisibleWarning;
     public LineRenderer LineRenderer;
     public float LineRendererBaseWidth;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        GameVisibleWarning.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameVisibleWarning.SetActive(false);
+    }
 
     private void Awake()
     {

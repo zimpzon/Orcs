@@ -16,8 +16,6 @@ public static class Playfab
     public const string GameTimeAccumulated = "game_time_accumulated";
     public const string RealTimeAccumulated = "real_time_accumulated";
     public const string ArenaLevel = "arena_level";
-    public const string ArenaTotalIncome = "arena_total_income";
-    public const string PassiveTotalIncome = "psssive_total_income";
 
     const string Version = "1.0";
 
@@ -54,7 +52,7 @@ public static class Playfab
 
             Debug.Log($"login successful, id: {result.PlayFabId}, created: {result.NewlyCreated}");
             Debug.Log($"Sending platform info ({Application.platform})");
-            SendPlatformInfo();
+            SendLoginInfo();
         }
 
         void ErrorCallback(PlayFabError result)
@@ -68,7 +66,7 @@ public static class Playfab
         PlayFabClientAPI.LoginWithCustomID(req, Callback, ErrorCallback);
     }
 
-    static void SendPlatformInfo()
+    static void SendLoginInfo()
     {
         var data = new Dictionary<string, string>
         {
@@ -76,6 +74,8 @@ public static class Playfab
             { "DeviceModel", SystemInfo.deviceModel },
             { "OS", SystemInfo.operatingSystem },
             { "UnityVersion", Application.unityVersion },
+            { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
+            { "total_earned_at_login", GameManager.Instance.TextTotalIncome.text },
         };
 
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest

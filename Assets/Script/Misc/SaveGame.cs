@@ -7,6 +7,11 @@ public class SaveGameMembers
     // Prevent overwriting save in case of Members reset (happens in editor on crash on code change).
     public bool SaveKillSwitch_CanSave = false;
 
+    public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
+
+    public bool HasMoneyCheated = false;
+    public bool HasArenaIncreaseCheated = false;
+
     // Time
     public double TotalGameTimeAccumulated = 0;
     public double TotalRealTimeAccumulated = 0;

@@ -4,6 +4,7 @@ using EZCameraShake;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,10 @@ public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
+    // 1: Was not saved in stats. Buildings were too cheap.
+    // 2: Made building much more expensive.
+    public const int BuildingCostVersion = 2;
+
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime };
 
     const float BaseXpToLevel = 14;
@@ -30,6 +35,7 @@ public class GameManager : MonoBehaviour
     public Color[] xpColors = new Color[] { };
 
     public BoxCollider2D ArenaBoundsCollider;
+    public Vector2 ArenaCenter => ArenaBoundsCollider.bounds.center;
     public LeanTween Tween;
     public Text TextVersion;
     public Text TextUser;
@@ -353,6 +359,13 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
+            if (GameState == State.Idle_OutOfTime)
+            {
+                // Killing last enemy will throw round gold, but on timeout that doesn't happen, so do it now.
+                // It must be before PrepareForNewRound since that resets round results.
+                PresentRoundGold(ArenaCenter);
+            }
+
             PrepareForNewRound();
 
             while (GameState == State.Idle_WonFight)
@@ -368,10 +381,6 @@ public class GameManager : MonoBehaviour
             while (GameState == State.Idle_OutOfTime)
             {
                 GameState = State.Idle_PresentLevel;
-
-                // We didn't kill all enemies so present gold in the middle. btw, zero is not middle but it is ok.
-                PresentRoundGold(Vector2.zero);
-
                 foreach (var enemy in enemies)
                 {
                     enemy.ReturnToCache();
@@ -948,28 +957,32 @@ public class GameManager : MonoBehaviour
 
     public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
-    DateTime _systemTimeLastPassiveUpdate = DateTime.MaxValue;
-    void CheckSystemAwayTime()
+    bool WasAway(out TimeSpan awayTime)
     {
-        var timeSinceLastSeen = DateTime.Now - _systemTimeLastPassiveUpdate;
-        if (timeSinceLastSeen > TimeSpan.FromMinutes(30))
+        const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+
+        awayTime = TimeSpan.Zero;
+
+        bool couldBeParsed = DateTime.TryParseExact(
+            SaveGame.Members.LastSeenUtcStr,
+            DateTimeFormat,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out DateTime timeSinceLastSeenUtc);
+
+        if (!couldBeParsed)
         {
-            FloatingTextSpawner.Instance.Spawn(
-                Vector2.zero + Vector2.down,
-                $"Away for {Format.FormatTimeSpan(timeSinceLastSeen)}",
-                Color.white,
-                speed: 0.01f,
-                timeToLive: 5.0f,
-                fontStyle: FontStyles.Bold);
+            SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeFormat);
+            return false;
         }
 
-        _systemTimeLastPassiveUpdate = DateTime.Now;
+        awayTime = DateTime.UtcNow - timeSinceLastSeenUtc;
+        SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeFormat);
+        return true;
     }
 
     void UpdatePassiveIncome()
     {
-        CheckSystemAwayTime();
-
         float currentTime = G.D.RealTime;
 
         if (_timePrevPassiveIncomeUpdate < 0f)
@@ -977,6 +990,23 @@ public class GameManager : MonoBehaviour
             _timePrevPassiveIncomeUpdate = currentTime;
             _deltaRealTime = 0f;
             return;
+        }
+
+        if (WasAway(out TimeSpan awayTime) && awayTime.TotalMinutes > 10)
+        {
+            // Not doing anything with this yet, just planning.
+            // I assume player got no income in this period? Otherwise TimeUtc
+            // Would have been updated regularly.
+            Decimal256 approxExpectedAwayIncome = awayTime.TotalSeconds * TotalPassiveIncome;
+
+            FloatingTextSpawner.Instance.Spawn(
+            ArenaCenter,
+            $"Away for {Format.FormatTimeSpan(awayTime)}\n" +
+            $"Welcome back!",
+            Color.cyan,
+            speed: 0.01f,
+            timeToLive: 8.0f,
+            fontStyle: FontStyles.Italic);
         }
 
         _deltaRealTime = currentTime - _timePrevPassiveIncomeUpdate;
@@ -1094,6 +1124,7 @@ public class GameManager : MonoBehaviour
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
+            { "building_cost_version", BuildingCostVersion },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
 
@@ -1160,21 +1191,29 @@ public class GameManager : MonoBehaviour
             ResetAllProgress();
         }
 
-        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.LeftShift))
+        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.Money += 100_000_000_000_000;
-        }
-        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            SaveGame.Members.Money = 0;
+            SaveGame.Members.HasMoneyCheated = true;
         }
 
-        if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightShift))
+        if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            SaveGame.Members.ArenaLevel++;
+            SaveGame.Members.HasArenaIncreaseCheated = true;
+        }
+
+        //if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
+        //{
+        //    SaveGame.Members.Money = 0;
+        //}
+
+        if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))
         {
             PlayerUpgrades.Data.TimeScale += 0.1f;
         }
 
-        if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightShift))
+        if (G.GetCheatKeyDown(KeyCode.LeftArrow) && G.GetCheatKey(KeyCode.RightControl))
         {
             PlayerUpgrades.Data.TimeScale -= 0.1f;
         }
@@ -1189,40 +1228,35 @@ public class GameManager : MonoBehaviour
             TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
-            long damage = PlayerUpgrades.Data.EffectiveZapDamage;
-            Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
-        }
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
+        //    long damage = PlayerUpgrades.Data.EffectiveZapDamage;
+        //    Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            PlayerUpgrades.Data.BaseMoveSpeed += Input.GetKey(KeyCode.LeftShift) ? 1f : -1f;
-            Debug.Log("BaseMoveSpeed : " + PlayerUpgrades.Data.BaseMoveSpeed);
-        }
+        //if (Input.GetKeyDown(KeyCode.F1))
+        //{
+        //    PlayerUpgrades.Data.BaseMoveSpeed += Input.GetKey(KeyCode.LeftShift) ? 1f : -1f;
+        //    Debug.Log("BaseMoveSpeed : " + PlayerUpgrades.Data.BaseMoveSpeed);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            PlayerUpgrades.Data.MagicMissileBaseCd += Input.GetKey(KeyCode.LeftShift) ? -0.25f : 0.25f;
-            Debug.Log("MagicMissileBaseCd : " + PlayerUpgrades.Data.MagicMissileBaseCd);
-        }
+        //if (Input.GetKeyDown(KeyCode.F2))
+        //{
+        //    PlayerUpgrades.Data.MagicMissileBaseCd += Input.GetKey(KeyCode.LeftShift) ? -0.25f : 0.25f;
+        //    Debug.Log("MagicMissileBaseCd : " + PlayerUpgrades.Data.MagicMissileBaseCd);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            PlayerUpgrades.Data.MagicMissileBaseDamage += Input.GetKey(KeyCode.LeftShift) ? 10f : -10f;
-            Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
-        }
+        //if (Input.GetKeyDown(KeyCode.F3))
+        //{
+        //    PlayerUpgrades.Data.MagicMissileBaseDamage += Input.GetKey(KeyCode.LeftShift) ? 10f : -10f;
+        //    Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
-            saw.Eject(Vector2.zero, Vector2.right, Color.white, 1.0f);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            SaveGame.Members.ArenaLevel++;
-        }
+        //if (Input.GetKeyDown(KeyCode.F4))
+        //{
+        //    var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
+        //    saw.Eject(Vector2.zero, Vector2.right, Color.white, 1.0f);
+        //}
     }
 }
