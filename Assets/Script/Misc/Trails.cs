@@ -31,7 +31,7 @@ namespace Assets.Script.Misc
         }
 
         // Reusable buffer to avoid GC from List and array allocations
-        private static Vector3[] jaggedTrailPoints = new Vector3[256];
+        private static Vector3[] jaggedTrailPoints = new Vector3[512];
 
         public static void DrawJaggedTrail(Vector2 from, Vector2 to, LineRenderer lineRenderer)
         {
@@ -41,9 +41,13 @@ namespace Assets.Script.Misc
             // when returning to the page after a while.
             try
             {
-
                 var direction = to - from;
                 float distance = direction.magnitude;
+
+                // Safety attempt
+                if (distance > 10)
+                    return;
+
                 direction.Normalize();
 
                 // Create perpendicular vector for jagged offsets
@@ -54,9 +58,9 @@ namespace Assets.Script.Misc
                 int numSteps = Mathf.CeilToInt(distance / stepSize);
                 int maxPoints = numSteps + 1;
 
-                // Resize buffer if needed (double size to reduce allocations)
-                if (jaggedTrailPoints.Length < maxPoints)
-                    jaggedTrailPoints = new Vector3[maxPoints * 2];
+                // Safety attempt
+                if (jaggedTrailPoints.Length < maxPoints - 5)
+                    return;
 
                 Vector2 previousPosition = from;
 

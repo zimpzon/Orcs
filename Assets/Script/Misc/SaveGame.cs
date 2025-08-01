@@ -2,13 +2,23 @@
 using System.IO;
 using UnityEngine;
 
+public enum QuestionMarkState { NotSet, CountingDown, ReadyForCollection };
+
 public class SaveGameMembers
 {
+    public string PlayerId = string.Empty;
+
     // Prevent overwriting save in case of Members reset (happens in editor on crash on code change).
     public bool SaveKillSwitch_CanSave = false;
 
     public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
 
+    // Questionmark bonuses
+    public bool QuestionMarksAreEnabled = false;
+    public float TimeLeftQuestionMark = float.MaxValue;
+    public QuestionMarkState QuestionMarkState = QuestionMarkState.NotSet;
+
+    // Cheat detection 
     public bool HasMoneyCheated = false;
     public bool HasArenaIncreaseCheated = false;
 

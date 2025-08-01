@@ -96,6 +96,10 @@ namespace PlayFab.Public
         /// <param name="isFocused">State of focus</param>
         public void OnApplicationFocus(bool isFocused)
         {
+            // PWE: Hack as big as they get. Change the SDK to not send focus events.
+            // We have to pay for these events at a certain threshold.
+            return;
+
             EnsureSingleGameSessionId();
             EventsModels.EventContents eventInfo = new EventsModels.EventContents();
             DateTime currentUtcDateTime = DateTime.UtcNow;

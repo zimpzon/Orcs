@@ -18,12 +18,15 @@ public class GameManager : MonoBehaviour
     // 2: Made building much more expensive.
     public const int BuildingCostVersion = 2;
 
-    public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime };
+    public const int MajorVersion = 1;
+    public const int MinorVersion = 1;
+
+    public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
     const int AutoSaveInterval = 5;
-    const int SendStatsInterval = 120;
+    const int SendStatsInterval = 60 * 10;
     const float MoneyUpdateDelay = 0.02f;
 
     public string GameVersion;
@@ -340,8 +343,17 @@ public class GameManager : MonoBehaviour
             GameState = State.Idle_Fighting;
             _nextZap = G.D.GameTime + ZapInterval;
 
+            ResetAwayTimestamp();
+
             while (GameState == State.Idle_Fighting)
             {
+                if (WasAway())
+                {
+                    // Probably throttled by browser.
+                    GameState = State.Idle_WasAway;
+                    continue;
+                }
+
                 CheckZapping(ActorDamageSource.ChainZap);
 
                 float delta = GameDeltaTime;
@@ -359,6 +371,11 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
+            if (GameState == State.Idle_WasAway)
+            {
+                // Nothing to do here, we just restart same round.
+            }
+
             if (GameState == State.Idle_OutOfTime)
             {
                 // Killing last enemy will throw round gold, but on timeout that doesn't happen, so do it now.
@@ -368,30 +385,27 @@ public class GameManager : MonoBehaviour
 
             PrepareForNewRound();
 
-            while (GameState == State.Idle_WonFight)
+            if (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here
                 SaveGame.Members.ArenaLevel++;
                 yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}", delay: 1);
                 yield return new WaitForSeconds(0.25f);
                 yield return null;
-                GameState = State.Idle_PresentLevel;
             }
 
-            while (GameState == State.Idle_OutOfTime)
+            if (GameState == State.Idle_OutOfTime)
             {
-                GameState = State.Idle_PresentLevel;
-                foreach (var enemy in enemies)
-                {
-                    enemy.ReturnToCache();
-                }
-
                 yield return ShowInfoTextFlashy("OUT OF TIME", delay: 1);
                 yield return new WaitForSeconds(0.5f);
 
                 // Go back one arena level on timeout
-                SaveGame.Members.ArenaLevel--;
+                if (SaveGame.Members.ArenaLevel > 1)
+                    SaveGame.Members.ArenaLevel--;
             }
+
+            GameState = State.Idle_PresentLevel;
+
             yield return null;
         }
     }
@@ -660,7 +674,6 @@ public class GameManager : MonoBehaviour
         long damageDone = _roundTotalHp - HpBarScript.CurrentHp;
 
         long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, damageDone);
-
         Vector2 endRoundGoldSummaryPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4);
 
         bool knifeThrowGoldEnabled = SaveGame.Members.LevelGoldPerKnifeThrown > 0;
@@ -690,6 +703,10 @@ public class GameManager : MonoBehaviour
 
         long secondsSpent = RoundTimeSeconds - _secondsLeft;
         long dps = (long)(damageDone / (double)secondsSpent);
+
+        // Happens after user was away for a while and we manually reset round.
+        if (goldWon <= 0 || damageDone <= 0 || secondsSpent <= 0)
+            return;
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
@@ -957,28 +974,58 @@ public class GameManager : MonoBehaviour
 
     public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
-    bool WasAway(out TimeSpan awayTime)
+    void ResetAwayTimestamp()
     {
-        const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeSerializedFormat);
+    }
 
+    const string DateTimeSerializedFormat = "yyyy-MM-dd HH:mm:ss";
+
+    bool WasAway(int minSeconds, out TimeSpan awayTime)
+    {
         awayTime = TimeSpan.Zero;
 
         bool couldBeParsed = DateTime.TryParseExact(
             SaveGame.Members.LastSeenUtcStr,
-            DateTimeFormat,
+            DateTimeSerializedFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
             out DateTime timeSinceLastSeenUtc);
 
         if (!couldBeParsed)
         {
-            SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeFormat);
+            SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeSerializedFormat);
             return false;
         }
 
         awayTime = DateTime.UtcNow - timeSinceLastSeenUtc;
-        SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeFormat);
-        return true;
+        ResetAwayTimestamp();
+
+        return awayTime.TotalSeconds >= minSeconds;
+    }
+
+    bool WasAway()
+    {
+        bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
+        if (wasAway)
+        {
+            // Not doing anything with this yet, just planning.
+            // I assume player got no income in this period? Otherwise TimeUtc
+            // Would have been updated regularly.
+            Decimal256 approxExpectedAwayIncome = awayTime.TotalSeconds * TotalPassiveIncome;
+
+            string msg = awayTime < TimeSpan.FromMinutes(10) ? "Welcome back!" :
+                $"You were away for {Format.FormatTimeSpan(awayTime)}\nWelcome back!";
+
+            FloatingTextSpawner.Instance.Spawn(
+            ArenaCenter,
+            msg,
+            Color.cyan,
+            speed: 0.01f,
+            timeToLive: 5.0f,
+            fontStyle: FontStyles.Italic);
+        }
+        return wasAway;
     }
 
     void UpdatePassiveIncome()
@@ -990,23 +1037,6 @@ public class GameManager : MonoBehaviour
             _timePrevPassiveIncomeUpdate = currentTime;
             _deltaRealTime = 0f;
             return;
-        }
-
-        if (WasAway(out TimeSpan awayTime) && awayTime.TotalMinutes > 10)
-        {
-            // Not doing anything with this yet, just planning.
-            // I assume player got no income in this period? Otherwise TimeUtc
-            // Would have been updated regularly.
-            Decimal256 approxExpectedAwayIncome = awayTime.TotalSeconds * TotalPassiveIncome;
-
-            FloatingTextSpawner.Instance.Spawn(
-            ArenaCenter,
-            $"Away for {Format.FormatTimeSpan(awayTime)}\n" +
-            $"Welcome back!",
-            Color.cyan,
-            speed: 0.01f,
-            timeToLive: 8.0f,
-            fontStyle: FontStyles.Italic);
         }
 
         _deltaRealTime = currentTime - _timePrevPassiveIncomeUpdate;
@@ -1124,7 +1154,10 @@ public class GameManager : MonoBehaviour
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
+
             { "building_cost_version", BuildingCostVersion },
+            { "game_major_version", MajorVersion },
+            { "game_minor_version", MinorVersion },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
 
@@ -1173,7 +1206,7 @@ public class GameManager : MonoBehaviour
         UpdateTotalIncomeText();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
-        GameDeltaTime = Math.Min(0.1f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
+        GameDeltaTime = Math.Min(0.5f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
         GameTime += GameDeltaTime;
 
 

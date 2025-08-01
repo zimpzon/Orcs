@@ -6,7 +6,6 @@ using UnityEngine;
 
 public static class Playfab
 {
-    public static string playerId;
     public static string DisplayStatus = "not logged in";
     static LoginResult LoginRes;
     static bool LoginComplete => LoginRes is not null;
@@ -19,28 +18,25 @@ public static class Playfab
 
     const string Version = "1.0";
 
-    const string PlayerIdKey = "playerId";
-
     public static void Login()
     {
         PlayFabSettings.TitleId = "4EE3"; // Haps
 
-        void CreateNewId()
+        string CreateNewId()
         {
             string newId = Guid.NewGuid().ToString();
-            PlayerPrefs.SetString(PlayerIdKey, newId);
+            return newId;
         }
 
-        if (!PlayerPrefs.HasKey(PlayerIdKey))
-            CreateNewId();
-
-        string id = PlayerPrefs.GetString(PlayerIdKey);
-        playerId = id;
+        if (string.IsNullOrWhiteSpace(SaveGame.Members.PlayerId))
+        {
+            SaveGame.Members.PlayerId = CreateNewId();
+        }
 
         var req = new LoginWithCustomIDRequest
         {
             CreateAccount = true,
-            CustomId = id,
+            CustomId = SaveGame.Members.PlayerId,
             TitleId = PlayFabSettings.TitleId,
         };
 
@@ -74,6 +70,8 @@ public static class Playfab
             { "DeviceModel", SystemInfo.deviceModel },
             { "OS", SystemInfo.operatingSystem },
             { "UnityVersion", Application.unityVersion },
+            { "game_major_version", GameManager.MajorVersion.ToString() },
+            { "game_minor_version", GameManager.MinorVersion.ToString() },
             { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
             { "total_earned_at_login", GameManager.Instance.TextTotalIncome.text },
         };
