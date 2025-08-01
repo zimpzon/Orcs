@@ -369,7 +369,7 @@ public class GameManager : MonoBehaviour
             {
                 GameState = State.Idle_PresentLevel;
 
-                // We didn't kill all enemies so present gold in the middle
+                // We didn't kill all enemies so present gold in the middle. btw, zero is not middle but it is ok.
                 PresentRoundGold(Vector2.zero);
 
                 foreach (var enemy in enemies)
