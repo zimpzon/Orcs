@@ -1149,15 +1149,17 @@ public class GameManager : MonoBehaviour
     public void UpdatePlayFabStats()
     {
         //Playfab.PlayerEvent(Playfab.SendStatsEvent, new Dictionary<string, object>());
+
+        // NB NB NB: only 25 stats are allowed!
         var dic = new Dictionary<string, int>()
         {
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 
-            { "building_cost_version", BuildingCostVersion },
-            { "game_major_version", MajorVersion },
-            { "game_minor_version", MinorVersion },
+            //{ "building_cost_version", BuildingCostVersion },
+            //{ "game_major_version", MajorVersion },
+            //{ "game_minor_version", MinorVersion },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
 
