@@ -7,7 +7,7 @@ using UnityEngine;
 
 public enum ActorTypeEnum
 {
-    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven,
+    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red,
 };
 
 public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard };

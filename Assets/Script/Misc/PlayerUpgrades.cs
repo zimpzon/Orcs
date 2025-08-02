@@ -50,6 +50,7 @@ public class UpgradeData
     public long WitchDoctorEffectiveDamage = 0;
 
     // Wizard
+    public bool WizardTwoMoreFireballsEnabled = false;
     public bool WizardEnabled = false;
     public long WizardEffectiveDamage = 0;
 

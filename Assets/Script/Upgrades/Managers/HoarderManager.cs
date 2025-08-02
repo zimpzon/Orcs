@@ -28,7 +28,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Healthy Income</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Steady, healty income.");
+            sb.AppendLine("<color=#dddddd>Steady, healty income. And two more fireballs!");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -69,7 +69,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            // Nothing, just $$
+            PlayerUpgrades.Data.WizardTwoMoreFireballsEnabled = SaveGame.Members.LevelHoarder > 0;
         }
 
         public static void OnBuy()

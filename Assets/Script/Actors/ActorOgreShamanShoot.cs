@@ -91,7 +91,8 @@ public class ActorOgreShamanShoot : MonoBehaviour
             bool isActiveArena = GameManager.Instance.GameState == GameManager.State.Idle_Fighting;
             if (isActiveArena && GameManager.Instance.GameTime > nextShoot)
             {
-                int projectileCount = 2;
+                // 1 or 3 fireballs depending on WizardTwoMoreEnabled.
+                int projectileCount = PlayerUpgrades.Data.WizardTwoMoreFireballsEnabled ? 3 : 1;
 
                 for (int i = 0; i < projectileCount; ++i)
                 {

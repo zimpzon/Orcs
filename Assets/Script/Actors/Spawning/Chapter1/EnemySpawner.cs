@@ -22,10 +22,12 @@ public static class EnemySpawner
         long hpOgreLarge = 1000 * HpScale;
         long hpHeroChaser = 10_000 * HpScale;
         long hpRaven = 100_000 * HpScale;
+        long hpRed = 1_000_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
         bool allowRaven = hpTargetForRound >= hpRaven;
+        bool allowRed = hpTargetForRound >= hpRed;
 
         List<ActorBase> enemies = new();
         int safety = 100;
@@ -35,7 +37,18 @@ public static class EnemySpawner
             long remainingHp = hpTargetForRound;
             enemies.Clear();
 
-            // 1. Ravens
+            // 1. Red
+            long clampedRed = 0;
+            if (allowRed)
+            {
+                clampedRed = Math.Min(remainingHp / hpRed, MaxEnemies - totalEnemies);
+                clampedRed -= UnityEngine.Random.Range(0, 2);
+                clampedRed = Math.Max(0, clampedRed);
+                remainingHp -= clampedRed * hpRed;
+                totalEnemies += clampedRed;
+            }
+
+            // 2. Ravens
             long clampedRaven = 0;
             if (allowRaven)
             {
@@ -46,7 +59,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRaven;
             }
 
-            // 2. Hero Chasers
+            // 3. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
@@ -57,7 +70,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 3. Large Ogres
+            // 4. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
@@ -68,14 +81,14 @@ public static class EnemySpawner
                 totalEnemies += clampedLarge;
             }
 
-            // 4. Small Ogres
+            // 5. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 5. Bats
+            // 6. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
@@ -85,6 +98,13 @@ public static class EnemySpawner
             {
                 clampedBat = 1;
                 remainingHp -= hpBat;
+            }
+
+            // Add Red
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Red, (int)clampedRed))
+            {
+                actor.BaseHp = hpRed;
+                enemies.Add(actor);
             }
 
             foreach (var actor in SpawnUtil.Random(ActorTypeEnum.HeroChaser, (int)clampedHeroChaser))
@@ -137,6 +157,7 @@ public static class EnemySpawner
             // Increase HP budgets and retry
             hpHeroChaser *= 10;
             hpRaven *= 10;
+            hpRed *= 10;
             hpOgreLarge *= 10;
             hpOgreSmall *= 10;
             hpBat *= 10;
