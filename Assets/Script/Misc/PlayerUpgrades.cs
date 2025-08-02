@@ -9,6 +9,7 @@ public class UpgradeData
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
+    public double IncomeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;

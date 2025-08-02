@@ -121,7 +121,7 @@ public class UpgradeManager : MonoBehaviour
 
     public Decimal256 GetTotalPassiveIncome()
     {
-        float incomeFactorPerFrame = GameManager.Instance.GetIncomeFactorPerFrame();
+        float incomeFactorPerFrame = GameManager.Instance.GetIncomeFactorPerFrame() * (float)PlayerUpgrades.Data.IncomeScale;
 
         SaveGame.Members.TotalIncomeClickDamage += ClickDamageManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeKnifeDamage += KnifeDamageManager.PassiveIncome() * incomeFactorPerFrame;

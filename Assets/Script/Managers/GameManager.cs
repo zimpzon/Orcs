@@ -1,6 +1,7 @@
 ﻿using Assets.Script;
 using Assets.Script.Misc;
 using EZCameraShake;
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,10 @@ public class GameManager : MonoBehaviour
     public const int BuildingCostVersion = 2;
 
     public const int MajorVersion = 1;
-    public const int MinorVersion = 1;
+
+    // 1: added versions
+    // 2: added mystery bonus
+    public const int MinorVersion = 2;
 
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
@@ -513,16 +517,17 @@ public class GameManager : MonoBehaviour
     public void AddGold(bool isLargeCoin, Decimal256 value)
     {
         Decimal256 moneyAdded = value;
-        SaveGame.Members.TotalIncomeArena += moneyAdded;
+        SaveGame.Members.TotalIncomeArena += moneyAdded * PlayerUpgrades.Data.IncomeScale;
 
         AddMoney(moneyAdded);
 
         Vector2 playerPos = G.D.PlayerPos;
         Vector2 textPos = playerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle();
 
+        Decimal256 displayMoney = moneyAdded * PlayerUpgrades.Data.IncomeScale;
         FloatingTextSpawner.Instance.Spawn(
             textPos,
-            $"${Format256.Format(moneyAdded)}",
+            $"${Format256.Format(displayMoney)}",
             Color.yellow,
             speed: 2.0f,
             timeToLive: 1.0f,
@@ -531,6 +536,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(Decimal256 amount)
     {
+        amount *= PlayerUpgrades.Data.IncomeScale;
         SaveGame.Members.Money += amount;
     }
 
@@ -887,6 +893,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (GetPlayFabStats().Count > 25)
+            throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
+
         SaveGame.Load();
         _firstSaveGameLoadComplete = true;
 
@@ -1046,12 +1055,15 @@ public class GameManager : MonoBehaviour
         _timePrevPassiveIncomeUpdate = currentTime;
 
         TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
-        SaveGame.Members.Money += TotalPassiveIncome * (Decimal256)_deltaRealTime;
+        Decimal256 moneyToAdd = TotalPassiveIncome * (Decimal256)_deltaRealTime;
+        AddMoney(moneyToAdd);
 
-        if (_prevPassiveIncome != TotalPassiveIncome)
+        Decimal256 scaledPassiveIncome = TotalPassiveIncome * PlayerUpgrades.Data.IncomeScale;
+
+        if (_prevPassiveIncome != scaledPassiveIncome)
         {
-            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(TotalPassiveIncome)} per second";
-            _prevPassiveIncome = TotalPassiveIncome;
+            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(scaledPassiveIncome)} per second";
+            _prevPassiveIncome = scaledPassiveIncome;
             PopText(TextPassiveIncome);
         }
     }
@@ -1146,25 +1158,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdatePlayFabStats()
+    Dictionary<string, int> GetPlayFabStats()
     {
-        //Playfab.PlayerEvent(Playfab.SendStatsEvent, new Dictionary<string, object>());
-
         // NB NB NB: only 25 stats are allowed!
         var dic = new Dictionary<string, int>()
         {
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
-            { Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
+            //{ Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 
             //{ "building_cost_version", BuildingCostVersion },
             //{ "game_major_version", MajorVersion },
-            //{ "game_minor_version", MinorVersion },
+            { "game_minor_version", MinorVersion },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
+            { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
 
-            { "level_zap", (int)SaveGame.Members.LevelClickDamage },
-            { "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
+            // 18 below this
+
+            // removed zap to make room for others
+            //{ "level_zap", (int)SaveGame.Members.LevelClickDamage },
+            //{ "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
 
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
             { "level_knife_damage_x2", (int)SaveGame.Members.LevelKnifeDamageX2 },
@@ -1193,7 +1207,12 @@ public class GameManager : MonoBehaviour
             { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
             { "level_moneymaker_x2", (int)SaveGame.Members.LevelMoneyMakerX2},
         };
+        return dic;
+    }
 
+    public void UpdatePlayFabStats()
+    {
+        var dic = GetPlayFabStats();
         Playfab.PlayerStat(dic);
     }
 

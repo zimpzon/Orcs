@@ -14,8 +14,8 @@ public class SaveGameMembers
     public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
 
     // Questionmark bonuses
-    public bool QuestionMarksAreEnabled = false;
-    public float TimeLeftQuestionMark = float.MaxValue;
+    public double QuestionMarkRealTimeLeft = -1;
+    public long MysteryCollected = 0;
     public QuestionMarkState QuestionMarkState = QuestionMarkState.NotSet;
 
     // Cheat detection 

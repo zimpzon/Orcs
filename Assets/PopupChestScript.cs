@@ -69,14 +69,12 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
                 // Stay hidden.
                 transform.parent.position = Vector2.right * 77777;
-                Debug.Log("HIDE");
                 _particles.Stop();
 
                 int randomSec = Random.Range(0, MaxRandomExtraHideTime);
                 yield return new WaitForSeconds(HideTime + randomSec);
 
                 // Show.
-                Debug.Log("SHOW");
                 SetRandomPos();
                 _particles.Play();
                 _wasClicked = false;
@@ -95,7 +93,6 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
                 if (outOfTime)
                 {
-                    Debug.Log("OUT OF TIME");
                     break; // To outermost loop.
                 }
 
@@ -107,8 +104,6 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
         void DoReward()
         {
-            Debug.Log("REWARD");
-
             long numberOfSeconds = Random.Range(100, 300);
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
             reward += 100;
