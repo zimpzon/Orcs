@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour
 
     // 1: added versions
     // 2: added mystery bonus
-    public const int MinorVersion = 2;
+    // 3: radial progress bar mystery counters
+    public const int MinorVersion = 3;
 
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
@@ -1301,7 +1302,7 @@ public class GameManager : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.F4))
         //{
         //    var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
-        //    saw.Eject(Vector2.zero, Vector2.right, Color.white, 1.0f);
+        //    saw.Eject(Vector2.zero, Vector2.right, Color.white, weaponScale: 0.5f);
         //}
     }
 }

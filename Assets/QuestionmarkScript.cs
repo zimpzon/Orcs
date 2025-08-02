@@ -14,6 +14,8 @@ public class QuestionmarkScript : MonoBehaviour
     public GameObject Popup;
     public TextMeshProUGUI Text;
     public Button Button;
+    public GameObject RadialRoot;
+    public Image RadialImage;
 
     public Color TextColorEnabled;
     public Color TextColorDisabled;
@@ -41,6 +43,8 @@ public class QuestionmarkScript : MonoBehaviour
         // When we get here game was (re)started. Could be reload or gone for the night, a month, a year.
         while (true)
         {
+            RadialRoot.SetActive(false);
+
             if (SaveGame.Members.QuestionMarkRealTimeLeft <= 0)
             {
                 // Either first run or a cycle completed (will set QuestionMarkRealTimeStart to -1).
@@ -110,7 +114,7 @@ public class QuestionmarkScript : MonoBehaviour
             bool isFirst = ++SaveGame.Members.MysteryCollected == 1;
             MysteryReward mysteryReward = GetRandomReward(isFirst);
 
-            BeginReward(mysteryReward);
+            yield return BeginReward(mysteryReward);
 
             // Mark begin of new cycle.
             SaveGame.Members.QuestionMarkRealTimeLeft = -1;
@@ -127,40 +131,77 @@ public class QuestionmarkScript : MonoBehaviour
             return selectedReward;
         }
 
-        void BeginReward(MysteryReward reward)
+        IEnumerator BeginReward(MysteryReward reward)
         {
             if (reward == MysteryReward.FasterTime)
-                StartCoroutine(FasterTimeCo());
+            {
+                yield return FasterTimeCo();
+            }
             else if (reward == MysteryReward.FasterIncome)
-                StartCoroutine(FasterIncomeCo());
+            {
+                yield return FasterIncomeCo();
+            }
             else if (reward == MysteryReward.FixedIncome)
-                StartCoroutine(FixedIncomeCo());
+            {
+                yield return FixedIncomeCo();
+            }
             else
+            {
                 ShowMessage($"Error, unknown reward: {reward}");
+            }
+        }
+
+        void InitRadial()
+        {
+            Text.text = "";
+            RadialRoot.SetActive(true);
+        }
+
+        void SetRadialProgress(float startRealTime, float endRealTime)
+        {
+            float realTime = G.D.RealTime;
+
+            float duration = endRealTime - startRealTime;
+            float elapsed = realTime - startRealTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            RadialImage.fillAmount = 1.0f - t;
         }
 
         IEnumerator FasterTimeCo()
         {
-            float endRealTime = G.D.RealTime + (60 * 3) + 33;
+            InitRadial();
+
+            float startRealTime = G.D.RealTime;
+            float endRealTime = startRealTime + (60 * 3) + 33;
             ShowMessage("Time runs 33% faster for 5 minutes and 5 seconds!");
 
             PlayerUpgrades.Data.TimeScale = 1.33f;
-           
+
             while (G.D.RealTime < endRealTime)
+            {
+                SetRadialProgress(startRealTime, endRealTime);
                 yield return null;
+            }
 
             PlayerUpgrades.Data.TimeScale = 1.0f;
         }
 
         IEnumerator FasterIncomeCo()
         {
-            float endRealTime = G.D.RealTime + 60;
+            InitRadial();
+
+            float startRealTime = G.D.RealTime;
+            float endRealTime = startRealTime + 60;
             ShowMessage("X10 ALL income for 1 minute!");
 
             PlayerUpgrades.Data.IncomeScale = 10.0;
 
             while (G.D.RealTime < endRealTime)
+            {
+                SetRadialProgress(startRealTime, endRealTime);
                 yield return null;
+            }
 
             PlayerUpgrades.Data.IncomeScale = 1.0;
         }

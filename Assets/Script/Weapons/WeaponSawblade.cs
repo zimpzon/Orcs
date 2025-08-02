@@ -21,23 +21,26 @@ public class WeaponSawblade : WeaponBase
             NextNoise = G.D.GameTime + 15;
         }
 
-        basic.Speed = 5.0f * weaponScale;
+        basic.DamageSource = ActorDamageSource.DaggerThrow;
+        basic.Speed = 10.0f;
+        basic.Damage = PlayerUpgrades.Data.AxeEffectiveDamage;
+        basic.StickyDamageCd = 0.2f;
+        basic.StickyMaxTotalDamage = PlayerUpgrades.Data.AxeEffectiveDamage * 1000;
+        basic.Force = 0.75f * weaponScale;
+        basic.MaxDistance = 15;
+        basic.RotationSpeed = 360.0f * 3;
+        basic.RotationSpeedWhenStuck = 360.0f * 6;
+        basic.ReflectOnEdges = false;
+
+
         basic.DamageFalloffDistance = 0.0f;
         basic.DamageFalloffPerMeter = 0.0f;
-        basic.Force = 0.75f * weaponScale;
-        basic.MaxDistance = PlayerUpgrades.Data.SawBladeMaxDistance * PlayerUpgrades.Data.SawBladeDurabilityMul;
         basic.Radius = 0.4f * weaponScale;
         basic.DieOnCollision = false;
-        basic.ReflectOnEdges = true;
         basic.CollisionSound = AudioManager.Instance.AudioData.Chainsaw;
         basic.StickySoundRepeater = AudioManager.Instance.RepeatingSawblade;
         basic.Volume = volume;
-        basic.RotationSpeed = 360.0f * 2;
-        basic.RotationSpeedWhenStuck = 360.0f * 6;
         basic.StickToTarget = true;
-        basic.Damage = 10.0f * weaponScale;
-        basic.StickyDamageCd = 0.25f;
-        basic.StickyMaxTotalDamage = PlayerUpgrades.Data.SawBladeMaxDamage * PlayerUpgrades.Data.SawBladeDurabilityMul;
         Vector3 scale = basic.SpriteInfo.Transform.localScale;
         scale.x = 0.7f * weaponScale;
         scale.y = 0.7f * weaponScale;
