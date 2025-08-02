@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Buffers.Text;
+using System.Collections;
 using System.IO;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Purchasing.MiniJSON;
 
 public enum QuestionMarkState { NotSet, CountingDown, ReadyForCollection };
 
@@ -96,6 +100,20 @@ public class SaveGameMembers
     public static SaveGameMembers FromJson(string json)
     {
         return JsonUtility.FromJson<SaveGameMembers>(json);
+    }
+
+    public string Export()
+    {
+        string json = ToJson();
+        var utf8 = Encoding.UTF8.GetBytes(json);
+        string base64 = Convert.ToBase64String(utf8);
+        return base64;
+    }
+
+    public void Import(string base64)
+    {
+        var utf8 = Convert.FromBase64String(base64);
+        string json = Encoding.UTF8.GetString(utf8);
     }
 }
 

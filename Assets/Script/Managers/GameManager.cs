@@ -1,7 +1,6 @@
 ﻿using Assets.Script;
 using Assets.Script.Misc;
 using EZCameraShake;
-using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,10 +14,6 @@ public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
-    // 1: Was not saved in stats. Buildings were too cheap.
-    // 2: Made building much more expensive.
-    public const int BuildingCostVersion = 2;
-
     public const int MajorVersion = 1;
 
     // 1: added versions
@@ -897,6 +892,7 @@ public class GameManager : MonoBehaviour
             throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
 
         SaveGame.Load();
+
         _firstSaveGameLoadComplete = true;
 
         TextGameInfo.text = "";
@@ -1164,12 +1160,7 @@ public class GameManager : MonoBehaviour
         var dic = new Dictionary<string, int>()
         {
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
-            //{ Playfab.GameTimeAccumulated, (int)SaveGame.Members.TotalGameTimeAccumulated },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
-
-            //{ "building_cost_version", BuildingCostVersion },
-            //{ "game_major_version", MajorVersion },
-            { "game_minor_version", MinorVersion },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
