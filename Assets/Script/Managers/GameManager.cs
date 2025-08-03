@@ -1120,7 +1120,7 @@ public class GameManager : MonoBehaviour
 
         Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
         _prevTotalIncome = total;
-        TextTotalIncome.text = $"Total earned: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        TextTotalIncome.text = $"Total earned this round: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     void UpdateTimeSeen()

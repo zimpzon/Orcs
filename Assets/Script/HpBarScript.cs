@@ -1,5 +1,4 @@
-﻿using Assets.Script.Misc;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class HpBarScript : MonoBehaviour
