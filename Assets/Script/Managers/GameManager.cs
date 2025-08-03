@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
     // 2: added mystery bonus
     // 3: radial progress bar mystery counters
     // 4: added Necromancer
-    public const int MinorVersion = 4;
+    // 5: started ascension
+    public const int MinorVersion = 5;
 
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
@@ -1163,9 +1164,11 @@ public class GameManager : MonoBehaviour
 
     Dictionary<string, int> GetPlayFabStats()
     {
-        // NB NB NB: only 25 stats are allowed!
+        // NB NB NB: only 25 stats are allowed! GameManager Awake() will throw if more.
         var dic = new Dictionary<string, int>()
         {
+            { "ascend_level", (int)SaveGame.Members.AscendLevelTemp },
+
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 

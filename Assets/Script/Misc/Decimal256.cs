@@ -199,6 +199,11 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     // Property to access the serialized value (useful for debugging)
     public string SerializedValue => serializedValue;
 
+    public double ToDouble()
+    {
+        return (double)rawValue / (double)ScaleFactor;
+    }
+
     public override string ToString()
     {
         BigInteger whole = rawValue / ScaleFactor;

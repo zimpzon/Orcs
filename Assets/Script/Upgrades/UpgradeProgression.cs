@@ -32,6 +32,23 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_ZapDamage_X2 = InitialPrice_ZapDamage * 10;
         public static Decimal256 InitialPrice_MoneyMaker_X2 = InitialPrice_MoneyMaker * 10;
 
+        public static Decimal256 BaseIncome_Clickdamage = 0.2;
+        public static Decimal256 BaseIncome_DaggerDamage = 2;
+        public static Decimal256 BaseIncome_GoldValue = 8;
+        public static Decimal256 BaseIncome_DaggerCd = 47;
+        public static Decimal256 BaseIncome_WitchDoctor = 260;
+        public static Decimal256 BaseIncome_GoldPerKnifeThrown = 1_400;
+        public static Decimal256 BaseIncome_Wizard = 7_800;
+        public static Decimal256 BaseIncome_Hoarder = 44_000;
+        public static Decimal256 BaseIncome_ZapDamage = 246_000;
+        public static Decimal256 BaseIncome_MoneyMaker = 1_230_000;
+
+        public static Decimal256 AscendXpForNextLevel(long level)
+        {
+            Decimal256 xpFirstLevel = 1_000_000_000;
+            return xpFirstLevel * (level + 1);
+        }
+
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
         {
             Decimal256 result = initialPrice * Math.Pow(10, levelX2);
@@ -54,16 +71,5 @@ namespace Assets.Script.Upgrades
             // > 3
             return (levelX2 - 3) * 50;
         }
-
-        public static Decimal256 BaseIncome_Clickdamage = 0.2;
-        public static Decimal256 BaseIncome_DaggerDamage = 2;
-        public static Decimal256 BaseIncome_GoldValue = 8;
-        public static Decimal256 BaseIncome_DaggerCd = 47;
-        public static Decimal256 BaseIncome_WitchDoctor = 260;
-        public static Decimal256 BaseIncome_GoldPerKnifeThrown = 1_400;
-        public static Decimal256 BaseIncome_Wizard = 7_800;
-        public static Decimal256 BaseIncome_Hoarder = 44_000;
-        public static Decimal256 BaseIncome_ZapDamage = 246_000;
-        public static Decimal256 BaseIncome_MoneyMaker = 1_230_000;
     }
 }

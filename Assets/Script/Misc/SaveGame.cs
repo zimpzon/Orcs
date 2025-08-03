@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Buffers.Text;
 using System.Collections;
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Purchasing.MiniJSON;
 
 public enum QuestionMarkState { NotSet, CountingDown, ReadyForCollection };
 
@@ -16,6 +14,11 @@ public class SaveGameMembers
     public bool SaveKillSwitch_CanSave = false;
 
     public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
+
+    // Ascending
+    public Decimal256 AscendXp;
+    public long AscendLevelTemp; // temp so we don't have garbage when implementing for real.
+    public long MonsterCredits;
 
     // Questionmark bonuses
     public double QuestionMarkRealTimeLeft = -1;
@@ -82,9 +85,6 @@ public class SaveGameMembers
     // Game
     public long ArenaLevel = 1;
     public Decimal256 Money = 40;
-
-    public long CurrentLevel = 1;
-    public long AscendLevel = 1;
 
     // Settings
     public int Version;
