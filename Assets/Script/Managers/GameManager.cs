@@ -1303,10 +1303,10 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
         //}
 
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
-            saw.Eject(Vector2.zero, Vector2.right, Color.white);
-        }
+        //if (Input.GetKeyDown(KeyCode.F4))
+        //{
+        //    var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
+        //    saw.Eject(Vector2.zero, Vector2.right, Color.white);
+        //}
     }
 }

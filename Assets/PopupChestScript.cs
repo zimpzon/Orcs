@@ -7,7 +7,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
     public LayerMask LayersToHit;
     public float margin = 100f;
     public const float ShowTime = 60 * 1;
-    public const float HideTime = 60 * 10;
+    public const float HideTime = 60 * 5;
     public const int MaxRandomExtraHideTime = 60;
     public Sprite BaseSprite;
     public Sprite[] Animation;
