@@ -14,7 +14,7 @@ public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
-    public const int MajorVersion = 1;
+    public const int MajorVersion = 0;
 
     // 1: added versions
     // 2: added mystery bonus
@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour
     public BoxCollider2D ArenaBoundsCollider;
     public Vector2 ArenaCenter => ArenaBoundsCollider.bounds.center;
     public LeanTween Tween;
-    public Text TextVersion;
-    public Text TextUser;
     public Text TextFps;
     public TextMeshProUGUI TextEndOfAlpha;
     public TextMeshProUGUI TextGameInfo;
@@ -51,6 +49,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextTotalIncome;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
+    public TextMeshProUGUI TextVersion;
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -897,6 +896,7 @@ public class GameManager : MonoBehaviour
         if (GetPlayFabStats().Count > 25)
             throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
 
+        TextVersion.text = $"V {MajorVersion}.{MinorVersion}";
         SaveGame.Load();
 
         _firstSaveGameLoadComplete = true;

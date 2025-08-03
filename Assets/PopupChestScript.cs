@@ -7,7 +7,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
     public LayerMask LayersToHit;
     public float margin = 100f;
     public const float ShowTime = 60 * 1;
-    public const float HideTime = 60 * 5;
+    public const float HideTime = 60 * 8;
     public const int MaxRandomExtraHideTime = 60;
     public Sprite BaseSprite;
     public Sprite[] Animation;
@@ -104,7 +104,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
         void DoReward()
         {
-            long numberOfSeconds = Random.Range(100, 300);
+            long numberOfSeconds = Random.Range(100, 200);
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
             reward += 100;
 

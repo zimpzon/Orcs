@@ -54,7 +54,7 @@ public static class Playfab
         void ErrorCallback(PlayFabError result)
         {
             DisplayStatus = "error logging in";
-            GameManager.Instance.TextUser.text = DisplayStatus;
+            //GameManager.Instance.TextUser.text = DisplayStatus;
 
             Debug.LogError($"login error: {result}");
         }
