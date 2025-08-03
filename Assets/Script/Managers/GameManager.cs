@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     // 1: added versions
     // 2: added mystery bonus
     // 3: radial progress bar mystery counters
-    public const int MinorVersion = 3;
+    // 4: added Necromancer
+    public const int MinorVersion = 4;
 
     public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
@@ -1110,7 +1111,9 @@ public class GameManager : MonoBehaviour
 
     void UpdateTotalIncomeText()
     {
-        if (SaveGame.Members.TotalIncomePassive == _prevTotalIncome)
+        Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
+
+        if (total == _prevTotalIncome)
             return;
 
         if (G.D.GameTime < _timeNextTotalIncomeUpdate)
@@ -1118,9 +1121,8 @@ public class GameManager : MonoBehaviour
 
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
-        Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
         _prevTotalIncome = total;
-        TextTotalIncome.text = $"Total earned: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        TextTotalIncome.text = $"Total earned this round: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     void UpdateTimeSeen()
