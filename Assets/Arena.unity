@@ -49878,6 +49878,7 @@ GameObject:
   - component: {fileID: 1038077831}
   - component: {fileID: 1038077834}
   - component: {fileID: 1038077835}
+  - component: {fileID: 1038077836}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -50073,6 +50074,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1d8010bc943ce240a4eff7caebc7219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1038077836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038077828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd74c091e87b86408fa5a8075fc2f65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1099459131
@@ -88240,7 +88253,7 @@ PrefabInstance:
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_Name
-      value: Hoarder
+      value: Master Wizard
       objectReference: {fileID: 0}
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -88290,7 +88303,7 @@ PrefabInstance:
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_text
-      value: Healthy Income
+      value: Master Wizard
       objectReference: {fileID: 0}
     - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}

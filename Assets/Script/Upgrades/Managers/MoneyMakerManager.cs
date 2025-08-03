@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Necromancer</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated skulls bitin for Dagger damage.");
+            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated skulls biting for Dagger damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");

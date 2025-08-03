@@ -122,6 +122,9 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator Think()
     {
+        var necromancer = GetComponent<NecromancerScript>();
+        StartCoroutine(necromancer.Think());
+
         while (true)
         {
             yield return null;
