@@ -45,7 +45,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current zap damage: <color=COLOR-ARENA>{Format256.Format(currentValue)}</color>");
+            sb.AppendLine($"<color=#dddddd>Current Zap damage: <color=COLOR-ARENA>{Format256.Format(currentValue)}</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}</color>");
             sb.AppendLine("");
             sb.AppendLine($"<color=#dddddd>Total damage: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalDamageChainZap)}</color>");

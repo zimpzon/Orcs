@@ -101,6 +101,9 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public bool StickToTarget;
         public float StickyDamageCd;
         public float StickyDamageTimeNext;
+        public float StickyDamageSimulateCd;
+        public float StickyDamageTimeNextSimulate;
+        public long StickyDamageCounter;
         public double StickyMaxTotalDamage;
         public double StickyDamageDone;
         public Vector3 StickOffset;
@@ -258,15 +261,21 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         // Keep sticking to target at specific offset
                         p.Position = p.CurrentTarget.transform.position + p.StickOffset;
                         p.CurrentTarget.SetSlowmotion(0.5f);
+                        Vector3 damageDirection = (p.StickOffset * -1).normalized;
                         if (GameManager.Instance.GameTime > p.StickyDamageTimeNext)
                         {
-                            Vector3 damageDirection = (p.StickOffset * -1).normalized;
                             double damage = p.Damage;
                             GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f, p.DamageSource);
                             p.StickyDamageDone += damage;
 
                             GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
                             p.StickyDamageTimeNext = GameManager.Instance.GameTime + p.StickyDamageCd;
+                        }
+                        else if (GameManager.Instance.GameTime > p.StickyDamageTimeNextSimulate)
+                        {
+                            // Fake 0 damage to get a visual effect more often than dealing real damage.
+                            p.CurrentTarget.ApplyDamage2(amount: 0, damageDirection, forceModifier: 0.25f);
+                            p.StickyDamageTimeNextSimulate = GameManager.Instance.GameTime + p.StickyDamageSimulateCd;
                         }
                     }
                 }

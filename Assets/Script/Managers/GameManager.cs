@@ -782,6 +782,10 @@ public class GameManager : MonoBehaviour
                 SaveGame.Members.TotalDamageWizard += damage;
                 break;
 
+            case ActorDamageSource.Necromancer:
+                SaveGame.Members.TotalDamageNecromancer += damage;
+                break;
+
             default:
                 throw new Exception($"DamageSource {damageSource} cannot be added to any known total");
         }
@@ -801,9 +805,9 @@ public class GameManager : MonoBehaviour
         long intAmount = (long)amount;
 
         // Diplay the full damager number, without truncating to enemy health.
-        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.5f;
+        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
         FloatingTextSpawner.Instance.Spawn(
-            (Vector2)enemy.transform.position + Vector2.up * 0.25f + randomTextOffset,
+            (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
             $"-{Format64.Format(intAmount)}",
             Color.red,
             speed: 0.75f,
@@ -1299,10 +1303,10 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
         //}
 
-        //if (Input.GetKeyDown(KeyCode.F4))
-        //{
-        //    var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
-        //    saw.Eject(Vector2.zero, Vector2.right, Color.white, weaponScale: 0.5f);
-        //}
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
+            saw.Eject(Vector2.zero, Vector2.right, Color.white);
+        }
     }
 }

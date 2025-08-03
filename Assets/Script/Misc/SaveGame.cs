@@ -77,6 +77,7 @@ public class SaveGameMembers
     public Decimal256 TotalDamageDaggerThrow;
     public Decimal256 TotalDamageWitchDoctor;
     public Decimal256 TotalDamageWizard;
+    public Decimal256 TotalDamageNecromancer;
 
     // Game
     public long ArenaLevel = 1;

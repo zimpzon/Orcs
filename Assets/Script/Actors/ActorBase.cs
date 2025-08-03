@@ -10,7 +10,7 @@ public enum ActorTypeEnum
     None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red,
 };
 
-public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard };
+public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard, Necromancer };
 
 public enum ActorForcedTargetType { Absolute, Direction };
 
@@ -486,7 +486,7 @@ public class ActorBase : MonoBehaviour
             AddForce(direction * (force * 0.2f * massInverse_ * forceModifier));
 
             material_.SetFloat(flashParamId_, 2.0f);
-            flashEndTime_ = GameManager.Instance.GameTime + 0.1f;
+            flashEndTime_ = GameManager.Instance.GameTime + 0.05f;
         }
     }
 

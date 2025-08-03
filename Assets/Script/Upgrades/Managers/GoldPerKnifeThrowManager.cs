@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Gold Per Dagger</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Get gold per dagger thrown. Higher dagger damage means higher reward.");
+            sb.AppendLine("<color=#dddddd>Get gold per dagger thrown. Higher Dagger damage equals higher reward.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -45,7 +45,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format256.Format(currentValue)}% of dagger damage</color>");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format256.Format(currentValue)}% of Dagger damage</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}%</color>");
 
             return sb.ToString();

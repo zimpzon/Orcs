@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=yellow>Wizard</color></b></size>");
-            sb.AppendLine("<color=#dddddd>High damage fireballs using zap damage.");
+            sb.AppendLine("<color=#dddddd>Hurls powerful fireballs that deal fire damage equal to Zap damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -45,7 +45,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>{currentValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Wizard Zap damage: <color=COLOR-ARENA>{currentValue}%</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}%</color>");
             sb.AppendLine("");
             sb.AppendLine($"<color=#dddddd>Total damage: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalDamageWizard)}</color>");

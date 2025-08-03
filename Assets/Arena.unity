@@ -37896,7 +37896,7 @@ MonoBehaviour:
   ShamanProjectile: {fileID: 21300000, guid: ccb0a7ec93bac9b41b5c0d63fc4c6e31, type: 3}
   PlayerDagger: {fileID: 405790247, guid: d5ea92cf78b4a2645a9b8083ec819f93, type: 3}
   RoundBullet: {fileID: 21300030, guid: 9780b41bcc160d34f98730360ae6d27b, type: 3}
-  Sawblade: {fileID: 21300000, guid: 8857f984ae7d2d34e8d0f0c04f3ff5b4, type: 3}
+  Sawblade: {fileID: 21300000, guid: 8d3fef0ff0476b84b829d849ff308bae, type: 3}
 --- !u!114 &630143964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65314,7 +65314,7 @@ PrefabInstance:
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_Name
-      value: MoneyMaker
+      value: Necromancer
       objectReference: {fileID: 0}
     - target: {fileID: 1187219669250549275, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -65364,7 +65364,7 @@ PrefabInstance:
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_text
-      value: Moneymaker
+      value: Necromancer
       objectReference: {fileID: 0}
     - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}

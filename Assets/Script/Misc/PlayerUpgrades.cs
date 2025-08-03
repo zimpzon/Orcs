@@ -54,10 +54,9 @@ public class UpgradeData
     public bool WizardEnabled = false;
     public long WizardEffectiveDamage = 0;
 
-    // Axe thrower
-    public bool AxeThrowerEnabled = false;
-    public double AxeBaseDamage = 0.0f;
-    public double AxeEffectiveDamage => MagicMissileEffectiveDamage;
+    // Necromancer
+    public bool NecromancerEnabled = false;
+    public double NecromancerEffectiveDamage = 1;
 
     // weapons
     public double MagicMissileBaseDamage = 3.0f;

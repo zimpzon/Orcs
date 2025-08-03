@@ -12,6 +12,8 @@ namespace Assets.Script.Upgrades
             Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeMoneyMaker;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
+            long currentValue = (long)(ValueForLevel(level) * 100.0);
+            long nextValue = (long)(ValueForLevel(level + 1) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelMoneyMaker,
@@ -27,8 +29,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Moneymaker</color></b></size>");
-            sb.AppendLine("<color=#dddddd>More money coming your way.");
+            sb.AppendLine("<size=+4><b><color=yellow>Necromancer</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated skulls bitin for Dagger damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -42,8 +44,16 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format256.Format(priceX2)}");
             sb.AppendLine("");
 
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Necromancer Dagger damage: <color=COLOR-ARENA>{currentValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}%</color>");
+            sb.AppendLine("");
+            sb.AppendLine($"<color=#dddddd>Total damage: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalDamageNecromancer)}</color>");
             return sb.ToString();
         }
+
+        private static double ValueForLevel(long level)
+            => 1 + 0.25 * (level - 1);
 
         private static Decimal256 BaseIncome()
         {
@@ -69,7 +79,9 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            // Nothing, just $$
+            PlayerUpgrades.Data.NecromancerEnabled = SaveGame.Members.LevelMoneyMaker > 0;
+            PlayerUpgrades.Data.NecromancerEffectiveDamage =
+                PlayerUpgrades.Data.MagicMissileEffectiveDamage * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
         }
 
         public static void OnBuy()

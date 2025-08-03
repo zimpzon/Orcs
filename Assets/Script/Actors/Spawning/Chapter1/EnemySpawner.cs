@@ -22,7 +22,7 @@ public static class EnemySpawner
         long hpOgreLarge = 1000 * HpScale;
         long hpHeroChaser = 10_000 * HpScale;
         long hpRaven = 100_000 * HpScale;
-        long hpRed = 1_000_000 * HpScale;
+        long hpRed = 200_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
