@@ -40,6 +40,6 @@ public class AscendProgressScript : MonoBehaviour, IPointerEnterHandler, IPointe
         ProgressBarImage.fillAmount = t;
 
         float pct = t * 100.0f;
-        TextCredits.text = $"Monster credits: {SaveGame.Members.AscendLevelTemp}\n<size=-3>Next: {pct:00.00}%";
+        TextCredits.text = $"Monster credits: {SaveGame.Members.AscendLevelTemp}\n<size=-3>Next: {pct:#0.0}%";
     }
 }

@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     // 5: started ascension
     public const int MinorVersion = 5;
 
-    public enum State { None, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
+    public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     public ParticleSystem CircleParticles;
     public GrenadeScript Grenade;
     public int SortLayerTopEffects;
-    public State GameState;
+    public State GameState = State.Idle_Starting_Game;
     public Canvas CanvasIntro;
     public Canvas CanvasGame;
     public Canvas CanvasDead;
@@ -348,14 +348,9 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_Fighting)
             {
-                if (WasAway())
-                {
-                    // Probably throttled by browser.
-                    GameState = State.Idle_WasAway;
-                    continue;
-                }
-
                 CheckZapping(ActorDamageSource.ChainZap);
+
+                HandleAway();
 
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -1016,27 +1011,52 @@ public class GameManager : MonoBehaviour
         return awayTime.TotalSeconds >= minSeconds;
     }
 
-    bool WasAway()
+    bool HandleAway()
     {
-        bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
+        // TODO: need to use Javascript system clock for this!
+
+        bool wasAway = WasAway(minSeconds: 2, out TimeSpan awayTime);
+        //bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
         if (wasAway)
         {
+            switch (GameState)
+            {
+                case State.Idle_Starting_Game:
+                    break;
+                case State.Idle_PresentLevel:
+                    break;
+                case State.Idle_Fighting:
+                    GameState = State.Idle_WasAway;
+                    break;
+                case State.Idle_WonFight:
+                    break;
+                case State.Idle_OutOfTime:
+                    break;
+                case State.Idle_WasAway:
+                    break;
+                default:
+                    throw new Exception($"Need to handle {nameof(GameState)} {GameState} after being away");
+            }
+
             // Not doing anything with this yet, just planning.
             // I assume player got no income in this period? Otherwise TimeUtc
             // Would have been updated regularly.
             Decimal256 approxExpectedAwayIncome = awayTime.TotalSeconds * TotalPassiveIncome;
 
-            string msg = awayTime < TimeSpan.FromMinutes(10) ? "Welcome back!" :
-                $"You were away for {Format.FormatTimeSpan(awayTime)}\nWelcome back!";
+            //string msg = awayTime < TimeSpan.FromMinutes(10) ? "Welcome back!" :
+            //    $"You were away for {Format.FormatTimeSpan(awayTime)}\nWelcome back!";
+
+            string msg = $"Welcome back!";
 
             FloatingTextSpawner.Instance.Spawn(
             ArenaCenter,
             msg,
             Color.cyan,
             speed: 0.01f,
-            timeToLive: 10.0f,
+            timeToLive: 8.0f,
             fontStyle: FontStyles.Italic);
         }
+
         return wasAway;
     }
 
