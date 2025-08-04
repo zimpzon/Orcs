@@ -142,10 +142,12 @@ public class GameManager : MonoBehaviour
 
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         GameState = State.Idle_RestartRound;
-        PrepareForNewRound();
-        SaveGame.Save();
 
+        PrepareForNewRound();
+        KillKillOnSaveWipeObjects();
         GameEvents.RaiseSaveWiped(GameEvents.SaveWipeReason.UserWipe);
+
+        SaveGame.Save();
     }
 
     public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
@@ -421,6 +423,15 @@ public class GameManager : MonoBehaviour
     public void KillKillableObjects()
     {
         var killables = FindObjectsOfType<MonoBehaviour>().OfType<IKillableObject>();
+        foreach (var killable in killables)
+        {
+            killable.Kill();
+        }
+    }
+
+    public void KillKillOnSaveWipeObjects()
+    {
+        var killables = FindObjectsOfType<MonoBehaviour>().OfType<IKillOnSaveWipe>();
         foreach (var killable in killables)
         {
             killable.Kill();

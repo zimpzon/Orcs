@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum AutoPickUpType { Money, Xp, }
 
-public class AutoPickUpScript : MonoBehaviour
+public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
 {
     public AutoPickUpType Type;
     public long Value = 1;
@@ -61,6 +61,11 @@ public class AutoPickUpScript : MonoBehaviour
     {
         transform.localScale = _baseScale;
         PickUpManagerScript.Instance.ReturnPickUpToCache(Type, gameObject);
+    }
+
+    public void Kill()
+    {
+        Die();
     }
 
     private void Update()
