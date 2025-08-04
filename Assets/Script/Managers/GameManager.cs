@@ -1034,7 +1034,7 @@ public class GameManager : MonoBehaviour
             msg,
             Color.cyan,
             speed: 0.01f,
-            timeToLive: 5.0f,
+            timeToLive: 10.0f,
             fontStyle: FontStyles.Italic);
         }
         return wasAway;
@@ -1252,16 +1252,23 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.HasMoneyCheated = true;
         }
 
+        if (G.GetCheatKeyDown(KeyCode.N) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            SaveGame.Members.Money = 0;
+        }
+
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.ArenaLevel++;
+            SaveGame.Members.ArenaLevel += 25;
             SaveGame.Members.HasArenaIncreaseCheated = true;
         }
 
-        //if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
-        //{
-        //    SaveGame.Members.Money = 0;
-        //}
+        if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            SaveGame.Members.ArenaLevel -= 25;
+            if (SaveGame.Members.ArenaLevel <= 1)
+                SaveGame.Members.ArenaLevel = 1;
+        }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))
         {
@@ -1288,24 +1295,6 @@ public class GameManager : MonoBehaviour
         //    var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
         //    long damage = PlayerUpgrades.Data.EffectiveZapDamage;
         //    Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.F1))
-        //{
-        //    PlayerUpgrades.Data.BaseMoveSpeed += Input.GetKey(KeyCode.LeftShift) ? 1f : -1f;
-        //    Debug.Log("BaseMoveSpeed : " + PlayerUpgrades.Data.BaseMoveSpeed);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.F2))
-        //{
-        //    PlayerUpgrades.Data.MagicMissileBaseCd += Input.GetKey(KeyCode.LeftShift) ? -0.25f : 0.25f;
-        //    Debug.Log("MagicMissileBaseCd : " + PlayerUpgrades.Data.MagicMissileBaseCd);
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.F3))
-        //{
-        //    PlayerUpgrades.Data.MagicMissileBaseDamage += Input.GetKey(KeyCode.LeftShift) ? 10f : -10f;
-        //    Debug.Log("MagicMissileBaseDamage : " + PlayerUpgrades.Data.MagicMissileBaseDamage);
         //}
 
         //if (Input.GetKeyDown(KeyCode.F4))

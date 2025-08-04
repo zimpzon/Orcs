@@ -16,6 +16,8 @@ public class QuestionmarkScript : MonoBehaviour
     public Button Button;
     public GameObject RadialRoot;
     public Image RadialImage;
+    public TextMeshProUGUI MoneyMultiplierText;
+    private Vector3 _pulseTextOriginalScale;
 
     public Color TextColorEnabled;
     public Color TextColorDisabled;
@@ -172,8 +174,11 @@ public class QuestionmarkScript : MonoBehaviour
         {
             InitRadial();
 
+            BeginPulseText();
+
             float startRealTime = G.D.RealTime;
-            float endRealTime = startRealTime + (60 * 3) + 33;
+            float endRealTime = startRealTime + (60 * 5) + 5;
+            //float endRealTime = startRealTime + 5;
             ShowMessage("Time runs 33% faster for 5 minutes and 5 seconds!");
 
             PlayerUpgrades.Data.TimeScale = 1.33f;
@@ -192,8 +197,13 @@ public class QuestionmarkScript : MonoBehaviour
             InitRadial();
 
             float startRealTime = G.D.RealTime;
+            //float endRealTime = startRealTime + 5;
             float endRealTime = startRealTime + 60;
             ShowMessage("X10 ALL income for 1 minute!");
+
+            MoneyMultiplierText.text = "X10";
+            MoneyMultiplierText.gameObject.SetActive(true);
+            BeginPulseText();
 
             PlayerUpgrades.Data.IncomeScale = 10.0;
 
@@ -204,6 +214,23 @@ public class QuestionmarkScript : MonoBehaviour
             }
 
             PlayerUpgrades.Data.IncomeScale = 1.0;
+            MoneyMultiplierText.gameObject.SetActive(false);
+            StopPulseText();
+        }
+
+        void BeginPulseText()
+        {
+            _pulseTextOriginalScale = MoneyMultiplierText.gameObject.transform.localScale;
+
+            LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.2f, 0.15f)
+                .setEaseInOutSine()
+                .setLoopPingPong();
+        }
+
+        void StopPulseText()
+        {
+            LeanTween.cancel(MoneyMultiplierText.gameObject);
+            MoneyMultiplierText.gameObject.transform.localScale = _pulseTextOriginalScale;
         }
 
         IEnumerator FixedIncomeCo()
