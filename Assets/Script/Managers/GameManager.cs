@@ -142,7 +142,10 @@ public class GameManager : MonoBehaviour
 
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         GameState = State.Idle_RestartRound;
+        PrepareForNewRound();
         SaveGame.Save();
+
+        GameEvents.RaiseSaveWiped(GameEvents.SaveWipeReason.UserWipe);
     }
 
     public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)

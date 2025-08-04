@@ -25,6 +25,13 @@ public class QuestionmarkScript : MonoBehaviour
     private void Awake()
     {
         StartCoroutine(Think());
+        GameEvents.OnSaveWiped += OnSaveWiped;
+    }
+
+    void OnSaveWiped(GameEvents.SaveWipeReason reason)
+    {
+        StopAllCoroutines();
+        StartCoroutine(Think());
     }
 
     private static string GetText(TimeSpan timeLeft)
