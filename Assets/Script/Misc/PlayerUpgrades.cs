@@ -9,7 +9,6 @@ public class UpgradeData
     public float CritChanceMul = 1.0f;
     public float CritValueMul = 1.5f;
     public float TimeScale = 1.0f;
-    public double IncomeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
     public TimeSpan GameStartTime = TimeSpan.Zero;
@@ -19,15 +18,14 @@ public class UpgradeData
     public double ZapDamageUpgrade = 1.0;
     public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
 
-    // gold
-    public float MoneyDoubleChance = 0.05f;
-    public float DropMoneyOnKillChance = 0.1f;
-    public int DropMoneyOnKillMin = 1;
-    public int DropMoneyOnKillMax = 3;
-
-    // xp
-    public float XpDoubleChance = 0.05f;
-    public float XpValueMul = 1.0f;
+    // passive income
+    public float PassiveIncomeTempMultiplier = 1.0f;
+    public float PassiveIncomeAscendMultiplier = 1.0f;
+    public float PassiveIncomeCurrentRunMultiplier = 1.0f;
+    public float PassiveIncomeEffectiveMultiplier =>
+        PassiveIncomeTempMultiplier *
+        PassiveIncomeAscendMultiplier *
+        PassiveIncomeCurrentRunMultiplier;
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;

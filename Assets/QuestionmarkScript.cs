@@ -206,13 +206,13 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             //float endRealTime = startRealTime + 5;
             float endRealTime = startRealTime + 60;
-            ShowMessage("X10 ALL income for 1 minute!");
+            ShowMessage("X10 income for 1 minute!");
 
             MoneyMultiplierText.text = "X10";
             MoneyMultiplierText.gameObject.SetActive(true);
             BeginPulseText();
 
-            PlayerUpgrades.Data.IncomeScale = 10.0;
+            PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 10.0f;
 
             while (G.D.RealTime < endRealTime)
             {
@@ -220,7 +220,7 @@ public class QuestionmarkScript : MonoBehaviour
                 yield return null;
             }
 
-            PlayerUpgrades.Data.IncomeScale = 1.0;
+            PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 1.0f;
             MoneyMultiplierText.gameObject.SetActive(false);
             StopPulseText();
         }
@@ -229,7 +229,7 @@ public class QuestionmarkScript : MonoBehaviour
         {
             _pulseTextOriginalScale = MoneyMultiplierText.gameObject.transform.localScale;
 
-            LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.2f, 0.15f)
+            LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.4f, 0.15f)
                 .setEaseInOutSine()
                 .setLoopPingPong();
         }

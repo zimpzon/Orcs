@@ -70,6 +70,10 @@ namespace Assets.Script.Upgrades
         private static Decimal256 BaseIncome()
         {
             Decimal256 baseIncome = UpgradeProgression.BaseIncome_DaggerCd;
+
+            // Apply global modifiers
+            baseIncome *= PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
+
             // Apply X2 bonuses
             baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelKnifeCdX2);
             return baseIncome;

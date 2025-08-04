@@ -530,14 +530,14 @@ public class GameManager : MonoBehaviour
     public void AddGold(bool isLargeCoin, Decimal256 value)
     {
         Decimal256 moneyAdded = value;
-        SaveGame.Members.TotalIncomeArena += moneyAdded * PlayerUpgrades.Data.IncomeScale;
+        SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
 
         Vector2 playerPos = G.D.PlayerPos;
         Vector2 textPos = playerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle();
 
-        Decimal256 displayMoney = moneyAdded * PlayerUpgrades.Data.IncomeScale;
+        Decimal256 displayMoney = moneyAdded;
         FloatingTextSpawner.Instance.Spawn(
             textPos,
             $"${Format256.Format(displayMoney)}",
@@ -549,7 +549,6 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(Decimal256 amount)
     {
-        amount *= PlayerUpgrades.Data.IncomeScale;
         SaveGame.Members.Money += amount;
     }
 
@@ -587,10 +586,7 @@ public class GameManager : MonoBehaviour
 
             if (pickupType == AutoPickUpType.Xp)
             {
-                float xpValue = value * PlayerUpgrades.Data.XpValueMul;
-                float xpToColorScale = 4.0f;
-                int colorIdx = Mathf.Min(xpColors.Length - 1, (int)(xpValue / xpToColorScale));
-                pickup.GetComponent<SpriteRenderer>().color = xpColors[colorIdx];
+                throw new NotImplementedException();
             }
             pickup.SetActive(true);
         }
@@ -1102,12 +1098,10 @@ public class GameManager : MonoBehaviour
         Decimal256 moneyToAdd = TotalPassiveIncome * (Decimal256)_deltaRealTime;
         AddMoney(moneyToAdd);
 
-        Decimal256 scaledPassiveIncome = TotalPassiveIncome * PlayerUpgrades.Data.IncomeScale;
-
-        if (_prevPassiveIncome != scaledPassiveIncome)
+        if (_prevPassiveIncome != TotalPassiveIncome)
         {
-            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(scaledPassiveIncome)} per second";
-            _prevPassiveIncome = scaledPassiveIncome;
+            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(TotalPassiveIncome)} per second";
+            _prevPassiveIncome = TotalPassiveIncome;
             PopText(TextPassiveIncome);
         }
     }
