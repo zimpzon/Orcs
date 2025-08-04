@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     // 5: started ascension
     public const int MinorVersion = 5;
 
-    public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_WasAway };
+    public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
     const float BaseXpToLevel = 14;
     const int RoundTimeSeconds = 30;
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetAllProgress()
     {
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerDie);
+        //AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerDie);
         
         float VolumeMaster = SaveGame.Members.VolumeMaster;
         float VolumeMusic = SaveGame.Members.VolumeMusic;
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.VolumeSfx = VolumeSfx;
 
         SaveGame.Members.SaveKillSwitch_CanSave = true;
-
+        GameState = State.Idle_RestartRound;
         SaveGame.Save();
     }
 
@@ -348,6 +348,13 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_Fighting)
             {
+                if (HandleAway())
+                {
+                    // Probably throttled by browser.
+                    GameState = State.Idle_RestartRound;
+                    continue;
+                }
+
                 CheckZapping(ActorDamageSource.ChainZap);
 
                 HandleAway();
@@ -367,7 +374,7 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
 
-            if (GameState == State.Idle_WasAway)
+            if (GameState == State.Idle_RestartRound)
             {
                 // Nothing to do here, we just restart same round.
             }
@@ -1026,13 +1033,13 @@ public class GameManager : MonoBehaviour
                 case State.Idle_PresentLevel:
                     break;
                 case State.Idle_Fighting:
-                    GameState = State.Idle_WasAway;
+                    GameState = State.Idle_RestartRound;
                     break;
                 case State.Idle_WonFight:
                     break;
                 case State.Idle_OutOfTime:
                     break;
-                case State.Idle_WasAway:
+                case State.Idle_RestartRound:
                     break;
                 default:
                     throw new Exception($"Need to handle {nameof(GameState)} {GameState} after being away");
