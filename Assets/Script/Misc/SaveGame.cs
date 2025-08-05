@@ -80,6 +80,9 @@ public class SaveGameMembers
     public long LevelZapDamageX2 = 0;
     public long LevelMoneyMakerX2 = 0;
 
+    // Pct
+    public long LevelPctBought = 0;
+
     // Damage
     public Decimal256 TotalDamageChainZap;
     public Decimal256 TotalDamageDaggerThrow;

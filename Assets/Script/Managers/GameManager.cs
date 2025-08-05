@@ -1213,6 +1213,7 @@ public class GameManager : MonoBehaviour
         var dic = new Dictionary<string, int>()
         {
             { "ascend_level", (int)SaveGame.Members.AscendLevelTemp },
+            { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
             { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
@@ -1220,17 +1221,17 @@ public class GameManager : MonoBehaviour
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
 
-            // 18 below this
+            // 17 below this
 
             // removed zap to make room for others
-            //{ "level_zap", (int)SaveGame.Members.LevelClickDamage },
+            { "level_zap", (int)SaveGame.Members.LevelClickDamage },
             //{ "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
 
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
-            { "level_knife_damage_x2", (int)SaveGame.Members.LevelKnifeDamageX2 },
+            //{ "level_knife_damage_x2", (int)SaveGame.Members.LevelKnifeDamageX2 },
 
             { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },
-            { "level_gold_value_x2", (int)SaveGame.Members.LevelMoneyPerGoldX2 },
+            //{ "level_gold_value_x2", (int)SaveGame.Members.LevelMoneyPerGoldX2 },
 
             { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
             { "level_dagger_cd_x2", (int)SaveGame.Members.LevelKnifeCdX2 },

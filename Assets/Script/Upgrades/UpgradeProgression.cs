@@ -71,5 +71,32 @@ namespace Assets.Script.Upgrades
             // > 3
             return (levelX2 - 3) * 50;
         }
+
+        public static Decimal256 PriceNextPercentageBonus(long level)
+        {
+            // Claude
+            //
+            // Level 4: ~622,500
+            // Level 10: ~1,900,000
+            // Level 50: ~75,000,000
+            // Level 100: ~1,000,000,000
+
+            if (level == 0) return 500;
+            if (level == 1) return 10_000;
+            if (level == 2) return 100_000;
+            if (level == 3) return 250_000;
+
+            // Geometric growth: base_price * growth_rate^(level - 4)
+            // Starting from 500,000 at level 3, with growth rate of ~1.245
+            // This reaches approximately 1 billion at level 100
+            // You can adjust the growthRate value slightly if you want to
+            // fine-tune the final amount - increasing it will make level 100
+            // cost more, decreasing it will make it cost less.
+            Decimal256 basePrice = 500_000;
+            double growthRate = 1.245;
+            double exponent = level - 3;
+
+            return basePrice * (Decimal256)Math.Pow(growthRate, exponent);
+        }
     }
 }
