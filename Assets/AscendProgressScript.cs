@@ -1,24 +1,26 @@
 using Assets.Script.Upgrades;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AscendProgressScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class AscendProgressScript : MonoBehaviour
 {
-    public GameObject NotImplemented;
     public TextMeshProUGUI TextCredits;
     public Image ProgressBarImage;
+    //public GameObject AscendDarkenPanel;
+    public GameObject AscendRoot;
     private float _nextUpdate;
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnShowClick()
     {
-        NotImplemented.SetActive(true);
+        //AscendDarkenPanel.SetActive(true);
+        AscendRoot.SetActive(true);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnCloseClick()
     {
-        NotImplemented.SetActive(false);
+        //AscendDarkenPanel.SetActive(false);
+        AscendRoot.SetActive(false);
     }
 
     void Update()
