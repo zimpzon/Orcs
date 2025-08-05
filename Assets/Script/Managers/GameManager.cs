@@ -676,8 +676,11 @@ public class GameManager : MonoBehaviour
 
     long CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
     {
-        const double HpToGoldPct = 0.1 / EnemySpawner.HpScale;
+        // This directly affects how much gold arena makes. On top we have dagger throws, which usually does more.
+        const double HpToGoldPct = 0.25 / EnemySpawner.HpScale;
 
+        // Faster completion means more gold. But we will end at lowest (0.75%) all the time since
+        // time will almost always be used up at higher levels.
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
         long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
