@@ -34,6 +34,9 @@ public class PercentageBonusScript : MonoBehaviour
         if (!CanAfford())
             return;
 
+        Decimal256 priceNext = UpgradeProgression.PriceNextPercentageBonus(SaveGame.Members.LevelPctBought);
+        GameManager.Instance.DeductMoney(priceNext);
+
         SaveGame.Members.LevelPctBought++;
         UpdateAll();
     }
@@ -54,7 +57,6 @@ public class PercentageBonusScript : MonoBehaviour
         bool canAfford = CanAfford();
         SetEnabled(canAfford);
         ButtonText.text = $"${Format256.Format(priceNext)}";
-        Debug.Log("PCT: " + PlayerUpgrades.Data.PassiveIncomePercentageBonuses);
         TextBonusStatus.text = $"+1% passive income\n<size=-2><color=#ccccee>Bonus: {SaveGame.Members.LevelPctBought}%";
     }
 
