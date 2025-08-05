@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     // 3: radial progress bar mystery counters
     // 4: added Necromancer
     // 5: started ascension
-    public const int MinorVersion = 5;
+    // 6: percentage upgrades added
+    public const int MinorVersion = 6;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

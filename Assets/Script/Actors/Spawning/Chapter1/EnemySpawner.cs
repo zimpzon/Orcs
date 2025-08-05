@@ -21,13 +21,17 @@ public static class EnemySpawner
         long hpOgreSmall = 50 * HpScale;
         long hpOgreLarge = 1000 * HpScale;
         long hpHeroChaser = 10_000 * HpScale;
+        long hpGreen = 50_000 * HpScale;
         long hpRaven = 100_000 * HpScale;
         long hpRed = 200_000 * HpScale;
+        long hpPigtail = 500_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
+        bool allowGreen = hpTargetForRound >= hpGreen;
         bool allowRaven = hpTargetForRound >= hpRaven;
         bool allowRed = hpTargetForRound >= hpRed;
+        bool allowPigtail = hpTargetForRound >= hpPigtail;
 
         List<ActorBase> enemies = new();
         int safety = 100;
@@ -37,7 +41,18 @@ public static class EnemySpawner
             long remainingHp = hpTargetForRound;
             enemies.Clear();
 
-            // 1. Red
+            // 1. Pigtail
+            long clampedPigtail = 0;
+            if (allowPigtail)
+            {
+                clampedPigtail = Math.Min(remainingHp / hpPigtail, MaxEnemies - totalEnemies);
+                clampedPigtail -= UnityEngine.Random.Range(0, 2);
+                clampedPigtail = Math.Max(0, clampedPigtail);
+                remainingHp -= clampedPigtail * hpPigtail;
+                totalEnemies += clampedPigtail;
+            }
+
+            // 2. Red
             long clampedRed = 0;
             if (allowRed)
             {
@@ -48,7 +63,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRed;
             }
 
-            // 2. Ravens
+            // 3. Ravens
             long clampedRaven = 0;
             if (allowRaven)
             {
@@ -59,7 +74,18 @@ public static class EnemySpawner
                 totalEnemies += clampedRaven;
             }
 
-            // 3. Hero Chasers
+            // 4. Green
+            long clampedGreen = 0;
+            if (allowGreen)
+            {
+                clampedGreen = Math.Min(remainingHp / hpGreen, MaxEnemies - totalEnemies);
+                clampedGreen -= UnityEngine.Random.Range(0, 2);
+                clampedGreen = Math.Max(0, clampedGreen);
+                remainingHp -= clampedGreen * hpGreen;
+                totalEnemies += clampedGreen;
+            }
+
+            // 5. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
@@ -70,7 +96,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 4. Large Ogres
+            // 6. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
@@ -81,14 +107,14 @@ public static class EnemySpawner
                 totalEnemies += clampedLarge;
             }
 
-            // 5. Small Ogres
+            // 7. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 6. Bats
+            // 8. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
@@ -100,6 +126,13 @@ public static class EnemySpawner
                 remainingHp -= hpBat;
             }
 
+            // Add Pigtail
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Pigtail, (int)clampedPigtail))
+            {
+                actor.BaseHp = hpPigtail;
+                enemies.Add(actor);
+            }
+
             // Add Red
             foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Red, (int)clampedRed))
             {
@@ -107,15 +140,22 @@ public static class EnemySpawner
                 enemies.Add(actor);
             }
 
-            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.HeroChaser, (int)clampedHeroChaser))
-            {
-                actor.BaseHp = hpHeroChaser;
-                enemies.Add(actor);
-            }
-
             foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Raven, (int)clampedRaven))
             {
                 actor.BaseHp = hpRaven;
+                enemies.Add(actor);
+            }
+
+            // Add Green
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Green, (int)clampedGreen))
+            {
+                actor.BaseHp = hpGreen;
+                enemies.Add(actor);
+            }
+
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.HeroChaser, (int)clampedHeroChaser))
+            {
+                actor.BaseHp = hpHeroChaser;
                 enemies.Add(actor);
             }
 
@@ -155,9 +195,11 @@ public static class EnemySpawner
                 break;
 
             // Increase HP budgets and retry
-            hpHeroChaser *= 10;
-            hpRaven *= 10;
+            hpPigtail *= 10;
             hpRed *= 10;
+            hpRaven *= 10;
+            hpGreen *= 10;
+            hpHeroChaser *= 10;
             hpOgreLarge *= 10;
             hpOgreSmall *= 10;
             hpBat *= 10;
