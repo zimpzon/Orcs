@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
     public TextMeshProUGUI TextTotalIncome;
+    public TextMeshProUGUI TextTotalKilled;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public TextMeshProUGUI TextVersion;
@@ -694,7 +695,7 @@ public class GameManager : MonoBehaviour
         bool knifeThrowGoldEnabled = SaveGame.Members.LevelGoldPerKnifeThrown > 0;
         if (knifeThrowGoldEnabled)
         {
-            // DaggerDamage * daggersThrown * goldPerDagger
+            // bonus = DaggerDamage * daggersThrown * goldPerDagger
             long knifeThrownBonus = (long)(
                 PlayerUpgrades.Data.MagicMissileEffectiveDamage *
                 G.D.PlayerScript.DaggersThrown *
@@ -702,6 +703,8 @@ public class GameManager : MonoBehaviour
 
             if (knifeThrownBonus > 0)
             {
+                SaveGame.Members.TotalIncomeKnifeThrow += knifeThrownBonus;
+
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
                     $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)}</color>G",
@@ -749,6 +752,8 @@ public class GameManager : MonoBehaviour
             float volume = 0.7f + UnityEngine.Random.value * 0.1f;
             AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.EnemyDie, volume, pitch);
         }
+
+        SaveGame.Members.EnemiesKilled += 1;
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
@@ -816,6 +821,7 @@ public class GameManager : MonoBehaviour
             amount = 1;
 
         long intAmount = (long)amount;
+        SaveGame.Members.DamageDone += intAmount;
 
         // Diplay the full damager number, without truncating to enemy health.
         Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
@@ -1141,24 +1147,25 @@ public class GameManager : MonoBehaviour
         TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
-
-    Decimal256 _prevTotalIncome = 999999;
     float _timeNextTotalIncomeUpdate;
 
-    void UpdateTotalIncomeText()
+    void UpdateBottomStats()
     {
         Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
-
-        if (total == _prevTotalIncome)
-            return;
 
         if (G.D.GameTime < _timeNextTotalIncomeUpdate)
             return;
 
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
-        _prevTotalIncome = total;
-        TextTotalIncome.text = $"Total earned this round: ${Format256.FormatWithDecimals(total, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        TextTotalIncome.text =
+            $"Total: ${Format256.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Passive: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Arena: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, alwaysThreeDecimalsForLargeNumbers: true)} ";
+
+        TextTotalKilled.text =
+            $"Enemies killed: {Format256.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Damage done: {Format256.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     void UpdateTimeSeen()
@@ -1260,7 +1267,7 @@ public class GameManager : MonoBehaviour
         UpdateTimeSeen();
         UpdatePassiveIncome();
         UpdateMoneyText();
-        UpdateTotalIncomeText();
+        UpdateBottomStats();
 
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.5f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
@@ -1279,6 +1286,11 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
         {
             ResetAllProgress();
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            QuestionmarkScript.Instance.ForceReady();
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))

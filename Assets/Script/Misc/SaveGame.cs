@@ -51,6 +51,11 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
 
+    public Decimal256 TotalIncomeKnifeThrow;
+
+    public Decimal256 EnemiesKilled;
+    public Decimal256 DamageDone;
+
     // Upgrades
     public long LevelClickDamage = 0;
     public long LevelKnifeCd = 0;

@@ -11,6 +11,7 @@ public enum MysteryReward
 
 public class QuestionmarkScript : MonoBehaviour
 {
+    public static QuestionmarkScript Instance;
     public GameObject Popup;
     public TextMeshProUGUI Text;
     public Button Button;
@@ -24,6 +25,7 @@ public class QuestionmarkScript : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         StartCoroutine(Think());
         GameEvents.OnSaveWiped += OnSaveWiped;
     }
@@ -31,7 +33,15 @@ public class QuestionmarkScript : MonoBehaviour
     void OnSaveWiped(GameEvents.SaveWipeReason reason)
     {
         StopAllCoroutines();
+        StopAllBuffs();
         StartCoroutine(Think());
+    }
+
+    // Make mystery bonus ready now. Debug or maybe other? Note: this aborts existing.
+    public void ForceReady()
+    {
+        OnSaveWiped(GameEvents.SaveWipeReason.UserWipe);
+        SaveGame.Members.QuestionMarkRealTimeLeft = 1;
     }
 
     private static string GetText(TimeSpan timeLeft)
@@ -196,7 +206,7 @@ public class QuestionmarkScript : MonoBehaviour
                 yield return null;
             }
 
-            PlayerUpgrades.Data.TimeScale = 1.0f;
+            StopAllBuffs();
         }
 
         IEnumerator FasterIncomeCo()
@@ -220,24 +230,16 @@ public class QuestionmarkScript : MonoBehaviour
                 yield return null;
             }
 
-            PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 1.0f;
-            MoneyMultiplierText.gameObject.SetActive(false);
-            StopPulseText();
+            StopAllBuffs();
         }
 
         void BeginPulseText()
         {
             _pulseTextOriginalScale = MoneyMultiplierText.gameObject.transform.localScale;
 
-            LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.4f, 0.15f)
+            LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.1f, 0.5f)
                 .setEaseInOutSine()
                 .setLoopPingPong();
-        }
-
-        void StopPulseText()
-        {
-            LeanTween.cancel(MoneyMultiplierText.gameObject);
-            MoneyMultiplierText.gameObject.transform.localScale = _pulseTextOriginalScale;
         }
 
         IEnumerator FixedIncomeCo()
@@ -264,5 +266,19 @@ public class QuestionmarkScript : MonoBehaviour
                 timeToLive: 14.0f,
                 fontStyle: TMPro.FontStyles.Bold);
         }
+    }
+
+    void StopAllBuffs()
+    {
+        PlayerUpgrades.Data.TimeScale = 1.0f;
+        PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 1.0f;
+        MoneyMultiplierText.gameObject.SetActive(false);
+        StopPulseText();
+    }
+
+    void StopPulseText()
+    {
+        LeanTween.cancel(MoneyMultiplierText.gameObject);
+        MoneyMultiplierText.gameObject.transform.localScale = _pulseTextOriginalScale;
     }
 }

@@ -47,6 +47,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format256.Format(currentValue)}% of Dagger damage</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}%</color>");
+            sb.AppendLine("");
+            sb.AppendLine($"<color=#dddddd>Dagger throws earned: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalIncomeKnifeThrow)}</color>");
 
             return sb.ToString();
         }
