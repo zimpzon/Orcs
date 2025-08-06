@@ -1172,14 +1172,6 @@ public class GameManager : MonoBehaviour
             $"Damage done: {Format256.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
-    void UpdateTimeSeen()
-    {
-        SaveGame.Members.TotalGameTimeAccumulated += G.D.GameTime - SaveGame.Members.LastGameTimeSeen;
-        SaveGame.Members.TotalRealTimeAccumulated += G.D.RealTime - SaveGame.Members.LastRealTimeSeen;
-        SaveGame.Members.LastGameTimeSeen = G.D.GameTime;
-        SaveGame.Members.LastRealTimeSeen = G.D.RealTime;
-    }
-
     float _nextSave;
 
     public void TrySaveGame(bool forceSave = false)
@@ -1217,7 +1209,6 @@ public class GameManager : MonoBehaviour
             { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
-            { Playfab.RealTimeAccumulated, (int)SaveGame.Members.TotalRealTimeAccumulated },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
@@ -1269,7 +1260,6 @@ public class GameManager : MonoBehaviour
         TrySaveGame();
         TrySendStats();
 
-        UpdateTimeSeen();
         UpdatePassiveIncome();
         UpdateMoneyText();
         UpdateBottomStats();

@@ -4,14 +4,15 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-public enum QuestionMarkState { NotSet, CountingDown, ReadyForCollection };
-
 public class SaveGameMembers
 {
-    public string PlayerId = string.Empty;
+    // ---------------------- Permanent data, stay after ascend ----------------------
 
-    // Prevent overwriting save in case of Members reset (happens in editor on crash on code change).
-    public bool SaveKillSwitch_CanSave = false;
+    // SaveGameAscend must be kept up to date with this. Should probably create total and per-round stats.
+
+    // Geez one is a left-over. I think only PlayerId is important.
+    public string PlayerId = string.Empty;
+    public string UserId;
 
     public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
 
@@ -20,23 +21,34 @@ public class SaveGameMembers
     public long AscendLevelTemp; // temp so we don't have garbage when implementing for real.
     public long MonsterCredits;
 
-    // Questionmark bonuses
-    public double QuestionMarkRealTimeLeft = -1;
-    public long MysteryCollected = 0;
-    public QuestionMarkState QuestionMarkState = QuestionMarkState.NotSet;
-
     // Cheat detection 
     public bool HasMoneyCheated = false;
     public bool HasArenaIncreaseCheated = false;
 
+    // Settings
+    public int Version;
+    public float VolumeMaster = 1.0f;
+    public float VolumeMusic = 0.7f;
+    public float VolumeSfx = 1.0f;
+
+
+    // ---------------------- Deleted after ascend ----------------------
+
+
+    // Prevent overwriting save in case of Members reset (happens in editor on crash on code change).
+    public bool SaveKillSwitch_CanSave = false;
+
+    // Tracking
+    public double QuestionMarkRealTimeLeft = -1;
+
     // Time
-    public double TotalGameTimeAccumulated = 0;
-    public double TotalRealTimeAccumulated = 0;
-    public double LastGameTimeSeen = 0;
-    public double LastRealTimeSeen = 0;
-    public long ChestsCollected = 0;
+    public string TimeLastSeenUtc;
+    public double LifeTimeSessionSeconds;
 
     // Stats
+    public long ChestsCollected = 0;
+    public long MysteryCollected = 0;
+
     public Decimal256 TotalIncomeClickDamage;
     public Decimal256 TotalIncomeGoldPerKnifeThrow;
     public Decimal256 TotalIncomeKnifeCd;
@@ -93,13 +105,6 @@ public class SaveGameMembers
     // Game
     public long ArenaLevel = 1;
     public Decimal256 Money = 40;
-
-    // Settings
-    public int Version;
-    public float VolumeMaster = 1.0f;
-    public float VolumeMusic = 0.7f;
-    public float VolumeSfx = 1.0f;
-    public string UserId;
 
     public string ToJson()
     {
