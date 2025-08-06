@@ -16257,9 +16257,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0.49983108, b: 0, a: 1}
-    m_HighlightedColor: {r: 0.6745098, g: 0.7490196, b: 1, a: 1}
-    m_PressedColor: {r: 0.589, g: 0.68308437, b: 1, a: 1}
-    m_SelectedColor: {r: 0.6745098, g: 0.7490196, b: 1, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.49803925, b: 0, a: 1}
+    m_PressedColor: {r: 0.88199997, g: 0.4392706, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0.49803925, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -32366,7 +32366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 21}
+  m_AnchoredPosition: {x: 0, y: -111.1}
   m_SizeDelta: {x: 100, y: 18.872604}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &359417975
@@ -33844,7 +33844,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.09803922, g: 0.21960784, b: 0.5019608, a: 0.6117647}
+      maxColor: {r: 0.811, g: 0.02290962, b: 0.09163837, a: 0.6117647}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -56252,15 +56252,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 93e3d18a90e17184ca276a8b67c1853d, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.5019608
+      value: 0.05322172
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 93e3d18a90e17184ca276a8b67c1853d, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.21960784
+      value: 0.09877742
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 93e3d18a90e17184ca276a8b67c1853d, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.09803922
+      value: 0.735849
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 93e3d18a90e17184ca276a8b67c1853d, type: 3}
       propertyPath: InitialModule.startLifetime.minScalar
@@ -73861,6 +73861,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1407321676}
     m_Modifications:
+    - target: {fileID: 1817257581003230922, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
@@ -73879,6 +73884,11 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: CardId
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889063575801353420, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
@@ -73980,6 +73990,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9111352111247506795, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -90048,8 +90063,8 @@ RectTransform:
   m_Children:
   - {fileID: 402539567}
   - {fileID: 1698090881}
-  - {fileID: 870673920}
   - {fileID: 310207511}
+  - {fileID: 870673920}
   m_Father: {fileID: 1119408386}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -91647,7 +91662,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.88032454, b: 0.5661765, a: 0.166}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.105882354}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

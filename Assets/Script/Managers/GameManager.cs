@@ -1021,7 +1021,6 @@ public class GameManager : MonoBehaviour
         }
 
         awayTime = DateTime.UtcNow - timeSinceLastSeenUtc;
-        SaveGame.Members.EstimatedOnlineSeconds += awayTime.TotalMilliseconds;
 
         ResetAwayTimestamp();
 
@@ -1182,6 +1181,9 @@ public class GameManager : MonoBehaviour
     {
         if (Time.realtimeSinceStartup > _nextSendStats)
         {
+            // Update estimated time every time we save, we only need it for stats anyways (for now...)
+            SaveGame.Members.EstimatedOnlineSeconds2 += SendStatsInterval;
+
             Debug.Log("Sending stats...");
             UpdatePlayFabStats();
             _nextSendStats = Time.realtimeSinceStartup + SendStatsInterval;
@@ -1201,7 +1203,7 @@ public class GameManager : MonoBehaviour
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
-            { "estimated_online_seconds", (int)SaveGame.Members.EstimatedOnlineSeconds },
+            { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
             // 17 below this
 
