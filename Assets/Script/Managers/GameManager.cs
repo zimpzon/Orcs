@@ -44,15 +44,17 @@ public class GameManager : MonoBehaviour
     public Vector2 ArenaCenter => ArenaBoundsCollider.bounds.center;
     public LeanTween Tween;
     public Text TextFps;
-    public TextMeshProUGUI TextEndOfAlpha;
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
-    public TextMeshProUGUI TextTotalIncome;
-    public TextMeshProUGUI TextTotalKilled;
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public TextMeshProUGUI TextVersion;
+
+    public TextMeshProUGUI TextTotalIncome;
+    public TextMeshProUGUI TextTotalKilled;
+    public TextMeshProUGUI TextTimeThisSession;
+
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -119,15 +121,7 @@ public class GameManager : MonoBehaviour
 
     [NonSerialized] public float xpToLevel;
     [NonSerialized] public float currentXp = 0;
-    float currentLevel_ = 1;
-    float roundStartTime_;
-
-    void EnablePanel(GameObject panel, bool enable)
-    {
-        // Work-around for Unity SetActive bug (still showing UI components after disable)
-        panel.SetActive(enable);
-//        panel.transform.localScale = enable ? Vector3.one : Vector3.zero;
-    }
+    private DateTime? _timeStartSessionUtc = null;
 
     public void ResetAllProgress()
     {
@@ -320,6 +314,10 @@ public class GameManager : MonoBehaviour
         string s8 = Format256.FormatWithDecimals(v2, alwaysThreeDecimalsForLargeNumbers: true);
         string s9 = Format256.FormatWithDecimals(v3, alwaysThreeDecimalsForLargeNumbers: true);
 
+        _timeStartSessionUtc = DateTime.UtcNow;
+
+        Playfab.Login();
+
         while (true)
         {
             UpdateMoneyText();
@@ -355,7 +353,7 @@ public class GameManager : MonoBehaviour
 
             while (GameState == State.Idle_Fighting)
             {
-                if (HandleAway())
+                if (RestartRoundIfWasAway())
                 {
                     // Probably throttled by browser.
                     GameState = State.Idle_RestartRound;
@@ -364,7 +362,7 @@ public class GameManager : MonoBehaviour
 
                 CheckZapping(ActorDamageSource.ChainZap);
 
-                HandleAway();
+                RestartRoundIfWasAway();
 
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -489,7 +487,6 @@ public class GameManager : MonoBehaviour
         BlackboardScript.DestroyAllCorpses();
         FloorBlood.Clear();
         RoundUnlockCount = 0;
-        roundStartTime_ = Time.time;
         xpToLevel = BaseXpToLevel;
         G.D.PlayerScript.ResetPlayerPos();
         G.D.PlayerScript.StartGame();
@@ -921,11 +918,9 @@ public class GameManager : MonoBehaviour
 
         TextVersion.text = $"V {MajorVersion}.{MinorVersion}";
         SaveGame.Load();
-
         _firstSaveGameLoadComplete = true;
 
         TextGameInfo.text = "";
-        Playfab.Login();
 
         Instance = this;
         Application.targetFrameRate = 60;
@@ -1008,27 +1003,25 @@ public class GameManager : MonoBehaviour
 
     public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
-    void ResetAwayTimestamp()
+    private static void ResetAwayTimestamp()
     {
-        SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeSerializedFormat);
+        SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
     }
 
-    const string DateTimeSerializedFormat = "yyyy-MM-dd HH:mm:ss";
-
-    bool WasAway(int minSeconds, out TimeSpan awayTime)
+    private static bool WasAway(int minSeconds, out TimeSpan awayTime)
     {
         awayTime = TimeSpan.Zero;
 
         bool couldBeParsed = DateTime.TryParseExact(
             SaveGame.Members.LastSeenUtcStr,
-            DateTimeSerializedFormat,
+            FormatTime.DateTimeSerializedFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
             out DateTime timeSinceLastSeenUtc);
 
         if (!couldBeParsed)
         {
-            SaveGame.Members.LastSeenUtcStr = DateTime.UtcNow.ToString(DateTimeSerializedFormat);
+            SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
             return false;
         }
 
@@ -1038,21 +1031,21 @@ public class GameManager : MonoBehaviour
         return awayTime.TotalSeconds >= minSeconds;
     }
 
-    bool HandleAway()
+    bool RestartRoundIfWasAway()
     {
-        // TODO: need to use Javascript system clock for this!
-
-        bool wasAway = WasAway(minSeconds: 2, out TimeSpan awayTime);
-        //bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
+        //bool wasAway = WasAway(minSeconds: 2, out TimeSpan awayTime);
+        bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
         if (wasAway)
         {
+            Debug.Log($"was away for {awayTime}");
+
             switch (GameState)
             {
                 case State.Idle_Starting_Game:
                     break;
                 case State.Idle_PresentLevel:
                     break;
-                case State.Idle_Fighting:
+                case State.Idle_Fighting: // restart round if fighting
                     GameState = State.Idle_RestartRound;
                     break;
                 case State.Idle_WonFight:
@@ -1064,14 +1057,6 @@ public class GameManager : MonoBehaviour
                 default:
                     throw new Exception($"Need to handle {nameof(GameState)} {GameState} after being away");
             }
-
-            // Not doing anything with this yet, just planning.
-            // I assume player got no income in this period? Otherwise TimeUtc
-            // Would have been updated regularly.
-            Decimal256 approxExpectedAwayIncome = awayTime.TotalSeconds * TotalPassiveIncome;
-
-            //string msg = awayTime < TimeSpan.FromMinutes(10) ? "Welcome back!" :
-            //    $"You were away for {Format.FormatTimeSpan(awayTime)}\nWelcome back!";
 
             string msg = $"Welcome back!";
 

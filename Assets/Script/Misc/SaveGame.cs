@@ -14,7 +14,7 @@ public class SaveGameMembers
     public string PlayerId = string.Empty;
     public string UserId;
 
-    public string LastSeenUtcStr = string.Empty; // ToString("yyyy-MM-dd HH:mm:ss")
+    public string LastSeenUtcStr = string.Empty;
 
     // Ascending
     public Decimal256 AscendXp;

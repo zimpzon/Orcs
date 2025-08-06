@@ -6,7 +6,7 @@ namespace Assets.Script.Misc
 {
     public static class FormatTime
     {
-        const string DateTimeSerializedFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string DateTimeSerializedFormat = "yyyy-MM-dd HH:mm:ss";
 
         public static string DateTimeToString(DateTime dateTime)
             => dateTime.ToString(DateTimeSerializedFormat);
@@ -14,7 +14,7 @@ namespace Assets.Script.Misc
         public static DateTime FromString(string s)
         {
             bool couldBeParsed = DateTime.TryParseExact(
-                SaveGame.Members.LastSeenUtcStr,
+                s,
                 DateTimeSerializedFormat,
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,

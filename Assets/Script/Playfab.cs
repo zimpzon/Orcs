@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using PlayFab;
 using PlayFab.ClientModels;
 using System;
@@ -74,6 +75,7 @@ public static class Playfab
             { "game_minor_version", GameManager.MinorVersion.ToString() },
             { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
             { "total_earned_at_login", GameManager.Instance.TextTotalIncome.text },
+            { "LatestLogin", FormatTime.DateTimeToString(DateTime.UtcNow) },
         };
 
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest
