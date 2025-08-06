@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -171,11 +170,6 @@ public static class SaveGame
     }
 
     const string SaveGameKey = "idle-knight-save.json";
-
-    static string GetPath()
-    {
-        return Path.Combine(Application.persistentDataPath, SaveGameKey);
-    }
 
     public static void Load()
     {

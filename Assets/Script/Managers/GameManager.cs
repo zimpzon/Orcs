@@ -1193,6 +1193,8 @@ public class GameManager : MonoBehaviour
             { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
+            { "diamond_count", (int)SaveGame.Members.DiamondCount },
+            { "monster_credits_lifetime", (int)SaveGame.Members.MonsterCreditsLifetimeTemp },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
