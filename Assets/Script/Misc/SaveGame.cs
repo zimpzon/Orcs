@@ -17,9 +17,11 @@ public class SaveGameMembers
     public string LastSeenUtcStr = string.Empty;
 
     // Ascending
-    public Decimal256 AscendXp;
-    public long AscendLevelTemp; // temp so we don't have garbage when implementing for real.
-    public long MonsterCredits;
+    public Decimal256 MonsterCreditsXp;
+    public long TimesAscendedTemp; // temp so we don't have garbage when implementing for real.
+    public long MonsterCreditsTemp;
+    public long MonsterCreditsLifetimeTemp;
+    public long DiamondCount;
 
     // Cheat detection 
     public bool HasMoneyCheated = false;

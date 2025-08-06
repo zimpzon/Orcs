@@ -7,19 +7,16 @@ public class AscendProgressScript : MonoBehaviour
 {
     public TextMeshProUGUI TextCredits;
     public Image ProgressBarImage;
-    //public GameObject AscendDarkenPanel;
     public GameObject AscendRoot;
     private float _nextUpdate;
 
     public void OnShowClick()
     {
-        //AscendDarkenPanel.SetActive(true);
         AscendRoot.SetActive(true);
     }
 
     public void OnCloseClick()
     {
-        //AscendDarkenPanel.SetActive(false);
         AscendRoot.SetActive(false);
     }
 
@@ -30,18 +27,20 @@ public class AscendProgressScript : MonoBehaviour
 
         _nextUpdate = G.D.GameTime + 1.0f;
 
-        SaveGame.Members.AscendXp += GameManager.Instance.TotalPassiveIncome;
-        Decimal256 xpForNextLevel = UpgradeProgression.AscendXpForNextLevel(SaveGame.Members.AscendLevelTemp);
-        if (SaveGame.Members.AscendXp > xpForNextLevel)
+        // 
+        SaveGame.Members.MonsterCreditsXp += GameManager.Instance.TotalPassiveIncome;
+        Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetimeTemp);
+        if (SaveGame.Members.MonsterCreditsXp > xpForNextLevel)
         {
-            SaveGame.Members.AscendXp -= xpForNextLevel;
-            SaveGame.Members.AscendLevelTemp++;
+            SaveGame.Members.MonsterCreditsXp -= xpForNextLevel;
+            SaveGame.Members.MonsterCreditsLifetimeTemp++;
+            SaveGame.Members.MonsterCreditsTemp++;
         }
 
-        float t = (float)(SaveGame.Members.AscendXp.ToDouble() / xpForNextLevel.ToDouble());
+        float t = (float)(SaveGame.Members.MonsterCreditsXp.ToDouble() / xpForNextLevel.ToDouble());
         ProgressBarImage.fillAmount = t;
 
         float pct = t * 100.0f;
-        TextCredits.text = $"Monster credits: {SaveGame.Members.AscendLevelTemp}\n<size=-3>Next: {pct:#0.0}%";
+        TextCredits.text = $"Monster credits: {SaveGame.Members.MonsterCreditsTemp}\n<size=-3>Next: {pct:#0.0}%";
     }
 }

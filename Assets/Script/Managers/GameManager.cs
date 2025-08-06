@@ -1190,7 +1190,6 @@ public class GameManager : MonoBehaviour
         // NB NB NB: only 25 stats are allowed! GameManager Awake() will throw if more.
         var dic = new Dictionary<string, int>()
         {
-            { "ascend_level", (int)SaveGame.Members.AscendLevelTemp },
             { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
@@ -1272,6 +1271,13 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
         {
             ResetAllProgress();
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            SaveGame.Members.DiamondCount = 0;
+            SaveGame.Members.MonsterCreditsTemp = 3;
+            SaveGame.Members.MonsterCreditsXp = 200000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))

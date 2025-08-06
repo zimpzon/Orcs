@@ -43,7 +43,12 @@ namespace Assets.Script.Upgrades
         public static Decimal256 BaseIncome_ZapDamage = 246_000;
         public static Decimal256 BaseIncome_MoneyMaker = 1_230_000;
 
-        public static Decimal256 AscendXpForNextLevel(long level)
+        public static long DiamondsForMonsterCredits(long monsterCredits)
+        {
+            return monsterCredits;
+        }
+
+        public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
             Decimal256 xpFirstLevel = 1_000_000_000;
             return xpFirstLevel * (level + 1);

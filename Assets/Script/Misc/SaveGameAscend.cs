@@ -12,9 +12,7 @@
         newSave.LastSeenUtcStr = oldSave.LastSeenUtcStr;
 
         // Ascending
-        newSave.AscendXp = oldSave.AscendXp;
-        newSave.AscendLevelTemp = oldSave.AscendLevelTemp;
-        newSave.MonsterCredits = oldSave.MonsterCredits;
+        newSave.MonsterCreditsXp = oldSave.MonsterCreditsXp;
 
         // Cheat detection
         newSave.HasMoneyCheated = oldSave.HasMoneyCheated;
