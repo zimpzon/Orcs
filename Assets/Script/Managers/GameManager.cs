@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
 
     [NonSerialized] public float xpToLevel;
     [NonSerialized] public float currentXp = 0;
-    private DateTime? _timeStartSessionUtc = null;
+    [NonSerialized] private DateTime? _timeStartSessionUtc = null;
 
     public void ResetAllProgress()
     {
@@ -990,12 +990,6 @@ public class GameManager : MonoBehaviour
         TrySaveGame(forceSave: true);
     }
 
-    void LateUpdate()
-    {
-        PruneDeadEnemies();
-        ActorBase.ResetClosestEnemy();
-    }
-
     Decimal256 _prevMoney = 999999;
     Decimal256 _prevPassiveIncome = 999999;
     float _timePrevPassiveIncomeUpdate = -1f;
@@ -1155,6 +1149,12 @@ public class GameManager : MonoBehaviour
         TextTotalKilled.text =
             $"Enemies killed: {Format256.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
             $"Damage done: {Format256.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
+
+
+        TimeSpan t = _timeStartSessionUtc.HasValue ?
+            DateTime.UtcNow - _timeStartSessionUtc.Value : TimeSpan.Zero;
+
+        TextTimeThisSession.text = $"Session: {FormatTime.Format(t.Days, t.Hours, t.Minutes, t.Seconds, useShorthand: true)}";
     }
 
     float _nextSave;
@@ -1238,6 +1238,12 @@ public class GameManager : MonoBehaviour
     {
         var dic = GetPlayFabStats();
         Playfab.PlayerStat(dic);
+    }
+
+    void LateUpdate()
+    {
+        PruneDeadEnemies();
+        ActorBase.ResetClosestEnemy();
     }
 
     void Update()

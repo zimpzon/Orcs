@@ -5093,7 +5093,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Enemies killed: 1.21M | Damage done: 2.233B'
+  m_text: 'Session: 200D, 11H, 23M'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -31848,11 +31848,12 @@ MonoBehaviour:
   TextGameInfo: {fileID: 2079914323}
   TextClock: {fileID: 274974692}
   TextLevel: {fileID: 1936795642}
-  TextTotalIncome: {fileID: 646665978}
-  TextTotalKilled: {fileID: 1124560693}
   TextMoney: {fileID: 1338943761}
   TextPassiveIncome: {fileID: 116551293}
   TextVersion: {fileID: 765104191}
+  TextTotalIncome: {fileID: 646665978}
+  TextTotalKilled: {fileID: 1124560693}
+  TextTimeThisSession: {fileID: 24164529}
   Floor: {fileID: 1771007547}
   ColorLocked: '#901010'
   ColorUnlocked: '#10ff10'
