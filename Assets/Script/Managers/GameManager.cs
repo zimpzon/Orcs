@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -1020,6 +1021,8 @@ public class GameManager : MonoBehaviour
         }
 
         awayTime = DateTime.UtcNow - timeSinceLastSeenUtc;
+        SaveGame.Members.EstimatedOnlineSeconds += awayTime.TotalMilliseconds;
+
         ResetAwayTimestamp();
 
         return awayTime.TotalSeconds >= minSeconds;
@@ -1198,6 +1201,7 @@ public class GameManager : MonoBehaviour
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
+            { "estimated_online_seconds", (int)SaveGame.Members.EstimatedOnlineSeconds },
 
             // 17 below this
 

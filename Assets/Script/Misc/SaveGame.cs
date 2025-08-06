@@ -32,6 +32,8 @@ public class SaveGameMembers
     public float VolumeMusic = 0.7f;
     public float VolumeSfx = 1.0f;
 
+    // Stats
+    public double EstimatedOnlineSeconds = 0;
 
     // ---------------------- Deleted after ascend ----------------------
 
