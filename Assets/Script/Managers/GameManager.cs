@@ -299,6 +299,8 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
+        //GameCanvasScript.Instance.ShowPopup("Welcome to Idle Earl Early access");
+
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
         Decimal256 v3 = 2_100_000;

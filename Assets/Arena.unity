@@ -72079,9 +72079,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'This is an alpha version.
+  m_text: 'This is Early access and
 
-    More buffs will be added.'
+    changes will  happen.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -73615,6 +73617,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37aa78d8c568ebf459f32e80a8c135af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GenericPopupPrefab: {fileID: 4089755122944064616, guid: b7259d78ccde4c84b8ec4dc9ed1984a6,
+    type: 3}
+  GenericPopupUiParent: {fileID: 1497543156}
 --- !u!114 &1497543158
 MonoBehaviour:
   m_ObjectHideFlags: 0
