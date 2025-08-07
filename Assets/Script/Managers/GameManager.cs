@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -1055,19 +1054,18 @@ public class GameManager : MonoBehaviour
                 default:
                     throw new Exception($"Need to handle {nameof(GameState)} {GameState} after being away");
             }
-
-            string msg = $"Welcome back!";
-
-            FloatingTextSpawner.Instance.Spawn(
-            ArenaCenter,
-            msg,
-            Color.cyan,
-            speed: 0.01f,
-            timeToLive: 8.0f,
-            fontStyle: FontStyles.Italic);
         }
 
         return wasAway;
+    }
+
+    void ShowWelcomeBackDialog(TimeSpan ts)
+    {
+        int d = ts.Days;
+        int h = ts.Hours;
+        int m = ts.Minutes;
+
+        GameCanvasScript.Instance.ShowPopup($"You were away for {FormatTime.Format(d, h, m)}\nWelcome back!");
     }
 
     void UpdatePassiveIncome()
@@ -1084,6 +1082,20 @@ public class GameManager : MonoBehaviour
         _deltaRealTime = currentTime - _timePrevPassiveIncomeUpdate;
         if (_deltaRealTime <= 0f)
             return;
+
+        // Important: even when on sleep realtime will be reflected when we
+        // wake back up. This means we get a huge deltatime and actually get
+        // income for all the time it was asleep. When throttled we should
+        // handle at least 5-10 seconds, though, so set max delta time to
+        // something reasonable.
+        const float MaxRealtimeDelta = 60 * 5;
+        if (_deltaRealTime > MaxRealtimeDelta)
+        {
+            var ts = TimeSpan.FromSeconds(_deltaRealTime);
+            ShowWelcomeBackDialog(ts);
+            Debug.Log($"Realtime delta too high ({(int)_deltaRealTime} sec), was probably on sleep. Clamped to {(int)MaxRealtimeDelta}");
+            _deltaRealTime = MaxRealtimeDelta;
+        }
 
         _timePrevPassiveIncomeUpdate = currentTime;
 
