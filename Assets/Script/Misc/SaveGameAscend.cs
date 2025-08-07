@@ -32,8 +32,7 @@
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
 
-        // Safeguard flag (was already there)
-        newSave.SaveKillSwitch_CanSave = oldSave.SaveKillSwitch_CanSave;
+        newSave.SaveKillSwitch_CanSave = true;
 
         // Replace old save with new save
         SaveGame.Members = newSave;

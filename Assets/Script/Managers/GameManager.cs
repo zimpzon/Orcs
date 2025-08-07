@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     // 4: added Necromancer
     // 5: started ascension
     // 6: percentage upgrades added
-    public const int MinorVersion = 6;
+    // 7: ascend almost done
+    public const int MinorVersion = 7;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -123,26 +124,25 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float currentXp = 0;
     [NonSerialized] private DateTime? _timeStartSessionUtc = null;
 
-    public void ResetAllProgress()
+    public void ResetAllProgress(bool ascend = false)
     {
-        //AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerDie);
-        
-        float VolumeMaster = SaveGame.Members.VolumeMaster;
-        float VolumeMusic = SaveGame.Members.VolumeMusic;
-        float VolumeSfx = SaveGame.Members.VolumeSfx;
+        if (ascend)
+        {
+            SaveGameAscend.AscendSaveGame();
+        }
+        else
+        {
+            SaveGame.Members = new SaveGameMembers();
+            GameCanvasScript.Instance.ShowPopup($"<color=yellow>Your savegame was deleted</color>\n\nWelcome to a new beginning!");
+        }
 
-        SaveGame.Members = new();
-        SaveGame.Members.VolumeMaster = VolumeMaster;
-        SaveGame.Members.VolumeMusic = VolumeMusic;
-        SaveGame.Members.VolumeSfx = VolumeSfx;
-
-        SaveGame.Members.SaveKillSwitch_CanSave = true;
         GameState = State.Idle_RestartRound;
 
         PrepareForNewRound();
         KillKillOnSaveWipeObjects();
-        GameEvents.RaiseSaveWiped(GameEvents.SaveWipeReason.UserWipe);
+        GameEvents.RaiseSaveWiped(ascend ? GameEvents.SaveWipeReason.Ascended : GameEvents.SaveWipeReason.UserWipe);
 
+        SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
     }
 
@@ -298,7 +298,8 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
-        GameCanvasScript.Instance.ShowPopup("Welcome to Idle Earl Early access");
+        GameCanvasScript.Instance.ShowPopup(
+            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\nPlease note that there will still be\nchanges affecting gameplay.");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1059,7 +1060,7 @@ public class GameManager : MonoBehaviour
         return wasAway;
     }
 
-    void ShowWelcomeBackDialog(TimeSpan ts)
+    static void ShowWelcomeBackDialog(TimeSpan ts)
     {
         int d = ts.Days;
         int h = ts.Hours;

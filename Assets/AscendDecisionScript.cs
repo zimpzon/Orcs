@@ -24,22 +24,12 @@ public class AscendDecisionScript : MonoBehaviour
     public void OnAscendClick()
     {
         SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
-
         SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
 
-        // not doing this right now
-        //SaveGameAscend.AscendSaveGame();
+        GameManager.Instance.ResetAllProgress(ascend: true);
 
-        string msg = $"YOU GAINED {DiamondsGainedAtRebirth} DIAMONDS<sprite=0>" +
-        "\n<color=yellow>(you were not reborn, you suspect this feature is not done)";
-
-        FloatingTextSpawner.Instance.Spawn(
-        GameManager.Instance.ArenaCenter,
-        msg,
-        Color.white,
-        speed: 0.01f,
-        timeToLive: 10.0f,
-        fontStyle: FontStyles.Italic);
+        string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
+        GameCanvasScript.Instance.ShowPopup(msg);
 
         AscendProgressScript.OnCloseClick();
     }
