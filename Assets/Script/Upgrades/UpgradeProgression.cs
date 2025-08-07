@@ -60,8 +60,8 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            // billion: 1, 26, 101, 226, 401, 626, 901, 1226, 1601, 2026, 2501, 3026, 3601, 4226, 4901, 5626,
-            Decimal256 xp = OneBillion * (1 + 2 * (level - 1) * (level - 1));
+            // billion: 2, 6, 18, 38, 66, 102, 146, 198, 258, 326, 402, 486, 578, 678, 786, 902, 1026, 1158, 1298, 1446
+            Decimal256 xp = 2 * OneBillion * (1 + 2 * (level - 1) * (level - 1));
             return xp;
         }
 

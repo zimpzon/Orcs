@@ -1,5 +1,6 @@
 using Assets.Script.Upgrades;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +28,9 @@ public class AscendProgressScript : MonoBehaviour
         passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX2_2 ? 2 : 0;
         passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX4_1 ? 4 : 0;
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveAdditiveMultiplier;
+
+        // 10% per diamond
+        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount * 0.1f;
     }
 
     void Update()

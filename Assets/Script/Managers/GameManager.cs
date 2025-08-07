@@ -301,7 +301,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStateCo()
     {
         GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\nPlease note that there will still be\nchanges affecting gameplay.");
+            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\nPlease note that gameplay changes\n and balancing will happen.");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -734,7 +734,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<color=yellow>{Format256.Format(damageDone)}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{Format256.Format(dps)}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}G</color>",
+            $"<color=yellow>{Format256.Format(damageDone)}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{Format256.Format(dps)}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
             timeToLive: 5.0f,
@@ -1215,6 +1215,7 @@ public class GameManager : MonoBehaviour
             { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
+            { "times_ascended_temp", (int)SaveGame.Members.TimesAscendedTemp },
             { "diamond_count", (int)SaveGame.Members.DiamondCount },
             { "monster_credits_lifetime", (int)SaveGame.Members.MonsterCreditsLifetimeTemp },
 

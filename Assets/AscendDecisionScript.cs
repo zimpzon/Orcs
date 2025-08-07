@@ -33,13 +33,17 @@ public class AscendDecisionScript : MonoBehaviour
         }
         else if (_clickCount == 1)
         {
-            SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
-            SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
+            GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
 
-            GameManager.Instance.ResetAllProgress(ascend: true);
+            {
+                //SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
+                //SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
 
-            string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
-            GameCanvasScript.Instance.ShowPopup(msg);
+                //GameManager.Instance.ResetAllProgress(ascend: true);
+
+                //string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
+                //GameCanvasScript.Instance.ShowPopup(msg);
+            }
 
             AscendProgressScript.OnCloseClick();
         }
@@ -54,7 +58,10 @@ public class AscendDecisionScript : MonoBehaviour
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
-        TextCurrentDiamonds.text = $"You have <color=yellow>{SaveGame.Members.DiamondCount}</color> {diamondTxt} <sprite=0>";
+        int diamondBonusPct = (int)(PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier * 100.0f);
+        string diamondIncomeBonustext = $"(+<color=yellow>{diamondBonusPct}</color>% income)";
+
+        TextCurrentDiamonds.text = $"You have <color=yellow>{SaveGame.Members.DiamondCount}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> monster {creditTxt} <sprite=0>";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
     }
