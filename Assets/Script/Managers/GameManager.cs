@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     // 5: started ascension
     // 6: percentage upgrades added
     // 7: ascend almost done
-    public const int MinorVersion = 7;
+    // 8: export added, diamonds gives +10%
+    public const int MinorVersion = 8;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1289,7 +1290,6 @@ public class GameManager : MonoBehaviour
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
-
 
         // CHEATS
 

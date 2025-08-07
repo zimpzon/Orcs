@@ -153,6 +153,12 @@ public static class SaveGame
         yield break;
     }
 
+    public static string GetObfuscatedSaveGame()
+    {
+        string json = Members.ToJson();
+        return Obfuscation.EncodeForSave(json);
+    }
+
     public static void Save()
     {
         if (!Members.SaveKillSwitch_CanSave)

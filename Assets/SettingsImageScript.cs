@@ -17,6 +17,12 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         Popup.SetActive(enabled);
     }
 
+    public void OnExportSaveClick()
+    {
+        string fileName = JsMappings.ExportSave();
+        GameCanvasScript.Instance.ShowPopup("Your save game was exported as: " + fileName);
+    }
+
     public void OnBackClick()
     {
         Debug.Log("BACK BACK");
