@@ -27,6 +27,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript Hoarder;
     public UpgradeItemScript ZapDamage;
     public UpgradeItemScript MoneyMaker;
+    public UpgradeItemScript DaggerMaster;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -52,6 +53,7 @@ public class UpgradeManager : MonoBehaviour
         HoarderManager.UpdateAll();
         ZapDamageManager.UpdateAll();
         MoneyMakerManager.UpdateAll();
+        DaggerMasterManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -80,6 +82,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelHoarder, SaveGame.Members.LevelZapDamage);
         else if (upgradeUiScript == MoneyMaker)
             return GetDisplayStatus(SaveGame.Members.LevelZapDamage, SaveGame.Members.LevelMoneyMaker);
+        else if (upgradeUiScript == DaggerMaster)
+            return GetDisplayStatus(SaveGame.Members.LevelMoneyMaker, SaveGame.Members.LevelDaggerMaster);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -108,6 +112,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(ZapDamage) == UpgradeDisplayStatus.FullyShown ? ZapDamageManager.GetText() : LockedText;
         else if (upgradeUiScript == MoneyMaker)
             text = GetUpgradeDisplayStatus(MoneyMaker) == UpgradeDisplayStatus.FullyShown ? MoneyMakerManager.GetText() : LockedText;
+        else if (upgradeUiScript == DaggerMaster)
+            text = GetUpgradeDisplayStatus(DaggerMaster) == UpgradeDisplayStatus.FullyShown ? DaggerMasterManager.GetText() : LockedText;
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -134,6 +140,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeHoarder += HoarderManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeZapDamage += ZapDamageManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeMoneyMaker += MoneyMakerManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeDaggerMaster += DaggerMasterManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -146,6 +153,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += HoarderManager.PassiveIncome();
         fullSum += ZapDamageManager.PassiveIncome();
         fullSum += MoneyMakerManager.PassiveIncome();
+        fullSum += DaggerMasterManager.PassiveIncome();
 
         SaveGame.Members.TotalIncomePassive += fullSum * incomeFactorPerFrame;
 
@@ -180,6 +188,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(Hoarder);
         SetIsVisble(ZapDamage);
         SetIsVisble(MoneyMaker);
+        SetIsVisble(DaggerMaster);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -191,6 +200,7 @@ public class UpgradeManager : MonoBehaviour
         HoarderManager.UpdateUi();
         ZapDamageManager.UpdateUi();
         MoneyMakerManager.UpdateUi();
+        DaggerMasterManager.UpdateUi();
     }
 
     void OnItemBought()
@@ -339,6 +349,20 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyDaggerMaster()
+    {
+        DaggerMasterManager.OnBuy();
+        DaggerMaster.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyDaggerMasterX2()
+    {
+        DaggerMasterManager.OnBuyX2();
+        DaggerMaster.SetPopupText();
+        OnItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -351,6 +375,7 @@ public class UpgradeManager : MonoBehaviour
         HoarderManager.UpdatePlayerUpgrades();
         ZapDamageManager.UpdatePlayerUpgrades();
         MoneyMakerManager.UpdatePlayerUpgrades();
+        DaggerMasterManager.UpdatePlayerUpgrades();
     }
 
     private void Awake()

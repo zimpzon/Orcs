@@ -63,6 +63,7 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeWizard;
     public Decimal256 TotalIncomeZapDamage;
     public Decimal256 TotalIncomeMoneyMaker;
+    public Decimal256 TotalIncomeDaggerMaster;
 
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
@@ -83,6 +84,7 @@ public class SaveGameMembers
     public long LevelWizard = 0;
     public long LevelZapDamage = 0;
     public long LevelMoneyMaker = 0;
+    public long LevelDaggerMaster = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -95,6 +97,7 @@ public class SaveGameMembers
     public long LevelWizardX2 = 0;
     public long LevelZapDamageX2 = 0;
     public long LevelMoneyMakerX2 = 0;
+    public long LevelDaggerMasterX2 = 0;
 
     // Pct
     public long LevelPctBought = 0;
