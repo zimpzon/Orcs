@@ -1,14 +1,14 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum AscendUpgradeCardId {
+public enum AscendUpgradeCardId
+{
     NotSet,
-    PlusTwoDaggers,
     PassiveIncomeX2_1,
     PassiveIncomeX2_2,
-    GoldX2_1,
-    GoldX2_2,
+    PassiveIncomeX4_1,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -23,6 +23,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
     public TextMeshProUGUI ButtonBuyText;
     public TextMeshProUGUI OwnedText;
     public AscendUpgradeCardId CardId = AscendUpgradeCardId.NotSet;
+    public AscendUpgradeCardScript UpgradeCardPassiveX2_1;
+    public AscendUpgradeCardScript UpgradeCardPassiveX2_2;
+    public AscendUpgradeCardScript UpgradeCardPassiveX4_1;
 
     Image _background;
 
@@ -31,10 +34,26 @@ public class AscendUpgradeCardScript : MonoBehaviour
         _background = GetComponent<Image>();
     }
 
-    public void Update()
+    void Update()
     {
-        // Just for testing owned
-        bool isOwned = CardId == AscendUpgradeCardId.NotSet;
+        UpdateUi();
+    }
+
+    private void UpdateUi()
+    {
+        bool isOwned = CardId switch
+        {
+            AscendUpgradeCardId.PassiveIncomeX2_1 => SaveGame.Members.BoughtPassiveX2_1,
+            AscendUpgradeCardId.PassiveIncomeX2_2 => SaveGame.Members.BoughtPassiveX2_2,
+            AscendUpgradeCardId.PassiveIncomeX4_1 => SaveGame.Members.BoughtPassiveX4_1,
+            _ => throw new NotImplementedException()
+        };
+
+        UpdateUiForSingleCard(isOwned);
+    }
+
+    private void UpdateUiForSingleCard(bool isOwned)
+    {
         OwnedText.enabled = isOwned;
         CardOverlay.enabled = isOwned;
 
@@ -57,10 +76,22 @@ public class AscendUpgradeCardScript : MonoBehaviour
     public void OnBuy()
     {
         Debug.Log("Bought " + CardId);
-        switch (CardId)
+        if (CardId == AscendUpgradeCardId.PassiveIncomeX2_1)
         {
-            default:
-                break;
-        };
+            SaveGame.Members.BoughtPassiveX2_1 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.PassiveIncomeX2_2)
+        {
+            SaveGame.Members.BoughtPassiveX2_2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_1)
+        {
+            SaveGame.Members.BoughtPassiveX4_1 = true;
+        }
+        else
+            throw new NotImplementedException();
+
+        SaveGame.Members.DiamondCount -= Cost;
+        AscendDecisionScript.Instance.UpdateUi();
     }
 }

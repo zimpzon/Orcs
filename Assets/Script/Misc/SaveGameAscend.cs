@@ -13,10 +13,15 @@
 
         // Ascending
         newSave.MonsterCreditsXp = oldSave.MonsterCreditsXp;
+        newSave.TimesAscendedTemp = oldSave.TimesAscendedTemp;
+        newSave.MonsterCreditsTemp = oldSave.MonsterCreditsTemp;
+        newSave.MonsterCreditsLifetimeTemp = oldSave.MonsterCreditsLifetimeTemp;
+        newSave.DiamondCount = oldSave.DiamondCount;
 
-        // Cheat detection
-        newSave.HasMoneyCheated = oldSave.HasMoneyCheated;
-        newSave.HasArenaIncreaseCheated = oldSave.HasArenaIncreaseCheated;
+        // Permanent upgrades
+        newSave.BoughtPassiveX2_1 = oldSave.BoughtPassiveX2_1;
+        newSave.BoughtPassiveX2_2 = oldSave.BoughtPassiveX2_2;
+        newSave.BoughtPassiveX4_1 = oldSave.BoughtPassiveX4_1;
 
         // Settings
         newSave.Version = oldSave.Version;
@@ -24,12 +29,14 @@
         newSave.VolumeMusic = oldSave.VolumeMusic;
         newSave.VolumeSfx = oldSave.VolumeSfx;
 
-        // Safeguard flag
+        // Stats
+        newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
+
+        // Safeguard flag (was already there)
         newSave.SaveKillSwitch_CanSave = oldSave.SaveKillSwitch_CanSave;
 
         // Replace old save with new save
         SaveGame.Members = newSave;
-
         return newSave;
     }
 }

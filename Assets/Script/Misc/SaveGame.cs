@@ -22,9 +22,10 @@ public class SaveGameMembers
     public long MonsterCreditsLifetimeTemp;
     public long DiamondCount;
 
-    // Cheat detection 
-    public bool HasMoneyCheated = false;
-    public bool HasArenaIncreaseCheated = false;
+    // Permanent upgrades
+    public bool BoughtPassiveX2_1 = false;
+    public bool BoughtPassiveX2_2 = false;
+    public bool BoughtPassiveX4_1 = false;
 
     // Settings
     public int Version;

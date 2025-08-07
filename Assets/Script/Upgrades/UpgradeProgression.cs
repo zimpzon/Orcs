@@ -10,6 +10,10 @@ namespace Assets.Script.Upgrades
 
     public static class UpgradeProgression
     {
+        public static Decimal256 OneMillion = 1_000_000;
+        public static Decimal256 OneBillion = OneMillion * 1000;
+        public static Decimal256 OneTrillion = OneBillion * 1000;
+
         public static Decimal256 InitialPrice_Clickdamage =                          50;
         public static Decimal256 InitialPrice_DaggerDamage =                        300;
         public static Decimal256 InitialPrice_GoldValue =                         3_100;
@@ -50,8 +54,9 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            Decimal256 xpFirstLevel = 1_000_000_000;
-            return xpFirstLevel * (level + 1);
+            // billion: 1, 26, 101, 226, 401, 626, 901, 1226, 1601, 2026, 2501, 3026, 3601, 4226, 4901, 5626,
+            Decimal256 xp = OneBillion * (1 + 2 * (level - 1) * (level - 1));
+            return xp;
         }
 
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)

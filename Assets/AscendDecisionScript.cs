@@ -44,7 +44,7 @@ public class AscendDecisionScript : MonoBehaviour
         AscendProgressScript.OnCloseClick();
     }
 
-    void UpdateUi()
+    public void UpdateUi()
     {
         //ButtonAscend.interactable = _diamondsGainedAtRebirth > 0;
         Color gainTextColor = DiamondsGainedAtRebirth == 0 ? new Color(0.9f, 0.2f, 0.1f) : Color.yellow;

@@ -8,7 +8,7 @@ public class AscendProgressScript : MonoBehaviour
     public TextMeshProUGUI TextCredits;
     public Image ProgressBarImage;
     public GameObject AscendRoot;
-    private float _nextUpdate;
+    private float _nextCreditUpdate;
 
     public void OnShowClick()
     {
@@ -20,14 +20,28 @@ public class AscendProgressScript : MonoBehaviour
         AscendRoot.SetActive(false);
     }
 
+    static void ApplyAscendPermanentBonuses()
+    {
+        // Additive
+        float passiveAdditiveMultiplier = SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
+        passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX2_2 ? 2 : 0;
+        passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX4_1 ? 4 : 0;
+        PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveAdditiveMultiplier;
+    }
+
     void Update()
     {
-        if (G.D.GameTime < _nextUpdate)
+        // Apply ascend bonuses
+        ApplyAscendPermanentBonuses();
+
+        if (G.D.GameTime < _nextCreditUpdate)
             return;
 
-        _nextUpdate = G.D.GameTime + 1.0f;
+        // Credits are updated every CreditUpdateRate, not every frame. Currently it MUST be
+        // once per second. Or scale TotalPassiveIncome to fit delta time.
+        const float CreditUpdateRate = 1.0f;
+        _nextCreditUpdate = G.D.GameTime + CreditUpdateRate;
 
-        // 
         SaveGame.Members.MonsterCreditsXp += GameManager.Instance.TotalPassiveIncome;
         Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetimeTemp);
         if (SaveGame.Members.MonsterCreditsXp > xpForNextLevel)

@@ -298,7 +298,7 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
-        //GameCanvasScript.Instance.ShowPopup("Welcome to Idle Earl Early access");
+        GameCanvasScript.Instance.ShowPopup("Welcome to Idle Earl Early access");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1310,7 +1310,6 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.Money += 100_000_000_000_000;
-            SaveGame.Members.HasMoneyCheated = true;
         }
 
         if (G.GetCheatKeyDown(KeyCode.N) && G.GetCheatKey(KeyCode.RightControl))
@@ -1321,7 +1320,6 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.ArenaLevel += 25;
-            SaveGame.Members.HasArenaIncreaseCheated = true;
         }
 
         if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
