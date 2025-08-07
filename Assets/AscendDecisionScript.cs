@@ -12,9 +12,12 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextCurrentDiamonds;
     public TextMeshProUGUI TextCurrentMonsterCredits;
     public TextMeshProUGUI TextAscendNowGain;
+    public TextMeshProUGUI TextButtonRebirth;
 
     public long MonsterCreditsAtStart;
     public long DiamondsGainedAtRebirth;
+
+    private int _clickCount;
 
     private void Awake()
     {
@@ -23,20 +26,27 @@ public class AscendDecisionScript : MonoBehaviour
 
     public void OnAscendClick()
     {
-        SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
-        SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
+        if (_clickCount == 0)
+        {
+            _clickCount = 1;
+            TextButtonRebirth.text = "YOU SURE?";
+        }
+        else if (_clickCount == 1)
+        {
+            SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
+            SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
 
-        GameManager.Instance.ResetAllProgress(ascend: true);
+            GameManager.Instance.ResetAllProgress(ascend: true);
 
-        string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
-        GameCanvasScript.Instance.ShowPopup(msg);
+            string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
+            GameCanvasScript.Instance.ShowPopup(msg);
 
-        AscendProgressScript.OnCloseClick();
+            AscendProgressScript.OnCloseClick();
+        }
     }
 
     public void UpdateUi()
     {
-        //ButtonAscend.interactable = _diamondsGainedAtRebirth > 0;
         Color gainTextColor = DiamondsGainedAtRebirth == 0 ? new Color(0.9f, 0.2f, 0.1f) : Color.yellow;
         string gainTextColorStr = ColorUtility.ToHtmlStringRGBA(gainTextColor);
 
@@ -54,5 +64,8 @@ public class AscendDecisionScript : MonoBehaviour
         MonsterCreditsAtStart = SaveGame.Members.MonsterCreditsTemp;
         DiamondsGainedAtRebirth = UpgradeProgression.DiamondsForMonsterCredits(MonsterCreditsAtStart);
         UpdateUi();
+
+        _clickCount = 0;
+        TextButtonRebirth.text = "REBIRTH!";
     }
 }

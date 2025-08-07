@@ -3,12 +3,24 @@ using UnityEngine.UI.Extensions;
 
 public class ScrollToTopOnStart : MonoBehaviour
 {
+    public static ScrollToTopOnStart Instance;
+
     public ScrollRectEx scrollRect;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void ScrollToTopNow()
+    {
+        StartCoroutine(ScrollToTopNextFrame());
+    }
 
     void Start()
     {
         // Defer the change until after UI has been fully built
-        StartCoroutine(ScrollToTopNextFrame());
+        ScrollToTopNow();
     }
 
     private System.Collections.IEnumerator ScrollToTopNextFrame()

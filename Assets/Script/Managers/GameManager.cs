@@ -142,6 +142,8 @@ public class GameManager : MonoBehaviour
         KillKillOnSaveWipeObjects();
         GameEvents.RaiseSaveWiped(ascend ? GameEvents.SaveWipeReason.Ascended : GameEvents.SaveWipeReason.UserWipe);
 
+        ScrollToTopOnStart.Instance.ScrollToTopNow();
+
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
     }
