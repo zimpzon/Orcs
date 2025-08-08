@@ -11,6 +11,9 @@ public class GenericPopupScript : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            OnClose();
+
         if (Time.realtimeSinceStartup > _autoCloseTime)
             OnClose();
     }

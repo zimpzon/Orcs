@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextTotalKilled;
     public TextMeshProUGUI TextTimeThisSession;
 
+    public Color ColorDamageNumbers = Color.red;
+    public Color ColorGoldCollect = Color.yellow;
+
     public SpriteRenderer Floor;
     Color floorDefaultColor;
     public string ColorLocked;
@@ -546,7 +549,7 @@ public class GameManager : MonoBehaviour
         FloatingTextSpawner.Instance.Spawn(
             textPos,
             $"${Format256.Format(displayMoney)}",
-            Color.yellow,
+            ColorGoldCollect,
             speed: 2.0f,
             timeToLive: 1.0f,
             fontStyle: TMPro.FontStyles.Bold);
@@ -835,7 +838,7 @@ public class GameManager : MonoBehaviour
         FloatingTextSpawner.Instance.Spawn(
             (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
             $"-{Format64.Format(intAmount)}",
-            Color.red,
+            ColorDamageNumbers,
             speed: 0.75f,
             timeToLive: 1.0f,
             fontStyle: TMPro.FontStyles.Bold);
