@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4123608, g: 0.51630175, b: 0.83137256, a: 1}
+  m_Color: {r: 0.29803923, g: 0.36078432, b: 0.5529412, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -322,9 +322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hi there. This is an Early version
-
-    d'
+  m_text: Hi there. test test text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -564,10 +562,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.40072158, g: 0.50754976, b: 0.83137256, a: 1}
-    m_HighlightedColor: {r: 0.40000004, g: 0.5058824, b: 0.8313726, a: 1}
-    m_PressedColor: {r: 0.40000004, g: 0.5058824, b: 0.8313726, a: 1}
-    m_SelectedColor: {r: 0.40000004, g: 0.5058824, b: 0.8313726, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.7176471, b: 0.5058824, a: 1}
+    m_HighlightedColor: {r: 0.54509807, g: 0.7176471, b: 0.5058824, a: 1}
+    m_PressedColor: {r: 0.47396722, g: 0.624, b: 0.43986887, a: 1}
+    m_SelectedColor: {r: 0.54509807, g: 0.7176471, b: 0.5058824, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
