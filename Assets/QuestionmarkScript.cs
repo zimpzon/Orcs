@@ -196,7 +196,7 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             float endRealTime = startRealTime + (60 * 5) + 5;
             //float endRealTime = startRealTime + 5;
-            ShowMessage("Time runs 33% faster for 5 minutes and 5 seconds!");
+            ShowMessage($"Time runs {Highlight(33)}% faster for {Highlight(5)} minutes and {Highlight(5)} seconds!");
 
             PlayerUpgrades.Data.TimeScale = 1.33f;
 
@@ -216,7 +216,7 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             //float endRealTime = startRealTime + 5;
             float endRealTime = startRealTime + 60;
-            ShowMessage("X10 income for 1 minute!");
+            ShowMessage($"{Highlight("X10")} income for {Highlight(1)} minute!");
 
             MoneyMultiplierText.text = "X10";
             MoneyMultiplierText.gameObject.SetActive(true);
@@ -242,13 +242,17 @@ public class QuestionmarkScript : MonoBehaviour
                 .setLoopPingPong();
         }
 
+        string Highlight(object s)
+            => s.ToString();
+            //=> Col.As(s, "yellow");
+
         IEnumerator FixedIncomeCo()
         {
             long numberOfSeconds = 60 * 5;
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
             reward += 1000;
 
-            ShowMessage($"300X income! ${Format256.Format(reward)}");
+            ShowMessage($"{Highlight(300)}X income = ${Highlight(Format256.Format(reward))}");
             reward += 100;
 
             GameManager.Instance.AddMoney(reward);
@@ -257,14 +261,8 @@ public class QuestionmarkScript : MonoBehaviour
 
         void ShowMessage(string msg)
         {
-            var pos = GameManager.ArenaBounds.center + Vector2.down * 3;
-            FloatingTextSpawner.Instance.Spawn(
-                pos,
-                $"<size=+1>MYSTERY COLLECTED</size>\n<color=yellow>{msg}</color>",
-                Color.white,
-                speed: 0.5f,
-                timeToLive: 14.0f,
-                fontStyle: TMPro.FontStyles.Bold);
+            string messageWithHeader = $"<color=yellow><size=+1>MYSTERY COLLECTED</size>\n\n</color>{msg}";
+            GameCanvasScript.Instance.ShowPopup(messageWithHeader);
         }
     }
 

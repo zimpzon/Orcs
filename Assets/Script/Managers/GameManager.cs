@@ -1224,38 +1224,20 @@ public class GameManager : MonoBehaviour
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
             { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
-            // 17 below this
+            // 11 below this
 
             // removed zap to make room for others
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
-            //{ "level_zap_x2", (int)SaveGame.Members.LevelClickDamageX2 },
-
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
-            //{ "level_knife_damage_x2", (int)SaveGame.Members.LevelKnifeDamageX2 },
-
             { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },
-            //{ "level_gold_value_x2", (int)SaveGame.Members.LevelMoneyPerGoldX2 },
-
             { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
-            { "level_dagger_cd_x2", (int)SaveGame.Members.LevelKnifeCdX2 },
-
             { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
-            { "level_witchdoctor_x2", (int)SaveGame.Members.LevelWitchDoctorX2 },
-
             { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown },
-            { "level_gold_per_dagger_x2", (int)SaveGame.Members.LevelGoldPerKnifeThrownX2 },
-
             { "level_wizard", (int)SaveGame.Members.LevelWizard },
-            { "level_wizard_x2", (int)SaveGame.Members.LevelWizardX2 },
-
             { "level_hoarder", (int)SaveGame.Members.LevelHoarder },
-            { "level_hoarder_x2", (int)SaveGame.Members.LevelHoarderX2 },
-
             { "level_zap_damage", (int)SaveGame.Members.LevelZapDamage },
-            { "level_zap_damage_x2", (int)SaveGame.Members.LevelZapDamageX2 },
-
             { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
-            { "level_moneymaker_x2", (int)SaveGame.Members.LevelMoneyMakerX2},
+            { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
         };
         return dic;
     }
