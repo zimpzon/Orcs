@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.43137258, g: 0.5647059, b: 0.40000004, a: 1}
+  m_Color: {r: 0.6509804, g: 0.31223145, b: 0.24281567, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -369,8 +369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cost: 1
-  CanAffordColor: {r: 0.4307295, g: 0.566, b: 0.3986918, a: 1}
-  CannotAffordColor: {r: 0.637, g: 0.4351093, b: 0.40030056, a: 1}
+  CanAffordColor: {r: 0.15686275, g: 0.68235296, b: 0.38039216, a: 1}
+  CannotAffordColor: {r: 0.6509804, g: 0.3137255, b: 0.24313726, a: 1}
   OwnedColor: {r: 0.63522005, g: 0.63522005, b: 0.63522005, a: 1}
   ButtonOverlay: {fileID: 8582976546675710129}
   CardOverlay: {fileID: 1817257581003230922}
@@ -378,6 +378,9 @@ MonoBehaviour:
   ButtonBuyText: {fileID: 4928851705164083944}
   OwnedText: {fileID: 8582473283915124599}
   CardId: 0
+  UpgradeCardPassiveX2_1: {fileID: 0}
+  UpgradeCardPassiveX2_2: {fileID: 0}
+  UpgradeCardPassiveX4_1: {fileID: 0}
 --- !u!1 &2954061053293027745
 GameObject:
   m_ObjectHideFlags: 0

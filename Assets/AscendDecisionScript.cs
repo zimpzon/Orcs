@@ -68,6 +68,8 @@ public class AscendDecisionScript : MonoBehaviour
         TextCurrentDiamonds.text = $"You have <color=yellow>{SaveGame.Members.DiamondCount}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> monster {creditTxt} <sprite=0>";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
+
+        ButtonAscend.interactable = SaveGame.Members.MonsterCreditsTemp > 0;
     }
 
     private void OnEnable()

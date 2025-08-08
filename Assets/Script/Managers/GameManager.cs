@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     // 6: percentage upgrades added
     // 7: ascend almost done
     // 8: export added, diamonds gives +10%
-    public const int MinorVersion = 8;
+    // 9: rebirth can be enabled
+    public const int MinorVersion = 9;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
