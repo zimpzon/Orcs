@@ -146,13 +146,14 @@ public static class SaveGame
         return Obfuscation.EncodeForSave(json);
     }
 
-    public static void ImportObfuscatedSaveGame(string obfuscated)
+    public static bool ImportObfuscatedSaveGame(string obfuscated)
     {
         string errorMsg = "";
         try
         {
             string json = Obfuscation.Decode(obfuscated);
             SaveGame.LoadJson(json, isRestore: true);
+            return true;
         }
         catch(FormatException)
         {
@@ -165,6 +166,7 @@ public static class SaveGame
 
         if (!string.IsNullOrWhiteSpace(errorMsg))
             GameCanvasScript.Instance.ShowPopup($"Could not import save game, reason:\n{errorMsg}");
+        return false;
     }
 
     public static void Save()

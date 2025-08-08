@@ -1005,7 +1005,7 @@ public class GameManager : MonoBehaviour
     float _timePrevPassiveIncomeUpdate = -1f;
     float _deltaRealTime = 0f;
 
-    public float GetIncomeFactorPerFrame() => _deltaRealTime;
+    public float GetIncomeFactorPerFrame() => _deltaRealTime * PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
 
     private static void ResetAwayTimestamp()
     {
@@ -1107,8 +1107,14 @@ public class GameManager : MonoBehaviour
 
         _timePrevPassiveIncomeUpdate = currentTime;
 
+        // TotalPassiveIncome is the per/sec income.
         TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
-        Decimal256 moneyToAdd = TotalPassiveIncome * (Decimal256)_deltaRealTime;
+
+        // MoneyToAdd is the scaled by fps income.
+        float incomeFactorPerFrame = GetIncomeFactorPerFrame();
+        Decimal256 moneyToAdd = TotalPassiveIncome * (Decimal256)incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomePassive += moneyToAdd;
+
         AddMoney(moneyToAdd);
 
         if (_prevPassiveIncome != TotalPassiveIncome)

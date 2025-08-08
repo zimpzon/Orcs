@@ -30,7 +30,8 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
 
     public void OnImportSaveClick()
     {
-        SaveGame.ImportObfuscatedSaveGame(TextImportInputField.text);
+        if (SaveGame.ImportObfuscatedSaveGame(TextImportInputField.text))
+            GameCanvasScript.Instance.ShowPopup("Save game was imported");
     }
 
     public void OnBackClick()

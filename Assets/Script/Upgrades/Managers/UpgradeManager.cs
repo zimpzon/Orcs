@@ -1,5 +1,6 @@
 using Assets.Script.Upgrades;
 using System;
+using System.Diagnostics;
 using UnityEngine;
 
 public enum UpgradeDisplayStatus
@@ -125,10 +126,17 @@ public class UpgradeManager : MonoBehaviour
         return text;
     }
 
+    // Will also update statistics, which is bad. Yikes.
+    float _prevCallTimeGetTotalPassiveIncomeForFrame = 0;
     public Decimal256 GetTotalPassiveIncome()
     {
+        if (G.D.RealTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
+            throw new("May not be called twice per frame, it has side effects!");
+
+        _prevCallTimeGetTotalPassiveIncomeForFrame = G.D.RealTime;
+
         float incomeFactorPerFrame =
-            GameManager.Instance.GetIncomeFactorPerFrame() * PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
+            GameManager.Instance.GetIncomeFactorPerFrame();
 
         SaveGame.Members.TotalIncomeClickDamage += ClickDamageManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeKnifeDamage += KnifeDamageManager.PassiveIncome() * incomeFactorPerFrame;
@@ -154,9 +162,6 @@ public class UpgradeManager : MonoBehaviour
         fullSum += ZapDamageManager.PassiveIncome();
         fullSum += MoneyMakerManager.PassiveIncome();
         fullSum += DaggerMasterManager.PassiveIncome();
-
-        SaveGame.Members.TotalIncomePassive += fullSum * incomeFactorPerFrame;
-
         return fullSum;
     }
 
