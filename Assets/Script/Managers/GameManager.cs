@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     // 7: ascend almost done
     // 8: export added, diamonds gives +10%
     // 9: rebirth can be enabled
-    public const int MinorVersion = 9;
+    // 10: import/export
+    public const int MinorVersion = 10;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -138,7 +139,6 @@ public class GameManager : MonoBehaviour
         else
         {
             SaveGame.Members = new SaveGameMembers();
-            GameCanvasScript.Instance.ShowPopup($"<color=yellow>Your savegame was deleted</color>\n\nWelcome to a new beginning!");
         }
 
         GameState = State.Idle_RestartRound;

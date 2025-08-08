@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Purchasing.MiniJSON;
 
 public class SaveGameMembers
 {
@@ -122,20 +123,6 @@ public class SaveGameMembers
     {
         return JsonUtility.FromJson<SaveGameMembers>(json);
     }
-
-    public string Export()
-    {
-        string json = ToJson();
-        var utf8 = Encoding.UTF8.GetBytes(json);
-        string base64 = Convert.ToBase64String(utf8);
-        return base64;
-    }
-
-    public void Import(string base64)
-    {
-        var utf8 = Convert.FromBase64String(base64);
-        string json = Encoding.UTF8.GetString(utf8);
-    }
 }
 
 public static class SaveGame
@@ -157,6 +144,27 @@ public static class SaveGame
     {
         string json = Members.ToJson();
         return Obfuscation.EncodeForSave(json);
+    }
+
+    public static void ImportObfuscatedSaveGame(string obfuscated)
+    {
+        string errorMsg = "";
+        try
+        {
+            string json = Obfuscation.Decode(obfuscated);
+            SaveGame.LoadJson(json, isRestore: true);
+        }
+        catch(FormatException)
+        {
+            errorMsg = "The save game format was not recognized";
+        }
+        catch (Exception e)
+        {
+             errorMsg = e.Message;
+        }
+
+        if (!string.IsNullOrWhiteSpace(errorMsg))
+            GameCanvasScript.Instance.ShowPopup($"Could not import save game, reason:\n{errorMsg}");
     }
 
     public static void Save()
@@ -201,9 +209,19 @@ public static class SaveGame
         }
 
         Debug.Log("json = " + prefs);
-        if (!string.IsNullOrWhiteSpace(prefs))
+        LoadJson(prefs);
+    }
+
+    public static void LoadJson(string json, bool isRestore = false)
+    {
+        if (isRestore)
         {
-            Members = SaveGameMembers.FromJson(prefs);
+            GameManager.Instance.ResetAllProgress();
+        }
+
+        if (!string.IsNullOrWhiteSpace(json))
+        {
+            Members = SaveGameMembers.FromJson(json);
         }
 
         Members ??= new SaveGameMembers();

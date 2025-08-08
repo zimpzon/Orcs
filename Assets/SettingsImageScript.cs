@@ -8,24 +8,33 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public GameObject Popup;
     public Button ButtonDeleteSave;
     public TextMeshProUGUI TextButtonDeleteSave;
+    public TMP_InputField TextImportInputField;
     private int _clickCount;
 
     void SetPopupEnabled(bool enabled)
     {
         _clickCount = 0;
         TextButtonDeleteSave.text = "DELETE SAVE GAME";
+
+        // Save game export text
+        TextImportInputField.text = SaveGame.GetObfuscatedSaveGame();
+
         Popup.SetActive(enabled);
     }
 
-    public void OnExportSaveClick()
+    //public void OnExportSaveClick()
+    //{
+    //    string fileName = JsMappings.ExportSave();
+    //    GameCanvasScript.Instance.ShowPopup("Your save game was exported as: " + fileName);
+    //}
+
+    public void OnImportSaveClick()
     {
-        string fileName = JsMappings.ExportSave();
-        GameCanvasScript.Instance.ShowPopup("Your save game was exported as: " + fileName);
+        SaveGame.ImportObfuscatedSaveGame(TextImportInputField.text);
     }
 
     public void OnBackClick()
     {
-        Debug.Log("BACK BACK");
         SetPopupEnabled(false);
     }
 
@@ -40,6 +49,8 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         {
             GameManager.Instance.ResetAllProgress();
             SetPopupEnabled(false);
+
+            GameCanvasScript.Instance.ShowPopup($"<color=yellow>Your savegame was deleted</color>\n\nWelcome to a new beginning!");
 
             FloatingTextSpawner.Instance.Spawn(
             GameManager.Instance.ArenaCenter,
