@@ -41,6 +41,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
 
     private void UpdateUi()
     {
+        // Diamonds etc.
+        AscendDecisionScript.Instance.UpdateUi();
+
         bool isOwned = CardId switch
         {
             AscendUpgradeCardId.PassiveIncomeX2_1 => SaveGame.Members.BoughtPassiveX2_1,

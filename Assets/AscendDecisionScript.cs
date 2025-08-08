@@ -1,4 +1,5 @@
 using Assets.Script.Upgrades;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,8 +15,8 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextAscendNowGain;
     public TextMeshProUGUI TextButtonRebirth;
 
-    public long MonsterCreditsAtStart;
-    public long DiamondsGainedAtRebirth;
+    [NonSerialized] public long MonsterCreditsAtStart;
+    [NonSerialized] public long DiamondsGainedAtRebirth;
 
     private int _clickCount;
 
@@ -33,16 +34,19 @@ public class AscendDecisionScript : MonoBehaviour
         }
         else if (_clickCount == 1)
         {
-            GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
-
+            if (AscendProgressScript.RebirthEnabled)
             {
-                //SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
-                //SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
+                SaveGame.Members.MonsterCreditsTemp -= MonsterCreditsAtStart;
+                SaveGame.Members.DiamondCount += MonsterCreditsAtStart;
 
-                //GameManager.Instance.ResetAllProgress(ascend: true);
+                GameManager.Instance.ResetAllProgress(ascend: true);
 
-                //string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
-                //GameCanvasScript.Instance.ShowPopup(msg);
+                string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMONDS";
+                GameCanvasScript.Instance.ShowPopup(msg);
+            }
+            else
+            {
+                GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
             }
 
             AscendProgressScript.OnCloseClick();

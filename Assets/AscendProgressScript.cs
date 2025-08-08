@@ -1,15 +1,23 @@
 using Assets.Script.Upgrades;
+using System;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AscendProgressScript : MonoBehaviour
 {
+    public AscendProgressScript Instance;
     public TextMeshProUGUI TextCredits;
     public Image ProgressBarImage;
     public GameObject AscendRoot;
     private float _nextCreditUpdate;
+
+    [NonSerialized] public bool RebirthEnabled = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void OnShowClick()
     {
@@ -35,6 +43,20 @@ public class AscendProgressScript : MonoBehaviour
 
     void Update()
     {
+        // Enable rebirth for now
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.LeftShift))
+        {
+            if (!RebirthEnabled)
+            {
+                RebirthEnabled = true;
+                GameCanvasScript.Instance.ShowPopup("Rebirth enabled!");
+            }
+            else
+            {
+                GameCanvasScript.Instance.ShowPopup("Rebirth already enabled");
+            }
+        }
+
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 

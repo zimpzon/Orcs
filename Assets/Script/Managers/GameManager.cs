@@ -1279,11 +1279,6 @@ public class GameManager : MonoBehaviour
         // CHEATS
 
 
-        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            ResetAllProgress();
-        }
-
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.DiamondCount = 0;
