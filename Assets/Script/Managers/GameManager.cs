@@ -1005,7 +1005,7 @@ public class GameManager : MonoBehaviour
     float _timePrevPassiveIncomeUpdate = -1f;
     float _deltaRealTime = 0f;
 
-    public float GetIncomeFactorPerFrame() => _deltaRealTime * PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
+    public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
     private static void ResetAwayTimestamp()
     {

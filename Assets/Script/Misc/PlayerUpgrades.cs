@@ -19,16 +19,18 @@ public class UpgradeData
     public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
 
     // passive income
-    // Percent bonuses are additive to ascend bonus, and we multiply it all by the X10 bonus.
+    // X10 * ascend bonuses * (1 + percent bonuses) * (1 + diamond bonuses)
     public float PassiveIncomeTempMultiplier = 1.0f;
-    // This is base multiplier, 1, 2, etc.
     public float PassiveIncomeAscendMultiplier = 1.0f;
-    // We add these additive multipliers
+
     public float PassiveIncomeDiamondMultiplier = 0.0f;
     public float PassiveIncomePercentageBonuses = 0.0f;
 
     public float PassiveIncomeEffectiveMultiplier =>
-        PassiveIncomeTempMultiplier * (PassiveIncomeAscendMultiplier + PassiveIncomePercentageBonuses + PassiveIncomeDiamondMultiplier);
+        PassiveIncomeTempMultiplier *
+        PassiveIncomeAscendMultiplier *
+        (1.0f + PassiveIncomePercentageBonuses) *
+        (1.0f + PassiveIncomeDiamondMultiplier);
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;

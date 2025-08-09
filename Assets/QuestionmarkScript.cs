@@ -26,6 +26,7 @@ public class QuestionmarkScript : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _pulseTextOriginalScale = MoneyMultiplierText.gameObject.transform.localScale;
         StartCoroutine(Think());
         GameEvents.OnSaveWiped += OnSaveWiped;
     }
@@ -235,8 +236,6 @@ public class QuestionmarkScript : MonoBehaviour
 
         void BeginPulseText()
         {
-            _pulseTextOriginalScale = MoneyMultiplierText.gameObject.transform.localScale;
-
             LeanTween.scale(MoneyMultiplierText.gameObject, Vector3.one * 1.1f, 0.5f)
                 .setEaseInOutSine()
                 .setLoopPingPong();
@@ -250,10 +249,9 @@ public class QuestionmarkScript : MonoBehaviour
         {
             long numberOfSeconds = 60 * 5;
             Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
-            reward += 1000;
+            reward += 100;
 
             ShowMessage($"{Highlight(300)}X income = ${Highlight(Format256.Format(reward))}");
-            reward += 100;
 
             GameManager.Instance.AddMoney(reward);
             yield return null;

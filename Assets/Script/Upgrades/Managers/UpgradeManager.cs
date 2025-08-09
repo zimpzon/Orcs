@@ -130,10 +130,10 @@ public class UpgradeManager : MonoBehaviour
     float _prevCallTimeGetTotalPassiveIncomeForFrame = 0;
     public Decimal256 GetTotalPassiveIncome()
     {
-        if (G.D.RealTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
+        if (G.D.GameTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
             throw new("May not be called twice per frame, it has side effects!");
-
-        _prevCallTimeGetTotalPassiveIncomeForFrame = G.D.RealTime;
+        
+        _prevCallTimeGetTotalPassiveIncomeForFrame = G.D.GameTime;
 
         float incomeFactorPerFrame =
             GameManager.Instance.GetIncomeFactorPerFrame();
