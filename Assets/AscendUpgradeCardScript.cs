@@ -68,7 +68,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
         }
         else
         {
-            bool canAfford = SaveGame.Members.DiamondCount >= Cost;
+            bool canAfford = SaveGame.Members.DiamondCount_09_08_2025 >= Cost;
             _background.color = canAfford ? CanAffordColor : CannotAffordColor;
             ButtonOverlay.enabled = !canAfford;
             ButtonBuy.interactable = canAfford;
@@ -94,7 +94,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else
             throw new NotImplementedException();
 
-        SaveGame.Members.DiamondCount -= Cost;
+        SaveGame.Members.DiamondCount_09_08_2025 -= Cost;
         AscendDecisionScript.Instance.UpdateUi();
     }
 }

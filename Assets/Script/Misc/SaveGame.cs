@@ -17,11 +17,12 @@ public class SaveGameMembers
     public string LastSeenUtcStr = string.Empty;
 
     // Ascending
-    public Decimal256 MonsterCreditsXp;
-    public long TimesAscendedTemp; // temp so we don't have garbage when implementing for real.
-    public long MonsterCreditsTemp;
-    public long MonsterCreditsLifetimeTemp;
-    public long DiamondCount;
+    public Decimal256 MonsterCreditsXp_09_08_2025;
+
+    public long TimesAscended_09_08_2025;
+    public long MonsterCredits_09_08_2025;
+    public long MonsterCreditsLifetime_09_08_2025;
+    public long DiamondCount_09_08_2025;
 
     // Permanent upgrades
     public bool BoughtPassiveX2_1 = false;

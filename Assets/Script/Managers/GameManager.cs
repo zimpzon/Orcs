@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     // 8: export added, diamonds gives +10%
     // 9: rebirth can be enabled
     // 10: import/export
-    public const int MinorVersion = 10;
+    // 11: Rebirth released
+    public const int MinorVersion = 11;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -306,7 +307,10 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStateCo()
     {
         GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\nPlease note that gameplay changes\n and balancing will happen.");
+            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\n" +
+            "<color=#40d0f0>REBIRTH</color> is now enabled. All Monster\n" +
+            "Credits earned before this release have been reset.\nBalancing will still occur.\n\n" +
+            "<color=#40d0f0>Please backup your save game.");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1226,9 +1230,9 @@ public class GameManager : MonoBehaviour
             { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
 
             { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
-            { "times_ascended_temp", (int)SaveGame.Members.TimesAscendedTemp },
-            { "diamond_count", (int)SaveGame.Members.DiamondCount },
-            { "monster_credits_lifetime", (int)SaveGame.Members.MonsterCreditsLifetimeTemp },
+            { "times_ascended_09_08_2025", (int)SaveGame.Members.TimesAscended_09_08_2025 },
+            { "diamond_count_09_08_2025", (int)SaveGame.Members.DiamondCount_09_08_2025 },
+            { "monster_credits_lifetime_09_08_2025", (int)SaveGame.Members.MonsterCreditsLifetime_09_08_2025 },
 
             { "chests_collected", (int)SaveGame.Members.ChestsCollected },
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
@@ -1288,9 +1292,9 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.DiamondCount = 0;
-            SaveGame.Members.MonsterCreditsTemp = 3;
-            SaveGame.Members.MonsterCreditsXp = 200000;
+            SaveGame.Members.DiamondCount_09_08_2025 = 0;
+            SaveGame.Members.MonsterCredits_09_08_2025 = 3;
+            SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))

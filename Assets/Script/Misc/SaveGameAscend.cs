@@ -12,11 +12,11 @@
         newSave.LastSeenUtcStr = oldSave.LastSeenUtcStr;
 
         // Ascending
-        newSave.MonsterCreditsXp = oldSave.MonsterCreditsXp;
-        newSave.TimesAscendedTemp = oldSave.TimesAscendedTemp;
-        newSave.MonsterCreditsTemp = oldSave.MonsterCreditsTemp;
-        newSave.MonsterCreditsLifetimeTemp = oldSave.MonsterCreditsLifetimeTemp;
-        newSave.DiamondCount = oldSave.DiamondCount;
+        newSave.MonsterCreditsXp_09_08_2025 = oldSave.MonsterCreditsXp_09_08_2025;
+        newSave.TimesAscended_09_08_2025 = oldSave.TimesAscended_09_08_2025;
+        newSave.MonsterCredits_09_08_2025 = oldSave.MonsterCredits_09_08_2025;
+        newSave.MonsterCreditsLifetime_09_08_2025 = oldSave.MonsterCreditsLifetime_09_08_2025;
+        newSave.DiamondCount_09_08_2025 = oldSave.DiamondCount_09_08_2025;
 
         // Permanent upgrades
         newSave.BoughtPassiveX2_1 = oldSave.BoughtPassiveX2_1;

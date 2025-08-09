@@ -12,7 +12,7 @@ public class AscendProgressScript : MonoBehaviour
     public GameObject AscendRoot;
     private float _nextCreditUpdate;
 
-    [NonSerialized] public bool RebirthEnabled = false;
+    [NonSerialized] public bool RebirthEnabled = true;
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class AscendProgressScript : MonoBehaviour
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
         // 10% per diamond
-        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount * 0.1f;
+        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * 0.1f;
     }
 
     void Update()
@@ -69,19 +69,19 @@ public class AscendProgressScript : MonoBehaviour
         const float CreditUpdateRate = 1.0f;
         _nextCreditUpdate = G.D.GameTime + CreditUpdateRate;
 
-        SaveGame.Members.MonsterCreditsXp += GameManager.Instance.TotalPassiveIncome;
-        Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetimeTemp + 1);
-        if (SaveGame.Members.MonsterCreditsXp > xpForNextLevel)
+        SaveGame.Members.MonsterCreditsXp_09_08_2025 += GameManager.Instance.TotalPassiveIncome;
+        Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
+        if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevel)
         {
-            SaveGame.Members.MonsterCreditsXp -= xpForNextLevel;
-            SaveGame.Members.MonsterCreditsLifetimeTemp++;
-            SaveGame.Members.MonsterCreditsTemp++;
+            SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevel;
+            SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
+            SaveGame.Members.MonsterCredits_09_08_2025++;
         }
 
-        float t = (float)(SaveGame.Members.MonsterCreditsXp.ToDouble() / xpForNextLevel.ToDouble());
+        float t = (float)(SaveGame.Members.MonsterCreditsXp_09_08_2025.ToDouble() / xpForNextLevel.ToDouble());
         ProgressBarImage.fillAmount = t;
 
         float pct = t * 100.0f;
-        TextCredits.text = $"Monster credits: {SaveGame.Members.MonsterCreditsTemp}\n<size=-3>Next: {pct:#0.0}%";
+        TextCredits.text = $"Monster credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3>Next: {pct:#0.0}%";
     }
 }
