@@ -67,7 +67,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
         {
-            Decimal256 result = initialPrice * Math.Pow(10, levelX2);
+            Decimal256 result = initialPrice * Math.Pow(2, levelX2);
             return result;
         }
 
@@ -78,14 +78,14 @@ namespace Assets.Script.Upgrades
             // 2: level 5
             // 3: level 25
             // 4: level 50
-            // 5: ...from here it is +50 per level
+            // 5: ...from here it is +25 per level
             if (levelX2 == 0) return 0;
             if (levelX2 == 1) return 1;
             if (levelX2 == 2) return 5;
             if (levelX2 == 3) return 25;
 
             // > 3
-            return (levelX2 - 3) * 50;
+            return (levelX2 - 3) * 25;
         }
 
         public static Decimal256 PriceNextPercentageBonus(long level)
