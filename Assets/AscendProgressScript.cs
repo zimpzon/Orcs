@@ -31,11 +31,12 @@ public class AscendProgressScript : MonoBehaviour
 
     static void ApplyAscendPermanentBonuses()
     {
-        // Additive
-        float passiveAdditiveMultiplier = SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
-        passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX2_2 ? 2 : 0;
-        passiveAdditiveMultiplier += SaveGame.Members.BoughtPassiveX4_1 ? 4 : 0;
-        PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveAdditiveMultiplier;
+        // Multiplicative
+        float passiveMultiplier = 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_2 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_1 ? 4 : 1;
+        PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
         // 10% per diamond
         PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount * 0.1f;
