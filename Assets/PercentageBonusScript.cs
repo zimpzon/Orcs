@@ -60,11 +60,16 @@ public class PercentageBonusScript : MonoBehaviour
         TextBonusStatus.text = $"+1% passive income\n<size=-2><color=#ccccee>Bonus: {SaveGame.Members.LevelPctBought}%";
     }
 
+    float _nextUpdate;
+
     void Update()
     {
         bool canAfford = CanAfford();
-        if (canAfford == _lastCanAfford)
+        bool doUpdate = canAfford != _lastCanAfford || G.D.GameTime > _nextUpdate;
+        if (!doUpdate)
             return;
+
+        _nextUpdate = G.D.GameTime + 0.5f;
 
         _lastCanAfford = canAfford;
         UpdateAll();
