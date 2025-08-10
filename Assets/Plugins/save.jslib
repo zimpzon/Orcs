@@ -4,7 +4,18 @@ mergeInto(LibraryManager.library, {
     window.localStorage.setItem("super-knight-v1-savegame", UTF8ToString(json));
   },
   
-  Load: function () {
+    GetHostInfo: function () {
+        var url = window.location.href;
+        var referrer = document.referrer;
+        var combined = url + "|" + referrer;
+        // Unity expects a C string pointer — return the heap-allocated UTF8 string
+        var lengthBytes = lengthBytesUTF8(combined) + 1;
+        var stringOnWasmHeap = _malloc(lengthBytes);
+        stringToUTF8(combined, stringOnWasmHeap, lengthBytes);
+        return stringOnWasmHeap;
+    },
+
+    Load: function () {
     var json = window.localStorage.getItem("super-knight-v1-savegame");
     if (json === null)
         json = ''

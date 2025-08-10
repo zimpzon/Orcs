@@ -76,6 +76,7 @@ public static class Playfab
             { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
             { "total_earned_at_login", GameManager.Instance.TextTotalIncome.text },
             { "LatestLogin", FormatTime.DateTimeToString(DateTime.UtcNow) },
+            { "hosting_info", JsMappings.GetHostingInfo() },
         };
 
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest

@@ -5,6 +5,18 @@ using System;
 public class JsMappings : MonoBehaviour
 {
     [DllImport("__Internal")]
+    private static extern System.IntPtr GetHostInfo();
+
+    public static string GetHostingInfo()
+    {
+        if (Application.platform != RuntimePlatform.WebGLPlayer)
+            return "Not WebGL";
+
+        var ptr = GetHostInfo();
+        return Marshal.PtrToStringUTF8(ptr);
+    }
+
+    [DllImport("__Internal")]
     public static extern void Save(string json);
 
     [DllImport("__Internal")]

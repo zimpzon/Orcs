@@ -307,11 +307,8 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStateCo()
     {
         GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl Early Access.</color>\n\n" +
-            "<color=#40d0f0>REBIRTH</color> is now enabled. All Monster\n" +
-            "Credits earned before this release have been reset.\nBalancing will still occur.\n\n" +
-            "<color=#40d0f0>Please backup your save game.</color>\n\n" +
-            "<size=-2><color=#c0c0c0>Recent changes:\n<size=-3>" +
+            "<color=yellow>Welcome to Idle Earl</color>\n\n" +
+            "<size=-2>Recent updates:\n<size=-3><color=#c0c0c0>" +
             " - X2 upgrades are now much cheaper\n" +
             " - backup of save games added to settings menu");
 
