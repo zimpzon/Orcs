@@ -22,9 +22,9 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_GoldPerKnifeThrown =           10_100_000;
         public static Decimal256 InitialPrice_Wizard =                      150_000_000;
         public static Decimal256 InitialPrice_Hoarder =                   2_100_000_000;
-        public static Decimal256 InitialPrice_ZapDamage =                28_500_000_000;
-        public static Decimal256 InitialPrice_MoneyMaker =              500_000_000_000;
-        public static Decimal256 InitialPrice_DaggerMaster =         11_000_000_000_000;
+        public static Decimal256 InitialPrice_ZapDamage =                20_500_000_000;
+        public static Decimal256 InitialPrice_MoneyMaker =              210_000_000_000;
+        public static Decimal256 InitialPrice_DaggerMaster =          2_200_000_000_000;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -90,28 +90,13 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 PriceNextPercentageBonus(long level)
         {
-            // Claude
-            //
-            // Level 4: ~622,500
-            // Level 10: ~1,900,000
-            // Level 50: ~75,000,000
-            // Level 100: ~1,000,000,000
-
             if (level == 0) return 500;
             if (level == 1) return 10_000;
             if (level == 2) return 100_000;
             if (level == 3) return 250_000;
-
-            // Geometric growth: base_price * growth_rate^(level - 4)
-            // Starting from 500,000 at level 3, with growth rate of ~1.245
-            // This reaches approximately 1 billion at level 100
-            // You can adjust the growthRate value slightly if you want to
-            // fine-tune the final amount - increasing it will make level 100
-            // cost more, decreasing it will make it cost less.
             Decimal256 basePrice = 500_000;
-            double growthRate = 1.245;
+            double growthRate = 1.2378; // Reduced from 1.245 to halve level 100 cost
             double exponent = level - 3;
-
             return basePrice * (Decimal256)Math.Pow(growthRate, exponent);
         }
     }
