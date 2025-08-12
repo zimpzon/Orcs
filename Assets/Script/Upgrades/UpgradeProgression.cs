@@ -67,7 +67,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
         {
-            Decimal256 result = initialPrice * Math.Pow(5, levelX2);
+            Decimal256 result = initialPrice * Math.Pow(3, levelX2);
             return result;
         }
 
