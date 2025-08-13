@@ -57,7 +57,7 @@ public class PercentageBonusScript : MonoBehaviour
         bool canAfford = CanAfford();
         SetEnabled(canAfford);
         ButtonText.text = $"${Format256.Format(priceNext)}";
-        TextBonusStatus.text = $"+1% passive income\n<size=-2><color=#ccccee>Bonus: {SaveGame.Members.LevelPctBought}%";
+        TextBonusStatus.text = $"+1% passive income\n<size=-2><color=#dddddd>Bonus: {SaveGame.Members.LevelPctBought}%";
     }
 
     float _nextUpdate;
