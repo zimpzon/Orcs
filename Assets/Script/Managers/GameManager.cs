@@ -1290,6 +1290,13 @@ public class GameManager : MonoBehaviour
         // CHEATS
 
 
+        if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            Playfab.LoginRes.SessionTicket = null;
+            _nextSendStats = 0;
+            TrySendStats();
+        }
+
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.DiamondCount_09_08_2025 = 0;

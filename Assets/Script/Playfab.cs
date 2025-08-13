@@ -8,7 +8,7 @@ using UnityEngine;
 public static class Playfab
 {
     public static string DisplayStatus = "not logged in";
-    static LoginResult LoginRes;
+    public static LoginResult LoginRes;
     static bool LoginComplete => LoginRes is not null;
 
     public const string SendStatsEvent = "send_stats_event";
@@ -25,8 +25,7 @@ public static class Playfab
 
         string CreateNewId()
         {
-            string newId = Guid.NewGuid().ToString();
-            return newId;
+            return Guid.NewGuid().ToString();
         }
 
         if (string.IsNullOrWhiteSpace(SaveGame.Members.PlayerId))
@@ -45,7 +44,6 @@ public static class Playfab
         {
             LoginRes = result;
             DisplayStatus = "logged in";
-            //GameManager.Instance.TextUser.text = DisplayStatus;
 
             Debug.Log($"login successful, id: {result.PlayFabId}, created: {result.NewlyCreated}");
             Debug.Log($"Sending platform info ({Application.platform})");
@@ -55,8 +53,6 @@ public static class Playfab
         void ErrorCallback(PlayFabError result)
         {
             DisplayStatus = "error logging in";
-            //GameManager.Instance.TextUser.text = DisplayStatus;
-
             Debug.LogError($"login error: {result}");
         }
 
@@ -82,7 +78,7 @@ public static class Playfab
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest
         {
             Data = data,
-            Permission = UserDataPermission.Public // Optional, makes it visible in dashboard
+            Permission = UserDataPermission.Public
         },
         result => Debug.Log("Platform info sent to PlayFab"),
         error => Debug.LogError("Failed to send platform info: " + error.GenerateErrorReport()));
@@ -108,17 +104,9 @@ public static class Playfab
             }
         };
 
-        void Callback(WriteEventResponse res)
-        {
-            Debug.Log($"event {eventName} sent");
-        }
-
-        void ErrorCallback(PlayFabError result)
-        {
-            Debug.LogError($"error sending event {eventName}: {result}");
-        }
-
-        PlayFabClientAPI.WritePlayerEvent(req, Callback, ErrorCallback);
+        PlayFabClientAPI.WritePlayerEvent(req,
+            res => Debug.Log($"event {eventName} sent"),
+            err => Debug.LogError($"error sending event {eventName}: {err}"));
     }
 
     public static void PlayerStat(Dictionary<string, int> stats)
@@ -129,6 +117,18 @@ public static class Playfab
             return;
         }
 
+        if (string.IsNullOrEmpty(LoginRes?.SessionTicket))
+        {
+            Debug.Log("No valid session ticket found. Re-logging in...");
+            LoginAndSendStats(stats);
+            return;
+        }
+
+        SendStats(stats, retryOnAuthError: true);
+    }
+
+    private static void SendStats(Dictionary<string, int> stats, bool retryOnAuthError)
+    {
         var req = new UpdatePlayerStatisticsRequest
         {
             Statistics = new List<StatisticUpdate>(),
@@ -139,22 +139,45 @@ public static class Playfab
             }
         };
 
-        foreach(var pair in stats)
+        foreach (var pair in stats)
         {
             req.Statistics.Add(new StatisticUpdate { StatisticName = pair.Key, Value = pair.Value });
         }
 
-        void Callback(UpdatePlayerStatisticsResult res)
-        {
-            Debug.Log($"stats {stats} sent");
-        }
+        PlayFabClientAPI.UpdatePlayerStatistics(req,
+            res => Debug.Log($"stats {stats} sent"),
+            err =>
+            {
+                Debug.LogError($"error sending stats {stats}: {err}");
 
-        void ErrorCallback(PlayFabError result)
-        {
-            Debug.LogError($"error sending stats {stats}: {result}");
-        }
+                if (retryOnAuthError && err.Error == PlayFabErrorCode.InvalidSessionTicket)
+                {
+                    Debug.Log("Session expired. Re-logging in...");
+                    LoginAndSendStats(stats);
+                }
+            });
+    }
 
-        PlayFabClientAPI.UpdatePlayerStatistics(req, Callback, ErrorCallback);
+    private static void LoginAndSendStats(Dictionary<string, int> statsToSend)
+    {
+        var req = new LoginWithCustomIDRequest
+        {
+            CreateAccount = true,
+            CustomId = SaveGame.Members.PlayerId,
+            TitleId = PlayFabSettings.TitleId,
+        };
+
+        PlayFabClientAPI.LoginWithCustomID(req,
+            result =>
+            {
+                LoginRes = result;
+                Debug.Log("Re-login successful, sending stats...");
+                SendStats(statsToSend, retryOnAuthError: false); // avoid infinite loop
+            },
+            error =>
+            {
+                Debug.LogError("Re-login failed: " + error.GenerateErrorReport());
+            });
     }
 
     public static void PlayerStat(string statName, int value)
