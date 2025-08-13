@@ -309,8 +309,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl</color>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#c0c0c0>" +
-            " - +1% upgrades are now cheaper\n" +
-            " - Zap damage and later tiers are now cheaper");
+            " - added new enemy\n" +
+            " - +1% upgrades are now cheaper");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;

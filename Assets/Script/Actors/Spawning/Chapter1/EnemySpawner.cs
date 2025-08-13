@@ -1,6 +1,7 @@
 using Assets.Script.Actors.Spawning;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class EnemySpawner
@@ -24,6 +25,7 @@ public static class EnemySpawner
         long hpGreen = 50_000 * HpScale;
         long hpRaven = 250_000 * HpScale;
         long hpRed = 1_000_000 * HpScale;
+        long hpPig = 2_500_000 * HpScale;
         long hpPigtail = 5_000_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
@@ -31,6 +33,7 @@ public static class EnemySpawner
         bool allowGreen = hpTargetForRound >= hpGreen;
         bool allowRaven = hpTargetForRound >= hpRaven;
         bool allowRed = hpTargetForRound >= hpRed;
+        bool allowPig = hpTargetForRound >= hpPig;
         bool allowPigtail = hpTargetForRound >= hpPigtail;
 
         List<ActorBase> enemies = new();
@@ -52,7 +55,18 @@ public static class EnemySpawner
                 totalEnemies += clampedPigtail;
             }
 
-            // 2. Red
+            // 2. Pig
+            long clampedPig = 0;
+            if (allowPig)
+            {
+                clampedPig = Math.Min(remainingHp / hpPig, MaxEnemies - totalEnemies);
+                clampedPig -= UnityEngine.Random.Range(0, 2);
+                clampedPig = Math.Max(0, clampedPig);
+                remainingHp -= clampedPig * hpPig;
+                totalEnemies += clampedPig;
+            }
+
+            // 3. Red
             long clampedRed = 0;
             if (allowRed)
             {
@@ -63,7 +77,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRed;
             }
 
-            // 3. Ravens
+            // 4. Ravens
             long clampedRaven = 0;
             if (allowRaven)
             {
@@ -74,7 +88,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRaven;
             }
 
-            // 4. Green
+            // 5. Green
             long clampedGreen = 0;
             if (allowGreen)
             {
@@ -85,7 +99,7 @@ public static class EnemySpawner
                 totalEnemies += clampedGreen;
             }
 
-            // 5. Hero Chasers
+            // 6. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
@@ -96,7 +110,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 6. Large Ogres
+            // 7. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
@@ -107,14 +121,14 @@ public static class EnemySpawner
                 totalEnemies += clampedLarge;
             }
 
-            // 7. Small Ogres
+            // 8. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 8. Bats
+            // 9. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
@@ -130,6 +144,13 @@ public static class EnemySpawner
             foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Pigtail, (int)clampedPigtail))
             {
                 actor.BaseHp = hpPigtail;
+                enemies.Add(actor);
+            }
+
+            // Add Pig
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.Pig, (int)clampedPig))
+            {
+                actor.BaseHp = hpPig;
                 enemies.Add(actor);
             }
 
@@ -196,6 +217,7 @@ public static class EnemySpawner
 
             // Increase HP budgets and retry
             hpPigtail *= 10;
+            hpPig *= 10;
             hpRed *= 10;
             hpRaven *= 10;
             hpGreen *= 10;
