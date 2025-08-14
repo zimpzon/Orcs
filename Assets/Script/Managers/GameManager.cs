@@ -1248,7 +1248,7 @@ public class GameManager : MonoBehaviour
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
             { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
-            // 11 below this
+            // 12 below this
 
             // removed zap to make room for others
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
@@ -1262,6 +1262,7 @@ public class GameManager : MonoBehaviour
             { "level_zap_damage", (int)SaveGame.Members.LevelZapDamage },
             { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
             { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
+            { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
         };
         return dic;
     }
