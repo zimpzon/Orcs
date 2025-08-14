@@ -21417,8 +21417,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287454284
-  m_fontColor: {r: 0.29803923, g: 0.36078432, b: 0.5529412, a: 1}
+    rgba: 4288895296
+  m_fontColor: {r: 0.2509804, g: 0.34901962, b: 0.6392157, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
@@ -28655,6 +28655,7 @@ GameObject:
   - component: {fileID: 478506930}
   - component: {fileID: 478506929}
   - component: {fileID: 478506931}
+  - component: {fileID: 478506932}
   m_Layer: 5
   m_Name: MonsterCreditsRoot
   m_TagString: Untagged
@@ -28738,6 +28739,51 @@ MonoBehaviour:
   TextCredits: {fileID: 2118231782}
   ProgressBarImage: {fileID: 548296178}
   AscendRoot: {fileID: 1119408385}
+--- !u!114 &478506932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478506927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &488792620
 GameObject:
   m_ObjectHideFlags: 0
@@ -41180,6 +41226,7 @@ GameObject:
   - component: {fileID: 960054183}
   - component: {fileID: 960054185}
   - component: {fileID: 960054184}
+  - component: {fileID: 960054186}
   m_Layer: 5
   m_Name: TextMoneyBackground
   m_TagString: Untagged
@@ -41246,6 +41293,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 960054182}
   m_CullTransparentMesh: 1
+--- !u!114 &960054186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960054182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &961580741
 GameObject:
   m_ObjectHideFlags: 0
@@ -46703,6 +46795,7 @@ GameObject:
   - component: {fileID: 1034648700}
   - component: {fileID: 1034648701}
   - component: {fileID: 1034648702}
+  - component: {fileID: 1034648703}
   m_Layer: 5
   m_Name: UpgradeItemPanel
   m_TagString: Untagged
@@ -46839,6 +46932,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 1034648700}
+--- !u!114 &1034648703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034648695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 257
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &1038077828
 GameObject:
   m_ObjectHideFlags: 0
@@ -57802,6 +57940,7 @@ GameObject:
   - component: {fileID: 1223022137}
   - component: {fileID: 1223022136}
   - component: {fileID: 1223022139}
+  - component: {fileID: 1223022140}
   m_Layer: 5
   m_Name: QuestionMark
   m_TagString: Untagged
@@ -57942,8 +58081,53 @@ MonoBehaviour:
   RadialRoot: {fileID: 1760089298}
   RadialImage: {fileID: 947266333}
   MoneyMultiplierText: {fileID: 33727676}
-  TextColorEnabled: {r: 0, g: 1, b: 0.043137256, a: 1}
+  TextColorEnabled: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
   TextColorDisabled: {r: 0.76729554, g: 0.74418217, b: 0.6587159, a: 1}
+--- !u!114 &1223022140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223022134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0.7484276, g: 0.7484276, b: 0.7484276, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &1225830588
 GameObject:
   m_ObjectHideFlags: 0
@@ -69006,6 +69190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1342960507}
   - component: {fileID: 1342960506}
+  - component: {fileID: 1342960508}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -69036,7 +69221,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 94d432cc01f9bff42ac91be77b097fe1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -69058,7 +69243,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: -1000
   m_Sprite: {fileID: 21300000, guid: 643d31933349bfc48a7a1182e2bf5f84, type: 3}
-  m_Color: {r: 0.18014117, g: 0.24883136, b: 0.45490196, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -69083,6 +69268,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1342960508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342960505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &1407321675
 GameObject:
   m_ObjectHideFlags: 0
@@ -93561,6 +93791,7 @@ GameObject:
   - component: {fileID: 2113834627}
   - component: {fileID: 2113834626}
   - component: {fileID: 2113834628}
+  - component: {fileID: 2113834629}
   m_Layer: 5
   m_Name: BonusPanel
   m_TagString: Untagged
@@ -93644,6 +93875,51 @@ MonoBehaviour:
   TextBonusStatus: {fileID: 1231419471}
   TextColorEnabled: {r: 0.86666673, g: 0.86666673, b: 0.86666673, a: 1}
   TextColorDisabled: {r: 0.56078434, g: 0.5647059, b: 0.57254905, a: 1}
+--- !u!114 &2113834629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113834624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45facfdc6a639f041b007c036dc527b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gradientType: 1
+  _blendMode: 2
+  _offset: 0
+  _effectGradient:
+    serializedVersion: 2
+    key0: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &2118231780
 GameObject:
   m_ObjectHideFlags: 0

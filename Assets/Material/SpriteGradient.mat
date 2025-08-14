@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SpriteGradient
-  m_Shader: {fileID: 4800000, guid: 41a3352336251c24abb0ec1faed70c06, type: 3}
+  m_Shader: {fileID: 4800000, guid: 047a5d390fd12a54ebfd65a14a45064e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _ColorMask
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -66,8 +66,10 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
+    - _AnimScale: 1.5
+    - _AnimSpeed: 0.25
     - _BumpScale: 1
-    - _ColorMask: 15
+    - _ColorMask: 11.28
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -79,12 +81,12 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 1
+    - _Scale: 1000
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Stencil: 0
-    - _StencilComp: 8
+    - _StencilComp: 7.91
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
@@ -92,7 +94,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorBottom: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorA: {r: 0.16862746, g: 0.23529413, b: 0.43137258, a: 1}
+    - _ColorB: {r: 0.14190002, g: 0.198, b: 0.363, a: 1}
+    - _ColorBottom: {r: 0.9748427, g: 0.56035167, b: 0, a: 1}
     - _ColorTop: {r: 0.29803923, g: 0.36078432, b: 0.5529412, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
