@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Purchasing.MiniJSON;
 
 public class SaveGameMembers
 {
@@ -66,6 +64,7 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeZapDamage;
     public Decimal256 TotalIncomeMoneyMaker;
     public Decimal256 TotalIncomeDaggerMaster;
+    public Decimal256 TotalIncomeNecroNinja;
 
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
@@ -87,6 +86,7 @@ public class SaveGameMembers
     public long LevelZapDamage = 0;
     public long LevelMoneyMaker = 0;
     public long LevelDaggerMaster = 0;
+    public long LevelNecroNinja = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -100,6 +100,7 @@ public class SaveGameMembers
     public long LevelZapDamageX2 = 0;
     public long LevelMoneyMakerX2 = 0;
     public long LevelDaggerMasterX2 = 0;
+    public long LevelNecroNinjaX2 = 0;
 
     // Pct
     public long LevelPctBought = 0;

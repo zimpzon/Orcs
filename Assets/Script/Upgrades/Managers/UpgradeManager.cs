@@ -29,6 +29,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript ZapDamage;
     public UpgradeItemScript MoneyMaker;
     public UpgradeItemScript DaggerMaster;
+    public UpgradeItemScript NecroNinja;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -55,6 +56,7 @@ public class UpgradeManager : MonoBehaviour
         ZapDamageManager.UpdateAll();
         MoneyMakerManager.UpdateAll();
         DaggerMasterManager.UpdateAll();
+        NecroNinjaManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -85,6 +87,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelZapDamage, SaveGame.Members.LevelMoneyMaker);
         else if (upgradeUiScript == DaggerMaster)
             return GetDisplayStatus(SaveGame.Members.LevelMoneyMaker, SaveGame.Members.LevelDaggerMaster);
+        else if (upgradeUiScript == NecroNinja)
+            return GetDisplayStatus(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelNecroNinja);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -115,6 +119,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(MoneyMaker) == UpgradeDisplayStatus.FullyShown ? MoneyMakerManager.GetText() : LockedText;
         else if (upgradeUiScript == DaggerMaster)
             text = GetUpgradeDisplayStatus(DaggerMaster) == UpgradeDisplayStatus.FullyShown ? DaggerMasterManager.GetText() : LockedText;
+        else if (upgradeUiScript == NecroNinja)
+            text = GetUpgradeDisplayStatus(NecroNinja) == UpgradeDisplayStatus.FullyShown ? NecroNinjaManager.GetText() : LockedText;
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -132,7 +138,7 @@ public class UpgradeManager : MonoBehaviour
     {
         if (G.D.GameTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
             throw new("May not be called twice per frame, it has side effects!");
-        
+
         _prevCallTimeGetTotalPassiveIncomeForFrame = G.D.GameTime;
 
         float incomeFactorPerFrame =
@@ -149,6 +155,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeZapDamage += ZapDamageManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeMoneyMaker += MoneyMakerManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeDaggerMaster += DaggerMasterManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeNecroNinja += NecroNinjaManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -162,6 +169,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += ZapDamageManager.PassiveIncome();
         fullSum += MoneyMakerManager.PassiveIncome();
         fullSum += DaggerMasterManager.PassiveIncome();
+        fullSum += NecroNinjaManager.PassiveIncome();
         return fullSum;
     }
 
@@ -194,6 +202,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(ZapDamage);
         SetIsVisble(MoneyMaker);
         SetIsVisble(DaggerMaster);
+        SetIsVisble(NecroNinja);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -206,6 +215,7 @@ public class UpgradeManager : MonoBehaviour
         ZapDamageManager.UpdateUi();
         MoneyMakerManager.UpdateUi();
         DaggerMasterManager.UpdateUi();
+        NecroNinjaManager.UpdateUi();
     }
 
     void OnItemBought()
@@ -368,6 +378,20 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyNecroNinja()
+    {
+        NecroNinjaManager.OnBuy();
+        NecroNinja.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyNecroNinjaX2()
+    {
+        NecroNinjaManager.OnBuyX2();
+        NecroNinja.SetPopupText();
+        OnItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -381,6 +405,7 @@ public class UpgradeManager : MonoBehaviour
         ZapDamageManager.UpdatePlayerUpgrades();
         MoneyMakerManager.UpdatePlayerUpgrades();
         DaggerMasterManager.UpdatePlayerUpgrades();
+        NecroNinjaManager.UpdatePlayerUpgrades();
     }
 
     private void Awake()

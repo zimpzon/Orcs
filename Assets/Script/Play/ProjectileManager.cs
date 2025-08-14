@@ -54,6 +54,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             RotationSpeedWhenStuck = 0.0f;
             CollisionSound = null;
             StickToTarget = false;
+            StickyNextEnemySeek = 0;
             StickyMaxTotalDamage = 0;
             StickyDamageTimeNext = 0;
             StickyDamageCd = 0;
@@ -99,6 +100,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public bool JumpToNearbyTarget;
         public double JumpDamageMul;
         public bool StickToTarget;
+        public float StickyNextEnemySeek;
         public float StickyDamageCd;
         public float StickyDamageTimeNext;
         public float StickyDamageSimulateCd;
@@ -241,7 +243,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
                 p.Position += movement;
 
-                if (p.StickToTarget && p.CurrentTarget != null)
+                if (p.StickToTarget && p.CurrentTarget is not null)
                 {
                     if (p.CurrentTarget.Hp <= 0)
                     {
@@ -352,6 +354,20 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 p.Direction = Vector3.Reflect(p.Direction, Vector3.up);
                             else
                                 p.Direction = Vector3.Reflect(p.Direction, Vector3.right);
+                        }
+                    }
+                    else if (p.StickToTarget)
+                    {
+                        if (PlayerUpgrades.Data.NecromancerAggressiveSkulls && G.D.GameTime > p.StickyNextEnemySeek)
+                        {
+                            p.StickyNextEnemySeek = G.D.GameTime + 0.1f;
+
+                            // Moving around and not close to an enemy. Move towards any close enemy.
+                            var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 3.0f);
+
+                            bool hasNearbyEnemy = closestEnemy != null;
+                            if (hasNearbyEnemy)
+                                p.Direction = (closestEnemy.transform.position - p.Position).normalized;
                         }
                     }
                 }

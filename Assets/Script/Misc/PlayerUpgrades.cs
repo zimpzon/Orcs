@@ -59,6 +59,7 @@ public class UpgradeData
 
     // Necromancer
     public bool NecromancerEnabled = false;
+    public bool NecromancerAggressiveSkulls = false;
     public double NecromancerEffectiveDamage = 1;
 
     // weapons

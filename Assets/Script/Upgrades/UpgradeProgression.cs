@@ -24,7 +24,8 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_Hoarder =                   2_100_000_000;
         public static Decimal256 InitialPrice_ZapDamage =                20_500_000_000;
         public static Decimal256 InitialPrice_MoneyMaker =              210_000_000_000;
-        public static Decimal256 InitialPrice_DaggerMaster =          2_200_000_000_000;
+        public static Decimal256 InitialPrice_DaggerMaster =          1_900_000_000_000;
+        public static Decimal256 InitialPrice_NecroNinja =           14_100_000_000_000;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -40,6 +41,7 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_ZapDamage_X2 = InitialPrice_ZapDamage * 10;
         public static Decimal256 InitialPrice_MoneyMaker_X2 = InitialPrice_MoneyMaker * 10;
         public static Decimal256 InitialPrice_DaggerMaster_X2 = InitialPrice_DaggerMaster * 10;
+        public static Decimal256 InitialPrice_NecroNinja_X2 = InitialPrice_NecroNinja * 10;
 
         public static Decimal256 BaseIncome_Clickdamage = 0.2;
         public static Decimal256 BaseIncome_DaggerDamage = 2;
@@ -52,6 +54,7 @@ namespace Assets.Script.Upgrades
         public static Decimal256 BaseIncome_ZapDamage = 255_000;
         public static Decimal256 BaseIncome_MoneyMaker = 1_500_000;
         public static Decimal256 BaseIncome_DaggerMaster = 10_000_000;
+        public static Decimal256 BaseIncome_NecroNinja = 62_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {
