@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     public HpBarScript HpBarScript;
     public GameModeEnum GameMode;
 
+    public Button ButtonQuit;
     public ParticleSystem FlyingBlood;
     public ParticleSystem BloodDrops;
     public ParticleSystem FloorBlood;
@@ -925,8 +926,17 @@ public class GameManager : MonoBehaviour
 
     bool _firstSaveGameLoadComplete = false;
 
+    public void OnQuit()
+    {
+        SaveGame.Save();
+        Application.Quit();
+    }
+
     void Awake()
     {
+        bool showQuitButton = Application.platform != RuntimePlatform.WebGLPlayer;
+        ButtonQuit.gameObject.SetActive(showQuitButton);
+
         if (GetPlayFabStats().Count > 25)
             throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
 
