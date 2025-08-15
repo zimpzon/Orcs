@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     // 9: rebirth can be enabled
     // 10: import/export
     // 11: Rebirth released
-    public const int MinorVersion = 11;
+    public const int MinorVersion = 12;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -308,8 +308,9 @@ public class GameManager : MonoBehaviour
     IEnumerator GameStateCo()
     {
         GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl</color>\n\n" +
+            "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#c0c0c0>" +
+            " - added another upgrade tier\n" +
             " - added new upgrade tier\n" +
             " - added new enemy");
 

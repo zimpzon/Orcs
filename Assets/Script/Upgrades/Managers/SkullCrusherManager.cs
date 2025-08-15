@@ -4,21 +4,21 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class MoneyMakerManager
+    public static class SkullCrusherManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelMoneyMaker;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeMoneyMaker;
+            long level = SaveGame.Members.LevelSkullCrusher;
+            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeSkullCrusher;
             Decimal256 baseIncome = BaseIncome();
             Decimal256 totalIncome = PassiveIncome();
-            long currentValue = (long)(ValueForLevel(level) * 100.0);
-            long nextValue = (long)(ValueForLevel(level + 1) * 100.0);
+            long currentIncrease = (long)Math.Round((ValueForLevel(level) - 1.0) * 100.0);
+            long nextIncrease = (long)Math.Round((ValueForLevel(level + 1) - 1.0) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
-                SaveGame.Members.LevelMoneyMaker,
-                SaveGame.Members.LevelMoneyMakerX2,
-                UpgradeProgression.InitialPrice_MoneyMaker_X2,
+                SaveGame.Members.LevelSkullCrusher,
+                SaveGame.Members.LevelSkullCrusherX2,
+                UpgradeProgression.InitialPrice_SkullCrusher_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
                 out Decimal256 priceX2,
@@ -29,8 +29,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Necromancer</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated skulls biting for Dagger damage.");
+            sb.AppendLine("<size=+4><b><color=yellow>Skull Crusher</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Skulls crush their target for more damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
@@ -43,36 +43,34 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
             sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format256.Format(priceX2)}");
             sb.AppendLine("");
-
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Necromancer Dagger damage: <color=COLOR-ARENA>{currentValue}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(nextValue.ToString())}%</color>");
-            sb.AppendLine("");
-            sb.AppendLine($"<color=#dddddd>Total damage: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalDamageNecromancer)}</color>");
+            sb.AppendLine($"<color=#dddddd>Skull damage increase: <color=COLOR-ARENA>{Format256.Format(currentIncrease)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextIncrease)}%</color>");
+
             return sb.ToString();
         }
 
         private static double ValueForLevel(long level)
-            => 1 + 0.25 * (level - 1);
+            => 1 + 0.2 * level;
 
         private static Decimal256 BaseIncome()
         {
-            Decimal256 baseIncome = UpgradeProgression.BaseIncome_MoneyMaker;
+            Decimal256 baseIncome = UpgradeProgression.BaseIncome_SkullCrusher;
 
             // Apply global modifiers
             baseIncome *= PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
 
             // Apply X2 bonuses
-            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelMoneyMakerX2);
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelSkullCrusherX2);
             return baseIncome;
         }
 
         public static Decimal256 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelMoneyMaker;
+            => BaseIncome() * SaveGame.Members.LevelSkullCrusher;
 
         public static Decimal256 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_MoneyMaker * Math.Pow(1.15, SaveGame.Members.LevelMoneyMaker);
+            return UpgradeProgression.InitialPrice_SkullCrusher * Math.Pow(1.15, SaveGame.Members.LevelSkullCrusher);
         }
 
         public static void UpdateAll()
@@ -83,9 +81,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.NecromancerEnabled = SaveGame.Members.LevelMoneyMaker > 0;
-            PlayerUpgrades.Data.NecromancerBaseDamage =
-                PlayerUpgrades.Data.MagicMissileEffectiveDamage * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
+            PlayerUpgrades.Data.NecromancerSkullCrusherMultiplier = ValueForLevel(SaveGame.Members.LevelSkullCrusher);
         }
 
         public static void OnBuy()
@@ -95,17 +91,17 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelMoneyMaker++;
+            SaveGame.Members.LevelSkullCrusher++;
         }
 
         public static void OnBuyX2()
         {
-            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_MoneyMaker_X2, SaveGame.Members.LevelMoneyMakerX2 + 1);
+            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_SkullCrusher_X2, SaveGame.Members.LevelSkullCrusherX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelMoneyMakerX2++;
+            SaveGame.Members.LevelSkullCrusherX2++;
         }
 
         public static void UpdateUi()
@@ -113,11 +109,11 @@ namespace Assets.Script.Upgrades
             Decimal256 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
-                SaveGame.Members.LevelMoneyMaker,
-                SaveGame.Members.LevelMoneyMakerX2,
-                UpgradeProgression.InitialPrice_MoneyMaker_X2);
+                SaveGame.Members.LevelSkullCrusher,
+                SaveGame.Members.LevelSkullCrusherX2,
+                UpgradeProgression.InitialPrice_SkullCrusher_X2);
 
-            UpgradeManager.Instance.MoneyMaker.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelMoneyMaker);
+            UpgradeManager.Instance.SkullCrusher.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelSkullCrusher);
         }
     }
 }

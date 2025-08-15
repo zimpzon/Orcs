@@ -60,7 +60,9 @@ public class UpgradeData
     // Necromancer
     public bool NecromancerEnabled = false;
     public bool NecromancerAggressiveSkulls = false;
-    public double NecromancerEffectiveDamage = 1;
+    public double NecromancerBaseDamage = 1;
+    public double NecromancerSkullCrusherMultiplier = 1;
+    public double NecromancerEffectiveDamage => NecromancerBaseDamage * NecromancerSkullCrusherMultiplier;
 
     // weapons
     public double MagicMissileBaseDamage = 3.0f;
