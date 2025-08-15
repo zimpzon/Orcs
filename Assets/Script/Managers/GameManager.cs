@@ -1264,6 +1264,7 @@ public class GameManager : MonoBehaviour
             { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
             { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
             { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
+            { "level_skull_crusher", (int)SaveGame.Members.LevelSkullCrusher},
         };
         return dic;
     }
