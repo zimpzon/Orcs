@@ -65,9 +65,26 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            // 5, 15, 45, 95, 165, 255, 365, 495, 645, 815, 1005, 1215, 1445, 1695, 1965, 2255, 2565, 2895, 3245, 3615B
-            Decimal256 xp = 5 * OneBillion * (1 + 2 * (level - 1) * (level - 1));
-            return xp;
+            // 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B, 1261.455B, 1586.641B,
+            // 2469.287B, 4188.125B, 7021.885B, 11249.297B, 17149.092B, 25000B.
+
+            long n = level - 1;
+
+            if (level <= 12)
+            {
+                // Original quadratic curve (keeps first 12 levels unchanged)
+                return 5 * OneBillion * (1 + 2 * n * n);
+            }
+            else
+            {
+                // Steeper cubic growth after level 12
+                // Match value at level 12 (1215) and hit ~25000 at level 20
+                // B = (25000 - 1215) / (8^3) = 46.455078125
+                Decimal256 baseXp = 1215 * OneBillion;
+                long d = level - 12;
+                Decimal256 extraXp = 46.455078125m * OneBillion * d * d * d;
+                return baseXp + extraXp;
+            }
         }
 
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
