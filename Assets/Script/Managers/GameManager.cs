@@ -27,7 +27,9 @@ public class GameManager : MonoBehaviour
     // 9: rebirth can be enabled
     // 10: import/export
     // 11: Rebirth released
-    public const int MinorVersion = 12;
+    // 12: new tiers
+    // 13: new colors
+    public const int MinorVersion = 13;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -309,10 +311,9 @@ public class GameManager : MonoBehaviour
     {
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
-            "<size=-2>Recent updates:\n<size=-3><color=#e0e0e0>" +
-            " - added another upgrade tier\n" +
-            " - added new upgrade tier\n" +
-            " - added new enemy");
+            "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added new color theme\n" +
+            " - added new upgrade tier");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -724,7 +725,7 @@ public class GameManager : MonoBehaviour
 
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
-                    $"Dagger throws: +<color=yellow>{Format256.Format(knifeThrownBonus)}</color>G",
+                    $"Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
                     Color.white,
                     speed: 0.05f,
                     timeToLive: 5.0f,
@@ -745,7 +746,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<color=yellow>{Format256.Format(damageDone)}</color> dam in <color=yellow>{secondsSpent}</color> sec (<color=yellow>{Format256.Format(dps)}</color> DPS), +<color=yellow>{Format256.Format(goldWon)}</color>G",
+            $"<color=#f2de05>{Format256.Format(damageDone)}</color> dam in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> DPS), +<color=#f2de05>{Format256.Format(goldWon)}</color>G",
             Color.white,
             speed: 0.05f,
             timeToLive: 5.0f,
