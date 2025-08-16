@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.54549456, g: 0.7176471, b: 0.5045059, a: 1}
+  m_Color: {r: 0.8745098, g: 0.5294118, b: 0.28627452, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -373,8 +373,8 @@ MonoBehaviour:
   PriceLabel: {fileID: 8735675063525337174}
   LevelLabel: {fileID: 615192009212399493}
   HighlightColor: {r: 0.821, g: 0.74214685, b: 0.58444065, a: 1}
-  CanAffordColor: {r: 0.54509807, g: 0.7176471, b: 0.5058824, a: 1}
-  CannotAffordColor: {r: 0.7176471, g: 0.49114662, b: 0.44996473, a: 1}
+  CanAffordColor: {r: 0.5529412, g: 0.74509805, b: 0.29803923, a: 1}
+  CannotAffordColor: {r: 0.8745098, g: 0.5294118, b: 0.28627452, a: 1}
 --- !u!114 &3704979357923190176
 MonoBehaviour:
   m_ObjectHideFlags: 0

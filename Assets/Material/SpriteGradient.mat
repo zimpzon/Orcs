@@ -66,8 +66,8 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _AnimScale: 1.5
-    - _AnimSpeed: 0.25
+    - _AnimScale: 1
+    - _AnimSpeed: 2
     - _BumpScale: 1
     - _ColorMask: 11.28
     - _Cutoff: 0.5
@@ -81,7 +81,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 1000
+    - _Scale: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -94,8 +94,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorA: {r: 0.22320911, g: 0.31145453, b: 0.571, a: 1}
-    - _ColorB: {r: 0.17936471, g: 0.23072632, b: 0.3882353, a: 1}
+    - _ColorA: {r: 0.20799999, g: 0.18991303, b: 0.17363478, a: 1}
+    - _ColorB: {r: 0.269, g: 0.24117242, b: 0.22262068, a: 1}
     - _ColorBottom: {r: 0.9748427, g: 0.56035167, b: 0, a: 1}
     - _ColorTop: {r: 0.29803923, g: 0.36078432, b: 0.5529412, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

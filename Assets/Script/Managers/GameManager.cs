@@ -309,7 +309,7 @@ public class GameManager : MonoBehaviour
     {
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
-            "<size=-2>Recent updates:\n<size=-3><color=#c0c0c0>" +
+            "<size=-2>Recent updates:\n<size=-3><color=#e0e0e0>" +
             " - added another upgrade tier\n" +
             " - added new upgrade tier\n" +
             " - added new enemy");
