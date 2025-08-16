@@ -42,7 +42,8 @@ public class AscendDecisionScript : MonoBehaviour
 
                 GameManager.Instance.ResetAllProgress(ascend: true);
 
-                string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} DIAMOND(S)";
+                string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
+                string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
                 GameCanvasScript.Instance.ShowPopup(msg);
             }
             else

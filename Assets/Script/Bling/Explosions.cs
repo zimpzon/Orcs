@@ -28,7 +28,10 @@ public static class Explosions
             var push = dir * force;
             enemy.AddForce(push);
             enemy.SetSlowmotion();
-            GameManager.Instance.DamageEnemy(enemy, damage, push.normalized, forceModifier: 0.01f, damageSource: damageSource);
+            if (damage > 0.01)
+            {
+                GameManager.Instance.DamageEnemy(enemy, damage, push.normalized, forceModifier: 0.01f, damageSource: damageSource);
+            }
         }
     }
 
