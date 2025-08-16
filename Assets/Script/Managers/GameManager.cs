@@ -29,7 +29,8 @@ public class GameManager : MonoBehaviour
     // 11: Rebirth released
     // 12: new tiers
     // 13: new colors
-    public const int MinorVersion = 13;
+    // 13: skins
+    public const int MinorVersion = 14;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -312,8 +313,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added new color theme\n" +
-            " - added new upgrade tier");
+            " - added unlockable skins\n" +
+            " - added new color theme");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1250,6 +1251,7 @@ public class GameManager : MonoBehaviour
             { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
             { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
+            { "current_skin", (int)SaveGame.Members.CurrentSkin },
             // 12 below this
 
             // removed zap to make room for others

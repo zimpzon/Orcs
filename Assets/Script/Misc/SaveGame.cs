@@ -118,6 +118,7 @@ public class SaveGameMembers
     // Game
     public long ArenaLevel = 1;
     public Decimal256 Money = 40;
+    public int CurrentSkin = 0;
 
     public string ToJson()
     {

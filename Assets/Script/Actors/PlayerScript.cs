@@ -349,7 +349,11 @@ public class PlayerScript : MonoBehaviour
         bool isRunning = isMoving_;
 
         Sprite[] sprites;
-        sprites = isRunning ? RunSprites : IdleSprites;
+        var idleSprites = SelectedSkinScript.Instance?.SelectedSkinAnimation?.IdleSprites ?? IdleSprites;
+        var runSprites = SelectedSkinScript.Instance?.SelectedSkinAnimation?.RunSprites ?? RunSprites;
+
+        sprites = isRunning ? runSprites : idleSprites;
+        //sprites = isRunning ? RunSprites : IdleSprites;
 
         //if (G.D.GameTime > _nextGrendade)
         //{

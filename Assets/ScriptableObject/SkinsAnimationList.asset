@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d49df12b9420945a78ff246e3f98ae, type: 3}
+  m_Name: SkinsAnimationList
+  m_EditorClassIdentifier: 
+  SkinAnimations:
+  - Animation: 1
+    IdleSprites:
+    - {fileID: 1477259288, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: -466936562, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: 423808389, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: 684149785, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    RunSprites:
+    - {fileID: 1472383464, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: 1555126169, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: 268477591, guid: 89392364497182349a92dccc1c074f13, type: 3}
+    - {fileID: 438007535, guid: 89392364497182349a92dccc1c074f13, type: 3}
+  - Animation: 2
+    IdleSprites:
+    - {fileID: 6649318301795521157, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: 2040878754602748034, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: 1057290425064735001, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: -1321852757366336338, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    RunSprites:
+    - {fileID: 1325627990370707371, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: 7515385857745999527, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: 130560200075417291, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+    - {fileID: -6279368262178705226, guid: f8ba2677153bfe24b8af7b6e5d38c43e, type: 3}
+  - Animation: 3
+    IdleSprites:
+    - {fileID: 1452709743893625741, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: 7528093243083118413, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: 4570405124357086229, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: -4068571230001568938, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    RunSprites:
+    - {fileID: 5503338043075946730, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: -2940117089090226684, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: 3345135621711417881, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+    - {fileID: 840837543107371318, guid: 50db72801d63a4542b94ee2a079d0fca, type: 3}
+  - Animation: 4
+    IdleSprites:
+    - {fileID: 7305871122265150635, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: -8950058083026335396, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: -8448983206681072748, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: -9091729011973024176, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    RunSprites:
+    - {fileID: 524544570930428773, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: -3707169140332333343, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: -4555274623280290940, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+    - {fileID: 7883607489562703100, guid: ea49ed220c45c264a8781ffa5b54e348, type: 3}
+  - Animation: 5
+    IdleSprites:
+    - {fileID: 5810963919603111094, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: 2397679790657634653, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: 2936248610823775635, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: -7391321377538325359, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    RunSprites:
+    - {fileID: 5972780516061729329, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: -268366780615945279, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: 5939368336209746639, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
+    - {fileID: 8507597243034814021, guid: fcdc8f50c232a454e9d4d02ff453cb11, type: 3}
