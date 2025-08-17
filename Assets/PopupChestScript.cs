@@ -113,7 +113,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
             FloatingTextSpawner.Instance.Spawn(
                 transform.position + Vector3.up * 2,
-                $"<size=+1>CHEST COLLECTED</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format256.Format(reward)}</color>",
+                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format256.Format(reward)}</color>",
                 Color.white,
                 speed: 0.1f,
                 timeToLive: 5.0f,
