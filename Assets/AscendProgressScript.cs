@@ -44,20 +44,6 @@ public class AscendProgressScript : MonoBehaviour
 
     void Update()
     {
-        // Enable rebirth for now
-        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.LeftShift))
-        {
-            if (!RebirthEnabled)
-            {
-                RebirthEnabled = true;
-                GameCanvasScript.Instance.ShowPopup("Rebirth enabled!");
-            }
-            else
-            {
-                GameCanvasScript.Instance.ShowPopup("Rebirth already enabled");
-            }
-        }
-
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 
@@ -70,6 +56,7 @@ public class AscendProgressScript : MonoBehaviour
         _nextCreditUpdate = G.D.GameTime + CreditUpdateRate;
 
         SaveGame.Members.MonsterCreditsXp_09_08_2025 += GameManager.Instance.TotalPassiveIncome;
+
         Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
         if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevel)
         {

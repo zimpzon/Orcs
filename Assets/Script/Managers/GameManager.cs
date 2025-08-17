@@ -314,8 +314,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added unlockable skins\n" +
-            " - added new color theme");
+            " - added 5 new skins for a total of 10\n" +
+            " - added unlockable skins");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;

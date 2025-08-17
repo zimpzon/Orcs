@@ -117,6 +117,18 @@ MonoBehaviour:
     - {fileID: -4566995808815579277, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
     - {fileID: 6707035365391869561, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
     - {fileID: -6062997074060184964, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: -5940273588708630780, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    RunSprites:
+    - {fileID: -6060375216096452440, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: -5849554204326265323, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: 1035078561336874271, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: 7782823462225615940, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+  - Animation: 0
+    IdleSprites:
+    - {fileID: -4566995808815579277, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: 6707035365391869561, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: -6062997074060184964, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
+    - {fileID: -5940273588708630780, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
     RunSprites:
     - {fileID: -6060375216096452440, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}
     - {fileID: -5849554204326265323, guid: 93dcd237ddc515d48afc062a7f9e4f5e, type: 3}

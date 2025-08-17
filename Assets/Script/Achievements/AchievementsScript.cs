@@ -7,10 +7,15 @@ public enum Achieved
 {
     WitchDoctor75,
     Necromancer75,
-    SkullCrusher1,
+    SkullCrusher5,
     Arena500,
-    Arena1000,
     Rebirth2,
+
+    Arena1000,
+    Rebirth3,
+    Mystery10,
+    Chest25,
+    Diamonds10,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -20,9 +25,13 @@ public class AchievementsScript : MonoBehaviour
         var list = SaveGame.Members.Achieved;
         AchievementChecks.CheckWitchDoctor(list);
         AchievementChecks.CheckNecro(list);
-        AchievementChecks.CheckSkullCrusher(list);
+        AchievementChecks.CheckSkullCrusher5(list);
         AchievementChecks.CheckArena500(list);
         AchievementChecks.CheckArena1000(list);
         AchievementChecks.CheckRebirth2(list);
+        AchievementChecks.CheckRebirth3(list);
+        AchievementChecks.CheckMystery10(list);
+        AchievementChecks.CheckChest25(list);
+        AchievementChecks.CheckDiamonds10(list);
     }
 }

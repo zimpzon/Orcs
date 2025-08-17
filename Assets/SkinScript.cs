@@ -51,6 +51,27 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Arena500), "Monster Earl: Reach Arena level 500");
         }
+
+        else if (animationName == SkinAnimation.BigMouth)
+        {
+            return (list.Contains(Achieved.Arena1000), "Big Mouth Earl: Reach Arena level 1000");
+        }
+        else if (animationName == SkinAnimation.Pirate)
+        {
+            return (list.Contains(Achieved.Chest25), "Pirate Earl: Loot 25 Chests");
+        }
+        else if (animationName == SkinAnimation.Wizard)
+        {
+            return (list.Contains(Achieved.Rebirth3), "Wizard Earl: Rebirth at least three times");
+        }
+        else if (animationName == SkinAnimation.Zombie)
+        {
+            return (list.Contains(Achieved.SkullCrusher5), "Zombie Earl: Reach Skull Crusher level 5");
+        }
+        else if (animationName == SkinAnimation.Wig)
+        {
+            return (list.Contains(Achieved.Diamonds10), "Wig Earl: Have at least 10 diamonds");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

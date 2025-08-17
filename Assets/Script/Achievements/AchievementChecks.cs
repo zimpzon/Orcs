@@ -32,14 +32,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckSkullCrusher(List<Achieved> list)
+        public static void CheckSkullCrusher5(List<Achieved> list)
         {
-            if (list.Contains(Achieved.SkullCrusher1)) return;
+            if (list.Contains(Achieved.SkullCrusher5)) return;
 
-            if (SaveGame.Members.LevelSkullCrusher >= 1)
+            if (SaveGame.Members.LevelSkullCrusher >= 5)
             {
-                list.Add(Achieved.SkullCrusher1);
-                NewAchieved(Achieved.SkullCrusher1);
+                list.Add(Achieved.SkullCrusher5);
+                NewAchieved(Achieved.SkullCrusher5);
             }
         }
 
@@ -73,6 +73,50 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Rebirth2);
                 NewAchieved(Achieved.Rebirth2);
+            }
+        }
+
+        public static void CheckRebirth3(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Rebirth3)) return;
+
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 3)
+            {
+                list.Add(Achieved.Rebirth3);
+                NewAchieved(Achieved.Rebirth3);
+            }
+        }
+
+        public static void CheckMystery10(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Mystery10)) return;
+
+            if (SaveGame.Members.MysteryCollected >= 10)
+            {
+                list.Add(Achieved.Mystery10);
+                NewAchieved(Achieved.Mystery10);
+            }
+        }
+
+        public static void CheckChest25(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Chest25)) return;
+
+            if (SaveGame.Members.ChestsCollected >= 25)
+            {
+                list.Add(Achieved.Chest25);
+                NewAchieved(Achieved.Chest25);
+            }
+        }
+
+        public static void CheckDiamonds10(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds10)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 10)
+            {
+                list.Add(Achieved.Diamonds10);
+                NewAchieved(Achieved.Diamonds10);
             }
         }
     }
