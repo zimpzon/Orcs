@@ -64,11 +64,11 @@ public class AscendDecisionScript : MonoBehaviour
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
-        int diamondBonusPct = (int)(PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier * 100.0f);
+        int diamondBonusPct = (int)Math.Round(PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier * 100.0f);
         string diamondIncomeBonustext = $"(+<color=yellow>{diamondBonusPct}</color>% income)";
 
         TextCurrentDiamonds.text = $"You have <color=yellow>{SaveGame.Members.DiamondCount_09_08_2025}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
-        TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> monster {creditTxt} <sprite=0>";
+        TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
         ButtonAscend.interactable = SaveGame.Members.MonsterCredits_09_08_2025 > 0;

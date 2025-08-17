@@ -82,6 +82,6 @@ public class AscendProgressScript : MonoBehaviour
         ProgressBarImage.fillAmount = t;
 
         float pct = t * 100.0f;
-        TextCredits.text = $"Monster credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3>Next: {pct:#0.0}%";
+        TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3>Next: {pct:#0.0}%";
     }
 }

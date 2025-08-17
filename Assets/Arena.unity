@@ -72134,15 +72134,15 @@ RectTransform:
   m_GameObject: {fileID: 1509302034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1474009091}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -25.5, y: 0}
-  m_SizeDelta: {x: 51, y: 23.3}
+  m_AnchoredPosition: {x: 27, y: -0.32889938}
+  m_SizeDelta: {x: 54, y: 37.1129}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1509302036
 MonoBehaviour:
@@ -72184,7 +72184,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: 17d07975a80c077498113c08775f1998, type: 2}
+  m_spriteAsset: {fileID: 11400000, guid: f5952287b78c20849860ea03c9fd3f12, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -72230,7 +72230,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 10.96, w: 5.69}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -89600,8 +89600,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Upon rebirth, you'll keep your diamonds, monster credits, and rebirth
-    bonuses, but lose everything else. \n\nYou return broke, but stronger than ever!"
+  m_text: "Upon rebirth, you'll keep your diamonds, credit XP, and rebirth bonuses,
+    but lose everything else. \n\nYou return broke, but stronger than ever!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -95949,10 +95949,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Monster credits:  8
+  m_text: 'Credits:  8
 
-    <line-height=250%><size=-2><color=#ccccee>Next:
-    66.66%'
+    <line-height=250%><size=-2><color=#ccccee>Next: 66.66%'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

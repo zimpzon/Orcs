@@ -29,8 +29,9 @@ public class GameManager : MonoBehaviour
     // 11: Rebirth released
     // 12: new tiers
     // 13: new colors
-    // 13: skins
-    public const int MinorVersion = 14;
+    // 14: skins
+    // 15: monster credits much more expensive
+    public const int MinorVersion = 15;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
