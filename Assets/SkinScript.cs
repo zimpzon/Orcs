@@ -29,25 +29,27 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)
     {
+        var list = SaveGame.Members.Achieved;
+
         if (animationName == SkinAnimation.Default)
         {
             return (true, "Good ol' Earl, always there");
         }
         else if (animationName == SkinAnimation.WitchDoctor)
         {
-            return (SaveGame.Members.LevelWitchDoctor >= 75, "Witch Doctor Earl: Have at least 75 Witch Doctor");
+            return (list.Contains(Achieved.WitchDoctor75), "Witch Doctor Earl: Reach Witch Doctor level 75");
         }
         else if (animationName == SkinAnimation.Necromancer)
         {
-            return (SaveGame.Members.LevelSkullCrusher >= 1, "Necromancer Earl: Have at least 1 Skull Crusher");
+            return (list.Contains(Achieved.Necromancer75), "Necromancer Earl: Reach Necromancer level 75");
         }
         else if (animationName == SkinAnimation.Orc)
         {
-            return (SaveGame.Members.TimesAscended_09_08_2025 > 1, "Orc Earl: Rebirth at least twice");
+            return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth at least twice");
         }
         else if (animationName == SkinAnimation.Monster)
         {
-            return (SaveGame.Members.ArenaLevel >= 500, "Monster Earl: Arena level must be 500 or higher");
+            return (list.Contains(Achieved.Arena500), "Monster Earl: Reach Arena level 500");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

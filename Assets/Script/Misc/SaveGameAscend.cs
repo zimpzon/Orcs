@@ -34,6 +34,8 @@
 
         newSave.SaveKillSwitch_CanSave = true;
 
+        newSave.Achieved = oldSave.Achieved;
+
         // Replace old save with new save
         SaveGame.Members = newSave;
         return newSave;

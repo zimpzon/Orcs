@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveGameMembers
@@ -33,8 +34,9 @@ public class SaveGameMembers
     public float VolumeMusic = 0.7f;
     public float VolumeSfx = 1.0f;
 
-    // Stats - versioning until it actually works
     public double EstimatedOnlineSeconds2 = 0;
+
+    public List<Achieved> Achieved = new List<Achieved>();
 
     // ---------------------- Deleted after ascend ----------------------
 
