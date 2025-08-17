@@ -49,7 +49,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Monster)
         {
-            return (list.Contains(Achieved.Arena500), "Monster Earl: Reach Arena level 500");
+            return (list.Contains(Achieved.Diamonds10), "Monster Earl: Have at least 10 diamonds");
         }
 
         else if (animationName == SkinAnimation.BigMouth)
@@ -70,7 +70,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Wig)
         {
-            return (list.Contains(Achieved.Diamonds10), "Wig Earl: Have at least 10 diamonds");
+            return (list.Contains(Achieved.Arena500), "Wig Earl: Reach Arena level 500");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

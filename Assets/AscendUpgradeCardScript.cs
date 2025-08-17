@@ -95,6 +95,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             throw new NotImplementedException();
 
         SaveGame.Members.DiamondCount_09_08_2025 -= Cost;
+        SaveGame.Save();
         AscendDecisionScript.Instance.UpdateUi();
     }
 }

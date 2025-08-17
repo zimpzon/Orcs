@@ -1306,15 +1306,15 @@ public class GameManager : MonoBehaviour
 
         // CHEATS
 
+        // C is taken
+        //if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
+        //{
+        //    Playfab.LoginRes.SessionTicket = null;
+        //    _nextSendStats = 0;
+        //    TrySendStats();
+        //}
 
         if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
-        {
-            Playfab.LoginRes.SessionTicket = null;
-            _nextSendStats = 0;
-            TrySendStats();
-        }
-
-        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.DiamondCount_09_08_2025 = 0;
             SaveGame.Members.MonsterCredits_09_08_2025 += 3;
