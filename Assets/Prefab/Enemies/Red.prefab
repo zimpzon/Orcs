@@ -248,7 +248,7 @@ MonoBehaviour:
   CanBeFrozen: 1
   CanBePoisened: 1
   Speed: 1.3
-  AvoidCrowds: 0
+  AvoidCrowds: 1
   CrowdScanRadius: 1
   CrowdMaxNearby: 3
   CrowdOutOfTheWayRange: 2.5
