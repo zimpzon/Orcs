@@ -13,7 +13,7 @@ public enum ActorForcedTargetType { Absolute, Direction };
 public enum ActorTypeEnum
 {
     // REMEMBER to update names just below
-    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail, Pig, White, Fez, Helmet, Swede
+    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail, Pig, White, Fez, Helmet, Swede, PigHat,
 };
 
 public class ActorBase : MonoBehaviour
@@ -33,6 +33,7 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.Fez, "name" },
         { ActorTypeEnum.Helmet, "name" },
         { ActorTypeEnum.Swede, "name" },
+        { ActorTypeEnum.PigHat, "name" },
     };
 
     const float PaintBallTickTime = 1.0f;

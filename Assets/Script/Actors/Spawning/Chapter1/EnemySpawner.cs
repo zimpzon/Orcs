@@ -31,6 +31,7 @@ public static class EnemySpawner
         long hpFez = 20_000_000 * HpScale;
         long hpHelmet = 50_000_000 * HpScale;
         long hpSwede = 100_000_000 * HpScale;
+        long hpPigHat = 200_000_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
@@ -44,9 +45,9 @@ public static class EnemySpawner
         bool allowHelmet = hpTargetForRound >= hpHelmet;
         bool allowSwede = hpTargetForRound >= hpSwede;
 
-        //var fez = SpawnUtil.Single(ActorTypeEnum.Swede, Vector2.zero).First();
-        //fez.BaseHp = hpFez;
-        //yield return fez;
+        //var tester = SpawnUtil.Single(ActorTypeEnum.PigHat, Vector2.zero).First();
+        //tester.BaseHp = hpFez;
+        //yield return tester;
 
         List<ActorBase> enemies = new();
         int safety = 100;

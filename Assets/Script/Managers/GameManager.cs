@@ -1351,7 +1351,7 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.Money += 100_000_000_000_000;
         }
 
-        if (G.GetCheatKeyDown(KeyCode.N) && G.GetCheatKey(KeyCode.RightControl))
+        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))
         {
             SaveGame.Members.Money = 0;
         }
