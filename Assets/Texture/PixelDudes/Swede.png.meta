@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,12 +72,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,199 +137,199 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: swede_0
+      name: Swede_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 47
-        width: 13
-        height: 20
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ae64aa0e4cf2bb250800000000000000
-      internalID: 5961411054384334570
+      spriteID: d07bc2b35eabc984782859e5a471aea4
+      internalID: 1028895189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swede_1
+      name: Swede_1
       rect:
         serializedVersion: 2
-        x: 2
-        y: 23
-        width: 13
-        height: 20
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 12794991798853810800000000000000
-      internalID: 1744450613226542881
+      spriteID: 276ecceccb5c60441aa95a4f51bb9e49
+      internalID: -258282170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swede_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 23
-        width: 13
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 30f981310ee12af90800000000000000
-      internalID: -6943953727709995261
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swede_3
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 23
-        width: 13
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f649e01141c6c1780800000000000000
-      internalID: -8710968745800067985
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swede_4
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 23
-        width: 13
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3f23e253d2af02b20800000000000000
-      internalID: 3107758814958334707
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swede_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 14
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6ed4047b39f8d51e0800000000000000
-      internalID: -2207450377744265754
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: swede_6
+      name: Swede_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
-        width: 15
-        height: 20
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ffd034a3e04b0b490800000000000000
-      internalID: -7732482586995126785
+      spriteID: 694b1c98d544dd7448145f6fda73c6ab
+      internalID: 1122548906
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swede_7
+      name: Swede_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93d29466b8a323246aa93f39d548adeb
+      internalID: 1961612973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swede_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 075a26f4fb08a1d46acaf39967eb3cff
+      internalID: -325423529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swede_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54d50c3b785ea774baf6efe7260e2fb4
+      internalID: -1309895741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swede_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3528a69657325847bc694a694d86e3e
+      internalID: 1142312407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Swede_7
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 15
-        height: 19
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9b1258211bf73b000800000000000000
-      internalID: 50524419327861177
+      spriteID: bca9c0395d9527d49b3d7e5248f5837e
+      internalID: -1153379861
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: swede_8
+      name: Swede_8
       rect:
         serializedVersion: 2
-        x: 50
+        x: 48
         y: 0
-        width: 13
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: fc51c4d8c9f39daf0800000000000000
-      internalID: -371195552663333425
+      spriteID: c75540a01e009e544b8b617b70cfc10e
+      internalID: -774121122
       vertices: []
       indices: 
       edges: []
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 1ecb31c47ab248b45bfdcba2f045af7c
     internalID: 0
     vertices: []
     indices: 
@@ -348,15 +348,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      swede_0: 5961411054384334570
-      swede_1: 1744450613226542881
-      swede_2: -6943953727709995261
-      swede_3: -8710968745800067985
-      swede_4: 3107758814958334707
-      swede_5: -2207450377744265754
-      swede_6: -7732482586995126785
-      swede_7: 50524419327861177
-      swede_8: -371195552663333425
+      Swede_0: 1028895189
+      Swede_1: -258282170
+      Swede_2: 1122548906
+      Swede_3: 1961612973
+      Swede_4: -325423529
+      Swede_5: -1309895741
+      Swede_6: 1142312407
+      Swede_7: -1153379861
+      Swede_8: -774121122
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
