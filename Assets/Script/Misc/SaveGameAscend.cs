@@ -29,12 +29,17 @@
         newSave.VolumeMusic = oldSave.VolumeMusic;
         newSave.VolumeSfx = oldSave.VolumeSfx;
 
+        newSave.ShowFloatingDamageNumbers = oldSave.ShowFloatingDamageNumbers;
+        newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
+
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
-
         newSave.SaveKillSwitch_CanSave = true;
 
         newSave.Achieved = oldSave.Achieved;
+        newSave.BeastsSeen = oldSave.BeastsSeen;
+
+        // Progress
 
         // Replace old save with new save
         SaveGame.Members = newSave;

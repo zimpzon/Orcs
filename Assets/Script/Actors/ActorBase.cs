@@ -3,19 +3,37 @@ using Assets.Script.Enemies;
 using Assets.Script.Misc;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
-public enum ActorTypeEnum
-{
-    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail, Pig, White, Fez, Helmet,
-};
 
 public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard, Necromancer };
 
 public enum ActorForcedTargetType { Absolute, Direction };
 
+public enum ActorTypeEnum
+{
+    // REMEMBER to update names just below
+    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail, Pig, White, Fez, Helmet,
+};
+
 public class ActorBase : MonoBehaviour
 {
+    public static readonly Dictionary<ActorTypeEnum, string> Names = new()
+    {
+        { ActorTypeEnum.OgreLarge, "name" },
+        { ActorTypeEnum.OgreSmall, "name" },
+        { ActorTypeEnum.BatWhite, "name" },
+        { ActorTypeEnum.HeroChaser, "name" },
+        { ActorTypeEnum.Raven, "name" },
+        { ActorTypeEnum.Red, "name" },
+        { ActorTypeEnum.Green, "name" },
+        { ActorTypeEnum.Pigtail, "name" },
+        { ActorTypeEnum.Pig, "name" },
+        { ActorTypeEnum.White, "name" },
+        { ActorTypeEnum.Fez, "name" },
+        { ActorTypeEnum.Helmet, "name" },
+    };
+
     const float PaintBallTickTime = 1.0f;
 
     [NonSerialized] public bool AlwaysLookAtPlayer;

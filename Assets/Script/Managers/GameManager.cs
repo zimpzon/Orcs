@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     // 14: skins
     // 15: monster credits much more expensive
     // 16: new enemies
-    public const int MinorVersion = 16;
+    // 17: toggle damage + gold numbers
+    // 18: added bestiary
+    public const int MinorVersion = 18;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -309,11 +311,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdateBeastsSeen(List<ActorBase> actors)
+    {
+        foreach (var actor in actors)
+        {
+            if (!SaveGame.Members.BeastsSeen.Contains(actor.ActorType))
+                SaveGame.Members.BeastsSeen.Add(actor.ActorType);
+        }
+    }
+
     // main loop
     IEnumerator GameStateCo()
     {
         GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n\n" +
+            "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
             " - added 2 new enemies\n" +
             " - added 5 new skins for a total of 10");
@@ -349,6 +360,8 @@ public class GameManager : MonoBehaviour
             ShowSecondsLeft(RoundTimeSeconds);
 
             var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
+            UpdateBeastsSeen(enemies);
+
             long totalHitpoints = enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
@@ -556,14 +569,17 @@ public class GameManager : MonoBehaviour
         Vector2 playerPos = G.D.PlayerPos;
         Vector2 textPos = playerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle();
 
-        Decimal256 displayMoney = moneyAdded;
-        FloatingTextSpawner.Instance.Spawn(
-            textPos,
-            $"${Format256.Format(displayMoney)}",
-            ColorGoldCollect,
-            speed: 2.0f,
-            timeToLive: 1.0f,
-            fontStyle: TMPro.FontStyles.Bold);
+        if (SaveGame.Members.ShowFloatingGoldNumbers)
+        {
+            Decimal256 displayMoney = moneyAdded;
+            FloatingTextSpawner.Instance.Spawn(
+                textPos,
+                $"${Format256.Format(displayMoney)}",
+                ColorGoldCollect,
+                speed: 2.0f,
+                timeToLive: 1.0f,
+                fontStyle: TMPro.FontStyles.Bold);
+        }
     }
 
     public void AddMoney(Decimal256 amount)
@@ -845,14 +861,17 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.DamageDone += intAmount;
 
         // Diplay the full damager number, without truncating to enemy health.
-        Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
-        FloatingTextSpawner.Instance.Spawn(
-            (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
-            $"-{Format64.Format(intAmount)}",
-            ColorDamageNumbers,
-            speed: 0.75f,
-            timeToLive: 1.0f,
-            fontStyle: TMPro.FontStyles.Bold);
+        if (SaveGame.Members.ShowFloatingDamageNumbers)
+        {
+            Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
+            FloatingTextSpawner.Instance.Spawn(
+                (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
+                $"-{Format64.Format(intAmount)}",
+                ColorDamageNumbers,
+                speed: 0.75f,
+                timeToLive: 1.0f,
+                fontStyle: TMPro.FontStyles.Bold);
+        }
 
         // Now truncate to enemy health.
         if (intAmount > enemy.Hp)

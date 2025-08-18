@@ -19,17 +19,18 @@ public class UpgradeData
     public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
 
     // passive income
-    // X10 * ascend bonuses * (1 + percent bonuses) * (1 + diamond bonuses)
     public float PassiveIncomeTempMultiplier = 1.0f;
     public float PassiveIncomeAscendMultiplier = 1.0f;
 
     public float PassiveIncomeDiamondMultiplier = 0.0f;
     public float PassiveIncomePercentageBonuses = 0.0f;
+    public float PassiveIncomeBestiaryBonuses = 0.0f;
 
     public float PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
         PassiveIncomeAscendMultiplier *
         (1.0f + PassiveIncomePercentageBonuses) *
+        (1.0f + PassiveIncomeBestiaryBonuses) *
         (1.0f + PassiveIncomeDiamondMultiplier);
 
     // gold

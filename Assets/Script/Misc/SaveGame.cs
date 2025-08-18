@@ -34,9 +34,14 @@ public class SaveGameMembers
     public float VolumeMusic = 0.7f;
     public float VolumeSfx = 1.0f;
 
-    public double EstimatedOnlineSeconds2 = 0;
+    public bool ShowFloatingDamageNumbers = true;
+    public bool ShowFloatingGoldNumbers = true;
 
+    // Progress
+    public List<ActorTypeEnum> BeastsSeen = new List<ActorTypeEnum>();
     public List<Achieved> Achieved = new List<Achieved>();
+
+    public double EstimatedOnlineSeconds2 = 0;
 
     // ---------------------- Deleted after ascend ----------------------
 

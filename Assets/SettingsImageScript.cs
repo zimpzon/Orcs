@@ -9,6 +9,9 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Button ButtonDeleteSave;
     public TextMeshProUGUI TextButtonDeleteSave;
     public TMP_InputField TextImportInputField;
+    public Toggle ShowFloatingDamageToggle;
+    public Toggle ShowFloatingGoldToggle;
+
     private int _clickCount;
 
     void SetPopupEnabled(bool enabled)
@@ -20,6 +23,9 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         TextImportInputField.text = SaveGame.GetObfuscatedSaveGame();
 
         Popup.SetActive(enabled);
+
+        ShowFloatingDamageToggle.isOn = SaveGame.Members.ShowFloatingDamageNumbers;
+        ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
     }
 
     //public void OnExportSaveClick()
@@ -32,6 +38,18 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     {
         if (SaveGame.ImportObfuscatedSaveGame(TextImportInputField.text))
             GameCanvasScript.Instance.ShowPopup("Save game was imported");
+    }
+
+    public void ShowFloatingDamageNumbers(bool show)
+    {
+        SaveGame.Members.ShowFloatingDamageNumbers = ShowFloatingDamageToggle.isOn;
+        SaveGame.Save();
+    }
+
+    public void ShowFloatingGoldNumbers(bool show)
+    {
+        SaveGame.Members.ShowFloatingGoldNumbers = ShowFloatingGoldToggle.isOn;
+        SaveGame.Save();
     }
 
     public void OnBackClick()
