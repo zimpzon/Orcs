@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     // 16: new enemies
     // 17: toggle damage + gold numbers
     // 18: added bestiary
-    public const int MinorVersion = 18;
+    // 19: bonus income for unlocked beasts
+    public const int MinorVersion = 19;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -326,8 +327,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added 2 new enemies\n" +
-            " - added 5 new skins for a total of 10");
+            " - new bonus income for unlocked beasts\n" +
+            " - added 2 new enemies\n");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
