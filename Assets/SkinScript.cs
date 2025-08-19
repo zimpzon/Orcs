@@ -37,11 +37,11 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WitchDoctor)
         {
-            return (list.Contains(Achieved.WitchDoctor75), "Witch Doctor Earl: Reach Witch Doctor level 75");
+            return (list.Contains(Achieved.WitchDoctor25), "Witch Doctor Earl: Reach Witch Doctor level 25");
         }
         else if (animationName == SkinAnimation.Necromancer)
         {
-            return (list.Contains(Achieved.Necromancer75), "Necromancer Earl: Reach Necromancer level 75");
+            return (list.Contains(Achieved.Necromancer25), "Necromancer Earl: Reach Necromancer level 25");
         }
         else if (animationName == SkinAnimation.Orc)
         {
@@ -51,7 +51,6 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Diamonds10), "Monster Earl: Have at least 10 diamonds");
         }
-
         else if (animationName == SkinAnimation.BigMouth)
         {
             return (list.Contains(Achieved.Arena1000), "Big Mouth Earl: Reach Arena level 1000");

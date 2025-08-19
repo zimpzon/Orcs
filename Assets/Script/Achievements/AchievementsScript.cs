@@ -5,8 +5,8 @@ using UnityEngine;
 [Serializable]
 public enum Achieved
 {
-    WitchDoctor75,
-    Necromancer75,
+    WitchDoctor25,
+    Necromancer25,
     SkullCrusher5,
     Arena500,
     Rebirth2,

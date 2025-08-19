@@ -12,23 +12,23 @@ namespace Assets.Script.Achievements
 
         public static void CheckWitchDoctor(List<Achieved> list)
         {
-            if (list.Contains(Achieved.WitchDoctor75)) return;
+            if (list.Contains(Achieved.WitchDoctor25)) return;
 
-            if (SaveGame.Members.LevelWitchDoctor >= 75)
+            if (SaveGame.Members.LevelWitchDoctor >= 25)
             {
-                list.Add(Achieved.WitchDoctor75);
-                NewAchieved(Achieved.WitchDoctor75);
+                list.Add(Achieved.WitchDoctor25);
+                NewAchieved(Achieved.WitchDoctor25);
             }
         }
 
         public static void CheckNecro(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Necromancer75)) return;
+            if (list.Contains(Achieved.Necromancer25)) return;
 
-            if (SaveGame.Members.LevelMoneyMaker >= 75)
+            if (SaveGame.Members.LevelMoneyMaker >= 25)
             {
-                list.Add(Achieved.Necromancer75);
-                NewAchieved(Achieved.Necromancer75);
+                list.Add(Achieved.Necromancer25);
+                NewAchieved(Achieved.Necromancer25);
             }
         }
 
