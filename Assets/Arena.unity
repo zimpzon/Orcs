@@ -61300,7 +61300,6 @@ MonoBehaviour:
     type: 3}
   Layout: {fileID: 455334205}
   Hovertext: {fileID: 293374239}
-  TextBonus: {fileID: 1092518357}
 --- !u!114 &1261470294
 MonoBehaviour:
   m_ObjectHideFlags: 0

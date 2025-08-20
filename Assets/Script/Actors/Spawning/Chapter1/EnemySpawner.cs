@@ -32,6 +32,7 @@ public static class EnemySpawner
         long hpHelmet = 50_000_000 * HpScale;
         long hpSwede = 100_000_000 * HpScale;
         long hpPigHat = 200_000_000 * HpScale;
+        long hpFreakyWiz = 400_000_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
@@ -44,8 +45,10 @@ public static class EnemySpawner
         bool allowFez = hpTargetForRound >= hpFez;
         bool allowHelmet = hpTargetForRound >= hpHelmet;
         bool allowSwede = hpTargetForRound >= hpSwede;
+        bool allowPigHat = hpTargetForRound >= hpPigHat;
+        bool allowFreakyWiz = hpTargetForRound >= hpFreakyWiz;
 
-        //var tester = SpawnUtil.Single(ActorTypeEnum.PigHat, Vector2.zero).First();
+        //var tester = SpawnUtil.Single(ActorTypeEnum.FreakyWiz, Vector2.zero).First();
         //tester.BaseHp = hpFez;
         //yield return tester;
 
@@ -57,7 +60,29 @@ public static class EnemySpawner
             long remainingHp = hpTargetForRound;
             enemies.Clear();
 
-            // 1. Swede
+            // 1. FreakyWiz
+            long clampedFreakyWiz = 0;
+            if (allowFreakyWiz)
+            {
+                clampedFreakyWiz = Math.Min(remainingHp / hpFreakyWiz, MaxEnemies - totalEnemies);
+                clampedFreakyWiz -= UnityEngine.Random.Range(0, 2);
+                clampedFreakyWiz = Math.Max(0, clampedFreakyWiz);
+                remainingHp -= clampedFreakyWiz * hpFreakyWiz;
+                totalEnemies += clampedFreakyWiz;
+            }
+
+            // 2. PigHat
+            long clampedPigHat = 0;
+            if (allowPigHat)
+            {
+                clampedPigHat = Math.Min(remainingHp / hpPigHat, MaxEnemies - totalEnemies);
+                clampedPigHat -= UnityEngine.Random.Range(0, 2);
+                clampedPigHat = Math.Max(0, clampedPigHat);
+                remainingHp -= clampedPigHat * hpPigHat;
+                totalEnemies += clampedPigHat;
+            }
+
+            // 3. Swede
             long clampedSwede = 0;
             if (allowSwede)
             {
@@ -68,7 +93,7 @@ public static class EnemySpawner
                 totalEnemies += clampedSwede;
             }
 
-            // 2. Helmet
+            // 4. Helmet
             long clampedHelmet = 0;
             if (allowHelmet)
             {
@@ -79,7 +104,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHelmet;
             }
 
-            // 3. Fez
+            // 5. Fez
             long clampedFez = 0;
             if (allowFez)
             {
@@ -90,7 +115,7 @@ public static class EnemySpawner
                 totalEnemies += clampedFez;
             }
 
-            // 4. White
+            // 6. White
             long clampedWhite = 0;
             if (allowWhite)
             {
@@ -101,7 +126,7 @@ public static class EnemySpawner
                 totalEnemies += clampedWhite;
             }
 
-            // 5. Pigtail
+            // 7. Pigtail
             long clampedPigtail = 0;
             if (allowPigtail)
             {
@@ -112,7 +137,7 @@ public static class EnemySpawner
                 totalEnemies += clampedPigtail;
             }
 
-            // 6. Pig
+            // 8. Pig
             long clampedPig = 0;
             if (allowPig)
             {
@@ -123,7 +148,7 @@ public static class EnemySpawner
                 totalEnemies += clampedPig;
             }
 
-            // 7. Red
+            // 9. Red
             long clampedRed = 0;
             if (allowRed)
             {
@@ -134,7 +159,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRed;
             }
 
-            // 8. Ravens
+            // 10. Ravens
             long clampedRaven = 0;
             if (allowRaven)
             {
@@ -145,7 +170,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRaven;
             }
 
-            // 9. Green
+            // 11. Green
             long clampedGreen = 0;
             if (allowGreen)
             {
@@ -156,7 +181,7 @@ public static class EnemySpawner
                 totalEnemies += clampedGreen;
             }
 
-            // 10. Hero Chasers
+            // 12. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
@@ -167,7 +192,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 11. Large Ogres
+            // 13. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
@@ -178,14 +203,14 @@ public static class EnemySpawner
                 totalEnemies += clampedLarge;
             }
 
-            // 12. Small Ogres
+            // 14. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 13. Bats
+            // 15. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
@@ -195,6 +220,20 @@ public static class EnemySpawner
             {
                 clampedBat = 1;
                 remainingHp -= hpBat;
+            }
+
+            // Add FreakyWiz
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.FreakyWiz, (int)clampedFreakyWiz))
+            {
+                actor.BaseHp = hpFreakyWiz;
+                enemies.Add(actor);
+            }
+
+            // Add PigHat
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.PigHat, (int)clampedPigHat))
+            {
+                actor.BaseHp = hpPigHat;
+                enemies.Add(actor);
             }
 
             // Add Swede
@@ -301,6 +340,8 @@ public static class EnemySpawner
                 break;
 
             // Increase HP budgets and retry
+            hpFreakyWiz *= 10;
+            hpPigHat *= 10;
             hpSwede *= 10;
             hpHelmet *= 10;
             hpFez *= 10;
