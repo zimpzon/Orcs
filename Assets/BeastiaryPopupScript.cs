@@ -16,7 +16,6 @@ public class BeastiaryPopupScript : MonoBehaviour
     public GameObject BeastPrefab;
     public GameObject Layout;
     public TextMeshProUGUI Hovertext;
-    public TextMeshProUGUI TextBonus;
     private List<Beast> _beasts = new List<Beast>();
 
     private void Awake()
@@ -49,17 +48,10 @@ public class BeastiaryPopupScript : MonoBehaviour
 
     private void Update()
     {
-        int incomeBonus = 0;
-        int idx = 0;
         foreach(var beast in _beasts)
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beast.Actor.ActorType);
             beast.Icon.color = isUnlocked ? Color.white : Color.black;
-            incomeBonus += isUnlocked ? idx + 1 : 0;
-            idx++;
         }
-        TextBonus.text = $"Bonus: +{incomeBonus}% passive income";
-
-        PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses = incomeBonus * 0.01f;
     }
 }
