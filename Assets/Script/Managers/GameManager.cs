@@ -334,6 +334,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added rebirth mystery bonus card\n" +
             " - different colors for damage numbers\n" +
             " - added names to bestiary\n");
 

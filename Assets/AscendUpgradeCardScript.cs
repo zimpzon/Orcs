@@ -9,6 +9,7 @@ public enum AscendUpgradeCardId
     PassiveIncomeX2_1,
     PassiveIncomeX2_2,
     PassiveIncomeX4_1,
+    FasterMystery,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -23,9 +24,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
     public TextMeshProUGUI ButtonBuyText;
     public TextMeshProUGUI OwnedText;
     public AscendUpgradeCardId CardId = AscendUpgradeCardId.NotSet;
-    public AscendUpgradeCardScript UpgradeCardPassiveX2_1;
-    public AscendUpgradeCardScript UpgradeCardPassiveX2_2;
-    public AscendUpgradeCardScript UpgradeCardPassiveX4_1;
+    //public AscendUpgradeCardScript UpgradeCardPassiveX2_1;
+    //public AscendUpgradeCardScript UpgradeCardPassiveX2_2;
+    //public AscendUpgradeCardScript UpgradeCardPassiveX4_1;
 
     Image _background;
 
@@ -49,6 +50,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.PassiveIncomeX2_1 => SaveGame.Members.BoughtPassiveX2_1,
             AscendUpgradeCardId.PassiveIncomeX2_2 => SaveGame.Members.BoughtPassiveX2_2,
             AscendUpgradeCardId.PassiveIncomeX4_1 => SaveGame.Members.BoughtPassiveX4_1,
+            AscendUpgradeCardId.FasterMystery => SaveGame.Members.BoughtFasterMystery,
             _ => throw new NotImplementedException()
         };
 
@@ -91,6 +93,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         {
             SaveGame.Members.BoughtPassiveX4_1 = true;
         }
+        else if (CardId == AscendUpgradeCardId.FasterMystery)
+        {
+            SaveGame.Members.BoughtFasterMystery = true;
+            SaveGame.Members.QuestionMarkRealTimeLeft *= 0.5f;        }
         else
             throw new NotImplementedException();
 

@@ -70,7 +70,8 @@ public class QuestionmarkScript : MonoBehaviour
                 // Either first run or a cycle completed (will set QuestionMarkRealTimeStart to -1).
                 // If we just loaded a save we just continue from there.
                 //long cycleSeconds = 3;
-                long cycleSeconds = UnityEngine.Random.Range(60 * 50, (60 * 60) - 1);
+                int maxMinutes = SaveGame.Members.BoughtFasterMystery ? 25 : 50;
+                long cycleSeconds = UnityEngine.Random.Range(60 * maxMinutes, 60 * (maxMinutes + 2) - 1);
                 SaveGame.Members.QuestionMarkRealTimeLeft = cycleSeconds;
 
                 _lastRealTime = G.D.RealTime;
@@ -143,6 +144,14 @@ public class QuestionmarkScript : MonoBehaviour
         MysteryReward GetRandomReward(bool isFirst)
         {
             int randomReward = UnityEngine.Random.Range(0, (int)MysteryReward.Last);
+            if (SaveGame.Members.BoughtFasterMystery)
+            {
+                // If faster mystery card bought x10 is also more likely
+                float extraChange = UnityEngine.Random.value;
+                if (extraChange > 0.5)
+                    randomReward = (int)MysteryReward.FasterIncome;
+            }
+
             MysteryReward selectedReward = isFirst switch
             {
                 true => MysteryReward.FasterIncome,

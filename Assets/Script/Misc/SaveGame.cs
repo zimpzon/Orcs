@@ -27,6 +27,7 @@ public class SaveGameMembers
     public bool BoughtPassiveX2_1 = false;
     public bool BoughtPassiveX2_2 = false;
     public bool BoughtPassiveX4_1 = false;
+    public bool BoughtFasterMystery = false;
 
     // Settings
     public int Version;
