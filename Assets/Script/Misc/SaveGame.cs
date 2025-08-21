@@ -147,11 +147,11 @@ public static class SaveGame
         Members = new();
     }
 
-    public static IEnumerator SaveCo()
-    {
-        Save();
-        yield break;
-    }
+    //public static IEnumerator SaveCo()
+    //{
+    //    Save();
+    //    yield break;
+    //}
 
     public static string GetObfuscatedSaveGame()
     {
@@ -188,14 +188,46 @@ public static class SaveGame
         {
             throw new System.Exception("SaveKillSwitch_CanSave is false, Members were reset somehow");
         }
-
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);
 
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            //Debug.Log("saving WEBGL");
-            JsMappings.Save(json);
+            //Debug.Log("saving WEBGL - dual save for safety");
+            // Save to both systems for redundancy
+            // PlayerPrefs survives localStorage clearing but gets wiped on updates
+            // JsMappings/localStorage survives updates but can randomly disappear
+
+            bool playerPrefsSuccess = false;
+            bool jsMappingsSuccess = false;
+
+            try
+            {
+                PlayerPrefs.SetString(SaveGameKey, json);
+                PlayerPrefs.Save();
+                playerPrefsSuccess = true;
+                //Debug.Log("PlayerPrefs save successful");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("PlayerPrefs save failed: " + e.Message);
+            }
+
+            try
+            {
+                JsMappings.Save(json);
+                jsMappingsSuccess = true;
+                //Debug.Log("JsMappings save successful");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("JsMappings save failed: " + e.Message);
+            }
+
+            if (!playerPrefsSuccess && !jsMappingsSuccess)
+            {
+                Debug.LogError("Both save methods failed! Data may be lost.");
+            }
         }
         else
         {
@@ -204,29 +236,98 @@ public static class SaveGame
         }
     }
 
-    const string SaveGameKey = "idle-knight-save.json";
+    const string SaveGameKey = "idle-earl-save-v1.json";
 
     public static void Load()
     {
-        Debug.Log("PLATFORM: " + Application.platform);
+        GameManager.GameLoadInfo.Add("Loading game, platform: " + Application.platform);
+        string playerPrefsData = string.Empty;
+        string jsMappingsData = string.Empty;
 
-        string prefs = string.Empty;
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            Debug.Log("loading from JS");
-            prefs = JsMappings.Load();
+            // Try to load from both sources
+            bool playerPrefsAvailable = false;
+            bool jsMappingsAvailable = false;
+
+            // Check PlayerPrefs
+            try
+            {
+                if (PlayerPrefs.HasKey(SaveGameKey))
+                {
+                    playerPrefsData = PlayerPrefs.GetString(SaveGameKey);
+                    if (!string.IsNullOrEmpty(playerPrefsData))
+                    {
+                        playerPrefsAvailable = true;
+                        GameManager.GameLoadInfo.Add("PlayerPrefs data available");
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                GameManager.GameLoadInfo.Add("PlayerPrefs load failed: " + e.Message);
+            }
+
+            // Check JsMappings
+            try
+            {
+                jsMappingsData = JsMappings.Load();
+                if (!string.IsNullOrEmpty(jsMappingsData))
+                {
+                    jsMappingsAvailable = true;
+                    GameManager.GameLoadInfo.Add("JsMappings data available");
+                }
+            }
+            catch (System.Exception e)
+            {
+                GameManager.GameLoadInfo.Add("JsMappings load failed: " + e.Message);
+            }
+
+            // Decide which data to use
+            string dataToLoad = string.Empty;
+
+            if (playerPrefsAvailable && jsMappingsAvailable)
+            {
+                // Both available - prefer PlayerPrefs (more recent since it survives localStorage issues)
+                GameManager.GameLoadInfo.Add("Both saves available, using PlayerPrefs");
+                dataToLoad = playerPrefsData;
+
+                // Optional: You could compare timestamps or save versions here if you store that info
+            }
+            else if (playerPrefsAvailable)
+            {
+                GameManager.GameLoadInfo.Add("Only PlayerPrefs available (JsMappings likely cleared)");
+                dataToLoad = playerPrefsData;
+            }
+            else if (jsMappingsAvailable)
+            {
+                GameManager.GameLoadInfo.Add("Only JsMappings available (likely after version update)");
+                dataToLoad = jsMappingsData;
+            }
+            else
+            {
+                GameManager.GameLoadInfo.Add("No save data found in either location");
+            }
+
+            Debug.Log("json = " + dataToLoad);
+            LoadJson(dataToLoad);
         }
         else
         {
             Debug.Log("loading from PREFS");
             if (PlayerPrefs.HasKey(SaveGameKey))
-                prefs = PlayerPrefs.GetString(SaveGameKey);
+            {
+                string prefs = PlayerPrefs.GetString(SaveGameKey);
+                Debug.Log("json = " + prefs);
+                LoadJson(prefs);
+            }
+            else
+            {
+                Debug.Log("No save data found");
+                LoadJson(string.Empty);
+            }
         }
-
-        Debug.Log("json = " + prefs);
-        LoadJson(prefs);
     }
-
     public static void LoadJson(string json, bool isRestore = false)
     {
         if (isRestore)

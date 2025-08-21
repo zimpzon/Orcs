@@ -35,7 +35,11 @@ public class GameManager : MonoBehaviour
     // 17: toggle damage + gold numbers
     // 18: added bestiary
     // 19: bonus income for unlocked beasts
-    public const int MinorVersion = 19;
+    // 20: new save method
+    // 21: save gone?
+    // 22: reverted to old save type
+    // 23: now using both local storage and playerprefs for save games
+    public const int MinorVersion = 23;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -110,6 +114,7 @@ public class GameManager : MonoBehaviour
     public int CurrentRound = 1;
     public int MaxRound = 10;
     public Decimal256 TotalPassiveIncome;
+    [NonSerialized] public static List<string> GameLoadInfo = new List<string>();
 
     int livingEnemyCount;
 
@@ -327,8 +332,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - new bonus income for unlocked beasts\n" +
-            " - added 2 new enemies\n");
+            " - replaced raven enemy\n");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1334,6 +1338,11 @@ public class GameManager : MonoBehaviour
         //    _nextSendStats = 0;
         //    TrySendStats();
         //}
+
+        if (G.GetCheatKeyDown(KeyCode.L) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            GameCanvasScript.Instance.ShowPopup(string.Join("\n", GameLoadInfo));
+        }
 
         if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
         {
