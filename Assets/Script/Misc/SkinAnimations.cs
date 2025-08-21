@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public enum SkinAnimation { NotSet, Default, WitchDoctor, Necromancer, Monster, Orc, Pirate, BigMouth, Wig, Wizard, Zombie }
+public enum SkinAnimation { NotSet, Default, WitchDoctor, Necromancer,
+    Monster, Orc, Pirate, BigMouth, Wig, Wizard, Zombie, Slug,
+}
 
 [Serializable]
 public class SkinAnimations

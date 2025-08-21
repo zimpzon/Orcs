@@ -13,7 +13,7 @@ public enum Achieved
 
     Arena1000,
     Rebirth3,
-    Mystery10,
+    Mystery25,
     Chest25,
     Diamonds10,
 };
@@ -30,7 +30,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArena1000(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
-        AchievementChecks.CheckMystery10(list);
+        AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckChest25(list);
         AchievementChecks.CheckDiamonds10(list);
     }

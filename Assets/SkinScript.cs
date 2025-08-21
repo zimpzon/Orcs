@@ -59,6 +59,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Chest25), "Pirate Earl: Loot 25 Chests");
         }
+        else if (animationName == SkinAnimation.Slug)
+        {
+            return (list.Contains(Achieved.Mystery25), "Slug Earl: Get 25 mystery rewards");
+        }
         else if (animationName == SkinAnimation.Wizard)
         {
             return (list.Contains(Achieved.Rebirth3), "Wizard Earl: Rebirth at least three times");

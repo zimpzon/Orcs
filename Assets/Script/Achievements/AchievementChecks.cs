@@ -87,14 +87,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckMystery10(List<Achieved> list)
+        public static void CheckMystery25(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Mystery10)) return;
+            if (list.Contains(Achieved.Mystery25)) return;
 
-            if (SaveGame.Members.MysteryCollected >= 10)
+            if (SaveGame.Members.MysteryCollected >= 25)
             {
-                list.Add(Achieved.Mystery10);
-                NewAchieved(Achieved.Mystery10);
+                list.Add(Achieved.Mystery25);
+                NewAchieved(Achieved.Mystery25);
             }
         }
 
