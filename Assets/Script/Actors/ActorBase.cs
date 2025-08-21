@@ -20,21 +20,21 @@ public class ActorBase : MonoBehaviour
 {
     public static readonly Dictionary<ActorTypeEnum, string> Names = new()
     {
-        { ActorTypeEnum.OgreLarge, "name" },
-        { ActorTypeEnum.OgreSmall, "name" },
-        { ActorTypeEnum.BatWhite, "name" },
-        { ActorTypeEnum.HeroChaser, "name" },
-        { ActorTypeEnum.Raven, "name" },
-        { ActorTypeEnum.Red, "name" },
-        { ActorTypeEnum.Green, "name" },
-        { ActorTypeEnum.Pigtail, "name" },
-        { ActorTypeEnum.Pig, "name" },
-        { ActorTypeEnum.White, "name" },
-        { ActorTypeEnum.Fez, "name" },
-        { ActorTypeEnum.Helmet, "name" },
-        { ActorTypeEnum.Swede, "name" },
-        { ActorTypeEnum.PigHat, "name" },
-        { ActorTypeEnum.FreakyWiz, "name" },
+        { ActorTypeEnum.OgreLarge, "The Teeth of Terror" },
+        { ActorTypeEnum.OgreSmall, "The Revenent Orc" },
+        { ActorTypeEnum.BatWhite, "Flaps" },
+        { ActorTypeEnum.HeroChaser, "The Ref" },
+        { ActorTypeEnum.Raven, "Simon The Slug" },
+        { ActorTypeEnum.Red, "The Lady in Red" },
+        { ActorTypeEnum.Green, "The Green Bean" },
+        { ActorTypeEnum.Pigtail, "McFeatherhead" },
+        { ActorTypeEnum.Pig, "Porky" },
+        { ActorTypeEnum.White, "Lidz" },
+        { ActorTypeEnum.Fez, "McManbun" },
+        { ActorTypeEnum.Helmet, "The Metalhead" },
+        { ActorTypeEnum.Swede, "The Multi-level Marketer" },
+        { ActorTypeEnum.PigHat, "Bigmouth" },
+        { ActorTypeEnum.FreakyWiz, "The Vampire Wizard Slug" },
     };
 
     const float PaintBallTickTime = 1.0f;

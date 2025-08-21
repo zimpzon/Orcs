@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     // 21: save gone?
     // 22: reverted to old save type
     // 23: now using both local storage and playerprefs for save games
+    // 24: named monsters
     public const int MinorVersion = 23;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
@@ -72,7 +73,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextTotalKilled;
     public TextMeshProUGUI TextTimeThisSession;
 
-    public Color ColorDamageNumbers = Color.red;
+    public Color ColorDamageNumbersDagger = Color.red;
+    public Color ColorDamageNumbersZap = Color.red;
     public Color ColorGoldCollect = Color.yellow;
 
     public SpriteRenderer Floor;
@@ -332,7 +334,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - replaced raven enemy\n");
+            " - different colors for damage numbers\n" +
+            " - added names to bestiary\n");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -851,6 +854,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private Color GetDamageColorFromSource(ActorDamageSource source)
+    {
+        return source switch
+        {
+            ActorDamageSource.ChainZap or ActorDamageSource.WitchDoctor or ActorDamageSource.Wizard => ColorDamageNumbersZap,
+            _ => ColorDamageNumbersDagger,
+        };
+    }
+
     public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier, ActorDamageSource damageSource)
     {
         if (enemy.Hp <= 0 || enemy.IsDead)
@@ -872,7 +884,7 @@ public class GameManager : MonoBehaviour
             FloatingTextSpawner.Instance.Spawn(
                 (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
                 $"-{Format64.Format(intAmount)}",
-                ColorDamageNumbers,
+                GetDamageColorFromSource(damageSource),
                 speed: 0.75f,
                 timeToLive: 1.0f,
                 fontStyle: TMPro.FontStyles.Bold);

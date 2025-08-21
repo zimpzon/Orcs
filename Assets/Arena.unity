@@ -28705,7 +28705,8 @@ MonoBehaviour:
   TextTotalIncome: {fileID: 646665978}
   TextTotalKilled: {fileID: 1124560693}
   TextTimeThisSession: {fileID: 24164529}
-  ColorDamageNumbers: {r: 0.9529412, g: 0.20392157, b: 0.20392157, a: 1}
+  ColorDamageNumbersDagger: {r: 0.77800006, g: 0, b: 0, a: 1}
+  ColorDamageNumbersZap: {r: 0.7764706, g: 0.30439162, b: 0, a: 1}
   ColorGoldCollect: {r: 0.9529412, g: 0.88235295, b: 0.07450981, a: 1}
   Floor: {fileID: 1771007547}
   ColorLocked: '#901010'
