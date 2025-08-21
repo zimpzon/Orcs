@@ -13,7 +13,8 @@ public enum ActorForcedTargetType { Absolute, Direction };
 public enum ActorTypeEnum
 {
     // REMEMBER to update names just below
-    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail, Pig, White, Fez, Helmet, Swede, PigHat, FreakyWiz
+    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail,
+    Pig, White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro
 };
 
 public class ActorBase : MonoBehaviour
@@ -35,6 +36,8 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.Swede, "The Multi-level Marketer" },
         { ActorTypeEnum.PigHat, "Bigmouth" },
         { ActorTypeEnum.FreakyWiz, "The Vampire Wizard Slug" },
+        { ActorTypeEnum.UndeadPirate, "The Undead Pirate" },
+        { ActorTypeEnum.WannabeNecro, "The Wannabe Necromancer" },
     };
 
     const float PaintBallTickTime = 1.0f;

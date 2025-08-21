@@ -33,6 +33,8 @@ public static class EnemySpawner
         long hpSwede = 100_000_000 * HpScale;
         long hpPigHat = 200_000_000 * HpScale;
         long hpFreakyWiz = 400_000_000 * HpScale;
+        long hpUndeadPirate = 800_000_000 * HpScale;
+        long hpWannabeNecro = 1_600_000_000 * HpScale;
 
         bool allowLarge = hpTargetForRound >= hpOgreLarge;
         bool allowHeroChaser = hpTargetForRound >= hpHeroChaser;
@@ -47,8 +49,10 @@ public static class EnemySpawner
         bool allowSwede = hpTargetForRound >= hpSwede;
         bool allowPigHat = hpTargetForRound >= hpPigHat;
         bool allowFreakyWiz = hpTargetForRound >= hpFreakyWiz;
+        bool allowUndeadPirate = hpTargetForRound >= hpUndeadPirate;
+        bool allowWannabeNecro = hpTargetForRound >= hpWannabeNecro;
 
-        //var tester = SpawnUtil.Single(ActorTypeEnum.FreakyWiz, Vector2.zero).First();
+        //var tester = SpawnUtil.Single(ActorTypeEnum.WannabeNecro, Vector2.zero).First();
         //tester.BaseHp = hpFez;
         //yield return tester;
 
@@ -60,7 +64,29 @@ public static class EnemySpawner
             long remainingHp = hpTargetForRound;
             enemies.Clear();
 
-            // 1. FreakyWiz
+            // 1. WannabeNecro
+            long clampedWannabeNecro = 0;
+            if (allowWannabeNecro)
+            {
+                clampedWannabeNecro = Math.Min(remainingHp / hpWannabeNecro, MaxEnemies - totalEnemies);
+                clampedWannabeNecro -= UnityEngine.Random.Range(0, 2);
+                clampedWannabeNecro = Math.Max(0, clampedWannabeNecro);
+                remainingHp -= clampedWannabeNecro * hpWannabeNecro;
+                totalEnemies += clampedWannabeNecro;
+            }
+
+            // 2. UndeadPirate
+            long clampedUndeadPirate = 0;
+            if (allowUndeadPirate)
+            {
+                clampedUndeadPirate = Math.Min(remainingHp / hpUndeadPirate, MaxEnemies - totalEnemies);
+                clampedUndeadPirate -= UnityEngine.Random.Range(0, 2);
+                clampedUndeadPirate = Math.Max(0, clampedUndeadPirate);
+                remainingHp -= clampedUndeadPirate * hpUndeadPirate;
+                totalEnemies += clampedUndeadPirate;
+            }
+
+            // 3. FreakyWiz
             long clampedFreakyWiz = 0;
             if (allowFreakyWiz)
             {
@@ -71,7 +97,7 @@ public static class EnemySpawner
                 totalEnemies += clampedFreakyWiz;
             }
 
-            // 2. PigHat
+            // 4. PigHat
             long clampedPigHat = 0;
             if (allowPigHat)
             {
@@ -82,7 +108,7 @@ public static class EnemySpawner
                 totalEnemies += clampedPigHat;
             }
 
-            // 3. Swede
+            // 5. Swede
             long clampedSwede = 0;
             if (allowSwede)
             {
@@ -93,7 +119,7 @@ public static class EnemySpawner
                 totalEnemies += clampedSwede;
             }
 
-            // 4. Helmet
+            // 6. Helmet
             long clampedHelmet = 0;
             if (allowHelmet)
             {
@@ -104,7 +130,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHelmet;
             }
 
-            // 5. Fez
+            // 7. Fez
             long clampedFez = 0;
             if (allowFez)
             {
@@ -115,7 +141,7 @@ public static class EnemySpawner
                 totalEnemies += clampedFez;
             }
 
-            // 6. White
+            // 8. White
             long clampedWhite = 0;
             if (allowWhite)
             {
@@ -126,7 +152,7 @@ public static class EnemySpawner
                 totalEnemies += clampedWhite;
             }
 
-            // 7. Pigtail
+            // 9. Pigtail
             long clampedPigtail = 0;
             if (allowPigtail)
             {
@@ -137,7 +163,7 @@ public static class EnemySpawner
                 totalEnemies += clampedPigtail;
             }
 
-            // 8. Pig
+            // 10. Pig
             long clampedPig = 0;
             if (allowPig)
             {
@@ -148,7 +174,7 @@ public static class EnemySpawner
                 totalEnemies += clampedPig;
             }
 
-            // 9. Red
+            // 11. Red
             long clampedRed = 0;
             if (allowRed)
             {
@@ -159,7 +185,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRed;
             }
 
-            // 10. Ravens
+            // 12. Ravens
             long clampedRaven = 0;
             if (allowRaven)
             {
@@ -170,7 +196,7 @@ public static class EnemySpawner
                 totalEnemies += clampedRaven;
             }
 
-            // 11. Green
+            // 13. Green
             long clampedGreen = 0;
             if (allowGreen)
             {
@@ -181,7 +207,7 @@ public static class EnemySpawner
                 totalEnemies += clampedGreen;
             }
 
-            // 12. Hero Chasers
+            // 14. Hero Chasers
             long clampedHeroChaser = 0;
             if (allowHeroChaser)
             {
@@ -192,7 +218,7 @@ public static class EnemySpawner
                 totalEnemies += clampedHeroChaser;
             }
 
-            // 13. Large Ogres
+            // 15. Large Ogres
             long clampedLarge = 0;
             if (allowLarge)
             {
@@ -203,14 +229,14 @@ public static class EnemySpawner
                 totalEnemies += clampedLarge;
             }
 
-            // 14. Small Ogres
+            // 16. Small Ogres
             long clampedSmall = Math.Min(remainingHp / hpOgreSmall, MaxEnemies - totalEnemies);
             clampedSmall -= UnityEngine.Random.Range(0, 2);
             clampedSmall = Math.Max(0, clampedSmall);
             remainingHp -= clampedSmall * hpOgreSmall;
             totalEnemies += clampedSmall;
 
-            // 15. Bats
+            // 17. Bats
             long clampedBat = Math.Min(remainingHp / hpBat, MaxEnemies - totalEnemies);
             clampedBat = Math.Max(0, clampedBat);
             remainingHp -= clampedBat * hpBat;
@@ -220,6 +246,20 @@ public static class EnemySpawner
             {
                 clampedBat = 1;
                 remainingHp -= hpBat;
+            }
+
+            // Add WannabeNecro
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.WannabeNecro, (int)clampedWannabeNecro))
+            {
+                actor.BaseHp = hpWannabeNecro;
+                enemies.Add(actor);
+            }
+
+            // Add UndeadPirate
+            foreach (var actor in SpawnUtil.Random(ActorTypeEnum.UndeadPirate, (int)clampedUndeadPirate))
+            {
+                actor.BaseHp = hpUndeadPirate;
+                enemies.Add(actor);
             }
 
             // Add FreakyWiz
@@ -340,6 +380,8 @@ public static class EnemySpawner
                 break;
 
             // Increase HP budgets and retry
+            hpWannabeNecro *= 10;
+            hpUndeadPirate *= 10;
             hpFreakyWiz *= 10;
             hpPigHat *= 10;
             hpSwede *= 10;
