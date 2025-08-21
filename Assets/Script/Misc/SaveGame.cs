@@ -74,6 +74,7 @@ public class SaveGameMembers
     public Decimal256 TotalIncomeDaggerMaster;
     public Decimal256 TotalIncomeNecroNinja;
     public Decimal256 TotalIncomeSkullCrusher;
+    public Decimal256 TotalIncomeChestMaster;
 
     public Decimal256 TotalIncomeArena;
     public Decimal256 TotalIncomePassive;
@@ -97,6 +98,7 @@ public class SaveGameMembers
     public long LevelDaggerMaster = 0;
     public long LevelNecroNinja = 0;
     public long LevelSkullCrusher = 0;
+    public long LevelChestMaster = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -112,6 +114,7 @@ public class SaveGameMembers
     public long LevelDaggerMasterX2 = 0;
     public long LevelNecroNinjaX2 = 0;
     public long LevelSkullCrusherX2 = 0;
+    public long LevelChestMasterX2 = 0;
 
     // Pct
     public long LevelPctBought = 0;

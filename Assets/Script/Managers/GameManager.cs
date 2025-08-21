@@ -40,7 +40,8 @@ public class GameManager : MonoBehaviour
     // 22: reverted to old save type
     // 23: now using both local storage and playerprefs for save games
     // 24: named monsters
-    public const int MinorVersion = 23;
+    // 25: enemies, skin, upgrade tier
+    public const int MinorVersion = 25;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -334,11 +335,11 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added new upgrade tier\n" +
             " - added two new enemies\n" +
             " - added new skin\n" +
             " - added rebirth mystery bonus card\n" +
-            " - different colors for damage numbers\n" +
-            " - added names to bestiary\n");
+            " - different colors for damage numbers\n");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
@@ -1293,7 +1294,7 @@ public class GameManager : MonoBehaviour
             { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
             { "current_skin", (int)SaveGame.Members.CurrentSkin },
-            // 12 below this
+            // 14 below this
 
             // removed zap to make room for others
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
@@ -1309,6 +1310,7 @@ public class GameManager : MonoBehaviour
             { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
             { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
             { "level_skull_crusher", (int)SaveGame.Members.LevelSkullCrusher},
+            { "level_chest_master", (int)SaveGame.Members.LevelChestMaster},
         };
         return dic;
     }

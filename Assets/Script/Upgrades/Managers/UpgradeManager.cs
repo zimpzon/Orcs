@@ -1,6 +1,5 @@
 using Assets.Script.Upgrades;
 using System;
-using System.Diagnostics;
 using UnityEngine;
 
 public enum UpgradeDisplayStatus
@@ -31,6 +30,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript DaggerMaster;
     public UpgradeItemScript NecroNinja;
     public UpgradeItemScript SkullCrusher;
+    public UpgradeItemScript ChestMaster;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -59,6 +59,7 @@ public class UpgradeManager : MonoBehaviour
         DaggerMasterManager.UpdateAll();
         NecroNinjaManager.UpdateAll();
         SkullCrusherManager.UpdateAll();
+        ChestMasterManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -93,6 +94,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelNecroNinja);
         else if (upgradeUiScript == SkullCrusher)
             return GetDisplayStatus(SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelSkullCrusher);
+        else if (upgradeUiScript == ChestMaster)
+            return GetDisplayStatus(SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelChestMaster);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -127,6 +130,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(NecroNinja) == UpgradeDisplayStatus.FullyShown ? NecroNinjaManager.GetText() : LockedText;
         else if (upgradeUiScript == SkullCrusher)
             text = GetUpgradeDisplayStatus(SkullCrusher) == UpgradeDisplayStatus.FullyShown ? SkullCrusherManager.GetText() : LockedText;
+        else if (upgradeUiScript == ChestMaster)
+            text = GetUpgradeDisplayStatus(ChestMaster) == UpgradeDisplayStatus.FullyShown ? ChestMasterManager.GetText() : LockedText;
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -163,6 +168,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeDaggerMaster += DaggerMasterManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeNecroNinja += NecroNinjaManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeSkullCrusher += SkullCrusherManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeChestMaster += ChestMasterManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -178,6 +184,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += DaggerMasterManager.PassiveIncome();
         fullSum += NecroNinjaManager.PassiveIncome();
         fullSum += SkullCrusherManager.PassiveIncome();
+        fullSum += ChestMasterManager.PassiveIncome();
         return fullSum;
     }
 
@@ -212,6 +219,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(DaggerMaster);
         SetIsVisble(NecroNinja);
         SetIsVisble(SkullCrusher);
+        SetIsVisble(ChestMaster);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -226,6 +234,7 @@ public class UpgradeManager : MonoBehaviour
         DaggerMasterManager.UpdateUi();
         NecroNinjaManager.UpdateUi();
         SkullCrusherManager.UpdateUi();
+        ChestMasterManager.UpdateUi();
     }
 
     void OnItemBought()
@@ -416,6 +425,20 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyChestMaster()
+    {
+        ChestMasterManager.OnBuy();
+        ChestMaster.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyChestMasterX2()
+    {
+        ChestMasterManager.OnBuyX2();
+        ChestMaster.SetPopupText();
+        OnItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -431,6 +454,7 @@ public class UpgradeManager : MonoBehaviour
         DaggerMasterManager.UpdatePlayerUpgrades();
         NecroNinjaManager.UpdatePlayerUpgrades();
         SkullCrusherManager.UpdatePlayerUpgrades();
+        ChestMasterManager.UpdatePlayerUpgrades();
     }
 
     private void Awake()
