@@ -68,37 +68,23 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            // Updated progression: 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B, 1500B, 1950B,
-            // 2650B, 3650B, 5000B, 6750B, 8950B, 11650B, 14900B...
+            // 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B, 1261.455B, 1586.641B,
+            // 2469.287B, 4188.125B, 7021.885B, 11249.297B, 17149.092B, 25000B.
             long n = level - 1;
-            if (level <= 11)
+            if (level <= 12)
             {
-                // Original quadratic curve for levels 1-11
+                // Original quadratic curve (keeps first 12 levels unchanged)
                 return 5 * OneBillion * (1 + 2 * n * n);
-            }
-            else if (level == 12)
-            {
-                return 1500 * OneBillion;
             }
             else
             {
-                // Exponential growth after level 12
-                // Level 12: 1500B, Level 20: ~40000B
-                // 1500 * multiplier^(level-12) = 40000 at level 20
-                // multiplier^8 = 40000/1500 ≈ 26.67, so multiplier ≈ 1.55
-
-                Decimal256 baseXp = 1500 * OneBillion;
-                long d = level - 12; // levels beyond 12
-                Decimal256 multiplier = 1.55m;
-                Decimal256 growthFactor = 1m;
-
-                // Calculate multiplier^d
-                for (int i = 0; i < d; i++)
-                {
-                    growthFactor *= multiplier;
-                }
-
-                return baseXp * growthFactor;
+                // Steeper cubic growth after level 12
+                // Match value at level 12 (1215) and hit ~25000 at level 20
+                // B = (25000 - 1215) / (8^3) = 46.455078125
+                Decimal256 baseXp = 1215 * OneBillion;
+                long d = level - 12;
+                Decimal256 extraXp = 46.455078125m * OneBillion * d * d * d;
+                return baseXp + extraXp;
             }
         }
 
