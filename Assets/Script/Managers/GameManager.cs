@@ -41,7 +41,9 @@ public class GameManager : MonoBehaviour
     // 23: now using both local storage and playerprefs for save games
     // 24: named monsters
     // 25: enemies, skin, upgrade tier
-    public const int MinorVersion = 25;
+    // 26: overflow bug
+    // 27: two new enemies
+    public const int MinorVersion = 27;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

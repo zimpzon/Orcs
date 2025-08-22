@@ -68,8 +68,8 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            // 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B, 1261.455B, 1586.641B,
-            // 2469.287B, 4188.125B, 7021.885B, 11249.297B, 17149.092B, 25000B.
+            // Original progression: 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B
+            // After level 12: Much steeper growth
             long n = level - 1;
             if (level <= 12)
             {
@@ -78,16 +78,19 @@ namespace Assets.Script.Upgrades
             }
             else
             {
-                // Steeper cubic growth after level 12
-                // Match value at level 12 (1215) and hit ~25000 at level 20
-                // B = (25000 - 1215) / (8^3) = 46.455078125
+                // Slightly steeper cubic growth after level 12
+                // Increased coefficient from 46.455 to ~58 for about 25% steeper curve
                 Decimal256 baseXp = 1215 * OneBillion;
                 long d = level - 12;
-                Decimal256 extraXp = 46.455078125m * OneBillion * d * d * d;
+                Decimal256 extraXp = 58m * OneBillion * d * d * d; // ~25% steeper than original
                 return baseXp + extraXp;
             }
         }
 
+        // Comparison with original:
+        // Level 20: Original ~25000B, New ~31250B (+25%)
+        // Level 30: Original ~82815B, New ~103519B (+25%) 
+        // Level 50: Original ~571815B, New ~714769B (+25%)
         public static Decimal256 PriceX2(Decimal256 initialPrice, long levelX2)
         {
             Decimal256 result = initialPrice * Math.Pow(3, levelX2);

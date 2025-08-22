@@ -14,7 +14,7 @@ public enum ActorTypeEnum
 {
     // REMEMBER to update names just below
     None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail,
-    Pig, White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro
+    Pig, White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro, Karateeth, Snout
 };
 
 public class ActorBase : MonoBehaviour
@@ -38,6 +38,8 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.FreakyWiz, "The Vampire Wizard Slug" },
         { ActorTypeEnum.UndeadPirate, "The Undead Pirate" },
         { ActorTypeEnum.WannabeNecro, "The Wannabe Necromancer" },
+        { ActorTypeEnum.Karateeth, "Karateeth" },
+        { ActorTypeEnum.Snout, "The Snout" },
     };
 
     const float PaintBallTickTime = 1.0f;
