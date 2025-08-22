@@ -28,6 +28,7 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_NecroNinja =           14_100_000_000_000;
         public static Decimal256 InitialPrice_SkullCrusher =        260_100_000_000_000;
         public static Decimal256 InitialPrice_ChestMaster =       5_100_100_000_000_000;
+        public static Decimal256 InitialPrice_Voidgazer =       220_000_000_000_000_000;
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
 
@@ -45,6 +46,7 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_NecroNinja_X2 = InitialPrice_NecroNinja * 10;
         public static Decimal256 InitialPrice_SkullCrusher_X2 = InitialPrice_SkullCrusher * 10;
         public static Decimal256 InitialPrice_ChestMaster_X2 = InitialPrice_ChestMaster * 10;
+        public static Decimal256 InitialPrice_Voidgazer_X2 = InitialPrice_Voidgazer * 10;
 
         public static Decimal256 BaseIncome_Clickdamage = 0.2;
         public static Decimal256 BaseIncome_DaggerDamage = 2;
@@ -55,11 +57,12 @@ namespace Assets.Script.Upgrades
         public static Decimal256 BaseIncome_Wizard = 7_800;
         public static Decimal256 BaseIncome_Hoarder = 44_000;
         public static Decimal256 BaseIncome_ZapDamage = 255_000;
-        public static Decimal256 BaseIncome_MoneyMaker = 1_500_000;
-        public static Decimal256 BaseIncome_DaggerMaster = 10_000_000;
-        public static Decimal256 BaseIncome_NecroNinja = 62_000_000;
-        public static Decimal256 BaseIncome_SkullCrusher = 370_000_000;
-        public static Decimal256 BaseIncome_ChestMaster = 2_220_000_000;
+        public static Decimal256 BaseIncome_MoneyMaker =            1_500_000;
+        public static Decimal256 BaseIncome_DaggerMaster =         10_000_000;
+        public static Decimal256 BaseIncome_NecroNinja =           62_000_000;
+        public static Decimal256 BaseIncome_SkullCrusher =        370_000_000;
+        public static Decimal256 BaseIncome_ChestMaster =       2_220_000_000;
+        public static Decimal256 BaseIncome_Voidgazer =        11_100_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {

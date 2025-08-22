@@ -31,6 +31,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript NecroNinja;
     public UpgradeItemScript SkullCrusher;
     public UpgradeItemScript ChestMaster;
+    public UpgradeItemScript Voidgazer;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -60,6 +61,7 @@ public class UpgradeManager : MonoBehaviour
         NecroNinjaManager.UpdateAll();
         SkullCrusherManager.UpdateAll();
         ChestMasterManager.UpdateAll();
+        VoidgazerManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -96,6 +98,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelSkullCrusher);
         else if (upgradeUiScript == ChestMaster)
             return GetDisplayStatus(SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelChestMaster);
+        else if (upgradeUiScript == Voidgazer)
+            return GetDisplayStatus(SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelVoidgazer);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -132,6 +136,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(SkullCrusher) == UpgradeDisplayStatus.FullyShown ? SkullCrusherManager.GetText() : LockedText;
         else if (upgradeUiScript == ChestMaster)
             text = GetUpgradeDisplayStatus(ChestMaster) == UpgradeDisplayStatus.FullyShown ? ChestMasterManager.GetText() : LockedText;
+        else if (upgradeUiScript == Voidgazer)
+            text = GetUpgradeDisplayStatus(Voidgazer) == UpgradeDisplayStatus.FullyShown ? VoidgazerManager.GetText() : LockedText;
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -169,6 +175,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeNecroNinja += NecroNinjaManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeSkullCrusher += SkullCrusherManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeChestMaster += ChestMasterManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeVoidgazer += VoidgazerManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal256 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -185,6 +192,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += NecroNinjaManager.PassiveIncome();
         fullSum += SkullCrusherManager.PassiveIncome();
         fullSum += ChestMasterManager.PassiveIncome();
+        fullSum += VoidgazerManager.PassiveIncome();
         return fullSum;
     }
 
@@ -220,6 +228,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(NecroNinja);
         SetIsVisble(SkullCrusher);
         SetIsVisble(ChestMaster);
+        SetIsVisble(Voidgazer);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -235,6 +244,7 @@ public class UpgradeManager : MonoBehaviour
         NecroNinjaManager.UpdateUi();
         SkullCrusherManager.UpdateUi();
         ChestMasterManager.UpdateUi();
+        VoidgazerManager.UpdateUi();
     }
 
     void OnItemBought()
@@ -439,6 +449,20 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought();
     }
 
+    public void OnBuyVoidgazer()
+    {
+        VoidgazerManager.OnBuy();
+        Voidgazer.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyVoidgazerX2()
+    {
+        VoidgazerManager.OnBuyX2();
+        Voidgazer.SetPopupText();
+        OnItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -455,6 +479,7 @@ public class UpgradeManager : MonoBehaviour
         NecroNinjaManager.UpdatePlayerUpgrades();
         SkullCrusherManager.UpdatePlayerUpgrades();
         ChestMasterManager.UpdatePlayerUpgrades();
+        VoidgazerManager.UpdatePlayerUpgrades();
     }
 
     private void Awake()

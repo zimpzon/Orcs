@@ -65,6 +65,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckArena5000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Arena5000)) return;
+
+            if (SaveGame.Members.ArenaLevel >= 5000)
+            {
+                list.Add(Achieved.Arena5000);
+                NewAchieved(Achieved.Arena5000);
+            }
+        }
+
         public static void CheckRebirth2(List<Achieved> list)
         {
             if (list.Contains(Achieved.Rebirth2)) return;
@@ -117,6 +128,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Diamonds10);
                 NewAchieved(Achieved.Diamonds10);
+            }
+        }
+
+        public static void CheckVoidgazer(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.VoidgazerTier)) return;
+
+            if (SaveGame.Members.LevelVoidgazer >= 1)
+            {
+                list.Add(Achieved.VoidgazerTier);
+                NewAchieved(Achieved.VoidgazerTier);
             }
         }
     }

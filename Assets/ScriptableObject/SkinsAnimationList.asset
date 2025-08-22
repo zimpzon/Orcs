@@ -134,3 +134,25 @@ MonoBehaviour:
     - {fileID: -3462869394367037705, guid: 8ad6e17489e41a548b3bd41403776a18, type: 3}
     - {fileID: -8853611584224794121, guid: 8ad6e17489e41a548b3bd41403776a18, type: 3}
     - {fileID: 218593927, guid: 8ad6e17489e41a548b3bd41403776a18, type: 3}
+  - Animation: 12
+    IdleSprites:
+    - {fileID: 8119140125076218788, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: -2435574724426784511, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: -2048089932879585173, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: 2945981995445407054, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    RunSprites:
+    - {fileID: -1845431601671277827, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: 3953851137033784415, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: 1222424744385831017, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+    - {fileID: -716100086088222686, guid: f4c7748c36e3e0b4f900efbc663091d6, type: 3}
+  - Animation: 13
+    IdleSprites:
+    - {fileID: -8862230653818981964, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: 8337621229426762568, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: -8752265316547914595, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: 1802133833785189634, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    RunSprites:
+    - {fileID: 8160062134687994622, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: 175450105943221067, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: -6278639034106953364, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+    - {fileID: -4083139222234349889, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}

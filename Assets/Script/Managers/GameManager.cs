@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour
     // 25: enemies, skin, upgrade tier
     // 26: overflow bug
     // 27: two new enemies
-    public const int MinorVersion = 27;
+    // 28: new tier + skins
+    public const int MinorVersion = 28;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1296,7 +1297,7 @@ public class GameManager : MonoBehaviour
             { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
 
             { "current_skin", (int)SaveGame.Members.CurrentSkin },
-            // 14 below this
+            // 15 below this
 
             // removed zap to make room for others
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
@@ -1313,6 +1314,7 @@ public class GameManager : MonoBehaviour
             { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
             { "level_skull_crusher", (int)SaveGame.Members.LevelSkullCrusher},
             { "level_chest_master", (int)SaveGame.Members.LevelChestMaster},
+            { "level_voidgazer", (int)SaveGame.Members.LevelVoidgazer},
         };
         return dic;
     }
@@ -1377,7 +1379,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.Money += 100_000_000_000_000;
+            SaveGame.Members.Money += 100_000_000_000_000_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))

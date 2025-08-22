@@ -75,6 +75,14 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Arena500), "Wig Earl: Reach Arena level 500");
         }
+        else if (animationName == SkinAnimation.KaratEarl)
+        {
+            return (list.Contains(Achieved.Arena5000), "KaratEarl: Reach Arena level 5000");
+        }
+        else if (animationName == SkinAnimation.Voidgazer)
+        {
+            return (list.Contains(Achieved.VoidgazerTier), "Voidgazer Earl: Reach Voidgazer");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }
