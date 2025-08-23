@@ -22597,7 +22597,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You have <color=yellow>0</color> diamonds <sprite=0>
+  m_text: You have <color=yellow>8888</color> diamonds <sprite=0>  (+25000% income)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -22625,8 +22625,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -30286,7 +30286,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15.187805, y: -83}
-  m_SizeDelta: {x: 368.8498, y: 144.6476}
+  m_SizeDelta: {x: 425, y: 144.6476}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &455334207
 MonoBehaviour:
@@ -37929,8 +37929,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -60852,8 +60852,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255615
-  m_fontColor: {r: 0.9987322, g: 1, b: 0, a: 1}
+    rgba: 4283153034
+  m_fontColor: {r: 0.5411765, g: 0.7294118, b: 0.29411766, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -62658,8 +62658,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 105.3124, y: 2.2423}
-  m_SizeDelta: {x: 399.6812, y: 324.8934}
+  m_AnchoredPosition: {x: 75.660805, y: 2.2423}
+  m_SizeDelta: {x: 454.6117, y: 324.8934}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1261470293
 MonoBehaviour:
@@ -93221,8 +93221,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -93711,8 +93711,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 266.76837, y: -62.06816}
-  m_SizeDelta: {x: 189.531, y: 92.6618}
+  m_AnchoredPosition: {x: 260.8011, y: -62.06816}
+  m_SizeDelta: {x: 195.2615, y: 92.6618}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1882685626
 MonoBehaviour:

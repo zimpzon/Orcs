@@ -12,7 +12,10 @@ public static class EnemySpawner
     // Enemy type definitions with base HP (before HpScale)
     private static readonly EnemyType[] EnemyTypes = new[]
     {
-        new EnemyType(ActorTypeEnum.Snout, 1_600_000_000),
+        new EnemyType(ActorTypeEnum.AfroOrc,       16_000_000_000),
+        new EnemyType(ActorTypeEnum.BrainZombie,    8_000_000_000),
+        new EnemyType(ActorTypeEnum.IronMask,       4_000_000_000),
+        new EnemyType(ActorTypeEnum.Snout,          1_600_000_000),
         new EnemyType(ActorTypeEnum.Karateeth, 700_000_000),
         new EnemyType(ActorTypeEnum.WannabeNecro, 320_000_000),
         new EnemyType(ActorTypeEnum.UndeadPirate, 160_000_000),
@@ -51,17 +54,19 @@ public static class EnemySpawner
         long hpTarget = CalculateHpTarget(level);
         var enemies = new List<ActorBase>();
 
-        // Uncomment for testing specific enemies
-        //var tester = SpawnUtil.Single(ActorTypeEnum.Snout, Vector2.zero).First();
-        //tester.BaseHp = EnemyTypes.First(e => e.Type == ActorTypeEnum.Fez).ScaledHp;
-        //yield return tester;
-
         const int maxRetries = 10;
         long hpMultiplier = 1;
 
         for (int retry = 0; retry < maxRetries; retry++)
         {
             enemies.Clear();
+
+            // Uncomment for testing specific enemies
+            //var tester = SpawnUtil.Single(ActorTypeEnum.IronMask, Vector2.zero).First();
+            //tester.BaseHp = EnemyTypes.First(e => e.Type == ActorTypeEnum.Fez).ScaledHp;
+            //enemies.Add(tester);
+
+
             long remainingHp = hpTarget;
             long totalEnemies = 0;
             ActorTypeEnum? circleType = null;

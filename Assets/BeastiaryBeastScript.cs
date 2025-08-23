@@ -19,7 +19,7 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(ActorType);
         if (isUnlocked)
         {
-            int bonus = (Index + 1);
+            int bonus = ((Index / 2) + 1);
             ActorBase.Names.TryGetValue(ActorType, out string name);
             Hovertext.text = $"{name}\n +{bonus}% passive income";
         }

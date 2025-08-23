@@ -40,7 +40,9 @@
         newSave.Achieved = oldSave.Achieved;
         newSave.BeastsSeen = oldSave.BeastsSeen;
 
-        // Progress
+        // Collectables
+        newSave.ChestsCollected = oldSave.ChestsCollected;
+        newSave.MysteryCollected = oldSave.MysteryCollected;
 
         // Replace old save with new save
         SaveGame.Members = newSave;

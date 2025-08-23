@@ -60,9 +60,9 @@ namespace Assets.Script.Upgrades
         public static Decimal256 BaseIncome_MoneyMaker =            1_500_000;
         public static Decimal256 BaseIncome_DaggerMaster =         10_000_000;
         public static Decimal256 BaseIncome_NecroNinja =           62_000_000;
-        public static Decimal256 BaseIncome_SkullCrusher =        370_000_000;
-        public static Decimal256 BaseIncome_ChestMaster =       2_220_000_000;
-        public static Decimal256 BaseIncome_Voidgazer =        11_100_000_000;
+        public static Decimal256 BaseIncome_SkullCrusher =        300_000_000;
+        public static Decimal256 BaseIncome_ChestMaster =       1_400_000_000;
+        public static Decimal256 BaseIncome_Voidgazer =         5_100_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {
@@ -71,21 +71,21 @@ namespace Assets.Script.Upgrades
 
         public static Decimal256 MonsterCreditXpForNextLevel(long level)
         {
-            // Original progression: 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B, 645B, 815B, 1005B, 1215B
-            // After level 12: Much steeper growth
+            // Original progression for levels 1-8: 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B
+            // Steep cubic growth starting from level 9
             long n = level - 1;
-            if (level <= 12)
+            if (level <= 8)
             {
-                // Original quadratic curve (keeps first 12 levels unchanged)
+                // Original quadratic curve for first 8 levels
                 return 5 * OneBillion * (1 + 2 * n * n);
             }
             else
             {
-                // Slightly steeper cubic growth after level 12
-                // Increased coefficient from 46.455 to ~58 for about 25% steeper curve
-                Decimal256 baseXp = 1215 * OneBillion;
-                long d = level - 12;
-                Decimal256 extraXp = 58m * OneBillion * d * d * d; // ~25% steeper than original
+                // Steep cubic growth starting from level 9
+                // Base XP at level 8 is 495B
+                Decimal256 baseXp = 495 * OneBillion;
+                long d = level - 8;
+                Decimal256 extraXp = 58m * OneBillion * d * d * d; // Cubic growth
                 return baseXp + extraXp;
             }
         }

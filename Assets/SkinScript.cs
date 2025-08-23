@@ -45,7 +45,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Orc)
         {
-            return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth at least 2 times");
+            return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth 2 times");
         }
         else if (animationName == SkinAnimation.Monster)
         {

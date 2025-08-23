@@ -23,7 +23,7 @@ public class BestiaryScript : MonoBehaviour
         foreach (var beastActor in _beastActors)
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beastActor.ActorType);
-            incomeBonus += isUnlocked ? idx + 1 : 0;
+            incomeBonus += isUnlocked ? (idx / 2) + 1 : 0;
             idx++;
         }
 
