@@ -45,7 +45,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Orc)
         {
-            return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth at least twice");
+            return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth at least 2 times");
         }
         else if (animationName == SkinAnimation.Monster)
         {
@@ -65,7 +65,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Wizard)
         {
-            return (list.Contains(Achieved.Rebirth3), "Wizard Earl: Rebirth at least three times");
+            return (list.Contains(Achieved.Rebirth3), "Wizard Earl: Rebirth 3 times");
         }
         else if (animationName == SkinAnimation.Zombie)
         {
@@ -82,6 +82,23 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.Voidgazer)
         {
             return (list.Contains(Achieved.VoidgazerTier), "Voidgazer Earl: Reach Voidgazer");
+        }
+
+        else if (animationName == SkinAnimation.UndeadBeauty)
+        {
+            return (list.Contains(Achieved.Rebirth8), "Undead Beauty Earl: Rebirth 8 times");
+        }
+        else if (animationName == SkinAnimation.HonorableKnight)
+        {
+            return (list.Contains(Achieved.Diamonds250), "Honorable Knight Earl: Have at least 250 diamonds");
+        }
+        else if (animationName == SkinAnimation.WellDressedOrc)
+        {
+            return (list.Contains(Achieved.Chest50), "Well-dressed Orc Earl: Loot 50 chests");
+        }
+        else if (animationName == SkinAnimation.Alien)
+        {
+            return (list.Contains(Achieved.ChainZap200), "Alien Earl: Reach Chain Zapping level 200");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

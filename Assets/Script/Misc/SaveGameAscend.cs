@@ -22,6 +22,7 @@
         newSave.BoughtPassiveX2_1 = oldSave.BoughtPassiveX2_1;
         newSave.BoughtPassiveX2_2 = oldSave.BoughtPassiveX2_2;
         newSave.BoughtPassiveX4_1 = oldSave.BoughtPassiveX4_1;
+        newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
 
         // Settings
         newSave.Version = oldSave.Version;

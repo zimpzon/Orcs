@@ -17,6 +17,11 @@ public enum Achieved
     Diamonds10,
     VoidgazerTier,
     Arena5000,
+
+    Diamonds250,
+    Rebirth8,
+    ChainZap200,
+    Chest50,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -36,5 +41,10 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckChest25(list);
         AchievementChecks.CheckDiamonds10(list);
         AchievementChecks.CheckVoidgazer(list);
+
+        AchievementChecks.CheckChainZap200(list);
+        AchievementChecks.CheckChest50(list);
+        AchievementChecks.CheckRebirth8(list);
+        AchievementChecks.CheckDiamonds250(list);
     }
 }

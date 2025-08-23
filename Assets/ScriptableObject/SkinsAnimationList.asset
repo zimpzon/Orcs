@@ -156,3 +156,47 @@ MonoBehaviour:
     - {fileID: 175450105943221067, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
     - {fileID: -6278639034106953364, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
     - {fileID: -4083139222234349889, guid: ac83414f81f61ea45bf207ab344ffaba, type: 3}
+  - Animation: 14
+    IdleSprites:
+    - {fileID: 4352903653162319181, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: -303100055126217913, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: -7797169826659603928, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: 5814824131445322177, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    RunSprites:
+    - {fileID: -2669831078205038458, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: -5774281731119277372, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: -1137029020, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+    - {fileID: 889406199, guid: 039886c365af26d47b5a9fafd4381d61, type: 3}
+  - Animation: 15
+    IdleSprites:
+    - {fileID: 5180927692961508376, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: -4622377032823119159, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: -4622377032823119159, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: -5029181301373766226, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    RunSprites:
+    - {fileID: -644400015585346353, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: -6325239190889689525, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: 8928551030478709285, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+    - {fileID: -3933158920655382405, guid: 333732860855a22468b3e332f6fa454d, type: 3}
+  - Animation: 16
+    IdleSprites:
+    - {fileID: -3620427700229666998, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: -6064842696636490183, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: 568312574599528830, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: 5616865980521103154, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    RunSprites:
+    - {fileID: 1385746534647897815, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: 8333473628666599317, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: -975394636615239872, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+    - {fileID: 3984287553000486061, guid: c708aeffb35d5bf489760828494928ce, type: 3}
+  - Animation: 17
+    IdleSprites:
+    - {fileID: -83875257576286418, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: 4926116713302506239, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: 4968983223810529655, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: -2335805321657799261, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    RunSprites:
+    - {fileID: -604943542203155985, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: -5877810104205674546, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: 8033426469747775736, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+    - {fileID: 5397495879473899627, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}

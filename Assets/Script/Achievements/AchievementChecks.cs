@@ -43,6 +43,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckChainZap200(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.ChainZap200)) return;
+
+            if (SaveGame.Members.LevelClickDamage >= 200)
+            {
+                list.Add(Achieved.ChainZap200);
+                NewAchieved(Achieved.ChainZap200);
+            }
+        }
+
         public static void CheckArena500(List<Achieved> list)
         {
             if (list.Contains(Achieved.Arena500)) return;
@@ -98,6 +109,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckRebirth8(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Rebirth8)) return;
+
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 8)
+            {
+                list.Add(Achieved.Rebirth8);
+                NewAchieved(Achieved.Rebirth8);
+            }
+        }
+
         public static void CheckMystery25(List<Achieved> list)
         {
             if (list.Contains(Achieved.Mystery25)) return;
@@ -120,6 +142,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckChest50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Chest50)) return;
+
+            if (SaveGame.Members.ChestsCollected >= 50)
+            {
+                list.Add(Achieved.Chest50);
+                NewAchieved(Achieved.Chest50);
+            }
+        }
+
         public static void CheckDiamonds10(List<Achieved> list)
         {
             if (list.Contains(Achieved.Diamonds10)) return;
@@ -128,6 +161,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Diamonds10);
                 NewAchieved(Achieved.Diamonds10);
+            }
+        }
+
+        public static void CheckDiamonds250(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds250)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 250)
+            {
+                list.Add(Achieved.Diamonds250);
+                NewAchieved(Achieved.Diamonds250);
             }
         }
 
