@@ -24,11 +24,11 @@ namespace Assets.Script.Upgrades
         public static Decimal256 InitialPrice_Hoarder =                   2_100_000_000;
         public static Decimal256 InitialPrice_ZapDamage =                20_500_000_000;
         public static Decimal256 InitialPrice_MoneyMaker =              210_000_000_000;
-        public static Decimal256 InitialPrice_DaggerMaster =          1_900_000_000_000;
-        public static Decimal256 InitialPrice_NecroNinja =           14_100_000_000_000;
-        public static Decimal256 InitialPrice_SkullCrusher =        260_100_000_000_000;
-        public static Decimal256 InitialPrice_ChestMaster =       5_100_100_000_000_000;
-        public static Decimal256 InitialPrice_Voidgazer =       220_000_000_000_000_000;
+        public static Decimal256 InitialPrice_DaggerMaster =          2_300_000_000_000;
+        public static Decimal256 InitialPrice_NecroNinja =           21_100_000_000_000;
+        public static Decimal256 InitialPrice_SkullCrusher =        330_100_000_000_000;
+        public static Decimal256 InitialPrice_ChestMaster =       6_500_100_000_000_000;
+        public static Decimal256 InitialPrice_Voidgazer =       250_000_000_000_000_000;
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
 

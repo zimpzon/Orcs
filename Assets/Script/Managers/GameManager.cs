@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour
     // 31: three new enemies, halved beast unlock xp
     // 32: bugfix: mystery and chest collections did not carry over rebirth
     // 33: fixed bug where Arena has gotten way too easy
-    public const int MinorVersion = 33;
+    // 34: increased high level upgrade prices
+    public const int MinorVersion = 34;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
