@@ -1,4 +1,3 @@
-using Assets.Script;
 using System.Collections;
 using UnityEngine;
 
@@ -55,8 +54,8 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = scale;
         basic.ParticleSystem = Particles.I.FireballTail;
-        basic.ParticleEmitCount = 5;
-        basic.ParticleEmitDelay = 0.05f;
+        basic.ParticleEmitCount = 2;
+        basic.ParticleEmitDelay = 0.02f;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
         basic.OnEndOfLife = OnProjectileEndOfLife;

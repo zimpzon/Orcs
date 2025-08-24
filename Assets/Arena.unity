@@ -79086,11 +79086,11 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
   NoiseModule:
-    enabled: 0
+    enabled: 1
     strength:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.99
+      scalar: 0.32
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -79247,16 +79247,16 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     separateAxes: 0
-    frequency: 0.07
+    frequency: 0.32
     damping: 0
-    octaves: 2
-    octaveMultiplier: 1
-    octaveScale: 1
+    octaves: 4
+    octaveMultiplier: 0.64
+    octaveScale: 2.14
     quality: 1
     scrollSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.88
+      scalar: 0.86
       minScalar: 0
       maxCurve:
         serializedVersion: 2
