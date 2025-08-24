@@ -61,12 +61,6 @@ public static class EnemySpawner
         {
             enemies.Clear();
 
-            // Uncomment for testing specific enemies
-            //var tester = SpawnUtil.Single(ActorTypeEnum.IronMask, Vector2.zero).First();
-            //tester.BaseHp = EnemyTypes.First(e => e.Type == ActorTypeEnum.Fez).ScaledHp;
-            //enemies.Add(tester);
-
-
             long remainingHp = hpTarget;
             long totalEnemies = 0;
             ActorTypeEnum? circleType = null;
@@ -93,21 +87,66 @@ public static class EnemySpawner
                     circleType = eligibleTypes[UnityEngine.Random.Range(0, eligibleTypes.Count)];
             }
 
-            // Try to spawn enemies from strongest to weakest
-            foreach (var enemyType in EnemyTypes)
+            // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (60% chance minimum)
+            bool shouldSpawnStrongest = UnityEngine.Random.value < 0.6f; // 60% guarantee
+            if (shouldSpawnStrongest)
             {
-                if (totalEnemies >= MaxEnemies) break;
+                // Find the strongest enemy we can actually afford
+                EnemyType? strongestAffordable = null;
+                foreach (var enemyType in EnemyTypes)
+                {
+                    long effectiveHp = enemyType.ScaledHp * hpMultiplier;
+                    if (remainingHp >= effectiveHp)
+                    {
+                        strongestAffordable = enemyType;
+                        break; // First one we can afford is the strongest (array is sorted strongest to weakest)
+                    }
+                }
 
-                long effectiveHp = enemyType.ScaledHp * hpMultiplier;
-                if (remainingHp < effectiveHp) continue;
+                if (strongestAffordable.HasValue)
+                {
+                    var enemyType = strongestAffordable.Value;
+                    long effectiveHp = enemyType.ScaledHp * hpMultiplier;
+                    long maxCount = Math.Min(remainingHp / effectiveHp, MaxEnemies - totalEnemies);
+                    long count = Math.Min(maxCount, UnityEngine.Random.Range(1, 4));
 
+                    if (count > 0)
+                    {
+                        bool useCircle = circleType == enemyType.Type && count > 5;
+                        SpawnEnemies(enemies, enemyType.Type, (int)count, effectiveHp, useCircle);
+                        remainingHp -= count * effectiveHp;
+                        totalEnemies += count;
+                    }
+                }
+            }
+
+            // PHASE 2: Fill remaining budget with weighted selection
+            while (remainingHp > 0 && totalEnemies < MaxEnemies)
+            {
+                var availableTypes = EnemyTypes.Where(e => e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
+                if (availableTypes.Length == 0) break;
+
+                // Create weights that heavily favor stronger enemies (exponential bias)
+                var weights = new float[availableTypes.Length];
+                for (int i = 0; i < availableTypes.Length; i++)
+                {
+                    // Find the original index in EnemyTypes array to get proper strength ordering
+                    int originalIndex = Array.FindIndex(EnemyTypes, e => e.Type == availableTypes[i].Type);
+                    // Lower index = stronger enemy, exponentially higher weight
+                    weights[i] = Mathf.Pow(2f, EnemyTypes.Length - originalIndex);
+                }
+
+                var selectedType = WeightedRandomSelect(availableTypes, weights);
+                long effectiveHp = selectedType.ScaledHp * hpMultiplier;
+
+                // Spawn 1-3 of the selected type
                 long maxCount = Math.Min(remainingHp / effectiveHp, MaxEnemies - totalEnemies);
-                long count = Math.Max(0, maxCount - UnityEngine.Random.Range(0, 2));
+                long count = Math.Min(maxCount, UnityEngine.Random.Range(1, 4));
 
                 if (count > 0)
                 {
-                    bool useCircle = circleType == enemyType.Type && count > 5;
-                    SpawnEnemies(enemies, enemyType.Type, (int)count, effectiveHp, useCircle);
+                    bool useCircle = circleType == selectedType.Type && count > 5;
+                    SpawnEnemies(enemies, selectedType.Type, (int)count, effectiveHp, useCircle);
                     remainingHp -= count * effectiveHp;
                     totalEnemies += count;
                 }
@@ -129,6 +168,22 @@ public static class EnemySpawner
         }
 
         return enemies;
+    }
+
+    private static EnemyType WeightedRandomSelect(EnemyType[] types, float[] weights)
+    {
+        float totalWeight = weights.Sum();
+        float randomValue = UnityEngine.Random.value * totalWeight;
+
+        float currentWeight = 0;
+        for (int i = 0; i < types.Length; i++)
+        {
+            currentWeight += weights[i];
+            if (randomValue <= currentWeight)
+                return types[i];
+        }
+
+        return types.Last(); // Fallback
     }
 
     private static long CalculateHpTarget(long level)

@@ -16,7 +16,7 @@ public enum Achieved
     Chest25,
     Diamonds10,
     VoidgazerTier,
-    Arena5000,
+    Arena1500,
 
     Diamonds250,
     Rebirth8,
@@ -34,7 +34,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckSkullCrusher5(list);
         AchievementChecks.CheckArena500(list);
         AchievementChecks.CheckArena1000(list);
-        AchievementChecks.CheckArena5000(list);
+        AchievementChecks.CheckArena1500(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckMystery25(list);

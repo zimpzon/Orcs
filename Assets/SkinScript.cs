@@ -77,7 +77,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.KaratEarl)
         {
-            return (list.Contains(Achieved.Arena5000), "KaratEarl: Reach Arena level 5000");
+            return (list.Contains(Achieved.Arena1500), "KaratEarl: Reach Arena level 1500");
         }
         else if (animationName == SkinAnimation.Voidgazer)
         {

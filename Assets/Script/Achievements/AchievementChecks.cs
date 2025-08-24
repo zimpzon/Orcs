@@ -76,14 +76,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckArena5000(List<Achieved> list)
+        public static void CheckArena1500(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Arena5000)) return;
+            if (list.Contains(Achieved.Arena1500)) return;
 
-            if (SaveGame.Members.ArenaLevel >= 5000)
+            if (SaveGame.Members.ArenaLevel >= 1500)
             {
-                list.Add(Achieved.Arena5000);
-                NewAchieved(Achieved.Arena5000);
+                list.Add(Achieved.Arena1500);
+                NewAchieved(Achieved.Arena1500);
             }
         }
 

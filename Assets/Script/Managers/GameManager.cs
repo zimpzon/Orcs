@@ -48,7 +48,8 @@ public class GameManager : MonoBehaviour
     // 30: fixes
     // 31: three new enemies, halved beast unlock xp
     // 32: bugfix: mystery and chest collections did not carry over rebirth
-    public const int MinorVersion = 30;
+    // 33: fixed bug where Arena has gotten way too easy
+    public const int MinorVersion = 33;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -342,9 +343,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - balancing: Arena had gotten way too easy\n" +
             " - added three new enemies\n" +
-            " - added four new skins\n" +
-            " - added new upgrade tier");
+            " - added four new skins");
 
         Decimal256 v1 = 1_234_456;
         Decimal256 v2 = 5_000_000;
