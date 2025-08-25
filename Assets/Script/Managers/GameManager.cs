@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
     // 32: bugfix: mystery and chest collections did not carry over rebirth
     // 33: fixed bug where Arena has gotten way too easy
     // 34: increased high level upgrade prices
-    public const int MinorVersion = 34;
+    // 35: arena a bit harder, again
+    public const int MinorVersion = 35;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

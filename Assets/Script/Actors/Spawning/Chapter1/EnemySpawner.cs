@@ -87,8 +87,8 @@ public static class EnemySpawner
                     circleType = eligibleTypes[UnityEngine.Random.Range(0, eligibleTypes.Count)];
             }
 
-            // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (60% chance minimum)
-            bool shouldSpawnStrongest = UnityEngine.Random.value < 0.6f; // 60% guarantee
+            // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (85% chance - increased from 60%)
+            bool shouldSpawnStrongest = UnityEngine.Random.value < 0.85f;
             if (shouldSpawnStrongest)
             {
                 // Find the strongest enemy we can actually afford
@@ -108,7 +108,8 @@ public static class EnemySpawner
                     var enemyType = strongestAffordable.Value;
                     long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                     long maxCount = Math.Min(remainingHp / effectiveHp, MaxEnemies - totalEnemies);
-                    long count = Math.Min(maxCount, UnityEngine.Random.Range(1, 4));
+                    // Spawn more of the strongest enemy (1-6 instead of 1-3)
+                    long count = Math.Min(maxCount, UnityEngine.Random.Range(1, 7));
 
                     if (count > 0)
                     {
@@ -120,28 +121,39 @@ public static class EnemySpawner
                 }
             }
 
-            // PHASE 2: Fill remaining budget with weighted selection
+            // PHASE 2: Fill remaining budget with heavily weighted selection toward strong enemies
             while (remainingHp > 0 && totalEnemies < MaxEnemies)
             {
                 var availableTypes = EnemyTypes.Where(e => e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
                 if (availableTypes.Length == 0) break;
 
-                // Create weights that heavily favor stronger enemies (exponential bias)
+                // Create weights that extremely favor stronger enemies (much higher exponential bias)
                 var weights = new float[availableTypes.Length];
                 for (int i = 0; i < availableTypes.Length; i++)
                 {
                     // Find the original index in EnemyTypes array to get proper strength ordering
                     int originalIndex = Array.FindIndex(EnemyTypes, e => e.Type == availableTypes[i].Type);
-                    // Lower index = stronger enemy, exponentially higher weight
-                    weights[i] = Mathf.Pow(2f, EnemyTypes.Length - originalIndex);
+                    // Lower index = stronger enemy, much higher exponential weight (increased from 2f to 4f)
+                    weights[i] = Mathf.Pow(4f, EnemyTypes.Length - originalIndex);
                 }
 
                 var selectedType = WeightedRandomSelect(availableTypes, weights);
                 long effectiveHp = selectedType.ScaledHp * hpMultiplier;
 
-                // Spawn 1-3 of the selected type
+                // Prefer spawning more of stronger enemies
                 long maxCount = Math.Min(remainingHp / effectiveHp, MaxEnemies - totalEnemies);
-                long count = Math.Min(maxCount, UnityEngine.Random.Range(1, 4));
+                int selectedIndex = Array.FindIndex(EnemyTypes, e => e.Type == selectedType.Type);
+
+                // If it's a top-tier enemy (first 8 in the list), spawn more of them
+                long count;
+                if (selectedIndex < 8) // Top 8 strongest enemies
+                {
+                    count = Math.Min(maxCount, UnityEngine.Random.Range(2, 6)); // 2-5 instead of 1-3
+                }
+                else
+                {
+                    count = Math.Min(maxCount, UnityEngine.Random.Range(1, 3)); // Keep weaker enemies at 1-2
+                }
 
                 if (count > 0)
                 {
