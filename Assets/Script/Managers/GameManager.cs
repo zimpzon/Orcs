@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour
     // 33: fixed bug where Arena has gotten way too easy
     // 34: increased high level upgrade prices
     // 35: arena a bit harder, again
-    public const int MinorVersion = 35;
+    // 36: style changes
+    public const int MinorVersion = 36;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

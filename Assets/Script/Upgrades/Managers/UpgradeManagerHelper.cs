@@ -33,9 +33,9 @@
         }
 
         public static string GetColorLevelX2(bool x2LevelMet)
-            => x2LevelMet ? "green" : "#DF3333";
+            => x2LevelMet ? "green" : "#DFA0A0";
 
         public static string GetColorPriceX2(bool x2PriceMet)
-            => x2PriceMet ? "green" : "#DF3333";
+            => x2PriceMet ? "green" : "#DFA0A0";
     }
 }

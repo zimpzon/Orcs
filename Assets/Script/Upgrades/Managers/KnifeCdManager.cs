@@ -46,7 +46,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
             sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=red>max reached" : $"{cdReductionNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DFA0A0>max reached" : $"{cdReductionNext}%")}</color>");
 
             return sb.ToString();
         }
