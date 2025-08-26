@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
     public bool UnlockAllHeroes;
 
     public Color[] xpColors = new Color[] { };
+    public TMP_FontAsset FontDefaultFloatingText;
+    public TMP_FontAsset FontTarragon;
 
     public BoxCollider2D ArenaBoundsCollider;
     public Vector2 ArenaCenter => ArenaBoundsCollider.bounds.center;
@@ -764,11 +766,13 @@ public class GameManager : MonoBehaviour
 
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
-                    $"Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
+                    $"<size=+2>Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
                     timeToLive: 5.0f,
-                    fontStyle: TMPro.FontStyles.Bold);
+                    fadeTime: 0.5f,
+                    fontStyle: TMPro.FontStyles.Bold,
+                    FontTarragon);
 
                 ThrowGoldSplit(knifeThrownBonus, position);
             }
@@ -785,11 +789,13 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<color=#f2de05>{Format256.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> dps), +<color=#f2de05>{Format256.Format(goldWon)}</color> gold",
+            $"<size=+2><color=#f2de05>{Format256.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> dps), +<color=#f2de05>{Format256.Format(goldWon)}</color> gold",
             new Color(0.8f, 0.8f, 0.8f),
             speed: 0.05f,
             timeToLive: 5.0f,
-            fontStyle: TMPro.FontStyles.Bold);
+            fadeTime: 0.5f,
+            fontStyle: TMPro.FontStyles.Bold,
+            FontTarragon);
     }
 
     void OnLastEnemyKilled(ActorBase lastEnemy)

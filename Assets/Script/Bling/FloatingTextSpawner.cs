@@ -16,11 +16,20 @@ public class FloatingTextSpawner : MonoBehaviour
         textPool_ = GetComponentInChildren<GameObjectPool>();
     }
 
-    public void Spawn(Vector3 position, string text, Color color, float speed = 1.0f, float timeToLive = 2.0f, FontStyles fontStyle = FontStyles.Bold, bool useQueue = false)
+    public void Spawn(
+        Vector3 position,
+        string text,
+        Color color,
+        float speed = 1.0f,
+        float timeToLive = 2.0f,
+        float fadeTime = 0.0f,
+        FontStyles fontStyle = FontStyles.Bold,
+        TMP_FontAsset fontAsset = null,
+        bool useQueue = false)
     {
         var go = textPool_.GetFromPool();
         var script = go.GetComponent<FloatingTextScript>();
-        script.Init(textPool_, position, text, color, speed, timeToLive, fontStyle);
+        script.Init(textPool_, position, text, color, speed, timeToLive, fadeTime, fontStyle, fontAsset);
         if (useQueue)
         {
             go.SetActive(false);

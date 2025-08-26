@@ -124,6 +124,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 Color.white,
                 speed: 0.1f,
                 timeToLive: 5.0f,
+                fadeTime: 0.5f,
                 fontStyle: TMPro.FontStyles.Bold);
         }
     }
