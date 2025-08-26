@@ -765,7 +765,7 @@ public class GameManager : MonoBehaviour
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.5f,
                     $"Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
-                    Color.white,
+                    new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
                     timeToLive: 5.0f,
                     fontStyle: TMPro.FontStyles.Bold);
@@ -785,8 +785,8 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<color=#f2de05>{Format256.Format(damageDone)}</color> dam in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> DPS), +<color=#f2de05>{Format256.Format(goldWon)}</color>G",
-            Color.white,
+            $"<color=#f2de05>{Format256.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> dps), +<color=#f2de05>{Format256.Format(goldWon)}</color> gold",
+            new Color(0.8f, 0.8f, 0.8f),
             speed: 0.05f,
             timeToLive: 5.0f,
             fontStyle: TMPro.FontStyles.Bold);
