@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Chain Zapping</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Chain Zapping</color></b></size>");
             sb.AppendLine("<color=#dddddd>Zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");

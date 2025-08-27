@@ -23243,8 +23243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aaaa2b3a5e4c3f49824c48ca66464a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ColorPassiveValues: {r: 0.2509804, g: 0.8784314, b: 0.8156863, a: 1}
-  ColorArenaValues: {r: 0.4862745, g: 0.9882353, b: 0, a: 1}
+  ColorPassiveValues: {r: 0.22745098, g: 0.79607844, b: 0.7372549, a: 1}
+  ColorArenaValues: {r: 0.5529412, g: 0.74509805, b: 0.29803923, a: 1}
   ClickDamage: {fileID: 1703837212}
   KnifeDamage: {fileID: 1988338383}
   GoldPerRound: {fileID: 1705899016}

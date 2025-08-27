@@ -38,7 +38,7 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.Helmet, "The Metalhead" },
         { ActorTypeEnum.Swede, "The Multi-level Marketer" },
         { ActorTypeEnum.PigHat, "Bigmouth" },
-        { ActorTypeEnum.FreakyWiz, "The Vampire Wizard Slug" },
+        { ActorTypeEnum.FreakyWiz, "The Scope Creep" },
         { ActorTypeEnum.UndeadPirate, "The Undead Pirate" },
         { ActorTypeEnum.WannabeNecro, "The Wannabe Necromancer" },
         { ActorTypeEnum.Karateeth, "Karateeth" },

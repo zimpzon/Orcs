@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Master Wizard</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Master Wizard</color></b></size>");
             sb.AppendLine("<color=#dddddd>Two more fireballs!");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");

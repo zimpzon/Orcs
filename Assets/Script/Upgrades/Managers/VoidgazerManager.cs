@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Voidgazer</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Voidgazer</color></b></size>");
             sb.AppendLine("<color=#dddddd>Unlocks the skin Voidgazer.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");

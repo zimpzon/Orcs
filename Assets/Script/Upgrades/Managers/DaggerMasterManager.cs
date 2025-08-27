@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Dagger Master</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Dagger Master</color></b></size>");
             sb.AppendLine("<color=#dddddd>Throw 3 daggers instead of one. All dagger bonuses apply.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");

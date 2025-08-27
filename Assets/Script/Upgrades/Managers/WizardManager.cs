@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Wizard</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Wizard</color></b></size>");
             sb.AppendLine("<color=#dddddd>Hurls powerful fireballs that deal fire damage equal to Zap damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");

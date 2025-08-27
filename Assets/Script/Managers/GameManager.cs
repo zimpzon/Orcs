@@ -766,7 +766,7 @@ public class GameManager : MonoBehaviour
                 SaveGame.Members.TotalIncomeKnifeThrow += knifeThrownBonus;
 
                 FloatingTextSpawner.Instance.Spawn(
-                    endRoundGoldSummaryPos + Vector2.down * 0.5f,
+                    endRoundGoldSummaryPos + Vector2.down * 0.7f,
                     $"<size=+2>Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,

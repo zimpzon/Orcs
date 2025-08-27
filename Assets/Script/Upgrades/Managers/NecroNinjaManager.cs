@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=yellow>Necro Ninja</color></b></size>");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Necro Ninja</color></b></size>");
             sb.AppendLine("<color=#dddddd>Skulls will furiously seek out nearby enemies.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
