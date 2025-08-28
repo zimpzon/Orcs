@@ -83,7 +83,6 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.VoidgazerTier), "Voidgazer Earl: Reach Voidgazer");
         }
-
         else if (animationName == SkinAnimation.UndeadBeauty)
         {
             return (list.Contains(Achieved.Rebirth8), "Undead Beauty Earl: Rebirth 8 times");
@@ -99,6 +98,18 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.Alien)
         {
             return (list.Contains(Achieved.ChainZap200), "Alien Earl: Reach Chain Zapping level 200");
+        }
+        else if (animationName == SkinAnimation.NinjaEarl)
+        {
+            return (list.Contains(Achieved.Diamonds50), "Ninja Earl: Have at least 50 diamonds");
+        }
+        else if (animationName == SkinAnimation.SecretiveEarl)
+        {
+            return (list.Contains(Achieved.X2_50), "Secretive Earl: Buy 50 X2 upgrades");
+        }
+        else if (animationName == SkinAnimation.SkaterEarl)
+        {
+            return (list.Contains(Achieved.X2_25), "Skater Earl: Buy 25 X2 upgrades");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

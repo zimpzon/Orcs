@@ -12,6 +12,7 @@ public class SettingsStatsScript : MonoBehaviour
         var sb = new StringBuilder();
         sb.AppendLine($"Passive income: {(long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100)}%");
         sb.AppendLine();
+        sb.AppendLine($"X2 multiplier: {1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier:0.00}");
         sb.AppendLine($"Bestiary multiplier: {1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses:0.00}");
         sb.AppendLine($"Bought 1% multiplier: {1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses:0.00}");
         sb.AppendLine($"Mystery multiplier: {PlayerUpgrades.Data.PassiveIncomeTempMultiplier:0.00}");

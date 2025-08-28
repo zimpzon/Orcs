@@ -200,3 +200,36 @@ MonoBehaviour:
     - {fileID: -5877810104205674546, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
     - {fileID: 8033426469747775736, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
     - {fileID: 5397495879473899627, guid: e3b70e9df237bf44bb26b042e2480665, type: 3}
+  - Animation: 18
+    IdleSprites:
+    - {fileID: -7202177798192206280, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: 771386450017125174, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: -3958142430209304317, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: 4192332997659522930, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    RunSprites:
+    - {fileID: 8445712861350847285, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: -6871685264575434877, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: -1571938120123032066, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+    - {fileID: 280134685819663049, guid: 96a31643a1501fc45b769382ce3fb76f, type: 3}
+  - Animation: 19
+    IdleSprites:
+    - {fileID: 2353880452671979977, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -1732446164458590131, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -1230968788445707340, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -2876418446786087676, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    RunSprites:
+    - {fileID: 8403545445271492723, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -4801944177042467472, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -4127902774741762610, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+    - {fileID: -7115221346783189063, guid: 539f7a18f4cd83740b9122e716748337, type: 3}
+  - Animation: 20
+    IdleSprites:
+    - {fileID: -898038345451661729, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: -7782446604776664803, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: 7425415651945795926, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: -5609568299307725893, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    RunSprites:
+    - {fileID: 7136155658244141072, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: 255655476775005445, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: -1822086629595566830, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}
+    - {fileID: 7873052122375947056, guid: c499f10c4d1bc0b4e81d5195d44dbbb2, type: 3}

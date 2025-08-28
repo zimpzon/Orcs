@@ -482,6 +482,32 @@ public class UpgradeManager : MonoBehaviour
         VoidgazerManager.UpdatePlayerUpgrades();
     }
 
+    void UpdateNumberOfX2Bought()
+    {
+        long total = 0;
+        total += SaveGame.Members.LevelClickDamageX2;
+        total += SaveGame.Members.LevelKnifeDamageX2;
+        total += SaveGame.Members.LevelMoneyPerGoldX2;
+        total += SaveGame.Members.LevelKnifeCdX2;
+        total += SaveGame.Members.LevelWitchDoctorX2;
+        total += SaveGame.Members.LevelGoldPerKnifeThrownX2;
+        total += SaveGame.Members.LevelWizardX2;
+        total += SaveGame.Members.LevelHoarderX2;
+        total += SaveGame.Members.LevelZapDamageX2;
+        total += SaveGame.Members.LevelMoneyMakerX2;
+        total += SaveGame.Members.LevelDaggerMasterX2;
+        total += SaveGame.Members.LevelNecroNinjaX2;
+        total += SaveGame.Members.LevelSkullCrusherX2;
+        total += SaveGame.Members.LevelChestMasterX2;
+        total += SaveGame.Members.LevelVoidgazerX2;
+        PlayerUpgrades.Data.NumberOfX2Bought = total;
+
+        const float BonusPerRank = 0.1f;
+        long bought = PlayerUpgrades.Data.NumberOfX2Bought;
+        long bonuses = bought / 5;
+        PlayerUpgrades.Data.PassiveIncomeX2Multiplier = BonusPerRank * bonuses;
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -490,6 +516,7 @@ public class UpgradeManager : MonoBehaviour
     private void Update()
     {
         UpdatePlayerUpgrades();
+        UpdateNumberOfX2Bought();
         UpdateUpgradeUi();
     }
 }

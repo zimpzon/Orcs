@@ -164,6 +164,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckDiamonds50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds50)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 50)
+            {
+                list.Add(Achieved.Diamonds50);
+                NewAchieved(Achieved.Diamonds50);
+            }
+        }
+
         public static void CheckDiamonds250(List<Achieved> list)
         {
             if (list.Contains(Achieved.Diamonds250)) return;
@@ -183,6 +194,28 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.VoidgazerTier);
                 NewAchieved(Achieved.VoidgazerTier);
+            }
+        }
+
+        public static void CheckX2_25(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.X2_25)) return;
+
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 25)
+            {
+                list.Add(Achieved.X2_25);
+                NewAchieved(Achieved.X2_25);
+            }
+        }
+
+        public static void CheckX2_50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.X2_50)) return;
+
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 50)
+            {
+                list.Add(Achieved.X2_50);
+                NewAchieved(Achieved.X2_50);
             }
         }
     }

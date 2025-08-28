@@ -19,6 +19,9 @@ public class UpgradeData
     public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
 
     // passive income
+    public long NumberOfX2Bought = 0;
+    public float PassiveIncomeX2Multiplier = 0.0f;
+
     public float PassiveIncomeTempMultiplier = 1.0f;
     public float PassiveIncomeAscendMultiplier = 1.0f;
 
@@ -29,6 +32,7 @@ public class UpgradeData
     public float PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
         PassiveIncomeAscendMultiplier *
+        (1.0f + PassiveIncomeX2Multiplier) *
         (1.0f + PassiveIncomePercentageBonuses) *
         (1.0f + PassiveIncomeBestiaryBonuses) *
         (1.0f + PassiveIncomeDiamondMultiplier);

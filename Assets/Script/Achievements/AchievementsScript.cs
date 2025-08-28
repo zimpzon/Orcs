@@ -22,6 +22,9 @@ public enum Achieved
     Rebirth8,
     ChainZap200,
     Chest50,
+    X2_25,
+    X2_50,
+    Diamonds50,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -41,10 +44,12 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckChest25(list);
         AchievementChecks.CheckDiamonds10(list);
         AchievementChecks.CheckVoidgazer(list);
-
         AchievementChecks.CheckChainZap200(list);
         AchievementChecks.CheckChest50(list);
         AchievementChecks.CheckRebirth8(list);
         AchievementChecks.CheckDiamonds250(list);
+        AchievementChecks.CheckX2_25(list);
+        AchievementChecks.CheckX2_50(list);
+        AchievementChecks.CheckDiamonds50(list);
     }
 }
