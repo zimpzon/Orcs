@@ -259,6 +259,6 @@ MonoBehaviour:
   XpCount: 1
   GoldCountMin: 0
   GoldCountMax: 0
-  ActorType: 2
+  ActorType: 4
   BaseHp: 1000
   UseSpawnParticles: 0

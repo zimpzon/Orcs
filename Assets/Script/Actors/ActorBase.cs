@@ -13,11 +13,9 @@ public enum ActorForcedTargetType { Absolute, Direction };
 public enum ActorTypeEnum
 {
     // REMEMBER to update names just below
-    None, Any, OgreLarge, OgreSmall, BatWhite, HeroChaser, Raven, Red, Green, Pigtail,
+    None, Any, BatWhite, OgreSmall, OgreLarge, HeroChaser, Raven, Red, Green, Pigtail,
     Pig, White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro, Karateeth,
     Snout, IronMask, BrainZombie, AfroOrc,
-
-
 };
 
 public class ActorBase : MonoBehaviour
