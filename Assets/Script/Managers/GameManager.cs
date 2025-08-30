@@ -54,7 +54,8 @@ public class GameManager : MonoBehaviour
     // 37: X2 bonuses
     // 38: 3 new skins
     // 39: updated away check
-    public const int MinorVersion = 39;
+    // 40: refactored Decimal256 to use double instead of decimal for temp values
+    public const int MinorVersion = 40;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1428,7 +1429,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
         {
-            ResetAllProgress(ascend: true);
+            SaveGame.Members.LevelClickDamage += 50;
         }
 
         //if (Input.GetKeyDown(KeyCode.F4))

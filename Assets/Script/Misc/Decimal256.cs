@@ -6,7 +6,8 @@ using UnityEngine;
 public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISerializationCallbackReceiver
 {
     private static readonly BigInteger MaxValue = (BigInteger.One << 256) - 1;
-    private static readonly BigInteger ScaleFactor = BigInteger.Pow(10, 4); // 4 decimal places
+    private static readonly double ScaleFactorDouble = Math.Pow(10, 4); // 4 decimal places as double
+    private static readonly BigInteger ScaleFactor = new BigInteger(ScaleFactorDouble); // BigInteger version for calculations
 
     [System.NonSerialized]
     private BigInteger rawValue;
@@ -17,26 +18,26 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public Decimal256(decimal value)
     {
-        // Multiply first to preserve decimal places, then convert to BigInteger
-        rawValue = new BigInteger(value * (decimal)ScaleFactor);
+        // Convert decimal to double first, then scale
+        double doubleValue = (double)value;
+        rawValue = new BigInteger(doubleValue * ScaleFactorDouble);
         ValidateRange(rawValue);
         serializedValue = rawValue.ToString();
     }
 
     public Decimal256(float value)
     {
-        // Convert to decimal first, multiply to preserve precision, then convert to BigInteger
-        decimal decimalValue = (decimal)value;
-        rawValue = new BigInteger(decimalValue * (decimal)ScaleFactor);
+        // Convert to double, then scale
+        double doubleValue = (double)value;
+        rawValue = new BigInteger(doubleValue * ScaleFactorDouble);
         ValidateRange(rawValue);
         serializedValue = rawValue.ToString();
     }
 
     public Decimal256(double value)
     {
-        // Convert to decimal first, multiply to preserve precision, then convert to BigInteger
-        decimal decimalValue = (decimal)value;
-        rawValue = new BigInteger(decimalValue * (decimal)ScaleFactor);
+        // Scale the double value directly
+        rawValue = new BigInteger(value * ScaleFactorDouble);
         ValidateRange(rawValue);
         serializedValue = rawValue.ToString();
     }
@@ -52,7 +53,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     public static Decimal256 FromSerializedString(string serialized)
     {
         if (string.IsNullOrEmpty(serialized))
-            return new Decimal256(0m);
+            return new Decimal256(0.0);
 
         var parsed = BigInteger.Parse(serialized);
         return new Decimal256(parsed);
@@ -110,8 +111,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public void Multiply(float factor)
     {
-        // Convert float to decimal, multiply by scale factor to preserve precision, then multiply
-        decimal scaledFactor = (decimal)factor * (decimal)ScaleFactor;
+        // Use double for the multiplication to avoid overflow
+        double scaledFactor = (double)factor * ScaleFactorDouble;
         var result = rawValue * new BigInteger(scaledFactor) / ScaleFactor;
         ValidateRange(result);
         rawValue = result;
@@ -144,8 +145,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public static Decimal256 operator *(Decimal256 left, float right)
     {
-        // Convert float to decimal, multiply by scale factor to preserve precision, then multiply
-        decimal scaledRight = (decimal)right * (decimal)ScaleFactor;
+        // Use double for the multiplication to avoid overflow
+        double scaledRight = (double)right * ScaleFactorDouble;
         var result = left.rawValue * new BigInteger(scaledRight) / ScaleFactor;
         ValidateRange(result);
         return new Decimal256(result);
@@ -182,8 +183,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public static Decimal256 operator *(Decimal256 left, double right)
     {
-        // Convert double to decimal, multiply by scale factor to preserve precision, then multiply
-        decimal scaledRight = (decimal)right * (decimal)ScaleFactor;
+        // Use double arithmetic throughout to avoid overflow
+        double scaledRight = right * ScaleFactorDouble;
         var result = left.rawValue * new BigInteger(scaledRight) / ScaleFactor;
         ValidateRange(result);
         return new Decimal256(result);
@@ -201,7 +202,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public double ToDouble()
     {
-        return (double)rawValue / (double)ScaleFactor;
+        return (double)rawValue / ScaleFactorDouble;
     }
 
     public override string ToString()
@@ -210,7 +211,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         BigInteger fraction = rawValue % ScaleFactor;
 
         // Remove trailing zeros from fraction part
-        string fractionStr = fraction.ToString().PadLeft(18, '0').TrimEnd('0');
+        string fractionStr = fraction.ToString().PadLeft(4, '0').TrimEnd('0');
         if (string.IsNullOrEmpty(fractionStr))
             return whole.ToString();
 
@@ -219,8 +220,8 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
 
     public string ToString(int decimalPlaces)
     {
-        if (decimalPlaces < 0 || decimalPlaces > 18)
-            throw new ArgumentOutOfRangeException(nameof(decimalPlaces), "Decimal places must be between 0 and 18");
+        if (decimalPlaces < 0 || decimalPlaces > 4)
+            throw new ArgumentOutOfRangeException(nameof(decimalPlaces), "Decimal places must be between 0 and 4");
 
         BigInteger whole = rawValue / ScaleFactor;
         BigInteger fraction = rawValue % ScaleFactor;
@@ -228,7 +229,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         if (decimalPlaces == 0)
             return whole.ToString();
 
-        BigInteger divisor = BigInteger.Pow(10, 18 - decimalPlaces);
+        BigInteger divisor = BigInteger.Pow(10, 4 - decimalPlaces);
         BigInteger roundedFraction = fraction / divisor;
 
         string fractionStr = roundedFraction.ToString().PadLeft(decimalPlaces, '0');
@@ -252,11 +253,11 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         if (!BigInteger.TryParse(integerPart, out BigInteger whole))
             throw new FormatException("Invalid integer part.");
 
-        // Pad or truncate fraction part to 18 digits
-        if (fractionPart.Length > 18)
-            fractionPart = fractionPart.Substring(0, 18);
+        // Pad or truncate fraction part to 4 digits
+        if (fractionPart.Length > 4)
+            fractionPart = fractionPart.Substring(0, 4);
         else
-            fractionPart = fractionPart.PadRight(18, '0');
+            fractionPart = fractionPart.PadRight(4, '0');
 
         if (!BigInteger.TryParse(fractionPart, out BigInteger fraction))
             throw new FormatException("Invalid fraction part.");
@@ -288,6 +289,6 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     public static implicit operator Decimal256(decimal d) => new Decimal256(d);
     public static implicit operator Decimal256(float f) => new Decimal256(f);
     public static implicit operator Decimal256(double d) => new Decimal256(d);
-    public static implicit operator Decimal256(int i) => new Decimal256((decimal)i);
-    public static implicit operator Decimal256(long l) => new Decimal256((decimal)l);
+    public static implicit operator Decimal256(int i) => new Decimal256((double)i);
+    public static implicit operator Decimal256(long l) => new Decimal256((double)l);
 }
