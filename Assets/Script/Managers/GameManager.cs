@@ -4,7 +4,6 @@ using EZCameraShake;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -54,7 +53,8 @@ public class GameManager : MonoBehaviour
     // 36: style changes
     // 37: X2 bonuses
     // 38: 3 new skins
-    public const int MinorVersion = 38;
+    // 39: updated away check
+    public const int MinorVersion = 39;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -375,6 +375,8 @@ public class GameManager : MonoBehaviour
 
         while (true)
         {
+            PrepareForNewRound();
+
             UpdateMoneyText();
 
             TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
@@ -393,6 +395,8 @@ public class GameManager : MonoBehaviour
 
             AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.NewRound);
             yield return ShowInfoTextFlashy("ROUND START!");
+            if (GameState == State.Idle_RestartRound)
+                continue;
             
             foreach (var enemy in enemies)
             {
@@ -418,8 +422,6 @@ public class GameManager : MonoBehaviour
                 }
 
                 CheckZapping(ActorDamageSource.ChainZap);
-
-                RestartRoundIfWasAway();
 
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -833,7 +835,7 @@ public class GameManager : MonoBehaviour
             return;
 
         // Smooth scale: 1 coin at low amounts, 20 at 1000 or more
-        int coinCount = Mathf.Clamp(Mathf.RoundToInt(goldWon / 50f), 1, 20);
+        int coinCount = Mathf.Clamp(Mathf.RoundToInt(goldWon / 50f), 1, 10);
 
         long baseValue = goldWon / coinCount;
         long remainder = goldWon % coinCount;
@@ -1082,39 +1084,31 @@ public class GameManager : MonoBehaviour
 
     public float GetIncomeFactorPerFrame() => _deltaRealTime;
 
-    private static void ResetAwayTimestamp()
+    private void ResetAwayTimestamp()
     {
-        SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
+        _timeLastSeen = DateTime.MinValue;
     }
 
-    private static bool WasAway(int minSeconds, out TimeSpan awayTime)
+    DateTime _timeLastSeen = DateTime.MinValue;
+
+    private bool WasAway(int minSeconds, out TimeSpan awayTime)
     {
         awayTime = TimeSpan.Zero;
-
-        bool couldBeParsed = DateTime.TryParseExact(
-            SaveGame.Members.LastSeenUtcStr,
-            FormatTime.DateTimeSerializedFormat,
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out DateTime timeSinceLastSeenUtc);
-
-        if (!couldBeParsed)
+        if (_timeLastSeen == DateTime.MinValue)
         {
-            SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
+            _timeLastSeen = DateTime.UtcNow;
             return false;
         }
 
-        awayTime = DateTime.UtcNow - timeSinceLastSeenUtc;
+        awayTime = DateTime.UtcNow - _timeLastSeen;
+        _timeLastSeen = DateTime.UtcNow;
 
-        ResetAwayTimestamp();
-
-        return awayTime.TotalSeconds >= minSeconds;
+        return awayTime.TotalSeconds > minSeconds;
     }
 
     bool RestartRoundIfWasAway()
     {
-        //bool wasAway = WasAway(minSeconds: 2, out TimeSpan awayTime);
-        bool wasAway = WasAway(minSeconds: 60 * 2, out TimeSpan awayTime);
+        bool wasAway = WasAway(minSeconds: 1, out TimeSpan awayTime);
         if (wasAway)
         {
             Debug.Log($"was away for {awayTime}");
@@ -1124,7 +1118,6 @@ public class GameManager : MonoBehaviour
                 case State.Idle_Starting_Game:
                     break;
                 case State.Idle_PresentLevel:
-                    break;
                 case State.Idle_Fighting: // restart round if fighting
                     GameState = State.Idle_RestartRound;
                     break;
@@ -1356,6 +1349,7 @@ public class GameManager : MonoBehaviour
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.5f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
         GameTime += GameDeltaTime;
+        SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
 
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -1432,12 +1426,10 @@ public class GameManager : MonoBehaviour
             TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
         }
 
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    var closestEnemy = BlackboardScript.GetClosestEnemy(G.D.PlayerPos, radius: 20);
-        //    long damage = PlayerUpgrades.Data.EffectiveZapDamage;
-        //    Zapper.TryZapEnemy(G.D.PlayerPos, closestEnemy, damage, ActorDamageSource.ChainZap);
-        //}
+        if (Input.GetKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            ResetAllProgress(ascend: true);
+        }
 
         //if (Input.GetKeyDown(KeyCode.F4))
         //{
