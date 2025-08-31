@@ -315,7 +315,7 @@ public class PlayerScript : MonoBehaviour
     long accumulatedCount = 0;
     double lastAccumulatedAdd;
 
-    public void OnGoldPickedUp(bool isLargeCoin, long value)
+    public void OnGoldPickedUp(bool isLargeCoin, double value)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volumeScale: 0.7f, pitch: pitch);

@@ -5,7 +5,7 @@ public enum AutoPickUpType { Money, Xp, }
 public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
 {
     public AutoPickUpType Type;
-    public long Value = 1;
+    public double Value = 1;
     float PickupDistance = 0.2f;
     float AttractPower = 22.0f;
     float ThrowForce = 5.0f;
@@ -104,13 +104,13 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
             }
             else if (Type == AutoPickUpType.Xp)
             {
-                float t = 1 - ((GameManager.Instance.xpToLevel - GameManager.Instance.currentXp) / GameManager.Instance.xpToLevel);
+                double t = 1 - ((GameManager.Instance.xpToLevel - GameManager.Instance.currentXp) / GameManager.Instance.xpToLevel);
                 const float pitchMin = 1.0f;
                 const float pitchMax = 1.0f;
-                float pitch = (pitchMax - pitchMin) * t + pitchMin;
+                double pitch = (pitchMax - pitchMin) * t + pitchMin;
                 GameManager.Instance.AddXp(Value);
-                float volume = 0.8f + t * 0.0f;
-                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volume, pitch);
+                float volume = 0.8f + (float)t * 0.0f;
+                AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volume, (float)pitch);
             }
 
             Die();

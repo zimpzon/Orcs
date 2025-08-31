@@ -160,8 +160,8 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
 
-    [NonSerialized] public float xpToLevel;
-    [NonSerialized] public float currentXp = 0;
+    [NonSerialized] public double xpToLevel;
+    [NonSerialized] public double currentXp = 0;
     [NonSerialized] private DateTime? _timeStartSessionUtc = null;
 
     public void ResetAllProgress(bool ascend = false)
@@ -619,7 +619,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.Money -= amount;
     }
 
-    public void AddXp(long amount)
+    public void AddXp(double amount)
     {
         currentXp += amount;
     }
@@ -635,7 +635,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, long value, float forceScale = 1.0f, bool isLargeCoin = false)
+    public void ThrowPickups(AutoPickUpType pickupType, Vector2 pos, int amount, double value, float forceScale = 1.0f, bool isLargeCoin = false)
     {
         for (int i = 0; i < amount; ++i)
         {
@@ -1429,7 +1429,18 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.LevelClickDamage += 50;
+            SaveGame.Members.LevelClickDamage = 1000;
+            SaveGame.Members.LevelGoldPerKnifeThrown = 1000;
+            SaveGame.Members.LevelHoarder = 1000;
+            SaveGame.Members.LevelDaggerMaster = 1000;
+            SaveGame.Members.LevelKnifeDamage = 1000;
+            SaveGame.Members.LevelMoneyPerGold = 1000;
+            SaveGame.Members.LevelPctBought = 250;
+            SaveGame.Members.LevelNecroNinja = 1000;
+            SaveGame.Members.LevelVoidgazer = 1000;
+            SaveGame.Members.LevelMoneyPerGold = 1000;
+            SaveGame.Members.LevelGoldPerKnifeThrown = 1000;
+            SaveGame.Members.ArenaLevel = 15000;
         }
 
         //if (Input.GetKeyDown(KeyCode.F4))

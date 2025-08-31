@@ -16,24 +16,6 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     [SerializeField]
     private string serializedValue;
 
-    public Decimal256(decimal value)
-    {
-        // Convert decimal to double first, then scale
-        double doubleValue = (double)value;
-        rawValue = new BigInteger(doubleValue * ScaleFactorDouble);
-        ValidateRange(rawValue);
-        serializedValue = rawValue.ToString();
-    }
-
-    public Decimal256(float value)
-    {
-        // Convert to double, then scale
-        double doubleValue = (double)value;
-        rawValue = new BigInteger(doubleValue * ScaleFactorDouble);
-        ValidateRange(rawValue);
-        serializedValue = rawValue.ToString();
-    }
-
     public Decimal256(double value)
     {
         // Scale the double value directly
@@ -286,8 +268,6 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     public static bool operator >=(Decimal256 left, Decimal256 right) => left.rawValue >= right.rawValue;
 
     // Implicit conversions
-    public static implicit operator Decimal256(decimal d) => new Decimal256(d);
-    public static implicit operator Decimal256(float f) => new Decimal256(f);
     public static implicit operator Decimal256(double d) => new Decimal256(d);
     public static implicit operator Decimal256(int i) => new Decimal256((double)i);
     public static implicit operator Decimal256(long l) => new Decimal256((double)l);
