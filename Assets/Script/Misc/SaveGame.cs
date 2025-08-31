@@ -132,7 +132,7 @@ public class SaveGameMembers
     // Game
     public long ArenaLevel = 1;
     public Decimal512 Money = 40;
-    public int CurrentSkin = 0;
+    public int CurrentSkin = 1;
 
     public string ToJson()
     {

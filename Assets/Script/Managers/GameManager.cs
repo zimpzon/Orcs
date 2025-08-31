@@ -342,7 +342,11 @@ public class GameManager : MonoBehaviour
         foreach (var actor in actors)
         {
             if (!SaveGame.Members.BeastsSeen.Contains(actor.ActorType))
+            {
+                // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
+                TitleTextScript.Instance.UdateTitle();
+            }
         }
     }
 

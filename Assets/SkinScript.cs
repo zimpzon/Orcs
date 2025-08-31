@@ -21,10 +21,23 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         Hovertext.text = "Hover over a skin to see unlock requirements";
     }
 
+    public void Awake()
+    {
+        MyAnimations = SkinAnimations.SkinAnimations.Where(x => x.Animation == AnimationName).Single();
+        SkinImage.sprite = MyAnimations.IdleSprites[0];
+        SetDefaultHovertext();
+    }
+
+    void SetSkin(SkinAnimation skinAnimation)
+    {
+        SelectedSkinScript.Instance.SelectedSkinAnimation = MyAnimations;
+    }
+
     public void OnClick()
     {
-        SaveGame.Members.CurrentSkin = (int)AnimationName;
-        SelectedSkinScript.Instance.SelectedSkinAnimation = MyAnimations;
+        SetSkin(AnimationName);
+        (_, string beastDescription) = GetUnlockStatus(AnimationName);
+        TitleTextScript.Instance.SetName(beastDescription.Substring(0, beastDescription.IndexOf(':')));
     }
 
     private (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)
@@ -33,7 +46,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (animationName == SkinAnimation.Default)
         {
-            return (true, "Good ol' Earl, always there");
+            return (true, "Good ol' Earl: always there");
         }
         else if (animationName == SkinAnimation.WitchDoctor)
         {
@@ -115,16 +128,9 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }
 
-    public void Awake()
-    {
-        MyAnimations = SkinAnimations.SkinAnimations.Where(x => x.Animation == AnimationName).Single();
-        SkinImage.sprite = MyAnimations.IdleSprites[0];
-        SetDefaultHovertext();
-    }
-
     private void Update()
     {
-        (bool isUnlocked, _) = GetUnlockStatus(AnimationName);
+        (bool isUnlocked, string text) = GetUnlockStatus(AnimationName);
         SkinImage.color = isUnlocked ? Color.white : Color.black;
         Button.interactable = isUnlocked;
         Button.Select();
