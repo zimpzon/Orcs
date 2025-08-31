@@ -17,7 +17,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     Image _background;
     bool _isHovering;
-    Decimal256 _latestPrice = 99999;
+    Decimal512 _latestPrice = 99999;
     long _latestLevel = 99999;
     bool _canAfford;
 
@@ -26,7 +26,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _background = GetComponent<Image>();
     }
 
-    public void UpdateUi(bool canAfford, bool enableBtnX2, Decimal256 priceNext, long currentLevel)
+    public void UpdateUi(bool canAfford, bool enableBtnX2, Decimal512 priceNext, long currentLevel)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
@@ -40,12 +40,12 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _canAfford = canAfford;
     }
 
-    void SetPrice(Decimal256 price)
+    void SetPrice(Decimal512 price)
     {
         if (price == _latestPrice)
             return;
 
-        PriceLabel.text = $"${Format256.Format(price)}";
+        PriceLabel.text = $"${Format512.Format(price)}";
         _latestPrice = price;
     }
 

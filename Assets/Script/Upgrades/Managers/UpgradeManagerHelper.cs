@@ -5,10 +5,10 @@
         public static void GetX2Calculated(
             long upgradeLevel,
             long levelX2,
-            Decimal256 initialPriceX2,
+            Decimal512 initialPriceX2,
             out long x2LevelsBought,
             out long x2LevelRequirement,
-            out Decimal256 priceX2,
+            out Decimal512 priceX2,
             out bool x2LevelMet,
             out bool x2PriceMet,
             out string colorX2LevelMet,
@@ -23,10 +23,10 @@
             colorX2PriceMet = GetColorPriceX2(x2PriceMet);
         }
 
-        public static bool X2RequirementsMet(long upgradeLevel, long levelX2, Decimal256 initialPriceX2)
+        public static bool X2RequirementsMet(long upgradeLevel, long levelX2, Decimal512 initialPriceX2)
         {
             long x2LevelRequirement = UpgradeProgression.LevelRequirementX2(levelX2 + 1);
-            Decimal256 priceX2 = UpgradeProgression.PriceX2(initialPriceX2, levelX2 + 1);
+            Decimal512 priceX2 = UpgradeProgression.PriceX2(initialPriceX2, levelX2 + 1);
             bool x2LevelMet = upgradeLevel >= x2LevelRequirement;
             bool x2PriceMet = SaveGame.Members.Money >= priceX2;
             return x2LevelMet && x2PriceMet;

@@ -57,7 +57,7 @@ public class AscendProgressScript : MonoBehaviour
 
         SaveGame.Members.MonsterCreditsXp_09_08_2025 += GameManager.Instance.TotalPassiveIncome;
 
-        Decimal256 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
+        Decimal512 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
         if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevel)
         {
             SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevel;

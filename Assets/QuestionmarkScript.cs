@@ -257,10 +257,10 @@ public class QuestionmarkScript : MonoBehaviour
         IEnumerator FixedIncomeCo()
         {
             long numberOfSeconds = 60 * 5;
-            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
+            Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             reward += 100;
 
-            ShowMessage($"{Highlight(300)}X income = ${Highlight(Format256.Format(reward))}");
+            ShowMessage($"{Highlight(300)}X income = ${Highlight(Format512.Format(reward))}");
 
             GameManager.Instance.AddMoney(reward);
             yield return null;

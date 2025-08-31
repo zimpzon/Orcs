@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Globalization;
 
-public static class Format256
+public static class Format512
 {
     private static readonly (BigInteger Threshold, string Short, string Long)[] Suffixes =
     {
@@ -28,7 +28,7 @@ public static class Format256
         (BigInteger.Pow(10, 6),  "M",  " million")
     };
 
-    public static string FormatWithDecimals(Decimal256 number, bool abbreviate = true, bool alwaysThreeDecimalsForLargeNumbers = false)
+    public static string FormatWithDecimals(Decimal512 number, bool abbreviate = true, bool alwaysThreeDecimalsForLargeNumbers = false)
     {
         BigInteger rawValue = number.RawValue;
         BigInteger scaleFactor = BigInteger.Pow(10, 4);
@@ -85,7 +85,7 @@ public static class Format256
         return wholeValue.ToString("N0", CultureInfo.InvariantCulture);
     }
 
-    public static string Format(Decimal256 number, bool abbreviate = true)
+    public static string Format(Decimal512 number, bool abbreviate = true)
     {
         BigInteger rawValue = number.RawValue;
         BigInteger scaleFactor = BigInteger.Pow(10, 4);

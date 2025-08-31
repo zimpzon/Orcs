@@ -25,7 +25,7 @@ public class HpBarScript : MonoBehaviour
         var scale = FillTransform.localScale;
         scale.x = max == 0 ? 0 : (float)current / max;
         FillTransform.localScale = scale;
-        HpText.text = $"{Format256.FormatWithDecimals(current, alwaysThreeDecimalsForLargeNumbers: true)}/{Format256.FormatWithDecimals(max, alwaysThreeDecimalsForLargeNumbers: true)}";
+        HpText.text = $"{Format512.FormatWithDecimals(current, alwaysThreeDecimalsForLargeNumbers: true)}/{Format512.FormatWithDecimals(max, alwaysThreeDecimalsForLargeNumbers: true)}";
         //HpText.text = $"{(long)current}/{(long)max}";
     }
 }

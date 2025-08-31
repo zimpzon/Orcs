@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour
     // 38: 3 new skins
     // 39: updated away check
     // 40: refactored Decimal256 to use double instead of decimal for temp values
-    public const int MinorVersion = 40;
+    // 41: extended to 512bit plus some long to doubles
+    public const int MinorVersion = 41;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -132,7 +133,7 @@ public class GameManager : MonoBehaviour
     public GameObject ArenaRoot;
     public int CurrentRound = 1;
     public int MaxRound = 10;
-    public Decimal256 TotalPassiveIncome;
+    public Decimal512 TotalPassiveIncome;
     [NonSerialized] public static List<string> GameLoadInfo = new List<string>();
 
     int livingEnemyCount;
@@ -354,21 +355,21 @@ public class GameManager : MonoBehaviour
             " - added three new skins\n" +
             " - added bonus for X2 bought");
 
-        Decimal256 v1 = 1_234_456;
-        Decimal256 v2 = 5_000_000;
-        Decimal256 v3 = 2_100_000;
+        Decimal512 v1 = 1_234_456;
+        Decimal512 v2 = 5_000_000;
+        Decimal512 v3 = 2_100_000;
 
-        string s1 = Format256.Format(v1);
-        string s2 = Format256.Format(v2);
-        string s3 = Format256.Format(v3);
+        string s1 = Format512.Format(v1);
+        string s2 = Format512.Format(v2);
+        string s3 = Format512.Format(v3);
 
-        string s4 = Format256.FormatWithDecimals(v1);
-        string s5 = Format256.FormatWithDecimals(v2);
-        string s6 = Format256.FormatWithDecimals(v3);
+        string s4 = Format512.FormatWithDecimals(v1);
+        string s5 = Format512.FormatWithDecimals(v2);
+        string s6 = Format512.FormatWithDecimals(v3);
 
-        string s7 = Format256.FormatWithDecimals(v1, alwaysThreeDecimalsForLargeNumbers: true);
-        string s8 = Format256.FormatWithDecimals(v2, alwaysThreeDecimalsForLargeNumbers: true);
-        string s9 = Format256.FormatWithDecimals(v3, alwaysThreeDecimalsForLargeNumbers: true);
+        string s7 = Format512.FormatWithDecimals(v1, alwaysThreeDecimalsForLargeNumbers: true);
+        string s8 = Format512.FormatWithDecimals(v2, alwaysThreeDecimalsForLargeNumbers: true);
+        string s9 = Format512.FormatWithDecimals(v3, alwaysThreeDecimalsForLargeNumbers: true);
 
         _timeStartSessionUtc = DateTime.UtcNow;
 
@@ -586,9 +587,9 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
-    public void AddGold(bool isLargeCoin, Decimal256 value)
+    public void AddGold(bool isLargeCoin, Decimal512 value)
     {
-        Decimal256 moneyAdded = value;
+        Decimal512 moneyAdded = value;
         SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
@@ -598,10 +599,10 @@ public class GameManager : MonoBehaviour
 
         if (SaveGame.Members.ShowFloatingGoldNumbers)
         {
-            Decimal256 displayMoney = moneyAdded;
+            Decimal512 displayMoney = moneyAdded;
             FloatingTextSpawner.Instance.Spawn(
                 textPos,
-                $"${Format256.Format(displayMoney)}",
+                $"${Format512.Format(displayMoney)}",
                 ColorGoldCollect,
                 speed: 2.0f,
                 timeToLive: 1.0f,
@@ -609,12 +610,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddMoney(Decimal256 amount)
+    public void AddMoney(Decimal512 amount)
     {
         SaveGame.Members.Money += amount;
     }
 
-    public void DeductMoney(Decimal256 amount)
+    public void DeductMoney(Decimal512 amount)
     {
         SaveGame.Members.Money -= amount;
     }
@@ -771,7 +772,7 @@ public class GameManager : MonoBehaviour
 
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.7f,
-                    $"<size=+2>Dagger throws: +<color=#f2de05>{Format256.Format(knifeThrownBonus)}</color>G",
+                    $"<size=+2>Dagger throws: +<color=#f2de05>{Format512.Format(knifeThrownBonus)}</color>G",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
                     timeToLive: 5.0f,
@@ -794,7 +795,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<size=+2><color=#f2de05>{Format256.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format256.Format(dps)}</color> dps), +<color=#f2de05>{Format256.Format(goldWon)}</color> gold",
+            $"<size=+2><color=#f2de05>{Format512.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format512.Format(dps)}</color> dps), +<color=#f2de05>{Format512.Format(goldWon)}</color> gold",
             new Color(0.8f, 0.8f, 0.8f),
             speed: 0.05f,
             timeToLive: 5.0f,
@@ -1078,8 +1079,8 @@ public class GameManager : MonoBehaviour
         TrySaveGame(forceSave: true);
     }
 
-    Decimal256 _prevMoney = 999999;
-    Decimal256 _prevPassiveIncome = 999999;
+    Decimal512 _prevMoney = 999999;
+    Decimal512 _prevPassiveIncome = 999999;
     float _timePrevPassiveIncomeUpdate = -1f;
     float _deltaRealTime = 0f;
 
@@ -1181,14 +1182,14 @@ public class GameManager : MonoBehaviour
 
         // MoneyToAdd is the scaled by fps income.
         float incomeFactorPerFrame = GetIncomeFactorPerFrame();
-        Decimal256 moneyToAdd = TotalPassiveIncome * (Decimal256)incomeFactorPerFrame;
+        Decimal512 moneyToAdd = TotalPassiveIncome * (Decimal512)incomeFactorPerFrame;
         SaveGame.Members.TotalIncomePassive += moneyToAdd;
 
         AddMoney(moneyToAdd);
 
         if (_prevPassiveIncome != TotalPassiveIncome)
         {
-            TextPassiveIncome.text = $"{Format256.FormatWithDecimals(TotalPassiveIncome)} per second";
+            TextPassiveIncome.text = $"{Format512.FormatWithDecimals(TotalPassiveIncome)} per second";
             _prevPassiveIncome = TotalPassiveIncome;
             PopText(TextPassiveIncome);
         }
@@ -1226,14 +1227,14 @@ public class GameManager : MonoBehaviour
         _prevMoneyTextNextUpdate = G.D.GameTime + MoneyUpdateDelay;
         _prevMoney = SaveGame.Members.Money;
 
-        TextMoney.text = $"${Format256.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        TextMoney.text = $"${Format512.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
     }
 
     float _timeNextTotalIncomeUpdate;
 
     void UpdateBottomStats()
     {
-        Decimal256 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
+        Decimal512 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
 
         if (G.D.GameTime < _timeNextTotalIncomeUpdate)
             return;
@@ -1241,13 +1242,13 @@ public class GameManager : MonoBehaviour
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
         TextTotalIncome.text =
-            $"Total: ${Format256.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)} | " +
-            $"Passive: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, alwaysThreeDecimalsForLargeNumbers: true)} | " +
-            $"Arena: ${Format256.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, alwaysThreeDecimalsForLargeNumbers: true)} ";
+            $"Total: ${Format512.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Passive: ${Format512.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Arena: ${Format512.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, alwaysThreeDecimalsForLargeNumbers: true)} ";
 
         TextTotalKilled.text =
-            $"Enemies killed: {Format256.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
-            $"Damage done: {Format256.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
+            $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
+            $"Damage done: {Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
 
 
         TimeSpan t = _timeStartSessionUtc.HasValue ?

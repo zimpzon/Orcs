@@ -3,9 +3,9 @@ using System.Numerics;
 using UnityEngine;
 
 [System.Serializable]
-public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISerializationCallbackReceiver
+public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISerializationCallbackReceiver
 {
-    private static readonly BigInteger MaxValue = (BigInteger.One << 256) - 1;
+    private static readonly BigInteger MaxValue = (BigInteger.One << 512) - 1;
     private static readonly double ScaleFactorDouble = Math.Pow(10, 4); // 4 decimal places as double
     private static readonly BigInteger ScaleFactor = new BigInteger(ScaleFactorDouble); // BigInteger version for calculations
 
@@ -16,7 +16,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     [SerializeField]
     private string serializedValue;
 
-    public Decimal256(double value)
+    public Decimal512(double value)
     {
         // Scale the double value directly
         rawValue = new BigInteger(value * ScaleFactorDouble);
@@ -24,7 +24,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         serializedValue = rawValue.ToString();
     }
 
-    private Decimal256(BigInteger raw)
+    private Decimal512(BigInteger raw)
     {
         ValidateRange(raw);
         rawValue = raw;
@@ -32,13 +32,13 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
     }
 
     // Static method to create from serialized string (used by parent class)
-    public static Decimal256 FromSerializedString(string serialized)
+    public static Decimal512 FromSerializedString(string serialized)
     {
         if (string.IsNullOrEmpty(serialized))
-            return new Decimal256(0.0);
+            return new Decimal512(0.0);
 
         var parsed = BigInteger.Parse(serialized);
-        return new Decimal256(parsed);
+        return new Decimal512(parsed);
     }
 
     // Unity serialization callbacks
@@ -64,7 +64,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         }
     }
 
-    public void Add(Decimal256 other)
+    public void Add(Decimal512 other)
     {
         var result = rawValue + other.rawValue;
         ValidateRange(result);
@@ -72,7 +72,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         serializedValue = result.ToString();
     }
 
-    public void Subtract(Decimal256 other)
+    public void Subtract(Decimal512 other)
     {
         var result = rawValue - other.rawValue;
         if (result < 0)
@@ -81,7 +81,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         serializedValue = result.ToString();
     }
 
-    public void Multiply(Decimal256 other)
+    public void Multiply(Decimal512 other)
     {
         var result = rawValue * other.rawValue;
         // Since both values are scaled, we need to divide by the scale factor once
@@ -101,78 +101,78 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         serializedValue = result.ToString();
     }
 
-    public static Decimal256 operator +(Decimal256 left, Decimal256 right)
+    public static Decimal512 operator +(Decimal512 left, Decimal512 right)
     {
         var result = left.rawValue + right.rawValue;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator -(Decimal256 left, Decimal256 right)
+    public static Decimal512 operator -(Decimal512 left, Decimal512 right)
     {
         var result = left.rawValue - right.rawValue;
         if (result < 0)
             throw new OverflowException("Result below 0.");
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(Decimal256 left, Decimal256 right)
+    public static Decimal512 operator *(Decimal512 left, Decimal512 right)
     {
         var result = left.rawValue * right.rawValue;
         // Since both values are scaled, we need to divide by the scale factor once
         result = result / ScaleFactor;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(Decimal256 left, float right)
+    public static Decimal512 operator *(Decimal512 left, float right)
     {
         // Use double for the multiplication to avoid overflow
         double scaledRight = (double)right * ScaleFactorDouble;
         var result = left.rawValue * new BigInteger(scaledRight) / ScaleFactor;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(float left, Decimal256 right)
+    public static Decimal512 operator *(float left, Decimal512 right)
     {
         return right * left;
     }
 
-    public static Decimal256 operator *(Decimal256 left, int right)
+    public static Decimal512 operator *(Decimal512 left, int right)
     {
         var result = left.rawValue * right;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(int left, Decimal256 right)
+    public static Decimal512 operator *(int left, Decimal512 right)
     {
         return right * left;
     }
 
-    public static Decimal256 operator *(Decimal256 left, long right)
+    public static Decimal512 operator *(Decimal512 left, long right)
     {
         var result = left.rawValue * right;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(long left, Decimal256 right)
+    public static Decimal512 operator *(long left, Decimal512 right)
     {
         return right * left;
     }
 
-    public static Decimal256 operator *(Decimal256 left, double right)
+    public static Decimal512 operator *(Decimal512 left, double right)
     {
         // Use double arithmetic throughout to avoid overflow
         double scaledRight = right * ScaleFactorDouble;
         var result = left.rawValue * new BigInteger(scaledRight) / ScaleFactor;
         ValidateRange(result);
-        return new Decimal256(result);
+        return new Decimal512(result);
     }
 
-    public static Decimal256 operator *(double left, Decimal256 right)
+    public static Decimal512 operator *(double left, Decimal512 right)
     {
         return right * left;
     }
@@ -218,7 +218,7 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
         return $"{whole}.{fractionStr}";
     }
 
-    public static Decimal256 Parse(string input)
+    public static Decimal512 Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
             throw new FormatException("Input is null or empty.");
@@ -245,30 +245,30 @@ public struct Decimal256 : IComparable<Decimal256>, IEquatable<Decimal256>, ISer
             throw new FormatException("Invalid fraction part.");
 
         BigInteger scaled = whole * ScaleFactor + fraction;
-        return new Decimal256(scaled);
+        return new Decimal512(scaled);
     }
 
     private static void ValidateRange(BigInteger value)
     {
         if (value < 0 || value > MaxValue)
-            throw new OverflowException("Value is outside 256-bit unsigned range.");
+            throw new OverflowException("Value is outside 512-bit unsigned range.");
     }
 
     // --- Comparison operators ---
-    public int CompareTo(Decimal256 other) => rawValue.CompareTo(other.rawValue);
-    public bool Equals(Decimal256 other) => rawValue.Equals(other.rawValue);
-    public override bool Equals(object obj) => obj is Decimal256 other && Equals(other);
+    public int CompareTo(Decimal512 other) => rawValue.CompareTo(other.rawValue);
+    public bool Equals(Decimal512 other) => rawValue.Equals(other.rawValue);
+    public override bool Equals(object obj) => obj is Decimal512 other && Equals(other);
     public override int GetHashCode() => rawValue.GetHashCode();
 
-    public static bool operator ==(Decimal256 left, Decimal256 right) => left.rawValue == right.rawValue;
-    public static bool operator !=(Decimal256 left, Decimal256 right) => left.rawValue != right.rawValue;
-    public static bool operator <(Decimal256 left, Decimal256 right) => left.rawValue < right.rawValue;
-    public static bool operator >(Decimal256 left, Decimal256 right) => left.rawValue > right.rawValue;
-    public static bool operator <=(Decimal256 left, Decimal256 right) => left.rawValue <= right.rawValue;
-    public static bool operator >=(Decimal256 left, Decimal256 right) => left.rawValue >= right.rawValue;
+    public static bool operator ==(Decimal512 left, Decimal512 right) => left.rawValue == right.rawValue;
+    public static bool operator !=(Decimal512 left, Decimal512 right) => left.rawValue != right.rawValue;
+    public static bool operator <(Decimal512 left, Decimal512 right) => left.rawValue < right.rawValue;
+    public static bool operator >(Decimal512 left, Decimal512 right) => left.rawValue > right.rawValue;
+    public static bool operator <=(Decimal512 left, Decimal512 right) => left.rawValue <= right.rawValue;
+    public static bool operator >=(Decimal512 left, Decimal512 right) => left.rawValue >= right.rawValue;
 
     // Implicit conversions
-    public static implicit operator Decimal256(double d) => new Decimal256(d);
-    public static implicit operator Decimal256(int i) => new Decimal256((double)i);
-    public static implicit operator Decimal256(long l) => new Decimal256((double)l);
+    public static implicit operator Decimal512(double d) => new Decimal512(d);
+    public static implicit operator Decimal512(int i) => new Decimal512((double)i);
+    public static implicit operator Decimal512(long l) => new Decimal512((double)l);
 }

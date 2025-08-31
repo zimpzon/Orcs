@@ -105,7 +105,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
         void DoReward()
         {
             long numberOfSeconds = Random.Range(100, 200);
-            Decimal256 reward = GameManager.Instance.TotalPassiveIncome * (Decimal256)numberOfSeconds;
+            Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             if (PlayerUpgrades.Data.BetterChests)
                 reward *= 2;
 
@@ -115,8 +115,8 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             SaveGame.Members.ChestsCollected += 1;
 
             string text = PlayerUpgrades.Data.BetterChests ?
-                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>2 X {numberOfSeconds}</color> X income = $<color=yellow>{Format256.Format(reward)}</color>" :
-                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format256.Format(reward)}</color>";
+                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>2 X {numberOfSeconds}</color> X income = $<color=yellow>{Format512.Format(reward)}</color>" :
+                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format512.Format(reward)}</color>";
 
             FloatingTextSpawner.Instance.Spawn(
                 transform.position + Vector3.up * 2,

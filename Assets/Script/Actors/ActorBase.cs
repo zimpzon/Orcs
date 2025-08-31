@@ -22,9 +22,9 @@ public class ActorBase : MonoBehaviour
 {
     public static readonly Dictionary<ActorTypeEnum, string> Names = new()
     {
-        { ActorTypeEnum.OgreLarge, "The Teeth of Terror" },
-        { ActorTypeEnum.OgreSmall, "The Revenent Orc" },
         { ActorTypeEnum.BatWhite, "Flaps" },
+        { ActorTypeEnum.OgreSmall, "The Revenent Orc" },
+        { ActorTypeEnum.OgreLarge, "The Teeth of Terror" },
         { ActorTypeEnum.HeroChaser, "The Ref" },
         { ActorTypeEnum.Raven, "Simon The Slug" },
         { ActorTypeEnum.Red, "The Lady in Red" },

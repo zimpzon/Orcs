@@ -16,7 +16,7 @@ public class SaveGameMembers
     public string LastSeenUtcStr = string.Empty;
 
     // Ascending
-    public Decimal256 MonsterCreditsXp_09_08_2025;
+    public Decimal512 MonsterCreditsXp_09_08_2025;
 
     public long TimesAscended_09_08_2025;
     public long MonsterCredits_09_08_2025;
@@ -61,29 +61,29 @@ public class SaveGameMembers
     public long ChestsCollected = 0;
     public long MysteryCollected = 0;
 
-    public Decimal256 TotalIncomeClickDamage;
-    public Decimal256 TotalIncomeGoldPerKnifeThrow;
-    public Decimal256 TotalIncomeKnifeCd;
-    public Decimal256 TotalIncomeKnifeDamage;
-    public Decimal256 TotalIncomeWitchDoctor;
-    public Decimal256 TotalIncomeGoldPerRound;
-    public Decimal256 TotalIncomeHoarder;
-    public Decimal256 TotalIncomeWizard;
-    public Decimal256 TotalIncomeZapDamage;
-    public Decimal256 TotalIncomeMoneyMaker;
-    public Decimal256 TotalIncomeDaggerMaster;
-    public Decimal256 TotalIncomeNecroNinja;
-    public Decimal256 TotalIncomeSkullCrusher;
-    public Decimal256 TotalIncomeChestMaster;
-    public Decimal256 TotalIncomeVoidgazer;
+    public Decimal512 TotalIncomeClickDamage;
+    public Decimal512 TotalIncomeGoldPerKnifeThrow;
+    public Decimal512 TotalIncomeKnifeCd;
+    public Decimal512 TotalIncomeKnifeDamage;
+    public Decimal512 TotalIncomeWitchDoctor;
+    public Decimal512 TotalIncomeGoldPerRound;
+    public Decimal512 TotalIncomeHoarder;
+    public Decimal512 TotalIncomeWizard;
+    public Decimal512 TotalIncomeZapDamage;
+    public Decimal512 TotalIncomeMoneyMaker;
+    public Decimal512 TotalIncomeDaggerMaster;
+    public Decimal512 TotalIncomeNecroNinja;
+    public Decimal512 TotalIncomeSkullCrusher;
+    public Decimal512 TotalIncomeChestMaster;
+    public Decimal512 TotalIncomeVoidgazer;
 
-    public Decimal256 TotalIncomeArena;
-    public Decimal256 TotalIncomePassive;
+    public Decimal512 TotalIncomeArena;
+    public Decimal512 TotalIncomePassive;
 
-    public Decimal256 TotalIncomeKnifeThrow;
+    public Decimal512 TotalIncomeKnifeThrow;
 
-    public Decimal256 EnemiesKilled;
-    public Decimal256 DamageDone;
+    public Decimal512 EnemiesKilled;
+    public Decimal512 DamageDone;
 
     // Upgrades
     public long LevelClickDamage = 0;
@@ -123,15 +123,15 @@ public class SaveGameMembers
     public long LevelPctBought = 0;
 
     // Damage
-    public Decimal256 TotalDamageChainZap;
-    public Decimal256 TotalDamageDaggerThrow;
-    public Decimal256 TotalDamageWitchDoctor;
-    public Decimal256 TotalDamageWizard;
-    public Decimal256 TotalDamageNecromancer;
+    public Decimal512 TotalDamageChainZap;
+    public Decimal512 TotalDamageDaggerThrow;
+    public Decimal512 TotalDamageWitchDoctor;
+    public Decimal512 TotalDamageWizard;
+    public Decimal512 TotalDamageNecromancer;
 
     // Game
     public long ArenaLevel = 1;
-    public Decimal256 Money = 40;
+    public Decimal512 Money = 40;
     public int CurrentSkin = 0;
 
     public string ToJson()

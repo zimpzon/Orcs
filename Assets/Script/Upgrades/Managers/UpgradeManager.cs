@@ -151,7 +151,7 @@ public class UpgradeManager : MonoBehaviour
 
     // Will also update statistics, which is bad. Yikes.
     float _prevCallTimeGetTotalPassiveIncomeForFrame = 0;
-    public Decimal256 GetTotalPassiveIncome()
+    public Decimal512 GetTotalPassiveIncome()
     {
         if (G.D.GameTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
             throw new("May not be called twice per frame, it has side effects!");
@@ -177,7 +177,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeChestMaster += ChestMasterManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeVoidgazer += VoidgazerManager.PassiveIncome() * incomeFactorPerFrame;
 
-        Decimal256 fullSum = 0;
+        Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
         fullSum += KnifeDamageManager.PassiveIncome();
         fullSum += ArenaGoldManager.PassiveIncome();

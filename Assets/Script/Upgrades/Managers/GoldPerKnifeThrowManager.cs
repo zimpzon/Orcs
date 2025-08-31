@@ -9,11 +9,11 @@ namespace Assets.Script.Upgrades
         public static string GetText()
         {
             long level = SaveGame.Members.LevelGoldPerKnifeThrown;
-            Decimal256 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerKnifeThrow;
-            Decimal256 baseIncome = BaseIncome();
-            Decimal256 totalIncome = PassiveIncome();
-            Decimal256 currentValue = ValueForLevel(level) * 100.0;
-            Decimal256 nextValue = ValueForLevel(level + 1) * 100.0;
+            Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerKnifeThrow;
+            Decimal512 baseIncome = BaseIncome();
+            Decimal512 totalIncome = PassiveIncome();
+            Decimal512 currentValue = ValueForLevel(level) * 100.0;
+            Decimal512 nextValue = ValueForLevel(level + 1) * 100.0;
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelGoldPerKnifeThrown,
@@ -21,7 +21,7 @@ namespace Assets.Script.Upgrades
                 UpgradeProgression.InitialPrice_GoldPerKnifeThrown_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
-                out Decimal256 priceX2,
+                out Decimal512 priceX2,
                 out bool x2LevelMet,
                 out bool x2PriceMet,
                 out string colorX2LevelMet,
@@ -33,22 +33,22 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#dddddd>Get gold per dagger thrown. Higher Dagger damage equals higher reward.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format256.Format(baseIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format256.Format(totalIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format256.Format(earnedSoFar)}</color>.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format512.Format(baseIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format512.Format(totalIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format512.Format(earnedSoFar)}</color>.");
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income X2</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-PASSIVE>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
-            sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format256.Format(priceX2)}");
+            sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format512.Format(priceX2)}");
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format256.Format(currentValue)}% of Dagger damage</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format256.Format(nextValue)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format512.Format(currentValue)}% of Dagger damage</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format512.Format(nextValue)}%</color>");
             sb.AppendLine("");
-            sb.AppendLine($"<color=#dddddd>Dagger throws earned: <color=COLOR-ARENA>{Format256.Format(SaveGame.Members.TotalIncomeKnifeThrow)}</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger throws earned: <color=COLOR-ARENA>{Format512.Format(SaveGame.Members.TotalIncomeKnifeThrow)}</color>");
 
             return sb.ToString();
         }
@@ -56,9 +56,9 @@ namespace Assets.Script.Upgrades
         private static long ValueForLevel(long level)
             => (long)(1 + (level - 1) * 1.1);
 
-        private static Decimal256 BaseIncome()
+        private static Decimal512 BaseIncome()
         {
-            Decimal256 baseIncome = UpgradeProgression.BaseIncome_GoldPerKnifeThrown;
+            Decimal512 baseIncome = UpgradeProgression.BaseIncome_GoldPerKnifeThrown;
 
             // Apply global modifiers
             baseIncome *= PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
@@ -68,10 +68,10 @@ namespace Assets.Script.Upgrades
             return baseIncome;
         }
 
-        public static Decimal256 PassiveIncome()
+        public static Decimal512 PassiveIncome()
             => BaseIncome() * SaveGame.Members.LevelGoldPerKnifeThrown;
 
-        public static Decimal256 PriceForNext()
+        public static Decimal512 PriceForNext()
         {
             return UpgradeProgression.InitialPrice_GoldPerKnifeThrown * Math.Pow(1.15, SaveGame.Members.LevelGoldPerKnifeThrown);
         }
@@ -89,7 +89,7 @@ namespace Assets.Script.Upgrades
 
         public static void OnBuy()
         {
-            Decimal256 priceForNext = PriceForNext();
+            Decimal512 priceForNext = PriceForNext();
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
@@ -99,7 +99,7 @@ namespace Assets.Script.Upgrades
 
         public static void OnBuyX2()
         {
-            Decimal256 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_GoldPerKnifeThrown_X2, SaveGame.Members.LevelGoldPerKnifeThrownX2 + 1);
+            Decimal512 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_GoldPerKnifeThrown_X2, SaveGame.Members.LevelGoldPerKnifeThrownX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
@@ -109,7 +109,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdateUi()
         {
-            Decimal256 priceForNext = PriceForNext();
+            Decimal512 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
                 SaveGame.Members.LevelGoldPerKnifeThrown,
