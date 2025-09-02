@@ -56,7 +56,8 @@ public class GameManager : MonoBehaviour
     // 39: updated away check
     // 40: refactored Decimal256 to use double instead of decimal for temp values
     // 41: extended to 512bit plus some long to doubles
-    public const int MinorVersion = 41;
+    // 42: title + probably bugfix for coins hanging over head (overflow value in cast to int)
+    public const int MinorVersion = 42;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -849,7 +850,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < coinCount; i++)
         {
             long value = baseValue + (i < remainder ? 1 : 0);
-            ThrowPickups(AutoPickUpType.Money, position, amount: 1, (int)value, forceScale: 4.0f, isLargeCoin);
+            ThrowPickups(AutoPickUpType.Money, position, amount: 1, value, forceScale: 4.0f, isLargeCoin);
         }
     }
 
