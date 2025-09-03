@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,6 +42,27 @@ public class SaveGameMembers
     public List<Achieved> Achieved = new List<Achieved>();
 
     public double EstimatedOnlineSeconds2 = 0;
+
+    // Stats
+    // ADDITIONAL IDEAS FOR STAT SCREEN
+    //   the income stats from settings page
+    //   time played
+    //   MonsterCreditsLifetime_09_08_2025
+    //   Chest count
+    //   Mystery count
+    //    If move from bottom, what do we add there?
+    //     Enemies killed (move from bottom)
+    //     Total damage done (move from bottom)
+    // HOW TO ALIGN left/right: https://discussions.unity.com/t/textmeshpro-right-and-left-align-on-same-line/672190/6
+
+    public long MaxDps = 0;
+    public long MaxArena = 1;
+    public long TotalArenasWon = 0;
+    public Decimal512 MaxIncome;
+    public Decimal512 MaxMoney;
+    public long MaxCredits;
+    public long TotalUpgradesBought = 0;
+    public long TotalX2UpgradesBought = 0;
 
     // ---------------------- Deleted after ascend ----------------------
 

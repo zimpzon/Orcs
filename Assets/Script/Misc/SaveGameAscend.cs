@@ -44,6 +44,17 @@
         newSave.ChestsCollected = oldSave.ChestsCollected;
         newSave.MysteryCollected = oldSave.MysteryCollected;
 
+        // Stats
+        newSave.MaxDps = oldSave.MaxDps;
+        newSave.MaxArena = oldSave.MaxArena;
+        newSave.TotalArenasWon = oldSave.TotalArenasWon;
+        newSave.MaxIncome = oldSave.MaxIncome;
+        newSave.MaxMoney = oldSave.MaxMoney;
+        newSave.MaxCredits = oldSave.MaxCredits;
+        newSave.TotalUpgradesBought = oldSave.TotalUpgradesBought;
+        newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
+
+
         // Replace old save with new save
         SaveGame.Members = newSave;
         return newSave;

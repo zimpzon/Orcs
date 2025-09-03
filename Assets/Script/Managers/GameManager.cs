@@ -463,6 +463,9 @@ public class GameManager : MonoBehaviour
             {
                 // Last enemy already threw round gold, NOT done here
                 SaveGame.Members.ArenaLevel++;
+                SaveGame.Members.TotalArenasWon++;
+                SaveGame.Members.MaxArena = Math.Max(SaveGame.Members.ArenaLevel, SaveGame.Members.MaxArena);
+
                 yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}", delay: 1);
                 yield return new WaitForSeconds(0.25f);
                 yield return null;
@@ -618,6 +621,9 @@ public class GameManager : MonoBehaviour
     public void AddMoney(Decimal512 amount)
     {
         SaveGame.Members.Money += amount;
+
+        if (SaveGame.Members.Money > SaveGame.Members.MaxMoney)
+            SaveGame.Members.MaxMoney = SaveGame.Members.Money;
     }
 
     public void DeductMoney(Decimal512 amount)
@@ -793,6 +799,7 @@ public class GameManager : MonoBehaviour
 
         long secondsSpent = RoundTimeSeconds - _secondsLeft;
         long dps = (long)(damageDone / (double)secondsSpent);
+        SaveGame.Members.MaxDps = Math.Max(dps, SaveGame.Members.MaxDps);
 
         // Happens after user was away for a while and we manually reset round.
         if (goldWon <= 0 || damageDone <= 0 || secondsSpent <= 0)
@@ -1184,6 +1191,8 @@ public class GameManager : MonoBehaviour
 
         // TotalPassiveIncome is the per/sec income.
         TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
+        if (TotalPassiveIncome > SaveGame.Members.MaxIncome)
+            SaveGame.Members.MaxIncome = TotalPassiveIncome;
 
         // MoneyToAdd is the scaled by fps income.
         float incomeFactorPerFrame = GetIncomeFactorPerFrame();

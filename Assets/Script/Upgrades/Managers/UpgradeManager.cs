@@ -249,6 +249,14 @@ public class UpgradeManager : MonoBehaviour
 
     void OnItemBought()
     {
+        SaveGame.Members.TotalUpgradesBought++;
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+        UpdateAllUpgrades();
+    }
+
+    void OnX2ItemBought()
+    {
+        SaveGame.Members.TotalX2UpgradesBought++;
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
         UpdateAllUpgrades();
     }
@@ -264,7 +272,7 @@ public class UpgradeManager : MonoBehaviour
     {
         ClickDamageManager.OnBuyX2();
         ClickDamage.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyKnifeDamage()
@@ -278,7 +286,7 @@ public class UpgradeManager : MonoBehaviour
     {
         KnifeDamageManager.OnBuyX2();
         KnifeDamage.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyArenaGold()
@@ -292,7 +300,7 @@ public class UpgradeManager : MonoBehaviour
     {
         ArenaGoldManager.OnBuyX2();
         GoldPerRound.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyKnifeCooldown()
@@ -306,7 +314,7 @@ public class UpgradeManager : MonoBehaviour
     {
         KnifeCdManager.OnBuyX2();
         KnifeCd.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyWitchDoctorDamage()
@@ -320,7 +328,7 @@ public class UpgradeManager : MonoBehaviour
     {
         WitchDoctorManager.OnBuyX2();
         WitchDoctor.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyGoldPerKnife()
@@ -334,7 +342,7 @@ public class UpgradeManager : MonoBehaviour
     {
         GoldPerKnifeThrowManager.OnBuyX2();
         GoldPerKnife.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyHoarder()
@@ -348,7 +356,7 @@ public class UpgradeManager : MonoBehaviour
     {
         HoarderManager.OnBuyX2();
         Hoarder.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyWizard()
@@ -362,7 +370,7 @@ public class UpgradeManager : MonoBehaviour
     {
         WizardManager.OnBuyX2();
         Wizard.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyZapDamage()
@@ -376,7 +384,7 @@ public class UpgradeManager : MonoBehaviour
     {
         ZapDamageManager.OnBuyX2();
         ZapDamage.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyMoneyMaker()
@@ -390,7 +398,7 @@ public class UpgradeManager : MonoBehaviour
     {
         MoneyMakerManager.OnBuyX2();
         MoneyMaker.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyDaggerMaster()
@@ -404,7 +412,7 @@ public class UpgradeManager : MonoBehaviour
     {
         DaggerMasterManager.OnBuyX2();
         DaggerMaster.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyNecroNinja()
@@ -418,7 +426,7 @@ public class UpgradeManager : MonoBehaviour
     {
         NecroNinjaManager.OnBuyX2();
         NecroNinja.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuySkullCrusher()
@@ -432,7 +440,7 @@ public class UpgradeManager : MonoBehaviour
     {
         SkullCrusherManager.OnBuyX2();
         SkullCrusher.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyChestMaster()
@@ -446,7 +454,7 @@ public class UpgradeManager : MonoBehaviour
     {
         ChestMasterManager.OnBuyX2();
         ChestMaster.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     public void OnBuyVoidgazer()
@@ -460,7 +468,7 @@ public class UpgradeManager : MonoBehaviour
     {
         VoidgazerManager.OnBuyX2();
         Voidgazer.SetPopupText();
-        OnItemBought();
+        OnX2ItemBought();
     }
 
     private void UpdatePlayerUpgrades()

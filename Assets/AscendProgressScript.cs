@@ -63,6 +63,7 @@ public class AscendProgressScript : MonoBehaviour
             SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevel;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
             SaveGame.Members.MonsterCredits_09_08_2025++;
+            SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
         }
 
         float t = (float)(SaveGame.Members.MonsterCreditsXp_09_08_2025.ToDouble() / xpForNextLevel.ToDouble());
