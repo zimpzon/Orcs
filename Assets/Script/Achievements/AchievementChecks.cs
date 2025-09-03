@@ -197,6 +197,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckMasterWizard(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.MasterWizardTier)) return;
+
+            if (SaveGame.Members.LevelHoarder >= 1)
+            {
+                list.Add(Achieved.MasterWizardTier);
+                NewAchieved(Achieved.MasterWizardTier);
+            }
+        }
+
         public static void CheckX2_25(List<Achieved> list)
         {
             if (list.Contains(Achieved.X2_25)) return;

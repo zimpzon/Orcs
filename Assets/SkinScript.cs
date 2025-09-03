@@ -76,10 +76,6 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Mystery25), "Slug Earl: Get 25 mystery rewards");
         }
-        else if (animationName == SkinAnimation.Wizard)
-        {
-            return (list.Contains(Achieved.Rebirth3), "Wizard Earl: Rebirth 3 times");
-        }
         else if (animationName == SkinAnimation.Zombie)
         {
             return (list.Contains(Achieved.SkullCrusher5), "Zombie Earl: Reach Skull Crusher level 5");
@@ -95,6 +91,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.Voidgazer)
         {
             return (list.Contains(Achieved.VoidgazerTier), "Voidgazer Earl: Reach Voidgazer");
+        }
+        else if (animationName == SkinAnimation.Wizard)
+        {
+            return (list.Contains(Achieved.MasterWizardTier), "Wizard Earl: Reach Master Wizard");
         }
         else if (animationName == SkinAnimation.UndeadBeauty)
         {
