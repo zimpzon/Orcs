@@ -57,7 +57,8 @@ public class GameManager : MonoBehaviour
     // 40: refactored Decimal256 to use double instead of decimal for temp values
     // 41: extended to 512bit plus some long to doubles
     // 42: title + probably bugfix for coins hanging over head (overflow value in cast to int)
-    public const int MinorVersion = 42;
+    // 43: a lot of new stats
+    public const int MinorVersion = 43;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -357,6 +358,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - lots of new stats at settings page\n" +
             " - added three new skins\n" +
             " - added bonus for X2 bought");
 
@@ -458,6 +460,8 @@ public class GameManager : MonoBehaviour
             }
 
             PrepareForNewRound();
+
+            SaveGame.Members.TotalArenas++;
 
             if (GameState == State.Idle_WonFight)
             {

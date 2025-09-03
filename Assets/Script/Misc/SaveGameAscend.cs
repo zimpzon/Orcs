@@ -47,6 +47,7 @@
         // Stats
         newSave.MaxDps = oldSave.MaxDps;
         newSave.MaxArena = oldSave.MaxArena;
+        newSave.TotalArenas = oldSave.TotalArenas;
         newSave.TotalArenasWon = oldSave.TotalArenasWon;
         newSave.MaxIncome = oldSave.MaxIncome;
         newSave.MaxMoney = oldSave.MaxMoney;
