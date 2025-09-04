@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class PopupManagerScript : MonoBehaviour
 {
     public static PopupManagerScript Instance;
-
     public Image PopupRoot;
     public TextMeshProUGUI Label;
 
@@ -14,7 +13,6 @@ public class PopupManagerScript : MonoBehaviour
         // Get the world corners of the hovered rect
         Vector3[] corners = new Vector3[4];
         hoveredRect.GetWorldCorners(corners);
-
         // corners[2] is top-right
         Vector3 topRightWorld = corners[2];
 
@@ -45,8 +43,38 @@ public class PopupManagerScript : MonoBehaviour
 
     public void Show(Vector2 position)
     {
-        PopupRoot.transform.position = position;
+        // Activate popup first to ensure it's in the hierarchy for calculations
         PopupRoot.gameObject.SetActive(true);
+
+        // Force canvas to update layouts immediately so we get accurate dimensions
+        Canvas.ForceUpdateCanvases();
+
+        // Get popup dimensions in screen space
+        RectTransform popupRectTransform = PopupRoot.GetComponent<RectTransform>();
+        Canvas canvas = PopupRoot.GetComponentInParent<Canvas>();
+        float scaleFactor = canvas ? canvas.scaleFactor : 1f;
+
+        float popupWidth = popupRectTransform.rect.width * scaleFactor;
+        float popupHeight = popupRectTransform.rect.height * scaleFactor;
+
+        // Get screen dimensions
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        // Calculate popup bounds (assuming center pivot)
+        float halfWidth = popupWidth * 0.5f;
+        float halfHeight = popupHeight * 0.5f;
+
+        // Constrain position to screen bounds
+        Vector2 constrainedPosition = position;
+
+        // Horizontal constraints
+        constrainedPosition.x = Mathf.Clamp(constrainedPosition.x, halfWidth, screenWidth - halfWidth);
+
+        // Vertical constraints  
+        constrainedPosition.y = Mathf.Clamp(constrainedPosition.y, halfHeight, screenHeight - halfHeight);
+
+        PopupRoot.transform.position = constrainedPosition;
     }
 
     public void Hide()
