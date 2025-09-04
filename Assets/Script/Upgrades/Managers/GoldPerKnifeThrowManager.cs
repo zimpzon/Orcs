@@ -45,7 +45,7 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format512.Format(currentValue)}% of Dagger damage</color>");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>{Format512.Format(currentValue)}%<color=#dddddd> of Dagger damage</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format512.Format(nextValue)}%</color>");
             sb.AppendLine("");
             sb.AppendLine($"<color=#dddddd>Dagger throws earned: <color=COLOR-ARENA>{Format512.Format(SaveGame.Members.TotalIncomeKnifeThrow)}</color>");
@@ -53,8 +53,8 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
-        private static long ValueForLevel(long level)
-            => (long)(1 + (level - 1) * 1.1);
+        private static double ValueForLevel(long level)
+            => ((1 + (level - 1) * 1.1)) / 100.0;
 
         private static Decimal512 BaseIncome()
         {

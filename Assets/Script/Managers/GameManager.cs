@@ -779,7 +779,8 @@ public class GameManager : MonoBehaviour
             long knifeThrownBonus = (long)(
                 PlayerUpgrades.Data.MagicMissileEffectiveDamage *
                 G.D.PlayerScript.DaggersThrown *
-                PlayerUpgrades.Data.GoldPerKnifeThrown);
+                PlayerUpgrades.Data.GoldPerKnifeThrown *
+                PlayerUpgrades.Data.MoneyPerGold);
 
             if (knifeThrownBonus > 0)
             {
@@ -787,7 +788,7 @@ public class GameManager : MonoBehaviour
 
                 FloatingTextSpawner.Instance.Spawn(
                     endRoundGoldSummaryPos + Vector2.down * 0.7f,
-                    $"<size=+2>Dagger throws: +<color=#f2de05>{Format512.Format(knifeThrownBonus)}</color>G",
+                    $"<size=+2>Dagger throws: +<color=#8DBE4C>{Format512.Format(knifeThrownBonus)}</color> gold",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
                     timeToLive: 5.0f,
@@ -811,7 +812,7 @@ public class GameManager : MonoBehaviour
 
         FloatingTextSpawner.Instance.Spawn(
             endRoundGoldSummaryPos,
-            $"<size=+2><color=#f2de05>{Format512.Format(damageDone)}</color> dmg in <color=#f2de05>{secondsSpent}</color> sec (<color=#f2de05>{Format512.Format(dps)}</color> dps), +<color=#f2de05>{Format512.Format(goldWon)}</color> gold",
+            $"<color=#F0F0F0><size=+2><color=#8DBE4C>{Format512.Format(damageDone)}</color> dmg in <color=#8DBE4C>{secondsSpent}</color> sec (<color=#8DBE4C>{Format512.Format(dps)}</color> dps), +<color=#8DBE4C>{Format512.Format(goldWon)}</color> gold",
             new Color(0.8f, 0.8f, 0.8f),
             speed: 0.05f,
             timeToLive: 5.0f,
@@ -852,7 +853,7 @@ public class GameManager : MonoBehaviour
         if (goldWon <= 0)
             return;
 
-        // Smooth scale: 1 coin at low amounts, 20 at 1000 or more
+        // Smooth scale: 1 coin at low amounts, 10 at 1000 or more
         int coinCount = Mathf.Clamp(Mathf.RoundToInt(goldWon / 50f), 1, 10);
 
         long baseValue = goldWon / coinCount;
@@ -1402,6 +1403,11 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
         {
             QuestionmarkScript.Instance.ForceReady();
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            PopupChestScript.Instance.ShowNow();
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))

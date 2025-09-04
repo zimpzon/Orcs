@@ -40,7 +40,7 @@ public class UpgradeData
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
     public double MoneyPerGold = 2;
-    public long GoldPerKnifeThrown = 0;
+    public double GoldPerKnifeThrown = 0;
     public bool BetterChests = false;
 
     // player

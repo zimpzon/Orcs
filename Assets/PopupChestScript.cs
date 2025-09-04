@@ -4,6 +4,11 @@ using UnityEngine.EventSystems;
 
 public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 {
+    public static PopupChestScript Instance;
+
+    public Color ColorDefault = Color.white;
+    public Color ColorHighlight = Color.yellow;
+
     public LayerMask LayersToHit;
     public float margin = 100f;
     public const float ShowTime = 60 * 1;
@@ -17,6 +22,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
+        Instance = this;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         BaseSprite = _spriteRenderer.sprite;
         _wasClicked = false;
@@ -50,6 +56,11 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
         transform.parent.position = randomPoint;
     }
 
+    bool _forceShow;
+    public void ShowNow()
+    {
+        _forceShow = true;
+    }
     // hide
     // wait x seconds
     // show
@@ -72,7 +83,11 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 _particles.Stop();
 
                 int randomSec = Random.Range(0, MaxRandomExtraHideTime);
-                yield return new WaitForSeconds(HideTime + randomSec);
+                float showTime = HideTime + randomSec;
+                while (G.D.GameTime < showTime && !_forceShow)
+                    yield return null;
+
+                _forceShow = false;
 
                 // Show.
                 SetRandomPos();
@@ -115,14 +130,13 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             SaveGame.Members.ChestsCollected += 1;
 
             string text = PlayerUpgrades.Data.BetterChests ?
-                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>2 X {numberOfSeconds}</color> X income = $<color=yellow>{Format512.Format(reward)}</color>" :
-                $"<size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=yellow>{numberOfSeconds}</color> X income = $<color=yellow>{Format512.Format(reward)}</color>";
-
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(ColorDefault)}>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>2 X {numberOfSeconds}</color> X income = $<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{Format512.Format(reward)}</color>" :
+                $"<color=#{ColorUtility.ToHtmlStringRGBA(ColorDefault)}>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{numberOfSeconds}</color> X income = $<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{Format512.Format(reward)}</color>";
             FloatingTextSpawner.Instance.Spawn(
                 transform.position + Vector3.up * 2,
                 text,
                 Color.white,
-                speed: 0.1f,
+                speed: 0.05f,
                 timeToLive: 5.0f,
                 fadeTime: 0.5f,
                 fontStyle: TMPro.FontStyles.Bold);
