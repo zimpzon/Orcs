@@ -210,12 +210,17 @@ public static class SaveGame
         return false;
     }
 
+    public static float LastSaveTime;
+
     public static void Save()
     {
         if (!Members.SaveKillSwitch_CanSave)
         {
             throw new System.Exception("SaveKillSwitch_CanSave is false, Members were reset somehow");
         }
+
+        LastSaveTime = G.D is not null ? G.D.GameTime : 0;
+
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);
 

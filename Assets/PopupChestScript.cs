@@ -83,7 +83,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 _particles.Stop();
 
                 int randomSec = Random.Range(0, MaxRandomExtraHideTime);
-                float showTime = HideTime + randomSec;
+                float showTime = HideTime + randomSec + G.D.GameTime;
                 while (G.D.GameTime < showTime && !_forceShow)
                     yield return null;
 

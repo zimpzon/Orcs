@@ -58,7 +58,8 @@ public class GameManager : MonoBehaviour
     // 41: extended to 512bit plus some long to doubles
     // 42: title + probably bugfix for coins hanging over head (overflow value in cast to int)
     // 43: a lot of new stats
-    public const int MinorVersion = 43;
+    // 44: fixed gold per knife scale bug + nerf
+    public const int MinorVersion = 44;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1269,11 +1270,19 @@ public class GameManager : MonoBehaviour
             $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
             $"Damage done: {Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
 
-
-        TimeSpan t = _timeStartSessionUtc.HasValue ?
-            DateTime.UtcNow - _timeStartSessionUtc.Value : TimeSpan.Zero;
-
-        TextTimeThisSession.text = $"Session: {FormatTime.Format(t.Days, t.Hours, t.Minutes, t.Seconds, useShorthand: true)}";
+        long timeSinceLastSaveTime = (long)(G.D.GameTime - SaveGame.LastSaveTime);
+        if (timeSinceLastSaveTime <= 5 && timeSinceLastSaveTime >= 0)
+        {
+            TextTimeThisSession.text = $"Game saved <5 sec ago";
+        }
+        else if (timeSinceLastSaveTime <= 20)
+        {
+            TextTimeThisSession.text = $"Game saved <20 sec ago";
+        }
+        else
+        {
+            TextTimeThisSession.text = $"Game saved >20 sec ago";
+        }
     }
 
     float _nextSave;
