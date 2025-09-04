@@ -7,6 +7,8 @@ public class PopupManagerScript : MonoBehaviour
     public static PopupManagerScript Instance;
     public Image PopupRoot;
     public TextMeshProUGUI Label;
+    private float _hideTime;
+    private bool _hidePending;
 
     public void PlaceLeftOfTarget(RectTransform hoveredRect)
     {
@@ -75,12 +77,23 @@ public class PopupManagerScript : MonoBehaviour
         constrainedPosition.y = Mathf.Clamp(constrainedPosition.y, halfHeight, screenHeight - halfHeight);
 
         PopupRoot.transform.position = constrainedPosition;
+        _hidePending = false;
     }
 
     public void Hide()
     {
-        PopupRoot.transform.position = Vector2.left * 1000;
-        PopupRoot.gameObject.SetActive(false);
+        _hidePending = true;
+        _hideTime = G.D.GameTime + 0.1f;
+    }
+
+    private void Update()
+    {
+        if (_hidePending && G.D.GameTime > _hideTime)
+        {
+            PopupRoot.transform.position = Vector2.left * 1000;
+            PopupRoot.gameObject.SetActive(false);
+            _hidePending = false;
+        }
     }
 
     private void Awake()

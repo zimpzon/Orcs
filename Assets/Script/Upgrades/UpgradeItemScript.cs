@@ -11,9 +11,10 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Button X2Button;
     public TextMeshProUGUI PriceLabel;
     public TextMeshProUGUI LevelLabel;
-    public Color HighlightColor;
     public Color CanAffordColor;
+    public Color CanAffordfHighlightColor;
     public Color CannotAffordColor;
+    public Color CannotAffordHighlightColor;
 
     Image _background;
     bool _isHovering;
@@ -73,7 +74,6 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isHovering = true;
-        _background.color = HighlightColor;
         SetPopupText();
         PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
     }
@@ -88,15 +88,14 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void Update()
     {
-        //if (_isHovering)
-        //{
-        //    _background.color = HighlightColor;
-        //}
-        //else
-        //{
-        //    _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
-        //}
-        _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
+        if (_isHovering)
+        {
+            _background.color = _canAfford ? CanAffordfHighlightColor : CannotAffordHighlightColor;
+        }
+        else
+        {
+            _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
+        }
 
         if (_isHovering && G.D.GameTime > _nextUpdate)
         {
