@@ -15,37 +15,39 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Color CanAffordfHighlightColor;
     public Color CannotAffordColor;
     public Color CannotAffordHighlightColor;
+    private float ColorTransitionSpeed = 10f; // Speed of color transition
 
     Image _background;
     bool _isHovering;
     Decimal512 _latestPrice = 99999;
     long _latestLevel = 99999;
     bool _canAfford;
+    Color _targetColor;
 
     private void Awake()
     {
         _background = GetComponent<Image>();
+        _targetColor = _background.color; // Initialize target color
     }
 
     public void UpdateUi(bool canAfford, bool enableBtnX2, Decimal512 priceNext, long currentLevel)
     {
         BuyButtonOverlay.enabled = !canAfford;
         BuyButton.interactable = canAfford;
-
         X2ButtonOverlay.enabled = !enableBtnX2;
         X2Button.interactable = enableBtnX2;
-
         SetPrice(priceNext);
         SetLevel(currentLevel);
-
         _canAfford = canAfford;
+
+        // Update target color when affordability changes
+        UpdateTargetColor();
     }
 
     void SetPrice(Decimal512 price)
     {
         if (price == _latestPrice)
             return;
-
         PriceLabel.text = $"${Format512.Format(price)}";
         _latestPrice = price;
     }
@@ -54,7 +56,6 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (level == _latestLevel)
             return;
-
         if (level == 0)
         {
             LevelLabel.text = "";
@@ -74,6 +75,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isHovering = true;
+        UpdateTargetColor();
         SetPopupText();
         PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
     }
@@ -81,21 +83,27 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerExit(PointerEventData eventData)
     {
         _isHovering = false;
+        UpdateTargetColor();
         PopupManagerScript.Instance.Hide();
     }
 
-    float _nextUpdate;
-
-    void Update()
+    void UpdateTargetColor()
     {
         if (_isHovering)
         {
-            _background.color = _canAfford ? CanAffordfHighlightColor : CannotAffordHighlightColor;
+            _targetColor = _canAfford ? CanAffordfHighlightColor : CannotAffordHighlightColor;
         }
         else
         {
-            _background.color = _canAfford ? CanAffordColor : CannotAffordColor;
+            _targetColor = _canAfford ? CanAffordColor : CannotAffordColor;
         }
+    }
+
+    float _nextUpdate;
+    void Update()
+    {
+        // Smoothly interpolate towards target color
+        _background.color = Color.Lerp(_background.color, _targetColor, ColorTransitionSpeed * Time.deltaTime);
 
         if (_isHovering && G.D.GameTime > _nextUpdate)
         {
