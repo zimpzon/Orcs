@@ -1271,7 +1271,7 @@ public class GameManager : MonoBehaviour
             $"Damage done: {Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
 
         long timeSinceLastSaveTime = (long)(G.D.GameTime - SaveGame.LastSaveTime);
-        if (timeSinceLastSaveTime <= 5 && timeSinceLastSaveTime >= 0)
+        if (timeSinceLastSaveTime <= 7 && timeSinceLastSaveTime >= 0)
         {
             TextTimeThisSession.text = $"Game saved <5 sec ago";
         }

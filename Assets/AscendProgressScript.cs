@@ -47,15 +47,25 @@ public class AscendProgressScript : MonoBehaviour
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 
-        if (G.D.GameTime < _nextCreditUpdate)
+        if (G.D.RealTime < _nextCreditUpdate)
             return;
 
-        // Credits are updated every CreditUpdateRate, not every frame. Currently it MUST be
-        // once per second. Or scale TotalPassiveIncome to fit delta time.
         const float CreditUpdateRate = 1.0f;
-        _nextCreditUpdate = G.D.GameTime + CreditUpdateRate;
+        const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
-        SaveGame.Members.MonsterCreditsXp_09_08_2025 += GameManager.Instance.TotalPassiveIncome;
+        // Calculate how much time actually passed since last update
+        float delta = G.D.RealTime - _nextCreditUpdate + CreditUpdateRate;
+
+        // Clamp it so we don't get a huge spike after sleep
+        if (delta > MaxRealtimeDelta)
+            delta = MaxRealtimeDelta;
+
+        // Schedule next update
+        _nextCreditUpdate = G.D.RealTime + CreditUpdateRate;
+
+        // Add scaled income
+        SaveGame.Members.MonsterCreditsXp_09_08_2025 +=
+            GameManager.Instance.TotalPassiveIncome * delta;
 
         Decimal512 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
         if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevel)
