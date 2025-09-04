@@ -141,14 +141,14 @@ public class GameManager : MonoBehaviour
 
     int livingEnemyCount;
 
-    [NonSerialized] public GameModeData LatestGameModeData = new ();
+    [NonSerialized] public GameModeData LatestGameModeData = new();
     [NonSerialized] public GameModeData CurrentGameModeData;
-    public GameModeData GameModeDataNursery = new ();
-    public GameModeData GameModeDataEarth = new ();
-    public GameModeData GameModeDataWind = new ();
-    public GameModeData GameModeDataFire = new ();
-    public GameModeData GameModeDataStorm = new ();
-    public GameModeData GameModeDataHarmony = new ();
+    public GameModeData GameModeDataNursery = new();
+    public GameModeData GameModeDataEarth = new();
+    public GameModeData GameModeDataWind = new();
+    public GameModeData GameModeDataFire = new();
+    public GameModeData GameModeDataStorm = new();
+    public GameModeData GameModeDataHarmony = new();
 
     public int SpriteFlashParamId;
     public int SpriteFlashColorParamId;
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
     public static Rect RightRect = new();
     [NonSerialized] public float TextUnlockBasePos;
 
-    static Dictionary<string, string> DebugValues = new ();
+    static Dictionary<string, string> DebugValues = new();
 
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
@@ -407,7 +407,7 @@ public class GameManager : MonoBehaviour
             yield return ShowInfoTextFlashy("ROUND START!");
             if (GameState == State.Idle_RestartRound)
                 continue;
-            
+
             foreach (var enemy in enemies)
             {
                 enemy.gameObject.SetActive(true);
@@ -658,7 +658,7 @@ public class GameManager : MonoBehaviour
         {
             var pickup = PickUpManagerScript.Instance.GetPickUpFromCache(pickupType);
             pickup.transform.position = pos;
-            
+
             var pickupScript = pickup.GetComponent<AutoPickUpScript>();
             pickupScript.Value = value;
             pickupScript.Throw(UnityEngine.Random.insideUnitCircle, forceScale, isLargeCoin);
@@ -1082,6 +1082,8 @@ public class GameManager : MonoBehaviour
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
+        SaveGame.OnSave += OnSaveGame;
+
         UpgradeManager.Instance.UpdateAllUpgrades();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
@@ -1251,6 +1253,22 @@ public class GameManager : MonoBehaviour
     }
 
     float _timeNextTotalIncomeUpdate;
+
+    Color? _textTimeThisSessionOriginalColor;
+    void OnSaveGame()
+    {
+        if (_textTimeThisSessionOriginalColor == null)
+            _textTimeThisSessionOriginalColor = TextTimeThisSession.color;
+
+        Color flash = Color.white;
+
+        LeanTween.value(TextTimeThisSession.gameObject, _textTimeThisSessionOriginalColor.Value, flash, 0.1f)
+            .setOnUpdate((Color val) =>
+            {
+                TextTimeThisSession.color = val;
+            })
+            .setLoopPingPong(1); // go there and back once
+    }
 
     void UpdateBottomStats()
     {

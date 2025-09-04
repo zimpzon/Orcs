@@ -175,12 +175,6 @@ public static class SaveGame
         Members = new();
     }
 
-    //public static IEnumerator SaveCo()
-    //{
-    //    Save();
-    //    yield break;
-    //}
-
     public static string GetObfuscatedSaveGame()
     {
         string json = Members.ToJson();
@@ -212,6 +206,8 @@ public static class SaveGame
 
     public static float LastSaveTime;
 
+    public static event Action OnSave;
+
     public static void Save()
     {
         if (!Members.SaveKillSwitch_CanSave)
@@ -220,6 +216,8 @@ public static class SaveGame
         }
 
         LastSaveTime = G.D is not null ? G.D.GameTime : 0;
+
+        OnSave?.Invoke();
 
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);
