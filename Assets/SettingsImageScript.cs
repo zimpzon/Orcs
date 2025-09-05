@@ -23,6 +23,14 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         TextImportInputField.text = SaveGame.GetObfuscatedSaveGame();
 
         Popup.SetActive(enabled);
+        if (enabled)
+        {
+            GlobalPopupManager.Instance.AfterShowPopup(Popup);
+        }
+        else
+        {
+            GlobalPopupManager.Instance.AfterHidePopup();
+        }
 
         ShowFloatingDamageToggle.isOn = SaveGame.Members.ShowFloatingDamageNumbers;
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;

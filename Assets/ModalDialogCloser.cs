@@ -21,6 +21,7 @@ public class ModalDialogCloser : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (!pointerInside && Input.GetMouseButtonDown(0))
         {
             dialog.SetActive(false);
+            GlobalPopupManager.Instance.AfterHidePopup();
         }
     }
 }

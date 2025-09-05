@@ -24183,7 +24183,6 @@ GameObject:
   - component: {fileID: 345903028}
   - component: {fileID: 345903030}
   - component: {fileID: 345903029}
-  - component: {fileID: 345903031}
   m_Layer: 5
   m_Name: Popup
   m_TagString: Untagged
@@ -24256,19 +24255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 345903027}
   m_CullTransparentMesh: 1
---- !u!114 &345903031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 345903027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f36b6ff49372f514898fc452187dd5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog: {fileID: 345903027}
 --- !u!1 &347820046
 GameObject:
   m_ObjectHideFlags: 0
@@ -29123,6 +29109,7 @@ GameObject:
   - component: {fileID: 351174288}
   - component: {fileID: 351174289}
   - component: {fileID: 351174292}
+  - component: {fileID: 351174293}
   m_Layer: 2
   m_Name: GameManager
   m_TagString: Untagged
@@ -29358,6 +29345,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c2f4b27196f84954b44753aaac214bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &351174293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 351174287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fdb89220b62693418d232fc6a0c56a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &357436241
@@ -37439,7 +37438,6 @@ GameObject:
   - component: {fileID: 555354702}
   - component: {fileID: 555354701}
   - component: {fileID: 555354704}
-  - component: {fileID: 555354703}
   m_Layer: 5
   m_Name: PopupX2
   m_TagString: Untagged
@@ -37509,19 +37507,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555354699}
   m_CullTransparentMesh: 1
---- !u!114 &555354703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555354699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f36b6ff49372f514898fc452187dd5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog: {fileID: 555354699}
 --- !u!114 &555354704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45843,7 +45828,6 @@ GameObject:
   - component: {fileID: 942382924}
   - component: {fileID: 942382923}
   - component: {fileID: 942382925}
-  - component: {fileID: 942382926}
   m_Layer: 5
   m_Name: PopupSkins
   m_TagString: Untagged
@@ -45873,7 +45857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 172, y: -3.611}
+  m_AnchoredPosition: {x: 75.6, y: -3.611}
   m_SizeDelta: {x: 451.2631, y: 336.602}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &942382923
@@ -45927,19 +45911,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Instance: {fileID: 0}
---- !u!114 &942382926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942382921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f36b6ff49372f514898fc452187dd5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog: {fileID: 942382921}
 --- !u!1 &947266331
 GameObject:
   m_ObjectHideFlags: 0
@@ -65074,7 +65045,6 @@ GameObject:
   - component: {fileID: 1261470295}
   - component: {fileID: 1261470294}
   - component: {fileID: 1261470293}
-  - component: {fileID: 1261470296}
   m_Layer: 5
   m_Name: PopupBeastiary
   m_TagString: Untagged
@@ -65163,19 +65133,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261470291}
   m_CullTransparentMesh: 1
---- !u!114 &1261470296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1261470291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f36b6ff49372f514898fc452187dd5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog: {fileID: 1261470291}
 --- !u!1 &1271132627
 GameObject:
   m_ObjectHideFlags: 0
@@ -75350,7 +75307,6 @@ GameObject:
   - component: {fileID: 1308816467}
   - component: {fileID: 1308816466}
   - component: {fileID: 1308816465}
-  - component: {fileID: 1308816464}
   m_Layer: 5
   m_Name: PopupTitle
   m_TagString: Untagged
@@ -75382,18 +75338,6 @@ RectTransform:
   m_AnchoredPosition: {x: 210.25, y: 6.9659}
   m_SizeDelta: {x: 498.87, y: 313.93}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1308816464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308816462}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31dec5496f14f46468cdbedc6cccb326, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1308816465
 MonoBehaviour:
   m_ObjectHideFlags: 0

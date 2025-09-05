@@ -1313,7 +1313,7 @@ public class GameManager : MonoBehaviour
 
         if (forceSave || Time.realtimeSinceStartup > _nextSave)
         {
-            Debug.Log("Saving game...");
+            //Debug.Log("Saving game...");
             SaveGame.Save();
             _nextSave = Time.realtimeSinceStartup + AutoSaveInterval;
         }
