@@ -11,12 +11,14 @@ public class ArenaBoundsScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        GameVisibleWarning.SetActive(true);
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+            GameVisibleWarning.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        GameVisibleWarning.SetActive(false);
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+            GameVisibleWarning.SetActive(false);
     }
 
     private void Awake()

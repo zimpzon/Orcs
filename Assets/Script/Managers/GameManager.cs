@@ -1017,8 +1017,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        bool showQuitButton = Application.platform != RuntimePlatform.WebGLPlayer;
-        ButtonQuit.gameObject.SetActive(showQuitButton);
+        //bool showQuitButton = Application.platform != RuntimePlatform.WebGLPlayer;
+        //ButtonQuit.gameObject.SetActive(showQuitButton);
 
         if (GetPlayFabStats().Count > 25)
             throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
@@ -1222,7 +1222,10 @@ public class GameManager : MonoBehaviour
         var rect = text.rectTransform;
         LeanTween.cancel(rect);
         rect.localScale = Vector3.one;
-        text.color = Color.yellow;
+        //var colorGreen = new Color(0.553f, 0.785f, 0.298f); // The green used in dps etc
+        var colorGreyish = new Color32(240, 240, 240, 255); // The grayish used for standard text
+
+        text.color = Color.white;
 
         LeanTween.scale(rect, Vector3.one * 1.1f, 0.1f)
             .setEase(LeanTweenType.easeOutQuad)
@@ -1232,7 +1235,7 @@ public class GameManager : MonoBehaviour
                     .setEase(LeanTweenType.easeOutBounce);
             });
 
-        LeanTween.value(gameObject, Color.yellow, Color.white, 0.4f)
+        LeanTween.value(gameObject, Color.white, colorGreyish, 0.4f)
             .setOnUpdate((Color col) => text.color = col);
     }
 
