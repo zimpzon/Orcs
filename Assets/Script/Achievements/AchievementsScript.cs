@@ -18,7 +18,6 @@ public enum Achieved
     VoidgazerTier,
     Arena1500,
     MasterWizardTier,
-
     Diamonds250,
     Rebirth8,
     ChainZap200,
@@ -26,6 +25,9 @@ public enum Achieved
     X2_25,
     X2_50,
     Diamonds50,
+    Arena100,
+    Skins3,
+    Rebirth1,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -36,9 +38,11 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckWitchDoctor(list);
         AchievementChecks.CheckNecro(list);
         AchievementChecks.CheckSkullCrusher5(list);
+        AchievementChecks.CheckArena100(list);
         AchievementChecks.CheckArena500(list);
         AchievementChecks.CheckArena1000(list);
         AchievementChecks.CheckArena1500(list);
+        AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckMystery25(list);
@@ -53,5 +57,6 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckX2_25(list);
         AchievementChecks.CheckX2_50(list);
         AchievementChecks.CheckDiamonds50(list);
+        AchievementChecks.CheckSkins3(list);
     }
 }

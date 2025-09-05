@@ -54,6 +54,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckArena100(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Arena100)) return;
+
+            if (SaveGame.Members.ArenaLevel >= 100)
+            {
+                list.Add(Achieved.Arena100);
+                NewAchieved(Achieved.Arena100);
+            }
+        }
+
         public static void CheckArena500(List<Achieved> list)
         {
             if (list.Contains(Achieved.Arena500)) return;
@@ -84,6 +95,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Arena1500);
                 NewAchieved(Achieved.Arena1500);
+            }
+        }
+
+        public static void CheckRebirth1(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Rebirth1)) return;
+
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 1)
+            {
+                list.Add(Achieved.Rebirth1);
+                NewAchieved(Achieved.Rebirth1);
             }
         }
 
@@ -227,6 +249,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.X2_50);
                 NewAchieved(Achieved.X2_50);
+            }
+        }
+
+        public static void CheckSkins3(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Skins3)) return;
+
+            if (SaveGame.Members.Achieved.Count >= 3)
+            {
+                list.Add(Achieved.Skins3);
+                NewAchieved(Achieved.Skins3);
             }
         }
     }

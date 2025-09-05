@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,12 +72,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -140,10 +140,10 @@ TextureImporter:
       name: SkinWhiteWalker_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 47
-        width: 15
-        height: 17
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: SkinWhiteWalker_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 23
-        width: 15
-        height: 17
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: SkinWhiteWalker_2
       rect:
         serializedVersion: 2
-        x: 17
-        y: 23
-        width: 15
-        height: 16
+        x: 16
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,10 +206,10 @@ TextureImporter:
       name: SkinWhiteWalker_3
       rect:
         serializedVersion: 2
-        x: 33
-        y: 23
-        width: 15
-        height: 15
+        x: 32
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,10 +228,10 @@ TextureImporter:
       name: SkinWhiteWalker_4
       rect:
         serializedVersion: 2
-        x: 49
-        y: 23
-        width: 15
-        height: 16
+        x: 48
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,10 +250,10 @@ TextureImporter:
       name: SkinWhiteWalker_5
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 15
-        height: 17
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,9 +273,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
+        y: 0
         width: 16
-        height: 17
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -297,7 +297,7 @@ TextureImporter:
         x: 32
         y: 0
         width: 16
-        height: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -316,10 +316,10 @@ TextureImporter:
       name: SkinWhiteWalker_8
       rect:
         serializedVersion: 2
-        x: 49
+        x: 48
         y: 0
-        width: 15
-        height: 15
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: a1634c83d34e33847bf9e285560f02fe
     internalID: 0
     vertices: []
     indices: 
@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SkinWhiteWalker_0: -3335259148569629892
+      SkinWhiteWalker_1: -3369279613075694743
+      SkinWhiteWalker_2: 1932128048464976374
+      SkinWhiteWalker_3: -5189589510853329230
+      SkinWhiteWalker_4: 7671403443921826633
+      SkinWhiteWalker_5: -471145465985091157
+      SkinWhiteWalker_6: 3603391976976140567
+      SkinWhiteWalker_7: 2759911095077748925
+      SkinWhiteWalker_8: 3910860113662810460
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

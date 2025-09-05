@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SkinPixie.png_0: -8266138778041317552
+      SkinPixie.png_1: 2996092854375203247
+      SkinPixie.png_2: -2420742745831537520
+      SkinPixie.png_3: 2876422667738844350
+      SkinPixie.png_4: 7053580524921894624
+      SkinPixie.png_5: 1617179524899840357
+      SkinPixie.png_6: -6288745655507715839
+      SkinPixie.png_7: 8594605413951201639
+      SkinPixie.png_8: -5520320983310942643
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

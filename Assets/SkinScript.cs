@@ -56,6 +56,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Necromancer25), "Necromancer Earl: Reach Necromancer level 25");
         }
+        else if (animationName == SkinAnimation.WhiteWalkerEarl)
+        {
+            return (list.Contains(Achieved.Rebirth1), "White Walker Earl: Rebirth 1 time");
+        }
         else if (animationName == SkinAnimation.Orc)
         {
             return (list.Contains(Achieved.Rebirth2), "Orc Earl: Rebirth 2 times");
@@ -79,6 +83,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.Zombie)
         {
             return (list.Contains(Achieved.SkullCrusher5), "Zombie Earl: Reach Skull Crusher level 5");
+        }
+        else if (animationName == SkinAnimation.EvilEyesEarl)
+        {
+            return (list.Contains(Achieved.Arena100), "Evil Eyes Earl: Reach Arena level 100");
         }
         else if (animationName == SkinAnimation.Wig)
         {
@@ -123,6 +131,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.SkaterEarl)
         {
             return (list.Contains(Achieved.X2_25), "Skater Earl: Buy 25 X2 upgrades");
+        }
+        else if (animationName == SkinAnimation.PrettyEarl)
+        {
+            return (list.Contains(Achieved.Skins3), "Pretty Earl: Unlock 3 skins");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

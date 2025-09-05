@@ -4,7 +4,7 @@ using UnityEngine;
 public enum SkinAnimation { NotSet, Default, WitchDoctor, Necromancer,
     Monster, Orc, Pirate, BigMouth, Wig, Wizard, Zombie, Slug, Voidgazer, KaratEarl,
     UndeadBeauty, WellDressedOrc, Alien, HonorableKnight, SecretiveEarl, NinjaEarl,
-    SkaterEarl,
+    SkaterEarl, WhiteWalkerEarl, PrettyEarl, EvilEyesEarl,
 }
 
 [Serializable]

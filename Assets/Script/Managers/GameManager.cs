@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour
     // 43: a lot of new stats
     // 44: fixed gold per knife scale bug + nerf
     // 45: minor improvements
-    public const int MinorVersion = 45;
+    // 46: three new skins
+    public const int MinorVersion = 46;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -360,9 +361,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - lots of new stats at settings page\n" +
-            " - added three new skins\n" +
-            " - added bonus for X2 bought");
+            " - added three new skins (again)\n" +
+            " - minor UI improvements\n" +
+            " - lots of new stats at settings page");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
