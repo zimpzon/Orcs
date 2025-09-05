@@ -64209,8 +64209,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1627836512}
   - {fileID: 1760089299}
+  - {fileID: 1627836512}
   m_Father: {fileID: 1497543156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -75686,8 +75686,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278821113
-  m_fontColor: {r: 0.9748427, g: 0.62914306, b: 0.033720862, a: 1}
+    rgba: 4282224127
+  m_fontColor: {r: 1, g: 0.5529412, b: 0.23921569, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

@@ -45,8 +45,11 @@ public class QuestionmarkScript : MonoBehaviour
         SaveGame.Members.QuestionMarkRealTimeLeft = 1;
     }
 
-    private static string GetText(TimeSpan timeLeft)
+    private static string GetWaitingText(TimeSpan timeLeft)
         => $"?\n<size=-10>{timeLeft.Minutes:00}:{timeLeft.Seconds:00}</size>";
+
+    private static string GetCountdownText(TimeSpan timeLeft)
+        => $"<size=-10>{timeLeft.Minutes:00}:{timeLeft.Seconds:00}</size>";
 
     public void OnButtonClick()
     {
@@ -100,7 +103,7 @@ public class QuestionmarkScript : MonoBehaviour
                     continue;
 
                 _lastDisplayedSeconds = timeSpan.Seconds;
-                Text.text = GetText(timeSpan);
+                Text.text = GetWaitingText(timeSpan);
             }
             #endregion
 
@@ -162,6 +165,7 @@ public class QuestionmarkScript : MonoBehaviour
 
         IEnumerator BeginReward(MysteryReward reward)
         {
+            Text.color = TextColorDisabled;
             if (reward == MysteryReward.FasterTime)
             {
                 yield return FasterTimeCo();
@@ -205,6 +209,7 @@ public class QuestionmarkScript : MonoBehaviour
 
             float startRealTime = G.D.RealTime;
             float endRealTime = startRealTime + (60 * 5) + 5;
+
             //float endRealTime = startRealTime + 5;
             ShowMessage($"Time runs {Highlight(33)}% faster for {Highlight(5)} minutes and {Highlight(5)} seconds!");
 
@@ -213,6 +218,8 @@ public class QuestionmarkScript : MonoBehaviour
             while (G.D.RealTime < endRealTime)
             {
                 SetRadialProgress(startRealTime, endRealTime);
+                var timeLeft = TimeSpan.FromSeconds(endRealTime - G.D.RealTime);
+                Text.text = GetCountdownText(timeLeft);
                 yield return null;
             }
 
@@ -237,6 +244,8 @@ public class QuestionmarkScript : MonoBehaviour
             while (G.D.RealTime < endRealTime)
             {
                 SetRadialProgress(startRealTime, endRealTime);
+                var timeLeft = TimeSpan.FromSeconds(endRealTime - G.D.RealTime);
+                Text.text = GetCountdownText(timeLeft);
                 yield return null;
             }
 
