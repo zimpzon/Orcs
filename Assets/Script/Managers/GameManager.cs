@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     // 42: title + probably bugfix for coins hanging over head (overflow value in cast to int)
     // 43: a lot of new stats
     // 44: fixed gold per knife scale bug + nerf
-    public const int MinorVersion = 44;
+    // 45: minor improvements
+    public const int MinorVersion = 45;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
