@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
     // 44: fixed gold per knife scale bug + nerf
     // 45: minor improvements
     // 46: three new skins
-    public const int MinorVersion = 46;
+    // 47: rebirth timer, colors
+    public const int MinorVersion = 47;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1332,6 +1333,10 @@ public class GameManager : MonoBehaviour
         {
             // Update estimated time every time we save, we only need it for stats anyways (for now...)
             SaveGame.Members.EstimatedOnlineSeconds2 += SendStatsInterval;
+            if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
+            {
+                SaveGame.Members.TimeSinceLastAscend += SendStatsInterval;
+            }
 
             Debug.Log("Sending stats...");
             UpdatePlayFabStats();

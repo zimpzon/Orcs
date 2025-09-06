@@ -14,6 +14,8 @@ public class SettingsStatsScript : MonoBehaviour
             => $"<align=left>{left}<line-height=0>\n<align=right><color=#EEEEEE>{right}</color><line-height=1em>";
 
         var lifetimeIncome = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
+        var timePlayed = TimeSpan.FromSeconds(SaveGame.Members.EstimatedOnlineSeconds2);
+        var timeSinceLastAscend = TimeSpan.FromSeconds(SaveGame.Members.TimeSinceLastAscend);
 
         var sb = new StringBuilder();
         sb.AppendLine(BuildLine("Passive income", $"{(long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100)}%"));
@@ -30,6 +32,15 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine(BuildLine("X2 Bought", Format512.Format(SaveGame.Members.TotalX2UpgradesBought)));
         sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025)));
+        sb.AppendLine(BuildLine("Rebirths", Format512.Format(SaveGame.Members.TimesAscended_09_08_2025)));
+        if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
+        {
+            sb.AppendLine(BuildLine("Time Since Last Rebirth", $"{FormatTime.Format(timeSinceLastAscend.Days, timeSinceLastAscend.Hours, timeSinceLastAscend.Minutes, useShorthand: true)}"));
+        }
+        else
+        {
+            sb.AppendLine(BuildLine("Time Since Last Rebirth", $"-"));
+        }
         sb.AppendLine(BuildLine("Chests", SaveGame.Members.ChestsCollected.ToString()));
         sb.AppendLine(BuildLine("Mystery Bonuses", SaveGame.Members.MysteryCollected.ToString()));
         sb.AppendLine(BuildLine("Max Arena", Format512.Format(SaveGame.Members.MaxArena)));
@@ -39,8 +50,7 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Total Damage", Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)));
         sb.AppendLine(BuildLine("Max DpS", Format512.Format(SaveGame.Members.MaxDps)));
 
-        var t = TimeSpan.FromSeconds(SaveGame.Members.EstimatedOnlineSeconds2);
-        sb.AppendLine(BuildLine("Time played", $"{FormatTime.Format(t.Days, t.Hours, t.Minutes, useShorthand: true)}"));
+        sb.AppendLine(BuildLine("Time played", $"{FormatTime.Format(timePlayed.Days, timePlayed.Hours, timePlayed.Minutes, useShorthand: true)}"));
 
         return sb.ToString();
     }

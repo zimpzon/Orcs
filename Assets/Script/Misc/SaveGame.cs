@@ -17,6 +17,7 @@ public class SaveGameMembers
     // Ascending
     public Decimal512 MonsterCreditsXp_09_08_2025;
 
+    public int TimeSinceLastAscend;
     public long TimesAscended_09_08_2025;
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;

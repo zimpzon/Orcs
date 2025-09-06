@@ -39,6 +39,7 @@ public class AscendDecisionScript : MonoBehaviour
                 SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
                 SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
                 SaveGame.Members.TimesAscended_09_08_2025++;
+                SaveGame.Members.TimeSinceLastAscend = 0;
 
                 GameManager.Instance.ResetAllProgress(ascend: true);
 
