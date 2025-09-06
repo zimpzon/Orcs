@@ -136,6 +136,18 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Skins3), "Pretty Earl: Unlock 3 skins");
         }
+        else if (animationName == SkinAnimation.AttentivePigEarl)
+        {
+            return (list.Contains(Achieved.Upgrades500), "Attentive Pig Earl: Buy 500 upgrades");
+        }
+        else if (animationName == SkinAnimation.ToxicEarl)
+        {
+            return (list.Contains(Achieved.Upgrades2500), "Toxic Earl: Buy 2500 upgrades");
+        }
+        else if (animationName == SkinAnimation.DisguisedMonsterEarl)
+        {
+            return (list.Contains(Achieved.Upgrades10000), "Disguised Monster Earl: Buy 10000 upgrades");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

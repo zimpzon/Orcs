@@ -262,5 +262,38 @@ namespace Assets.Script.Achievements
                 NewAchieved(Achieved.Skins3);
             }
         }
+
+        public static void CheckUpgrades500(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Upgrades500)) return;
+
+            if (SaveGame.Members.TotalUpgradesBought >= 500)
+            {
+                list.Add(Achieved.Upgrades500);
+                NewAchieved(Achieved.Upgrades500);
+            }
+        }
+
+        public static void CheckUpgrades2500(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Upgrades2500)) return;
+
+            if (SaveGame.Members.TotalUpgradesBought >= 2500)
+            {
+                list.Add(Achieved.Upgrades2500);
+                NewAchieved(Achieved.Upgrades2500);
+            }
+        }
+
+        public static void CheckUpgrades10000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Upgrades10000)) return;
+
+            if (SaveGame.Members.TotalUpgradesBought >= 10000)
+            {
+                list.Add(Achieved.Upgrades10000);
+                NewAchieved(Achieved.Upgrades10000);
+            }
+        }
     }
 }

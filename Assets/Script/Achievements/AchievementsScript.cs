@@ -28,6 +28,9 @@ public enum Achieved
     Arena100,
     Skins3,
     Rebirth1,
+    Upgrades500,
+    Upgrades2500,
+    Upgrades10000,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -58,5 +61,8 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckX2_50(list);
         AchievementChecks.CheckDiamonds50(list);
         AchievementChecks.CheckSkins3(list);
+        AchievementChecks.CheckUpgrades500(list);
+        AchievementChecks.CheckUpgrades2500(list);
+        AchievementChecks.CheckUpgrades10000(list);
     }
 }

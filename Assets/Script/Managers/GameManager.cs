@@ -62,7 +62,8 @@ public class GameManager : MonoBehaviour
     // 45: minor improvements
     // 46: three new skins
     // 47: rebirth timer, colors
-    public const int MinorVersion = 47;
+    // 48: new skins
+    public const int MinorVersion = 48;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -362,9 +363,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added three more skins (yes, again)\n" +
             " - added three new skins (again)\n" +
-            " - minor UI improvements\n" +
-            " - lots of new stats at settings page");
+            " - minor UI improvements");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1286,9 +1287,7 @@ public class GameManager : MonoBehaviour
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
         TextTotalIncome.text =
-            $"Total: ${Format512.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)} | " +
-            $"Passive: ${Format512.FormatWithDecimals(SaveGame.Members.TotalIncomePassive, alwaysThreeDecimalsForLargeNumbers: true)} | " +
-            $"Arena: ${Format512.FormatWithDecimals(SaveGame.Members.TotalIncomeArena, alwaysThreeDecimalsForLargeNumbers: true)} ";
+            $"Total: ${Format512.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)}";
 
         TextTotalKilled.text =
             $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
@@ -1297,15 +1296,15 @@ public class GameManager : MonoBehaviour
         long timeSinceLastSaveTime = (long)(G.D.GameTime - SaveGame.LastSaveTime);
         if (timeSinceLastSaveTime <= 7 && timeSinceLastSaveTime >= 0)
         {
-            TextTimeThisSession.text = $"Game saved <5 sec ago";
+            TextTimeThisSession.text = $"Game saved <5 sec ago    |";
         }
         else if (timeSinceLastSaveTime <= 20)
         {
-            TextTimeThisSession.text = $"Game saved <20 sec ago";
+            TextTimeThisSession.text = $"Game saved <20 sec ago    |";
         }
         else
         {
-            TextTimeThisSession.text = $"Game saved >20 sec ago";
+            TextTimeThisSession.text = $"Game saved >20 sec ago    |";
         }
     }
 
