@@ -29157,7 +29157,7 @@ MonoBehaviour:
   TextTimeThisSession: {fileID: 24164529}
   ColorDamageNumbersDagger: {r: 0.77800006, g: 0, b: 0, a: 1}
   ColorDamageNumbersZap: {r: 0.7764706, g: 0.30439162, b: 0, a: 1}
-  ColorGoldCollect: {r: 0.9529412, g: 0.88235295, b: 0.07450981, a: 1}
+  ColorGoldCollect: {r: 0.9490196, g: 0.78431374, b: 0.33333334, a: 1}
   Floor: {fileID: 1771007547}
   ColorLocked: '#901010'
   ColorUnlocked: '#10ff10'
