@@ -126,11 +126,11 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SecretiveEarl)
         {
-            return (list.Contains(Achieved.X2_50), "Secretive Earl: Buy 50 X2 upgrades");
+            return (list.Contains(Achieved.X2_50), "Secretive Earl: Reach 50 X2 bonus");
         }
         else if (animationName == SkinAnimation.SkaterEarl)
         {
-            return (list.Contains(Achieved.X2_25), "Skater Earl: Buy 25 X2 upgrades");
+            return (list.Contains(Achieved.X2_25), "Skater Earl: Reach 25 X2 bonus");
         }
         else if (animationName == SkinAnimation.PrettyEarl)
         {
