@@ -63,7 +63,8 @@ public class GameManager : MonoBehaviour
     // 46: three new skins
     // 47: rebirth timer, colors
     // 48: new skins
-    public const int MinorVersion = 48;
+    // 49: faster arena rebirth card
+    public const int MinorVersion = 49;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -363,9 +364,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - faster arena rebirth card\n" +
             " - added three more skins (yes, again)\n" +
-            " - added three new skins (again)\n" +
-            " - minor UI improvements");
+            " - added three new skins (again)");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -468,10 +469,21 @@ public class GameManager : MonoBehaviour
 
             SaveGame.Members.TotalArenas++;
 
+            long arenaStep = SaveGame.Members.BoughtFasterArena ? 5L : 1L;
+
             if (GameState == State.Idle_WonFight)
             {
-                // Last enemy already threw round gold, NOT done here
-                SaveGame.Members.ArenaLevel++;
+                // Last enemy already threw round gold, NOT done here.
+                SaveGame.Members.ArenaLevel += arenaStep;
+                
+                if (arenaStep > 1)
+                {
+                    // snap to nearest multiple of 5 (rounding down).
+                    SaveGame.Members.ArenaLevel -= SaveGame.Members.ArenaLevel % arenaStep;
+                    if (SaveGame.Members.ArenaLevel < 1)
+                        SaveGame.Members.ArenaLevel = 1;
+                }
+
                 SaveGame.Members.TotalArenasWon++;
                 SaveGame.Members.MaxArena = Math.Max(SaveGame.Members.ArenaLevel, SaveGame.Members.MaxArena);
 
@@ -487,7 +499,10 @@ public class GameManager : MonoBehaviour
 
                 // Go back one arena level on timeout
                 if (SaveGame.Members.ArenaLevel > 1)
-                    SaveGame.Members.ArenaLevel--;
+                    SaveGame.Members.ArenaLevel -= arenaStep;
+
+                if (SaveGame.Members.ArenaLevel < 1)
+                    SaveGame.Members.ArenaLevel = 1;
             }
 
             GameState = State.Idle_PresentLevel;
@@ -1362,7 +1377,6 @@ public class GameManager : MonoBehaviour
             { "current_skin", (int)SaveGame.Members.CurrentSkin },
             // 15 below this
 
-            // removed zap to make room for others
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
             { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },

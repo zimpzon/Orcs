@@ -77,7 +77,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
             GameManager.Instance.ResetAllProgress();
             SetPopupEnabled(false);
 
-            GameCanvasScript.Instance.ShowPopup($"<color=yellow>Your savegame was deleted</color>\n\nWelcome to a new beginning!");
+            GameCanvasScript.Instance.ShowPopup($"<color=yellow>Your save game was deleted</color>\n\nWelcome to a new beginning!");
 
             FloatingTextSpawner.Instance.Spawn(
             GameManager.Instance.ArenaCenter,

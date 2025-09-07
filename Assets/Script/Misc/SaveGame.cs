@@ -28,6 +28,7 @@ public class SaveGameMembers
     public bool BoughtPassiveX2_2 = false;
     public bool BoughtPassiveX4_1 = false;
     public bool BoughtFasterMystery = false;
+    public bool BoughtFasterArena = false;
 
     // Settings
     public int Version;
@@ -45,17 +46,7 @@ public class SaveGameMembers
     public double EstimatedOnlineSeconds2 = 0;
 
     // Stats
-    // ADDITIONAL IDEAS FOR STAT SCREEN
-    //   the income stats from settings page
-    //   time played
-    //   MonsterCreditsLifetime_09_08_2025
-    //   Chest count
-    //   Mystery count
-    //    If move from bottom, what do we add there?
-    //     Enemies killed (move from bottom)
-    //     Total damage done (move from bottom)
     // HOW TO ALIGN left/right: https://discussions.unity.com/t/textmeshpro-right-and-left-align-on-same-line/672190/6
-
     public long MaxDps = 0;
     public long MaxArena = 1;
     public long TotalArenas = 0;
