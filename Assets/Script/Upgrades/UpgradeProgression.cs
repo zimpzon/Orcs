@@ -14,21 +14,22 @@ namespace Assets.Script.Upgrades
         public static Decimal512 OneBillion = OneMillion * 1000;
         public static Decimal512 OneTrillion = OneBillion * 1000;
 
-        public static Decimal512 InitialPrice_Clickdamage =                          50;
-        public static Decimal512 InitialPrice_DaggerDamage =                        300;
-        public static Decimal512 InitialPrice_GoldValue =                         3_100;
-        public static Decimal512 InitialPrice_DaggerCd =                         42_000;
-        public static Decimal512 InitialPrice_WitchDoctor =                     750_000;
-        public static Decimal512 InitialPrice_GoldPerKnifeThrown =           10_100_000;
-        public static Decimal512 InitialPrice_Wizard =                      150_000_000;
-        public static Decimal512 InitialPrice_Hoarder =                   2_100_000_000;
-        public static Decimal512 InitialPrice_ZapDamage =                20_500_000_000;
-        public static Decimal512 InitialPrice_MoneyMaker =              210_000_000_000;
-        public static Decimal512 InitialPrice_DaggerMaster =          2_300_000_000_000;
-        public static Decimal512 InitialPrice_NecroNinja =           21_100_000_000_000;
-        public static Decimal512 InitialPrice_SkullCrusher =        330_100_000_000_000;
-        public static Decimal512 InitialPrice_ChestMaster =       6_500_100_000_000_000;
-        public static Decimal512 InitialPrice_Voidgazer =       250_000_000_000_000_000;
+        public static Decimal512 InitialPrice_Clickdamage =                                 50;
+        public static Decimal512 InitialPrice_DaggerDamage =                               300;
+        public static Decimal512 InitialPrice_GoldValue =                                3_100;
+        public static Decimal512 InitialPrice_DaggerCd =                                42_000;
+        public static Decimal512 InitialPrice_WitchDoctor =                            750_000;
+        public static Decimal512 InitialPrice_GoldPerKnifeThrown =                  10_100_000;
+        public static Decimal512 InitialPrice_Wizard =                             150_000_000;
+        public static Decimal512 InitialPrice_Hoarder =                          2_100_000_000;
+        public static Decimal512 InitialPrice_ZapDamage =                       20_500_000_000;
+        public static Decimal512 InitialPrice_MoneyMaker =                     210_000_000_000;
+        public static Decimal512 InitialPrice_DaggerMaster =                 2_300_000_000_000;
+        public static Decimal512 InitialPrice_NecroNinja =                  21_100_000_000_000;
+        public static Decimal512 InitialPrice_SkullCrusher =               330_100_000_000_000;
+        public static Decimal512 InitialPrice_ChestMaster =              6_500_100_000_000_000;
+        public static Decimal512 InitialPrice_Voidgazer =              250_000_000_000_000_000;
+        public static Decimal512 InitialPrice_SmartDaggers =        15_250_000_000_000_000_000;
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
 
@@ -47,6 +48,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SkullCrusher_X2 = InitialPrice_SkullCrusher * 10;
         public static Decimal512 InitialPrice_ChestMaster_X2 = InitialPrice_ChestMaster * 10;
         public static Decimal512 InitialPrice_Voidgazer_X2 = InitialPrice_Voidgazer * 10;
+        public static Decimal512 InitialPrice_SmartDaggers_X2 = InitialPrice_SmartDaggers * 10;
 
         public static Decimal512 BaseIncome_Clickdamage = 0.2;
         public static Decimal512 BaseIncome_DaggerDamage = 2;
@@ -63,6 +65,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_SkullCrusher =        300_000_000;
         public static Decimal512 BaseIncome_ChestMaster =       1_400_000_000;
         public static Decimal512 BaseIncome_Voidgazer =         5_100_000_000;
+        public static Decimal512 BaseIncome_SmartDaggers =     15_200_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {

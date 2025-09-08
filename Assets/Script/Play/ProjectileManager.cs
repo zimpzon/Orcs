@@ -50,6 +50,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             DieOnCollision = true;
             ReflectOnCollision = false;
             ReflectOnEdges = false;
+            ReflectRotationOffset = 0;
             RotationSpeed = 0.0f;
             RotationSpeedWhenStuck = 0.0f;
             CollisionSound = null;
@@ -95,6 +96,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public bool DieOnCollision;
         public bool ReflectOnCollision;
         public bool ReflectOnEdges;
+        public float ReflectRotationOffset;
         public float RotationSpeed;
         public float RotationSpeedWhenStuck;
         public bool JumpToNearbyTarget;
@@ -237,7 +239,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         p.Direction = new Vector3(p.Direction.x, -p.Direction.y, 0.0f);
                     }
 
-                    float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                    float rot_z = (Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg) + p.ReflectRotationOffset;
                     p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
                 }
 
@@ -332,7 +334,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 if (offCd && p.JumpToNearbyTarget)
                                 {
                                     p.PreviousJumpTargets.Add(enemy);
-                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.0f, p.PreviousJumpTargets);
+                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 3.0f, p.PreviousJumpTargets);
 
                                     bool hasNearbyEnemy = closestEnemy != null;
                                     if (hasNearbyEnemy)
