@@ -112,6 +112,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Diamonds250), "Honorable Knight Earl: Have at least 250 diamonds");
         }
+        else if (animationName == SkinAnimation.FreakyEarl)
+        {
+            return (list.Contains(Achieved.Diamonds1000), "Freaky Earl: Have at least 1000 diamonds");
+        }
         else if (animationName == SkinAnimation.WellDressedOrc)
         {
             return (list.Contains(Achieved.Chest50), "Well-dressed Orc Earl: Loot 50 chests");
@@ -151,6 +155,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.ScaryEarl)
         {
             return (list.Contains(Achieved.BuyCardScaryEarl), "Scary Earl: Buy with diamonds");
+        }
+        else if (animationName == SkinAnimation.SlickEarl)
+        {
+            return (list.Contains(Achieved.SmartDagger10), "Slick Earl: Reach Smart Daggers level 10");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");

@@ -321,3 +321,14 @@ MonoBehaviour:
     - {fileID: 5342144632704801258, guid: 3408b3d7261cc8b46957c2b2bbc2d817, type: 3}
     - {fileID: -3739717246497228583, guid: 3408b3d7261cc8b46957c2b2bbc2d817, type: 3}
     - {fileID: 1187298505, guid: 3408b3d7261cc8b46957c2b2bbc2d817, type: 3}
+  - Animation: 29
+    IdleSprites:
+    - {fileID: 7761850369429286162, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: 2667657187668536331, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: -8599039790024096334, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: 5487703115169322975, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    RunSprites:
+    - {fileID: -7352173899076328317, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: 7543038012808173627, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: -9072012528199135289, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}
+    - {fileID: -9077272893515047490, guid: 5126811cc1c0ef8468d11ee935eb676d, type: 3}

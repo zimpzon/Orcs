@@ -67,7 +67,8 @@ public class GameManager : MonoBehaviour
     // 50: scary Earl skin for diamonds
     // 51: Arena super jump on fast clear
     // 52: New upgrade tier
-    public const int MinorVersion = 52;
+    // 53: Two new skins
+    public const int MinorVersion = 53;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -367,9 +368,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - two new skins\n" +
             " - new upgrade tier\n" +
-            " - turbo arena rebirth card\n" +
-            " - added three more skins");
+            " - turbo arena rebirth card");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1481,7 +1482,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.Money += 100_000_000_000_000_000;
+            SaveGame.Members.Money += 900_000_000_000_000_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))

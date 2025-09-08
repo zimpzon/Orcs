@@ -32,6 +32,8 @@ public enum Achieved
     Upgrades2500,
     Upgrades10000,
     BuyCardScaryEarl,
+    SmartDagger10,
+    Diamonds1000,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -66,5 +68,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckUpgrades2500(list);
         AchievementChecks.CheckUpgrades10000(list);
         AchievementChecks.CheckBuyCardScaryEarl(list);
+        AchievementChecks.CheckSmartDagger10(list);
+        AchievementChecks.CheckDiamonds1000(list);
     }
 }

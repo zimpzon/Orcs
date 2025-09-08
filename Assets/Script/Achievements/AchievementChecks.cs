@@ -208,6 +208,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckDiamonds1000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds1000)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 1000)
+            {
+                list.Add(Achieved.Diamonds1000);
+                NewAchieved(Achieved.Diamonds1000);
+            }
+        }
+
         public static void CheckVoidgazer(List<Achieved> list)
         {
             if (list.Contains(Achieved.VoidgazerTier)) return;
@@ -304,6 +315,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.BuyCardScaryEarl);
                 NewAchieved(Achieved.BuyCardScaryEarl);
+            }
+        }
+
+        public static void CheckSmartDagger10(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.SmartDagger10)) return;
+
+            if (SaveGame.Members.LevelSmartDaggers >= 10)
+            {
+                list.Add(Achieved.SmartDagger10);
+                NewAchieved(Achieved.SmartDagger10);
             }
         }
     }
