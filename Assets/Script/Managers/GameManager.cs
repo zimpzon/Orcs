@@ -65,7 +65,8 @@ public class GameManager : MonoBehaviour
     // 48: new skins
     // 49: faster arena rebirth card
     // 50: scary Earl skin for diamonds
-    public const int MinorVersion = 50;
+    // 51: Arena super jump on fast clear
+    public const int MinorVersion = 51;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -471,6 +472,22 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.TotalArenas++;
 
             long arenaStep = SaveGame.Members.BoughtFasterArena ? 5L : 1L;
+            int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
+            // If faster Arena and >= 20 seconds left take a big jump.
+            if (secondsLeftAtRoundEnd >= 20 && SaveGame.Members.BoughtFasterArena)
+            {
+                arenaStep = 25;
+                Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);
+                FloatingTextSpawner.Instance.Spawn(
+                    superStepPos,
+                    $"<size=+3>Super fast Arena clear! Making super jump!",
+                    new Color(0.8f, 0.8f, 0.8f),
+                    speed: 0.05f,
+                    timeToLive: 3.0f,
+                    fadeTime: 0.5f,
+                    fontStyle: TMPro.FontStyles.Bold,
+                    FontTarragon);
+            }
 
             if (GameState == State.Idle_WonFight)
             {
