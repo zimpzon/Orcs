@@ -64,7 +64,8 @@ public class GameManager : MonoBehaviour
     // 47: rebirth timer, colors
     // 48: new skins
     // 49: faster arena rebirth card
-    public const int MinorVersion = 49;
+    // 50: scary Earl skin for diamonds
+    public const int MinorVersion = 50;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

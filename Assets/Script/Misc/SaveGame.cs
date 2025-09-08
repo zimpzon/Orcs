@@ -29,6 +29,15 @@ public class SaveGameMembers
     public bool BoughtPassiveX4_1 = false;
     public bool BoughtFasterMystery = false;
     public bool BoughtFasterArena = false;
+    public bool BoughtScaryEarlSkin = false;
+
+    public string AscendCardDebug() =>
+        $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
+        $"{nameof(BoughtPassiveX2_2)} = {SaveGame.Members.BoughtPassiveX2_2} | " +
+        $"{nameof(BoughtPassiveX4_1)} = {SaveGame.Members.BoughtPassiveX4_1} | " +
+        $"{nameof(BoughtFasterMystery)} = {SaveGame.Members.BoughtFasterMystery} | " +
+        $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
+        $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin}";
 
     // Settings
     public int Version;

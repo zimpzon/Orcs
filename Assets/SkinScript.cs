@@ -148,6 +148,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Upgrades10000), "Disguised Monster Earl: Buy 10000 upgrades");
         }
+        else if (animationName == SkinAnimation.ScaryEarl)
+        {
+            return (list.Contains(Achieved.BuyCardScaryEarl), "Scary Earl: Buy with diamonds");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

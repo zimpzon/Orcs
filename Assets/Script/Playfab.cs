@@ -63,15 +63,11 @@ public static class Playfab
     {
         var data = new Dictionary<string, string>
         {
-            { "Platform", Application.platform.ToString() },
-            { "DeviceModel", SystemInfo.deviceModel },
-            { "OS", SystemInfo.operatingSystem },
-            { "UnityVersion", Application.unityVersion },
-            { "game_major_version", GameManager.MajorVersion.ToString() },
-            { "game_minor_version", GameManager.MinorVersion.ToString() },
+            { "Platform|DeviceModel|OS", $"{Application.platform} | {SystemInfo.deviceModel} | {SystemInfo.operatingSystem}" },
+            { "game_version", $"{GameManager.MajorVersion}.{GameManager.MinorVersion}" },
             { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
-            { "total_earned_at_login", GameManager.Instance.TextTotalIncome.text },
-            { "LatestLogin", FormatTime.DateTimeToString(DateTime.UtcNow) },
+            { "counts|bestiary|skin", $"{SaveGame.Members.BeastsSeen.Count} | {SaveGame.Members.Achieved.Count}" },
+            { "ascend_cards", SaveGame.Members.AscendCardDebug() },
             { "hosting_info", JsMappings.GetHostingInfo() },
         };
 

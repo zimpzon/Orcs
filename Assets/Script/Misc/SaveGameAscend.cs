@@ -24,6 +24,7 @@
         newSave.BoughtPassiveX4_1 = oldSave.BoughtPassiveX4_1;
         newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
+        newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
         newSave.Version = oldSave.Version;

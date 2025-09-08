@@ -295,5 +295,16 @@ namespace Assets.Script.Achievements
                 NewAchieved(Achieved.Upgrades10000);
             }
         }
+
+        public static void CheckBuyCardScaryEarl(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.BuyCardScaryEarl)) return;
+
+            if (SaveGame.Members.BoughtScaryEarlSkin)
+            {
+                list.Add(Achieved.BuyCardScaryEarl);
+                NewAchieved(Achieved.BuyCardScaryEarl);
+            }
+        }
     }
 }
