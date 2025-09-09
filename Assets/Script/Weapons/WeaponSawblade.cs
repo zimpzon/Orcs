@@ -30,7 +30,7 @@ public class WeaponSawblade : WeaponBase
         basic.Speed = 8.0f;
         basic.Damage = PlayerUpgrades.Data.NecromancerEffectiveDamage;
         basic.StickyDamageCd = ApplyDamgeCd;
-        basic.StickyMaxTotalDamage = int.MaxValue;
+        basic.StickyMaxTotalDamage = 0;
         basic.StickyDamageSimulateCd = 0.2f;
         basic.Force = 0.5f;
         basic.MaxDistance = 9999;
