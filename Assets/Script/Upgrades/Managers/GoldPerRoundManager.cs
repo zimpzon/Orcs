@@ -71,7 +71,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_GoldValue * Math.Pow(1.15, SaveGame.Members.LevelMoneyPerGold);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_GoldValue, SaveGame.Members.LevelMoneyPerGold);
         }
 
         public static void UpdateAll()
@@ -92,7 +92,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelMoneyPerGold++;
+            SaveGame.Members.LevelMoneyPerGold += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()

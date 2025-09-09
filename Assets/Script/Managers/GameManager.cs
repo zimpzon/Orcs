@@ -172,9 +172,14 @@ public class GameManager : MonoBehaviour
 
     static Dictionary<string, string> DebugValues = new();
 
+    public Button ButtonBuy1;
+    public Button ButtonBuy10;
+    public Button ButtonBuy100;
+
+    [NonSerialized] public int BuyAmount = 1;
+
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
-
     [NonSerialized] public double xpToLevel;
     [NonSerialized] public double currentXp = 0;
     [NonSerialized] private DateTime? _timeStartSessionUtc = null;
@@ -200,6 +205,8 @@ public class GameManager : MonoBehaviour
 
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
+
+        SetBuyMultiple(1);
     }
 
     public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
@@ -1132,6 +1139,8 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
 
         ResetGame(autoStartGame: true);
+        SetBuyMultiple(1);
+
         StartCoroutine(GameStateCo());
     }
 
@@ -1315,6 +1324,29 @@ public class GameManager : MonoBehaviour
             .setLoopPingPong(1); // go there and back once
     }
 
+    public void SetBuyMultiple(int count)
+    {
+        ButtonBuy1.interactable = true;
+        ButtonBuy10.interactable = true;
+        ButtonBuy100.interactable = true;
+        if (count == 1)
+        {
+            ButtonBuy1.interactable = false;
+            BuyAmount = 1;
+        }
+        else if (count == 10)
+        {
+            ButtonBuy10.interactable = false;
+            BuyAmount = 10;
+        }
+        else if (count == 100)
+        {
+            ButtonBuy100.interactable = false;
+            BuyAmount = 100;
+        }
+        UpgradeManager.Instance.UpdateUpgradeUi();
+    }
+
     void UpdateBottomStats()
     {
         Decimal512 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
@@ -1363,7 +1395,6 @@ public class GameManager : MonoBehaviour
     }
 
     float _nextSendStats;
-
     void TrySendStats()
     {
         if (Time.realtimeSinceStartup > _nextSendStats)

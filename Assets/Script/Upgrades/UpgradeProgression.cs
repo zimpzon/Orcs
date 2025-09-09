@@ -122,6 +122,18 @@ namespace Assets.Script.Upgrades
             return (levelX2 - 3) * 25;
         }
 
+        public static Decimal512 PriceForNextUpgrade(Decimal512 initialPrice, long currentLevel)
+        {
+            int buyAmount = GameManager.Instance.BuyAmount;
+            Decimal512 sum = 0;
+            for (int i = 0; i < buyAmount; ++i)
+            {
+                Decimal512 priceForLevel = initialPrice * Math.Pow(1.15, currentLevel + i);
+                sum += priceForLevel;
+            }
+            return sum;
+        }
+
         public static Decimal512 PriceNextPercentageBonus(long level)
         {
             if (level == 0) return 500;
