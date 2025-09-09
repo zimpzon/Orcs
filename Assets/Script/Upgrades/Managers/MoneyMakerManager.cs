@@ -72,7 +72,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_MoneyMaker * Math.Pow(1.15, SaveGame.Members.LevelMoneyMaker);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_MoneyMaker, SaveGame.Members.LevelMoneyMaker);
         }
 
         public static void UpdateAll()
@@ -95,7 +95,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelMoneyMaker++;
+            SaveGame.Members.LevelMoneyMaker += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()

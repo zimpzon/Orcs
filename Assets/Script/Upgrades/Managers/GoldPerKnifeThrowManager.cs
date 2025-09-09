@@ -73,7 +73,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_GoldPerKnifeThrown * Math.Pow(1.15, SaveGame.Members.LevelGoldPerKnifeThrown);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_GoldPerKnifeThrown, SaveGame.Members.LevelGoldPerKnifeThrown);
         }
 
         public static void UpdateAll()
@@ -94,7 +94,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelGoldPerKnifeThrown++;
+            SaveGame.Members.LevelGoldPerKnifeThrown += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()

@@ -1,6 +1,7 @@
 ﻿using Assets.Script.Upgrades.Managers;
 using System;
 using System.Text;
+using UnityEngine.UI.Extensions.Examples;
 
 namespace Assets.Script.Upgrades
 {
@@ -78,7 +79,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_Clickdamage * Math.Pow(1.15, SaveGame.Members.LevelClickDamage);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Clickdamage, SaveGame.Members.LevelClickDamage);
         }
 
         public static void UpdateAll()
@@ -99,7 +100,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelClickDamage++;
+            SaveGame.Members.LevelClickDamage += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()

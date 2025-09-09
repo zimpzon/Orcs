@@ -73,7 +73,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.InitialPrice_ZapDamage * Math.Pow(1.15, SaveGame.Members.LevelZapDamage);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_ZapDamage, SaveGame.Members.LevelZapDamage);
         }
 
         public static void UpdateAll()
@@ -94,7 +94,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelZapDamage++;
+            SaveGame.Members.LevelZapDamage += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()
