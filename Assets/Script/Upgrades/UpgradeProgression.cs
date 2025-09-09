@@ -30,6 +30,8 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_ChestMaster =              6_500_100_000_000_000;
         public static Decimal512 InitialPrice_Voidgazer =              250_000_000_000_000_000;
         public static Decimal512 InitialPrice_SmartDaggers =        15_250_000_000_000_000_000;
+        //public static Decimal512 InitialPrice_SmartDaggers2 = InitialPrice_SmartDaggers * 10;
+
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
 
