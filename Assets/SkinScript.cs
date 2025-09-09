@@ -160,6 +160,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.SmartDagger10), "Slick Earl: Reach Smart Daggers level 10");
         }
+        else if (animationName == SkinAnimation.GangsterEarl)
+        {
+            return (list.Contains(Achieved.ChestMaster200), "Gangster Earl: Reach Bountiful level 200");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

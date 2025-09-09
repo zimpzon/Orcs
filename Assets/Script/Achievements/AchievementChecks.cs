@@ -328,5 +328,16 @@ namespace Assets.Script.Achievements
                 NewAchieved(Achieved.SmartDagger10);
             }
         }
+
+        public static void CheckChestMaster200(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.ChestMaster200)) return;
+
+            if (SaveGame.Members.LevelChestMaster >= 200)
+            {
+                list.Add(Achieved.ChestMaster200);
+                NewAchieved(Achieved.ChestMaster200);
+            }
+        }
     }
 }

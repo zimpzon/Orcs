@@ -34,6 +34,7 @@ public enum Achieved
     BuyCardScaryEarl,
     SmartDagger10,
     Diamonds1000,
+    ChestMaster200,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -70,5 +71,6 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckBuyCardScaryEarl(list);
         AchievementChecks.CheckSmartDagger10(list);
         AchievementChecks.CheckDiamonds1000(list);
+        AchievementChecks.CheckChestMaster200(list);
     }
 }

@@ -68,7 +68,9 @@ public class GameManager : MonoBehaviour
     // 51: Arena super jump on fast clear
     // 52: New upgrade tier
     // 53: Two new skins
-    public const int MinorVersion = 53;
+    // 53: New skins
+    // 54: Skin Gangster Earl
+    public const int MinorVersion = 54;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -368,6 +370,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - one new skin\n" +
             " - two new skins\n" +
             " - new upgrade tier\n" +
             " - turbo arena rebirth card");
