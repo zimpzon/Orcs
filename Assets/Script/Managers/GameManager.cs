@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
     // 53: New skins
     // 54: Skin Gangster Earl
     // 55: Added buy multiple buttons
-    public const int MinorVersion = 55;
+    // 55: Added new enemy
+    public const int MinorVersion = 56;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -378,9 +379,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - new enemy\n" +
             " - buy multiple buttons\n" +
-            " - new skins\n" +
-            " - new upgrade tier");
+            " - new skins");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -486,7 +487,7 @@ public class GameManager : MonoBehaviour
             long arenaStep = SaveGame.Members.BoughtFasterArena ? 5L : 1L;
             int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
             // If faster Arena and >= 20 seconds left take a big jump.
-            if (secondsLeftAtRoundEnd >= 20 && SaveGame.Members.BoughtFasterArena)
+            if (secondsLeftAtRoundEnd >= 20 && SaveGame.Members.BoughtFasterArena && GameState == State.Idle_WonFight)
             {
                 arenaStep = 25;
                 Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);

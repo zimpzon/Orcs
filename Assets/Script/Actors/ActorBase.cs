@@ -15,7 +15,7 @@ public enum ActorTypeEnum
     // REMEMBER to update names just below
     None, Any, BatWhite, OgreSmall, OgreLarge, HeroChaser, Green, Raven, Red, Pig, Pigtail,
     White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro, Karateeth,
-    Snout, IronMask, BrainZombie, AfroOrc,
+    Snout, IronMask, BrainZombie, AfroOrc, Faceless,
 };
 
 public class ActorBase : MonoBehaviour
@@ -44,6 +44,7 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.IronMask, "The Iron Mask" },
         { ActorTypeEnum.BrainZombie, "The Brain Zombie" },
         { ActorTypeEnum.AfroOrc, "The Afro Orc" },
+        { ActorTypeEnum.Faceless, "The Faceless" },
     };
 
     const float PaintBallTickTime = 1.0f;

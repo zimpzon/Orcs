@@ -12,11 +12,12 @@ public static class EnemySpawner
     // Enemy type definitions with base HP (before HpScale)
     private static readonly EnemyType[] EnemyTypes = new[]
     {
-        new EnemyType(ActorTypeEnum.AfroOrc,        700_000_000),
-        new EnemyType(ActorTypeEnum.BrainZombie,    600_000_000),
-        new EnemyType(ActorTypeEnum.IronMask,       500_000_000),
-        new EnemyType(ActorTypeEnum.Snout,          400_000_000),
-        new EnemyType(ActorTypeEnum.Karateeth,      300_000_000),
+        new EnemyType(ActorTypeEnum.Faceless,    12_800_000_000),
+        new EnemyType(ActorTypeEnum.AfroOrc,      6_400_000_000),
+        new EnemyType(ActorTypeEnum.BrainZombie,  3_200_000_000),
+        new EnemyType(ActorTypeEnum.IronMask,     1_600_000_000),
+        new EnemyType(ActorTypeEnum.Snout,          800_000_000),
+        new EnemyType(ActorTypeEnum.Karateeth,      400_000_000),
         new EnemyType(ActorTypeEnum.WannabeNecro,   200_000_000),
         new EnemyType(ActorTypeEnum.UndeadPirate,   120_000_000),
         new EnemyType(ActorTypeEnum.FreakyWiz,       80_000_000),
@@ -53,6 +54,11 @@ public static class EnemySpawner
     {
         long hpTarget = CalculateHpTarget(level);
         var enemies = new List<ActorBase>();
+
+
+        //// TEST NEW ENEMIES: Add them here
+        //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.Faceless, 1).ToList());
+
 
         const int maxRetries = 10;
         long hpMultiplier = 1;
