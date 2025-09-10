@@ -7,7 +7,7 @@ using UnityEngine;
 public static class EnemySpawner
 {
     public const long HpScale = 5;
-    public const long MaxEnemies = 100;
+    public const long MaxEnemies = 50;
 
     // Enemy type definitions with base HP (before HpScale)
     private static readonly EnemyType[] EnemyTypes = new[]
@@ -204,12 +204,22 @@ public static class EnemySpawner
         return types.Last(); // Fallback
     }
 
+    //private static long CalculateHpTarget(long level)
+    //{
+    //    const long HpBase = 40;
+    //    const long HpBasePerLevel = 60;
+
+    //    return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 10)) * HpScale;
+    //}
+
     private static long CalculateHpTarget(long level)
     {
         const long HpBase = 40;
         const long HpBasePerLevel = 60;
+        const long HpScale = 5;
 
-        return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 10)) * HpScale;
+        // Adjusted quadratic multiplier to hit 20B at level 10K
+        return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 39998L / 1000L)) * HpScale;
     }
 
     private static void SpawnEnemies(List<ActorBase> enemies, ActorTypeEnum type, int count, long hp, bool useCircle = false)
