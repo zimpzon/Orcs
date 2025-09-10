@@ -11,6 +11,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public TMP_InputField TextImportInputField;
     public Toggle ShowFloatingDamageToggle;
     public Toggle ShowFloatingGoldToggle;
+    public Toggle UseScientificNotationToggle;
 
     private int _clickCount;
 
@@ -34,6 +35,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
 
         ShowFloatingDamageToggle.isOn = SaveGame.Members.ShowFloatingDamageNumbers;
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
+        UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
     }
 
     //public void OnExportSaveClick()
@@ -57,6 +59,12 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public void ShowFloatingGoldNumbers(bool show)
     {
         SaveGame.Members.ShowFloatingGoldNumbers = ShowFloatingGoldToggle.isOn;
+        SaveGame.Save();
+    }
+
+    public void UseScientificNotation(bool show)
+    {
+        SaveGame.Members.UseScientificNotation = UseScientificNotationToggle.isOn;
         SaveGame.Save();
     }
 

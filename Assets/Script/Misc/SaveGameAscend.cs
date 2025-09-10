@@ -34,6 +34,7 @@
 
         newSave.ShowFloatingDamageNumbers = oldSave.ShowFloatingDamageNumbers;
         newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
+        newSave.UseScientificNotation = oldSave.UseScientificNotation;
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;

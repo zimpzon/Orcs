@@ -1304,7 +1304,11 @@ public class GameManager : MonoBehaviour
         _prevMoneyTextNextUpdate = G.D.GameTime + MoneyUpdateDelay;
         _prevMoney = SaveGame.Members.Money;
 
-        TextMoney.text = $"${Format512.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        string textMoney = SaveGame.Members.UseScientificNotation ?
+            $"${FormatScientific.Format(SaveGame.Members.Money)}" :
+            $"${Format512.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+
+        TextMoney.text = textMoney;
     }
 
     float _timeNextTotalIncomeUpdate;

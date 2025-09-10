@@ -17,6 +17,10 @@ public class SettingsStatsScript : MonoBehaviour
         var timePlayed = TimeSpan.FromSeconds(SaveGame.Members.EstimatedOnlineSeconds2);
         var timeSinceLastAscend = TimeSpan.FromSeconds(SaveGame.Members.TimeSinceLastAscend);
 
+        string strTextMoney = SaveGame.Members.UseScientificNotation ?
+            $"${FormatScientific.Format(SaveGame.Members.MaxMoney)}" :
+            $"${Format512.Format(SaveGame.Members.MaxMoney)}";
+
         var sb = new StringBuilder();
         sb.AppendLine(BuildLine("Passive income", $"{(long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100)}%"));
         sb.AppendLine(BuildLine("X2 multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier:0.00}"));
@@ -26,7 +30,7 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Rebirth cards multiplier", $"{PlayerUpgrades.Data.PassiveIncomeAscendMultiplier:0.00}"));
         sb.AppendLine(BuildLine("Diamond multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier:0.00}"));
         sb.AppendLine();
-        sb.AppendLine(BuildLine("Max Money", Format512.Format(SaveGame.Members.MaxMoney)));
+        sb.AppendLine(BuildLine("Max Money", strTextMoney));
         sb.AppendLine(BuildLine("Max Income", Format512.Format(SaveGame.Members.MaxIncome)));
         sb.AppendLine(BuildLine("Total Income", Format512.Format(lifetimeIncome)));
         sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
