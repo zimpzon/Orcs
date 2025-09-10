@@ -21,8 +21,16 @@ public class SettingsStatsScript : MonoBehaviour
             $"${FormatScientific.Format(SaveGame.Members.MaxMoney)}" :
             $"${Format512.Format(SaveGame.Members.MaxMoney)}";
 
+        string strTotalIncome = SaveGame.Members.UseScientificNotation ?
+            $"${FormatScientific.Format(lifetimeIncome)}" :
+            $"${Format512.Format(lifetimeIncome)}";
+
+        string strMaxIncome = SaveGame.Members.UseScientificNotation ?
+            $"${FormatScientific.Format(SaveGame.Members.MaxIncome)}" :
+            $"${Format512.Format(SaveGame.Members.MaxIncome)}";
+
         var sb = new StringBuilder();
-        sb.AppendLine(BuildLine("Passive income", $"{(long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100)}%"));
+        sb.AppendLine(BuildLine("Passive income", $"{Format512.Format((long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100))}%"));
         sb.AppendLine(BuildLine("X2 multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier:0.00}"));
         sb.AppendLine(BuildLine("Bestiary multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses:0.00}"));
         sb.AppendLine(BuildLine("Bought 1% multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses:0.00}"));
@@ -31,8 +39,8 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Diamond multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier:0.00}"));
         sb.AppendLine();
         sb.AppendLine(BuildLine("Max Money", strTextMoney));
-        sb.AppendLine(BuildLine("Max Income", Format512.Format(SaveGame.Members.MaxIncome)));
-        sb.AppendLine(BuildLine("Total Income", Format512.Format(lifetimeIncome)));
+        sb.AppendLine(BuildLine("Max Income", strMaxIncome));
+        sb.AppendLine(BuildLine("Total Income", strTotalIncome));
         sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine(BuildLine("X2 Bought", Format512.Format(SaveGame.Members.TotalX2UpgradesBought)));
         sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025)));

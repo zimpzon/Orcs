@@ -71,8 +71,9 @@ public class GameManager : MonoBehaviour
     // 53: New skins
     // 54: Skin Gangster Earl
     // 55: Added buy multiple buttons
-    // 55: Added new enemy
-    public const int MinorVersion = 56;
+    // 56: Added new enemy
+    // 57: Added scientific notation
+    public const int MinorVersion = 57;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1218,6 +1219,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup($"You were away for {FormatTime.Format(d, h, m)}\nWelcome back!");
     }
 
+    float _nextPassiveIncomeUpdate;
     void UpdatePassiveIncome()
     {
         float currentTime = G.D.RealTime;
@@ -1261,11 +1263,21 @@ public class GameManager : MonoBehaviour
 
         AddMoney(moneyToAdd);
 
-        if (_prevPassiveIncome != TotalPassiveIncome)
+        if (_prevPassiveIncome != TotalPassiveIncome || G.D.GameTime > _nextPassiveIncomeUpdate)
         {
-            TextPassiveIncome.text = $"{Format512.FormatWithDecimals(TotalPassiveIncome)} per second";
+            _nextPassiveIncomeUpdate = G.D.GameTime + 0.2f;
             _prevPassiveIncome = TotalPassiveIncome;
-            PopText(TextPassiveIncome);
+
+            string textIncome = SaveGame.Members.UseScientificNotation ?
+                FormatScientific.Format(TotalPassiveIncome) :
+                Format512.FormatWithDecimals(TotalPassiveIncome);
+
+            textIncome = $"{textIncome} per second";
+            if (textIncome != TextPassiveIncome.text)
+            {
+                TextPassiveIncome.text = textIncome;
+                PopText(TextPassiveIncome);
+            }
         }
     }
 
