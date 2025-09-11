@@ -73,7 +73,8 @@ public class GameManager : MonoBehaviour
     // 55: Added buy multiple buttons
     // 56: Added new enemy
     // 57: Added scientific notation
-    public const int MinorVersion = 57;
+    // 58: reduced enemy HP some.
+    public const int MinorVersion = 58;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

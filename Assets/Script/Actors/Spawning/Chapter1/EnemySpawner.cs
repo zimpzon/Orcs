@@ -12,11 +12,11 @@ public static class EnemySpawner
     // Enemy type definitions with base HP (before HpScale)
     private static readonly EnemyType[] EnemyTypes = new[]
     {
-        new EnemyType(ActorTypeEnum.Faceless,    12_800_000_000),
-        new EnemyType(ActorTypeEnum.AfroOrc,      6_400_000_000),
-        new EnemyType(ActorTypeEnum.BrainZombie,  3_200_000_000),
-        new EnemyType(ActorTypeEnum.IronMask,     1_600_000_000),
-        new EnemyType(ActorTypeEnum.Snout,          800_000_000),
+        new EnemyType(ActorTypeEnum.Faceless,     2_500_000_000),
+        new EnemyType(ActorTypeEnum.AfroOrc,      1_600_000_000),
+        new EnemyType(ActorTypeEnum.BrainZombie,  1_200_000_000),
+        new EnemyType(ActorTypeEnum.IronMask,       900_000_000),
+        new EnemyType(ActorTypeEnum.Snout,          600_000_000),
         new EnemyType(ActorTypeEnum.Karateeth,      400_000_000),
         new EnemyType(ActorTypeEnum.WannabeNecro,   200_000_000),
         new EnemyType(ActorTypeEnum.UndeadPirate,   120_000_000),
@@ -206,6 +206,7 @@ public static class EnemySpawner
 
     //private static long CalculateHpTarget(long level)
     //{
+    //    // 5 billion at level 10K, HpScale is included.
     //    const long HpBase = 40;
     //    const long HpBasePerLevel = 60;
 
@@ -218,8 +219,21 @@ public static class EnemySpawner
         const long HpBasePerLevel = 60;
         const long HpScale = 5;
 
-        // Adjusted quadratic multiplier to hit 20B at level 10K
-        return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 39998L / 1000L)) * HpScale;
+        // Desired HP at level 10,000 (adjustable)
+        const long HpAtTargetLevel = 10_000_000_000;
+
+        // Just a fixpoint to have an idea of where HP scaling is going.
+        const int TargetLevel = 10_000;
+
+        // Quadratic coefficient is solved so that HP(10000) == HpAtMaxLevel
+        double quadCoeff =
+            (HpAtTargetLevel / (double)HpScale
+            - (HpBase + (TargetLevel - 1) * HpBasePerLevel))
+            / ((TargetLevel - 1L) * (TargetLevel - 1L));
+
+        return (long)((HpBase
+            + ((level - 1) * HpBasePerLevel)
+            + ((level - 1L) * (level - 1L) * quadCoeff)) * HpScale);
     }
 
     private static void SpawnEnemies(List<ActorBase> enemies, ActorTypeEnum type, int count, long hp, bool useCircle = false)
