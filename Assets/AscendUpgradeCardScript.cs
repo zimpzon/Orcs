@@ -11,6 +11,7 @@ public enum AscendUpgradeCardId
     PassiveIncomeX4_1,
     PassiveIncomeX4_2,
     PassiveIncomeX4_3,
+    PassiveIncomeX6_1,
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
@@ -56,6 +57,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.PassiveIncomeX4_1 => SaveGame.Members.BoughtPassiveX4_1,
             AscendUpgradeCardId.PassiveIncomeX4_2 => SaveGame.Members.BoughtPassiveX4_2,
             AscendUpgradeCardId.PassiveIncomeX4_3 => SaveGame.Members.BoughtPassiveX4_3,
+            AscendUpgradeCardId.PassiveIncomeX6_1 => SaveGame.Members.BoughtPassiveX6_1,
             AscendUpgradeCardId.FasterMystery => SaveGame.Members.BoughtFasterMystery,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
@@ -108,6 +110,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_3)
         {
             SaveGame.Members.BoughtPassiveX4_3 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.PassiveIncomeX6_1)
+        {
+            SaveGame.Members.BoughtPassiveX6_1 = true;
         }
         else if (CardId == AscendUpgradeCardId.FasterMystery)
         {
