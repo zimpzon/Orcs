@@ -13,6 +13,8 @@ public class PlayerScript : MonoBehaviour
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
 
+    public GameObject Follower;
+
     public Vector3 LatestLeftRight { get { return flipX_ < 0 ? Vector3.left : Vector3.right; } }
 
     [System.NonSerialized] public Vector3 CursorPos;
@@ -23,6 +25,8 @@ public class PlayerScript : MonoBehaviour
     Vector3 force_;
     Transform trans_;
     SpriteRenderer renderer_;
+    SpriteRenderer _followerRenderer;
+    Transform _followerTransform;
     Vector3 playerPos_;
     float flipX_;
     float playerScale_ = 2.0f;
@@ -74,6 +78,7 @@ public class PlayerScript : MonoBehaviour
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
         DaggersThrown = 0;
         isFiringSalvo = false;
+        _followerTransform.position = trans_.position;
     }
 
     public void StartGame()
@@ -334,12 +339,26 @@ public class PlayerScript : MonoBehaviour
         playerScale_ = trans_.localScale.x; // Assume uniform scale
         renderer_ = GetComponent<SpriteRenderer>();
         playerPos_ = trans_.position;
+        _followerTransform = Follower.transform;
+        _followerRenderer = Follower.GetComponent<SpriteRenderer>();
 
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
         material_ = renderer_.material;
 
         shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
+    }
+
+    // STALKED by a ghostly presence from the void
+    void FollowerChasePlayer()
+    {
+        var dir = trans_.position - _followerTransform.position;
+        _followerRenderer.flipX = dir.x < 0;
+
+        dir.Normalize();
+
+        var step = dir * 1.0f * G.D.GameDeltaTime;
+        _followerTransform.position += step;
     }
 
     float _nextGrendade = -1;
@@ -364,12 +383,7 @@ public class PlayerScript : MonoBehaviour
         //}
 
         animationController_.Tick(GameManager.Instance.GameDeltaTime, renderer_, sprites);
-
-        if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            immortal_ = !immortal_;
-            FloatingTextSpawner.Instance.Spawn(trans_.position + Vector3.up * 0.5f, $"Immortal: {immortal_}", Color.cyan, speed: 0.5f, timeToLive: 0.5f, fontStyle: FontStyles.Bold);
-        }
+        _followerRenderer.sprite = renderer_.sprite;
 
         if (GameManager.Instance.PauseGameTime)
             return;
@@ -378,6 +392,7 @@ public class PlayerScript : MonoBehaviour
             SetFlash(false);
 
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
+        _followerRenderer.sortingOrder = int.MaxValue;
 
         if (isMoving_)
             playerPos_ += moveVec_;
@@ -389,5 +404,7 @@ public class PlayerScript : MonoBehaviour
         force_ *= 1.0f - (20.0f * GameManager.Instance.GameDeltaTime);
 
         DoMovement();
+
+        FollowerChasePlayer();
     }
 }
