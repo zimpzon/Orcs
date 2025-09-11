@@ -29725,7 +29725,7 @@ MonoBehaviour:
   TextMoney: {fileID: 1338943761}
   TextPassiveIncome: {fileID: 116551293}
   TextVersion: {fileID: 765104191}
-  TextTotalIncome: {fileID: 646665978}
+  TextIncomeBonus: {fileID: 646665978}
   TextTotalKilled: {fileID: 1124560693}
   TextTimeThisSession: {fileID: 24164529}
   ColorDamageNumbersDagger: {r: 0.77800006, g: 0, b: 0, a: 1}
@@ -39405,12 +39405,12 @@ GameObject:
   - component: {fileID: 646665979}
   - component: {fileID: 646665978}
   m_Layer: 5
-  m_Name: TextRoundIncome
+  m_Name: TextIncomeBonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &646665977
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39427,7 +39427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -224.8, y: -193}
+  m_AnchoredPosition: {x: -167.39, y: -193}
   m_SizeDelta: {x: 127.973816, y: 15}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &646665978
@@ -39450,7 +39450,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Total: 123245'
+  m_text: 'Passive income bonus: 2000%'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

@@ -73,8 +73,10 @@ public class GameManager : MonoBehaviour
     // 55: Added buy multiple buttons
     // 56: Added new enemy
     // 57: Added scientific notation
-    // 58: reduced enemy HP some.
-    public const int MinorVersion = 58;
+    // 58: Reduced enemy HP some
+    // 59: Reworked Rebirth bonuses
+    // 60: Increased dagger damage
+    public const int MinorVersion = 60;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -105,7 +107,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextPassiveIncome;
     public TextMeshProUGUI TextVersion;
 
-    public TextMeshProUGUI TextTotalIncome;
+    public TextMeshProUGUI TextIncomeBonus;
     public TextMeshProUGUI TextTotalKilled;
     public TextMeshProUGUI TextTimeThisSession;
 
@@ -381,9 +383,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - new enemy\n" +
-            " - buy multiple buttons\n" +
-            " - new skins");
+            " - reworked Rebirth bonuses\n" +
+            " - increased dagger damage");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1374,8 +1375,8 @@ public class GameManager : MonoBehaviour
 
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
-        TextTotalIncome.text =
-            $"Total: ${Format512.FormatWithDecimals(total, alwaysThreeDecimalsForLargeNumbers: true)}";
+        TextIncomeBonus.text =
+            $"Passive income: {Format512.Format((long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100))}%";
 
         TextTotalKilled.text =
             $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
