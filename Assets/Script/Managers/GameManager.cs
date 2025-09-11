@@ -76,7 +76,8 @@ public class GameManager : MonoBehaviour
     // 58: Reduced enemy HP some
     // 59: Reworked Rebirth bonuses
     // 60: Increased dagger damage
-    public const int MinorVersion = 60;
+    // 61: Buy 25
+    public const int MinorVersion = 61;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -180,7 +181,7 @@ public class GameManager : MonoBehaviour
 
     public Button ButtonBuy1;
     public Button ButtonBuy10;
-    public Button ButtonBuy100;
+    public Button ButtonBuy25;
 
     [NonSerialized] public int BuyAmount = 1;
 
@@ -1347,7 +1348,7 @@ public class GameManager : MonoBehaviour
     {
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
-        ButtonBuy100.interactable = true;
+        ButtonBuy25.interactable = true;
         if (count == 1)
         {
             ButtonBuy1.interactable = false;
@@ -1358,10 +1359,10 @@ public class GameManager : MonoBehaviour
             ButtonBuy10.interactable = false;
             BuyAmount = 10;
         }
-        else if (count == 100)
+        else if (count == 25)
         {
-            ButtonBuy100.interactable = false;
-            BuyAmount = 100;
+            ButtonBuy25.interactable = false;
+            BuyAmount = 25;
         }
         UpgradeManager.Instance.UpdateUpgradeUi();
     }

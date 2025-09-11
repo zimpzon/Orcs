@@ -10758,7 +10758,7 @@ GameObject:
   - component: {fileID: 38639497}
   - component: {fileID: 38639496}
   m_Layer: 5
-  m_Name: ButtonBuy100
+  m_Name: ButtonBuy25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10835,7 +10835,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 100
+          m_IntArgument: 25
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -29845,7 +29845,7 @@ MonoBehaviour:
   SpriteFlashColorParamId: 504
   ButtonBuy1: {fileID: 2094598816}
   ButtonBuy10: {fileID: 648812891}
-  ButtonBuy100: {fileID: 38639496}
+  ButtonBuy25: {fileID: 38639496}
   ZapTargetIgnoreList:
   - {fileID: 0}
   - {fileID: 0}
@@ -81282,7 +81282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy 100
+  m_text: Buy 25
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -98693,7 +98693,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773579962}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f36b6ff49372f514898fc452187dd5f1, type: 3}
   m_Name: 

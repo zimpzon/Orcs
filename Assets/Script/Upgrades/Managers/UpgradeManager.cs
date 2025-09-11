@@ -259,7 +259,7 @@ public class UpgradeManager : MonoBehaviour
 
     void OnItemBought()
     {
-        SaveGame.Members.TotalUpgradesBought++;
+        SaveGame.Members.TotalUpgradesBought += GameManager.Instance.BuyAmount;
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
         UpdateAllUpgrades();
     }
