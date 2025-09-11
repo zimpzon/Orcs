@@ -36,6 +36,8 @@ public class AscendProgressScript : MonoBehaviour
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_2 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_1 ? 4 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_2 ? 4 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_3 ? 4 : 1;
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
         // 10% per diamond

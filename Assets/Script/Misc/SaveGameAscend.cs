@@ -22,6 +22,8 @@
         newSave.BoughtPassiveX2_1 = oldSave.BoughtPassiveX2_1;
         newSave.BoughtPassiveX2_2 = oldSave.BoughtPassiveX2_2;
         newSave.BoughtPassiveX4_1 = oldSave.BoughtPassiveX4_1;
+        newSave.BoughtPassiveX4_2 = oldSave.BoughtPassiveX4_2;
+        newSave.BoughtPassiveX4_3 = oldSave.BoughtPassiveX4_3;
         newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
