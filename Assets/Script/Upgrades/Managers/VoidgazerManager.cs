@@ -28,7 +28,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=#8DBE4C>Voidgazer</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Unlocks the skin Voidgazer.");
+            sb.AppendLine("<color=#dddddd>The Void gazes back at Earl, making him run 50% faster.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format512.Format(baseIncome)}</color> per second.");
@@ -73,6 +73,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
+            PlayerUpgrades.Data.MoveSpeedAdd = 2.0f;
         }
 
         public static void OnBuy()
