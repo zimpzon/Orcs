@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
 // NB! this script is set to run after all other scripts, so we can be sure closestEnemy was updated
 public class PlayerScript : MonoBehaviour
 {
+    public bool EnableFollower = false;
     bool chase_ = false;
     float chaseSwitch_ = 0;
     public Sprite[] RunSprites;
@@ -78,7 +78,9 @@ public class PlayerScript : MonoBehaviour
         Weapon = WeaponBase.GetWeapon(WeaponType.None);
         DaggersThrown = 0;
         isFiringSalvo = false;
-        _followerTransform.position = trans_.position;
+        //_followerTransform.position = trans_.position;
+        EnableFollower = false;
+        _followerRenderer.enabled = EnableFollower;
     }
 
     public void StartGame()
@@ -341,6 +343,7 @@ public class PlayerScript : MonoBehaviour
         playerPos_ = trans_.position;
         _followerTransform = Follower.transform;
         _followerRenderer = Follower.GetComponent<SpriteRenderer>();
+        _followerTransform.position = trans_.position;
 
         flashParamId_ = Shader.PropertyToID("_FlashAmount");
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
@@ -352,6 +355,9 @@ public class PlayerScript : MonoBehaviour
     // STALKED by a ghostly presence from the void
     void FollowerChasePlayer()
     {
+        if (!EnableFollower) return;
+        _followerRenderer.enabled = true;
+
         var dir = trans_.position - _followerTransform.position;
         _followerRenderer.flipX = dir.x < 0;
 
@@ -392,7 +398,7 @@ public class PlayerScript : MonoBehaviour
             SetFlash(false);
 
         renderer_.sortingOrder = Mathf.RoundToInt(trans_.position.y * 100f) * -1;
-        _followerRenderer.sortingOrder = int.MaxValue;
+        _followerRenderer.sortingOrder = 100000;
 
         if (isMoving_)
             playerPos_ += moveVec_;

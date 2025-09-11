@@ -365,3 +365,14 @@ MonoBehaviour:
     - {fileID: -9025704719612306295, guid: 138d77795157c154c9fb283caa49639f, type: 3}
     - {fileID: 8478396640318591498, guid: 138d77795157c154c9fb283caa49639f, type: 3}
     - {fileID: -8002909343901240193, guid: 138d77795157c154c9fb283caa49639f, type: 3}
+  - Animation: 33
+    IdleSprites:
+    - {fileID: 585102732, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: 1324578534, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: -1652590163, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: -2076072230, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    RunSprites:
+    - {fileID: -386250284, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: 2138720194, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: -1850704003, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
+    - {fileID: 289100042, guid: 49efc48167fc56141b6798eb996aed92, type: 3}
