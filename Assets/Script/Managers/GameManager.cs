@@ -1377,7 +1377,7 @@ public class GameManager : MonoBehaviour
         _timeNextTotalIncomeUpdate = G.D.GameTime + 0.1f;
 
         TextIncomeBonus.text =
-            $"Passive income: {Format512.Format((long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100))}%";
+            $"Passive income: {Format512.Format((long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100), abbreviate: true)} %";
 
         TextTotalKilled.text =
             $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
