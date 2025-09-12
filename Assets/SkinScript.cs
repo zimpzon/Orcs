@@ -164,6 +164,14 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.ChestMaster200), "Gangster Earl: Reach Bountiful level 200");
         }
+        else if (animationName == SkinAnimation.ChickenEarl)
+        {
+            return (list.Contains(Achieved.Have1Percent50), "Chicken Earl: Have 50 1% bonuses");
+        }
+        else if (animationName == SkinAnimation.YoungEarl)
+        {
+            return (list.Contains(Achieved.Buy1PercentTotal500), "Young Earl: Buy 500 1% bonuses");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

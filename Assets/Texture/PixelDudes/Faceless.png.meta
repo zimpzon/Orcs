@@ -137,199 +137,199 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SkinFaceless_0
+      name: Faceless_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 47
-        width: 13
-        height: 19
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 7a20dd329840869b0800000000000000
-      internalID: -5086810792056257881
+      spriteID: 9d300d4c54fe6304697cb4962ade5f3d
+      internalID: 714743548
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SkinFaceless_1
+      name: Faceless_1
       rect:
         serializedVersion: 2
-        x: 2
-        y: 23
-        width: 13
-        height: 19
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 27ed96f22f2ec3300800000000000000
-      internalID: 233310810521853554
+      spriteID: 3e95a6330686a9d4cb075535dde0973f
+      internalID: 673606662
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SkinFaceless_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 23
-        width: 13
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a59c3c8d718e63460800000000000000
-      internalID: 7221214241653770586
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SkinFaceless_3
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 23
-        width: 13
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0f069a829e5d337b0800000000000000
-      internalID: -5245613943570210576
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SkinFaceless_4
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 23
-        width: 13
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2a584576eac7487a0800000000000000
-      internalID: -6375834083950033502
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SkinFaceless_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 14
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9ca52928261244eb0800000000000000
-      internalID: -4736624201105777975
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SkinFaceless_6
+      name: Faceless_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
-        width: 15
-        height: 19
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9dd02043711840c00800000000000000
-      internalID: 865958965018758617
+      spriteID: f6f79e476cf6c9f44b53d1d22a798d56
+      internalID: -1945058637
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SkinFaceless_7
+      name: Faceless_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39958630fa7838a4da22c6d965633b54
+      internalID: -1098544889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Faceless_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 577af82b69801044f896f7c192784cd9
+      internalID: 546833677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Faceless_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d2cdf8a47c71c94da76cccdb4611646
+      internalID: -599913449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Faceless_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91c11dd53e9964e4d9f14e1eeddf5c93
+      internalID: 638119305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Faceless_7
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 15
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c93378039558ab520800000000000000
-      internalID: 2718631943184266140
+      spriteID: 2674f01569c2db84289e052110a52e52
+      internalID: 827697127
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SkinFaceless_8
+      name: Faceless_8
       rect:
         serializedVersion: 2
-        x: 50
+        x: 48
         y: 0
-        width: 13
-        height: 17
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b43af90da5db04640800000000000000
-      internalID: 5062254178909266763
+      spriteID: 345a9c179f5daaf41b7244c54c5b3ef8
+      internalID: -708616049
       vertices: []
       indices: 
       edges: []
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6b24fdb826d514c498b49f29d63659e4
     internalID: 0
     vertices: []
     indices: 
@@ -348,15 +348,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SkinFaceless_0: -5086810792056257881
-      SkinFaceless_1: 233310810521853554
-      SkinFaceless_2: 7221214241653770586
-      SkinFaceless_3: -5245613943570210576
-      SkinFaceless_4: -6375834083950033502
-      SkinFaceless_5: -4736624201105777975
-      SkinFaceless_6: 865958965018758617
-      SkinFaceless_7: 2718631943184266140
-      SkinFaceless_8: 5062254178909266763
+      Faceless_0: 714743548
+      Faceless_1: 673606662
+      Faceless_2: -1945058637
+      Faceless_3: -1098544889
+      Faceless_4: 546833677
+      Faceless_5: -599913449
+      Faceless_6: 638119305
+      Faceless_7: 827697127
+      Faceless_8: -708616049
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

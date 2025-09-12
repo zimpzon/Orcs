@@ -60,6 +60,7 @@
         newSave.MaxCredits = oldSave.MaxCredits;
         newSave.TotalUpgradesBought = oldSave.TotalUpgradesBought;
         newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
+        newSave.TotalLevelPctBought = oldSave.TotalLevelPctBought;
 
 
         // Replace old save with new save

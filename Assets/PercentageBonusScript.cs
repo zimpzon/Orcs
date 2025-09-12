@@ -38,6 +38,7 @@ public class PercentageBonusScript : MonoBehaviour
         GameManager.Instance.DeductMoney(priceNext);
 
         SaveGame.Members.LevelPctBought++;
+        SaveGame.Members.TotalLevelPctBought++;
         UpdateAll();
     }
 

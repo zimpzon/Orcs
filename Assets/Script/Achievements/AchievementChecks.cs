@@ -339,5 +339,27 @@ namespace Assets.Script.Achievements
                 NewAchieved(Achieved.ChestMaster200);
             }
         }
+
+        public static void Have1Percent50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Have1Percent50)) return;
+
+            if (SaveGame.Members.LevelPctBought >= 50)
+            {
+                list.Add(Achieved.Have1Percent50);
+                NewAchieved(Achieved.Have1Percent50);
+            }
+        }
+
+        public static void Buy1PercentTotal500(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Buy1PercentTotal500)) return;
+
+            if (SaveGame.Members.TotalLevelPctBought>= 500)
+            {
+                list.Add(Achieved.Buy1PercentTotal500);
+                NewAchieved(Achieved.Buy1PercentTotal500);
+            }
+        }
     }
 }

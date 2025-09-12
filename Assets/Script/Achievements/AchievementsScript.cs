@@ -35,6 +35,8 @@ public enum Achieved
     SmartDagger10,
     Diamonds1000,
     ChestMaster200,
+    Have1Percent50,
+    Buy1PercentTotal500,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -72,5 +74,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckSmartDagger10(list);
         AchievementChecks.CheckDiamonds1000(list);
         AchievementChecks.CheckChestMaster200(list);
+        AchievementChecks.Have1Percent50(list);
+        AchievementChecks.Buy1PercentTotal500(list);
     }
 }

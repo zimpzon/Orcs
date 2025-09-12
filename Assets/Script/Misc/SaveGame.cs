@@ -156,6 +156,7 @@ public class SaveGameMembers
 
     // Pct
     public long LevelPctBought = 0;
+    public long TotalLevelPctBought = 0;
 
     // Damage
     public Decimal512 TotalDamageChainZap;
