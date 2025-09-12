@@ -40,9 +40,10 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine();
         sb.AppendLine(BuildLine("Max Money", strTextMoney));
         sb.AppendLine(BuildLine("Max Income", strMaxIncome));
-        sb.AppendLine(BuildLine("Total Income", strTotalIncome));
+        //sb.AppendLine(BuildLine("Total Income", strTotalIncome));
         sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine(BuildLine("X2 Bought", Format512.Format(SaveGame.Members.TotalX2UpgradesBought)));
+        sb.AppendLine(BuildLine("1% Bonuses Bought", Format512.Format(SaveGame.Members.TotalLevelPctBought)));
         sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025)));
         sb.AppendLine(BuildLine("Rebirths", Format512.Format(SaveGame.Members.TimesAscended_09_08_2025)));
         if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
