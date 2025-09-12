@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     // 59: Reworked Rebirth bonuses
     // 60: Increased dagger damage
     // 61: Buy 25
-    // 62: New upgrade tier, Windwalker + three new skins + Discord open link
+    // 62: New upgrade tier, Windwalker + three new skins + Discord open link + Dagger/zap balancing
     public const int MinorVersion = 62;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
@@ -385,6 +385,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - Dagger/Zap balancing\n" +
             " - added two new skins\n" +
             " - added new upgrade tier\n" +
             " - reworked Rebirth bonuses");

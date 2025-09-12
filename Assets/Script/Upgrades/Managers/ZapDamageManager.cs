@@ -53,7 +53,7 @@ namespace Assets.Script.Upgrades
 
         private static double ValueForLevel(long level)
         {
-            return 0.1 * level;
+            return 0.15 * level;
         }
 
         private static Decimal512 BaseIncome()
