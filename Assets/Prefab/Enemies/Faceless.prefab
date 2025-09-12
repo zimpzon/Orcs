@@ -180,13 +180,12 @@ SpriteRenderer:
   m_SortingLayerID: -1832096683
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5086810792056257881, guid: a2f453a46f2148043a660c4c1d719778,
-    type: 3}
+  m_Sprite: {fileID: 714743548, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8, y: 1.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -242,10 +241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animations:
-  - {fileID: -4736624201105777975, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
-  - {fileID: 865958965018758617, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
-  - {fileID: 2718631943184266140, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
-  - {fileID: 5062254178909266763, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
+  - {fileID: -599913449, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
+  - {fileID: 638119305, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
+  - {fileID: 827697127, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
+  - {fileID: -708616049, guid: a2f453a46f2148043a660c4c1d719778, type: 3}
   CanBeFrozen: 0
   CanBePoisened: 1
   Speed: 1.4
