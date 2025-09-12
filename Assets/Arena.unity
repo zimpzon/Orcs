@@ -39176,7 +39176,7 @@ PrefabInstance:
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_text
-      value: Zap Damage
+      value: Frenzy
       objectReference: {fileID: 0}
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -39193,6 +39193,16 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5767378929902888365, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -39303,7 +39313,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e6f05255cac5280448eed9166cc3a46b,
+      objectReference: {fileID: 1477259288, guid: 89392364497182349a92dccc1c074f13,
         type: 3}
     - target: {fileID: 6518668318611965686, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
@@ -39313,12 +39323,12 @@ PrefabInstance:
     - target: {fileID: 6518668318611965686, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.667194
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6518668318611965686, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.15408784
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6609570323282823315, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}

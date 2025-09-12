@@ -16,7 +16,7 @@ public class UpgradeData
     // Zap
     public long BaseZapDamage = 0;
     public double ZapDamageUpgrade = 1.0;
-    public long EffectiveZapDamage => (long)(BaseZapDamage * ZapDamageUpgrade);
+    public long EffectiveZapDamage => (long)(BaseZapDamage * (1.0 + ZapDamageUpgrade));
 
     // passive income
     public long NumberOfX2Bought = 0;
@@ -72,8 +72,10 @@ public class UpgradeData
 
     // weapons
     public double MagicMissileBaseDamage = 3.0f;
-    public double MagicMissileDamageMul = 1.0f;
-    public double MagicMissileEffectiveDamage => MagicMissileBaseDamage * MagicMissileDamageMul;
+    public double MagicMissileDamageMulZapDamage = 0.0f;
+    public double MagicMissileDamageMulSmartDaggers = 0.0f;
+    public double MagicMissileEffectiveDamage => MagicMissileBaseDamage *
+        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers);
 
     public double MagicMissileBaseCd = 0.5f;
     public double MagicMissileCdMul = 1.0f;

@@ -12,8 +12,8 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeZapDamage;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentIncrease = (long)((ValueForLevel(level) - 1.0) * 100.0);
-            long nextIncrease = (long)((ValueForLevel(level + 1) - 1.0) * 100.0);
+            long currentIncrease = (long)(ValueForLevel(level) * 100.0);
+            long nextIncrease = (long)(ValueForLevel(level + 1) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelZapDamage,
@@ -29,8 +29,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Zap Damage</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Increases all Zap damage.");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Frenzy</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Increases all damage.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format512.FormatWithDecimals(baseIncome)}</color> per second.");
@@ -45,15 +45,15 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Zap damage increase: <color=COLOR-ARENA>{Format512.Format(currentIncrease)}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format512.Format(nextIncrease)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Bonus damage: +<color=COLOR-ARENA>{Format512.Format(currentIncrease)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: +<color=COLOR-ARENA>{Format512.Format(nextIncrease)}%</color>");
 
             return sb.ToString();
         }
 
         private static double ValueForLevel(long level)
         {
-            return 1.0 + 0.25 * level;
+            return 0.1 * level;
         }
 
         private static Decimal512 BaseIncome()
@@ -85,6 +85,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.ZapDamageUpgrade = ValueForLevel(SaveGame.Members.LevelZapDamage);
+            PlayerUpgrades.Data.MagicMissileDamageMulZapDamage = ValueForLevel(SaveGame.Members.LevelZapDamage);
         }
 
         public static void OnBuy()

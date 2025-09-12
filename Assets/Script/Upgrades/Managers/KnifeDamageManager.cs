@@ -54,7 +54,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static long ValueForLevel(long level)
-            => 50 + 50 * level;
+            => 50 + 40 * level;
 
         private static Decimal512 BaseIncome()
         {

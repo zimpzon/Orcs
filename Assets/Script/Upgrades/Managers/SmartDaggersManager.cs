@@ -45,15 +45,15 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Bonus Dagger damage: <color=COLOR-ARENA>{Format512.Format(currentValue)}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format512.Format(nextValue)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Bonus Dagger damage: +<color=COLOR-ARENA>{Format512.Format(currentValue)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: +<color=COLOR-ARENA>{Format512.Format(nextValue)}%</color>");
 
             return sb.ToString();
         }
 
         private static double ValueForLevel(long level)
         {
-            return 1 + level * 0.15;
+            return level * 0.15;
         }
 
         private static Decimal512 BaseIncome()
@@ -85,7 +85,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MagicMissileJumpDamageMul = SaveGame.Members.LevelSmartDaggers > 0 ? 1.0f : 0.0f;
-            PlayerUpgrades.Data.MagicMissileDamageMul = ValueForLevel(SaveGame.Members.LevelSmartDaggers);
+            PlayerUpgrades.Data.MagicMissileDamageMulSmartDaggers = ValueForLevel(SaveGame.Members.LevelSmartDaggers);
         }
 
         public static void OnBuy()

@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     // 59: Reworked Rebirth bonuses
     // 60: Increased dagger damage
     // 61: Buy 25
-    // 62: New upgrade tier, Windwalker + three new skins
+    // 62: New upgrade tier, Windwalker + three new skins + Discord open link
     public const int MinorVersion = 62;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
