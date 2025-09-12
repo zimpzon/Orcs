@@ -4,21 +4,21 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class KnifeCdManager
+    public static class FastFeetManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelKnifeCd;
-            Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeKnifeCd;
+            long level = SaveGame.Members.LevelFastFeet;
+            Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeFastFeet;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long cdReductionNow = (long)(ClampLevel(level) * (100.0 / MaxLevel));
-            long cdReductionNext = (long)((ClampLevel(level + 1)) * (100.0 / MaxLevel));
+            long speedAddNow = (long)Math.Round(ValueForLevel(level) * 100.0f);
+            long speedAddNext = (long)Math.Round(ValueForLevel(level + 1) * 100.0f);
 
             UpgradeManagerHelper.GetX2Calculated(
-                SaveGame.Members.LevelKnifeCd,
-                SaveGame.Members.LevelKnifeCdX2,
-                UpgradeProgression.InitialPrice_DaggerCd_X2,
+                SaveGame.Members.LevelFastFeet,
+                SaveGame.Members.LevelFastFeetX2,
+                UpgradeProgression.InitialPrice_FastFeet_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
                 out Decimal512 priceX2,
@@ -29,8 +29,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Dagger Cooldown</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throw daggers faster.");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Windwalker</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Haunted by a creepy ghost, Earl runs faster.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format512.Format(baseIncome)}</color> per second.");
@@ -44,16 +44,14 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format512.Format(priceX2)}");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
+            sb.AppendLine($"<color=#dddddd>Run speed bonus: <color=COLOR-ARENA>{speedAddNow}%</color>");
             sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{cdReductionNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{speedAddNext}%")}</color>");
 
             return sb.ToString();
         }
 
-        private const int MaxLevel = 50;
-        private const double EndValueValue = 0.1;
-        private const double StartValue = 0.4;
+        private const int MaxLevel = 25;
 
         private static long ClampLevel(long level)
             => level > MaxLevel ? MaxLevel : level;
@@ -61,30 +59,27 @@ namespace Assets.Script.Upgrades
         private static float ValueForLevel(long level)
         {
             level = ClampLevel(level);
-
-            double Step = (StartValue - EndValueValue) / MaxLevel;
-            double value = StartValue - level * Step;
-            return (float)value;
+            return level * 0.02f;
         }
 
         private static Decimal512 BaseIncome()
         {
-            Decimal512 baseIncome = UpgradeProgression.BaseIncome_DaggerCd;
+            Decimal512 baseIncome = UpgradeProgression.BaseIncome_FastFeet;
 
             // Apply global modifiers
             baseIncome *= PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
 
             // Apply X2 bonuses
-            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelKnifeCdX2);
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelFastFeetX2);
             return baseIncome;
         }
 
         public static Decimal512 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelKnifeCd;
+            => BaseIncome() * SaveGame.Members.LevelFastFeet;
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_DaggerCd, SaveGame.Members.LevelKnifeCd);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_FastFeet, SaveGame.Members.LevelFastFeet);
         }
 
         public static void UpdateAll()
@@ -95,7 +90,7 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.MagicMissileBaseCd = ValueForLevel(SaveGame.Members.LevelKnifeCd);
+            PlayerUpgrades.Data.MoveSpeedAdd = PlayerUpgrades.Data.MoveSpeedAdd * ValueForLevel(SaveGame.Members.LevelFastFeet);
         }
 
         public static void OnBuy()
@@ -105,17 +100,17 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelKnifeCd += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelFastFeet += GameManager.Instance.BuyAmount;
         }
 
         public static void OnBuyX2()
         {
-            Decimal512 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_DaggerCd_X2, SaveGame.Members.LevelKnifeCdX2 + 1);
+            Decimal512 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_FastFeet_X2, SaveGame.Members.LevelFastFeetX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelKnifeCdX2++;
+            SaveGame.Members.LevelFastFeetX2++;
         }
 
         public static void UpdateUi()
@@ -123,11 +118,11 @@ namespace Assets.Script.Upgrades
             Decimal512 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
-                SaveGame.Members.LevelKnifeCd,
-                SaveGame.Members.LevelKnifeCdX2,
-                UpgradeProgression.InitialPrice_DaggerCd_X2);
+                SaveGame.Members.LevelFastFeet,
+                SaveGame.Members.LevelFastFeetX2,
+                UpgradeProgression.InitialPrice_FastFeet_X2);
 
-            UpgradeManager.Instance.KnifeCd.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelKnifeCd);
+            UpgradeManager.Instance.FastFeet.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelFastFeet);
         }
     }
 }

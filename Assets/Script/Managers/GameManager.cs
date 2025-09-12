@@ -403,6 +403,10 @@ public class GameManager : MonoBehaviour
         string s8 = Format512.FormatWithDecimals(v2, alwaysThreeDecimalsForLargeNumbers: true);
         string s9 = Format512.FormatWithDecimals(v3, alwaysThreeDecimalsForLargeNumbers: true);
 
+        Decimal512 InitialPrice_SmartDaggers = 15_250_000_000_000_000_000;
+        Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
+        string s10 = Format512.FormatWithDecimals(InitialPrice_SmartDaggers, alwaysThreeDecimalsForLargeNumbers: true);
+
         _timeStartSessionUtc = DateTime.UtcNow;
 
         Playfab.Login();
@@ -1536,7 +1540,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.Money += 900_000_000_000_000_000;
+            SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 100_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))

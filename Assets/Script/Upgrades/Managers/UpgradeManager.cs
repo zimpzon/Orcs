@@ -33,6 +33,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript ChestMaster;
     public UpgradeItemScript Voidgazer;
     public UpgradeItemScript SmartDaggers;
+    public UpgradeItemScript FastFeet;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -64,6 +65,7 @@ public class UpgradeManager : MonoBehaviour
         ChestMasterManager.UpdateAll();
         VoidgazerManager.UpdateAll();
         SmartDaggersManager.UpdateAll();
+        FastFeetManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -104,6 +106,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelVoidgazer);
         else if (upgradeUiScript == SmartDaggers)
             return GetDisplayStatus(SaveGame.Members.LevelVoidgazer, SaveGame.Members.LevelSmartDaggers);
+        else if (upgradeUiScript == FastFeet)
+            return GetDisplayStatus(SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelFastFeet);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -144,6 +148,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(Voidgazer) == UpgradeDisplayStatus.FullyShown ? VoidgazerManager.GetText() : LockedText;
         else if (upgradeUiScript == SmartDaggers)
             text = GetUpgradeDisplayStatus(SmartDaggers) == UpgradeDisplayStatus.FullyShown ? SmartDaggersManager.GetText() : LockedText;
+        else if (upgradeUiScript == FastFeet)
+            text = GetUpgradeDisplayStatus(FastFeet) == UpgradeDisplayStatus.FullyShown ? FastFeetManager.GetText() : LockedText;
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -183,6 +189,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeChestMaster += ChestMasterManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeVoidgazer += VoidgazerManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeSmartDaggers += SmartDaggersManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeFastFeet += FastFeetManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -201,6 +208,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += ChestMasterManager.PassiveIncome();
         fullSum += VoidgazerManager.PassiveIncome();
         fullSum += SmartDaggersManager.PassiveIncome();
+        fullSum += FastFeetManager.PassiveIncome();
         return fullSum;
     }
 
@@ -238,6 +246,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(ChestMaster);
         SetIsVisble(Voidgazer);
         SetIsVisble(SmartDaggers);
+        SetIsVisble(FastFeet);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -255,6 +264,7 @@ public class UpgradeManager : MonoBehaviour
         ChestMasterManager.UpdateUi();
         VoidgazerManager.UpdateUi();
         SmartDaggersManager.UpdateUi();
+        FastFeetManager.UpdateUi();
     }
 
     void OnItemBought()
@@ -495,6 +505,20 @@ public class UpgradeManager : MonoBehaviour
         OnX2ItemBought();
     }
 
+    public void OnBuyFastFeet()
+    {
+        FastFeetManager.OnBuy();
+        FastFeet.SetPopupText();
+        OnItemBought();
+    }
+
+    public void OnBuyFastFeetX2()
+    {
+        FastFeetManager.OnBuyX2();
+        FastFeet.SetPopupText();
+        OnX2ItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -513,6 +537,7 @@ public class UpgradeManager : MonoBehaviour
         ChestMasterManager.UpdatePlayerUpgrades();
         VoidgazerManager.UpdatePlayerUpgrades();
         SmartDaggersManager.UpdatePlayerUpgrades();
+        FastFeetManager.UpdatePlayerUpgrades();
     }
 
     void UpdateNumberOfX2Bought()
@@ -534,6 +559,7 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelChestMasterX2;
         total += SaveGame.Members.LevelVoidgazerX2;
         total += SaveGame.Members.LevelSmartDaggersX2;
+        total += SaveGame.Members.LevelFastFeetX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
         const float BonusPerRank = 0.1f;
