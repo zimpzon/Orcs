@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,6 +9,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Button ButtonDeleteSave;
     public TextMeshProUGUI TextButtonDeleteSave;
     public TMP_InputField TextImportInputField;
+    public TMP_InputField TextDiscordLink;
     public Toggle ShowFloatingDamageToggle;
     public Toggle ShowFloatingGoldToggle;
     public Toggle UseScientificNotationToggle;
@@ -43,6 +44,11 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     //    string fileName = JsMappings.ExportSave();
     //    GameCanvasScript.Instance.ShowPopup("Your save game was exported as: " + fileName);
     //}
+
+    public void OnOpenDiscordLink()
+    {
+        Application.OpenURL(TextDiscordLink.text);
+    }
 
     public void OnImportSaveClick()
     {
