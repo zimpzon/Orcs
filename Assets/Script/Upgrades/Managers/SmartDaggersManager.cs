@@ -12,8 +12,8 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeSmartDaggers;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentValue = (long)Math.Round((ValueForLevel(level) - 1.0) * 100.0);
-            long nextValue = (long)Math.Round((ValueForLevel(level + 1) - 1.0) * 100.0);
+            long currentValue = (long)Math.Round((ValueForLevel(level)) * 100.0);
+            long nextValue = (long)Math.Round((ValueForLevel(level + 1)) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelSmartDaggers,
