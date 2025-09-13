@@ -32,13 +32,15 @@ public class AscendProgressScript : MonoBehaviour
     static void ApplyAscendPermanentBonuses()
     {
         // Additive
-        int passiveMultiplier = 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX2_1 ? 2 : 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX2_2 ? 2 : 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX4_1 ? 4 : 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX4_2 ? 4 : 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX4_3 ? 4 : 0;
-        passiveMultiplier += SaveGame.Members.BoughtPassiveX6_1 ? 6 : 0;
+        // TODO: THESE are rebalanced but the names are not changed. Cannot just change due to save file JSON. Recover?
+        float passiveMultiplier = 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_2 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_1 ? 3 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_2 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_3 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX6_1 ? 2 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX7_1 ? 2 : 1;
 
         // If no card bonuses were added multiplier should be one.
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier == 0 ? 1 : passiveMultiplier;
