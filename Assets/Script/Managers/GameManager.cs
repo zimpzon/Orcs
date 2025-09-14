@@ -80,7 +80,8 @@ public class GameManager : MonoBehaviour
     // 62: New upgrade tier, Windwalker + three new skins + Discord open link + Dagger/zap balancing
     // 63: Emergency disabled some cards, worse than the price
     // 64: Reworked cards again
-    public const int MinorVersion = 64;
+    // 65: Added buy to next X2 button
+    public const int MinorVersion = 65;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -184,9 +185,11 @@ public class GameManager : MonoBehaviour
 
     public Button ButtonBuy1;
     public Button ButtonBuy10;
-    public Button ButtonBuy25;
+    public Button ButtonBuyNextX2;
+    public Button ButtonBuy100;
 
-    [NonSerialized] public int BuyAmount = 1;
+    public enum BuyAmountSelection {  Buy1 = 0, Buy10 = 1, Buy100 = 2, BuyNextX2 = 3, }
+    [NonSerialized] public BuyAmountSelection SelectedBuyAmount = BuyAmountSelection.Buy1;
 
     [NonSerialized] public float UnlockedPct;
     [NonSerialized] public int RoundUnlockCount;
@@ -216,7 +219,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
 
-        SetBuyMultiple(1);
+        SetBuyMultiple((int)BuyAmountSelection.Buy1);
     }
 
     public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
@@ -387,10 +390,10 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added button to buy to next X2\n" +
             " - another rework of Rebirth bonuses\n" +
             " - Dagger/Zap balancing\n" +
-            " - added two new skins\n" +
-            " - added new upgrade tier");
+            " - added two new skins");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1153,7 +1156,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
 
         ResetGame(autoStartGame: true);
-        SetBuyMultiple(1);
+        SetBuyMultiple((int)BuyAmountSelection.Buy1);
 
         StartCoroutine(GameStateCo());
     }
@@ -1353,25 +1356,31 @@ public class GameManager : MonoBehaviour
             .setLoopPingPong(1); // go there and back once
     }
 
-    public void SetBuyMultiple(int count)
+    // selection is BuyAmountSelection
+    public void SetBuyMultiple(int selection)
     {
+        SelectedBuyAmount = (BuyAmountSelection)selection;
+
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
-        ButtonBuy25.interactable = true;
-        if (count == 1)
+        ButtonBuy100.interactable = true;
+        ButtonBuyNextX2.interactable = true;
+
+        if (SelectedBuyAmount == BuyAmountSelection.Buy1)
         {
             ButtonBuy1.interactable = false;
-            BuyAmount = 1;
         }
-        else if (count == 10)
+        else if (SelectedBuyAmount == BuyAmountSelection.Buy10)
         {
             ButtonBuy10.interactable = false;
-            BuyAmount = 10;
         }
-        else if (count == 25)
+        else if (SelectedBuyAmount == BuyAmountSelection.Buy100)
         {
-            ButtonBuy25.interactable = false;
-            BuyAmount = 25;
+            ButtonBuy100.interactable = false;
+        }
+        else if (SelectedBuyAmount == BuyAmountSelection.BuyNextX2)
+        {
+            ButtonBuyNextX2.interactable = false;
         }
         UpgradeManager.Instance.UpdateUpgradeUi();
     }

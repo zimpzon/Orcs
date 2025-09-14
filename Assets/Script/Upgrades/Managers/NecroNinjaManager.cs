@@ -66,7 +66,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_NecroNinja, SaveGame.Members.LevelNecroNinja);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_NecroNinja, SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelNecroNinjaX2);
         }
 
         public static void UpdateAll()
@@ -87,7 +87,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelNecroNinja += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelNecroNinja += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelNecroNinjaX2);
         }
 
         public static void OnBuyX2()

@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Voidgazer, SaveGame.Members.LevelVoidgazer);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Voidgazer, SaveGame.Members.LevelVoidgazer, SaveGame.Members.LevelVoidgazerX2);
         }
 
         public static void UpdateAll()
@@ -83,7 +83,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelVoidgazer += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelVoidgazer += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelVoidgazer, SaveGame.Members.LevelVoidgazerX2);
         }
 
         public static void OnBuyX2()

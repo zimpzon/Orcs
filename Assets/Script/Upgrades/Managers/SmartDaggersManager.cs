@@ -73,7 +73,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_SmartDaggers, SaveGame.Members.LevelSmartDaggers);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_SmartDaggers, SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelSmartDaggersX2);
         }
 
         public static void UpdateAll()
@@ -95,7 +95,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelSmartDaggers += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelSmartDaggers += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelSmartDaggersX2);
         }
 
         public static void OnBuyX2()

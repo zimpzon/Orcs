@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_ChestMaster, SaveGame.Members.LevelChestMaster);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_ChestMaster, SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelChestMasterX2);
         }
 
         public static void UpdateAll()
@@ -83,7 +83,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelChestMaster += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelChestMaster += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelChestMasterX2);
         }
 
         public static void OnBuyX2()

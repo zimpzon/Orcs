@@ -79,7 +79,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_FastFeet, SaveGame.Members.LevelFastFeet);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_FastFeet, SaveGame.Members.LevelFastFeet, SaveGame.Members.LevelFastFeetX2);
         }
 
         public static void UpdateAll()
@@ -100,7 +100,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelFastFeet += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelFastFeet += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelFastFeet, SaveGame.Members.LevelFastFeetX2);
         }
 
         public static void OnBuyX2()

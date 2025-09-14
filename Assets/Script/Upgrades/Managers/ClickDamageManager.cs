@@ -79,7 +79,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Clickdamage, SaveGame.Members.LevelClickDamage);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Clickdamage, SaveGame.Members.LevelClickDamage, SaveGame.Members.LevelClickDamageX2);
         }
 
         public static void UpdateAll()
@@ -100,7 +100,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelClickDamage += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelClickDamage += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelClickDamage, SaveGame.Members.LevelClickDamageX2);
         }
 
         public static void OnBuyX2()

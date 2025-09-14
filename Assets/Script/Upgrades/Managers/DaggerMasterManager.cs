@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_DaggerMaster, SaveGame.Members.LevelDaggerMaster);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_DaggerMaster, SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
         }
 
         public static void UpdateAll()
@@ -83,7 +83,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelDaggerMaster += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelDaggerMaster += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
         }
 
         public static void OnBuyX2()

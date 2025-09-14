@@ -62,7 +62,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Hoarder, SaveGame.Members.LevelHoarder);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_Hoarder, SaveGame.Members.LevelHoarder, SaveGame.Members.LevelHoarderX2);
         }
 
         public static void UpdateAll()
@@ -83,7 +83,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelHoarder += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelHoarder += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelHoarder, SaveGame.Members.LevelHoarderX2);
         }
 
         public static void OnBuyX2()

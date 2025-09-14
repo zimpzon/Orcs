@@ -267,9 +267,9 @@ public class UpgradeManager : MonoBehaviour
         FastFeetManager.UpdateUi();
     }
 
-    void OnItemBought()
+    void OnItemBought(long actualBuyAmount)
     {
-        SaveGame.Members.TotalUpgradesBought += GameManager.Instance.BuyAmount;
+        SaveGame.Members.TotalUpgradesBought += actualBuyAmount;
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
         UpdateAllUpgrades();
     }
@@ -283,9 +283,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyClickDamage()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelClickDamage, SaveGame.Members.LevelClickDamageX2);
         ClickDamageManager.OnBuy();
         ClickDamage.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyClickDamageX2()
@@ -297,9 +298,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyKnifeDamage()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelKnifeDamage, SaveGame.Members.LevelKnifeDamageX2);
         KnifeDamageManager.OnBuy();
         KnifeDamage.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyKnifeDamageX2()
@@ -311,9 +313,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyArenaGold()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelMoneyPerGold, SaveGame.Members.LevelMoneyPerGoldX2);
         ArenaGoldManager.OnBuy();
         GoldPerRound.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyArenaGoldX2()
@@ -325,9 +328,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyKnifeCooldown()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelKnifeCd, SaveGame.Members.LevelKnifeCdX2);
         KnifeCdManager.OnBuy();
         KnifeCd.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyKnifeCooldownX2()
@@ -339,9 +343,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyWitchDoctorDamage()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelWitchDoctor, SaveGame.Members.LevelWitchDoctorX2);
         WitchDoctorManager.OnBuy();
         WitchDoctor.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyWitchDoctorDamageX2()
@@ -353,9 +358,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyGoldPerKnife()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelGoldPerKnifeThrown, SaveGame.Members.LevelGoldPerKnifeThrownX2);
         GoldPerKnifeThrowManager.OnBuy();
         GoldPerKnife.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyGoldPerKnifeX2()
@@ -367,9 +373,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyHoarder()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelHoarder, SaveGame.Members.LevelHoarderX2);
         HoarderManager.OnBuy();
         Hoarder.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyHoarderX2()
@@ -381,9 +388,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyWizard()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelWizard, SaveGame.Members.LevelWizardX2);
         WizardManager.OnBuy();
         Wizard.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyWizardX2()
@@ -395,9 +403,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyZapDamage()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelZapDamage, SaveGame.Members.LevelZapDamageX2);
         ZapDamageManager.OnBuy();
         ZapDamage.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyZapDamageX2()
@@ -409,9 +418,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyMoneyMaker()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelMoneyMaker, SaveGame.Members.LevelMoneyMakerX2);
         MoneyMakerManager.OnBuy();
         MoneyMaker.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyMoneyMakerX2()
@@ -423,9 +433,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyDaggerMaster()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
         DaggerMasterManager.OnBuy();
         DaggerMaster.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyDaggerMasterX2()
@@ -437,9 +448,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyNecroNinja()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelNecroNinjaX2);
         NecroNinjaManager.OnBuy();
         NecroNinja.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyNecroNinjaX2()
@@ -451,9 +463,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuySkullCrusher()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelSkullCrusherX2);
         SkullCrusherManager.OnBuy();
         SkullCrusher.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuySkullCrusherX2()
@@ -465,9 +478,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyChestMaster()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelChestMasterX2);
         ChestMasterManager.OnBuy();
         ChestMaster.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyChestMasterX2()
@@ -479,9 +493,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyVoidgazer()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelVoidgazer, SaveGame.Members.LevelVoidgazerX2);
         VoidgazerManager.OnBuy();
         Voidgazer.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyVoidgazerX2()
@@ -493,9 +508,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuySmartDaggers()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelSmartDaggersX2);
         SmartDaggersManager.OnBuy();
         SmartDaggers.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuySmartDaggersX2()
@@ -507,9 +523,10 @@ public class UpgradeManager : MonoBehaviour
 
     public void OnBuyFastFeet()
     {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelFastFeet, SaveGame.Members.LevelFastFeetX2);
         FastFeetManager.OnBuy();
         FastFeet.SetPopupText();
-        OnItemBought();
+        OnItemBought(buyAmount);
     }
 
     public void OnBuyFastFeetX2()

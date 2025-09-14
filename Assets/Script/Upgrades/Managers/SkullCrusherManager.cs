@@ -70,7 +70,7 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_SkullCrusher, SaveGame.Members.LevelSkullCrusher);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_SkullCrusher, SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelSkullCrusherX2);
         }
 
         public static void UpdateAll()
@@ -91,7 +91,7 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelSkullCrusher += GameManager.Instance.BuyAmount;
+            SaveGame.Members.LevelSkullCrusher += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelSkullCrusherX2);
         }
 
         public static void OnBuyX2()

@@ -124,9 +124,44 @@ namespace Assets.Script.Upgrades
             return (levelX2 - 3) * 25;
         }
 
-        public static Decimal512 PriceForNextUpgrade(Decimal512 initialPrice, long currentLevel)
+        public static long GetActualBuyAmountFromSelectedBuyAmount(long currentLevel, long currentLevelX2)
         {
-            int buyAmount = GameManager.Instance.BuyAmount;
+            var selection = GameManager.Instance.SelectedBuyAmount;
+            if (selection == GameManager.BuyAmountSelection.Buy1)
+            {
+                return 1;
+            }
+            else if (selection == GameManager.BuyAmountSelection.Buy10)
+            {
+                return 10;
+            }
+            else if (selection == GameManager.BuyAmountSelection.Buy100)
+            {
+                return 100;
+            }
+            else if (selection == GameManager.BuyAmountSelection.BuyNextX2)
+            {
+                // Find the next X2 level that requires more upgrade levels than we currently have
+                long nextX2Level = currentLevelX2 + 1;
+                long requiredLevel = LevelRequirementX2(nextX2Level);
+                
+                // If we already meet the requirement for the next X2, skip to the one after that
+                while (requiredLevel <= currentLevel)
+                {
+                    nextX2Level++;
+                    requiredLevel = LevelRequirementX2(nextX2Level);
+                }
+                
+                return requiredLevel - currentLevel;
+            }
+            else
+                throw new NotImplementedException($"{selection}");
+        }
+
+        public static Decimal512 PriceForNextUpgrade(Decimal512 initialPrice, long currentLevel, long currentLevelX2)
+        {
+            long buyAmount = GetActualBuyAmountFromSelectedBuyAmount(currentLevel, currentLevelX2);
+
             Decimal512 sum = 0;
             for (int i = 0; i < buyAmount; ++i)
             {
