@@ -81,7 +81,8 @@ public class GameManager : MonoBehaviour
     // 63: Emergency disabled some cards, worse than the price
     // 64: Reworked cards again
     // 65: Added buy to next X2 button
-    public const int MinorVersion = 65;
+    // 66: Added Crypt Master upgrade tier
+    public const int MinorVersion = 66;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -390,10 +391,10 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added new upgrade tier\n" +
             " - added button to buy to next X2\n" +
             " - another rework of Rebirth bonuses\n" +
-            " - Dagger/Zap balancing\n" +
-            " - added two new skins");
+            " - Dagger/Zap balancing");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1471,19 +1472,19 @@ public class GameManager : MonoBehaviour
 
             { "level_zap", (int)SaveGame.Members.LevelClickDamage },
             { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
-            { "level_gold_value", (int)SaveGame.Members.LevelMoneyPerGold },
             { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
             { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
-            { "level_gold_per_dagger", (int)SaveGame.Members.LevelGoldPerKnifeThrown },
             { "level_wizard", (int)SaveGame.Members.LevelWizard },
             { "level_hoarder", (int)SaveGame.Members.LevelHoarder },
             { "level_zap_damage", (int)SaveGame.Members.LevelZapDamage },
-            { "level_moneymaker", (int)SaveGame.Members.LevelMoneyMaker },
             { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
             { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
             { "level_skull_crusher", (int)SaveGame.Members.LevelSkullCrusher},
             { "level_chest_master", (int)SaveGame.Members.LevelChestMaster},
             { "level_voidgazer", (int)SaveGame.Members.LevelVoidgazer},
+            { "level_smart_daggers", (int)SaveGame.Members.LevelSmartDaggers},
+            { "level_fast_feet", (int)SaveGame.Members.LevelFastFeet},
+            { "level_crypt_master", (int)SaveGame.Members.LevelCryptMaster},
         };
         return dic;
     }

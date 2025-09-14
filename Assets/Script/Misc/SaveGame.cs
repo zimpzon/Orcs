@@ -109,6 +109,7 @@ public class SaveGameMembers
     public Decimal512 TotalIncomeVoidgazer;
     public Decimal512 TotalIncomeSmartDaggers;
     public Decimal512 TotalIncomeFastFeet;
+    public Decimal512 TotalIncomeCryptMaster;
 
     public Decimal512 TotalIncomeArena;
     public Decimal512 TotalIncomePassive;
@@ -136,6 +137,7 @@ public class SaveGameMembers
     public long LevelVoidgazer = 0;
     public long LevelSmartDaggers = 0;
     public long LevelFastFeet = 0;
+    public long LevelCryptMaster = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -155,6 +157,7 @@ public class SaveGameMembers
     public long LevelVoidgazerX2 = 0;
     public long LevelSmartDaggersX2 = 0;
     public long LevelFastFeetX2 = 0;
+    public long LevelCryptMasterX2 = 0;
 
     // Pct
     public long LevelPctBought = 0;

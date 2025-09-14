@@ -19,7 +19,7 @@ public class NecromancerScript : MonoBehaviour
 
     public IEnumerator Think()
     {
-        int shotsLeft = 3;
+        int shotsLeft = SaveGame.Members.LevelCryptMaster > 0 ? 4 : 3;
 
         while (true)
         {
