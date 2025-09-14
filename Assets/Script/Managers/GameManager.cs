@@ -499,8 +499,8 @@ public class GameManager : MonoBehaviour
 
             long arenaStep = SaveGame.Members.BoughtFasterArena ? 5L : 1L;
             int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
-            // If faster Arena and >= 20 seconds left take a big jump.
-            if (secondsLeftAtRoundEnd >= 20 && SaveGame.Members.BoughtFasterArena && GameState == State.Idle_WonFight)
+            // If faster Arena and >= 15 seconds left take a big jump.
+            if (secondsLeftAtRoundEnd >= 15 && SaveGame.Members.BoughtFasterArena && GameState == State.Idle_WonFight)
             {
                 arenaStep = 25;
                 Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);
