@@ -84,7 +84,8 @@ public class GameManager : MonoBehaviour
     // 66: Added Crypt Master upgrade tier
     // 67: Reworked cards again
     // 68: Increased Arena hp
-    public const int MinorVersion = 68;
+    // 69: Reworked card prices
+    public const int MinorVersion = 69;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1541,7 +1542,14 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.DiamondCount_09_08_2025 = 0;
-            SaveGame.Members.MonsterCredits_09_08_2025 += 100;
+            SaveGame.Members.MonsterCredits_09_08_2025 += 1;
+            SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            SaveGame.Members.DiamondCount_09_08_2025 = 0;
+            SaveGame.Members.MonsterCredits_09_08_2025 += 10;
             SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
         }
 
