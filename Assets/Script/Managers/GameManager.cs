@@ -82,7 +82,9 @@ public class GameManager : MonoBehaviour
     // 64: Reworked cards again
     // 65: Added buy to next X2 button
     // 66: Added Crypt Master upgrade tier
-    public const int MinorVersion = 66;
+    // 67: Reworked cards again
+    // 68: Increased Arena hp
+    public const int MinorVersion = 68;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -391,10 +393,10 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - increased enemy HP\n" +
+            " - reworked card bonuses\n" +
             " - added new upgrade tier\n" +
-            " - added button to buy to next X2\n" +
-            " - another rework of Rebirth bonuses\n" +
-            " - Dagger/Zap balancing");
+            " - added button to buy to next X2");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1539,7 +1541,7 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.DiamondCount_09_08_2025 = 0;
-            SaveGame.Members.MonsterCredits_09_08_2025 += 3;
+            SaveGame.Members.MonsterCredits_09_08_2025 += 100;
             SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
         }
 
