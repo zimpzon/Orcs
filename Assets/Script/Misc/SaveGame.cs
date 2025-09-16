@@ -31,6 +31,7 @@ public class SaveGameMembers
     public bool BoughtPassiveX4_3 = false;
     public bool BoughtPassiveX6_1 = false;
     public bool BoughtPassiveX7_1 = false;
+    public bool BoughtShinyDiamonds = false;
     public bool BoughtFasterMystery = false;
     public bool BoughtFasterArena = false;
     public bool BoughtScaryEarlSkin = false;
@@ -43,6 +44,7 @@ public class SaveGameMembers
         $"{nameof(BoughtPassiveX4_3)} = {SaveGame.Members.BoughtPassiveX4_3} | " +
         $"{nameof(BoughtPassiveX6_1)} = {SaveGame.Members.BoughtPassiveX6_1} | " +
         $"{nameof(BoughtPassiveX7_1)} = {SaveGame.Members.BoughtPassiveX7_1} | " +
+        $"{nameof(BoughtShinyDiamonds)} = {SaveGame.Members.BoughtShinyDiamonds} | " +
         $"{nameof(BoughtFasterMystery)} = {SaveGame.Members.BoughtFasterMystery} | " +
         $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
         $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin}";

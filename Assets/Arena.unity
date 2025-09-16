@@ -30000,12 +30000,12 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardPassiveX4_3
+      value: AscendUpgradeCardBetterDiamonds
       objectReference: {fileID: 0}
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -30015,17 +30015,17 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Tripples passive income!
+      value: Diamonds now gives 12% instead of 10%.
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: Cost
-      value: 16
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: CardId
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -30130,7 +30130,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Passive Income X3
+      value: Shiny Diamonds
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54320,7 +54320,7 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: CardId
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -54400,12 +54400,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 501
+      value: 61
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -70
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -79823,9 +79823,9 @@ RectTransform:
   - {fileID: 1472455712}
   - {fileID: 1311167427}
   - {fileID: 704456291}
-  - {fileID: 349117284}
   - {fileID: 426208597}
   - {fileID: 556235843}
+  - {fileID: 349117284}
   - {fileID: 971493929}
   - {fileID: 1664130205}
   - {fileID: 1809959423}
@@ -88861,7 +88861,7 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: CardId
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -88941,7 +88941,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 61
+      value: 171
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -89392,6 +89392,7 @@ MonoBehaviour:
   TextCurrentMonsterCredits: {fileID: 719025057}
   TextAscendNowGain: {fileID: 1810895776}
   TextButtonRebirth: {fileID: 2126669216}
+  TextWhatYouLose: {fileID: 1882685626}
 --- !u!1001 &1698313477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101307,7 +101308,7 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: CardId
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -101387,7 +101388,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 171
+      value: 281
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -102441,7 +102442,7 @@ MonoBehaviour:
     precious diamonds.
 
 
-    Each diamond you hold gives a +10% income bonus. You
+    Each diamond you hold gives [VALUE]% income bonus. You
     can buy upgrades with diamonds.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}

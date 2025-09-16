@@ -14,15 +14,18 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextCurrentMonsterCredits;
     public TextMeshProUGUI TextAscendNowGain;
     public TextMeshProUGUI TextButtonRebirth;
+    public TextMeshProUGUI TextWhatYouLose;
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
 
+    private string _whatYouLoseTemplate;
     private int _clickCount;
 
     private void Awake()
     {
         Instance = this;
+        _whatYouLoseTemplate = TextWhatYouLose.text;
     }
 
     public void OnAscendClick()
@@ -71,6 +74,9 @@ public class AscendDecisionScript : MonoBehaviour
         TextCurrentDiamonds.text = $"You have <color=#9DE05C>{SaveGame.Members.DiamondCount_09_08_2025}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
+
+        string diamondValue = SaveGame.Members.BoughtShinyDiamonds ? "12" : "10";
+        TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");
 
         ButtonAscend.interactable = SaveGame.Members.MonsterCredits_09_08_2025 > 0;
     }

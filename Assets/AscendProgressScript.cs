@@ -42,11 +42,11 @@ public class AscendProgressScript : MonoBehaviour
         //passiveMultiplier *= SaveGame.Members.BoughtPassiveX6_1 ? 3 : 1;
         //passiveMultiplier *= SaveGame.Members.BoughtPassiveX7_1 ? 4 : 1;
 
-        // If no card bonuses were added multiplier should be one.
-        PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier == 0 ? 1 : passiveMultiplier;
+        PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
-        // 10% per diamond
-        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * 0.1f;
+        // 10% or 12% per diamond
+        float diamondBonus = SaveGame.Members.BoughtShinyDiamonds ? 0.12f : 0.1f;
+        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * diamondBonus;
     }
 
     void Update()

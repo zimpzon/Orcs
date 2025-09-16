@@ -13,6 +13,7 @@ public enum AscendUpgradeCardId
     PassiveIncomeX4_3,
     PassiveIncomeX6_1,
     PassiveIncomeX7_1,
+    ShinyDiamonds,
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
@@ -61,6 +62,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.PassiveIncomeX6_1 => SaveGame.Members.BoughtPassiveX6_1,
             AscendUpgradeCardId.PassiveIncomeX7_1 => SaveGame.Members.BoughtPassiveX7_1,
             AscendUpgradeCardId.FasterMystery => SaveGame.Members.BoughtFasterMystery,
+            AscendUpgradeCardId.ShinyDiamonds => SaveGame.Members.BoughtShinyDiamonds,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
             _ => throw new NotImplementedException()
@@ -109,17 +111,21 @@ public class AscendUpgradeCardScript : MonoBehaviour
         {
             SaveGame.Members.BoughtPassiveX4_2 = true;
         }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_3)
+        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_3)
+        //{
+        //    SaveGame.Members.BoughtPassiveX4_3 = true;
+        //}
+        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX6_1)
+        //{
+        //    SaveGame.Members.BoughtPassiveX6_1 = true;
+        //}
+        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX7_1)
+        //{
+        //    SaveGame.Members.BoughtPassiveX7_1 = true;
+        //}
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds)
         {
-            SaveGame.Members.BoughtPassiveX4_3 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX6_1)
-        {
-            SaveGame.Members.BoughtPassiveX6_1 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX7_1)
-        {
-            SaveGame.Members.BoughtPassiveX7_1 = true;
+            SaveGame.Members.BoughtShinyDiamonds = true;
         }
         else if (CardId == AscendUpgradeCardId.FasterMystery)
         {
