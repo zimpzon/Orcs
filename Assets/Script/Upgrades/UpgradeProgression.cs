@@ -95,7 +95,7 @@ namespace Assets.Script.Upgrades
                 // Base XP at level 8 is 495B
                 Decimal512 baseXp = 495 * OneBillion;
                 long d = level - 8;
-                Decimal512 extraXp = 65.0 * OneBillion * d * d * d; // Cubic growth
+                Decimal512 extraXp = 58.0 * OneBillion * d * d * d; // Cubic growth
                 return baseXp + extraXp;
             }
         }
