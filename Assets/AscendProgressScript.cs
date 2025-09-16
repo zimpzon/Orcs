@@ -37,10 +37,10 @@ public class AscendProgressScript : MonoBehaviour
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_2 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_1 ? 2 : 1;
-        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_2 ? 3 : 1;
-        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_3 ? 3 : 1;
-        passiveMultiplier *= SaveGame.Members.BoughtPassiveX6_1 ? 3 : 1;
-        passiveMultiplier *= SaveGame.Members.BoughtPassiveX7_1 ? 4 : 1;
+        passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_2 ? 2 : 1;
+        //passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_3 ? 3 : 1;
+        //passiveMultiplier *= SaveGame.Members.BoughtPassiveX6_1 ? 3 : 1;
+        //passiveMultiplier *= SaveGame.Members.BoughtPassiveX7_1 ? 4 : 1;
 
         // If no card bonuses were added multiplier should be one.
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier == 0 ? 1 : passiveMultiplier;
