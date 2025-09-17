@@ -38,6 +38,35 @@ namespace Assets.Script.Upgrades.Managers
             return $"<color=#dddddd>Price: <color={GetColorPriceX2(x2PriceMet: false)}>${Format512.Format(priceForNext)} ({timeStr})";
         }
 
+        public static string FormatTimeLeft(Decimal512 valueForNext, Decimal512 current, double MaxSeconds = double.MaxValue)
+        {
+            var money = SaveGame.Members.Money;
+
+            if (GameManager.Instance.TotalPassiveIncome < 0.01)
+                return string.Empty;
+
+            Decimal512 amountLeft = valueForNext - current;
+            double secondsLeft = (amountLeft / GameManager.Instance.TotalPassiveIncome).ToDouble();
+
+            // Handle edge cases before creating TimeSpan
+            if (secondsLeft <= 0 || secondsLeft > MaxSeconds || double.IsInfinity(secondsLeft) || double.IsNaN(secondsLeft))
+                return string.Empty;
+
+            string timeStr;
+            if (secondsLeft > MaxTimeSpanSeconds)
+            {
+                // Handle extremely long times without creating TimeSpan
+                timeStr = "∞"; // or "Never" or ">29k years"
+            }
+            else
+            {
+                TimeSpan ts = TimeSpan.FromSeconds(secondsLeft);
+                timeStr = Format.FormatTimeShort(ts);
+            }
+
+            return timeStr;
+        }
+
         public static void GetX2Calculated(
             long upgradeLevel,
             long levelX2,

@@ -1,4 +1,5 @@
 using Assets.Script.Upgrades;
+using Assets.Script.Upgrades.Managers;
 using System;
 using TMPro;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class AscendProgressScript : MonoBehaviour
 {
     public AscendProgressScript Instance;
     public TextMeshProUGUI TextCredits;
+    public TextMeshProUGUI TextTimeLeft;
     public Image ProgressBarImage;
     public GameObject AscendRoot;
     private float _nextCreditUpdate;
@@ -87,5 +89,9 @@ public class AscendProgressScript : MonoBehaviour
 
         float pct = t * 100.0f;
         TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3>Next: {pct:#0.000}%";
+
+        bool showTimeLeft = SaveGame.Members.MonsterCreditsLifetime_09_08_2025 > 0;
+        const double MaxSeconds = 60 * 60 * 12;
+        TextTimeLeft.text = showTimeLeft ? UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, SaveGame.Members.MonsterCreditsXp_09_08_2025, MaxSeconds) : string.Empty;
     }
 }

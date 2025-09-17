@@ -91,7 +91,8 @@ public class GameManager : MonoBehaviour
     // 73: Updated Shiny Diamonds to 15%
     // 73: Two more Shiny Diamonds
     // 74: Added countdown timer for upgrade prices
-    public const int MinorVersion = 74;
+    // 75: Added credit countdown timer
+    public const int MinorVersion = 75;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1547,17 +1548,20 @@ public class GameManager : MonoBehaviour
         {
             SaveGame.Members.DiamondCount_09_08_2025 = 0;
             SaveGame.Members.MonsterCredits_09_08_2025 += 1;
+            SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 1;
             SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 10;
+            SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 10;
         }
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 100;
+            SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 100;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
