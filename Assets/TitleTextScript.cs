@@ -20,9 +20,14 @@ public class TitleTextScript : MonoBehaviour
 
     public void UpdateTitle()
     {
-        ActorTypeEnum maxBeastSeen = SaveGame.Members.BeastsSeen.Max();
-        if (!ActorBase.Names.TryGetValue(maxBeastSeen, out string beastName))
-            beastName = "Nothing";
+        string beastName = "Nothing";
+        if (SaveGame.Members.BeastsSeen.Count > 0)
+        {
+            ActorTypeEnum maxBeastSeen = SaveGame.Members.BeastsSeen.Max();
+            if (!ActorBase.Names.TryGetValue(maxBeastSeen, out beastName))
+                beastName = "Nothing";
+        }
+
         Text.text = $"{EarlName}, {Link} {beastName}";
     }
 
