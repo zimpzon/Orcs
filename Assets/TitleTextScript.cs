@@ -15,10 +15,10 @@ public class TitleTextScript : MonoBehaviour
     public void SetName(string name)
     {
         EarlName = name;
-        UdateTitle();
+        UpdateTitle();
     }
 
-    public void UdateTitle()
+    public void UpdateTitle()
     {
         ActorTypeEnum maxBeastSeen = SaveGame.Members.BeastsSeen.Max();
         if (!ActorBase.Names.TryGetValue(maxBeastSeen, out string beastName))
@@ -29,6 +29,6 @@ public class TitleTextScript : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        UdateTitle();
+        UpdateTitle();
     }
 }

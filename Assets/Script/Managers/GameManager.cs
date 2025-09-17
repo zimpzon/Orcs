@@ -92,7 +92,8 @@ public class GameManager : MonoBehaviour
     // 73: Two more Shiny Diamonds
     // 74: Added countdown timer for upgrade prices
     // 75: Added credit countdown timer
-    public const int MinorVersion = 75;
+    // 76: Significantly increased value of Shiny Diamonds 3 (and price)
+    public const int MinorVersion = 76;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -390,7 +391,7 @@ public class GameManager : MonoBehaviour
             {
                 // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
-                TitleTextScript.Instance.UdateTitle();
+                TitleTextScript.Instance.UpdateTitle();
             }
         }
     }
@@ -1160,6 +1161,7 @@ public class GameManager : MonoBehaviour
         SaveGame.OnSave += OnSaveGame;
 
         UpgradeManager.Instance.UpdateAllUpgrades();
+        TitleTextScript.Instance.UpdateTitle();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
