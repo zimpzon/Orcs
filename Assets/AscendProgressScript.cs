@@ -62,7 +62,7 @@ public class AscendProgressScript : MonoBehaviour
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
         // Calculate how much time actually passed since last update
-        float delta = G.D.RealTime - _nextCreditUpdate + CreditUpdateRate;
+        double delta = G.D.RealTime - _nextCreditUpdate + CreditUpdateRate;
 
         // Clamp it so we don't get a huge spike after sleep
         if (delta > MaxRealtimeDelta)
@@ -84,10 +84,11 @@ public class AscendProgressScript : MonoBehaviour
             SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
         }
 
-        float t = (float)(SaveGame.Members.MonsterCreditsXp_09_08_2025.ToDouble() / xpForNextLevel.ToDouble());
-        ProgressBarImage.fillAmount = t;
+        double t = SaveGame.Members.MonsterCreditsXp_09_08_2025.ToDouble() / xpForNextLevel.ToDouble();
+        ProgressBarImage.fillAmount = (float)t;
 
-        float pct = t * 100.0f;
+        double pct = t * 100.0;
+        if (pct > 100) pct = 100;
         TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3>Next: {pct:#0.000}%";
 
         bool showTimeLeft = SaveGame.Members.MonsterCreditsLifetime_09_08_2025 > 0;

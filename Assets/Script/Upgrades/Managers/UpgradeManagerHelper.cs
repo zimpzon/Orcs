@@ -1,4 +1,4 @@
-﻿using Assets.Script.Misc;
+using Assets.Script.Misc;
 using System;
 
 namespace Assets.Script.Upgrades.Managers
@@ -11,7 +11,7 @@ namespace Assets.Script.Upgrades.Managers
         public static string FormatPrice(Decimal512 priceForNext)
         {
             var money = SaveGame.Members.Money;
-            string onlyPriceStr = $"<color=#dddddd>Price: <color={GetColorPriceX2(x2PriceMet: true)}>${Format512.Format(priceForNext)}";
+            string onlyPriceStr = $"<color=#dddddd>Price: $<color={GetColorPriceX2(x2PriceMet: true)}>{Format512.Format(priceForNext)}";
 
             if (GameManager.Instance.TotalPassiveIncome < 0.001 || priceForNext <= money)
                 return onlyPriceStr;
@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades.Managers
             if (secondsLeft > MaxTimeSpanSeconds)
             {
                 // Handle extremely long times without creating TimeSpan
-                timeStr = "∞"; // or "Never" or ">29k years"
+                timeStr = "a lot of years"; // or "Never" or ">29k years"
             }
             else
             {
@@ -35,7 +35,7 @@ namespace Assets.Script.Upgrades.Managers
                 timeStr = Format.FormatTimeShort(ts);
             }
 
-            return $"<color=#dddddd>Price: <color={GetColorPriceX2(x2PriceMet: false)}>${Format512.Format(priceForNext)} ({timeStr})";
+            return $"<color=#dddddd>Price: $<color={GetColorPriceX2(x2PriceMet: false)}>{Format512.Format(priceForNext)} ({timeStr})";
         }
 
         public static string FormatTimeLeft(Decimal512 valueForNext, Decimal512 current, double MaxSeconds = double.MaxValue)
@@ -43,6 +43,10 @@ namespace Assets.Script.Upgrades.Managers
             var money = SaveGame.Members.Money;
 
             if (GameManager.Instance.TotalPassiveIncome < 0.01)
+                return string.Empty;
+
+            // Handle case where current >= valueForNext (already achieved or exceeded the target)
+            if (current >= valueForNext)
                 return string.Empty;
 
             Decimal512 amountLeft = valueForNext - current;
@@ -56,7 +60,7 @@ namespace Assets.Script.Upgrades.Managers
             if (secondsLeft > MaxTimeSpanSeconds)
             {
                 // Handle extremely long times without creating TimeSpan
-                timeStr = "∞"; // or "Never" or ">29k years"
+                timeStr = "a lot of years"; // or "Never" or ">29k years"
             }
             else
             {

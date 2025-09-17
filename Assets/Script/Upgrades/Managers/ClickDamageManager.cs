@@ -1,4 +1,4 @@
-﻿using Assets.Script.Misc;
+using Assets.Script.Misc;
 using Assets.Script.Upgrades.Managers;
 using System;
 using System.Text;
@@ -34,9 +34,9 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#dddddd>Zaps enemies every 3 seconds.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-ARENA>${Format512.FormatWithDecimals(baseIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>${Format512.FormatWithDecimals(totalIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-ARENA>${Format512.FormatWithDecimals(earnedSoFar)}</color>.");
+            sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.FormatWithDecimals(baseIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: $<color=COLOR-ARENA>{Format512.FormatWithDecimals(totalIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: $<color=COLOR-ARENA>{Format512.FormatWithDecimals(earnedSoFar)}</color>.");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
             sb.AppendLine("");
 

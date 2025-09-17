@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour
     // 74: Added countdown timer for upgrade prices
     // 75: Added credit countdown timer
     // 76: Significantly increased value of Shiny Diamonds 3 (and price)
-    public const int MinorVersion = 76;
+    // 77: Fixed credit level up overflow (was using float), capped at 1 due to updates every sec
+    public const int MinorVersion = 77;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
