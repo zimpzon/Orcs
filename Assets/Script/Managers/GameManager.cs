@@ -1558,12 +1558,14 @@ public class GameManager : MonoBehaviour
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 10;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 10;
+            SaveGame.Members.DiamondCount_09_08_2025 += 10;
         }
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 100;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 100;
+            SaveGame.Members.DiamondCount_09_08_2025 += 100;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
