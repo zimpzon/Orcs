@@ -44,8 +44,7 @@ public class AscendProgressScript : MonoBehaviour
 
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
-        // 10% or 12% per diamond
-        float diamondBonus = SaveGame.Members.BoughtShinyDiamonds ? 0.12f : 0.1f;
+        float diamondBonus = UpgradeProgression.GetCurrentDiamondMultiplier();
         PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * diamondBonus;
     }
 

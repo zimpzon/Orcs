@@ -185,5 +185,20 @@ namespace Assets.Script.Upgrades
             double exponent = level - 3;
             return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }
+
+        public static int GetCurrentDiamondMultiplierPct()
+            => (int)Math.Round(GetCurrentDiamondMultiplier() * 100);
+
+        public static float GetCurrentDiamondMultiplier()
+        {
+            float diamondMultiplier = 0.1f;
+            if (SaveGame.Members.BoughtShinyDiamonds)
+                diamondMultiplier += 0.1f;
+            if (SaveGame.Members.BoughtShinyDiamonds2)
+                diamondMultiplier += 0.2f;
+            if (SaveGame.Members.BoughtShinyDiamonds3)
+                diamondMultiplier += 0.3f;
+            return diamondMultiplier;
+        }
     }
 }

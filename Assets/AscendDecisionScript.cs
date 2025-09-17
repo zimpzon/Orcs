@@ -75,7 +75,7 @@ public class AscendDecisionScript : MonoBehaviour
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
-        string diamondValue = SaveGame.Members.BoughtShinyDiamonds ? "12" : "10";
+        int diamondValue = UpgradeProgression.GetCurrentDiamondMultiplierPct();
         TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");
 
         ButtonAscend.interactable = SaveGame.Members.MonsterCredits_09_08_2025 > 0;
