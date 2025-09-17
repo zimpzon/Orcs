@@ -33,15 +33,16 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#dddddd>Get gold per dagger thrown. Higher Dagger damage equals higher reward.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-PASSIVE>${Format512.Format(baseIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-PASSIVE>${Format512.Format(totalIncome)}</color> per second.");
-            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-PASSIVE>${Format512.Format(earnedSoFar)}</color>.");
+            sb.AppendLine($"<color=#dddddd>Each level earns <color=COLOR-ARENA>${Format512.Format(baseIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Current: <color=COLOR-ARENA>${Format512.Format(totalIncome)}</color> per second.");
+            sb.AppendLine($"<color=#dddddd>Earned so far: <color=COLOR-ARENA>${Format512.Format(earnedSoFar)}</color>.");
+            sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income X2</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-PASSIVE>{x2LevelsBought}");
+            sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-ARENA>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
-            sb.AppendLine($"<color=#dddddd>Price: <color={colorX2PriceMet}>${Format512.Format(priceX2)}");
+            sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");

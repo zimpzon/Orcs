@@ -1,7 +1,43 @@
-﻿namespace Assets.Script.Upgrades.Managers
+﻿using Assets.Script.Misc;
+using System;
+
+namespace Assets.Script.Upgrades.Managers
 {
     internal class UpgradeManagerHelper
     {
+        // TimeSpan.MaxValue is about 10,675,199 days or ~29,247 years
+        private static readonly double MaxTimeSpanSeconds = TimeSpan.MaxValue.TotalSeconds;
+
+        public static string FormatPrice(Decimal512 priceForNext)
+        {
+            var money = SaveGame.Members.Money;
+            string onlyPriceStr = $"<color=#dddddd>Price: <color={GetColorPriceX2(x2PriceMet: true)}>${Format512.Format(priceForNext)}";
+
+            if (GameManager.Instance.TotalPassiveIncome < 0.001 || priceForNext <= money)
+                return onlyPriceStr;
+
+            Decimal512 priceLeft = priceForNext - SaveGame.Members.Money;
+            double secondsLeft = (priceLeft / GameManager.Instance.TotalPassiveIncome).ToDouble();
+
+            // Handle edge cases before creating TimeSpan
+            if (secondsLeft <= 0 || double.IsInfinity(secondsLeft) || double.IsNaN(secondsLeft))
+                return onlyPriceStr;
+
+            string timeStr;
+            if (secondsLeft > MaxTimeSpanSeconds)
+            {
+                // Handle extremely long times without creating TimeSpan
+                timeStr = "∞"; // or "Never" or ">29k years"
+            }
+            else
+            {
+                TimeSpan ts = TimeSpan.FromSeconds(secondsLeft);
+                timeStr = Format.FormatTimeShort(ts);
+            }
+
+            return $"<color=#dddddd>Price: <color={GetColorPriceX2(x2PriceMet: false)}>${Format512.Format(priceForNext)} ({timeStr})";
+        }
+
         public static void GetX2Calculated(
             long upgradeLevel,
             long levelX2,

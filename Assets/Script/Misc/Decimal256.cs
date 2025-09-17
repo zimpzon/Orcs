@@ -177,6 +177,102 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         return right * left;
     }
 
+    // Add these methods to your Decimal512 struct
+
+    public void Divide(Decimal512 other)
+    {
+        if (other.rawValue == 0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Scale up the dividend to maintain precision
+        var result = (rawValue * ScaleFactor) / other.rawValue;
+        ValidateRange(result);
+        rawValue = result;
+        serializedValue = result.ToString();
+    }
+
+    public void Divide(float divisor)
+    {
+        if (divisor == 0.0f)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Convert float to scaled BigInteger
+        double scaledDivisor = (double)divisor * ScaleFactorDouble;
+        var result = (rawValue * ScaleFactor) / new BigInteger(scaledDivisor);
+        ValidateRange(result);
+        rawValue = result;
+        serializedValue = result.ToString();
+    }
+
+    public void Divide(double divisor)
+    {
+        if (divisor == 0.0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Convert double to scaled BigInteger
+        double scaledDivisor = divisor * ScaleFactorDouble;
+        var result = (rawValue * ScaleFactor) / new BigInteger(scaledDivisor);
+        ValidateRange(result);
+        rawValue = result;
+        serializedValue = result.ToString();
+    }
+
+    // Division operators
+    public static Decimal512 operator /(Decimal512 left, Decimal512 right)
+    {
+        if (right.rawValue == 0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Scale up the dividend to maintain precision
+        var result = (left.rawValue * ScaleFactor) / right.rawValue;
+        ValidateRange(result);
+        return new Decimal512(result);
+    }
+
+    public static Decimal512 operator /(Decimal512 left, float right)
+    {
+        if (right == 0.0f)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Convert float to scaled BigInteger
+        double scaledRight = (double)right * ScaleFactorDouble;
+        var result = (left.rawValue * ScaleFactor) / new BigInteger(scaledRight);
+        ValidateRange(result);
+        return new Decimal512(result);
+    }
+
+    public static Decimal512 operator /(Decimal512 left, double right)
+    {
+        if (right == 0.0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        // Convert double to scaled BigInteger
+        double scaledRight = right * ScaleFactorDouble;
+        var result = (left.rawValue * ScaleFactor) / new BigInteger(scaledRight);
+        ValidateRange(result);
+        return new Decimal512(result);
+    }
+
+    public static Decimal512 operator /(Decimal512 left, int right)
+    {
+        if (right == 0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        var result = left.rawValue / right;
+        ValidateRange(result);
+        return new Decimal512(result);
+    }
+
+    public static Decimal512 operator /(Decimal512 left, long right)
+    {
+        if (right == 0)
+            throw new DivideByZeroException("Cannot divide by zero.");
+
+        var result = left.rawValue / right;
+        ValidateRange(result);
+        return new Decimal512(result);
+    }
+
     public BigInteger RawValue => rawValue;
 
     // Property to access the serialized value (useful for debugging)

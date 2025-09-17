@@ -89,8 +89,9 @@ public class GameManager : MonoBehaviour
     // 71: Removed last 3 cards, crazy scaling. Undid some of credit curve scaling. (200 -> 65)
     // 72: Added card Shiny Diamonds
     // 73: Updated Shiny Diamonds to 15%
-    // 73: Two more Shiny Diamonds.
-    public const int MinorVersion = 73;
+    // 73: Two more Shiny Diamonds
+    // 74: Added countdown timer for upgrade prices
+    public const int MinorVersion = 74;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -399,11 +400,8 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added card Shiny Diamonds\n" +
-            " - large balance changes, some reverted\n" +
-            " - increased enemy HP\n" +
-            " - reworked card bonuses\n" +
-            " - added new upgrade tier");
+            " - added countdown for upgrade prices\n" +
+            " - added card Shiny Diamonds");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;

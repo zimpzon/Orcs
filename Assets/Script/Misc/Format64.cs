@@ -49,6 +49,33 @@ namespace Assets.Script.Misc
 
     public class Format
     {
+        public static string FormatTimeShort(TimeSpan ts)
+        {
+            // Handle very long times
+            if (ts.TotalDays > 9999)
+                return ">9999 days";
+
+            // Format based on magnitude
+            if (ts.TotalDays >= 1)
+            {
+                if (ts.TotalDays >= 365)
+                    return $"{(int)(ts.TotalDays / 365)}y {ts.Days % 365}d";
+                return $"{ts.Days}d {ts.Hours:D2}h {ts.Minutes:D2}m";
+            }
+            else if (ts.TotalHours >= 1)
+            {
+                return $"{ts.Hours}h {ts.Minutes:D2}m {ts.Seconds:D2}s";
+            }
+            else if (ts.TotalMinutes >= 1)
+            {
+                return $"{ts.Minutes}m {ts.Seconds:D2}s";
+            }
+            else
+            {
+                return $"{ts.Seconds}s";
+            }
+        }
+
         public static string FormatTimeSpan(TimeSpan timeSpan)
         {
             var parts = new List<string>();
