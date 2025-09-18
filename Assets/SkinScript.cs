@@ -172,6 +172,18 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Buy1PercentTotal500), "Young Earl: Buy 500 1% bonuses");
         }
+        else if (animationName == SkinAnimation.BallEarl)
+        {
+            return (list.Contains(Achieved.Diamonds5000), "Ball Earl: Have at least 5000 diamonds");
+        }
+        else if (animationName == SkinAnimation.MonochromeEarl)
+        {
+            return (list.Contains(Achieved.Diamonds10000), "Monochrome Earl: Have at least 10000 diamonds");
+        }
+        else if (animationName == SkinAnimation.SaturatedEarl)
+        {
+            return (list.Contains(Achieved.Rebirth50), "Saturated Earl: Rebirth 50 times");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }

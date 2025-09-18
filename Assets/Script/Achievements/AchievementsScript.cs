@@ -37,6 +37,9 @@ public enum Achieved
     ChestMaster200,
     Have1Percent50,
     Buy1PercentTotal500,
+    Rebirth50,
+    Diamonds5000,
+    Diamonds10000,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -51,28 +54,31 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArena500(list);
         AchievementChecks.CheckArena1000(list);
         AchievementChecks.CheckArena1500(list);
-        AchievementChecks.CheckRebirth1(list);
-        AchievementChecks.CheckRebirth2(list);
-        AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckChest25(list);
-        AchievementChecks.CheckDiamonds10(list);
         AchievementChecks.CheckVoidgazer(list);
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
         AchievementChecks.CheckChest50(list);
+        AchievementChecks.CheckRebirth1(list);
+        AchievementChecks.CheckRebirth2(list);
+        AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckRebirth8(list);
-        AchievementChecks.CheckDiamonds250(list);
+        AchievementChecks.CheckRebirth8(list);
         AchievementChecks.CheckX2_25(list);
         AchievementChecks.CheckX2_50(list);
-        AchievementChecks.CheckDiamonds50(list);
         AchievementChecks.CheckSkins3(list);
         AchievementChecks.CheckUpgrades500(list);
         AchievementChecks.CheckUpgrades2500(list);
         AchievementChecks.CheckUpgrades10000(list);
         AchievementChecks.CheckBuyCardScaryEarl(list);
         AchievementChecks.CheckSmartDagger10(list);
+        AchievementChecks.CheckDiamonds10(list);
+        AchievementChecks.CheckDiamonds50(list);
+        AchievementChecks.CheckDiamonds250(list);
         AchievementChecks.CheckDiamonds1000(list);
+        AchievementChecks.CheckDiamonds5000(list);
+        AchievementChecks.CheckDiamonds10000(list);
         AchievementChecks.CheckChestMaster200(list);
         AchievementChecks.Have1Percent50(list);
         AchievementChecks.Buy1PercentTotal500(list);

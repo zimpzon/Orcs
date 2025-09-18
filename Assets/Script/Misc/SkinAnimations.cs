@@ -6,7 +6,7 @@ public enum SkinAnimation { NotSet, Default, WitchDoctor, Necromancer,
     UndeadBeauty, WellDressedOrc, Alien, HonorableKnight, SecretiveEarl, NinjaEarl,
     SkaterEarl, WhiteWalkerEarl, PrettyEarl, EvilEyesEarl, ToxicEarl, AttentivePigEarl,
     DisguisedMonsterEarl, FreakyEarl, ScaryEarl, SlickEarl, ChickenEarl, YoungEarl,
-    GangsterEarl, GhostEarl,
+    GangsterEarl, GhostEarl, BallEarl, MonochromeEarl, SaturatedEarl,
 }
 
 [Serializable]

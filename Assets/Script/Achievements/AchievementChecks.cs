@@ -142,6 +142,17 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckRebirth50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Rebirth50)) return;
+
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 50)
+            {
+                list.Add(Achieved.Rebirth50);
+                NewAchieved(Achieved.Rebirth50);
+            }
+        }
+
         public static void CheckMystery25(List<Achieved> list)
         {
             if (list.Contains(Achieved.Mystery25)) return;
@@ -216,6 +227,28 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Diamonds1000);
                 NewAchieved(Achieved.Diamonds1000);
+            }
+        }
+
+        public static void CheckDiamonds5000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds5000)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 5000)
+            {
+                list.Add(Achieved.Diamonds5000);
+                NewAchieved(Achieved.Diamonds5000);
+            }
+        }
+
+        public static void CheckDiamonds10000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Diamonds10000)) return;
+
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 10000)
+            {
+                list.Add(Achieved.Diamonds10000);
+                NewAchieved(Achieved.Diamonds10000);
             }
         }
 

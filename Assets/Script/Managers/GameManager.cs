@@ -95,7 +95,8 @@ public class GameManager : MonoBehaviour
     // 76: Significantly increased value of Shiny Diamonds 3 (and price)
     // 77: Fixed credit level up overflow (was using float), capped at 1 due to updates every sec
     // 78: Reduced Shiny Diamonds 3 to 160%
-    public const int MinorVersion = 78;
+    // 79: Three more skins
+    public const int MinorVersion = 79;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -404,6 +405,7 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added three new skin\n" +
             " - added countdown for upgrade prices\n" +
             " - added card Shiny Diamonds");
 
