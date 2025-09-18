@@ -197,7 +197,7 @@ namespace Assets.Script.Upgrades
             if (SaveGame.Members.BoughtShinyDiamonds2)
                 diamondMultiplier += 0.2f;
             if (SaveGame.Members.BoughtShinyDiamonds3)
-                diamondMultiplier += 2.0f;
+                diamondMultiplier += 1.6f;
             return diamondMultiplier;
         }
     }
