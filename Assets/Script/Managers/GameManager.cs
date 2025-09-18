@@ -96,7 +96,8 @@ public class GameManager : MonoBehaviour
     // 77: Fixed credit level up overflow (was using float), capped at 1 due to updates every sec
     // 78: Reduced Shiny Diamonds 3 to 160%
     // 79: Three more skins
-    public const int MinorVersion = 79;
+    // 80: Trying to prevent xp overflow on credit level up
+    public const int MinorVersion = 80;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

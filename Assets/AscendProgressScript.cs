@@ -78,7 +78,7 @@ public class AscendProgressScript : MonoBehaviour
         Decimal512 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
         if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevel)
         {
-            SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevel;
+            SaveGame.Members.MonsterCreditsXp_09_08_2025 = 0;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
             SaveGame.Members.MonsterCredits_09_08_2025++;
             SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
