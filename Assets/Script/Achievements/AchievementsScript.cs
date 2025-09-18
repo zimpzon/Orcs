@@ -64,7 +64,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckRebirth8(list);
-        AchievementChecks.CheckRebirth8(list);
+        AchievementChecks.CheckRebirth50(list);
         AchievementChecks.CheckX2_25(list);
         AchievementChecks.CheckX2_50(list);
         AchievementChecks.CheckSkins3(list);
