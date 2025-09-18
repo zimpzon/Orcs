@@ -97,7 +97,8 @@ public class GameManager : MonoBehaviour
     // 78: Reduced Shiny Diamonds 3 to 160%
     // 79: Three more skins
     // 80: Trying to prevent xp overflow on credit level up
-    public const int MinorVersion = 80;
+    // 81: Partial undo of beast % nerf
+    public const int MinorVersion = 81;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
