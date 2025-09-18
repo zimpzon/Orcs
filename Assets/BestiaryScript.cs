@@ -23,7 +23,10 @@ public class BestiaryScript : MonoBehaviour
         foreach (var beastActor in _beastActors)
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beastActor.ActorType);
-            incomeBonus += isUnlocked ? (idx / 2) + 1 : 0;
+
+            // Cap beastiary bonus at 5% so it won't go crazy at high levels. Diamonds are more than enough.
+            // Calc is both here and in BeastiaryBeastScript
+            incomeBonus += Mathf.Min(5, isUnlocked ? (idx / 2) + 1 : 0);
             idx++;
         }
 

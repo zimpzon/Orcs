@@ -12,9 +12,12 @@ public static class EnemySpawner
     // Enemy type definitions with base HP (before HpScale)
     private static readonly EnemyType[] EnemyTypes = new[]
     {
-        new EnemyType(ActorTypeEnum.Faceless,     2_500_000_000),
-        new EnemyType(ActorTypeEnum.AfroOrc,      1_600_000_000),
-        new EnemyType(ActorTypeEnum.BrainZombie,  1_200_000_000),
+        new EnemyType(ActorTypeEnum.TheDarkness,100_000_000_000),
+        new EnemyType(ActorTypeEnum.PigFromSpace,32_000_000_000),
+        new EnemyType(ActorTypeEnum.FromTheDeep, 10_000_000_000),
+        new EnemyType(ActorTypeEnum.Faceless,     4_400_000_000),
+        new EnemyType(ActorTypeEnum.AfroOrc,      2_600_000_000),
+        new EnemyType(ActorTypeEnum.BrainZombie,  1_500_000_000),
         new EnemyType(ActorTypeEnum.IronMask,       900_000_000),
         new EnemyType(ActorTypeEnum.Snout,          600_000_000),
         new EnemyType(ActorTypeEnum.Karateeth,      400_000_000),
@@ -56,8 +59,10 @@ public static class EnemySpawner
         var enemies = new List<ActorBase>();
 
 
-        //// TEST NEW ENEMIES: Add them here
-        //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.Faceless, 1).ToList());
+        //// (DOESN'T WORK - what? it is cleared right after!) -> TEST NEW ENEMIES: Add them here
+        //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.TheDarkness, 1).ToList());
+        //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.PigFromSpace, 1).ToList());
+        //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.FromTheDeep, 1).ToList());
 
 
         const int maxRetries = 10;
