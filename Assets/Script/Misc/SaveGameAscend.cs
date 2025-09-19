@@ -1,4 +1,4 @@
-﻿static class SaveGameAscend
+static class SaveGameAscend
 {
     // This creates a new save and keeps all the settings that should carry over.
     public static SaveGameMembers AscendSaveGame()
@@ -29,6 +29,8 @@
         newSave.BoughtShinyDiamonds = oldSave.BoughtShinyDiamonds;
         newSave.BoughtShinyDiamonds2 = oldSave.BoughtShinyDiamonds2;
         newSave.BoughtShinyDiamonds3 = oldSave.BoughtShinyDiamonds3;
+        newSave.BoughtShinyDiamonds4 = oldSave.BoughtShinyDiamonds4;
+        newSave.BoughtShinyDiamonds5 = oldSave.BoughtShinyDiamonds5;
         newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;

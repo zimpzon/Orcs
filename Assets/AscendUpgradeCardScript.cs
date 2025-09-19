@@ -16,6 +16,8 @@ public enum AscendUpgradeCardId
     ShinyDiamonds,
     ShinyDiamonds2,
     ShinyDiamonds3,
+    ShinyDiamonds4,
+    ShinyDiamonds5,
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
@@ -67,6 +69,8 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ShinyDiamonds => SaveGame.Members.BoughtShinyDiamonds,
             AscendUpgradeCardId.ShinyDiamonds2 => SaveGame.Members.BoughtShinyDiamonds2,
             AscendUpgradeCardId.ShinyDiamonds3 => SaveGame.Members.BoughtShinyDiamonds3,
+            AscendUpgradeCardId.ShinyDiamonds4 => SaveGame.Members.BoughtShinyDiamonds4,
+            AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
             _ => throw new NotImplementedException()
@@ -138,6 +142,14 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.ShinyDiamonds3)
         {
             SaveGame.Members.BoughtShinyDiamonds3 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds4)
+        {
+            SaveGame.Members.BoughtShinyDiamonds4 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds5)
+        {
+            SaveGame.Members.BoughtShinyDiamonds5 = true;
         }
         else if (CardId == AscendUpgradeCardId.FasterMystery)
         {

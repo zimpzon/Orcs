@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +34,8 @@ public class SaveGameMembers
     public bool BoughtShinyDiamonds = false;
     public bool BoughtShinyDiamonds2 = false;
     public bool BoughtShinyDiamonds3 = false;
+    public bool BoughtShinyDiamonds4 = false;
+    public bool BoughtShinyDiamonds5 = false;
     public bool BoughtFasterMystery = false;
     public bool BoughtFasterArena = false;
     public bool BoughtScaryEarlSkin = false;
@@ -49,6 +51,8 @@ public class SaveGameMembers
         $"{nameof(BoughtShinyDiamonds)} = {SaveGame.Members.BoughtShinyDiamonds} | " +
         $"{nameof(BoughtShinyDiamonds2)} = {SaveGame.Members.BoughtShinyDiamonds2} | " +
         $"{nameof(BoughtShinyDiamonds3)} = {SaveGame.Members.BoughtShinyDiamonds3} | " +
+        $"{nameof(BoughtShinyDiamonds4)} = {SaveGame.Members.BoughtShinyDiamonds4} | " +
+        $"{nameof(BoughtShinyDiamonds5)} = {SaveGame.Members.BoughtShinyDiamonds5} | " +
         $"{nameof(BoughtFasterMystery)} = {SaveGame.Members.BoughtFasterMystery} | " +
         $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
         $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin}";

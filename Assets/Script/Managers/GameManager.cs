@@ -98,7 +98,8 @@ public class GameManager : MonoBehaviour
     // 79: Three more skins
     // 80: Trying to prevent xp overflow on credit level up
     // 81: Partial undo of beast % nerf
-    public const int MinorVersion = 81;
+    // 82: Split Shiny Diamonds into 5 cards instead of 3
+    public const int MinorVersion = 82;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -407,9 +408,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - split Shiny Diamonds into 5 cards\n" +
             " - added three new skin\n" +
-            " - added countdown for upgrade prices\n" +
-            " - added card Shiny Diamonds");
+            " - added countdown for upgrade prices");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
