@@ -20,22 +20,22 @@ public class UpgradeData
 
     // passive income
     public long NumberOfX2Bought = 0;
-    public float PassiveIncomeX2Multiplier = 0.0f;
+    public double PassiveIncomeX2Multiplier = 0.0f;
 
-    public float PassiveIncomeTempMultiplier = 1.0f;
-    public float PassiveIncomeAscendMultiplier = 1.0f;
+    public double PassiveIncomeTempMultiplier = 1.0f;
+    public double PassiveIncomeAscendMultiplier = 1.0f;
 
-    public float PassiveIncomeDiamondMultiplier = 0.0f;
-    public float PassiveIncomePercentageBonuses = 0.0f;
-    public float PassiveIncomeBestiaryBonuses = 0.0f;
+    public double PassiveIncomeDiamondMultiplier = 0.0f;
+    public double PassiveIncomePercentageBonuses = 0.0f;
+    public double PassiveIncomeBestiaryBonuses = 0.0f;
 
-    public float PassiveIncomeEffectiveMultiplier =>
+    public double PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
         PassiveIncomeAscendMultiplier *
-        (1.0f + PassiveIncomeX2Multiplier) *
-        (1.0f + PassiveIncomePercentageBonuses) *
-        (1.0f + PassiveIncomeBestiaryBonuses) *
-        (1.0f + PassiveIncomeDiamondMultiplier);
+        (1.0 + PassiveIncomeX2Multiplier) *
+        (1.0 + PassiveIncomePercentageBonuses) *
+        (1.0 + PassiveIncomeBestiaryBonuses) *
+        (1.0 + PassiveIncomeDiamondMultiplier);
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;

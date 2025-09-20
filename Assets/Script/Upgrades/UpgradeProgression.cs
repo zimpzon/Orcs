@@ -189,16 +189,16 @@ namespace Assets.Script.Upgrades
         public static int GetCurrentDiamondMultiplierPct()
             => (int)Math.Round(GetCurrentDiamondMultiplier() * 100);
 
-        public static float GetCurrentDiamondMultiplier()
+        public static double GetCurrentDiamondMultiplier()
         {
-            const float BaseMultiplier = 0.1f;
-            const float ShinyDiamondsBonus = 0.1f;
-            const float ShinyDiamonds2Bonus = 0.2f;
-            const float ShinyDiamonds3Bonus = 0.4f;
-            const float ShinyDiamonds4Bonus = 0.6f;
-            const float ShinyDiamonds5Bonus = 1.0f;
+            const double BaseMultiplier = 0.1;
+            const double ShinyDiamondsBonus = 0.1;
+            const double ShinyDiamonds2Bonus = 0.2;
+            const double ShinyDiamonds3Bonus = 0.4;
+            const double ShinyDiamonds4Bonus = 0.6;
+            const double ShinyDiamonds5Bonus = 1.0;
 
-            float diamondMultiplier = BaseMultiplier;
+            double diamondMultiplier = BaseMultiplier;
 
             if (SaveGame.Members.BoughtShinyDiamonds)
                 diamondMultiplier += ShinyDiamondsBonus;

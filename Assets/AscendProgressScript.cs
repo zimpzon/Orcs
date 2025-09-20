@@ -35,7 +35,7 @@ public class AscendProgressScript : MonoBehaviour
     {
         // Additive
         // TODO: THESE are rebalanced but the names are not changed. Cannot just change due to save file JSON. Recover?
-        float passiveMultiplier = 1;
+        double passiveMultiplier = 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_1 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX2_2 ? 2 : 1;
         passiveMultiplier *= SaveGame.Members.BoughtPassiveX4_1 ? 2 : 1;
@@ -46,7 +46,7 @@ public class AscendProgressScript : MonoBehaviour
 
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
 
-        float diamondBonus = UpgradeProgression.GetCurrentDiamondMultiplier();
+        double diamondBonus = UpgradeProgression.GetCurrentDiamondMultiplier();
         PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * diamondBonus;
     }
 
