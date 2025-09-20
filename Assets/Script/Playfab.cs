@@ -147,9 +147,9 @@ public static class Playfab
                 // Avoid serializing dictionary in error message for WebGL compatibility
                 Debug.LogError($"error sending stats: {err}");
 
-                if (retryOnAuthError && err.Error == PlayFabErrorCode.InvalidSessionTicket)
+                if (retryOnAuthError)
                 {
-                    Debug.Log("Session expired. Re-logging in...");
+                    Debug.Log("Stats error detected, re-logging in...");
                     LoginAndSendStats(stats);
                 }
             });
