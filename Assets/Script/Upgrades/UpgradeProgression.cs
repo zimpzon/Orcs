@@ -202,12 +202,16 @@ namespace Assets.Script.Upgrades
 
             if (SaveGame.Members.BoughtShinyDiamonds)
                 diamondMultiplier += ShinyDiamondsBonus;
+
             if (SaveGame.Members.BoughtShinyDiamonds2)
                 diamondMultiplier += ShinyDiamonds2Bonus;
+
             if (SaveGame.Members.BoughtShinyDiamonds3)
                 diamondMultiplier += ShinyDiamonds3Bonus;
+
             if (SaveGame.Members.BoughtShinyDiamonds4)
                 diamondMultiplier += ShinyDiamonds4Bonus;
+    
             if (SaveGame.Members.BoughtShinyDiamonds5)
                 diamondMultiplier += ShinyDiamonds5Bonus;
 

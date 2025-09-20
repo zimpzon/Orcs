@@ -1,4 +1,6 @@
 using Assets.Script.Upgrades;
+using Assets.Script.Misc;
+using Assets.Script.Upgrades.Managers;
 using System;
 using UnityEngine;
 
@@ -72,7 +74,7 @@ public class UpgradeManager : MonoBehaviour
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
 
-    private const string LockedText = "Buy one to see details.";
+    private const string LockedDescription = "Buy one to see details.";
 
     private UpgradeDisplayStatus GetUpgradeDisplayStatus(UpgradeItemScript upgradeUiScript)
     {
@@ -116,46 +118,98 @@ public class UpgradeManager : MonoBehaviour
             throw new NotImplementedException(upgradeUiScript.name);
     }
 
+    private Decimal512 GetPriceForNext(UpgradeItemScript upgradeUiScript)
+    {
+        if (upgradeUiScript == ClickDamage)
+            return ClickDamageManager.PriceForNext();
+        else if (upgradeUiScript == KnifeDamage)
+            return KnifeDamageManager.PriceForNext();
+        else if (upgradeUiScript == GoldPerRound)
+            return ArenaGoldManager.PriceForNext();
+        else if (upgradeUiScript == KnifeCd)
+            return KnifeCdManager.PriceForNext();
+        else if (upgradeUiScript == WitchDoctor)
+            return WitchDoctorManager.PriceForNext();
+        else if (upgradeUiScript == GoldPerKnife)
+            return GoldPerKnifeThrowManager.PriceForNext();
+        else if (upgradeUiScript == Wizard)
+            return WizardManager.PriceForNext();
+        else if (upgradeUiScript == Hoarder)
+            return HoarderManager.PriceForNext();
+        else if (upgradeUiScript == ZapDamage)
+            return ZapDamageManager.PriceForNext();
+        else if (upgradeUiScript == MoneyMaker)
+            return MoneyMakerManager.PriceForNext();
+        else if (upgradeUiScript == DaggerMaster)
+            return DaggerMasterManager.PriceForNext();
+        else if (upgradeUiScript == NecroNinja)
+            return NecroNinjaManager.PriceForNext();
+        else if (upgradeUiScript == SkullCrusher)
+            return SkullCrusherManager.PriceForNext();
+        else if (upgradeUiScript == ChestMaster)
+            return ChestMasterManager.PriceForNext();
+        else if (upgradeUiScript == Voidgazer)
+            return VoidgazerManager.PriceForNext();
+        else if (upgradeUiScript == SmartDaggers)
+            return SmartDaggersManager.PriceForNext();
+        else if (upgradeUiScript == FastFeet)
+            return FastFeetManager.PriceForNext();
+        else if (upgradeUiScript == CryptMaster)
+            return CryptMasterManager.PriceForNext();
+        else
+            throw new NotImplementedException(upgradeUiScript.name);
+    }
+
+    private string GetLockedText(UpgradeItemScript upgradeUiScript)
+    {
+        Decimal512 priceForNext = GetPriceForNext(upgradeUiScript);
+        if (priceForNext <= 0)
+            return LockedDescription;
+
+        string priceSummary = UpgradeManagerHelper.FormatPrice(priceForNext);
+        return $"{LockedDescription}\n{priceSummary}";
+    }
+
     public string GetText(UpgradeItemScript upgradeUiScript)
     {
         string text = "";
 
         if (upgradeUiScript == ClickDamage)
-            text = GetUpgradeDisplayStatus(ClickDamage) == UpgradeDisplayStatus.FullyShown ? ClickDamageManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(ClickDamage) == UpgradeDisplayStatus.FullyShown ? ClickDamageManager.GetText() : GetLockedText(ClickDamage);
         else if (upgradeUiScript == KnifeDamage)
-            text = GetUpgradeDisplayStatus(KnifeDamage) == UpgradeDisplayStatus.FullyShown ? KnifeDamageManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(KnifeDamage) == UpgradeDisplayStatus.FullyShown ? KnifeDamageManager.GetText() : GetLockedText(KnifeDamage);
         else if (upgradeUiScript == GoldPerRound)
-            text = GetUpgradeDisplayStatus(GoldPerRound) == UpgradeDisplayStatus.FullyShown ? ArenaGoldManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(GoldPerRound) == UpgradeDisplayStatus.FullyShown ? ArenaGoldManager.GetText() : GetLockedText(GoldPerRound);
         else if (upgradeUiScript == KnifeCd)
-            text = GetUpgradeDisplayStatus(KnifeCd) == UpgradeDisplayStatus.FullyShown ? KnifeCdManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(KnifeCd) == UpgradeDisplayStatus.FullyShown ? KnifeCdManager.GetText() : GetLockedText(KnifeCd);
         else if (upgradeUiScript == WitchDoctor)
-            text = GetUpgradeDisplayStatus(WitchDoctor) == UpgradeDisplayStatus.FullyShown ? WitchDoctorManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(WitchDoctor) == UpgradeDisplayStatus.FullyShown ? WitchDoctorManager.GetText() : GetLockedText(WitchDoctor);
         else if (upgradeUiScript == GoldPerKnife)
-            text = GetUpgradeDisplayStatus(GoldPerKnife) == UpgradeDisplayStatus.FullyShown ? GoldPerKnifeThrowManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(GoldPerKnife) == UpgradeDisplayStatus.FullyShown ? GoldPerKnifeThrowManager.GetText() : GetLockedText(GoldPerKnife);
         else if (upgradeUiScript == Wizard)
-            text = GetUpgradeDisplayStatus(Wizard) == UpgradeDisplayStatus.FullyShown ? WizardManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(Wizard) == UpgradeDisplayStatus.FullyShown ? WizardManager.GetText() : GetLockedText(Wizard);
         else if (upgradeUiScript == Hoarder)
-            text = GetUpgradeDisplayStatus(Hoarder) == UpgradeDisplayStatus.FullyShown ? HoarderManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(Hoarder) == UpgradeDisplayStatus.FullyShown ? HoarderManager.GetText() : GetLockedText(Hoarder);
         else if (upgradeUiScript == ZapDamage)
-            text = GetUpgradeDisplayStatus(ZapDamage) == UpgradeDisplayStatus.FullyShown ? ZapDamageManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(ZapDamage) == UpgradeDisplayStatus.FullyShown ? ZapDamageManager.GetText() : GetLockedText(ZapDamage);
         else if (upgradeUiScript == MoneyMaker)
-            text = GetUpgradeDisplayStatus(MoneyMaker) == UpgradeDisplayStatus.FullyShown ? MoneyMakerManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(MoneyMaker) == UpgradeDisplayStatus.FullyShown ? MoneyMakerManager.GetText() : GetLockedText(MoneyMaker);
         else if (upgradeUiScript == DaggerMaster)
-            text = GetUpgradeDisplayStatus(DaggerMaster) == UpgradeDisplayStatus.FullyShown ? DaggerMasterManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(DaggerMaster) == UpgradeDisplayStatus.FullyShown ? DaggerMasterManager.GetText() : GetLockedText(DaggerMaster);
         else if (upgradeUiScript == NecroNinja)
-            text = GetUpgradeDisplayStatus(NecroNinja) == UpgradeDisplayStatus.FullyShown ? NecroNinjaManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(NecroNinja) == UpgradeDisplayStatus.FullyShown ? NecroNinjaManager.GetText() : GetLockedText(NecroNinja);
         else if (upgradeUiScript == SkullCrusher)
-            text = GetUpgradeDisplayStatus(SkullCrusher) == UpgradeDisplayStatus.FullyShown ? SkullCrusherManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(SkullCrusher) == UpgradeDisplayStatus.FullyShown ? SkullCrusherManager.GetText() : GetLockedText(SkullCrusher);
         else if (upgradeUiScript == ChestMaster)
-            text = GetUpgradeDisplayStatus(ChestMaster) == UpgradeDisplayStatus.FullyShown ? ChestMasterManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(ChestMaster) == UpgradeDisplayStatus.FullyShown ? ChestMasterManager.GetText() : GetLockedText(ChestMaster);
         else if (upgradeUiScript == Voidgazer)
-            text = GetUpgradeDisplayStatus(Voidgazer) == UpgradeDisplayStatus.FullyShown ? VoidgazerManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(Voidgazer) == UpgradeDisplayStatus.FullyShown ? VoidgazerManager.GetText() : GetLockedText(Voidgazer);
         else if (upgradeUiScript == SmartDaggers)
-            text = GetUpgradeDisplayStatus(SmartDaggers) == UpgradeDisplayStatus.FullyShown ? SmartDaggersManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(SmartDaggers) == UpgradeDisplayStatus.FullyShown ? SmartDaggersManager.GetText() : GetLockedText(SmartDaggers);
         else if (upgradeUiScript == FastFeet)
-            text = GetUpgradeDisplayStatus(FastFeet) == UpgradeDisplayStatus.FullyShown ? FastFeetManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(FastFeet) == UpgradeDisplayStatus.FullyShown ? FastFeetManager.GetText() : GetLockedText(FastFeet);
         else if (upgradeUiScript == CryptMaster)
-            text = GetUpgradeDisplayStatus(CryptMaster) == UpgradeDisplayStatus.FullyShown ? CryptMasterManager.GetText() : LockedText;
+            text = GetUpgradeDisplayStatus(CryptMaster) == UpgradeDisplayStatus.FullyShown ? CryptMasterManager.GetText() : GetLockedText(CryptMaster);
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
