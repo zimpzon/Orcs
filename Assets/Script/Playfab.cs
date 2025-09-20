@@ -141,10 +141,11 @@ public static class Playfab
         }
 
         PlayFabClientAPI.UpdatePlayerStatistics(req,
-            res => Debug.Log($"stats {stats} sent"),
+            res => Debug.Log($"stats sent successfully"),
             err =>
             {
-                Debug.LogError($"error sending stats {stats}: {err}");
+                // Avoid serializing dictionary in error message for WebGL compatibility
+                Debug.LogError($"error sending stats: {err}");
 
                 if (retryOnAuthError && err.Error == PlayFabErrorCode.InvalidSessionTicket)
                 {

@@ -99,7 +99,8 @@ public class GameManager : MonoBehaviour
     // 80: Trying to prevent xp overflow on credit level up
     // 81: Partial undo of beast % nerf
     // 82: Split Shiny Diamonds into 5 cards instead of 3
-    public const int MinorVersion = 82;
+    // 83: Trying to fix freeze bug at return message, enabled low exception support
+    public const int MinorVersion = 83;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -1570,9 +1571,9 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.MonsterCredits_09_08_2025 += 100;
+            //SaveGame.Members.MonsterCredits_09_08_2025 += 100;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 100;
-            SaveGame.Members.DiamondCount_09_08_2025 += 100;
+            //SaveGame.Members.DiamondCount_09_08_2025 += 100;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
