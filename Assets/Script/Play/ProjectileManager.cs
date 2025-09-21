@@ -392,7 +392,14 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                 }
 
                 if (p.RotationSpeed > 0.0f)
-                    p.SpriteInfo.Transform.rotation = Quaternion.Euler(0.0f, 0.0f, G.D.GameTime * (p.CurrentTarget == null ? p.RotationSpeed : p.RotationSpeedWhenStuck));
+                {
+                    float baseRotation = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                    // Use major axis to determine rotation direction: clockwise for positive X/Y, counter-clockwise for negative
+                    float rotationDirection = (Mathf.Abs(p.Direction.x) > Mathf.Abs(p.Direction.y)) ?
+                        Mathf.Sign(p.Direction.x) : Mathf.Sign(p.Direction.y);
+                    float spinRotation = G.D.GameTime * -rotationDirection * (p.CurrentTarget == null ? p.RotationSpeed : p.RotationSpeedWhenStuck);
+                    p.SpriteInfo.Transform.rotation = Quaternion.Euler(0.0f, 0.0f, baseRotation + spinRotation);
+                }
 
                 if (p.SwayFactor > 0.0f)
                 {
