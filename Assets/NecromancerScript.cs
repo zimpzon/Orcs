@@ -4,6 +4,7 @@ using UnityEngine;
 public class NecromancerScript : MonoBehaviour
 {
     PlayerScript _player;
+    int _currentShotIndex = 0;
 
     void Awake()
     {
@@ -13,8 +14,35 @@ public class NecromancerScript : MonoBehaviour
     void Shoot()
     {
         var saw = WeaponBase.GetWeapon(WeaponType.Sawblade);
-        var randomDir = Random.insideUnitCircle.normalized;
-        saw.Eject(_player.transform.position, randomDir, Color.white);
+
+        // Calculate direction based on shot index to avoid middle zone
+        Vector2 direction = GetSkullDirection(_currentShotIndex);
+        _currentShotIndex++;
+
+        saw.Eject(_player.transform.position, direction, Color.white);
+    }
+
+    Vector2 GetSkullDirection(int shotIndex)
+    {
+        // Two zones: 315°-350° (forward-down) and 10°-45° (forward-up)
+        // Avoid the middle zone around 0° (straight forward)
+
+        float angleInDegrees;
+
+        if (shotIndex % 2 == 0)
+        {
+            // Even shots: forward-down zone (315°-350°)
+            angleInDegrees = Random.Range(315f, 350f);
+        }
+        else
+        {
+            // Odd shots: forward-up zone (10°-45°)
+            angleInDegrees = Random.Range(10f, 45f);
+        }
+
+        // Convert to radians and create direction vector
+        float angleInRadians = angleInDegrees * Mathf.Deg2Rad;
+        return new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
     }
 
     public IEnumerator Think()
@@ -29,6 +57,9 @@ public class NecromancerScript : MonoBehaviour
                 continue;
             }
 
+            // Reset shot index for new volley
+            _currentShotIndex = 0;
+
             while (shotsLeft > 0)
             {
                 yield return null;
@@ -38,7 +69,7 @@ public class NecromancerScript : MonoBehaviour
                 {
                     Shoot();
                     shotsLeft--;
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.2f);
                 }
             }
 

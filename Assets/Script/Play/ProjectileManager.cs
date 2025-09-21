@@ -254,7 +254,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 2.5f);
+                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 50.0f); // TODO: parameter?
 
                         bool hasNearbyEnemy = closestEnemy != null;
                         if (hasNearbyEnemy)
