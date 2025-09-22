@@ -12,8 +12,6 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeNecroNinja;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentValue = (long)(ValueForLevel(level) * 100.0);
-            long nextValue = (long)(ValueForLevel(level + 1) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelNecroNinja,
@@ -46,9 +44,6 @@ namespace Assets.Script.Upgrades
 
             return sb.ToString();
         }
-
-        private static double ValueForLevel(long level)
-            => 1 + 0.25 * (level - 1);
 
         private static Decimal512 BaseIncome()
         {

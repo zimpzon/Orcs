@@ -180,7 +180,7 @@ public class PlayerScript : MonoBehaviour
             totalRecoil += recoil;
 
             // Multishot (same frame)
-            double sideDamage = baseDamage * 0.5f;
+            double sideDamage = baseDamage * 2;
             for (int j = 1; j <= PlayerUpgrades.Data.MagicMissileMultiShots; ++j)
             {
                 var dir1 = Quaternion.AngleAxis(-j * anglePerShot, Vector3.forward) * fireDir;
