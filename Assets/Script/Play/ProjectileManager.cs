@@ -254,7 +254,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickySoundRepeater.StopClip();
 
                         p.CurrentTarget = null;
-                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 50.0f); // TODO: parameter?
+                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 1000.0f); // TODO: parameter?
 
                         bool hasNearbyEnemy = closestEnemy != null;
                         if (hasNearbyEnemy)
@@ -334,7 +334,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 if (offCd && p.JumpToNearbyTarget)
                                 {
                                     p.PreviousJumpTargets.Add(enemy);
-                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 3.0f, p.PreviousJumpTargets);
+                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 1000.0f, p.PreviousJumpTargets); // TODO: parameter?
 
                                     bool hasNearbyEnemy = closestEnemy != null;
                                     if (hasNearbyEnemy)
@@ -365,7 +365,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickyNextEnemySeek = G.D.GameTime + 0.1f;
 
                             // Moving around and not close to an enemy. Move towards any close enemy.
-                            var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 3.0f);
+                            var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 1000.0f); // TODO: parameter?
 
                             bool hasNearbyEnemy = closestEnemy != null;
                             if (hasNearbyEnemy)
