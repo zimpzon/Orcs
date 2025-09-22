@@ -12,8 +12,8 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeZapDamage;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentIncrease = (long)(ValueForLevel(level) * 100.0);
-            long nextIncrease = (long)(ValueForLevel(level + 1) * 100.0);
+            long currentIncrease = (long)Math.Round(ValueForLevel(level) * 100.0);
+            long nextIncrease = (long)Math.Round(ValueForLevel(level + 1) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelZapDamage,
@@ -54,7 +54,7 @@ namespace Assets.Script.Upgrades
 
         private static double ValueForLevel(long level)
         {
-            return 0.15 * level;
+            return 0.2 * level;
         }
 
         private static Decimal512 BaseIncome()

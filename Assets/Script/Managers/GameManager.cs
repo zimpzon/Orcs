@@ -1632,17 +1632,20 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.LevelClickDamage = 1000;
-            SaveGame.Members.LevelGoldPerKnifeThrown = 1000;
-            SaveGame.Members.LevelHoarder = 1000;
-            SaveGame.Members.LevelDaggerMaster = 1000;
-            SaveGame.Members.LevelKnifeDamage = 1000;
-            SaveGame.Members.LevelMoneyPerGold = 1000;
-            SaveGame.Members.LevelPctBought = 250;
-            SaveGame.Members.LevelChestMaster = 1000;
-            SaveGame.Members.LevelVoidgazer = 1000;
-            SaveGame.Members.LevelMoneyPerGold = 1000;
-            SaveGame.Members.LevelMoneyMaker = 10;
+            SaveGame.Members.LevelClickDamage = 400;
+            SaveGame.Members.LevelKnifeDamage = 300;
+            SaveGame.Members.LevelKnifeCd = 250;
+            SaveGame.Members.LevelWitchDoctor = 200;
+            SaveGame.Members.LevelWizard = 175;
+            SaveGame.Members.LevelHoarder = 150; // *
+            SaveGame.Members.LevelMoneyMaker = 110;
+            SaveGame.Members.LevelZapDamage = 125;
+            SaveGame.Members.LevelDaggerMaster = 100;
+            SaveGame.Members.LevelNecroNinja = 75;
+            SaveGame.Members.LevelSkullCrusher = 50;
+            SaveGame.Members.LevelSmartDaggers = 25;
+            SaveGame.Members.LevelCryptMaster = 5;
+
             SaveGame.Members.ArenaLevel = 15000;
         }
 

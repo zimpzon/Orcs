@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=#8DBE4C>Necromancer</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated skulls biting for Dagger damage.");
+            sb.AppendLine("<color=#dddddd>Throws aggressive reanimated biting skulls.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.Format(baseIncome)}</color> per second.");
@@ -54,7 +54,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static double ValueForLevel(long level)
-            => 1 + 0.25 * (level - 1);
+            => 1 + 0.1 * (level - 1);
 
         private static Decimal512 BaseIncome()
         {
@@ -86,7 +86,7 @@ namespace Assets.Script.Upgrades
         {
             PlayerUpgrades.Data.NecromancerEnabled = SaveGame.Members.LevelMoneyMaker > 0;
             PlayerUpgrades.Data.NecromancerBaseDamage =
-                PlayerUpgrades.Data.MagicMissileEffectiveDamage * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
+                (PlayerUpgrades.Data.MagicMissileEffectiveDamage * 0.5f) * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
         }
 
         public static void OnBuy()
