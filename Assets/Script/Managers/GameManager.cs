@@ -102,7 +102,8 @@ public class GameManager : MonoBehaviour
     // 83: Trying to fix freeze bug at return message, enabled low exception support
     // 84: Huge skull aggro range
     // 85: Damage types balanced
-    public const int MinorVersion = 85;
+    // 86: Fixed away time resetting Arena
+    public const int MinorVersion = 86;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -111,6 +112,8 @@ public class GameManager : MonoBehaviour
     const int AutoSaveInterval = 5;
     const int SendStatsInterval = 60 * 10;
     const float MoneyUpdateDelay = 0.02f;
+    // Allow brief frame hitches without treating them as being away.
+    const int AwayRestartThresholdSeconds = 5;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -1221,7 +1224,7 @@ public class GameManager : MonoBehaviour
 
     bool RestartRoundIfWasAway()
     {
-        bool wasAway = WasAway(minSeconds: 1, out TimeSpan awayTime);
+        bool wasAway = WasAway(minSeconds: AwayRestartThresholdSeconds, out TimeSpan awayTime);
         if (wasAway)
         {
             Debug.Log($"was away for {awayTime}");
