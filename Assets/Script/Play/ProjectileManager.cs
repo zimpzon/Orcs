@@ -42,6 +42,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             DamageFalloffPerMeter = 0.0f;
             DieTime = 0;
             Type = ProjectileType.HarmsEnemies;
+            JumpToNearbyTarget = false;
             IsLastFrame = false;
             OnEndOfLife = null;
             IsFirstFrame = true;
