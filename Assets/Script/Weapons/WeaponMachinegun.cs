@@ -48,7 +48,7 @@ public class WeaponMachinegun : WeaponBase
         basic.ParticleEmitCount = 1;
         basic.ParticleEmitDelay = 0.01f;
         basic.JumpToNearbyTarget = PlayerUpgrades.Data.MagicMissileJumpDamageMul > 0;
-        basic.JumpDamageMul = PlayerUpgrades.Data.MagicMissileJumpDamageMul;
+        basic.JumpMaxDistance = PlayerUpgrades.Data.MagicMissileJumpRange;
         basic.DieOnCollision = !basic.JumpToNearbyTarget;
         basic.ReflectOnEdges = true;
         basic.ReflectRotationOffset = 270;

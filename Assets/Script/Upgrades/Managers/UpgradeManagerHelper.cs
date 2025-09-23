@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades.Managers
             if (secondsLeft > MaxTimeSpanSeconds)
             {
                 // Handle extremely long times without creating TimeSpan
-                timeStr = "a lot of years"; // or "Never" or ">29k years"
+                timeStr = "forget it"; // or "Never" or ">29k years"
             }
             else
             {
@@ -60,7 +60,7 @@ namespace Assets.Script.Upgrades.Managers
             if (secondsLeft > MaxTimeSpanSeconds)
             {
                 // Handle extremely long times without creating TimeSpan
-                timeStr = "a lot of years"; // or "Never" or ">29k years"
+                timeStr = "forget it"; // or "Never" or ">29k years"
             }
             else
             {

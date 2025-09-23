@@ -86,6 +86,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MagicMissileJumpDamageMul = SaveGame.Members.LevelSmartDaggers > 0 ? 1.0f : 0.0f;
+            PlayerUpgrades.Data.MagicMissileJumpRange = SaveGame.Members.LevelSmartDaggers > 0 ? 1000.0f : 0.0f;
             PlayerUpgrades.Data.MagicMissileDamageMulSmartDaggers = ValueForLevel(SaveGame.Members.LevelSmartDaggers);
         }
 

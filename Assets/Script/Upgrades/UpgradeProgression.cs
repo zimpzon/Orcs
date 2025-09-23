@@ -32,6 +32,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SmartDaggers =        15_250_000_000_000_000_000;
         public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
         public static Decimal512 InitialPrice_CryptMaster = InitialPrice_FastFeet * 100;
+        public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 100;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -54,6 +55,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SmartDaggers_X2 = InitialPrice_SmartDaggers * 10;
         public static Decimal512 InitialPrice_FastFeet_X2 = InitialPrice_FastFeet * 10;
         public static Decimal512 InitialPrice_CryptMaster_X2 = InitialPrice_CryptMaster * 10;
+        public static Decimal512 InitialPrice_SmartFireballs_X2 = InitialPrice_SmartFireballs * 10;
 
         public static Decimal512 BaseIncome_Clickdamage = 0.2;
         public static Decimal512 BaseIncome_DaggerDamage = 2;
@@ -73,6 +75,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_SmartDaggers =     15_200_000_000;
         public static Decimal512 BaseIncome_FastFeet =         40_100_000_000;
         public static Decimal512 BaseIncome_CryptMaster =     100_250_000_000;
+        public static Decimal512 BaseIncome_SmartFireballs =  250_250_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {

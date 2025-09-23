@@ -46,6 +46,8 @@ public class ActorOgreShamanShoot : MonoBehaviour
         scale *= 2.0f;
 
         basic.DieOnCollision = false;
+        basic.JumpToNearbyTarget = PlayerUpgrades.Data.WizardSmartFireballsEnabled;
+        basic.JumpMaxDistance = PlayerUpgrades.Data.WizardSmartFireballsJumpRange;
         basic.Position = (Vector2)_player.transform.position + direction * 0.5f;
         basic.SpriteInfo.Renderer.sprite = SpriteData.Instance.ShamanProjectile;
         basic.SpriteInfo.Renderer.sortingLayerID = GameManager.Instance.SortLayerTopEffects;

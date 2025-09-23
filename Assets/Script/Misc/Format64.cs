@@ -53,7 +53,7 @@ namespace Assets.Script.Misc
         {
             // Handle very long times
             if (ts.TotalDays > 9999)
-                return ">9999 days";
+                return "forget it";
 
             // Format based on magnitude
             if (ts.TotalDays >= 1)

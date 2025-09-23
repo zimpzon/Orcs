@@ -62,6 +62,9 @@ public class UpgradeData
     public bool WizardTwoMoreFireballsEnabled = false;
     public bool WizardEnabled = false;
     public long WizardEffectiveDamage = 0;
+    public bool WizardSmartFireballsEnabled = false;
+    public double WizardSmartFireballsDamageMultiplier = 1.0f;
+    public float WizardSmartFireballsJumpRange = 0.0f;
 
     // Necromancer
     public bool NecromancerEnabled = false;
@@ -90,6 +93,7 @@ public class UpgradeData
     public float MagicMissileEffectiveSpeed => MagicMissileBaseSpeed * MagicMissileSpeedMul * GameManager.Instance.ArenaScale;
 
     public double MagicMissileJumpDamageMul = 0.0f;
+    public float MagicMissileJumpRange = 0.0f;
     public int MagicMissileMultiShots = 0;
 
     public bool MeleeThrowBought = false;

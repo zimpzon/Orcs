@@ -37,6 +37,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript SmartDaggers;
     public UpgradeItemScript FastFeet;
     public UpgradeItemScript CryptMaster;
+    public UpgradeItemScript SmartFireballs;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -70,6 +71,7 @@ public class UpgradeManager : MonoBehaviour
         SmartDaggersManager.UpdateAll();
         FastFeetManager.UpdateAll();
         CryptMasterManager.UpdateAll();
+        SmartFireballsManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -114,6 +116,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelFastFeet);
         else if (upgradeUiScript == CryptMaster)
             return GetDisplayStatus(SaveGame.Members.LevelFastFeet, SaveGame.Members.LevelCryptMaster);
+        else if (upgradeUiScript == SmartFireballs)
+            return GetDisplayStatus(SaveGame.Members.LevelCryptMaster, SaveGame.Members.LevelSmartFireballs);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -156,6 +160,8 @@ public class UpgradeManager : MonoBehaviour
             return FastFeetManager.PriceForNext();
         else if (upgradeUiScript == CryptMaster)
             return CryptMasterManager.PriceForNext();
+        else if (upgradeUiScript == SmartFireballs)
+            return SmartFireballsManager.PriceForNext();
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -210,6 +216,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(FastFeet) == UpgradeDisplayStatus.FullyShown ? FastFeetManager.GetText() : GetLockedText(FastFeet);
         else if (upgradeUiScript == CryptMaster)
             text = GetUpgradeDisplayStatus(CryptMaster) == UpgradeDisplayStatus.FullyShown ? CryptMasterManager.GetText() : GetLockedText(CryptMaster);
+        else if (upgradeUiScript == SmartFireballs)
+            text = GetUpgradeDisplayStatus(SmartFireballs) == UpgradeDisplayStatus.FullyShown ? SmartFireballsManager.GetText() : GetLockedText(SmartFireballs);
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -251,6 +259,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeSmartDaggers += SmartDaggersManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeFastFeet += FastFeetManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeCryptMaster += CryptMasterManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeSmartFireballs += SmartFireballsManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -271,6 +280,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += SmartDaggersManager.PassiveIncome();
         fullSum += FastFeetManager.PassiveIncome();
         fullSum += CryptMasterManager.PassiveIncome();
+        fullSum += SmartFireballsManager.PassiveIncome();
         return fullSum;
     }
 
@@ -310,6 +320,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(SmartDaggers);
         SetIsVisble(FastFeet);
         SetIsVisble(CryptMaster);
+        SetIsVisble(SmartFireballs);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -329,6 +340,7 @@ public class UpgradeManager : MonoBehaviour
         SmartDaggersManager.UpdateUi();
         FastFeetManager.UpdateUi();
         CryptMasterManager.UpdateUi();
+        SmartFireballsManager.UpdateUi();
     }
 
     void OnItemBought(long actualBuyAmount)
@@ -615,6 +627,21 @@ public class UpgradeManager : MonoBehaviour
         OnX2ItemBought();
     }
 
+    public void OnBuySmartFireballs()
+    {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSmartFireballs, SaveGame.Members.LevelSmartFireballsX2);
+        SmartFireballsManager.OnBuy();
+        SmartFireballs.SetPopupText();
+        OnItemBought(buyAmount);
+    }
+
+    public void OnBuySmartFireballsX2()
+    {
+        SmartFireballsManager.OnBuyX2();
+        SmartFireballs.SetPopupText();
+        OnX2ItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -635,6 +662,7 @@ public class UpgradeManager : MonoBehaviour
         SmartDaggersManager.UpdatePlayerUpgrades();
         FastFeetManager.UpdatePlayerUpgrades();
         CryptMasterManager.UpdatePlayerUpgrades();
+        SmartFireballsManager.UpdatePlayerUpgrades();
     }
 
     void UpdateNumberOfX2Bought()
@@ -658,6 +686,7 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelSmartDaggersX2;
         total += SaveGame.Members.LevelFastFeetX2;
         total += SaveGame.Members.LevelCryptMasterX2;
+        total += SaveGame.Members.LevelSmartFireballsX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
         const float BonusPerRank = 0.1f;

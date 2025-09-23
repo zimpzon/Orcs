@@ -225,7 +225,7 @@ public static class EnemySpawner
         const long HpScale = 5;
 
         // Desired HP at level 10,000 (adjustable)
-        const long HpAtTargetLevel = 25_000_000_000;
+        const long HpAtTargetLevel = 30_000_000_000;
 
         // Just a fixpoint to have an idea of where HP scaling is going.
         const int TargetLevel = 10_000;

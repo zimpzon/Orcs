@@ -43,6 +43,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             DieTime = 0;
             Type = ProjectileType.HarmsEnemies;
             JumpToNearbyTarget = false;
+            JumpMaxDistance = 1000.0f;
             IsLastFrame = false;
             OnEndOfLife = null;
             IsFirstFrame = true;
@@ -101,6 +102,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float RotationSpeed;
         public float RotationSpeedWhenStuck;
         public bool JumpToNearbyTarget;
+        public float JumpMaxDistance;
         public double JumpDamageMul;
         public bool StickToTarget;
         public float StickyNextEnemySeek;
@@ -335,14 +337,19 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 if (offCd && p.JumpToNearbyTarget)
                                 {
                                     p.PreviousJumpTargets.Add(enemy);
-                                    var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 1000.0f, p.PreviousJumpTargets); // TODO: parameter?
 
-                                    bool hasNearbyEnemy = closestEnemy != null;
-                                    if (hasNearbyEnemy)
+                                    float jumpRadius = Mathf.Max(p.JumpMaxDistance, 0.0f);
+                                    if (jumpRadius > 0.01f)
                                     {
-                                        p.Direction = (closestEnemy.transform.position - p.Position).normalized;
-                                        float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
-                                        p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+                                        var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, jumpRadius, p.PreviousJumpTargets); // TODO: parameter?
+
+                                        bool hasNearbyEnemy = closestEnemy != null;
+                                        if (hasNearbyEnemy)
+                                        {
+                                            p.Direction = (closestEnemy.transform.position - p.Position).normalized;
+                                            float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
+                                            p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+                                        }
                                     }
                                 }
                             }
@@ -366,7 +373,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                             p.StickyNextEnemySeek = G.D.GameTime + 0.1f;
 
                             // Moving around and not close to an enemy. Move towards any close enemy.
-                            var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, 1000.0f); // TODO: parameter?
+                            var closestEnemy = BlackboardScript.GetClosestEnemy(p.Position, Mathf.Max(p.JumpMaxDistance, 0.0f)); // TODO: parameter?
 
                             bool hasNearbyEnemy = closestEnemy != null;
                             if (hasNearbyEnemy)

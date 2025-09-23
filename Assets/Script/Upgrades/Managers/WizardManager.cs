@@ -86,8 +86,9 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.WizardEnabled = SaveGame.Members.LevelWizard > 0;
-            PlayerUpgrades.Data.WizardEffectiveDamage =
-                (long)(PlayerUpgrades.Data.EffectiveZapDamage * ValueForLevel(SaveGame.Members.LevelWizard));
+            double wizardBaseDamage = PlayerUpgrades.Data.EffectiveZapDamage * ValueForLevel(SaveGame.Members.LevelWizard);
+            wizardBaseDamage *= PlayerUpgrades.Data.WizardSmartFireballsDamageMultiplier;
+            PlayerUpgrades.Data.WizardEffectiveDamage = (long)wizardBaseDamage;
         }
 
         public static void OnBuy()

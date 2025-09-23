@@ -103,7 +103,8 @@ public class GameManager : MonoBehaviour
     // 84: Huge skull aggro range
     // 85: Damage types balanced
     // 86: Fixed away time resetting Arena
-    public const int MinorVersion = 86;
+    // 87: Added new tier
+    public const int MinorVersion = 87;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -414,11 +415,10 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added new upgrade tier\n" +
             " - different damage types more balanced\n" +
             " - improved seeking skulls\n" +
-            " - split Shiny Diamonds into 5 cards\n" +
-            " - added three new skin\n" +
-            " - added countdown for upgrade prices");
+            " - split Shiny Diamonds into 5 cards");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1510,6 +1510,7 @@ public class GameManager : MonoBehaviour
             { "level_smart_daggers", (int)SaveGame.Members.LevelSmartDaggers},
             { "level_fast_feet", (int)SaveGame.Members.LevelFastFeet},
             { "level_crypt_master", (int)SaveGame.Members.LevelCryptMaster},
+            { "level_smart_fireballs", (int)SaveGame.Members.LevelSmartFireballs},
         };
         return dic;
     }
@@ -1650,6 +1651,7 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.LevelSkullCrusher = 50;
             SaveGame.Members.LevelSmartDaggers = 25;
             SaveGame.Members.LevelCryptMaster = 5;
+            SaveGame.Members.LevelSmartFireballs = 3;
 
             SaveGame.Members.ArenaLevel = 15000;
         }
