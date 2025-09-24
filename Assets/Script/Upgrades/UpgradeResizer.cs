@@ -99,4 +99,12 @@ public class UpgradeResizer : MonoBehaviour
             UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, ItemPanelExpandedSize.y);
         }
     }
+
+    void Update()
+    {
+        if (isExpanded && Input.GetKeyDown(KeyCode.Escape))
+        {
+            Collapse();
+        }
+    }
 }
