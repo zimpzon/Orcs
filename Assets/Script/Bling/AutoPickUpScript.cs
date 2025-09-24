@@ -6,7 +6,7 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
 {
     public AutoPickUpType Type;
     public double Value = 1;
-    float PickupDistance = 0.2f;
+    float PickupDistance = 0.5f;
     float AttractPower = 22.0f;
     float ThrowForce = 5.0f;
     float Drag = 5.0f;

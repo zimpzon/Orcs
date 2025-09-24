@@ -104,7 +104,8 @@ public class GameManager : MonoBehaviour
     // 85: Damage types balanced
     // 86: Fixed away time resetting Arena
     // 87: Added new tier
-    public const int MinorVersion = 87;
+    // 88: Added expand/collapse button
+    public const int MinorVersion = 88;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
     const int SendStatsInterval = 60 * 10;
     const float MoneyUpdateDelay = 0.02f;
     // Allow brief frame hitches without treating them as being away.
-    const int AwayRestartThresholdSeconds = 5;
+    const int AwayRestartThresholdSeconds = 3;
 
     public string GameVersion;
     public static GameManager Instance;
@@ -415,10 +416,10 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added expand/collapse button\n" +
             " - added new upgrade tier\n" +
             " - different damage types more balanced\n" +
-            " - improved seeking skulls\n" +
-            " - split Shiny Diamonds into 5 cards");
+            " - improved seeking skulls");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1389,7 +1390,6 @@ public class GameManager : MonoBehaviour
 
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
-        ButtonBuy100.interactable = true;
         ButtonBuyNextX2.interactable = true;
 
         if (SelectedBuyAmount == BuyAmountSelection.Buy1)
