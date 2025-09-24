@@ -19,6 +19,9 @@ public class UpgradeResizer : MonoBehaviour
     static readonly Vector2 ItemPanelExpandedSize = new(760, 396);
     Vector2 itemPanelCollapsedSize;
     bool isExpanded = false;
+    bool isAnimating = false;
+
+    const float AnimationDuration = 0.3f;
 
     void Start()
     {
@@ -46,6 +49,8 @@ public class UpgradeResizer : MonoBehaviour
 
     public void Toggle()
     {
+        if (isAnimating) return;
+
         if (isExpanded)
             Collapse();
         else
@@ -54,7 +59,17 @@ public class UpgradeResizer : MonoBehaviour
 
     public void Collapse()
     {
+        if (isAnimating) return;
+
         isExpanded = false;
+        isAnimating = false;
+
+        // Cancel any running animations
+        if (ScrollPanel != null)
+            LeanTween.cancel(ScrollPanel.gameObject);
+        if (UpgradeItemPanel != null)
+            LeanTween.cancel(UpgradeItemPanel.gameObject);
+
         if (GridLayoutGroup != null)
         {
             GridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -78,31 +93,80 @@ public class UpgradeResizer : MonoBehaviour
 
     void Expand()
     {
+        if (isAnimating) return;
+
         isExpanded = true;
+        isAnimating = true;
+
         if (GridLayoutGroup != null)
         {
             GridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedRowCount;
             GridLayoutGroup.constraintCount = ExpandedColumnCount;
         }
 
+        int animationsCompleted = 0;
+        int totalAnimations = 0;
+
         if (ScrollPanel != null)
         {
-            ScrollPanel.anchoredPosition = ScrollExpandedPos;
-            ScrollPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, ScrollExpandedSize.x);
-            ScrollPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, ScrollExpandedSize.y);
+            totalAnimations += 2; // position and size
+
+            LeanTween.cancel(ScrollPanel.gameObject);
+
+            LeanTween.move(ScrollPanel, ScrollExpandedPos, AnimationDuration)
+                .setEaseOutQuad()
+                .setOnComplete(() =>
+                {
+                    animationsCompleted++;
+                    if (animationsCompleted >= totalAnimations)
+                        isAnimating = false;
+                });
+
+            LeanTween.size(ScrollPanel, ScrollExpandedSize, AnimationDuration)
+                .setEaseOutQuad()
+                .setOnComplete(() =>
+                {
+                    animationsCompleted++;
+                    if (animationsCompleted >= totalAnimations)
+                        isAnimating = false;
+                });
         }
 
         if (UpgradeItemPanel != null)
         {
-            UpgradeItemPanel.anchoredPosition = ItemPanelPos;
-            UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, ItemPanelExpandedSize.x);
-            UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, ItemPanelExpandedSize.y);
+            totalAnimations += 2; // position and size
+
+            LeanTween.cancel(UpgradeItemPanel.gameObject);
+
+            LeanTween.move(UpgradeItemPanel, ItemPanelPos, AnimationDuration)
+                .setEaseOutQuad()
+                .setOnComplete(() =>
+                {
+                    animationsCompleted++;
+                    if (animationsCompleted >= totalAnimations)
+                        isAnimating = false;
+                });
+
+            LeanTween.size(UpgradeItemPanel, ItemPanelExpandedSize, AnimationDuration)
+                .setEaseOutQuad()
+                .setOnComplete(() =>
+                {
+                    animationsCompleted++;
+                    if (animationsCompleted >= totalAnimations)
+                        isAnimating = false;
+                });
+        }
+
+        // Fallback to clear animation flag if no panels to animate
+        if (totalAnimations == 0)
+        {
+            isAnimating = false;
         }
     }
 
     void Update()
     {
-        if (isExpanded && Input.GetKeyDown(KeyCode.Escape))
+        if (isExpanded && !isAnimating && Input.GetKeyDown(KeyCode.Escape))
         {
             Collapse();
         }
