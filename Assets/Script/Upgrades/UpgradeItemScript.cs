@@ -77,7 +77,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _isHovering = true;
         UpdateTargetColor();
         SetPopupText();
-        PopupManagerScript.Instance.PlaceLeftOfTarget(GetComponent<RectTransform>());
+        PopupManagerScript.Instance.PlaceNextToTarget(GetComponent<RectTransform>());
     }
 
     public void OnPointerExit(PointerEventData eventData)

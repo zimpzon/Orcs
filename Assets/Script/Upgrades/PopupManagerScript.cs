@@ -10,29 +10,41 @@ public class PopupManagerScript : MonoBehaviour
     private float _hideTime;
     private bool _hidePending;
 
-    public void PlaceLeftOfTarget(RectTransform hoveredRect)
+    public void PlaceNextToTarget(RectTransform hoveredRect)
     {
-        // Get the world corners of the hovered rect
+        // Compute world corners and convert to screen space for placement anchors
         Vector3[] corners = new Vector3[4];
         hoveredRect.GetWorldCorners(corners);
-        // corners[2] is top-right
-        Vector3 topRightWorld = corners[2];
+        Vector2 topLeftScreen = RectTransformUtility.WorldToScreenPoint(null, corners[1]);
+        Vector2 topRightScreen = RectTransformUtility.WorldToScreenPoint(null, corners[2]);
 
-        // Convert the top-right world position to screen coordinates
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, topRightWorld);
+        // Determine where the hovered rect sits relative to the screen center
+        Vector2 hoveredCenterScreen = RectTransformUtility.WorldToScreenPoint(
+            null,
+            hoveredRect.TransformPoint(hoveredRect.rect.center)
+        );
 
-        // Get the width of the popup in screen space
+        // Get the popup dimensions in screen space
         RectTransform popupRectTransform = PopupRoot.GetComponent<RectTransform>();
-
-        // Get canvas scale factor (to convert from local size to screen space)
         Canvas canvas = PopupRoot.GetComponentInParent<Canvas>();
         float scaleFactor = canvas ? canvas.scaleFactor : 1f;
 
         float popupWidth = popupRectTransform.rect.width * scaleFactor;
         float hoveredHeight = hoveredRect.rect.height * scaleFactor;
 
-        Vector2 popupPos = screenPoint;
-        popupPos.x += popupWidth * 0.5f; // Changed to place popup to the right
+        // Place popup on the side opposite the screen edge to keep it visible
+        Vector2 popupPos;
+        if (hoveredCenterScreen.x < Screen.width * 0.5f)
+        {
+            popupPos = topRightScreen;
+            popupPos.x += popupWidth * 0.5f;
+        }
+        else
+        {
+            popupPos = topLeftScreen;
+            popupPos.x -= popupWidth * 0.5f;
+        }
+
         popupPos.y -= hoveredHeight * 0.5f;
 
         Show(popupPos);

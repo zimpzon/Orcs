@@ -1,19 +1,28 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-The Unity project root contains the source under Assets/. Gameplay scripts live in Assets/Script (grouped by feature directories like Managers, Weapons, Upgrades), art and audio assets in Assets/Texture, Assets/Audio, and prefabs in Assets/Prefab. Shared configuration sits in ProjectSettings/, while build artifacts should be produced in Build/ and kept out of Assets/.
+- Unity project root at `C:\Repo\IdleKnight`; gameplay scripts live under `Assets/Script/` grouped by feature (e.g., `Managers`, `Weapons`, `Upgrades`).
+- Art, audio, and prefabs reside in `Assets/Texture`, `Assets/Audio`, and `Assets/Prefab` respectively; keep build outputs in `Build/` and out of `Assets/`.
+- Shared project configuration is stored in `ProjectSettings/`; avoid editing `Library/` or `Temp/` as they are generated.
 
 ## Build, Test, and Development Commands
-Run the project in the Unity Editor matching the version recorded in ProjectSettings/ProjectVersion.txt. For scripted builds, use "%UNITY_PATH%" -projectPath "C:\Repo\IdleKnight" -quit -batchmode -executeMethod BuildPipeline.BuildPlayer to produce desktop players into Build/. Open IdleKnight.sln in Rider/Visual Studio for C# iteration; use the IDE's Attach to Unity integration for play mode debugging.
+- Launch the Unity Editor version recorded in `ProjectSettings/ProjectVersion.txt` to iterate on gameplay and UI.
+- For scripted desktop builds, run `%UNITY_PATH% -projectPath "C:\Repo\IdleKnight" -quit -batchmode -executeMethod BuildPipeline.BuildPlayer` to produce binaries in `Build/`.
+- Open `IdleKnight.sln` in Rider or Visual Studio to edit C# scripts and attach the debugger to the Unity Editor for play mode validation.
 
 ## Coding Style & Naming Conventions
-Follow Unity/C# conventions: four-space indentation, PascalCase for classes and public members, camelCase for locals and private fields (no prefix unless Unity serialization requires public). Keep MonoBehaviour scripts lean—prefer feature folders over nested namespaces. Run the IDE formatter with .editorconfig defaults and ensure serialized fields remain at the top of the file for inspector clarity.
+- Use four-space indentation and follow Unity/C# defaults: PascalCase for classes, methods, and public fields; camelCase for locals and private members.
+- Keep serialized fields declared at the top of each MonoBehaviour for inspector clarity and avoid redundant namespaces.
+- Run the IDE formatter respecting `.editorconfig` before committing; prefer brief, purpose-driven comments only when logic is non-obvious.
 
 ## Testing Guidelines
-Automated tests are not maintained in this repo; ignore the Unity package-cache Tests/ directories that ship with dependencies. Focus on manual validation in play mode and document reproduction steps when filing bugs. When adding future tests, place EditMode suites under Assets/Tests/EditMode and PlayMode suites under Assets/Tests/PlayMode.
+- Automated tests are not maintained; rely on manual play mode validation and document reproduction steps when issues arise.
+- When authoring future tests, place EditMode suites in `Assets/Tests/EditMode` and PlayMode suites in `Assets/Tests/PlayMode`; name test files after the feature under test (e.g., `UpgradePopupTests`).
 
 ## Commit & Pull Request Guidelines
-Commits are short, imperative summaries (e.g., dded three new enemies). Group related gameplay tweaks together and avoid committing generated Library/Temp files. Pull requests should include a concise change description, affected scenes or prefabs, any linked task IDs, and GIFs/screenshots demonstrating new UI or VFX behaviour.
+- Write short, imperative commit messages (e.g., `Add upgrade popup flip logic`) and avoid committing generated `Library/` or `Temp/` assets.
+- Pull requests should describe the change, list impacted scenes or prefabs, link task IDs if applicable, and include screenshots or GIFs for visual updates.
 
-## Environment & Configuration Tips
-Use the checked-in Packages/manifest.json to restore dependencies and avoid modifying Library/. Configure PlayFab credentials via Unity's PlayFab editor extension and never commit keys; store secrets in your local UserSettings/ profile.
+## Security & Configuration Tips
+- Restore packages via the checked-in `Packages/manifest.json`; do not alter Unity cache directories.
+- Configure PlayFab or other credentials through Unityâ€™s editor extensions and keep secrets in `UserSettings/`, never in source control.
