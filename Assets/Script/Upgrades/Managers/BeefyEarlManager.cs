@@ -4,19 +4,19 @@ using System.Text;
 
 namespace Assets.Script.Upgrades
 {
-    public static class DaggerMasterManager
+    public static class BeefyEarlManager
     {
         public static string GetText()
         {
-            long level = SaveGame.Members.LevelDaggerMaster;
-            Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeDaggerMaster;
+            long level = SaveGame.Members.LevelBeefyEarl;
+            Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeBeefyEarl;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
 
             UpgradeManagerHelper.GetX2Calculated(
-                SaveGame.Members.LevelDaggerMaster,
-                SaveGame.Members.LevelDaggerMasterX2,
-                UpgradeProgression.InitialPrice_DaggerMaster_X2,
+                SaveGame.Members.LevelBeefyEarl,
+                SaveGame.Members.LevelBeefyEarlX2,
+                UpgradeProgression.InitialPrice_BeefyEarl_X2,
                 out long x2LevelsBought,
                 out long x2LevelRequirement,
                 out Decimal512 priceX2,
@@ -27,8 +27,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Dagger Master</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throw 3 daggers instead of one. Extra daggers do extra damage.");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Beefy Earl</color></b></size>");
+            sb.AppendLine("<color=#dddddd>More daggers and stronger too!");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.FormatWithDecimals(baseIncome)}</color> per second.");
@@ -43,27 +43,31 @@ namespace Assets.Script.Upgrades
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("");
 
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * 5}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * 5}%</color>");
+
             return sb.ToString();
         }
 
         private static Decimal512 BaseIncome()
         {
-            Decimal512 baseIncome = UpgradeProgression.BaseIncome_DaggerMaster;
+            Decimal512 baseIncome = UpgradeProgression.BaseIncome_BeefyEarl;
 
             // Apply global modifiers
             baseIncome *= PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
 
             // Apply X2 bonuses
-            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelDaggerMasterX2);
+            baseIncome = baseIncome * Math.Pow(2, SaveGame.Members.LevelBeefyEarlX2);
             return baseIncome;
         }
 
         public static Decimal512 PassiveIncome()
-            => BaseIncome() * SaveGame.Members.LevelDaggerMaster;
+            => BaseIncome() * SaveGame.Members.LevelBeefyEarl;
 
         public static Decimal512 PriceForNext()
         {
-            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_DaggerMaster, SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
+            return UpgradeProgression.PriceForNextUpgrade(UpgradeProgression.InitialPrice_BeefyEarl, SaveGame.Members.LevelBeefyEarl, SaveGame.Members.LevelBeefyEarlX2);
         }
 
         public static void UpdateAll()
@@ -74,7 +78,8 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.MagicMissileMultiShotsDaggerMaster = SaveGame.Members.LevelDaggerMaster > 0 ? 1 : 0;
+            PlayerUpgrades.Data.MagicMissileMultiShotsBeefyEarl = SaveGame.Members.LevelBeefyEarl > 0 ? 1 : 0;
+            PlayerUpgrades.Data.MagicMissileBeefyEarlDamageMultiplier = SaveGame.Members.LevelBeefyEarl * 0.05;
         }
 
         public static void OnBuy()
@@ -84,17 +89,17 @@ namespace Assets.Script.Upgrades
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelDaggerMaster += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
+            SaveGame.Members.LevelBeefyEarl += UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelBeefyEarl, SaveGame.Members.LevelBeefyEarlX2);
         }
 
         public static void OnBuyX2()
         {
-            Decimal512 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_DaggerMaster_X2, SaveGame.Members.LevelDaggerMasterX2 + 1);
+            Decimal512 priceForNext = UpgradeProgression.PriceX2(UpgradeProgression.InitialPrice_BeefyEarl_X2, SaveGame.Members.LevelBeefyEarlX2 + 1);
             if (priceForNext > SaveGame.Members.Money)
                 return;
 
             GameManager.Instance.DeductMoney(priceForNext);
-            SaveGame.Members.LevelDaggerMasterX2++;
+            SaveGame.Members.LevelBeefyEarlX2++;
         }
 
         public static void UpdateUi()
@@ -102,11 +107,11 @@ namespace Assets.Script.Upgrades
             Decimal512 priceForNext = PriceForNext();
             bool canAfford = priceForNext <= SaveGame.Members.Money;
             bool enableBtnX2 = UpgradeManagerHelper.X2RequirementsMet(
-                SaveGame.Members.LevelDaggerMaster,
-                SaveGame.Members.LevelDaggerMasterX2,
-                UpgradeProgression.InitialPrice_DaggerMaster_X2);
+                SaveGame.Members.LevelBeefyEarl,
+                SaveGame.Members.LevelBeefyEarlX2,
+                UpgradeProgression.InitialPrice_BeefyEarl_X2);
 
-            UpgradeManager.Instance.DaggerMaster.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelDaggerMaster);
+            UpgradeManager.Instance.BeefyEarl.UpdateUi(canAfford, enableBtnX2, priceForNext, SaveGame.Members.LevelBeefyEarl);
         }
     }
 }

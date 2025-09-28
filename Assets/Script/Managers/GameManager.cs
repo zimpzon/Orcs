@@ -106,7 +106,8 @@ public class GameManager : MonoBehaviour
     // 87: Added new tier
     // 88: Added expand/collapse button
     // 89: Unnerfed Bestiary XP
-    public const int MinorVersion = 89;
+    // 90: New upgrade tier, increased highlevel income
+    public const int MinorVersion = 90;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -417,10 +418,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added expand/collapse button\n" +
+            " - Significantly increased high level income\n" +
             " - added new upgrade tier\n" +
-            " - different damage types more balanced\n" +
-            " - improved seeking skulls");
+            " - added expand/collapse button");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -1597,7 +1597,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 100_000;
+            SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 50_000_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))

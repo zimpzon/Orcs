@@ -77,8 +77,9 @@ public class UpgradeData
     public double MagicMissileBaseDamage = 3.0f;
     public double MagicMissileDamageMulZapDamage = 0.0f;
     public double MagicMissileDamageMulSmartDaggers = 0.0f;
+    public double MagicMissileBeefyEarlDamageMultiplier = 0.0f;
     public double MagicMissileEffectiveDamage => MagicMissileBaseDamage *
-        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers);
+        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers + MagicMissileBeefyEarlDamageMultiplier);
 
     public double MagicMissileBaseCd = 0.5f;
     public double MagicMissileCdMul = 1.0f;
@@ -94,7 +95,9 @@ public class UpgradeData
 
     public double MagicMissileJumpDamageMul = 0.0f;
     public float MagicMissileJumpRange = 0.0f;
-    public int MagicMissileMultiShots = 0;
+    public int MagicMissileMultiShotsDaggerMaster = 0;
+    public int MagicMissileMultiShotsBeefyEarl = 0;
+    public int MagicMissileMultiShots => MagicMissileMultiShotsDaggerMaster + MagicMissileMultiShotsBeefyEarl;
 
     public bool MeleeThrowBought = false;
     public bool MeleeThrowEnabledInRound = false;
