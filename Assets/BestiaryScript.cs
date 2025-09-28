@@ -26,7 +26,7 @@ public class BestiaryScript : MonoBehaviour
 
             // Cap beastiary bonus at 10% so it won't go crazy at high levels. Diamonds are more than enough.
             // Calc is both here and in BeastiaryBeastScript
-            incomeBonus += Mathf.Min(10, isUnlocked ? (idx / 2) + 1 : 0);
+            incomeBonus += isUnlocked ? (idx / 2) + 1 : 0;
             idx++;
         }
 

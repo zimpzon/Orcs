@@ -105,7 +105,8 @@ public class GameManager : MonoBehaviour
     // 86: Fixed away time resetting Arena
     // 87: Added new tier
     // 88: Added expand/collapse button
-    public const int MinorVersion = 88;
+    // 89: Unnerfed Bestiary XP
+    public const int MinorVersion = 89;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour
     const int SendStatsInterval = 60 * 10;
     const float MoneyUpdateDelay = 0.02f;
     // Allow brief frame hitches without treating them as being away.
-    const int AwayRestartThresholdSeconds = 3;
+    const int AwayRestartThresholdSeconds = 5;
 
     public string GameVersion;
     public static GameManager Instance;
