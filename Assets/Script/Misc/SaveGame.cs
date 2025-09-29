@@ -66,6 +66,7 @@ public class SaveGameMembers
     public bool ShowFloatingDamageNumbers = true;
     public bool ShowFloatingGoldNumbers = true;
     public bool UseScientificNotation = false;
+    public bool ShowDetailsOnHover = true;
 
     // Progress
     public List<ActorTypeEnum> BeastsSeen = new List<ActorTypeEnum>();

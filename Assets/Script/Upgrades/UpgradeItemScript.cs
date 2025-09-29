@@ -76,6 +76,10 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         _isHovering = true;
         UpdateTargetColor();
+
+        if (!SaveGame.Members.ShowDetailsOnHover)
+            return;
+
         SetPopupText();
         PopupManagerScript.Instance.PlaceNextToTarget(GetComponent<RectTransform>());
     }
@@ -84,6 +88,10 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         _isHovering = false;
         UpdateTargetColor();
+
+        if (!SaveGame.Members.ShowDetailsOnHover)
+            return;
+
         PopupManagerScript.Instance.Hide();
     }
 

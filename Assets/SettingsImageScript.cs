@@ -13,6 +13,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle ShowFloatingDamageToggle;
     public Toggle ShowFloatingGoldToggle;
     public Toggle UseScientificNotationToggle;
+    public Toggle ShowDetailsOnHoverToggle;
 
     private int _clickCount;
 
@@ -37,6 +38,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         ShowFloatingDamageToggle.isOn = SaveGame.Members.ShowFloatingDamageNumbers;
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
         UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
+        ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
     }
 
     //public void OnExportSaveClick()
@@ -71,6 +73,12 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public void UseScientificNotation(bool show)
     {
         SaveGame.Members.UseScientificNotation = UseScientificNotationToggle.isOn;
+        SaveGame.Save();
+    }
+
+    public void ShowDetailsOnHover(bool show)
+    {
+        SaveGame.Members.ShowDetailsOnHover = ShowDetailsOnHoverToggle.isOn;
         SaveGame.Save();
     }
 

@@ -44,6 +44,7 @@ static class SaveGameAscend
         newSave.ShowFloatingDamageNumbers = oldSave.ShowFloatingDamageNumbers;
         newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
         newSave.UseScientificNotation = oldSave.UseScientificNotation;
+        newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;

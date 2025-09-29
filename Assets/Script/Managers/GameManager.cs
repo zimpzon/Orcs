@@ -107,7 +107,8 @@ public class GameManager : MonoBehaviour
     // 88: Added expand/collapse button
     // 89: Unnerfed Bestiary XP
     // 90: New upgrade tier, increased highlevel income
-    public const int MinorVersion = 90;
+    // 91: Setting for removing details on hover
+    public const int MinorVersion = 91;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
