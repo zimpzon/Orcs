@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
     // 90: New upgrade tier, increased highlevel income
     // 91: Setting for removing details on hover
     // 92: Sped up the beginning a bit
+    // 93: Added buy10 for percent bonuses
     public const int MinorVersion = 92;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
@@ -420,9 +421,9 @@ public class GameManager : MonoBehaviour
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl Earl'y Access</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
             "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
+            " - added buy 10 for percentage bonuses\n" +
             " - made the beginning a bit faster\n" +
-            " - Significantly increased high level income\n" +
-            " - added new upgrade tier");
+            " - Significantly increased high level income");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
