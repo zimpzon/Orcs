@@ -61,14 +61,14 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 BaseIncome_Clickdamage = 0.2;
         public static Decimal512 BaseIncome_DaggerDamage = 2;
-        public static Decimal512 BaseIncome_GoldValue = 8;
-        public static Decimal512 BaseIncome_DaggerCd = 47;
-        public static Decimal512 BaseIncome_WitchDoctor = 260;
+        public static Decimal512 BaseIncome_GoldValue = 10;
+        public static Decimal512 BaseIncome_DaggerCd = 50;
+        public static Decimal512 BaseIncome_WitchDoctor = 275;
         public static Decimal512 BaseIncome_GoldPerKnifeThrown = 1_400;
-        public static Decimal512 BaseIncome_Wizard = 7_800;
-        public static Decimal512 BaseIncome_Hoarder = 44_000;
-        public static Decimal512 BaseIncome_ZapDamage = 255_000;
-        public static Decimal512 BaseIncome_MoneyMaker =            1_500_000;
+        public static Decimal512 BaseIncome_Wizard = 10_000;
+        public static Decimal512 BaseIncome_Hoarder = 50_000;
+        public static Decimal512 BaseIncome_ZapDamage = 275_000;
+        public static Decimal512 BaseIncome_MoneyMaker =            1_750_000;
         public static Decimal512 BaseIncome_DaggerMaster =         10_000_000;
         public static Decimal512 BaseIncome_NecroNinja =           62_000_000;
         public static Decimal512 BaseIncome_SkullCrusher =        300_000_000;
