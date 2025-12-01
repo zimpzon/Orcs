@@ -37,7 +37,7 @@ public class OrcController : MonoBehaviour
     void Awake()
     {
         trans_ = transform;
-        renderer_ = GetComponent<SpriteRenderer>();
+        renderer_ = trans_.Find("Sprite").GetComponent<SpriteRenderer>();
         hearts_ = trans_.Find("Hearts").GetComponent<ParticleSystem>();
         arrow_ = trans_.Find("Arrow").GetComponent<Transform>();
         baseColor_ = renderer_.color;
@@ -114,7 +114,7 @@ public class OrcController : MonoBehaviour
     void MakeGhost(bool isGhost)
     {
         arrow_.gameObject.SetActive(!isGhost);
-        GetComponent<SpriteRenderer>().color = isGhost ? GhostColor : baseColor_;
+        renderer_.color = isGhost ? GhostColor : baseColor_;
         GetComponent<Collider2D>().enabled = !isGhost;
         reviveTime_ = G.D.GameTime + PlayerUpgrades.Data.OrcReviveTime * PlayerUpgrades.Data.OrcReviveTimeMul;
     }

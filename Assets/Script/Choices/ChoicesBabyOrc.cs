@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public static class ChoicesBabyOrc
 {
-    public const string Name = "StarDucks";
+    public const string Name = "Hearts";
 
     public static List<Choice> GetBabyOrcChoices()
     {
@@ -11,7 +11,7 @@ public static class ChoicesBabyOrc
             new Choice
             {
                 Title = $"{Name}, first aid (1)",
-                Description = $"<color=#00ff00>+10</color> more life when rescuing a duck",
+                Description = $"<color=#00ff00>+10</color> more life when collecting heart",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.RescueDuckHp += 10;
@@ -19,7 +19,7 @@ public static class ChoicesBabyOrc
                 NextLevel = new Choice
                 {
                     Title = $"{Name}, first aid (2)",
-                    Description = $"<color=#00ff00>+10</color> more life when rescuing a duck",
+                    Description = $"<color=#00ff00>+10</color> more life when collecting heart",
                     Apply = () =>
                     {
                         PlayerUpgrades.Data.RescueDuckHp += 10;
@@ -30,7 +30,7 @@ public static class ChoicesBabyOrc
             new Choice
             {
                 Title = $"{Name}, Knightsaber (1)",
-                Description = "Pushes enemies near the duck",
+                Description = "Pushes enemies near the heart",
                 Apply = () =>
                 {
                     PlayerUpgrades.Data.OrcJedisEnabled = true;

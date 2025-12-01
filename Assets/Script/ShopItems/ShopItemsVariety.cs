@@ -10,7 +10,7 @@ public static class ShopItemsVariety
             new ShopItem
             {
                 ItemType = ShopItemType.SpawnChest,
-                Title = "Duck's Treasure",
+                Title = "Treasure",
                 Description = $"A large or a small treasure chest will show up at {G.ColorTimePositive(new TimeSpan(0, 15 - 5, 0))}",
                 BasePrice = 100,
                 MaxLevel = 1,
@@ -179,7 +179,7 @@ public static class ShopItemsVariety
 
                     if (shopItem.IsLocked)
                     {
-                        return $"Save a total of {G.D.UpgradeNeutralColorHex}{G.D.CosmeticHeartsSaves}</color> ducks\n\nCurrent: {G.D.UpgradeNeutralColorHex}{SaveGame.Members.OrcsSaved}</color>";
+                        return $"Collect a total of {G.D.UpgradeNeutralColorHex}{G.D.CosmeticHeartsSaves}</color> hearts\n\nCurrent: {G.D.UpgradeNeutralColorHex}{SaveGame.Members.OrcsSaved}</color>";
                     }
                     else
                     {

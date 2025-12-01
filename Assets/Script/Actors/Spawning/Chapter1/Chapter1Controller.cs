@@ -120,7 +120,7 @@ public class Chapter1Controller : MonoBehaviour, IKillableObject
 
         var info = new GameInfo
         {
-            Text = "Victory!\n\n\nBrave knight, the ducks are saved and the kingdom rejoices!\n\n\nUse the menu to return to title screen",
+            Text = "Victory!\n\n\nBrave knight, the kingdom is saved from the hordes!\n\n\nUse the menu to return to title screen",
             Color = Color.green,
             Duration = 60.0f,
             FadeInDuration = 0.5f,

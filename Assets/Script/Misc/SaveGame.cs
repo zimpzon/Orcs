@@ -156,7 +156,7 @@ public static class SaveGame
         }
     }
 
-    const string SaveGameKey = "save.json";
+    const string SaveGameKey = "super-knight-v2.json";
 
     static string GetPath()
     {

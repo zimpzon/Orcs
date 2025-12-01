@@ -1,11 +1,11 @@
 mergeInto(LibraryManager.library, {
 
   Save: function (json) {
-    window.localStorage.setItem("super-knight-v1-savegame", UTF8ToString(json));
+    window.localStorage.setItem("super-knight-v2-savegame", UTF8ToString(json));
   },
 
   Load: function () {
-    var json = window.localStorage.getItem("super-knight-v1-savegame");
+    var json = window.localStorage.getItem("super-knight-v2-savegame");
     if (json === null)
         json = ''
 

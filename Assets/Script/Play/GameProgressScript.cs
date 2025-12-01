@@ -29,7 +29,7 @@ public class GameProgressScript : MonoBehaviour
     {
         TextScore.enabled = true;
 
-        TextHowTo.text = "Save The Pirate Ducks";
+        TextHowTo.text = "Collect hearts for health and gold";
 
         TextControls.enabled = true;
         TextHowTo.enabled = true;
