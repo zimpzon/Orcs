@@ -44,9 +44,7 @@ public class SkellieCharger : ActorBase
             {
                 target_ = GameManager.Instance.PlayerTrans.position + (Vector3)(RndUtil.RandomInsideUnitCircle() * 2);
                 target_ = GameManager.Instance.ClampToBounds(target_, renderer_.sprite);
-                chargeSpeed_ = Speed * 5;
-                if (chargeSpeed_ > 8.0f)
-                    chargeSpeed_ = 8.0f;
+                chargeSpeed_ = Speed;
 
                 material_.color = ChargeColor;
 
