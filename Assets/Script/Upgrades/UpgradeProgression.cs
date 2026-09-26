@@ -33,7 +33,9 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
         public static Decimal512 InitialPrice_CryptMaster = InitialPrice_FastFeet * 100;
         public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 80;
-        public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 80;
+        // Trimmed from *80 to *60 to make room for CriticalStrike, which now slots in at BeefyEarl's old price.
+        public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 60;
+        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_SmartFireballs * 80;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -58,6 +60,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_CryptMaster_X2 = InitialPrice_CryptMaster * 10;
         public static Decimal512 InitialPrice_SmartFireballs_X2 = InitialPrice_SmartFireballs * 10;
         public static Decimal512 InitialPrice_BeefyEarl_X2 = InitialPrice_BeefyEarl * 10;
+        public static Decimal512 InitialPrice_CriticalStrike_X2 = InitialPrice_CriticalStrike * 10;
 
         public static Decimal512 BaseIncome_Clickdamage = 0.2;
         public static Decimal512 BaseIncome_DaggerDamage = 2;
@@ -79,6 +82,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_CryptMaster =     500_250_000_000;
         public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000;
         public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000;
+        public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {

@@ -1053,6 +1053,13 @@ public class GameManager : MonoBehaviour
         direction = direction.normalized;
 
         amount *= PlayerUpgrades.Data.DamageMul;
+
+        // Critical Strike upgrade: BaseCritChance/CritChanceMul/CritValueMul already existed as
+        // unused hooks in PlayerUpgrades - this is the first thing to actually read them.
+        bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;
+        if (isCrit)
+            amount *= PlayerUpgrades.Data.CritValueMul;
+
         if (amount < 1)
             amount = 1;
 
@@ -1063,9 +1070,13 @@ public class GameManager : MonoBehaviour
         if (SaveGame.Members.ShowFloatingDamageNumbers)
         {
             Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
+            string damageText = isCrit
+                ? $"<size=+2>-{Format64.Format(intAmount)} CRIT!</size>"
+                : $"-{Format64.Format(intAmount)}";
+
             FloatingTextSpawner.Instance.Spawn(
                 (Vector2)enemy.transform.position + Vector2.up * 1.0f + randomTextOffset,
-                $"-{Format64.Format(intAmount)}",
+                damageText,
                 GetDamageColorFromSource(damageSource),
                 speed: 0.75f,
                 timeToLive: 1.0f,

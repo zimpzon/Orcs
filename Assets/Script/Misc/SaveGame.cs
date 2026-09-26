@@ -123,6 +123,7 @@ public class SaveGameMembers
     public Decimal512 TotalIncomeCryptMaster;
     public Decimal512 TotalIncomeSmartFireballs;
     public Decimal512 TotalIncomeBeefyEarl;
+    public Decimal512 TotalIncomeCriticalStrike;
 
     public Decimal512 TotalIncomeArena;
     public Decimal512 TotalIncomePassive;
@@ -153,6 +154,7 @@ public class SaveGameMembers
     public long LevelCryptMaster = 0;
     public long LevelSmartFireballs = 0;
     public long LevelBeefyEarl = 0;
+    public long LevelCriticalStrike = 0;
 
     // X2
     public long LevelClickDamageX2 = 0;
@@ -175,6 +177,7 @@ public class SaveGameMembers
     public long LevelCryptMasterX2 = 0;
     public long LevelSmartFireballsX2 = 0;
     public long LevelBeefyEarlX2 = 0;
+    public long LevelCriticalStrikeX2 = 0;
 
     // Pct
     public long LevelPctBought = 0;

@@ -39,6 +39,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript CryptMaster;
     public UpgradeItemScript SmartFireballs;
     public UpgradeItemScript BeefyEarl;
+    public UpgradeItemScript CriticalStrike;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -74,6 +75,7 @@ public class UpgradeManager : MonoBehaviour
         CryptMasterManager.UpdateAll();
         SmartFireballsManager.UpdateAll();
         BeefyEarlManager.UpdateAll();
+        CriticalStrikeManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -122,6 +124,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelCryptMaster, SaveGame.Members.LevelSmartFireballs);
         else if (upgradeUiScript == BeefyEarl)
             return GetDisplayStatus(SaveGame.Members.LevelSmartFireballs, SaveGame.Members.LevelBeefyEarl);
+        else if (upgradeUiScript == CriticalStrike)
+            return GetDisplayStatus(SaveGame.Members.LevelBeefyEarl, SaveGame.Members.LevelCriticalStrike);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -168,6 +172,8 @@ public class UpgradeManager : MonoBehaviour
             return SmartFireballsManager.PriceForNext();
         else if (upgradeUiScript == BeefyEarl)
             return BeefyEarlManager.PriceForNext();
+        else if (upgradeUiScript == CriticalStrike)
+            return CriticalStrikeManager.PriceForNext();
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -226,6 +232,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(SmartFireballs) == UpgradeDisplayStatus.FullyShown ? SmartFireballsManager.GetText() : GetLockedText(SmartFireballs);
         else if (upgradeUiScript == BeefyEarl)
             text = GetUpgradeDisplayStatus(BeefyEarl) == UpgradeDisplayStatus.FullyShown ? BeefyEarlManager.GetText() : GetLockedText(BeefyEarl);
+        else if (upgradeUiScript == CriticalStrike)
+            text = GetUpgradeDisplayStatus(CriticalStrike) == UpgradeDisplayStatus.FullyShown ? CriticalStrikeManager.GetText() : GetLockedText(CriticalStrike);
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -269,6 +277,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeCryptMaster += CryptMasterManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeSmartFireballs += SmartFireballsManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeBeefyEarl += BeefyEarlManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeCriticalStrike += CriticalStrikeManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -291,6 +300,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += CryptMasterManager.PassiveIncome();
         fullSum += SmartFireballsManager.PassiveIncome();
         fullSum += BeefyEarlManager.PassiveIncome();
+        fullSum += CriticalStrikeManager.PassiveIncome();
         return fullSum;
     }
 
@@ -332,6 +342,7 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(CryptMaster);
         SetIsVisble(SmartFireballs);
         SetIsVisble(BeefyEarl);
+        SetIsVisble(CriticalStrike);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -353,6 +364,7 @@ public class UpgradeManager : MonoBehaviour
         CryptMasterManager.UpdateUi();
         SmartFireballsManager.UpdateUi();
         BeefyEarlManager.UpdateUi();
+        CriticalStrikeManager.UpdateUi();
     }
 
     void OnItemBought(long actualBuyAmount)
@@ -669,6 +681,21 @@ public class UpgradeManager : MonoBehaviour
         OnX2ItemBought();
     }
 
+    public void OnBuyCriticalStrike()
+    {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelCriticalStrike, SaveGame.Members.LevelCriticalStrikeX2);
+        CriticalStrikeManager.OnBuy();
+        CriticalStrike.SetPopupText();
+        OnItemBought(buyAmount);
+    }
+
+    public void OnBuyCriticalStrikeX2()
+    {
+        CriticalStrikeManager.OnBuyX2();
+        CriticalStrike.SetPopupText();
+        OnX2ItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -691,6 +718,7 @@ public class UpgradeManager : MonoBehaviour
         CryptMasterManager.UpdatePlayerUpgrades();
         SmartFireballsManager.UpdatePlayerUpgrades();
         BeefyEarlManager.UpdatePlayerUpgrades();
+        CriticalStrikeManager.UpdatePlayerUpgrades();
     }
 
     void UpdateNumberOfX2Bought()
@@ -716,6 +744,7 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelCryptMasterX2;
         total += SaveGame.Members.LevelSmartFireballsX2;
         total += SaveGame.Members.LevelBeefyEarlX2;
+        total += SaveGame.Members.LevelCriticalStrikeX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
         const float BonusPerRank = 0.1f;
