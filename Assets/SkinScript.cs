@@ -40,7 +40,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         TitleTextScript.Instance.SetName(beastDescription.Substring(0, beastDescription.IndexOf(':')));
     }
 
-    private (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)
+    public static (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)
     {
         var list = SaveGame.Members.Achieved;
 
@@ -186,6 +186,17 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
+    }
+
+    // How many skins have been unlocked, out of every skin actually present in the game - used for
+    // the game progress popup. Reads the live SkinScript instances (Skins popup, may be inactive)
+    // rather than the SkinAnimation enum directly, since the enum has an unused GhostEarl entry
+    // with no unlock rule and no in-game representation.
+    public static (int unlocked, int total) GetUnlockProgress()
+    {
+        var allSkins = FindObjectsOfType<SkinScript>(true);
+        int unlocked = allSkins.Count(s => GetUnlockStatus(s.AnimationName).isUnlocked);
+        return (unlocked, allSkins.Length);
     }
 
     private void Update()

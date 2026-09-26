@@ -1,3 +1,4 @@
+using Assets.Script;
 using Assets.Script.Actors.Spawning;
 using System;
 using System.Collections.Generic;
@@ -9,49 +10,66 @@ public static class EnemySpawner
     public const long HpScale = 5;
     public const long MaxEnemies = 50;
 
-    // Enemy type definitions with base HP (before HpScale)
+    // Enemy type definitions with base HP (before HpScale) and the arena level at which the type
+    // becomes eligible to spawn at all (independent of HP-budget affordability). MinLevel gaps
+    // keep accelerating from Karateeth (4200) up to TheDarkness (~25,000) - deliberately NOT
+    // linear, since arenas clear much faster at high levels so a fixed level-gap would feel
+    // front-loaded in real play time even though it looks even on paper.
+    // A handful of BaseHp values below (Helmet through Karateeth, and PigFromSpace) were also
+    // lowered so HP-budget affordability doesn't become the binding gate and silently override
+    // MinLevel further out than intended (as happened with TheDarkness at its original 100B HP,
+    // which wasn't naturally affordable until ~arena 40,800 regardless of any MinLevel gate).
+    // Conversely, BatWhite through Green had BaseHp raised: with MinLevel now gating the roster
+    // to just 1-2 available types for long early stretches, their old (much smaller) BaseHp meant
+    // the HP budget at their own gate level needed 40-120+ of them to fill a round, blowing past
+    // MaxEnemies and forcing the hpMultiplier retry into oddly tanky reskins of weak mobs. Raised
+    // BaseHp keeps budget/effectiveHp in the same ~10-17x range every other tier already sits in.
     private static readonly EnemyType[] EnemyTypes = new[]
     {
-        new EnemyType(ActorTypeEnum.TheDarkness,100_000_000_000),
-        new EnemyType(ActorTypeEnum.PigFromSpace,32_000_000_000),
-        new EnemyType(ActorTypeEnum.FromTheDeep, 10_000_000_000),
-        new EnemyType(ActorTypeEnum.Faceless,     4_400_000_000),
-        new EnemyType(ActorTypeEnum.AfroOrc,      2_600_000_000),
-        new EnemyType(ActorTypeEnum.BrainZombie,  1_500_000_000),
-        new EnemyType(ActorTypeEnum.IronMask,       900_000_000),
-        new EnemyType(ActorTypeEnum.Snout,          600_000_000),
-        new EnemyType(ActorTypeEnum.Karateeth,      400_000_000),
-        new EnemyType(ActorTypeEnum.WannabeNecro,   200_000_000),
-        new EnemyType(ActorTypeEnum.UndeadPirate,   120_000_000),
-        new EnemyType(ActorTypeEnum.FreakyWiz,       80_000_000),
-        new EnemyType(ActorTypeEnum.PigHat,          40_000_000),
-        new EnemyType(ActorTypeEnum.Swede,           20_000_000),
-        new EnemyType(ActorTypeEnum.Helmet,          10_000_000),
-        new EnemyType(ActorTypeEnum.Fez,              4_000_000),
-        new EnemyType(ActorTypeEnum.White,            2_000_000),
-        new EnemyType(ActorTypeEnum.Pigtail,          1_000_000),
-        new EnemyType(ActorTypeEnum.Pig,                500_000),
-        new EnemyType(ActorTypeEnum.Red,                200_000),
-        new EnemyType(ActorTypeEnum.Raven,               50_000),
-        new EnemyType(ActorTypeEnum.Green,               10_000),
-        new EnemyType(ActorTypeEnum.HeroChaser,           2_000),
-        new EnemyType(ActorTypeEnum.OgreLarge,              200),
-        new EnemyType(ActorTypeEnum.OgreSmall,               10),
-        new EnemyType(ActorTypeEnum.BatWhite,                 4),
+        new EnemyType(ActorTypeEnum.TheDarkness, 35_000_000_000, 25_000),
+        new EnemyType(ActorTypeEnum.PigFromSpace,21_000_000_000, 20_500),
+        new EnemyType(ActorTypeEnum.FromTheDeep, 10_000_000_000, 16_500),
+        new EnemyType(ActorTypeEnum.Faceless,     4_400_000_000, 13_000),
+        new EnemyType(ActorTypeEnum.AfroOrc,      2_600_000_000, 10_300),
+        new EnemyType(ActorTypeEnum.BrainZombie,  1_500_000_000,  8_200),
+        new EnemyType(ActorTypeEnum.IronMask,       900_000_000,  6_500),
+        new EnemyType(ActorTypeEnum.Snout,          600_000_000,  5_000),
+        new EnemyType(ActorTypeEnum.Karateeth,      320_000_000,  4_200),
+        new EnemyType(ActorTypeEnum.WannabeNecro,   175_000_000,  3_500),
+        new EnemyType(ActorTypeEnum.UndeadPirate,    95_000_000,  3_000),
+        new EnemyType(ActorTypeEnum.FreakyWiz,       52_000_000,  2_500),
+        new EnemyType(ActorTypeEnum.PigHat,          28_000_000,  2_000),
+        new EnemyType(ActorTypeEnum.Swede,           15_000_000,  1_500),
+        new EnemyType(ActorTypeEnum.Helmet,           8_000_000,  1_200),
+        new EnemyType(ActorTypeEnum.Fez,              4_000_000,    900),
+        new EnemyType(ActorTypeEnum.White,            2_000_000,    600),
+        new EnemyType(ActorTypeEnum.Pigtail,          1_000_000,    400),
+        new EnemyType(ActorTypeEnum.Pig,                500_000,    250),
+        new EnemyType(ActorTypeEnum.Red,                200_000,    160),
+        new EnemyType(ActorTypeEnum.Raven,               50_000,    120),
+        new EnemyType(ActorTypeEnum.Green,               35_000,     80),
+        new EnemyType(ActorTypeEnum.HeroChaser,          14_000,     50),
+        new EnemyType(ActorTypeEnum.OgreLarge,            2_000,     20),
+        new EnemyType(ActorTypeEnum.OgreSmall,              100,      5),
+        new EnemyType(ActorTypeEnum.BatWhite,                 4,      1),
     };
 
     private struct EnemyType
     {
         public ActorTypeEnum Type { get; }
         public long BaseHp { get; }
+        public long MinLevel { get; }
         public long ScaledHp => BaseHp * HpScale;
 
-        public EnemyType(ActorTypeEnum type, long baseHp)
+        public EnemyType(ActorTypeEnum type, long baseHp, long minLevel)
         {
             Type = type;
             BaseHp = baseHp;
+            MinLevel = minLevel;
         }
     }
+
+    private enum SpawnPattern { None, Circle, FilledCircle, Square, Line, Triangle }
 
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
@@ -74,16 +92,20 @@ public static class EnemySpawner
 
             long remainingHp = hpTarget;
             long totalEnemies = 0;
-            ActorTypeEnum? circleType = null;
+            ActorTypeEnum? patternType = null;
+            SpawnPattern chosenPattern = SpawnPattern.None;
 
-            // Determine which type (if any) will spawn in a circle this round
-            if (UnityEngine.Random.value < 0.25f)
+            // Pick an interesting formation for one enemy type roughly every 5 arena levels rather
+            // than every round - keeps it a treat instead of noise.
+            if (level % 5 == 0)
             {
                 var eligibleTypes = new List<ActorTypeEnum>();
 
                 // First pass: find types that will have 5+ enemies
                 foreach (var enemyType in EnemyTypes)
                 {
+                    if (level < enemyType.MinLevel) continue;
+
                     long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                     if (remainingHp < effectiveHp) continue;
 
@@ -95,7 +117,12 @@ public static class EnemySpawner
                 }
 
                 if (eligibleTypes.Count > 0)
-                    circleType = eligibleTypes[UnityEngine.Random.Range(0, eligibleTypes.Count)];
+                {
+                    patternType = eligibleTypes[UnityEngine.Random.Range(0, eligibleTypes.Count)];
+
+                    var patterns = (SpawnPattern[])Enum.GetValues(typeof(SpawnPattern));
+                    chosenPattern = patterns[UnityEngine.Random.Range(1, patterns.Length)]; // skip None
+                }
             }
 
             // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (85% chance - increased from 60%)
@@ -106,6 +133,8 @@ public static class EnemySpawner
                 EnemyType? strongestAffordable = null;
                 foreach (var enemyType in EnemyTypes)
                 {
+                    if (level < enemyType.MinLevel) continue;
+
                     long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                     if (remainingHp >= effectiveHp)
                     {
@@ -124,8 +153,8 @@ public static class EnemySpawner
 
                     if (count > 0)
                     {
-                        bool useCircle = circleType == enemyType.Type && count > 5;
-                        SpawnEnemies(enemies, enemyType.Type, (int)count, effectiveHp, useCircle);
+                        SpawnPattern pattern = patternType == enemyType.Type && count > 5 ? chosenPattern : SpawnPattern.None;
+                        SpawnEnemies(enemies, enemyType.Type, (int)count, effectiveHp, pattern);
                         remainingHp -= count * effectiveHp;
                         totalEnemies += count;
                     }
@@ -135,7 +164,7 @@ public static class EnemySpawner
             // PHASE 2: Fill remaining budget with heavily weighted selection toward strong enemies
             while (remainingHp > 0 && totalEnemies < MaxEnemies)
             {
-                var availableTypes = EnemyTypes.Where(e => e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
+                var availableTypes = EnemyTypes.Where(e => level >= e.MinLevel && e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
                 if (availableTypes.Length == 0) break;
 
                 // Create weights that extremely favor stronger enemies (much higher exponential bias)
@@ -168,18 +197,25 @@ public static class EnemySpawner
 
                 if (count > 0)
                 {
-                    bool useCircle = circleType == selectedType.Type && count > 5;
-                    SpawnEnemies(enemies, selectedType.Type, (int)count, effectiveHp, useCircle);
+                    SpawnPattern pattern = patternType == selectedType.Type && count > 5 ? chosenPattern : SpawnPattern.None;
+                    SpawnEnemies(enemies, selectedType.Type, (int)count, effectiveHp, pattern);
                     remainingHp -= count * effectiveHp;
                     totalEnemies += count;
                 }
             }
 
-            // Ensure at least one enemy spawns
-            if (totalEnemies == 0)
+            // Ensure a minimum number of enemies spawn even for high-tier "boss" rounds where a
+            // single enemy eats almost the entire HP budget (see the MinLevel comment above -
+            // FromTheDeep/PigFromSpace/TheDarkness are tuned close to their affordability
+            // threshold on purpose). Padding with cheap BatWhite filler adds only negligible extra
+            // HP on top of the round's target budget.
+            const int MinEnemiesPerRound = 5;
+            if (totalEnemies < MinEnemiesPerRound)
             {
                 var batType = EnemyTypes.Last(); // BatWhite
-                SpawnEnemies(enemies, batType.Type, 1, batType.ScaledHp * hpMultiplier, false);
+                int padCount = (int)(MinEnemiesPerRound - totalEnemies);
+                SpawnEnemies(enemies, batType.Type, padCount, batType.ScaledHp * hpMultiplier);
+                totalEnemies += padCount;
             }
 
             // If we spawned fewer than max enemies, we're done
@@ -191,6 +227,51 @@ public static class EnemySpawner
         }
 
         return enemies;
+    }
+
+    // Index into EnemyTypes (0 = strongest/TheDarkness, higher = weaker); -1 for non-tiered types.
+    public static int GetTierRank(ActorTypeEnum type)
+        => Array.FindIndex(EnemyTypes, e => e.Type == type);
+
+    // Scales Witch Doctor zap damage down for weaker enemies relative to whichever tier is
+    // currently the toughest ALIVE enemy in the arena: full damage against that enemy, decaying
+    // exponentially per tier below it so 5 tiers down lands at ~20%, with a 10% hard floor so
+    // trash mobs are never fully immune to the zap.
+    public static double GetWitchDoctorTierMultiplier(ActorTypeEnum targetType)
+    {
+        int targetRank = GetTierRank(targetType);
+        if (targetRank < 0)
+            return 1.0;
+
+        int strongestAliveRank = int.MaxValue;
+        foreach (var enemy in BlackboardScript.GetAllEnemies())
+        {
+            if (enemy.Hp <= 0) continue;
+
+            int rank = GetTierRank(enemy.ActorType);
+            if (rank >= 0 && rank < strongestAliveRank)
+                strongestAliveRank = rank;
+        }
+
+        if (strongestAliveRank == int.MaxValue)
+            return 1.0;
+
+        int tiersBelow = targetRank - strongestAliveRank;
+        if (tiersBelow <= 0)
+            return 1.0;
+
+        const double DecayPerTier = 0.72478; // 0.72478^5 ~= 0.20
+        const double MinMultiplier = 0.10;
+        return Math.Max(MinMultiplier, Math.Pow(DecayPerTier, tiersBelow));
+    }
+
+    // How many enemy tiers have ever been reached, out of the full roster - used for the game
+    // progress popup. Based on MaxArena (lifetime best) rather than the current ArenaLevel, so it
+    // doesn't regress after ascending back down to arena 1.
+    public static (int unlocked, int total) GetTierUnlockProgress()
+    {
+        int unlocked = EnemyTypes.Count(e => e.MinLevel <= SaveGame.Members.MaxArena);
+        return (unlocked, EnemyTypes.Length);
     }
 
     private static EnemyType WeightedRandomSelect(EnemyType[] types, float[] weights)
@@ -241,19 +322,40 @@ public static class EnemySpawner
             + ((level - 1L) * (level - 1L) * quadCoeff)) * HpScale);
     }
 
-    private static void SpawnEnemies(List<ActorBase> enemies, ActorTypeEnum type, int count, long hp, bool useCircle = false)
+    private static void SpawnEnemies(List<ActorBase> enemies, ActorTypeEnum type, int count, long hp, SpawnPattern pattern = SpawnPattern.None)
     {
-        IEnumerable<ActorBase> spawned;
+        float halfSize = (GameManager.ArenaBounds.height - 2) / 2;
+        Vector2 center = GameManager.ArenaBounds.center + Vector2.right * 3;
 
-        if (useCircle)
+        IEnumerable<ActorBase> spawned;
+        switch (pattern)
         {
-            float circleHeight = (GameManager.ArenaBounds.height - 2) / 2;
-            Vector2 center = GameManager.ArenaBounds.center + Vector2.right * 3;
-            spawned = SpawnUtil.Circle(type, center, circleHeight, count);
-        }
-        else
-        {
-            spawned = SpawnUtil.Random(type, count);
+            case SpawnPattern.Circle:
+                spawned = SpawnUtil.Circle(type, center, halfSize, count);
+                break;
+
+            case SpawnPattern.FilledCircle:
+                spawned = SpawnUtil.FilledCircle(type, center, halfSize, count);
+                break;
+
+            case SpawnPattern.Square:
+                int gridSize = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(count)));
+                float gridSpacing = (halfSize * 2) / gridSize;
+                spawned = SpawnUtil.Square(type, center, gridSize, gridSpacing).Take(count);
+                break;
+
+            case SpawnPattern.Line:
+                spawned = SpawnUtil.Line(type, center, halfSize * 2, count, UnityEngine.Random.Range(0f, 180f));
+                break;
+
+            case SpawnPattern.Triangle:
+                float triangleSpacing = (halfSize * 2) / Mathf.Max(1, count);
+                spawned = SpawnUtil.Triangle(type, center, triangleSpacing, count);
+                break;
+
+            default:
+                spawned = SpawnUtil.Random(type, count);
+                break;
         }
 
         foreach (var enemy in spawned)

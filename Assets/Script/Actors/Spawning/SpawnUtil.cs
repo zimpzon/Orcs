@@ -111,6 +111,82 @@ namespace Assets.Script.Actors.Spawning
             }
         }
 
+        public static IEnumerable<ActorBase> FilledCircle(ActorTypeEnum actorType, Vector2 center, float radius, int count)
+        {
+            // Sunflower/phyllotaxis packing: evenly fills the disc instead of just its rim.
+            const float goldenAngle = 137.50776f * Mathf.Deg2Rad;
+            var points = new List<Vector3>();
+
+            for (int i = 0; i < count; i++)
+            {
+                float r = radius * Mathf.Sqrt((i + 0.5f) / count);
+                float angle = i * goldenAngle;
+                points.Add(new Vector3(center.x + r * Mathf.Cos(angle), center.y + r * Mathf.Sin(angle), 0f));
+            }
+
+            points = points.OrderBy(p => p.x).ToList();
+
+            foreach (var point in points)
+            {
+                var spawn = SpawnActor(actorType);
+                spawn.transform.position = point;
+                yield return spawn.GetComponent<ActorBase>();
+            }
+        }
+
+        public static IEnumerable<ActorBase> Line(ActorTypeEnum actorType, Vector2 center, float length, int count, float angleDegrees = 0f)
+        {
+            var points = new List<Vector3>();
+            float angleRad = angleDegrees * Mathf.Deg2Rad;
+            Vector2 dir = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+
+            for (int i = 0; i < count; i++)
+            {
+                float t = count <= 1 ? 0f : (i / (float)(count - 1)) - 0.5f;
+                Vector3 point = new Vector3(center.x + dir.x * t * length, center.y + dir.y * t * length, 0f);
+                points.Add(point);
+            }
+
+            points = points.OrderBy(p => p.x).ToList();
+
+            foreach (var point in points)
+            {
+                var spawn = SpawnActor(actorType);
+                spawn.transform.position = point;
+                yield return spawn.GetComponent<ActorBase>();
+            }
+        }
+
+        public static IEnumerable<ActorBase> Triangle(ActorTypeEnum actorType, Vector2 center, float spacing, int count)
+        {
+            // Pyramid/bowling-pin layout: row 0 has 1 slot, row 1 has 2, row 2 has 3, etc.
+            var slots = new List<(int row, int col)>();
+            for (int row = 0; slots.Count < count; row++)
+            {
+                for (int col = 0; col <= row && slots.Count < count; col++)
+                    slots.Add((row, col));
+            }
+
+            int totalRows = slots[slots.Count - 1].row + 1;
+            var points = new List<Vector3>();
+            foreach (var (row, col) in slots)
+            {
+                float rowWidth = row * spacing;
+                float x = center.x - rowWidth / 2f + col * spacing;
+                float y = center.y + (totalRows - row) * spacing * 0.85f;
+                points.Add(new Vector3(x, y, 0f));
+            }
+
+            points = points.OrderBy(p => p.x).ToList();
+
+            foreach (var point in points)
+            {
+                var spawn = SpawnActor(actorType);
+                spawn.transform.position = point;
+                yield return spawn.GetComponent<ActorBase>();
+            }
+        }
+
         static readonly List<Vector2> posList = new ();
 
         public static IEnumerable<ActorBase> SpawnFormation(

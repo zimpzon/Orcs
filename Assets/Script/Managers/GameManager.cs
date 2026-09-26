@@ -389,7 +389,7 @@ public class GameManager : MonoBehaviour
 
             var nextEnemy = BlackboardScript.GetClosestEnemy(
                 prevEnemy.transform.position,
-                radius: 4.0f,
+                radius: 6.0f, // 4.0 + 50%
                 ZapTargetIgnoreList);
 
             if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy, damageSource))
@@ -857,9 +857,56 @@ public class GameManager : MonoBehaviour
         // time will almost always be used up at higher levels.
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
-        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct);
+
+        // Without this, early arenas hand out gold disproportionate to how cheap early upgrades are,
+        // letting players reach the shop upgrades almost immediately. Ramp gold from a low floor at
+        // arena 1 up to full value by EarlyGameRampLevels. The ramp is linear (unchanged) up through
+        // EarlyGameSlowdownLevel, which comfortably covers the 1st/2nd upgrade - past that point it
+        // eases in more slowly so the 3rd/4th upgrade take a bit longer to reach, while still landing
+        // on exactly the same value at EarlyGameRampLevels, so anything at/after that is unaffected.
+        const double EarlyGameGoldFloor = 0.2;
+        const long EarlyGameRampLevels = 100;
+        const long EarlyGameSlowdownLevel = 10;
+        const double EarlyGameSlowdownPower = 2.0;
+
+        long arenaLevel = SaveGame.Members.ArenaLevel;
+        double earlyGameMul;
+        if (arenaLevel <= EarlyGameSlowdownLevel)
+        {
+            earlyGameMul = EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
+                (arenaLevel - 1) / (double)EarlyGameRampLevels;
+        }
+        else
+        {
+            double valueAtSlowdownLevel = EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
+                (EarlyGameSlowdownLevel - 1) / (double)EarlyGameRampLevels;
+            double progress = Math.Min(1.0,
+                (arenaLevel - EarlyGameSlowdownLevel) / (double)(EarlyGameRampLevels - EarlyGameSlowdownLevel));
+            earlyGameMul = valueAtSlowdownLevel + (1.0 - valueAtSlowdownLevel) * Math.Pow(progress, EarlyGameSlowdownPower);
+        }
+        earlyGameMul = Math.Min(1.0, earlyGameMul);
+
+        // Round HP (and so gold) is quadratic in arena level, but upgrade costs grow exponentially
+        // per upgrade level - the exponential eventually wins, making late arenas feel like they
+        // stop mattering. No change below LateGameBoostLevel; past it, gold effectively grows like
+        // level^2.5 instead of level^2 (an extra sqrt(level/LateGameBoostLevel) factor) to extend
+        // how long arena income keeps up with upgrade costs.
+        const long LateGameBoostLevel = 200;
+        double lateGameMul = SaveGame.Members.ArenaLevel <= LateGameBoostLevel
+            ? 1.0
+            : Math.Sqrt(SaveGame.Members.ArenaLevel / (double)LateGameBoostLevel);
+
+        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct * earlyGameMul * lateGameMul);
         if (goldWon <= 0) goldWon = 1;
-        return (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
+        long result = (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
+
+        // Guarantee arena 1 alone covers the cheapest upgrade, so new (and freshly-ascended) players
+        // aren't left stuck without enough gold to buy anything.
+        long firstUpgradeCost = (long)Assets.Script.Upgrades.UpgradeProgression.InitialPrice_Clickdamage.ToDouble();
+        if (SaveGame.Members.ArenaLevel == 1 && result < firstUpgradeCost)
+            result = firstUpgradeCost;
+
+        return result;
     }
 
     void PresentRoundGold(Vector2 position)
@@ -926,9 +973,6 @@ public class GameManager : MonoBehaviour
 
     public void OnEnemyKill(ActorBase actor)
     {
-        long value = (long)Math.Ceiling(SaveGame.Members.ArenaLevel * PlayerUpgrades.Data.MoneyPerGold);
-        ThrowPickups(AutoPickUpType.Money, actor.transform.position, amount: 1, value, isLargeCoin: false);
-
         if (UnityEngine.Random.value > 0.75)
         {
             float pitch = 1.6f + UnityEngine.Random.value * 0.2f;

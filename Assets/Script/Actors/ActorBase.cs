@@ -680,11 +680,12 @@ public class ActorBase : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.5f);
 
-                const float ZapRange = 3.0f;
+                const float ZapRange = 4.5f; // 3.0 + 50%
                 var closestEnemy = BlackboardScript.GetClosestEnemy(transform.position, radius: ZapRange, this);
                 if (closestEnemy is not null)
                 {
-                    long damage = PlayerUpgrades.Data.WitchDoctorEffectiveDamage;
+                    double tierMultiplier = EnemySpawner.GetWitchDoctorTierMultiplier(closestEnemy.ActorType);
+                    long damage = (long)(PlayerUpgrades.Data.WitchDoctorEffectiveDamage * tierMultiplier);
                     if (Zapper.TryZapEnemy(transform.position, closestEnemy, damage, ActorDamageSource.WitchDoctor))
                     {
                         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.6f, pitch: 1.2f);
