@@ -30700,7 +30700,7 @@ MonoBehaviour:
   SpriteFlashColorParamId: 504
   ButtonBuy1: {fileID: 2094598816}
   ButtonBuy10: {fileID: 648812891}
-  ButtonBuyNextX2: {fileID: 2054648933}
+  ButtonBuy50: {fileID: 2054648933}
   ButtonBuy100: {fileID: 0}
   ZapTargetIgnoreList:
   - {fileID: 0}
@@ -106282,7 +106282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Next X2
+  m_text: Buy 50
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -112308,7 +112308,7 @@ GameObject:
   - component: {fileID: 2054648934}
   - component: {fileID: 2054648933}
   m_Layer: 5
-  m_Name: ButtonBuyNextX2
+  m_Name: ButtonBuy50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

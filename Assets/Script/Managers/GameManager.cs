@@ -216,10 +216,10 @@ public class GameManager : MonoBehaviour
 
     public Button ButtonBuy1;
     public Button ButtonBuy10;
-    public Button ButtonBuyNextX2;
+    public Button ButtonBuy50;
     public Button ButtonBuy100;
 
-    public enum BuyAmountSelection {  Buy1 = 0, Buy10 = 1, Buy100 = 2, BuyNextX2 = 3, }
+    public enum BuyAmountSelection {  Buy1 = 0, Buy10 = 1, Buy100 = 2, Buy50 = 3, }
     [NonSerialized] public BuyAmountSelection SelectedBuyAmount = BuyAmountSelection.Buy1;
 
     [NonSerialized] public float UnlockedPct;
@@ -1438,7 +1438,7 @@ public class GameManager : MonoBehaviour
 
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
-        ButtonBuyNextX2.interactable = true;
+        ButtonBuy50.interactable = true;
 
         if (SelectedBuyAmount == BuyAmountSelection.Buy1)
         {
@@ -1452,9 +1452,9 @@ public class GameManager : MonoBehaviour
         {
             ButtonBuy100.interactable = false;
         }
-        else if (SelectedBuyAmount == BuyAmountSelection.BuyNextX2)
+        else if (SelectedBuyAmount == BuyAmountSelection.Buy50)
         {
-            ButtonBuyNextX2.interactable = false;
+            ButtonBuy50.interactable = false;
         }
         UpgradeManager.Instance.UpdateUpgradeUi();
     }

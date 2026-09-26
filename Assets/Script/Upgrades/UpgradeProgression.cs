@@ -148,20 +148,9 @@ namespace Assets.Script.Upgrades
             {
                 return 100;
             }
-            else if (selection == GameManager.BuyAmountSelection.BuyNextX2)
+            else if (selection == GameManager.BuyAmountSelection.Buy50)
             {
-                // Find the next X2 level that requires more upgrade levels than we currently have
-                long nextX2Level = currentLevelX2 + 1;
-                long requiredLevel = LevelRequirementX2(nextX2Level);
-                
-                // If we already meet the requirement for the next X2, skip to the one after that
-                while (requiredLevel <= currentLevel)
-                {
-                    nextX2Level++;
-                    requiredLevel = LevelRequirementX2(nextX2Level);
-                }
-                
-                return requiredLevel - currentLevel;
+                return 50;
             }
             else
                 throw new NotImplementedException($"{selection}");
