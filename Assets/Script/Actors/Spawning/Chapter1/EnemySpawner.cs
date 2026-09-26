@@ -26,6 +26,23 @@ public static class EnemySpawner
     // BaseHp keeps budget/effectiveHp in the same ~10-17x range every other tier already sits in.
     private static readonly EnemyType[] EnemyTypes = new[]
     {
+        // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
+        // same accelerating MinLevel-gap convention as the stretch above (gaps growing from ~5,000
+        // up to ~18,000) and the same "BaseHp comfortably under natural HP-budget affordability at
+        // its MinLevel" rule so MinLevel stays the binding gate, not the HP curve.
+        new EnemyType(ActorTypeEnum.FromTheVoid, 1_408_000_000_000, 161_500),
+        new EnemyType(ActorTypeEnum.TheGrey,     1_112_000_000_000, 143_500),
+        new EnemyType(ActorTypeEnum.DarkWizard,    871_000_000_000, 127_000),
+        new EnemyType(ActorTypeEnum.TheKaren,      677_000_000_000, 112_000),
+        new EnemyType(ActorTypeEnum.ShirlieShaman, 524_000_000_000,  98_500),
+        new EnemyType(ActorTypeEnum.UndeadPig,     404_000_000_000,  86_500),
+        new EnemyType(ActorTypeEnum.ChillZombie,   308_000_000_000,  75_500),
+        new EnemyType(ActorTypeEnum.InnocentOrc,   232_000_000_000,  65_500),
+        new EnemyType(ActorTypeEnum.AngryDude,     172_000_000_000,  56_500),
+        new EnemyType(ActorTypeEnum.HrDude,        127_000_000_000,  48_500),
+        new EnemyType(ActorTypeEnum.OrangeMan,      93_000_000_000,  41_500),
+        new EnemyType(ActorTypeEnum.BabyOrc,        68_000_000_000,  35_500),
+        new EnemyType(ActorTypeEnum.NakedDude,      48_000_000_000,  30_000),
         new EnemyType(ActorTypeEnum.TheDarkness, 35_000_000_000, 25_000),
         new EnemyType(ActorTypeEnum.PigFromSpace,21_000_000_000, 20_500),
         new EnemyType(ActorTypeEnum.FromTheDeep, 10_000_000_000, 16_500),

@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 979b71fbcdeb90a48ac002283f158dff
+guid: 11a41efe47c248648aa9dc476f99e7e5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2656898192874261783
-    second: chill-zombie_0
+      213: 4488562915832287044
+    second: baby-orc_0
   - first:
-      213: -8492574614619836959
-    second: chill-zombie_1
+      213: 4619427641201908396
+    second: baby-orc_1
   - first:
-      213: 2826038876179799350
-    second: chill-zombie_2
+      213: -4090494892129408532
+    second: baby-orc_2
   - first:
-      213: -7596729549536816438
-    second: chill-zombie_3
+      213: 1556214734784099907
+    second: baby-orc_3
   - first:
-      213: 7718432040038364264
-    second: chill-zombie_4
+      213: 6807409775653756690
+    second: baby-orc_4
   - first:
-      213: 5007134690216977736
-    second: chill-zombie_5
+      213: 5808023340887667499
+    second: baby-orc_5
   - first:
-      213: -4277579661799407480
-    second: chill-zombie_6
+      213: -3451162231176996127
+    second: baby-orc_6
   - first:
-      213: 7908838686448599078
-    second: chill-zombie_7
+      213: 173091873046783621
+    second: baby-orc_7
   - first:
-      213: 4528375932764680759
-    second: chill-zombie_8
+      213: -3197140563358870411
+    second: baby-orc_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,9 +75,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,13 +137,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chill-zombie_0
+      name: baby-orc_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 47
+        y: 48
         width: 16
-        height: 20
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9e23a51ab2dc02bd0800000000000000
-      internalID: -2656898192874261783
+      spriteID: 44fcc26c0349a4e30800000000000000
+      internalID: 4488562915832287044
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_1
+      name: baby-orc_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 23
+        y: 24
         width: 16
-        height: 20
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1eda5133260542a80800000000000000
-      internalID: -8492574614619836959
+      spriteID: caad57307f08b1040800000000000000
+      internalID: 4619427641201908396
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_2
+      name: baby-orc_2
       rect:
         serializedVersion: 2
-        x: 15
-        y: 23
-        width: 17
-        height: 19
+        x: 16
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,20 +196,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 63d1428826b183720800000000000000
-      internalID: 2826038876179799350
+      spriteID: ce9a3176194ab37c0800000000000000
+      internalID: -4090494892129408532
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_3
+      name: baby-orc_3
       rect:
         serializedVersion: 2
-        x: 31
-        y: 23
-        width: 17
-        height: 18
+        x: 32
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,20 +218,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac2152159bef29690800000000000000
-      internalID: -7596729549536816438
+      spriteID: 346f80d5e09c89510800000000000000
+      internalID: 1556214734784099907
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_4
+      name: baby-orc_4
       rect:
         serializedVersion: 2
-        x: 47
-        y: 23
-        width: 17
-        height: 19
+        x: 48
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,20 +240,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 864fa71eb016d1b60800000000000000
-      internalID: 7718432040038364264
+      spriteID: 21f1d5eaf17c87e50800000000000000
+      internalID: 6807409775653756690
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_5
+      name: baby-orc_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
-        height: 20
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -262,42 +262,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8452be8c87aec7540800000000000000
-      internalID: 5007134690216977736
+      spriteID: b2379c0d47e3a9050800000000000000
+      internalID: 5808023340887667499
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_6
+      name: baby-orc_6
       rect:
         serializedVersion: 2
-        x: 15
-        y: 1
-        width: 17
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 880c20016fbf2a4c0800000000000000
-      internalID: -4277579661799407480
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: chill-zombie_7
-      rect:
-        serializedVersion: 2
-        x: 31
+        x: 16
         y: 0
-        width: 17
-        height: 19
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,20 +284,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 620c2abe1e6d1cd60800000000000000
-      internalID: 7908838686448599078
+      spriteID: 1ea537c5c320b10d0800000000000000
+      internalID: -3451162231176996127
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: chill-zombie_8
+      name: baby-orc_7
       rect:
         serializedVersion: 2
-        x: 47
+        x: 32
         y: 0
-        width: 17
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,8 +306,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 732fdd12be508de30800000000000000
-      internalID: 4528375932764680759
+      spriteID: 586e5763422f66200800000000000000
+      internalID: 173091873046783621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baby-orc_8
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5749008c89971a3d0800000000000000
+      internalID: -3197140563358870411
       vertices: []
       indices: 
       edges: []
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5ea19974b87c3a9469517d544166bde0
     internalID: 0
     vertices: []
     indices: 
@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      baby-orc_0: 4488562915832287044
+      baby-orc_1: 4619427641201908396
+      baby-orc_2: -4090494892129408532
+      baby-orc_3: 1556214734784099907
+      baby-orc_4: 6807409775653756690
+      baby-orc_5: 5808023340887667499
+      baby-orc_6: -3451162231176996127
+      baby-orc_7: 173091873046783621
+      baby-orc_8: -3197140563358870411
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

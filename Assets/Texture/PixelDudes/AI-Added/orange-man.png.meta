@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 2205fbce012e7b34281af1d39fe0c0ba
+guid: f541c288a36ffd94dac877102546b372
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -740232548326298204
-    second: from-the-void_0
+      213: -6257909695614656637
+    second: orange-man_0
   - first:
-      213: 8447234963737550216
-    second: from-the-void_1
+      213: -963435054016334538
+    second: orange-man_1
   - first:
-      213: -8874413446486489145
-    second: from-the-void_2
+      213: 2121032389977767444
+    second: orange-man_2
   - first:
-      213: 1311996671428593149
-    second: from-the-void_3
+      213: -2390273236790222891
+    second: orange-man_3
   - first:
-      213: 3617594207649862953
-    second: from-the-void_4
+      213: 1558500136339814132
+    second: orange-man_4
   - first:
-      213: 7323073140719990709
-    second: from-the-void_5
+      213: 6587183996197141843
+    second: orange-man_5
   - first:
-      213: -2932632238152300400
-    second: from-the-void_6
+      213: -1947171343742807504
+    second: orange-man_6
   - first:
-      213: -4649601591874724786
-    second: from-the-void_7
+      213: -3655172041722514725
+    second: orange-man_7
   - first:
-      213: 1170325452305533542
-    second: from-the-void_8
+      213: -860714918571376591
+    second: orange-man_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,9 +75,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,13 +137,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: from-the-void_0
+      name: orange-man_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 47
-        width: 14
-        height: 20
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ad24d15b6a2ab5f0800000000000000
-      internalID: -740232548326298204
+      spriteID: 38f5a64a9407729a0800000000000000
+      internalID: -6257909695614656637
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: from-the-void_1
+      name: orange-man_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 23
-        width: 14
-        height: 20
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,108 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 88d16d3b17b9a3570800000000000000
-      internalID: 8447234963737550216
+      spriteID: 63572314ce031a2f0800000000000000
+      internalID: -963435054016334538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: from-the-void_2
-      rect:
-        serializedVersion: 2
-        x: 17
-        y: 23
-        width: 14
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7c709343dffb7d480800000000000000
-      internalID: -8874413446486489145
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: from-the-void_3
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 23
-        width: 14
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: df50ffa7506253210800000000000000
-      internalID: 1311996671428593149
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: from-the-void_4
-      rect:
-        serializedVersion: 2
-        x: 49
-        y: 23
-        width: 14
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9251b78d3c6443230800000000000000
-      internalID: 3617594207649862953
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: from-the-void_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 14
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5b7b1d0e838c0a560800000000000000
-      internalID: 7323073140719990709
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: from-the-void_6
+      name: orange-man_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
-        width: 15
-        height: 20
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,20 +196,108 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 098c21464823d47d0800000000000000
-      internalID: -2932632238152300400
+      spriteID: 41ef8b198bb6f6d10800000000000000
+      internalID: 2121032389977767444
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: from-the-void_7
+      name: orange-man_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dfdef4c72b04ded0800000000000000
+      internalID: -2390273236790222891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange-man_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f6bee0ed97e0a510800000000000000
+      internalID: 1558500136339814132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange-man_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35df773b1f06a6b50800000000000000
+      internalID: 6587183996197141843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange-man_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 032d36bbaf14af4e0800000000000000
+      internalID: -1947171343742807504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: orange-man_7
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 15
-        height: 19
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,20 +306,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e4c5731acfb497fb0800000000000000
-      internalID: -4649601591874724786
+      spriteID: bd2b03cd468364dc0800000000000000
+      internalID: -3655172041722514725
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: from-the-void_8
+      name: orange-man_8
       rect:
         serializedVersion: 2
-        x: 49
+        x: 48
         y: 0
-        width: 14
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,8 +328,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 66a05485cc4dd3010800000000000000
-      internalID: 1170325452305533542
+      spriteID: 1308ca187502e04f0800000000000000
+      internalID: -860714918571376591
       vertices: []
       indices: 
       edges: []
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f69201054b8cfe44a92e05dbe45de69d
     internalID: 0
     vertices: []
     indices: 
@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      orange-man_0: -6257909695614656637
+      orange-man_1: -963435054016334538
+      orange-man_2: 2121032389977767444
+      orange-man_3: -2390273236790222891
+      orange-man_4: 1558500136339814132
+      orange-man_5: 6587183996197141843
+      orange-man_6: -1947171343742807504
+      orange-man_7: -3655172041722514725
+      orange-man_8: -860714918571376591
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

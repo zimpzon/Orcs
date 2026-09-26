@@ -1,28 +1,34 @@
 fileFormatVersion: 2
-guid: a26eea40a16122943b402ec8dfd2905c
+guid: dcd04e80f97c3a1498bac26dc7c79407
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -896793595508069026
-    second: shirlie-shaman_0
+      213: -6531106351091616628
+    second: undead-pig_0
   - first:
-      213: -1160107994116300838
-    second: shirlie-shaman_1
+      213: -5179839882222598597
+    second: undead-pig_1
   - first:
-      213: 5769708918890131501
-    second: shirlie-shaman_2
+      213: 4105655192723384136
+    second: undead-pig_2
   - first:
-      213: 4476727382225498511
-    second: shirlie-shaman_3
+      213: 525817101212333690
+    second: undead-pig_3
   - first:
-      213: -3750415935685710331
-    second: shirlie-shaman_4
+      213: 7726373548989531246
+    second: undead-pig_4
   - first:
-      213: 1115124427887569219
-    second: shirlie-shaman_5
+      213: 6021402510982760335
+    second: undead-pig_5
   - first:
-      213: 197889945874919160
-    second: shirlie-shaman_6
+      213: -5454133836653266187
+    second: undead-pig_6
+  - first:
+      213: 5934552845671705535
+    second: undead-pig_7
+  - first:
+      213: 8489665617775287732
+    second: undead-pig_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -55,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,9 +75,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -90,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,13 +137,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shirlie-shaman_0
+      name: undead-pig_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 47
-        width: 17
-        height: 20
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5d65eee9f2fd83f0800000000000000
-      internalID: -896793595508069026
+      spriteID: c84f2e08069dc55a0800000000000000
+      internalID: -6531106351091616628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_1
+      name: undead-pig_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 23
-        width: 17
-        height: 20
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: adf5b950de776efe0800000000000000
-      internalID: -1160107994116300838
+      spriteID: b3688b232138d18b0800000000000000
+      internalID: -5179839882222598597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_2
+      name: undead-pig_2
       rect:
         serializedVersion: 2
-        x: 15
-        y: 23
-        width: 18
-        height: 19
+        x: 16
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,20 +196,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d2079d741bf121050800000000000000
-      internalID: 5769708918890131501
+      spriteID: 847e38425a73af830800000000000000
+      internalID: 4105655192723384136
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_3
+      name: undead-pig_3
       rect:
         serializedVersion: 2
-        x: 31
-        y: 23
-        width: 33
-        height: 19
+        x: 32
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -212,20 +218,42 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f81b0ddd5d7802e30800000000000000
-      internalID: 4476727382225498511
+      spriteID: a76369e1ed31c4700800000000000000
+      internalID: 525817101212333690
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_4
+      name: undead-pig_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e64ce758ec7993b60800000000000000
+      internalID: 7726373548989531246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: undead-pig_5
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 33
-        height: 21
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,20 +262,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 50e2d79b398d3fbc0800000000000000
-      internalID: -3750415935685710331
+      spriteID: f87c5c45ea1509350800000000000000
+      internalID: 6021402510982760335
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_5
+      name: undead-pig_6
       rect:
         serializedVersion: 2
-        x: 31
+        x: 16
         y: 0
-        width: 18
-        height: 19
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -256,20 +284,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 349699c42c7b97f00800000000000000
-      internalID: 1115124427887569219
+      spriteID: 5faf7dc3c260f44b0800000000000000
+      internalID: -5454133836653266187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shirlie-shaman_6
+      name: undead-pig_7
       rect:
         serializedVersion: 2
-        x: 47
+        x: 32
         y: 0
-        width: 17
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,8 +306,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8feee787bdb0fb200800000000000000
-      internalID: 197889945874919160
+      spriteID: fbbab0bde54cb5250800000000000000
+      internalID: 5934552845671705535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: undead-pig_8
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bdd75136e951d570800000000000000
+      internalID: 8489665617775287732
       vertices: []
       indices: 
       edges: []
@@ -288,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4d49bbf01b239e84c83d54bb142f564e
     internalID: 0
     vertices: []
     indices: 
@@ -297,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      undead-pig_0: -6531106351091616628
+      undead-pig_1: -5179839882222598597
+      undead-pig_2: 4105655192723384136
+      undead-pig_3: 525817101212333690
+      undead-pig_4: 7726373548989531246
+      undead-pig_5: 6021402510982760335
+      undead-pig_6: -5454133836653266187
+      undead-pig_7: 5934552845671705535
+      undead-pig_8: 8489665617775287732
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

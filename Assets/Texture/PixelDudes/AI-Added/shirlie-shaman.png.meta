@@ -1,34 +1,28 @@
 fileFormatVersion: 2
-guid: 31d4746401758dc4a8e438bb05f8937d
+guid: a26eea40a16122943b402ec8dfd2905c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4039578113799400323
-    second: innocent-orc_0
+      213: -896793595508069026
+    second: shirlie-shaman_0
   - first:
-      213: 3281928551036109767
-    second: innocent-orc_1
+      213: -1160107994116300838
+    second: shirlie-shaman_1
   - first:
-      213: 8806791916022105774
-    second: innocent-orc_2
+      213: 5769708918890131501
+    second: shirlie-shaman_2
   - first:
-      213: -8600769242292218491
-    second: innocent-orc_3
+      213: 4476727382225498511
+    second: shirlie-shaman_3
   - first:
-      213: 1209919831915065224
-    second: innocent-orc_4
+      213: -3750415935685710331
+    second: shirlie-shaman_4
   - first:
-      213: -3055288998970921302
-    second: innocent-orc_5
+      213: 1115124427887569219
+    second: shirlie-shaman_5
   - first:
-      213: 953402717186474327
-    second: innocent-orc_6
-  - first:
-      213: 7747145461318559272
-    second: innocent-orc_7
-  - first:
-      213: -1339168069546616550
-    second: innocent-orc_8
+      213: 197889945874919160
+    second: shirlie-shaman_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,9 +69,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +90,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,13 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: innocent-orc_0
+      name: shirlie-shaman_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 47
-        width: 13
-        height: 20
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d745b8cab1980f7c0800000000000000
-      internalID: -4039578113799400323
+      spriteID: e5d65eee9f2fd83f0800000000000000
+      internalID: -896793595508069026
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: innocent-orc_1
+      name: shirlie-shaman_1
       rect:
         serializedVersion: 2
-        x: 2
-        y: 23
-        width: 13
-        height: 20
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,108 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7c348b6f0a0cb8d20800000000000000
-      internalID: 3281928551036109767
+      spriteID: adf5b950de776efe0800000000000000
+      internalID: -1160107994116300838
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: innocent-orc_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 23
-        width: 13
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ea687455692083a70800000000000000
-      internalID: 8806791916022105774
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: innocent-orc_3
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 23
-        width: 13
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 585111661fde3a880800000000000000
-      internalID: -8600769242292218491
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: innocent-orc_4
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 23
-        width: 13
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 88f6ffb3daf7ac010800000000000000
-      internalID: 1209919831915065224
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: innocent-orc_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 14
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: aaeed22d7de6995d0800000000000000
-      internalID: -3055288998970921302
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: innocent-orc_6
+      name: shirlie-shaman_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
-        width: 15
-        height: 20
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,52 +190,140 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 751cacd48ba2b3d00800000000000000
-      internalID: 953402717186474327
+      spriteID: d2079d741bf121050800000000000000
+      internalID: 5769708918890131501
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: innocent-orc_7
+      name: shirlie-shaman_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f81b0ddd5d7802e30800000000000000
+      internalID: 4476727382225498511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shirlie-shaman_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50e2d79b398d3fbc0800000000000000
+      internalID: -3750415935685710331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shirlie-shaman_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349699c42c7b97f00800000000000000
+      internalID: 1115124427887569219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shirlie-shaman_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8feee787bdb0fb200800000000000000
+      internalID: 197889945874919160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shirlie-shaman_7
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 15
-        height: 19
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8262c2d30c3638b60800000000000000
-      internalID: 7747145461318559272
+      spriteID: de756d2344668b741917c3ba0ede4ce5
+      internalID: -1395949576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: innocent-orc_8
+      name: shirlie-shaman_8
       rect:
         serializedVersion: 2
-        x: 50
+        x: 48
         y: 0
-        width: 13
-        height: 18
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a19d0286cb15a6de0800000000000000
-      internalID: -1339168069546616550
+      spriteID: 9e8363b5223aadf41b57175e690c36b4
+      internalID: -1093421980
       vertices: []
       indices: 
       edges: []
@@ -338,7 +332,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: d7e29fc82342b2349b1cc2fa99a02eb6
     internalID: 0
     vertices: []
     indices: 
@@ -347,7 +341,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      shirlie-shaman_0: -896793595508069026
+      shirlie-shaman_1: -1160107994116300838
+      shirlie-shaman_2: 5769708918890131501
+      shirlie-shaman_3: 4476727382225498511
+      shirlie-shaman_4: -3750415935685710331
+      shirlie-shaman_5: 1115124427887569219
+      shirlie-shaman_6: 197889945874919160
+      shirlie-shaman_7: -1395949576
+      shirlie-shaman_8: -1093421980
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

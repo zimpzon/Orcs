@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 9a8a73d8714ebe140b8dd13d0ec52aa3
+guid: 2205fbce012e7b34281af1d39fe0c0ba
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 991839517887212300
-    second: naked-dude_0
+      213: -740232548326298204
+    second: from-the-void_0
   - first:
-      213: 6168929733123805214
-    second: naked-dude_1
+      213: 8447234963737550216
+    second: from-the-void_1
   - first:
-      213: -8937087015269724450
-    second: naked-dude_2
+      213: -8874413446486489145
+    second: from-the-void_2
   - first:
-      213: -1208559340266754017
-    second: naked-dude_3
+      213: 1311996671428593149
+    second: from-the-void_3
   - first:
-      213: -662143648661435723
-    second: naked-dude_4
+      213: 3617594207649862953
+    second: from-the-void_4
   - first:
-      213: -4150928378444640028
-    second: naked-dude_5
+      213: 7323073140719990709
+    second: from-the-void_5
   - first:
-      213: -7966313992202367121
-    second: naked-dude_6
+      213: -2932632238152300400
+    second: from-the-void_6
   - first:
-      213: -7629045725029353492
-    second: naked-dude_7
+      213: -4649601591874724786
+    second: from-the-void_7
   - first:
-      213: 788650721272079285
-    second: naked-dude_8
+      213: 1170325452305533542
+    second: from-the-void_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,9 +75,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -96,10 +96,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -137,13 +137,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: naked-dude_0
+      name: from-the-void_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 47
-        width: 12
-        height: 17
+        x: 0
+        y: 48
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c0bacd959c8b3cd00800000000000000
-      internalID: 991839517887212300
+      spriteID: 4ad24d15b6a2ab5f0800000000000000
+      internalID: -740232548326298204
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: naked-dude_1
+      name: from-the-void_1
       rect:
         serializedVersion: 2
-        x: 2
-        y: 23
-        width: 12
-        height: 17
+        x: 0
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,108 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e10903b68e07c9550800000000000000
-      internalID: 6168929733123805214
+      spriteID: 88d16d3b17b9a3570800000000000000
+      internalID: 8447234963737550216
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: naked-dude_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 23
-        width: 12
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ede8718d5b619f380800000000000000
-      internalID: -8937087015269724450
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: naked-dude_3
-      rect:
-        serializedVersion: 2
-        x: 34
-        y: 23
-        width: 12
-        height: 15
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f107b69eea55a3fe0800000000000000
-      internalID: -1208559340266754017
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: naked-dude_4
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 23
-        width: 12
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5ba01471cd79fc6f0800000000000000
-      internalID: -662143648661435723
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: naked-dude_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 0
-        width: 13
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4e018b2e1a0f466c0800000000000000
-      internalID: -4150928378444640028
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: naked-dude_6
+      name: from-the-void_2
       rect:
         serializedVersion: 2
         x: 16
-        y: 1
-        width: 15
-        height: 17
+        y: 24
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -284,20 +196,108 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6fcd85a1a7f17190800000000000000
-      internalID: -7966313992202367121
+      spriteID: 7c709343dffb7d480800000000000000
+      internalID: -8874413446486489145
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: naked-dude_7
+      name: from-the-void_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df50ffa7506253210800000000000000
+      internalID: 1311996671428593149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: from-the-void_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 24
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9251b78d3c6443230800000000000000
+      internalID: 3617594207649862953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: from-the-void_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b7b1d0e838c0a560800000000000000
+      internalID: 7323073140719990709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: from-the-void_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 098c21464823d47d0800000000000000
+      internalID: -2932632238152300400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: from-the-void_7
       rect:
         serializedVersion: 2
         x: 32
         y: 0
-        width: 14
-        height: 16
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -306,20 +306,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ce7b960655f202690800000000000000
-      internalID: -7629045725029353492
+      spriteID: e4c5731acfb497fb0800000000000000
+      internalID: -4649601591874724786
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: naked-dude_8
+      name: from-the-void_8
       rect:
         serializedVersion: 2
-        x: 50
+        x: 48
         y: 0
-        width: 12
-        height: 15
+        width: 16
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,8 +328,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b3274d07a9d1fa00800000000000000
-      internalID: 788650721272079285
+      spriteID: 66a05485cc4dd3010800000000000000
+      internalID: 1170325452305533542
       vertices: []
       indices: 
       edges: []
@@ -338,7 +338,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 75c0a2e60d5045b49b6babb4bf6854df
     internalID: 0
     vertices: []
     indices: 
@@ -347,7 +347,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      from-the-void_0: -740232548326298204
+      from-the-void_1: 8447234963737550216
+      from-the-void_2: -8874413446486489145
+      from-the-void_3: 1311996671428593149
+      from-the-void_4: 3617594207649862953
+      from-the-void_5: 7323073140719990709
+      from-the-void_6: -2932632238152300400
+      from-the-void_7: -4649601591874724786
+      from-the-void_8: 1170325452305533542
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

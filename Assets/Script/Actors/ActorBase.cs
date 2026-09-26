@@ -16,6 +16,9 @@ public enum ActorTypeEnum
     None, Any, BatWhite, OgreSmall, OgreLarge, HeroChaser, Green, Raven, Red, Pig, Pigtail,
     White, Fez, Helmet, Swede, PigHat, FreakyWiz, UndeadPirate, WannabeNecro, Karateeth,
     Snout, IronMask, BrainZombie, AfroOrc, Faceless, FromTheDeep, PigFromSpace, TheDarkness,
+    // AI-Added pixel dudes, extending the roster past TheDarkness (arena 25,000+)
+    NakedDude, BabyOrc, OrangeMan, HrDude, AngryDude, InnocentOrc, ChillZombie, UndeadPig,
+    ShirlieShaman, TheKaren, DarkWizard, TheGrey, FromTheVoid,
 };
 
 public class ActorBase : MonoBehaviour
@@ -48,6 +51,19 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.FromTheDeep, "The Dweller Of The Deep" },
         { ActorTypeEnum.PigFromSpace, "The Pig From Space" },
         { ActorTypeEnum.TheDarkness, "The Darkness" },
+        { ActorTypeEnum.NakedDude, "Naked Dude" },
+        { ActorTypeEnum.BabyOrc, "Baby Orc" },
+        { ActorTypeEnum.OrangeMan, "Orange Man" },
+        { ActorTypeEnum.HrDude, "HR Dude" },
+        { ActorTypeEnum.AngryDude, "Angry Dude" },
+        { ActorTypeEnum.InnocentOrc, "Innocent Orc" },
+        { ActorTypeEnum.ChillZombie, "Chill Zombie" },
+        { ActorTypeEnum.UndeadPig, "Undead Pig" },
+        { ActorTypeEnum.ShirlieShaman, "Shirlie Shaman" },
+        { ActorTypeEnum.TheKaren, "The Karen" },
+        { ActorTypeEnum.DarkWizard, "Dark Wizard" },
+        { ActorTypeEnum.TheGrey, "The Grey" },
+        { ActorTypeEnum.FromTheVoid, "From The Void" },
     };
 
     const float PaintBallTickTime = 1.0f;

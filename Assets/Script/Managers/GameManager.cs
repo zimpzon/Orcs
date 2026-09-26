@@ -1712,7 +1712,7 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.LevelCryptMaster = 5;
             SaveGame.Members.LevelSmartFireballs = 3;
 
-            SaveGame.Members.ArenaLevel = 15000;
+            SaveGame.Members.ArenaLevel += 5000;
         }
 
         //if (Input.GetKeyDown(KeyCode.F4))
