@@ -208,12 +208,19 @@ public class QuestionmarkScript : MonoBehaviour
             BeginPulseText();
 
             float startRealTime = G.D.RealTime;
-            float endRealTime = startRealTime + (60 * 5) + 5;
+            float endRealTime = startRealTime + (60 * 5);
 
-            //float endRealTime = startRealTime + 5;
-            ShowMessage($"Time runs {Highlight(33)}% faster for {Highlight(5)} minutes and {Highlight(5)} seconds!");
+            ShowMessage($"Time runs {Highlight(33)}% faster and income is {Highlight("X2.5")} for {Highlight(5)} minutes!");
+
+            MoneyMultiplierText.text = "X2.5";
+            MoneyMultiplierText.gameObject.SetActive(true);
 
             PlayerUpgrades.Data.TimeScale = 1.33f;
+            // Compare by EXTRA income over the 1x baseline, not total: FasterIncomeCo's 10x for 60s
+            // gives (10-1)*60 = 540 extra income-seconds. At 2.5x over this 300s duration we give
+            // (2.5-1)*300 = 450 extra income-seconds, matching FixedIncomeCo's 450 target - with
+            // the 33% time speedup remaining a genuine bonus on top, uncounted in that math.
+            PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 2.5f;
 
             while (G.D.RealTime < endRealTime)
             {
@@ -265,11 +272,13 @@ public class QuestionmarkScript : MonoBehaviour
 
         IEnumerator FixedIncomeCo()
         {
-            long numberOfSeconds = 60 * 5;
+            // Was 300s (~50% of FasterIncome's 10x-for-60s value); bumped to 450s (~75%) so this
+            // reward doesn't feel weak next to the other two.
+            long numberOfSeconds = 450;
             Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             reward += 100;
 
-            ShowMessage($"{Highlight(300)}X income = ${Highlight(Format512.Format(reward))}");
+            ShowMessage($"{Highlight(450)}X income = ${Highlight(Format512.Format(reward))}");
 
             GameManager.Instance.AddMoney(reward);
             yield return null;
