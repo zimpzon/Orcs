@@ -276,25 +276,25 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckX2_250(List<Achieved> list)
+        public static void CheckX2_300(List<Achieved> list)
         {
-            if (list.Contains(Achieved.X2_250)) return;
+            if (list.Contains(Achieved.X2_300)) return;
 
-            if (PlayerUpgrades.Data.NumberOfX2Bought >= 250)
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 300)
             {
-                list.Add(Achieved.X2_250);
-                NewAchieved(Achieved.X2_250);
+                list.Add(Achieved.X2_300);
+                NewAchieved(Achieved.X2_300);
             }
         }
 
-        public static void CheckX2_500(List<Achieved> list)
+        public static void CheckX2_150(List<Achieved> list)
         {
-            if (list.Contains(Achieved.X2_100)) return;
+            if (list.Contains(Achieved.X2_150)) return;
 
-            if (PlayerUpgrades.Data.NumberOfX2Bought >= 100)
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 150)
             {
-                list.Add(Achieved.X2_100);
-                NewAchieved(Achieved.X2_100);
+                list.Add(Achieved.X2_150);
+                NewAchieved(Achieved.X2_150);
             }
         }
 

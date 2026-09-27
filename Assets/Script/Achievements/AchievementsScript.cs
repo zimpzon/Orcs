@@ -22,8 +22,8 @@ public enum Achieved
     Rebirth8,
     ChainZap200,
     Chest100,
-    X2_250,
-    X2_100,
+    X2_300,
+    X2_150,
     Diamonds50,
     Arena1000,
     Skins20,
@@ -65,8 +65,8 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckRebirth8(list);
         AchievementChecks.CheckRebirth50(list);
-        AchievementChecks.CheckX2_250(list);
-        AchievementChecks.CheckX2_500(list);
+        AchievementChecks.CheckX2_300(list);
+        AchievementChecks.CheckX2_150(list);
         AchievementChecks.CheckSkins20(list);
         AchievementChecks.CheckUpgrades500(list);
         AchievementChecks.CheckUpgrades2500(list);
