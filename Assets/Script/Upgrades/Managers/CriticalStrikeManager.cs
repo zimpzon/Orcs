@@ -12,8 +12,9 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeCriticalStrike;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long chanceNow = (long)Math.Round(ValueForLevel(level) * 100.0);
-            long chanceNext = (long)Math.Round(ValueForLevel(level + 1) * 100.0);
+            long chanceNow = (long)Math.Round(ChanceForLevel(level) * 100.0);
+            long multNow = level * 10;
+            long multNext = (level + 1) * 10;
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelCriticalStrike,
@@ -45,21 +46,17 @@ namespace Assets.Script.Upgrades
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Critical hit chance: <color=COLOR-ARENA>{chanceNow}%</color> (x{PlayerUpgrades.Data.CritValueMul:0.0} damage)");
-            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{chanceNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Critical hit chance: <color=COLOR-ARENA>{chanceNow}%</color>");
+            sb.AppendLine($"<color=#dddddd>Critical hit damage: <color=COLOR-ARENA>x{multNow}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>x{multNext}</color>");
 
             return sb.ToString();
         }
 
-        private const int MaxLevel = 15;
-        private const double ChancePerLevel = 0.01; // 1% per level, capped at 15% at level 15
+        private const double FlatChance = 0.15; // always 15% once any level is owned
 
-        private static long ClampLevel(long level)
-            => level > MaxLevel ? MaxLevel : level;
-
-        private static double ValueForLevel(long level)
-            => ClampLevel(level) * ChancePerLevel;
+        private static double ChanceForLevel(long level)
+            => level > 0 ? FlatChance : 0.0;
 
         private static Decimal512 BaseIncome()
         {
@@ -89,7 +86,9 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.BaseCritChance = (float)ValueForLevel(SaveGame.Members.LevelCriticalStrike);
+            long level = SaveGame.Members.LevelCriticalStrike;
+            PlayerUpgrades.Data.BaseCritChance = (float)ChanceForLevel(level);
+            PlayerUpgrades.Data.CritValueMul = level * 10.0f;
         }
 
         public static void OnBuy()

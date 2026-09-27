@@ -144,12 +144,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckRebirth50(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Rebirth50)) return;
+            if (list.Contains(Achieved.Rebirth20)) return;
 
-            if (SaveGame.Members.TimesAscended_09_08_2025 >= 50)
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 20)
             {
-                list.Add(Achieved.Rebirth50);
-                NewAchieved(Achieved.Rebirth50);
+                list.Add(Achieved.Rebirth20);
+                NewAchieved(Achieved.Rebirth20);
             }
         }
 

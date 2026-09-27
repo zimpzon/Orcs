@@ -14,6 +14,8 @@ namespace Assets.Script.Upgrades
             Decimal512 totalIncome = PassiveIncome();
             long speedAddNow = (long)Math.Round(ValueForLevel(level) * 100.0f);
             long speedAddNext = (long)Math.Round(ValueForLevel(level + 1) * 100.0f);
+            long dmgBonusNow = level * 10;
+            long dmgBonusNext = (level + 1) * 10;
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelFastFeet,
@@ -48,6 +50,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Run speed bonus: <color=COLOR-ARENA>{speedAddNow}%</color>");
             sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
             sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{speedAddNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{dmgBonusNow}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{dmgBonusNext}%</color>");
 
             return sb.ToString();
         }
@@ -92,6 +96,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MoveSpeedAdd = PlayerUpgrades.Data.MoveSpeedAdd * ValueForLevel(SaveGame.Members.LevelFastFeet);
+            PlayerUpgrades.Data.MagicMissileDamageMulFastFeet = SaveGame.Members.LevelFastFeet * 0.10;
         }
 
         public static void OnBuy()

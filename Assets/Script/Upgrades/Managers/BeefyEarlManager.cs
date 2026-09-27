@@ -44,8 +44,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * 5}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * 5}%</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * 25}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * 25}%</color>");
 
             return sb.ToString();
         }
@@ -79,7 +79,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MagicMissileMultiShotsBeefyEarl = SaveGame.Members.LevelBeefyEarl > 0 ? 1 : 0;
-            PlayerUpgrades.Data.MagicMissileBeefyEarlDamageMultiplier = SaveGame.Members.LevelBeefyEarl * 0.05;
+            PlayerUpgrades.Data.MagicMissileBeefyEarlDamageMultiplier = SaveGame.Members.LevelBeefyEarl * 0.25;
         }
 
         public static void OnBuy()

@@ -37,7 +37,7 @@ public enum Achieved
     ChestMaster200,
     Have1Percent50,
     Buy1PercentTotal500,
-    Rebirth50,
+    Rebirth20,
     Diamonds5000,
     Diamonds10000,
 };

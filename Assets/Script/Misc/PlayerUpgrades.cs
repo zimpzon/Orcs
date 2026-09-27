@@ -7,7 +7,7 @@ public class UpgradeData
     public float DamageMul = 1.0f;
     public float BaseCritChance = 0.00f;
     public float CritChanceMul = 1.0f;
-    public float CritValueMul = 10.0f;
+    public float CritValueMul = 0.0f;
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
@@ -78,8 +78,9 @@ public class UpgradeData
     public double MagicMissileDamageMulZapDamage = 0.0f;
     public double MagicMissileDamageMulSmartDaggers = 0.0f;
     public double MagicMissileBeefyEarlDamageMultiplier = 0.0f;
+    public double MagicMissileDamageMulFastFeet = 0.0f;
     public double MagicMissileEffectiveDamage => MagicMissileBaseDamage *
-        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers + MagicMissileBeefyEarlDamageMultiplier);
+        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers + MagicMissileBeefyEarlDamageMultiplier + MagicMissileDamageMulFastFeet);
 
     public double MagicMissileBaseCd = 0.5f;
     public double MagicMissileCdMul = 1.0f;

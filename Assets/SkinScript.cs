@@ -182,7 +182,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {
-            return (list.Contains(Achieved.Rebirth50), "Saturated Earl: Rebirth 50 times");
+            return (list.Contains(Achieved.Rebirth20), "Saturated Earl: Rebirth 20 times");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
