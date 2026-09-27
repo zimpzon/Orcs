@@ -21,6 +21,7 @@ public enum AscendUpgradeCardId
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
+    CheaperPercentBonuses,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -56,6 +57,18 @@ public class AscendUpgradeCardScript : MonoBehaviour
         // Diamonds etc.
         AscendDecisionScript.Instance.UpdateUi();
 
+        if (CardId == AscendUpgradeCardId.NotSet)
+        {
+            // Placeholder card - not wired to a real upgrade yet. Always locked/non-interactable.
+            OwnedText.enabled = false;
+            CardOverlay.enabled = false;
+            _background.color = CannotAffordColor;
+            ButtonOverlay.enabled = true;
+            ButtonBuy.interactable = false;
+            ButtonBuyText.text = "???";
+            return;
+        }
+
         bool isOwned = CardId switch
         {
             AscendUpgradeCardId.PassiveIncomeX2_1 => SaveGame.Members.BoughtPassiveX2_1,
@@ -73,6 +86,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
+            AscendUpgradeCardId.CheaperPercentBonuses => SaveGame.Members.BoughtCheaperPercentBonuses,
             _ => throw new NotImplementedException()
         };
 
@@ -102,6 +116,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
 
     public void OnBuy()
     {
+        if (CardId == AscendUpgradeCardId.NotSet)
+            return;
+
         Debug.Log("Bought " + CardId);
         if (CardId == AscendUpgradeCardId.PassiveIncomeX2_1)
         {
@@ -163,6 +180,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.SkinScaryEarl)
         {
             SaveGame.Members.BoughtScaryEarlSkin = true;
+        }
+        else if (CardId == AscendUpgradeCardId.CheaperPercentBonuses)
+        {
+            SaveGame.Members.BoughtCheaperPercentBonuses = true;
         }
         else
             throw new NotImplementedException();
