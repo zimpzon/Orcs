@@ -151,7 +151,7 @@ public class QuestionmarkScript : MonoBehaviour
             {
                 // If faster mystery card bought x10 is also more likely
                 float extraChange = UnityEngine.Random.value;
-                if (extraChange > 0.5)
+                if (extraChange > 0.75)
                     randomReward = (int)MysteryReward.FasterIncome;
             }
 

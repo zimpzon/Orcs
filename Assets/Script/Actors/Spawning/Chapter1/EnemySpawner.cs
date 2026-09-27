@@ -28,21 +28,26 @@ public static class EnemySpawner
     {
         // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
         // same accelerating MinLevel-gap convention as the stretch above (gaps growing from ~5,000
-        // up to ~18,000) and the same "BaseHp comfortably under natural HP-budget affordability at
-        // its MinLevel" rule so MinLevel stays the binding gate, not the HP curve.
-        new EnemyType(ActorTypeEnum.FromTheVoid, 1_408_000_000_000, 161_500),
-        new EnemyType(ActorTypeEnum.TheGrey,     1_112_000_000_000, 143_500),
-        new EnemyType(ActorTypeEnum.DarkWizard,    871_000_000_000, 127_000),
-        new EnemyType(ActorTypeEnum.TheKaren,      677_000_000_000, 112_000),
-        new EnemyType(ActorTypeEnum.ShirlieShaman, 524_000_000_000,  98_500),
-        new EnemyType(ActorTypeEnum.UndeadPig,     404_000_000_000,  86_500),
-        new EnemyType(ActorTypeEnum.ChillZombie,   308_000_000_000,  75_500),
-        new EnemyType(ActorTypeEnum.InnocentOrc,   232_000_000_000,  65_500),
-        new EnemyType(ActorTypeEnum.AngryDude,     172_000_000_000,  56_500),
-        new EnemyType(ActorTypeEnum.HrDude,        127_000_000_000,  48_500),
-        new EnemyType(ActorTypeEnum.OrangeMan,      93_000_000_000,  41_500),
-        new EnemyType(ActorTypeEnum.BabyOrc,        68_000_000_000,  35_500),
-        new EnemyType(ActorTypeEnum.NakedDude,      48_000_000_000,  30_000),
+        // up to ~18,000). BaseHp is deliberately compressed to a ~1.148x-per-tier geometric curve
+        // topping out at 6x TheDarkness's HP (FromTheVoid), not a straight continuation of the
+        // lower tiers' ~1.37x-per-tier spacing. The uncapped combat-damage multipliers (Zap Damage
+        // +20%/level, Smart Daggers +80%/level, Beefy Earl +5%/level, all linear-per-level against
+        // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would
+        // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
+        // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
+        new EnemyType(ActorTypeEnum.FromTheVoid,   210_000_000_000, 161_500),
+        new EnemyType(ActorTypeEnum.TheGrey,       183_000_000_000, 143_500),
+        new EnemyType(ActorTypeEnum.DarkWizard,    159_000_000_000, 127_000),
+        new EnemyType(ActorTypeEnum.TheKaren,      139_000_000_000, 112_000),
+        new EnemyType(ActorTypeEnum.ShirlieShaman, 121_000_000_000,  98_500),
+        new EnemyType(ActorTypeEnum.UndeadPig,     105_000_000_000,  86_500),
+        new EnemyType(ActorTypeEnum.ChillZombie,    92_000_000_000,  75_500),
+        new EnemyType(ActorTypeEnum.InnocentOrc,    80_000_000_000,  65_500),
+        new EnemyType(ActorTypeEnum.AngryDude,      70_000_000_000,  56_500),
+        new EnemyType(ActorTypeEnum.HrDude,         61_000_000_000,  48_500),
+        new EnemyType(ActorTypeEnum.OrangeMan,      53_000_000_000,  41_500),
+        new EnemyType(ActorTypeEnum.BabyOrc,        46_000_000_000,  35_500),
+        new EnemyType(ActorTypeEnum.NakedDude,      40_000_000_000,  30_000),
         new EnemyType(ActorTypeEnum.TheDarkness, 35_000_000_000, 25_000),
         new EnemyType(ActorTypeEnum.PigFromSpace,21_000_000_000, 20_500),
         new EnemyType(ActorTypeEnum.FromTheDeep, 10_000_000_000, 16_500),
