@@ -164,7 +164,7 @@ public class PlayerScript : MonoBehaviour
         double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
         float mainScale = 1.5f;
         float multiDaggerScale = 1.0f;
-        float anglePerShot = 10f;
+        float anglePerShot = 5f;
         float totalRecoil = 0;
 
         isFiringSalvo = true;

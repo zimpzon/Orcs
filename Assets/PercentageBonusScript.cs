@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using Assets.Script.Upgrades;
 using TMPro;
 using UnityEngine;
@@ -116,7 +117,7 @@ public class PercentageBonusScript : MonoBehaviour
         ButtonText.text = $"${Format512.Format(totalPrice)}";
 
         string bonusText = buyAmount == 1 ? "+1% passive income" : $"+{buyAmount}% passive income";
-        TextBonusStatus.text = $"{bonusText}\n<size=-2><color=#cccccc>Bonus: {SaveGame.Members.LevelPctBought}%";
+        TextBonusStatus.text = $"{bonusText}\n<size=-2><color=#cccccc>Bonus: {Format64.Format(SaveGame.Members.LevelPctBought)}%";
 
         if (TextBuyAmount != null)
         {

@@ -1071,7 +1071,7 @@ public class GameManager : MonoBehaviour
         {
             Vector2 randomTextOffset = UnityEngine.Random.insideUnitCircle * 1.0f;
             string damageText = isCrit
-                ? $"<size=+2>-{Format64.Format(intAmount)} CRIT!</size>"
+                ? $"<size=+1>-{Format64.Format(intAmount)} CRIT!</size>"
                 : $"-{Format64.Format(intAmount)}";
 
             FloatingTextSpawner.Instance.Spawn(
@@ -1633,7 +1633,7 @@ public class GameManager : MonoBehaviour
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 10;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 10;
-            SaveGame.Members.DiamondCount_09_08_2025 += 10;
+            SaveGame.Members.DiamondCount_09_08_2025 += 100;
         }
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
@@ -1665,7 +1665,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.ArenaLevel += 25;
+            SaveGame.Members.ArenaLevel += 500;
         }
 
         if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
