@@ -54,7 +54,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Necromancer)
         {
-            return (list.Contains(Achieved.Necromancer25), "Necromancer Earl: Reach Necromancer level 25");
+            return (list.Contains(Achieved.Necromancer200), "Necromancer Earl: Reach Necromancer level 200");
         }
         else if (animationName == SkinAnimation.WhiteWalkerEarl)
         {
@@ -70,15 +70,15 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BigMouth)
         {
-            return (list.Contains(Achieved.Arena1000), "Big Mouth Earl: Reach Arena level 1000");
+            return (list.Contains(Achieved.Arena25000), "Big Mouth Earl: Reach Arena level 25000");
         }
         else if (animationName == SkinAnimation.Pirate)
         {
-            return (list.Contains(Achieved.Chest25), "Pirate Earl: Loot 25 Chests");
+            return (list.Contains(Achieved.Chest50), "Pirate Earl: Loot 50 Chests");
         }
         else if (animationName == SkinAnimation.Slug)
         {
-            return (list.Contains(Achieved.Mystery25), "Slug Earl: Get 25 mystery rewards");
+            return (list.Contains(Achieved.Mystery100), "Slug Earl: Get 100 mystery rewards");
         }
         else if (animationName == SkinAnimation.Zombie)
         {
@@ -86,19 +86,19 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.EvilEyesEarl)
         {
-            return (list.Contains(Achieved.Arena100), "Evil Eyes Earl: Reach Arena level 100");
+            return (list.Contains(Achieved.Arena1000), "Evil Eyes Earl: Reach Arena level 1000");
         }
         else if (animationName == SkinAnimation.Wig)
         {
-            return (list.Contains(Achieved.Arena500), "Wig Earl: Reach Arena level 500");
+            return (list.Contains(Achieved.Arena5000), "Wig Earl: Reach Arena level 5000");
         }
         else if (animationName == SkinAnimation.KaratEarl)
         {
-            return (list.Contains(Achieved.Arena1500), "KaratEarl: Reach Arena level 1500");
+            return (list.Contains(Achieved.Arena50000), "KaratEarl: Reach Arena level 50000");
         }
         else if (animationName == SkinAnimation.Voidgazer)
         {
-            return (list.Contains(Achieved.VoidgazerTier), "Voidgazer Earl: Reach Voidgazer");
+            return (list.Contains(Achieved.CriticalStrikeTier), "Voidgazer Earl: Reach Critical Strike");
         }
         else if (animationName == SkinAnimation.Wizard)
         {
@@ -118,7 +118,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WellDressedOrc)
         {
-            return (list.Contains(Achieved.Chest50), "Well-dressed Orc Earl: Loot 50 chests");
+            return (list.Contains(Achieved.Chest100), "Well-dressed Orc Earl: Loot 100 chests");
         }
         else if (animationName == SkinAnimation.Alien)
         {
@@ -130,15 +130,15 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SecretiveEarl)
         {
-            return (list.Contains(Achieved.X2_50), "Secretive Earl: Reach 50 X2 bonus");
+            return (list.Contains(Achieved.X2_100), "Secretive Earl: Reach 100 X2 bonus");
         }
         else if (animationName == SkinAnimation.SkaterEarl)
         {
-            return (list.Contains(Achieved.X2_25), "Skater Earl: Reach 25 X2 bonus");
+            return (list.Contains(Achieved.X2_250), "Skater Earl: Reach 250 X2 bonus");
         }
         else if (animationName == SkinAnimation.PrettyEarl)
         {
-            return (list.Contains(Achieved.Skins3), "Pretty Earl: Unlock 3 skins");
+            return (list.Contains(Achieved.Skins20), "Pretty Earl: Unlock 20 skins");
         }
         else if (animationName == SkinAnimation.AttentivePigEarl)
         {
@@ -150,7 +150,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.DisguisedMonsterEarl)
         {
-            return (list.Contains(Achieved.Upgrades10000), "Disguised Monster Earl: Buy 10000 upgrades");
+            return (list.Contains(Achieved.Upgrades100000), "Disguised Monster Earl: Buy 100000 upgrades");
         }
         else if (animationName == SkinAnimation.ScaryEarl)
         {
@@ -178,7 +178,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.MonochromeEarl)
         {
-            return (list.Contains(Achieved.Diamonds10000), "Monochrome Earl: Have at least 10000 diamonds");
+            return (list.Contains(Achieved.Diamonds50000), "Monochrome Earl: Have at least 50000 diamonds");
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {

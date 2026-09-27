@@ -5,6 +5,8 @@ namespace Assets.Script.Achievements
 {
     internal static class AchievementChecks
     {
+        private const int V = 100;
+
         public static void NewAchieved(Achieved achieved)
         {
             Debug.Log("New achievement: " + achieved);
@@ -21,14 +23,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckNecro(List<Achieved> list)
+        public static void CheckNecro200(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Necromancer25)) return;
+            if (list.Contains(Achieved.Necromancer200)) return;
 
-            if (SaveGame.Members.LevelMoneyMaker >= 25)
+            if (SaveGame.Members.LevelMoneyMaker >= 200)
             {
-                list.Add(Achieved.Necromancer25);
-                NewAchieved(Achieved.Necromancer25);
+                list.Add(Achieved.Necromancer200);
+                NewAchieved(Achieved.Necromancer200);
             }
         }
 
@@ -54,28 +56,6 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckArena100(List<Achieved> list)
-        {
-            if (list.Contains(Achieved.Arena100)) return;
-
-            if (SaveGame.Members.ArenaLevel >= 100)
-            {
-                list.Add(Achieved.Arena100);
-                NewAchieved(Achieved.Arena100);
-            }
-        }
-
-        public static void CheckArena500(List<Achieved> list)
-        {
-            if (list.Contains(Achieved.Arena500)) return;
-
-            if (SaveGame.Members.ArenaLevel >= 500)
-            {
-                list.Add(Achieved.Arena500);
-                NewAchieved(Achieved.Arena500);
-            }
-        }
-
         public static void CheckArena1000(List<Achieved> list)
         {
             if (list.Contains(Achieved.Arena1000)) return;
@@ -87,14 +67,36 @@ namespace Assets.Script.Achievements
             }
         }
 
+        public static void CheckArena5000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Arena5000)) return;
+
+            if (SaveGame.Members.ArenaLevel >= 5000)
+            {
+                list.Add(Achieved.Arena5000);
+                NewAchieved(Achieved.Arena5000);
+            }
+        }
+
+        public static void CheckArena25000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Arena25000)) return;
+
+            if (SaveGame.Members.ArenaLevel >= 25000)
+            {
+                list.Add(Achieved.Arena25000);
+                NewAchieved(Achieved.Arena25000);
+            }
+        }
+
         public static void CheckArena1500(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Arena1500)) return;
+            if (list.Contains(Achieved.Arena50000)) return;
 
-            if (SaveGame.Members.ArenaLevel >= 1500)
+            if (SaveGame.Members.ArenaLevel >= 50000)
             {
-                list.Add(Achieved.Arena1500);
-                NewAchieved(Achieved.Arena1500);
+                list.Add(Achieved.Arena50000);
+                NewAchieved(Achieved.Arena50000);
             }
         }
 
@@ -155,23 +157,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckMystery25(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Mystery25)) return;
+            if (list.Contains(Achieved.Mystery100)) return;
 
-            if (SaveGame.Members.MysteryCollected >= 25)
+            if (SaveGame.Members.MysteryCollected >= 100)
             {
-                list.Add(Achieved.Mystery25);
-                NewAchieved(Achieved.Mystery25);
-            }
-        }
-
-        public static void CheckChest25(List<Achieved> list)
-        {
-            if (list.Contains(Achieved.Chest25)) return;
-
-            if (SaveGame.Members.ChestsCollected >= 25)
-            {
-                list.Add(Achieved.Chest25);
-                NewAchieved(Achieved.Chest25);
+                list.Add(Achieved.Mystery100);
+                NewAchieved(Achieved.Mystery100);
             }
         }
 
@@ -183,6 +174,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Chest50);
                 NewAchieved(Achieved.Chest50);
+            }
+        }
+
+        public static void CheckChest100(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Chest100)) return;
+
+            if (SaveGame.Members.ChestsCollected >= 100)
+            {
+                list.Add(Achieved.Chest100);
+                NewAchieved(Achieved.Chest100);
             }
         }
 
@@ -241,25 +243,25 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckDiamonds10000(List<Achieved> list)
+        public static void CheckDiamonds50000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Diamonds10000)) return;
+            if (list.Contains(Achieved.Diamonds50000)) return;
 
-            if (SaveGame.Members.DiamondCount_09_08_2025 >= 10000)
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 50000)
             {
-                list.Add(Achieved.Diamonds10000);
-                NewAchieved(Achieved.Diamonds10000);
+                list.Add(Achieved.Diamonds50000);
+                NewAchieved(Achieved.Diamonds50000);
             }
         }
 
         public static void CheckVoidgazer(List<Achieved> list)
         {
-            if (list.Contains(Achieved.VoidgazerTier)) return;
+            if (list.Contains(Achieved.CriticalStrikeTier)) return;
 
-            if (SaveGame.Members.LevelVoidgazer >= 1)
+            if (SaveGame.Members.LevelCriticalStrike >= 1)
             {
-                list.Add(Achieved.VoidgazerTier);
-                NewAchieved(Achieved.VoidgazerTier);
+                list.Add(Achieved.CriticalStrikeTier);
+                NewAchieved(Achieved.CriticalStrikeTier);
             }
         }
 
@@ -274,36 +276,36 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckX2_25(List<Achieved> list)
+        public static void CheckX2_250(List<Achieved> list)
         {
-            if (list.Contains(Achieved.X2_25)) return;
+            if (list.Contains(Achieved.X2_250)) return;
 
-            if (PlayerUpgrades.Data.NumberOfX2Bought >= 25)
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 250)
             {
-                list.Add(Achieved.X2_25);
-                NewAchieved(Achieved.X2_25);
+                list.Add(Achieved.X2_250);
+                NewAchieved(Achieved.X2_250);
             }
         }
 
-        public static void CheckX2_50(List<Achieved> list)
+        public static void CheckX2_500(List<Achieved> list)
         {
-            if (list.Contains(Achieved.X2_50)) return;
+            if (list.Contains(Achieved.X2_100)) return;
 
-            if (PlayerUpgrades.Data.NumberOfX2Bought >= 50)
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 100)
             {
-                list.Add(Achieved.X2_50);
-                NewAchieved(Achieved.X2_50);
+                list.Add(Achieved.X2_100);
+                NewAchieved(Achieved.X2_100);
             }
         }
 
-        public static void CheckSkins3(List<Achieved> list)
+        public static void CheckSkins20(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Skins3)) return;
+            if (list.Contains(Achieved.Skins20)) return;
 
-            if (SaveGame.Members.Achieved.Count >= 3)
+            if (SaveGame.Members.Achieved.Count >= 20)
             {
-                list.Add(Achieved.Skins3);
-                NewAchieved(Achieved.Skins3);
+                list.Add(Achieved.Skins20);
+                NewAchieved(Achieved.Skins20);
             }
         }
 
@@ -331,12 +333,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckUpgrades10000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Upgrades10000)) return;
+            if (list.Contains(Achieved.Upgrades100000)) return;
 
-            if (SaveGame.Members.TotalUpgradesBought >= 10000)
+            if (SaveGame.Members.TotalUpgradesBought >= 100000)
             {
-                list.Add(Achieved.Upgrades10000);
-                NewAchieved(Achieved.Upgrades10000);
+                list.Add(Achieved.Upgrades100000);
+                NewAchieved(Achieved.Upgrades100000);
             }
         }
 

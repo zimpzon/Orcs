@@ -6,31 +6,31 @@ using UnityEngine;
 public enum Achieved
 {
     WitchDoctor25,
-    Necromancer25,
+    Necromancer200,
     SkullCrusher5,
-    Arena500,
+    Arena5000,
     Rebirth2,
-    Arena1000,
+    Arena25000,
     Rebirth3,
-    Mystery25,
-    Chest25,
+    Mystery100,
+    Chest50,
     Diamonds10,
-    VoidgazerTier,
-    Arena1500,
+    CriticalStrikeTier,
+    Arena50000,
     MasterWizardTier,
     Diamonds250,
     Rebirth8,
     ChainZap200,
-    Chest50,
-    X2_25,
-    X2_50,
+    Chest100,
+    X2_250,
+    X2_100,
     Diamonds50,
-    Arena100,
-    Skins3,
+    Arena1000,
+    Skins20,
     Rebirth1,
     Upgrades500,
     Upgrades2500,
-    Upgrades10000,
+    Upgrades100000,
     BuyCardScaryEarl,
     SmartDagger10,
     Diamonds1000,
@@ -39,7 +39,7 @@ public enum Achieved
     Buy1PercentTotal500,
     Rebirth20,
     Diamonds5000,
-    Diamonds10000,
+    Diamonds50000,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -48,26 +48,26 @@ public class AchievementsScript : MonoBehaviour
     {
         var list = SaveGame.Members.Achieved;
         AchievementChecks.CheckWitchDoctor(list);
-        AchievementChecks.CheckNecro(list);
+        AchievementChecks.CheckNecro200(list);
         AchievementChecks.CheckSkullCrusher5(list);
-        AchievementChecks.CheckArena100(list);
-        AchievementChecks.CheckArena500(list);
         AchievementChecks.CheckArena1000(list);
+        AchievementChecks.CheckArena5000(list);
+        AchievementChecks.CheckArena25000(list);
         AchievementChecks.CheckArena1500(list);
         AchievementChecks.CheckMystery25(list);
-        AchievementChecks.CheckChest25(list);
+        AchievementChecks.CheckChest50(list);
         AchievementChecks.CheckVoidgazer(list);
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
-        AchievementChecks.CheckChest50(list);
+        AchievementChecks.CheckChest100(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
         AchievementChecks.CheckRebirth8(list);
         AchievementChecks.CheckRebirth50(list);
-        AchievementChecks.CheckX2_25(list);
-        AchievementChecks.CheckX2_50(list);
-        AchievementChecks.CheckSkins3(list);
+        AchievementChecks.CheckX2_250(list);
+        AchievementChecks.CheckX2_500(list);
+        AchievementChecks.CheckSkins20(list);
         AchievementChecks.CheckUpgrades500(list);
         AchievementChecks.CheckUpgrades2500(list);
         AchievementChecks.CheckUpgrades10000(list);
@@ -78,7 +78,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckDiamonds250(list);
         AchievementChecks.CheckDiamonds1000(list);
         AchievementChecks.CheckDiamonds5000(list);
-        AchievementChecks.CheckDiamonds10000(list);
+        AchievementChecks.CheckDiamonds50000(list);
         AchievementChecks.CheckChestMaster200(list);
         AchievementChecks.Have1Percent50(list);
         AchievementChecks.Buy1PercentTotal500(list);
