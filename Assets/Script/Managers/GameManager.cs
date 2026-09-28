@@ -884,6 +884,13 @@ public class GameManager : MonoBehaviour
                 (arenaLevel - EarlyGameSlowdownLevel) / (double)(EarlyGameRampLevels - EarlyGameSlowdownLevel));
             earlyGameMul = valueAtSlowdownLevel + (1.0 - valueAtSlowdownLevel) * Math.Pow(progress, EarlyGameSlowdownPower);
         }
+
+        // The ramp alone made the first arenas after arena 1 too stingy to afford upgrades. Boost them,
+        // capped at full value so the ramp still lands on 1.0 by EarlyGameRampLevels. Arena 1 is left
+        // alone since it's already tuned via the first-upgrade guarantee below.
+        const double EarlyGameGoldBoost = 2.0;
+        if (arenaLevel > 1)
+            earlyGameMul *= EarlyGameGoldBoost;
         earlyGameMul = Math.Min(1.0, earlyGameMul);
 
         // Round HP (and so gold) is quadratic in arena level, but upgrade costs grow exponentially
@@ -954,15 +961,16 @@ public class GameManager : MonoBehaviour
         if (goldWon <= 0 || damageDone <= 0 || secondsSpent <= 0)
             return;
 
-        FloatingTextSpawner.Instance.Spawn(
-            endRoundGoldSummaryPos,
-            $"<color=#F0F0F0><size=+2><color=#8DBE4C>{Format512.Format(damageDone)}</color> dmg in <color=#8DBE4C>{secondsSpent}</color> sec (<color=#8DBE4C>{Format512.Format(dps)}</color> dps), +<color=#8DBE4C>{Format512.Format(goldWon)}</color> gold",
-            new Color(0.8f, 0.8f, 0.8f),
-            speed: 0.05f,
-            timeToLive: 5.0f,
-            fadeTime: 0.5f,
-            fontStyle: TMPro.FontStyles.Bold,
-            FontTarragon);
+        // Removed text that shown round dps etc. Never read it and it was disturbing.
+        //FloatingTextSpawner.Instance.Spawn(
+        //    endRoundGoldSummaryPos,
+        //    $"<color=#F0F0F0><size=+2><color=#8DBE4C>{Format512.Format(damageDone)}</color> dmg in <color=#8DBE4C>{secondsSpent}</color> sec (<color=#8DBE4C>{Format512.Format(dps)}</color> dps), +<color=#8DBE4C>{Format512.Format(goldWon)}</color> gold",
+        //    new Color(0.8f, 0.8f, 0.8f),
+        //    speed: 0.05f,
+        //    timeToLive: 5.0f,
+        //    fadeTime: 0.5f,
+        //    fontStyle: TMPro.FontStyles.Bold,
+        //    FontTarragon);
     }
 
     void OnLastEnemyKilled(ActorBase lastEnemy)
