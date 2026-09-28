@@ -33,7 +33,8 @@ static class SaveGameAscend
         newSave.BoughtShinyDiamonds5 = oldSave.BoughtShinyDiamonds5;
         newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
-        newSave.BoughtCheaperPercentBonuses = oldSave.BoughtCheaperPercentBonuses;
+        newSave.BoughtPercentBonusX10 = oldSave.BoughtPercentBonusX10;
+        newSave.BoughtHalfEnemyHp = oldSave.BoughtHalfEnemyHp;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings

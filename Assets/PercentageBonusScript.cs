@@ -15,6 +15,8 @@ public class PercentageBonusScript : MonoBehaviour
     public Button ButtonBuy1;
     public Button ButtonBuy10;
     public TextMeshProUGUI TextBuyAmount;
+    public TextMeshProUGUI TextButtonBuy1Label;
+    public TextMeshProUGUI TextButtonBuy10Label;
 
     public Color TextColorEnabled;
     public Color TextColorDisabled;
@@ -107,7 +109,8 @@ public class PercentageBonusScript : MonoBehaviour
 
     void UpdateAll()
     {
-        PlayerUpgrades.Data.PassiveIncomePercentageBonuses = SaveGame.Members.LevelPctBought * 0.01f;
+        double bonusMultiplier = SaveGame.Members.BoughtPercentBonusX10 ? 10.0 : 1.0;
+        PlayerUpgrades.Data.PassiveIncomePercentageBonuses = SaveGame.Members.LevelPctBought * 0.01f * bonusMultiplier;
 
         Decimal512 totalPrice = GetTotalPriceForBuyAmount();
         int buyAmount = GetBuyAmount();
@@ -116,13 +119,20 @@ public class PercentageBonusScript : MonoBehaviour
         SetEnabled(canAfford);
         ButtonText.text = $"${Format512.Format(totalPrice)}";
 
-        string bonusText = buyAmount == 1 ? "+1% passive income" : $"+{buyAmount}% passive income";
-        TextBonusStatus.text = $"{bonusText}\n<size=-2><color=#cccccc>Bonus: {Format64.Format(SaveGame.Members.LevelPctBought)}%";
+        long displayBuyPct = (long)(buyAmount * bonusMultiplier);
+        string bonusText = $"+{displayBuyPct}% passive income";
+        long displayTotalPct = (long)(SaveGame.Members.LevelPctBought * bonusMultiplier);
+        TextBonusStatus.text = $"{bonusText}\n<size=-3><color=#cccccc>Bonus: {displayTotalPct}%";
 
         if (TextBuyAmount != null)
         {
-            TextBuyAmount.text = buyAmount == 1 ? "Buy 1" : "Buy 10";
+            TextBuyAmount.text = $"Buy {displayBuyPct}";
         }
+
+        if (TextButtonBuy1Label != null)
+            TextButtonBuy1Label.text = $"{(long)(1 * bonusMultiplier)}";
+        if (TextButtonBuy10Label != null)
+            TextButtonBuy10Label.text = $"{(long)(10 * bonusMultiplier)}";
     }
 
     float _nextUpdate;

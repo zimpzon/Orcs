@@ -380,9 +380,12 @@ public static class EnemySpawner
                 break;
         }
 
+        // Permanent rebirth upgrade: halves enemy HP everywhere, for any level.
+        long effectiveSpawnHp = SaveGame.Members.BoughtHalfEnemyHp ? hp / 2 : hp;
+
         foreach (var enemy in spawned)
         {
-            enemy.BaseHp = hp;
+            enemy.BaseHp = effectiveSpawnHp;
             enemies.Add(enemy);
         }
     }

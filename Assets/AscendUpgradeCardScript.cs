@@ -21,7 +21,8 @@ public enum AscendUpgradeCardId
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
-    CheaperPercentBonuses,
+    PercentBonusX10,
+    HalfEnemyHp,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -86,7 +87,8 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
-            AscendUpgradeCardId.CheaperPercentBonuses => SaveGame.Members.BoughtCheaperPercentBonuses,
+            AscendUpgradeCardId.PercentBonusX10 => SaveGame.Members.BoughtPercentBonusX10,
+            AscendUpgradeCardId.HalfEnemyHp => SaveGame.Members.BoughtHalfEnemyHp,
             _ => throw new NotImplementedException()
         };
 
@@ -181,9 +183,13 @@ public class AscendUpgradeCardScript : MonoBehaviour
         {
             SaveGame.Members.BoughtScaryEarlSkin = true;
         }
-        else if (CardId == AscendUpgradeCardId.CheaperPercentBonuses)
+        else if (CardId == AscendUpgradeCardId.PercentBonusX10)
         {
-            SaveGame.Members.BoughtCheaperPercentBonuses = true;
+            SaveGame.Members.BoughtPercentBonusX10 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.HalfEnemyHp)
+        {
+            SaveGame.Members.BoughtHalfEnemyHp = true;
         }
         else
             throw new NotImplementedException();

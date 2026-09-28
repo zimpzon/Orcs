@@ -39,7 +39,8 @@ public class SaveGameMembers
     public bool BoughtFasterMystery = false;
     public bool BoughtFasterArena = false;
     public bool BoughtScaryEarlSkin = false;
-    public bool BoughtCheaperPercentBonuses = false;
+    public bool BoughtPercentBonusX10 = false;
+    public bool BoughtHalfEnemyHp = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -57,7 +58,8 @@ public class SaveGameMembers
         $"{nameof(BoughtFasterMystery)} = {SaveGame.Members.BoughtFasterMystery} | " +
         $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
         $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin} | " +
-        $"{nameof(BoughtCheaperPercentBonuses)} = {SaveGame.Members.BoughtCheaperPercentBonuses}";
+        $"{nameof(BoughtPercentBonusX10)} = {SaveGame.Members.BoughtPercentBonusX10} | " +
+        $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp}";
 
     // Settings
     public int Version;

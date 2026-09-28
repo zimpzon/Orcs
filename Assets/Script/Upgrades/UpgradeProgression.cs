@@ -175,24 +175,14 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 PriceNextPercentageBonus(long level)
         {
-            Decimal512 price;
-            if (level == 0) price = 500;
-            else if (level == 1) price = 10_000;
-            else if (level == 2) price = 100_000;
-            else if (level == 3) price = 250_000;
-            else
-            {
-                Decimal512 basePrice = 500_000;
-                double growthRate = 1.2378; // Reduced from 1.245 to halve level 100 cost
-                double exponent = level - 3;
-                price = basePrice * (Decimal512)Math.Pow(growthRate, exponent);
-            }
-
-            // Permanent rebirth upgrade: cuts the price of +1% bonuses by 90%.
-            if (SaveGame.Members.BoughtCheaperPercentBonuses)
-                price *= 0.1;
-
-            return price;
+            if (level == 0) return 500;
+            if (level == 1) return 10_000;
+            if (level == 2) return 100_000;
+            if (level == 3) return 250_000;
+            Decimal512 basePrice = 500_000;
+            double growthRate = 1.2378; // Reduced from 1.245 to halve level 100 cost
+            double exponent = level - 3;
+            return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }
 
         public static int GetCurrentDiamondMultiplierPct()
