@@ -105,8 +105,7 @@ public class AscendProgressScript : MonoBehaviour
         if (pct > 100) pct = 100;
         TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3><color=#cccccc>Next: {pct:#0}%";
 
-        bool showTimeLeft = SaveGame.Members.MonsterCreditsLifetime_09_08_2025 > 0;
         const double MaxSeconds = 60 * 60 * 12;
-        TextTimeLeft.text = showTimeLeft ? UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds) : string.Empty;
+        TextTimeLeft.text = UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds);
     }
 }
