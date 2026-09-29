@@ -31,6 +31,7 @@ public enum AscendUpgradeCardId
     X2Mastery1,
     X2Mastery2,
     X2Mastery3,
+    FasterArena2,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -105,6 +106,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.X2Mastery1 => SaveGame.Members.BoughtX2Mastery1,
             AscendUpgradeCardId.X2Mastery2 => SaveGame.Members.BoughtX2Mastery2,
             AscendUpgradeCardId.X2Mastery3 => SaveGame.Members.BoughtX2Mastery3,
+            AscendUpgradeCardId.FasterArena2 => SaveGame.Members.BoughtFasterArena2,
             _ => throw new NotImplementedException()
         };
 
@@ -238,6 +240,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.X2Mastery3)
         {
             SaveGame.Members.BoughtX2Mastery3 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.FasterArena2)
+        {
+            SaveGame.Members.BoughtFasterArena2 = true;
         }
         else
             throw new NotImplementedException();
