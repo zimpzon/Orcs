@@ -45219,12 +45219,22 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardEmpty6
+      value: AscendUpgradeCardBeastScholar1
       objectReference: {fileID: 0}
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Coming soon
+      value: Each beast gives +1% multiplier per tier!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: Cost
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: CardId
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -45329,7 +45339,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: ???
+      value: Beast Scholar 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -45353,12 +45363,22 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardEmpty7
+      value: AscendUpgradeCardBeastScholar2
       objectReference: {fileID: 0}
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Coming soon
+      value: Each beast gives +1% multiplier per tier!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: Cost
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: CardId
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -45463,7 +45483,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: ???
+      value: Beast Scholar 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -44,6 +44,8 @@ public class SaveGameMembers
     public bool BoughtHaggler1 = false;
     public bool BoughtHaggler2 = false;
     public bool BoughtHaggler3 = false;
+    public bool BoughtBeastScholar1 = false;
+    public bool BoughtBeastScholar2 = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -65,7 +67,9 @@ public class SaveGameMembers
         $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp} | " +
         $"{nameof(BoughtHaggler1)} = {SaveGame.Members.BoughtHaggler1} | " +
         $"{nameof(BoughtHaggler2)} = {SaveGame.Members.BoughtHaggler2} | " +
-        $"{nameof(BoughtHaggler3)} = {SaveGame.Members.BoughtHaggler3}";
+        $"{nameof(BoughtHaggler3)} = {SaveGame.Members.BoughtHaggler3} | " +
+        $"{nameof(BoughtBeastScholar1)} = {SaveGame.Members.BoughtBeastScholar1} | " +
+        $"{nameof(BoughtBeastScholar2)} = {SaveGame.Members.BoughtBeastScholar2}";
 
     // Settings
     public int Version;

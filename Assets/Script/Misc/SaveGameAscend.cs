@@ -38,6 +38,8 @@ static class SaveGameAscend
         newSave.BoughtHaggler1 = oldSave.BoughtHaggler1;
         newSave.BoughtHaggler2 = oldSave.BoughtHaggler2;
         newSave.BoughtHaggler3 = oldSave.BoughtHaggler3;
+        newSave.BoughtBeastScholar1 = oldSave.BoughtBeastScholar1;
+        newSave.BoughtBeastScholar2 = oldSave.BoughtBeastScholar2;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
