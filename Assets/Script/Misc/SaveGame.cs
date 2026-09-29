@@ -41,6 +41,9 @@ public class SaveGameMembers
     public bool BoughtScaryEarlSkin = false;
     public bool BoughtPercentBonusX10 = false;
     public bool BoughtHalfEnemyHp = false;
+    public bool BoughtHaggler1 = false;
+    public bool BoughtHaggler2 = false;
+    public bool BoughtHaggler3 = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -59,7 +62,10 @@ public class SaveGameMembers
         $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
         $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin} | " +
         $"{nameof(BoughtPercentBonusX10)} = {SaveGame.Members.BoughtPercentBonusX10} | " +
-        $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp}";
+        $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp} | " +
+        $"{nameof(BoughtHaggler1)} = {SaveGame.Members.BoughtHaggler1} | " +
+        $"{nameof(BoughtHaggler2)} = {SaveGame.Members.BoughtHaggler2} | " +
+        $"{nameof(BoughtHaggler3)} = {SaveGame.Members.BoughtHaggler3}";
 
     // Settings
     public int Version;

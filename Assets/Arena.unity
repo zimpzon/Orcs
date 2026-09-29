@@ -44787,12 +44787,22 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardEmpty3
+      value: AscendUpgradeCardHaggler1
       objectReference: {fileID: 0}
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Coming soon
+      value: Shop upgrades cost 50% less!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: Cost
+      value: 2500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: CardId
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -44897,7 +44907,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: ???
+      value: Haggler 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44921,12 +44931,22 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardEmpty4
+      value: AscendUpgradeCardHaggler2
       objectReference: {fileID: 0}
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Coming soon
+      value: Shop upgrades cost 50% less!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: Cost
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: CardId
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -45031,7 +45051,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: ???
+      value: Haggler 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -45055,12 +45075,22 @@ PrefabInstance:
     - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_Name
-      value: AscendUpgradeCardEmpty5
+      value: AscendUpgradeCardHaggler3
       objectReference: {fileID: 0}
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Coming soon
+      value: Shop upgrades cost 50% less!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: Cost
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
+        type: 3}
+      propertyPath: CardId
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -45165,7 +45195,7 @@ PrefabInstance:
     - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: ???
+      value: Haggler 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

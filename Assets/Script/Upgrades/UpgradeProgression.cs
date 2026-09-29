@@ -117,7 +117,17 @@ namespace Assets.Script.Upgrades
         public static Decimal512 PriceX2(Decimal512 initialPrice, long levelX2)
         {
             Decimal512 result = initialPrice * Math.Pow(3, levelX2);
-            return result;
+            return result * ShopPriceMul();
+        }
+
+        // Haggler ascend cards: each owned tier halves all gold shop prices (not the 1% bonus).
+        public static double ShopPriceMul()
+        {
+            double mul = 1.0;
+            if (SaveGame.Members.BoughtHaggler1) mul *= 0.5;
+            if (SaveGame.Members.BoughtHaggler2) mul *= 0.5;
+            if (SaveGame.Members.BoughtHaggler3) mul *= 0.5;
+            return mul;
         }
 
         public static long LevelRequirementX2(long levelX2)
@@ -170,7 +180,7 @@ namespace Assets.Script.Upgrades
                 Decimal512 priceForLevel = initialPrice * Math.Pow(1.15, currentLevel + i);
                 sum += priceForLevel;
             }
-            return sum;
+            return sum * ShopPriceMul();
         }
 
         public static Decimal512 PriceNextPercentageBonus(long level)

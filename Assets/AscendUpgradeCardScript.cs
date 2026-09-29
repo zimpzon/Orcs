@@ -23,6 +23,9 @@ public enum AscendUpgradeCardId
     SkinScaryEarl,
     PercentBonusX10,
     HalfEnemyHp,
+    Haggler1,
+    Haggler2,
+    Haggler3,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -89,6 +92,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
             AscendUpgradeCardId.PercentBonusX10 => SaveGame.Members.BoughtPercentBonusX10,
             AscendUpgradeCardId.HalfEnemyHp => SaveGame.Members.BoughtHalfEnemyHp,
+            AscendUpgradeCardId.Haggler1 => SaveGame.Members.BoughtHaggler1,
+            AscendUpgradeCardId.Haggler2 => SaveGame.Members.BoughtHaggler2,
+            AscendUpgradeCardId.Haggler3 => SaveGame.Members.BoughtHaggler3,
             _ => throw new NotImplementedException()
         };
 
@@ -190,6 +196,18 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.HalfEnemyHp)
         {
             SaveGame.Members.BoughtHalfEnemyHp = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Haggler1)
+        {
+            SaveGame.Members.BoughtHaggler1 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Haggler2)
+        {
+            SaveGame.Members.BoughtHaggler2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Haggler3)
+        {
+            SaveGame.Members.BoughtHaggler3 = true;
         }
         else
             throw new NotImplementedException();

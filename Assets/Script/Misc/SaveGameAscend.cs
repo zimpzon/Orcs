@@ -35,6 +35,9 @@ static class SaveGameAscend
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
         newSave.BoughtPercentBonusX10 = oldSave.BoughtPercentBonusX10;
         newSave.BoughtHalfEnemyHp = oldSave.BoughtHalfEnemyHp;
+        newSave.BoughtHaggler1 = oldSave.BoughtHaggler1;
+        newSave.BoughtHaggler2 = oldSave.BoughtHaggler2;
+        newSave.BoughtHaggler3 = oldSave.BoughtHaggler3;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
