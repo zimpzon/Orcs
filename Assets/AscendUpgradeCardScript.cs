@@ -32,6 +32,7 @@ public enum AscendUpgradeCardId
     X2Mastery2,
     X2Mastery3,
     FasterArena2,
+    CardDiscount,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -107,6 +108,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.X2Mastery2 => SaveGame.Members.BoughtX2Mastery2,
             AscendUpgradeCardId.X2Mastery3 => SaveGame.Members.BoughtX2Mastery3,
             AscendUpgradeCardId.FasterArena2 => SaveGame.Members.BoughtFasterArena2,
+            AscendUpgradeCardId.CardDiscount => SaveGame.Members.BoughtCardDiscount,
             _ => throw new NotImplementedException()
         };
 
@@ -126,12 +128,23 @@ public class AscendUpgradeCardScript : MonoBehaviour
         }
         else
         {
-            bool canAfford = SaveGame.Members.DiamondCount_09_08_2025 >= Cost;
+            bool canAfford = SaveGame.Members.DiamondCount_09_08_2025 >= EffectiveCost();
             _background.color = canAfford ? CanAffordColor : CannotAffordColor;
             ButtonOverlay.enabled = !canAfford;
             ButtonBuy.interactable = canAfford;
         }
-        ButtonBuyText.text = $"{Cost} <sprite=0>";
+        ButtonBuyText.text = $"{EffectiveCost()} <sprite=0>";
+    }
+
+    // Cost in the Inspector is the base price and is never modified. Diamond Deals makes every other card cheaper.
+    const double CardDiscountMul = 0.8;
+
+    long EffectiveCost()
+    {
+        if (!SaveGame.Members.BoughtCardDiscount || CardId == AscendUpgradeCardId.CardDiscount)
+            return Cost;
+
+        return Math.Max(1, (long)Math.Round(Cost * CardDiscountMul));
     }
 
     public void OnBuy()
@@ -245,10 +258,14 @@ public class AscendUpgradeCardScript : MonoBehaviour
         {
             SaveGame.Members.BoughtFasterArena2 = true;
         }
+        else if (CardId == AscendUpgradeCardId.CardDiscount)
+        {
+            SaveGame.Members.BoughtCardDiscount = true;
+        }
         else
             throw new NotImplementedException();
 
-        SaveGame.Members.DiamondCount_09_08_2025 -= Cost;
+        SaveGame.Members.DiamondCount_09_08_2025 -= EffectiveCost();
         SaveGame.Save();
         AscendDecisionScript.Instance.UpdateUi();
     }

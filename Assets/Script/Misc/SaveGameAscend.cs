@@ -44,6 +44,7 @@ static class SaveGameAscend
         newSave.BoughtX2Mastery2 = oldSave.BoughtX2Mastery2;
         newSave.BoughtX2Mastery3 = oldSave.BoughtX2Mastery3;
         newSave.BoughtFasterArena2 = oldSave.BoughtFasterArena2;
+        newSave.BoughtCardDiscount = oldSave.BoughtCardDiscount;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
