@@ -12,8 +12,11 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeKnifeCd;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long cdReductionNow = (long)(ClampLevel(level) * (100.0 / MaxLevel));
-            long cdReductionNext = (long)((ClampLevel(level + 1)) * (100.0 / MaxLevel));
+
+            double maxReduction = StartValue - EndValue;
+            double step = maxReduction / MaxLevel;
+            string cdReductionNow = $"{ClampLevelToMax(level) * step / StartValue * 100:0.0}";
+            string cdReductionNext = $"{ClampLevelToMax(level + 1) * step / StartValue * 100:0.0}";
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelKnifeCd,
@@ -46,24 +49,24 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{cdReductionNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevelToMax(level)} / {MaxLevel}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "Max reduction reached" : $"{cdReductionNext}%")}</color>");
 
             return sb.ToString();
         }
 
         private const int MaxLevel = 50;
-        private const double EndValueValue = 0.1;
+        private const double EndValue = 0.1;
         private const double StartValue = 0.4;
 
-        private static long ClampLevel(long level)
+        private static long ClampLevelToMax(long level)
             => level > MaxLevel ? MaxLevel : level;
 
         private static float ValueForLevel(long level)
         {
-            level = ClampLevel(level);
+            level = ClampLevelToMax(level);
 
-            double Step = (StartValue - EndValueValue) / MaxLevel;
+            double Step = (StartValue - EndValue) / MaxLevel;
             double value = StartValue - level * Step;
             return (float)value;
         }
