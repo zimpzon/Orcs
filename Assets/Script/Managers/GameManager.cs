@@ -13,8 +13,6 @@ public enum GameModeEnum { Undeads };
 
 public class GameManager : MonoBehaviour
 {
-    public const int MajorVersion = 0;
-
     // 1: added versions
     // 2: added mystery bonus
     // 3: radial progress bar mystery counters
@@ -110,7 +108,8 @@ public class GameManager : MonoBehaviour
     // 91: Setting for removing details on hover
     // 92: Sped up the beginning a bit
     // 93: Added buy10 for percent bonuses
-    public const int MinorVersion = 93;
+    public const int MajorVersion = 1;
+    public const int MinorVersion = 0;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 
@@ -420,10 +419,9 @@ public class GameManager : MonoBehaviour
     {
         GameCanvasScript.Instance.ShowPopup(
             "<color=yellow>Welcome to Idle Earl</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
-            "<size=-2>Recent updates:\n<size=-3><color=#d0d0e0>" +
-            " - added buy 10 for percentage bonuses\n" +
-            " - made the beginning a bit faster\n" +
-            " - Significantly increased high level income");
+            "<size=-2>Fight in the arena\n" + 
+            "Buy upgrades to get stronger\n" +
+            "Teach them to not mess with <color=yellow>Earl\n");
 
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
@@ -868,15 +866,16 @@ public class GameManager : MonoBehaviour
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
 
         // Without this, early arenas hand out gold disproportionate to how cheap early upgrades are,
-        // letting players reach the shop upgrades almost immediately. Ramp gold from a low floor at
-        // arena 1 up to full value by EarlyGameRampLevels. The ramp is linear (unchanged) up through
-        // EarlyGameSlowdownLevel, which comfortably covers the 1st/2nd upgrade - past that point it
-        // eases in more slowly so the 3rd/4th upgrade take a bit longer to reach, while still landing
-        // on exactly the same value at EarlyGameRampLevels, so anything at/after that is unaffected.
+        // letting players reach the shop upgrades almost immediately. Up through EarlyGameSlowdownLevel
+        // gold ramps linearly from a low floor (x EarlyGameGoldBoost after arena 1, which was too stingy
+        // to afford upgrades; arena 1 itself is tuned via the first-upgrade guarantee below). From there
+        // it ramps linearly up to FullGoldMul at EarlyGameRampLevels and stays there - a flat mid-game
+        // multiplier made arena 11 pay 5x arena 10, so it's spread out over the ramp instead.
         const double EarlyGameGoldFloor = 0.2;
+        const double EarlyGameGoldBoost = 2.0;
         const long EarlyGameRampLevels = 100;
         const long EarlyGameSlowdownLevel = 10;
-        const double EarlyGameSlowdownPower = 2.0;
+        const double FullGoldMul = 5.0;
 
         long arenaLevel = SaveGame.Members.ArenaLevel;
         double earlyGameMul;
@@ -884,23 +883,17 @@ public class GameManager : MonoBehaviour
         {
             earlyGameMul = EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
                 (arenaLevel - 1) / (double)EarlyGameRampLevels;
+            if (arenaLevel > 1)
+                earlyGameMul *= EarlyGameGoldBoost;
         }
         else
         {
-            double valueAtSlowdownLevel = EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
-                (EarlyGameSlowdownLevel - 1) / (double)EarlyGameRampLevels;
+            double valueAtSlowdownLevel = EarlyGameGoldBoost * (EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
+                (EarlyGameSlowdownLevel - 1) / (double)EarlyGameRampLevels);
             double progress = Math.Min(1.0,
                 (arenaLevel - EarlyGameSlowdownLevel) / (double)(EarlyGameRampLevels - EarlyGameSlowdownLevel));
-            earlyGameMul = valueAtSlowdownLevel + (1.0 - valueAtSlowdownLevel) * Math.Pow(progress, EarlyGameSlowdownPower);
+            earlyGameMul = valueAtSlowdownLevel + (FullGoldMul - valueAtSlowdownLevel) * progress;
         }
-
-        // The ramp alone made the first arenas after arena 1 too stingy to afford upgrades. Boost them,
-        // capped at full value so the ramp still lands on 1.0 by EarlyGameRampLevels. Arena 1 is left
-        // alone since it's already tuned via the first-upgrade guarantee below.
-        const double EarlyGameGoldBoost = 2.0;
-        if (arenaLevel > 1)
-            earlyGameMul *= EarlyGameGoldBoost;
-        earlyGameMul = Math.Min(1.0, earlyGameMul);
 
         // Round HP (and so gold) is quadratic in arena level, but upgrade costs grow exponentially
         // per upgrade level - the exponential eventually wins, making late arenas feel like they
