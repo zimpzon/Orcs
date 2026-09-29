@@ -16,10 +16,10 @@ public class BestiaryScript : MonoBehaviour
         }
     }
 
-    // Bonus step per beast index. Base 3%, each Beast Scholar ascend card adds +1% (back up to the original 5%).
+    // Bonus step per beast index. Base 1%, each Beast Scholar ascend card adds +1% (max 3%).
     public static int PctPerBeast()
     {
-        int pct = 3;
+        int pct = 1;
         if (SaveGame.Members.BoughtBeastScholar1) pct++;
         if (SaveGame.Members.BoughtBeastScholar2) pct++;
         return pct;
@@ -33,8 +33,7 @@ public class BestiaryScript : MonoBehaviour
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beastActor.ActorType);
 
-            // Cap beastiary bonus at 10% so it won't go crazy at high levels. Diamonds are more than enough.
-            // Calc is both here and in BeastiaryBeastScript
+            // Step per beast index is PctPerBeast() (1%, +1% per Beast Scholar card). Calc is both here and in BeastiaryBeastScript.
             incomeBonus += isUnlocked ? (idx + 1) * PctPerBeast() : 0;
             idx++;
         }
