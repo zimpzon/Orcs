@@ -386,6 +386,8 @@ public static class EnemySpawner
         foreach (var enemy in spawned)
         {
             enemy.BaseHp = effectiveSpawnHp;
+            // Reset() (Hp = BaseHp) only runs when returning to the cache, i.e. with the previous BaseHp.
+            enemy.Hp = effectiveSpawnHp;
             enemies.Add(enemy);
         }
     }

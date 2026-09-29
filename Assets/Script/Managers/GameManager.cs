@@ -464,6 +464,9 @@ public class GameManager : MonoBehaviour
             var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
             UpdateBeastsSeen(enemies);
 
+            if (enemies.Distinct().Count() != enemies.Count)
+                Debug.LogError("Same enemy instance spawned twice in one round - ActorCache is handing out duplicates");
+
             long totalHitpoints = enemies.Sum(a => a.BaseHp);
             livingEnemyCount = enemies.Count();
             HpBarScript.SetHp(totalHitpoints, totalHitpoints);
@@ -472,7 +475,13 @@ public class GameManager : MonoBehaviour
             AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.NewRound);
             yield return ShowInfoTextFlashy("ROUND START!");
             if (GameState == State.Idle_RestartRound)
+            {
+                // Not activated yet, so DestroyAllEnemies won't find them. Return them or they leak from the cache.
+                // Straight to the cache, not ReturnToCache(): a never-activated actor hasn't run Awake, so Reset() would NRE.
+                foreach (var enemy in enemies)
+                    Assets.Script.Enemies.ActorCache.Instance.ReturnObject(enemy.gameObject);
                 continue;
+            }
 
             foreach (var enemy in enemies)
             {

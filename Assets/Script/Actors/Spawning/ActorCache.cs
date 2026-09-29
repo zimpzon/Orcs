@@ -7,8 +7,9 @@ namespace Assets.Script.Enemies
     {
         class CacheEntry
         {
-            public int Idx = 0;
-            public List<GameObject> Objects = new();
+            public int TotalCount = 0;
+            public Stack<GameObject> Free = new();
+            public HashSet<GameObject> InCache = new();
         }
         public GameObject ObjectsParent;
         public static ActorCache Instance;
@@ -34,26 +35,23 @@ namespace Assets.Script.Enemies
                 ExpandCache(StartCapacity, actorType);
             }
             var cacheEntry = Caches[actorType];
-            if (cacheEntry.Idx >= cacheEntry.Objects.Count)
-                ExpandCache(cacheEntry.Objects.Count / 2, actorType);
-            return cacheEntry.Objects[cacheEntry.Idx++];
+            if (cacheEntry.Free.Count == 0)
+                ExpandCache(Mathf.Max(1, cacheEntry.TotalCount / 2), actorType);
+
+            var actor = cacheEntry.Free.Pop();
+            cacheEntry.InCache.Remove(actor);
+            return actor;
         }
         public void ReturnObject(GameObject actor)
         {
             var actorType = actor.GetComponent<ActorBase>().ActorType;
             actor.SetActive(false);
 
-            var cacheEntry = Caches[actorType];
-
-            // Add bounds checking to prevent negative index
-            if (cacheEntry.Idx <= 0)
-            {
-                // Looks like double return. Ignore.
+            // Double returns used to corrupt the cache and hand out the same actor twice in one round.
+            if (!Caches.TryGetValue(actorType, out var cacheEntry) || !cacheEntry.InCache.Add(actor))
                 return;
-            }
 
-            cacheEntry.Idx--;
-            cacheEntry.Objects[cacheEntry.Idx] = actor;
+            cacheEntry.Free.Push(actor);
         }
         void ExpandCache(int count, ActorTypeEnum actorType)
         {
@@ -66,7 +64,9 @@ namespace Assets.Script.Enemies
                 var originalScale = newObject.transform.localScale;
                 newObject.transform.SetParent(ObjectsParent.transform, worldPositionStays: true);
                 newObject.transform.localScale = originalScale;
-                cacheEntry.Objects.Add(newObject);
+                cacheEntry.Free.Push(newObject);
+                cacheEntry.InCache.Add(newObject);
+                cacheEntry.TotalCount++;
             }
         }
     }
