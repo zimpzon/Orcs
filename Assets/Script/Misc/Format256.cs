@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using System.Globalization;
+using Assets.Script.Misc;
 
 public static class Format512
 {
@@ -44,7 +45,7 @@ public static class Format512
             }
             else
             {
-                return decimalValue.ToString("0.0", CultureInfo.InvariantCulture);
+                return decimalValue.ToString("0.0", DisplayNumberFormat.Info);
             }
         }
 
@@ -61,19 +62,19 @@ public static class Format512
                 string numberPart;
                 if (scaledValue >= 100)
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", DisplayNumberFormat.Info);
                 }
                 else if (scaledValue >= 10)
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", DisplayNumberFormat.Info);
                     if (!alwaysThreeDecimalsForLargeNumbers)
-                        numberPart = numberPart.TrimEnd('0').TrimEnd('.');
+                        numberPart = DisplayNumberFormat.TrimTrailingDecimals(numberPart);
                 }
                 else
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", DisplayNumberFormat.Info);
                     if (!alwaysThreeDecimalsForLargeNumbers)
-                        numberPart = numberPart.TrimEnd('0').TrimEnd('.');
+                        numberPart = DisplayNumberFormat.TrimTrailingDecimals(numberPart);
                 }
 
                 return numberPart + (abbreviate ? shortSuffix : longSuffix);
@@ -82,7 +83,7 @@ public static class Format512
 
         // For numbers >= 1000 but < 1M, format as whole number with thousands separators
         BigInteger wholeValue = rawValue / scaleFactor;
-        return wholeValue.ToString("N0", CultureInfo.InvariantCulture);
+        return wholeValue.ToString("N0", DisplayNumberFormat.Info);
     }
 
     public static string Format(Decimal512 number, bool abbreviate = true)
@@ -110,15 +111,15 @@ public static class Format512
                 string numberPart;
                 if (scaledValue >= 100)
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture);
+                    numberPart = scaledValue.ToString("N3", DisplayNumberFormat.Info);
                 }
                 else if (scaledValue >= 10)
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = DisplayNumberFormat.TrimTrailingDecimals(scaledValue.ToString("N3", DisplayNumberFormat.Info));
                 }
                 else
                 {
-                    numberPart = scaledValue.ToString("N3", CultureInfo.InvariantCulture).TrimEnd('0').TrimEnd('.');
+                    numberPart = DisplayNumberFormat.TrimTrailingDecimals(scaledValue.ToString("N3", DisplayNumberFormat.Info));
                 }
 
                 return numberPart + (abbreviate ? shortSuffix : longSuffix);
@@ -127,6 +128,6 @@ public static class Format512
 
         // For numbers >= 1000 but < 1M, format as whole number with thousands separators
         BigInteger wholeValue = rawValue / scaleFactor;
-        return wholeValue.ToString("N0", CultureInfo.InvariantCulture);
+        return wholeValue.ToString("N0", DisplayNumberFormat.Info);
     }
 }

@@ -942,15 +942,16 @@ public class GameManager : MonoBehaviour
             {
                 SaveGame.Members.TotalIncomeKnifeThrow += knifeThrownBonus;
 
-                FloatingTextSpawner.Instance.Spawn(
-                    endRoundGoldSummaryPos + Vector2.down * 0.7f,
-                    $"<size=+2>Dagger throws: +<color=#8DBE4C>{Format512.Format(knifeThrownBonus)}</color> gold",
-                    new Color(0.8f, 0.8f, 0.8f),
-                    speed: 0.05f,
-                    timeToLive: 5.0f,
-                    fadeTime: 0.5f,
-                    fontStyle: TMPro.FontStyles.Bold,
-                    FontTarragon);
+                // Removed since it was noisy
+                //FloatingTextSpawner.Instance.Spawn(
+                //    endRoundGoldSummaryPos + Vector2.down * 0.7f,
+                //    $"<size=+2>Dagger throws: +<color=#8DBE4C>{Format512.Format(knifeThrownBonus)}</color> gold",
+                //    new Color(0.8f, 0.8f, 0.8f),
+                //    speed: 0.05f,
+                //    timeToLive: 5.0f,
+                //    fadeTime: 0.5f,
+                //    fontStyle: TMPro.FontStyles.Bold,
+                //    FontTarragon);
 
                 ThrowGoldSplit(knifeThrownBonus, position);
             }

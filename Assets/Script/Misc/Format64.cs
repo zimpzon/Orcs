@@ -31,7 +31,7 @@ namespace Assets.Script.Misc
             double value = number / 1000.0;
 
             // Remove trailing zeros from decimal representation
-            string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", CultureInfo.InvariantCulture) : value.ToString("0.###", CultureInfo.InvariantCulture);
+            string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", DisplayNumberFormat.Info) : value.ToString("0.###", DisplayNumberFormat.Info);
 
             return formatted + (abbreviate ? "K" : " thousand");
         }
@@ -41,7 +41,7 @@ namespace Assets.Script.Misc
             double value = number / divisor;
 
             // Remove trailing zeros from decimal representation
-            string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", CultureInfo.InvariantCulture) : value.ToString("0.###", CultureInfo.InvariantCulture);
+            string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", DisplayNumberFormat.Info) : value.ToString("0.###", DisplayNumberFormat.Info);
 
             return formatted + (abbreviate ? shortSuffix : longSuffix);
         }
