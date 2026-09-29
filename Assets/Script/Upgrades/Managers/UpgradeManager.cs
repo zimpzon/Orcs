@@ -747,10 +747,20 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelCriticalStrikeX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
-        const float BonusPerRank = 0.1f;
         long bought = PlayerUpgrades.Data.NumberOfX2Bought;
         long bonuses = bought / 5;
-        PlayerUpgrades.Data.PassiveIncomeX2Multiplier = BonusPerRank * bonuses;
+        PlayerUpgrades.Data.PassiveIncomeX2Multiplier = X2BonusPerRank() * bonuses;
+    }
+
+    // Base 10% per rank, each X2 Mastery ascend card adds another 10%.
+    static double X2BonusPerRank()
+    {
+        const double BonusPerRank = 0.1;
+        int cards = 0;
+        if (SaveGame.Members.BoughtX2Mastery1) cards++;
+        if (SaveGame.Members.BoughtX2Mastery2) cards++;
+        if (SaveGame.Members.BoughtX2Mastery3) cards++;
+        return BonusPerRank * (1 + cards);
     }
 
     private void Awake()

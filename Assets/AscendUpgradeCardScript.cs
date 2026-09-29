@@ -28,6 +28,9 @@ public enum AscendUpgradeCardId
     Haggler3,
     BeastScholar1,
     BeastScholar2,
+    X2Mastery1,
+    X2Mastery2,
+    X2Mastery3,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -99,6 +102,9 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.Haggler3 => SaveGame.Members.BoughtHaggler3,
             AscendUpgradeCardId.BeastScholar1 => SaveGame.Members.BoughtBeastScholar1,
             AscendUpgradeCardId.BeastScholar2 => SaveGame.Members.BoughtBeastScholar2,
+            AscendUpgradeCardId.X2Mastery1 => SaveGame.Members.BoughtX2Mastery1,
+            AscendUpgradeCardId.X2Mastery2 => SaveGame.Members.BoughtX2Mastery2,
+            AscendUpgradeCardId.X2Mastery3 => SaveGame.Members.BoughtX2Mastery3,
             _ => throw new NotImplementedException()
         };
 
@@ -220,6 +226,18 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.BeastScholar2)
         {
             SaveGame.Members.BoughtBeastScholar2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.X2Mastery1)
+        {
+            SaveGame.Members.BoughtX2Mastery1 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.X2Mastery2)
+        {
+            SaveGame.Members.BoughtX2Mastery2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.X2Mastery3)
+        {
+            SaveGame.Members.BoughtX2Mastery3 = true;
         }
         else
             throw new NotImplementedException();

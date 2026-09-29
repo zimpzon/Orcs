@@ -40,6 +40,9 @@ static class SaveGameAscend
         newSave.BoughtHaggler3 = oldSave.BoughtHaggler3;
         newSave.BoughtBeastScholar1 = oldSave.BoughtBeastScholar1;
         newSave.BoughtBeastScholar2 = oldSave.BoughtBeastScholar2;
+        newSave.BoughtX2Mastery1 = oldSave.BoughtX2Mastery1;
+        newSave.BoughtX2Mastery2 = oldSave.BoughtX2Mastery2;
+        newSave.BoughtX2Mastery3 = oldSave.BoughtX2Mastery3;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
