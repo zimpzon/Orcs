@@ -561,12 +561,14 @@ public class GameManager : MonoBehaviour
             if (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here.
-                SaveGame.Members.ArenaLevel += arenaStep;
-                
-                if (arenaStep > 1)
+                // Speed cheat also multiplies the jump (timeouts still only step back the normal amount).
+                long winStep = arenaStep * (long)G.CheatSpeed;
+                SaveGame.Members.ArenaLevel += winStep;
+
+                if (winStep > 1)
                 {
-                    // snap to nearest multiple of 5 (rounding down).
-                    SaveGame.Members.ArenaLevel -= SaveGame.Members.ArenaLevel % arenaStep;
+                    // snap to nearest multiple of the step (rounding down).
+                    SaveGame.Members.ArenaLevel -= SaveGame.Members.ArenaLevel % winStep;
                     if (SaveGame.Members.ArenaLevel < 1)
                         SaveGame.Members.ArenaLevel = 1;
                 }
@@ -1531,20 +1533,57 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Test cheat: passive income, credits, mystery timer and time played run CheatSpeedMultiplier times faster,
+    // and arena wins jump CheatSpeedMultiplier times further. Arena combat itself runs at normal speed.
+    const float CheatSpeedMultiplier = 10.0f;
+    TextMeshProUGUI _cheatSpeedLabel;
+
+    void ToggleCheatSpeed()
+    {
+        // Deliberately not Time.timeScale - the arena can't handle running that fast. Combat stays at normal speed,
+        // everything driven by G.D.RealTime runs faster, and arena wins jump further instead.
+        G.CheatSpeed = G.CheatSpeed == 1.0f ? CheatSpeedMultiplier : 1.0f;
+        bool isOn = G.CheatSpeed != 1.0f;
+        Debug.Log($"Cheat speed x{G.CheatSpeed}");
+
+        if (_cheatSpeedLabel == null)
+        {
+            // Clone the ARENA N text so it matches the arena view style, and put it just below it.
+            _cheatSpeedLabel = Instantiate(TextLevel, TextLevel.transform.parent);
+            _cheatSpeedLabel.name = "CheatSpeedLabel";
+            _cheatSpeedLabel.rectTransform.anchoredPosition -= new Vector2(0, TextLevel.rectTransform.rect.height);
+            _cheatSpeedLabel.color = new Color(1.0f, 0.35f, 0.25f);
+        }
+
+        _cheatSpeedLabel.text = $"CHEAT SPEED x{G.CheatSpeed:0}";
+        _cheatSpeedLabel.gameObject.SetActive(isOn);
+    }
+
     float _nextSendStats;
+    float _statsScaledTimeNext;
     void TrySendStats()
     {
         if (Time.realtimeSinceStartup > _nextSendStats)
         {
+            // Time played is counted in G.D.RealTime so the speed cheat makes it grow faster too. Without the cheat
+            // this is SendStatsInterval per send, same as before.
+            float scaledNow = G.D.RealTime;
+            int secondsPlayed = _statsScaledTimeNext == 0 ? SendStatsInterval : (int)(scaledNow - _statsScaledTimeNext + SendStatsInterval);
+            _statsScaledTimeNext = scaledNow + SendStatsInterval;
+
             // Update estimated time every time we save, we only need it for stats anyways (for now...)
-            SaveGame.Members.EstimatedOnlineSeconds2 += SendStatsInterval;
+            SaveGame.Members.EstimatedOnlineSeconds2 += secondsPlayed;
             if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
             {
-                SaveGame.Members.TimeSinceLastAscend += SendStatsInterval;
+                SaveGame.Members.TimeSinceLastAscend += secondsPlayed;
             }
 
-            Debug.Log("Sending stats...");
-            UpdatePlayFabStats();
+            // Don't pollute the PlayFab leaderboards while testing with the speed cheat.
+            if (G.CheatSpeed == 1.0f)
+            {
+                Debug.Log("Sending stats...");
+                UpdatePlayFabStats();
+            }
             _nextSendStats = Time.realtimeSinceStartup + SendStatsInterval;
         }
     }
@@ -1687,6 +1726,11 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.ArenaLevel -= 25;
             if (SaveGame.Members.ArenaLevel <= 1)
                 SaveGame.Members.ArenaLevel = 1;
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            ToggleCheatSpeed();
         }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))

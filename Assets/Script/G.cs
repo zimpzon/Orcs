@@ -29,7 +29,23 @@ public class G : MonoBehaviour
     [NonSerialized] public Vector3 PlayerPos;
     public Vector3 PlayerCenterOffset;
 
-    public float RealTime => Time.realtimeSinceStartup;
+    // Test cheat (RightCtrl+T): RealTime-driven systems run CheatSpeed times faster (not arena combat), see GameManager.ToggleCheatSpeed.
+    public static float CheatSpeed = 1.0f;
+
+    // Real time, but sped up by CheatSpeed. Accumulated lazily so it is exact no matter who calls it or when the speed changes.
+    // Equals Time.realtimeSinceStartup when the cheat has never been used.
+    double _scaledRealTime;
+    float _lastRealtimeSinceStartup;
+    public float RealTime
+    {
+        get
+        {
+            float now = Time.realtimeSinceStartup;
+            _scaledRealTime += (now - _lastRealtimeSinceStartup) * CheatSpeed;
+            _lastRealtimeSinceStartup = now;
+            return (float)_scaledRealTime;
+        }
+    }
     public float GameTime => GameManager.Instance.GameTime;
     public float GameDeltaTime => GameManager.Instance.GameDeltaTime;
 
