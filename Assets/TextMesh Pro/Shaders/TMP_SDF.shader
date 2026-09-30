@@ -126,6 +126,7 @@ SubShader {
 		#include "UnityUI.cginc"
 		#include "TMPro_Properties.cginc"
 		#include "TMPro.cginc"
+		#include "Assets/Shader/UISaturation.cginc"
 
 		struct vertex_t
 		{
@@ -315,7 +316,7 @@ SubShader {
 			clip(faceColor.a - 0.001);
 		    #endif
 
-  		    return faceColor * input.color.a;
+  		    return ApplyUISaturationPremul(faceColor * input.color.a);
 		}
 		ENDCG
 	}

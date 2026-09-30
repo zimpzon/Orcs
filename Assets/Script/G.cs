@@ -89,9 +89,21 @@ public class G : MonoBehaviour
         return Input.GetKey(code);
     }
 
+    [Header("UI saturation (buttons, panels and text). 0 = unchanged, 0.25 = +25%, negative = less.")]
+    [Range(-1.0f, 2.0f)] public float UISaturationBoost = 0.25f;
+    static readonly int UISaturationBoostId = Shader.PropertyToID("_UISaturationBoost");
+
+    void ApplyUISaturation() => Shader.SetGlobalFloat(UISaturationBoostId, UISaturationBoost);
+
+    // Lets the slider preview in edit mode too.
+    private void OnValidate() => ApplyUISaturation();
+
     private void Awake()
     {
         D = this;
+
+        ApplyUISaturation();
+        gameObject.AddComponent<UISaturationApplier>();
 
         UpgradePositiveColorHex = ColorToHex(UpgradePositiveColor);
         UpgradeNegativeColorHex = ColorToHex(UpgradeNegativeColor);
@@ -101,5 +113,6 @@ public class G : MonoBehaviour
     private void Update()
     {
         D.PlayerPos = PlayerTrans.position;
+        ApplyUISaturation(); // cheap, and lets the slider be tweaked live in play mode
     }
 }
