@@ -45,7 +45,7 @@ public class FloatingTextSpawner : MonoBehaviour
     // merge) instead of spamming a new text per hit.
     const float MergeWindow = 0.12f;
     // Overall size of damage numbers (1 = the floating text prefab's normal size).
-    const float DamageTextScale = 0.75f;
+    const float DamageTextScale = 0.85f;
     readonly Dictionary<int, (FloatingTextScript script, int generation)> damageTexts_ = new();
     static readonly Color CritColor = new Color(1.0f, 0.82f, 0.2f);
 

@@ -708,9 +708,18 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
+    // Overall scale of all money picked up in the arena (round gold, dagger-throw gold, chests), applied at pickup.
+    const double ArenaMoneyScale = 0.1;
+
     public void AddGold(bool isLargeCoin, Decimal512 value)
     {
-        Decimal512 moneyAdded = value;
+        // Arena money benefits from the same income % bonuses as passive income (diamonds, X2 cards, 1% bonus,
+        // bestiary...), otherwise every bonus bought makes arena gold relatively worse. Applied here at pickup so it
+        // stays in Decimal512 (the round-gold path is long and would overflow with large late-game multipliers).
+        // ArenaGoldIncomeShare: 1 = full multiplier, 0.5 = sqrt of it (gentler), 0 = old behavior.
+        const double ArenaGoldIncomeShare = 1.0;
+        double incomeMul = Math.Pow(Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier), ArenaGoldIncomeShare);
+        Decimal512 moneyAdded = value * (incomeMul * ArenaMoneyScale);
         SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
@@ -870,37 +879,10 @@ public class GameManager : MonoBehaviour
         float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
         float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
 
-        // Without this, early arenas hand out gold disproportionate to how cheap early upgrades are,
-        // letting players reach the shop upgrades almost immediately. Up through EarlyGameSlowdownLevel
-        // gold ramps linearly from a low floor (x EarlyGameGoldBoost after arena 1, which was too stingy
-        // to afford upgrades; arena 1 itself is tuned via the first-upgrade guarantee below). From there
-        // it ramps linearly up to FullGoldMul at FullGoldLevel and stays there - a flat mid-game
-        // multiplier made arena 11 pay 5x arena 10, so it's spread out over the ramp instead.
-        const double EarlyGameGoldFloor = 0.2;
-        const double EarlyGameGoldBoost = 4.0; // was 2.0; doubled so early arenas pay 2x too, not just ~arena 45
-        const long EarlyGameRampLevels = 100;
-        const long EarlyGameSlowdownLevel = 10;
-        const double FullGoldMul = 5.0;
-        // Arena where the ramp reaches FullGoldMul. Was EarlyGameRampLevels (100), but mid-arenas (~45) paid too little.
-        const long FullGoldLevel = 50;
-
-        long arenaLevel = SaveGame.Members.ArenaLevel;
-        double earlyGameMul;
-        if (arenaLevel <= EarlyGameSlowdownLevel)
-        {
-            earlyGameMul = EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
-                (arenaLevel - 1) / (double)EarlyGameRampLevels;
-            if (arenaLevel > 1)
-                earlyGameMul *= EarlyGameGoldBoost;
-        }
-        else
-        {
-            double valueAtSlowdownLevel = EarlyGameGoldBoost * (EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
-                (EarlyGameSlowdownLevel - 1) / (double)EarlyGameRampLevels);
-            double progress = Math.Min(1.0,
-                (arenaLevel - EarlyGameSlowdownLevel) / (double)(FullGoldLevel - EarlyGameSlowdownLevel));
-            earlyGameMul = valueAtSlowdownLevel + (FullGoldMul - valueAtSlowdownLevel) * progress;
-        }
+        // Flat multiplier on round gold. The old arena 1-100 ramp is gone: gold scales with round HP (arena level)
+        // and with the income % multiplier applied at pickup (see AddGold). Tuned down twice by 4x
+        // (5.0 -> 1.25 -> 0.3125) after income % scaling made arena gold too high.
+        const double ArenaGoldMul = 0.3125;
 
         // Round HP (and so gold) is quadratic in arena level, but upgrade costs grow exponentially
         // per upgrade level - the exponential eventually wins, making late arenas feel like they
@@ -912,14 +894,15 @@ public class GameManager : MonoBehaviour
             ? 1.0
             : Math.Sqrt(SaveGame.Members.ArenaLevel / (double)LateGameBoostLevel);
 
-        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct * earlyGameMul * lateGameMul);
+        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct * ArenaGoldMul * lateGameMul);
         if (goldWon <= 0) goldWon = 1;
         long result = (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
 
-        // Guarantee arena 1 alone covers the cheapest upgrade (twice over, matching the 2x early-gold boost), so
-        // new (and freshly-ascended) players aren't left stuck without enough gold to buy anything.
+        // Guarantee arena 1 alone covers the cheapest upgrade (twice over), so new (and freshly-ascended)
+        // players aren't left stuck without enough gold to buy anything.
         long firstUpgradeCost = (long)Assets.Script.Upgrades.UpgradeProgression.InitialPrice_Clickdamage.ToDouble();
-        long arenaOneMinimum = firstUpgradeCost * 2;
+        // Divided by ArenaMoneyScale since that is applied at pickup, so the player still ends up with 2x the cost.
+        long arenaOneMinimum = (long)Math.Ceiling(firstUpgradeCost * 2 / ArenaMoneyScale);
         if (SaveGame.Members.ArenaLevel == 1 && result < arenaOneMinimum)
             result = arenaOneMinimum;
 
