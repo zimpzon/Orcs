@@ -13,8 +13,8 @@ namespace Assets.Script.Upgrades
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
             long chanceNow = (long)Math.Round(ChanceForLevel(level) * 100.0);
-            long multNow = level * 10;
-            long multNext = (level + 1) * 10;
+            long multNow = (long)CritValueForLevel(level);
+            long multNext = (long)CritValueForLevel(level + 1);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelCriticalStrike,
@@ -58,6 +58,11 @@ namespace Assets.Script.Upgrades
         private static double ChanceForLevel(long level)
             => level > 0 ? FlatChance : 0.0;
 
+        // Crit damage multiplier. Was 10x per level, which at 15% chance made Critical Strike outscale every other
+        // tier (~16x average damage at level 10). Level 1 is unchanged (10x), deeper levels grow half as fast.
+        private static float CritValueForLevel(long level)
+            => level > 0 ? 5.0f + 5.0f * level : 0.0f;
+
         private static Decimal512 BaseIncome()
         {
             Decimal512 baseIncome = UpgradeProgression.BaseIncome_CriticalStrike;
@@ -88,7 +93,7 @@ namespace Assets.Script.Upgrades
         {
             long level = SaveGame.Members.LevelCriticalStrike;
             PlayerUpgrades.Data.BaseCritChance = (float)ChanceForLevel(level);
-            PlayerUpgrades.Data.CritValueMul = level * 10.0f;
+            PlayerUpgrades.Data.CritValueMul = CritValueForLevel(level);
         }
 
         public static void OnBuy()

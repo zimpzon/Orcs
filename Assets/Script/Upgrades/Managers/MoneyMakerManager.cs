@@ -6,6 +6,10 @@ namespace Assets.Script.Upgrades
 {
     public static class MoneyMakerManager
     {
+        // Skull damage as a share of dagger damage. Was 0.5; raised to 1.5 when the single dagger got its 3x bonus
+        // (PlayerScript.SingleDaggerDamageBonus), which skulls don't benefit from.
+        const double SkullDaggerDamageShare = 1.5;
+
         public static string GetText()
         {
             long level = SaveGame.Members.LevelMoneyMaker;
@@ -54,7 +58,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static double ValueForLevel(long level)
-            => 1 + 0.1 * (level - 1);
+            => 1 + 0.25 * (level - 1); // was +0.1/level
 
         private static Decimal512 BaseIncome()
         {
@@ -86,7 +90,7 @@ namespace Assets.Script.Upgrades
         {
             PlayerUpgrades.Data.NecromancerEnabled = SaveGame.Members.LevelMoneyMaker > 0;
             PlayerUpgrades.Data.NecromancerBaseDamage =
-                (PlayerUpgrades.Data.MagicMissileEffectiveDamage * 0.5f) * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
+                (PlayerUpgrades.Data.MagicMissileEffectiveDamage * SkullDaggerDamageShare) * ValueForLevel(SaveGame.Members.LevelMoneyMaker);
         }
 
         public static void OnBuy()

@@ -54,8 +54,9 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
+        // Was 50 + 50/level; +50% per level so daggers (and skulls, which are based on dagger damage) keep up with fireballs.
         private static long ValueForLevel(long level)
-            => 50 + 50 * level;
+            => 50 + 75 * level;
 
         private static Decimal512 BaseIncome()
         {

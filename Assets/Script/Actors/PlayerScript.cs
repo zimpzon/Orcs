@@ -159,9 +159,15 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    // While Earl only throws a single dagger (before Dagger Master / Beefy Earl add side daggers at 4x damage each, i.e.
+    // 9x then 17x total output), the main dagger gets this bonus so daggers aren't useless early. It switches off as soon
+    // as multishot is owned, so late game is unaffected.
+    const double SingleDaggerDamageBonus = 3.0;
+
     IEnumerator FireSalvo(Vector2 fireDir)
     {
         double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
+        double mainDamage = PlayerUpgrades.Data.MagicMissileMultiShots == 0 ? baseDamage * SingleDaggerDamageBonus : baseDamage;
         float mainScale = 1.5f;
         float multiDaggerScale = 1.0f;
         float anglePerShot = 5f;
@@ -175,7 +181,7 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             float recoil;
-            Weapon.FireFromPoint(trans_.position, fireDir, baseDamage, mainScale, GameManager.Instance.SortLayerTopEffects, out recoil);
+            Weapon.FireFromPoint(trans_.position, fireDir, mainDamage, mainScale, GameManager.Instance.SortLayerTopEffects, out recoil);
             DaggersThrown++;
             totalRecoil += recoil;
 

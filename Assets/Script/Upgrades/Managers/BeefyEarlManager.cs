@@ -6,6 +6,9 @@ namespace Assets.Script.Upgrades
 {
     public static class BeefyEarlManager
     {
+        // Dagger damage bonus per level (was 0.25 when it shared one additive sum with Smart Daggers).
+        const double DamagePerLevel = 0.5;
+
         public static string GetText()
         {
             long level = SaveGame.Members.LevelBeefyEarl;
@@ -44,8 +47,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * 25}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * 25}%</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * DamagePerLevel * 100:0}%</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * DamagePerLevel * 100:0}%</color>");
 
             return sb.ToString();
         }
@@ -79,7 +82,8 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MagicMissileMultiShotsBeefyEarl = SaveGame.Members.LevelBeefyEarl > 0 ? 1 : 0;
-            PlayerUpgrades.Data.MagicMissileBeefyEarlDamageMultiplier = SaveGame.Members.LevelBeefyEarl * 0.25;
+            // Now a separate multiplier on dagger damage (see PlayerUpgrades.MagicMissileEffectiveDamage), was +25%/level.
+            PlayerUpgrades.Data.MagicMissileBeefyEarlDamageMultiplier = SaveGame.Members.LevelBeefyEarl * DamagePerLevel;
         }
 
         public static void OnBuy()

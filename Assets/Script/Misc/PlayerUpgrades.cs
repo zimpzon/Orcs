@@ -78,8 +78,12 @@ public class UpgradeData
     public double MagicMissileDamageMulZapDamage = 0.0f;
     public double MagicMissileDamageMulSmartDaggers = 0.0f;
     public double MagicMissileBeefyEarlDamageMultiplier = 0.0f;
-    public double MagicMissileEffectiveDamage => MagicMissileBaseDamage *
-        (1.0 + MagicMissileDamageMulZapDamage + MagicMissileDamageMulSmartDaggers + MagicMissileBeefyEarlDamageMultiplier);
+    // Multiplicative, not one shared sum - with a sum, each extra bonus was diluted by the others (Beefy Earl's
+    // +25%/level barely registered next to Smart Daggers' +80%/level).
+    public double MagicMissileEffectiveDamage => MagicMissileBaseDamage
+        * (1.0 + MagicMissileDamageMulZapDamage)
+        * (1.0 + MagicMissileDamageMulSmartDaggers)
+        * (1.0 + MagicMissileBeefyEarlDamageMultiplier);
 
     public double MagicMissileBaseCd = 0.5f;
     public double MagicMissileCdMul = 1.0f;

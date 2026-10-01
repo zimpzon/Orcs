@@ -55,7 +55,9 @@ namespace Assets.Script.Upgrades
         }
 
         private static double ValueForLevel(long level)
-            => 20 + 0.15 * (level - 1);
+            // +2% of base per level. Originally +0.15 on 20 (+0.75%/level); +10% made fireballs ~8x too strong by level
+            // 200, since they already stack zap damage (50/level) x 20 x Angry Fireballs.
+            => 20 * (1 + 0.02 * (level - 1));
 
         private static Decimal512 BaseIncome()
         {
