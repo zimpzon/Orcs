@@ -874,13 +874,15 @@ public class GameManager : MonoBehaviour
         // letting players reach the shop upgrades almost immediately. Up through EarlyGameSlowdownLevel
         // gold ramps linearly from a low floor (x EarlyGameGoldBoost after arena 1, which was too stingy
         // to afford upgrades; arena 1 itself is tuned via the first-upgrade guarantee below). From there
-        // it ramps linearly up to FullGoldMul at EarlyGameRampLevels and stays there - a flat mid-game
+        // it ramps linearly up to FullGoldMul at FullGoldLevel and stays there - a flat mid-game
         // multiplier made arena 11 pay 5x arena 10, so it's spread out over the ramp instead.
         const double EarlyGameGoldFloor = 0.2;
-        const double EarlyGameGoldBoost = 2.0;
+        const double EarlyGameGoldBoost = 4.0; // was 2.0; doubled so early arenas pay 2x too, not just ~arena 45
         const long EarlyGameRampLevels = 100;
         const long EarlyGameSlowdownLevel = 10;
         const double FullGoldMul = 5.0;
+        // Arena where the ramp reaches FullGoldMul. Was EarlyGameRampLevels (100), but mid-arenas (~45) paid too little.
+        const long FullGoldLevel = 50;
 
         long arenaLevel = SaveGame.Members.ArenaLevel;
         double earlyGameMul;
@@ -896,7 +898,7 @@ public class GameManager : MonoBehaviour
             double valueAtSlowdownLevel = EarlyGameGoldBoost * (EarlyGameGoldFloor + (1.0 - EarlyGameGoldFloor) *
                 (EarlyGameSlowdownLevel - 1) / (double)EarlyGameRampLevels);
             double progress = Math.Min(1.0,
-                (arenaLevel - EarlyGameSlowdownLevel) / (double)(EarlyGameRampLevels - EarlyGameSlowdownLevel));
+                (arenaLevel - EarlyGameSlowdownLevel) / (double)(FullGoldLevel - EarlyGameSlowdownLevel));
             earlyGameMul = valueAtSlowdownLevel + (FullGoldMul - valueAtSlowdownLevel) * progress;
         }
 
@@ -914,11 +916,12 @@ public class GameManager : MonoBehaviour
         if (goldWon <= 0) goldWon = 1;
         long result = (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
 
-        // Guarantee arena 1 alone covers the cheapest upgrade, so new (and freshly-ascended) players
-        // aren't left stuck without enough gold to buy anything.
+        // Guarantee arena 1 alone covers the cheapest upgrade (twice over, matching the 2x early-gold boost), so
+        // new (and freshly-ascended) players aren't left stuck without enough gold to buy anything.
         long firstUpgradeCost = (long)Assets.Script.Upgrades.UpgradeProgression.InitialPrice_Clickdamage.ToDouble();
-        if (SaveGame.Members.ArenaLevel == 1 && result < firstUpgradeCost)
-            result = firstUpgradeCost;
+        long arenaOneMinimum = firstUpgradeCost * 2;
+        if (SaveGame.Members.ArenaLevel == 1 && result < arenaOneMinimum)
+            result = arenaOneMinimum;
 
         return result;
     }
