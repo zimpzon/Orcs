@@ -753,7 +753,7 @@ public class UpgradeManager : MonoBehaviour
     }
 
     // Base 10% per rank, each X2 Mastery ascend card adds another 10%.
-    static double X2BonusPerRank()
+    public static double X2BonusPerRank()
     {
         const double BonusPerRank = 0.1;
         int cards = 0;

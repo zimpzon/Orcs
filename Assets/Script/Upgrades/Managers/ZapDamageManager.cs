@@ -52,9 +52,12 @@ namespace Assets.Script.Upgrades
             return sb.ToString();
         }
 
+        // Frenzy: +10% to ALL damage per level, as a true multiplier (PlayerUpgrades.DamageMul, applied to every hit in
+        // GameManager.DamageEnemy). It used to be +20%/level added into the zap and dagger multipliers only, where it
+        // got diluted by Smart Daggers / Beefy Earl in the same sum.
         private static double ValueForLevel(long level)
         {
-            return 0.2 * level;
+            return 0.1 * level;
         }
 
         private static Decimal512 BaseIncome()
@@ -85,8 +88,11 @@ namespace Assets.Script.Upgrades
 
         public static void UpdatePlayerUpgrades()
         {
-            PlayerUpgrades.Data.ZapDamageUpgrade = ValueForLevel(SaveGame.Members.LevelZapDamage);
-            PlayerUpgrades.Data.MagicMissileDamageMulZapDamage = ValueForLevel(SaveGame.Members.LevelZapDamage);
+            PlayerUpgrades.Data.DamageMul = (float)(1.0 + ValueForLevel(SaveGame.Members.LevelZapDamage));
+
+            // No longer added here, or Frenzy would count twice for zap/daggers.
+            PlayerUpgrades.Data.ZapDamageUpgrade = 0;
+            PlayerUpgrades.Data.MagicMissileDamageMulZapDamage = 0;
         }
 
         public static void OnBuy()

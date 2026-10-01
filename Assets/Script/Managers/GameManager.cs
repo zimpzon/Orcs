@@ -708,18 +708,14 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.Menu);
     }
 
-    // Overall scale of all money picked up in the arena (round gold, dagger-throw gold, chests), applied at pickup.
+    // Scale of the non-income-based arena money: dagger-throw gold and chests (both also get the income % multiplier,
+    // see ArenaMoneyMul). Round gold itself is income-based, see CalculateRoundCompleteGold.
     const double ArenaMoneyScale = 0.1;
 
     public void AddGold(bool isLargeCoin, Decimal512 value)
     {
-        // Arena money benefits from the same income % bonuses as passive income (diamonds, X2 cards, 1% bonus,
-        // bestiary...), otherwise every bonus bought makes arena gold relatively worse. Applied here at pickup so it
-        // stays in Decimal512 (the round-gold path is long and would overflow with large late-game multipliers).
-        // ArenaGoldIncomeShare: 1 = full multiplier, 0.5 = sqrt of it (gentler), 0 = old behavior.
-        const double ArenaGoldIncomeShare = 1.0;
-        double incomeMul = Math.Pow(Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier), ArenaGoldIncomeShare);
-        Decimal512 moneyAdded = value * (incomeMul * ArenaMoneyScale);
+        // Coin values are final - all arena money scaling is applied where the coins are thrown.
+        Decimal512 moneyAdded = value;
         SaveGame.Members.TotalIncomeArena += moneyAdded;
 
         AddMoney(moneyAdded);
@@ -869,62 +865,65 @@ public class GameManager : MonoBehaviour
     Vector3 rotInf = new Vector3(0, 0, 0);
     float magn = 1.0f, rough = 10, fadeIn = 0.5f, fadeOut = 0.5f;
 
-    long CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
+    // Every arena round (won or timed out) pays a fixed RoundIncomeSeconds of passive income, except the first
+    // arenas which use the early-run floor below. Deliberately NOT multiplied by Gold Value (MoneyPerGold) - that
+    // turned "3 sec of income" into hundreds of seconds at high Gold Value levels.
+    const double RoundIncomeSeconds = 3.0;
+    // Dagger-throw gold: nerfed to 5% (DaggerGoldMul), and capped at this many seconds of income per round
+    // (also 5% of the previous 3 sec cap, so the nerf holds whether or not the cap is hit).
+    const double DaggerGoldMul = 0.05;
+    const double DaggerGoldMaxIncomeSeconds = 0.15;
+
+    double CalculateRoundCompleteGold(int totalSeconds, int secondsLeft, long totalDamage)
     {
-        // This directly affects how much gold arena makes. On top we have dagger throws, which usually does more.
-        const double HpToGoldPct = 0.25 / EnemySpawner.HpScale;
+        double result = Math.Max(1.0, TotalPassiveIncome.ToDouble() * RoundIncomeSeconds);
 
-        // Faster completion means more gold. But we will end at lowest (0.75%) all the time since
-        // time will almost always be used up at higher levels.
-        float timeFraction = (secondsLeft + 0.0001f) / totalSeconds;
-        float penaltyMul = 0.75f + 0.75f * timeFraction; // Linear scaling
-
-        // Flat multiplier on round gold. The old arena 1-100 ramp is gone: gold scales with round HP (arena level)
-        // and with the income % multiplier applied at pickup (see AddGold). Tuned down twice by 4x
-        // (5.0 -> 1.25 -> 0.3125) after income % scaling made arena gold too high.
-        const double ArenaGoldMul = 0.3125;
-
-        // Round HP (and so gold) is quadratic in arena level, but upgrade costs grow exponentially
-        // per upgrade level - the exponential eventually wins, making late arenas feel like they
-        // stop mattering. No change below LateGameBoostLevel; past it, gold effectively grows like
-        // level^2.5 instead of level^2 (an extra sqrt(level/LateGameBoostLevel) factor) to extend
-        // how long arena income keeps up with upgrade costs.
-        const long LateGameBoostLevel = 200;
-        double lateGameMul = SaveGame.Members.ArenaLevel <= LateGameBoostLevel
-            ? 1.0
-            : Math.Sqrt(SaveGame.Members.ArenaLevel / (double)LateGameBoostLevel);
-
-        long goldWon = (long)Math.Ceiling(totalDamage * penaltyMul * HpToGoldPct * ArenaGoldMul * lateGameMul);
-        if (goldWon <= 0) goldWon = 1;
-        long result = (long)(goldWon * PlayerUpgrades.Data.MoneyPerGold);
-
-        // Guarantee arena 1 alone covers the cheapest upgrade (twice over), so new (and freshly-ascended)
-        // players aren't left stuck without enough gold to buy anything.
-        long firstUpgradeCost = (long)Assets.Script.Upgrades.UpgradeProgression.InitialPrice_Clickdamage.ToDouble();
-        // Divided by ArenaMoneyScale since that is applied at pickup, so the player still ends up with 2x the cost.
-        long arenaOneMinimum = (long)Math.Ceiling(firstUpgradeCost * 2 / ArenaMoneyScale);
-        if (SaveGame.Members.ArenaLevel == 1 && result < arenaOneMinimum)
-            result = arenaOneMinimum;
+        // Early-run floor: income is ~0 at the start of a run, so the first arenas must pay well above it for the
+        // player to buy anything. Arena 1 pays exactly the first upgrade (1 zap), then the floor grows
+        // EarlyFloorGrowth per arena up to EarlyFloorLastLevel, after which income-based gold takes over.
+        const double EarlyFloorGrowth = 1.35;
+        const long EarlyFloorLastLevel = 20;
+        long level = SaveGame.Members.ArenaLevel;
+        if (level <= EarlyFloorLastLevel)
+        {
+            double firstUpgradeCost = Assets.Script.Upgrades.UpgradeProgression.InitialPrice_Clickdamage.ToDouble();
+            double earlyFloor = firstUpgradeCost * Math.Pow(EarlyFloorGrowth, Math.Max(0, level - 1));
+            if (level == 1)
+                result = earlyFloor; // exactly one zap upgrade
+            else
+                result = Math.Max(result, earlyFloor);
+        }
 
         return result;
     }
+
+    // Income-scaled multiplier for the other arena money (dagger-throw gold, chests): income % bonuses x ArenaMoneyScale.
+    public double ArenaMoneyMul()
+        => Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier) * ArenaMoneyScale;
 
     void PresentRoundGold(Vector2 position)
     {
         long damageDone = _roundTotalHp - HpBarScript.CurrentHp;
 
-        long goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, damageDone);
+        double goldWon = CalculateRoundCompleteGold(RoundTimeSeconds, _secondsLeft, damageDone);
         Vector2 endRoundGoldSummaryPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 4);
 
         bool knifeThrowGoldEnabled = SaveGame.Members.LevelGoldPerKnifeThrown > 0;
         if (knifeThrowGoldEnabled)
         {
             // bonus = DaggerDamage * daggersThrown * goldPerDagger
-            long knifeThrownBonus = (long)(
+            double knifeThrownBonus =
                 PlayerUpgrades.Data.MagicMissileEffectiveDamage *
                 G.D.PlayerScript.DaggersThrown *
                 PlayerUpgrades.Data.GoldPerKnifeThrown *
-                PlayerUpgrades.Data.MoneyPerGold);
+                PlayerUpgrades.Data.MoneyPerGold *
+                ArenaMoneyMul() *
+                DaggerGoldMul;
+
+            // Nothing ties dagger gold to income, so cap it to keep a round at a few seconds of income.
+            double incomePerSec = TotalPassiveIncome.ToDouble();
+            if (incomePerSec > 0)
+                knifeThrownBonus = Math.Min(knifeThrownBonus, incomePerSec * DaggerGoldMaxIncomeSeconds);
 
             if (knifeThrownBonus > 0)
             {
@@ -991,22 +990,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void ThrowGoldSplit(long goldWon, Vector3 position, bool isLargeCoin = true)
+    void ThrowGoldSplit(double goldWon, Vector3 position, bool isLargeCoin = true)
     {
         if (goldWon <= 0)
             return;
 
-        // Smooth scale: 1 coin at low amounts, 10 at 1000 or more
-        int coinCount = Mathf.Clamp(Mathf.RoundToInt(goldWon / 50f), 1, 10);
-
-        long baseValue = goldWon / coinCount;
-        long remainder = goldWon % coinCount;
+        // Smooth scale: 1 coin at low amounts, 10 at 500 or more. Double, since income-based gold can be huge.
+        int coinCount = (int)Math.Clamp(Math.Round(goldWon / 50.0), 1, 10);
+        double value = goldWon / coinCount;
 
         for (int i = 0; i < coinCount; i++)
-        {
-            long value = baseValue + (i < remainder ? 1 : 0);
             ThrowPickups(AutoPickUpType.Money, position, amount: 1, value, forceScale: 4.0f, isLargeCoin);
-        }
     }
 
     void AddToTotalDamage(ActorDamageSource damageSource, long damage)

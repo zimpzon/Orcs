@@ -22,7 +22,7 @@ public class ChestScript : MonoBehaviour, IKillableObject
 
         GameManager.Instance.MakePoof(transform.position, 4, 1.5f);
         GameManager.Instance.MakeFlash(transform.position, 2);
-        GameManager.Instance.ThrowPickups(AutoPickUpType.Money, transform.position,money, 1, 2.0f);
+        GameManager.Instance.ThrowPickups(AutoPickUpType.Money, transform.position, money, GameManager.Instance.ArenaMoneyMul(), 2.0f);
         GameManager.Instance.ThrowPickups(AutoPickUpType.Xp, transform.position, 20, xpValue, forceScale: 8.0f);
 
         for (int i = 0; i < 5; ++i)
