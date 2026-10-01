@@ -30399,7 +30399,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +10% to diamond bonus. <Color=yellow>Don't buy too early!
+      value: '+10% to diamond bonus. <Color=yellow>Careful: may lower income'
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -65861,7 +65861,7 @@ PrefabInstance:
       propertyPath: m_text
       value: '+40% to diamond bonus.
 
-        <Color=yellow>Don''t buy too early!'
+        <Color=yellow>Careful: may lower income'
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -87578,7 +87578,7 @@ PrefabInstance:
       propertyPath: m_text
       value: '+60% to diamond bonus.
 
-        <Color=yellow>Don''t buy too early!'
+        <Color=yellow>Careful: may lower income'
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -100318,7 +100318,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: "+100% to diamond bonus. \n<Color=yellow>Don't buy too early!"
+      value: "+100% to diamond bonus. \n<Color=yellow>Careful: may lower income"
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -100474,7 +100474,7 @@ PrefabInstance:
       propertyPath: m_text
       value: '+20% to diamond bonus.
 
-        <Color=yellow>Don''t buy too early!'
+        <Color=yellow>Careful: may lower income'
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -108304,7 +108304,7 @@ MonoBehaviour:
   PlayerScript: {fileID: 1038077829}
   PlayerTrans: {fileID: 1038077830}
   PlayerCenterOffset: {x: 0.055, y: -0.15, z: 0}
-  UISaturationBoost: 0.25
+  UISaturationBoost: 0.2
 --- !u!114 &1919188413
 MonoBehaviour:
   m_ObjectHideFlags: 0
