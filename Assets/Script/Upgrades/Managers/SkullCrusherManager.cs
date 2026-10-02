@@ -52,7 +52,7 @@ namespace Assets.Script.Upgrades
         }
 
         private static double ValueForLevel(long level)
-            => 1 + 0.3 * level;
+            => 1 + 0.6 * level; // was +30%/level; doubled since it's the only damage gain among the surrounding utility tiers
 
         private static Decimal512 BaseIncome()
         {
