@@ -80,14 +80,19 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
         var playerPos = G.D.PlayerPos + Vector3.up * 0.3f;
         var diff = playerPos - myPos;
 
-        if (diff.sqrMagnitude < sqrAttractDistance_ && time > throwEndTime_)
+        bool attracting = diff.sqrMagnitude < sqrAttractDistance_ && time > throwEndTime_;
+        if (attracting)
         {
             var direction = diff.normalized;
             force_ = direction * AttractPower;
         }
 
+        // If this frame's step would reach or pass the player, collect it now. Otherwise at low frame rates a step
+        // can be larger than the pickup radius and the coin wobbles back and forth around the player's head.
+        bool reachesPlayer = attracting && (force_ * dt).sqrMagnitude >= diff.sqrMagnitude;
+
         float forceMagnitude = force_.magnitude;
-        if (forceMagnitude > 0.1f)
+        if (forceMagnitude > 0.1f && !reachesPlayer)
         {
             var newPos = myPos + force_ * dt;
             newPos = GameManager.Instance.ClampToBounds(newPos, spriteRenderer_.sprite);
@@ -96,7 +101,7 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
             force_ *= 1.0f - dt * Drag;
         }
 
-        if (diff.sqrMagnitude < sqrPickupDistance_ && time > throwEndTime_)
+        if ((diff.sqrMagnitude < sqrPickupDistance_ || reachesPlayer) && time > throwEndTime_)
         {
             if (Type == AutoPickUpType.Money)
             {
