@@ -1051,6 +1051,10 @@ public class GameManager : MonoBehaviour
 
         amount *= PlayerUpgrades.Data.DamageMul;
 
+        // Skull Slicer: all damage to an enemy with a skull attached is multiplied.
+        if (enemy.SkullMarkedUntil > GameTime)
+            amount *= PlayerUpgrades.Data.SkullSlicerDamageMul;
+
         // Critical Strike upgrade: BaseCritChance/CritChanceMul/CritValueMul already existed as
         // unused hooks in PlayerUpgrades - this is the first thing to actually read them.
         bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;

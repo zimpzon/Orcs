@@ -12,6 +12,9 @@ public class UpgradeData
     // Power Zap: applies only to actual zaps (Zapper.TryZapEnemy), not to things scaled from zap damage.
     public int PowerZapExtraJumps = 0;
     public double PowerZapDamageMul = 1.0;
+
+    // Skull Slicer: all damage to an enemy with a skull attached is multiplied by this.
+    public double SkullSlicerDamageMul = 1.0;
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);

@@ -268,6 +268,11 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         // Keep sticking to target at specific offset
                         p.Position = p.CurrentTarget.transform.position + p.StickOffset;
                         p.CurrentTarget.SetSlowmotion(0.5f);
+
+                        // Skull Slicer: mark the enemy as carrying a skull. Refreshed every frame while attached, so it
+                        // simply expires shortly after the skull leaves or the enemy dies.
+                        if (p.DamageSource == ActorDamageSource.Necromancer)
+                            p.CurrentTarget.SkullMarkedUntil = GameManager.Instance.GameTime + 0.2f;
                         Vector3 damageDirection = (p.StickOffset * -1).normalized;
                         if (GameManager.Instance.GameTime > p.StickyDamageTimeNext)
                         {

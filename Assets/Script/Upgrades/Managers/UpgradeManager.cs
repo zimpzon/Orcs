@@ -41,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript BeefyEarl;
     public UpgradeItemScript CriticalStrike;
     public UpgradeItemScript PowerZap;
+    public UpgradeItemScript SkullSlicer;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -78,6 +79,7 @@ public class UpgradeManager : MonoBehaviour
         BeefyEarlManager.UpdateAll();
         CriticalStrikeManager.UpdateAll();
         PowerZapManager.UpdateAll();
+        SkullSlicerManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -130,6 +132,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelBeefyEarl, SaveGame.Members.LevelCriticalStrike);
         else if (PowerZap != null && upgradeUiScript == PowerZap)
             return GetDisplayStatus(SaveGame.Members.LevelCriticalStrike, SaveGame.Members.LevelPowerZap);
+        else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
+            return GetDisplayStatus(SaveGame.Members.LevelPowerZap, SaveGame.Members.LevelSkullSlicer);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -180,6 +184,8 @@ public class UpgradeManager : MonoBehaviour
             return CriticalStrikeManager.PriceForNext();
         else if (PowerZap != null && upgradeUiScript == PowerZap)
             return PowerZapManager.PriceForNext();
+        else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
+            return SkullSlicerManager.PriceForNext();
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -242,6 +248,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(CriticalStrike) == UpgradeDisplayStatus.FullyShown ? CriticalStrikeManager.GetText() : GetLockedText(CriticalStrike);
         else if (PowerZap != null && upgradeUiScript == PowerZap)
             text = GetUpgradeDisplayStatus(PowerZap) == UpgradeDisplayStatus.FullyShown ? PowerZapManager.GetText() : GetLockedText(PowerZap);
+        else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
+            text = GetUpgradeDisplayStatus(SkullSlicer) == UpgradeDisplayStatus.FullyShown ? SkullSlicerManager.GetText() : GetLockedText(SkullSlicer);
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -287,6 +295,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeBeefyEarl += BeefyEarlManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeCriticalStrike += CriticalStrikeManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomePowerZap += PowerZapManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeSkullSlicer += SkullSlicerManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -311,6 +320,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += BeefyEarlManager.PassiveIncome();
         fullSum += CriticalStrikeManager.PassiveIncome();
         fullSum += PowerZapManager.PassiveIncome();
+        fullSum += SkullSlicerManager.PassiveIncome();
         return fullSum;
     }
 
@@ -355,6 +365,8 @@ public class UpgradeManager : MonoBehaviour
         SetIsVisble(CriticalStrike);
         if (PowerZap != null)
             SetIsVisble(PowerZap);
+        if (SkullSlicer != null)
+            SetIsVisble(SkullSlicer);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -378,6 +390,7 @@ public class UpgradeManager : MonoBehaviour
         BeefyEarlManager.UpdateUi();
         CriticalStrikeManager.UpdateUi();
         PowerZapManager.UpdateUi();
+        SkullSlicerManager.UpdateUi();
     }
 
     void OnItemBought(long actualBuyAmount)
@@ -724,6 +737,21 @@ public class UpgradeManager : MonoBehaviour
         OnX2ItemBought();
     }
 
+    public void OnBuySkullSlicer()
+    {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSkullSlicer, SaveGame.Members.LevelSkullSlicerX2);
+        SkullSlicerManager.OnBuy();
+        SkullSlicer.SetPopupText();
+        OnItemBought(buyAmount);
+    }
+
+    public void OnBuySkullSlicerX2()
+    {
+        SkullSlicerManager.OnBuyX2();
+        SkullSlicer.SetPopupText();
+        OnX2ItemBought();
+    }
+
     private void UpdatePlayerUpgrades()
     {
         ClickDamageManager.UpdatePlayerUpgrades();
@@ -748,6 +776,7 @@ public class UpgradeManager : MonoBehaviour
         BeefyEarlManager.UpdatePlayerUpgrades();
         CriticalStrikeManager.UpdatePlayerUpgrades();
         PowerZapManager.UpdatePlayerUpgrades();
+        SkullSlicerManager.UpdatePlayerUpgrades();
     }
 
     void UpdateNumberOfX2Bought()
@@ -775,6 +804,7 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelBeefyEarlX2;
         total += SaveGame.Members.LevelCriticalStrikeX2;
         total += SaveGame.Members.LevelPowerZapX2;
+        total += SaveGame.Members.LevelSkullSlicerX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
         long bought = PlayerUpgrades.Data.NumberOfX2Bought;
