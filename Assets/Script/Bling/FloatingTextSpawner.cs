@@ -25,11 +25,12 @@ public class FloatingTextSpawner : MonoBehaviour
         float fadeTime = 0.0f,
         FontStyles fontStyle = FontStyles.Bold,
         TMP_FontAsset fontAsset = null,
-        bool useQueue = false)
+        bool useQueue = false,
+        bool soft = false)
     {
         var go = textPool_.GetFromPool();
         var script = go.GetComponent<FloatingTextScript>();
-        script.Init(textPool_, position, text, color, speed, timeToLive, fadeTime, fontStyle, fontAsset);
+        script.Init(textPool_, position, text, color, speed, timeToLive, fadeTime, fontStyle, fontAsset, soft);
         if (useQueue)
         {
             go.SetActive(false);
@@ -73,6 +74,61 @@ public class FloatingTextSpawner : MonoBehaviour
         script.InitDamage(textPool_, position, amount, isCrit, color, CritColor, sizeMul);
         go.SetActive(true);
         damageTexts_[key] = (script, script.Generation);
+    }
+
+    // Gold pickup numbers: collapse like damage numbers, but split each burst of coins into a random 4-5 numbers.
+    // When a burst starts we pick the group count; each new number then takes its share of the coins still in flight
+    // (AutoPickUpScript.ActiveMoneyCount). Each merge pops the number.
+    const int GoldGroupsMin = 4;
+    const int GoldGroupsMax = 5;
+    const float GoldBurstGap = 0.5f;       // no gold pickup for this long = next pickup starts a new burst
+    const float GoldMergeWindow = 0.4f;    // never merge pickups further apart than this
+    // Overall size of gold numbers (1 = the floating text prefab's normal size).
+    const float GoldTextScale = 1.0f;
+    FloatingTextScript goldText_;
+    int goldTextGeneration_;
+    int goldMergesLeft_;
+    int goldGroupsLeft_;
+    int goldBurstIndex_;
+    float lastGoldPickupTime_ = -100f;
+
+    public void SpawnGold(Vector3 position, Decimal512 amount, Color color)
+    {
+        float now = GameManager.Instance.GameTime;
+        bool newBurst = now - lastGoldPickupTime_ > GoldBurstGap;
+        lastGoldPickupTime_ = now;
+
+        if (!newBurst && goldMergesLeft_ > 0 && goldText_ != null && goldText_.Generation == goldTextGeneration_
+            && goldText_.CanMerge(GoldMergeWindow, maxMergeAge: float.MaxValue))
+        {
+            goldText_.AddGold(amount);
+            goldMergesLeft_--;
+            return;
+        }
+
+        if (newBurst)
+        {
+            goldGroupsLeft_ = Random.Range(GoldGroupsMin, GoldGroupsMax + 1);
+            goldBurstIndex_ = 0;
+        }
+
+        // Fan the numbers of a burst out: alternate left/right of the player, a bit further out each time,
+        // and drift outward to that side so they don't overlap.
+        float side = goldBurstIndex_ % 2 == 0 ? -1f : 1f;
+        position += new Vector3(side * (0.35f + 0.35f * (goldBurstIndex_ / 2)), 0.12f * goldBurstIndex_, 0);
+        goldBurstIndex_++;
+
+        // Coins still in flight include the one being picked up right now.
+        int coinsLeft = Mathf.Max(1, AutoPickUpScript.ActiveMoneyCount);
+        int groups = Mathf.Max(1, goldGroupsLeft_);
+        goldMergesLeft_ = Mathf.CeilToInt(coinsLeft / (float)groups) - 1;
+        goldGroupsLeft_ = Mathf.Max(1, goldGroupsLeft_ - 1);
+
+        var go = textPool_.GetFromPool();
+        goldText_ = go.GetComponent<FloatingTextScript>();
+        goldText_.InitGold(textPool_, position, amount, color, GoldTextScale, side);
+        go.SetActive(true);
+        goldTextGeneration_ = goldText_.Generation;
     }
 
     readonly List<int> staleKeys_ = new();

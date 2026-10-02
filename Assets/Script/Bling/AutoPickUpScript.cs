@@ -22,6 +22,10 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
     bool _initComplete;
     bool _isLarge;
 
+    // Money coins currently thrown and not yet picked up. Used to split a burst of gold text into a few numbers.
+    public static int ActiveMoneyCount;
+    bool _countedAsActiveMoney;
+
     private void Awake()
     {
         // Total hack because localScale became zero immediately, even if wasn't to begin with, wtf?
@@ -41,6 +45,11 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
             Init();
 
         _isLarge = isLargeCoin;
+        if (Type == AutoPickUpType.Money && !_countedAsActiveMoney)
+        {
+            ActiveMoneyCount++;
+            _countedAsActiveMoney = true;
+        }
         forceScale *= GameManager.Instance.ArenaScale;
         forceScale_ = forceScale;
 
@@ -59,6 +68,12 @@ public class AutoPickUpScript : MonoBehaviour, IKillOnSaveWipe
 
     public void Die()
     {
+        if (_countedAsActiveMoney)
+        {
+            ActiveMoneyCount = Mathf.Max(0, ActiveMoneyCount - 1);
+            _countedAsActiveMoney = false;
+        }
+
         transform.localScale = _baseScale;
         PickUpManagerScript.Instance.ReturnPickUpToCache(Type, gameObject);
     }

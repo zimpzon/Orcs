@@ -721,19 +721,11 @@ public class GameManager : MonoBehaviour
 
         AddMoney(moneyAdded);
 
-        Vector2 playerPos = G.D.PlayerPos;
-        Vector2 textPos = playerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle();
-
         if (SaveGame.Members.ShowFloatingGoldNumbers)
         {
-            Decimal512 displayMoney = moneyAdded;
-            FloatingTextSpawner.Instance.Spawn(
-                textPos,
-                $"${Format512.Format(displayMoney)}",
-                ColorGoldCollect,
-                speed: 2.0f,
-                timeToLive: 1.0f,
-                fontStyle: TMPro.FontStyles.Bold);
+            // Collapses like damage numbers: pickups close together are summed into one popping "$" number.
+            Vector2 textPos = (Vector2)G.D.PlayerPos + Vector2.up * 0.75f + RndUtil.RandomInsideUnitCircle() * 0.3f;
+            FloatingTextSpawner.Instance.SpawnGold(textPos, moneyAdded, ColorGoldCollect);
         }
     }
 
