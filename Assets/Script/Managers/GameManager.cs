@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
     // 92: Sped up the beginning a bit
     // 93: Added buy10 for percent bonuses
     public const int MajorVersion = 1;
-    public const int MinorVersion = 0;
+    public const int MinorVersion = 1;
 
     public enum State { None, Idle_Starting_Game, Idle_PresentLevel, Idle_Fighting, Idle_WonFight, Idle_OutOfTime, Idle_RestartRound };
 

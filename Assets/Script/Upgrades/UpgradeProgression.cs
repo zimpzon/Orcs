@@ -35,9 +35,11 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 80;
         // Trimmed from *80 to *60 to make room for CriticalStrike, which now slots in at BeefyEarl's old price.
         public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 60;
-        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_SmartFireballs * 80;
-        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 80;
-        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 80;
+        // Last tiers keep the same x60 step as the late tiers before them. Critical Strike used to be
+        // SmartFireballs * 80, only 1.3x Beefy Earl, so it came almost free right after it.
+        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 60;
+        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 60;
+        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 60;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
