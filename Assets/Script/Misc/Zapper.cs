@@ -27,6 +27,10 @@ namespace Assets.Script.Misc
             if (actor is null)
                 return false;
 
+            // Power Zap boosts actual zaps only (player chain zap + Witch Doctor corpse zaps both come through here),
+            // not things that merely scale from zap damage, like Wizard fireballs.
+            damage = (long)(damage * PlayerUpgrades.Data.PowerZapDamageMul);
+
             var direction = (to - from).normalized;
             GameManager.Instance.DamageEnemy(actor, damage, direction, forceModifier: 1.5f, damageSource: damageSource);
 

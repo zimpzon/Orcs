@@ -382,7 +382,8 @@ public class GameManager : MonoBehaviour
         const int MaxJumps = 3;
         const float JumpDelay = 0.001f;
 
-        for (int i = 0; i < MaxJumps; ++i)
+        int jumps = MaxJumps + PlayerUpgrades.Data.PowerZapExtraJumps;
+        for (int i = 0; i < jumps; ++i)
         {
             yield return new WaitForSeconds(JumpDelay);
 
@@ -1678,7 +1679,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 50_000_000;
+            SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 50_000_000_000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))

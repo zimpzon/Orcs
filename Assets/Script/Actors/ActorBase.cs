@@ -144,6 +144,8 @@ public class ActorBase : MonoBehaviour
     [NonSerialized] public bool IsSpawning = true;
     [NonSerialized] public int UniqueId;
     static int UniqueIdCounter = 1;
+    // Shared scratch list for Power Zap corpse-zap chains; only used inside one synchronous loop, so sharing is safe.
+    static readonly List<ActorBase> CorpseZapSkipList = new();
 
     float paintEnd_;
     Color paintColor_;
@@ -716,6 +718,31 @@ public class ActorBase : MonoBehaviour
                         {
                             Particles.I.ClickTrail.transform.position = (Vector2)transform.position + UnityEngine.Random.insideUnitCircle * 0.5f;
                             Particles.I.ClickTrail.Emit(5);
+                        }
+
+                        // Power Zap: the corpse zap chains on to more enemies (same radius as the player's chain zap).
+                        if (PlayerUpgrades.Data.PowerZapExtraJumps > 0)
+                        {
+                            CorpseZapSkipList.Clear();
+                            CorpseZapSkipList.Add(this);
+                            CorpseZapSkipList.Add(closestEnemy);
+                            var prevEnemy = closestEnemy;
+
+                            for (int jump = 0; jump < PlayerUpgrades.Data.PowerZapExtraJumps; ++jump)
+                            {
+                                const float JumpRange = 6.0f;
+                                var nextEnemy = BlackboardScript.GetClosestEnemy(prevEnemy.transform.position, JumpRange, CorpseZapSkipList);
+                                if (nextEnemy is null)
+                                    break;
+
+                                long jumpDamage = (long)(PlayerUpgrades.Data.WitchDoctorEffectiveDamage * EnemySpawner.GetWitchDoctorTierMultiplier(nextEnemy.ActorType));
+                                if (!Zapper.TryZapEnemy(prevEnemy.transform.position, nextEnemy, jumpDamage, ActorDamageSource.WitchDoctor))
+                                    break;
+
+                                GameManager.Instance.MakeFlash(prevEnemy.transform.position, size: 1);
+                                CorpseZapSkipList.Add(nextEnemy);
+                                prevEnemy = nextEnemy;
+                            }
                         }
                     }
                 }
