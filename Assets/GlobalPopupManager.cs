@@ -18,41 +18,58 @@ public class GlobalPopupManager : MonoBehaviour
     // Darkens everything behind the open popup, same look as the rebirth popup's AscendDarkenBackground.
     // Purely visual (no raycasts), so popup buttons, toggle-close and click-outside closing work as before.
     static readonly Color DarkenColor = new Color(0, 0, 0, 0.843f);
-    const float DarkenSize = 10000f;
     GameObject _darken;
+
+    // Popups are nested at different depths (e.g. the settings popup is inside SettingsImage, so later siblings like
+    // the credits box drew on top of it). Instead of relying on hierarchy order, the open popup gets its own canvas
+    // with a sorting override, and the darken layer sits just below it - both above all regular UI.
+    const int PopupSortingOrder = 100;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    void BringPopupToFront(GameObject popup)
+    {
+        if (!popup.TryGetComponent<Canvas>(out var popupCanvas))
+            popupCanvas = popup.AddComponent<Canvas>();
+        popupCanvas.overrideSorting = true;
+        popupCanvas.sortingOrder = PopupSortingOrder;
+
+        // A nested canvas needs its own raycaster, or the popup's buttons stop receiving clicks.
+        if (!popup.TryGetComponent<GraphicRaycaster>(out _))
+            popup.AddComponent<GraphicRaycaster>();
+    }
+
     void ShowDarken(GameObject popup)
     {
+        var rootCanvas = popup.GetComponentInParent<Canvas>()?.rootCanvas;
+        if (rootCanvas == null)
+            return;
+
         if (_darken == null)
         {
-            _darken = new GameObject("PopupDarkenBackground", typeof(RectTransform), typeof(Image));
+            _darken = new GameObject("PopupDarkenBackground", typeof(RectTransform), typeof(Canvas), typeof(Image));
             var image = _darken.GetComponent<Image>();
             image.color = DarkenColor;
             image.raycastTarget = false;
         }
 
+        // Fill the root canvas, drawn just below the popup's own canvas.
         var rt = (RectTransform)_darken.transform;
-        rt.SetParent(popup.transform.parent, worldPositionStays: false);
-        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.sizeDelta = new Vector2(DarkenSize, DarkenSize);
+        rt.SetParent(rootCanvas.transform, worldPositionStays: false);
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = rt.offsetMax = Vector2.zero;
         rt.localScale = Vector3.one;
 
-        // Center it on the screen (root canvas center), whatever size/position the popup's parent has.
-        var canvas = popup.GetComponentInParent<Canvas>();
-        if (canvas != null)
-            rt.position = canvas.rootCanvas.transform.position;
-
-        // Directly behind the popup: moving the overlay to the popup's index pushes the popup one step up.
-        rt.SetSiblingIndex(popup.transform.GetSiblingIndex());
-        if (rt.GetSiblingIndex() > popup.transform.GetSiblingIndex())
-            rt.SetSiblingIndex(popup.transform.GetSiblingIndex());
-
         _darken.SetActive(true);
+        var darkenCanvas = _darken.GetComponent<Canvas>();
+        darkenCanvas.overrideSorting = true;
+        darkenCanvas.sortingOrder = PopupSortingOrder - 1;
+
+        BringPopupToFront(popup);
     }
 
     void HideDarken()
@@ -61,11 +78,38 @@ public class GlobalPopupManager : MonoBehaviour
             _darken.SetActive(false);
     }
 
+    // Click outside the open popup closes it. Remembered briefly so that if that same click lands on the popup's own
+    // open button (whose onClick fires on mouse up and would reopen it), it acts as the usual toggle-close instead.
+    GameObject _closedByOutsideClick;
+    float _closedByOutsideClickTime;
+    const float OutsideClickToggleWindow = 0.5f;
+
+    bool IsPointerOver(GameObject popup)
+    {
+        var rt = popup.transform as RectTransform;
+        if (rt == null)
+            return true; // can't tell - don't close
+
+        var canvas = popup.GetComponentInParent<Canvas>();
+        Camera cam = canvas == null || canvas.rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.rootCanvas.worldCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(rt, Input.mousePosition, cam);
+    }
+
     private void Update()
     {
         // Safety net: popup closed some other way.
         if (CurrentPopup != null && !CurrentPopup.activeInHierarchy)
             CurrentPopup = null;
+
+        if (CurrentPopup != null && Input.GetMouseButtonDown(0) && !IsPointerOver(CurrentPopup))
+        {
+            var popup = CurrentPopup;
+            popup.SetActive(false);
+            CancelTweens(popup);
+            CurrentPopup = null;
+            _closedByOutsideClick = popup;
+            _closedByOutsideClickTime = Time.unscaledTime;
+        }
 
         if (CurrentPopup == null && _darken != null && _darken.activeSelf)
             HideDarken();
@@ -83,6 +127,18 @@ public class GlobalPopupManager : MonoBehaviour
 
     public void AfterShowPopup(GameObject popup)
     {
+        // This popup was just closed by the outside click that is now hitting its own open button: keep it closed,
+        // like clicking the open button of an already open popup always did.
+        if (popup == _closedByOutsideClick && Time.unscaledTime - _closedByOutsideClickTime < OutsideClickToggleWindow)
+        {
+            _closedByOutsideClick = null;
+            popup.SetActive(false);
+            CancelTweens(popup);
+            HideDarken();
+            return;
+        }
+        _closedByOutsideClick = null;
+
         if (popup == CurrentPopup)
         {
             Debug.Log("AfterShowPopup: already open, closing: " + CurrentPopup.name);
