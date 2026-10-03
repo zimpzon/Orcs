@@ -46,6 +46,15 @@ public class X2BonusScript : MonoBehaviour
     float _bonusTextBaseHeight;
     string _lastText;
     readonly System.Text.StringBuilder _sb = new();
+    readonly System.Collections.Generic.List<(string Name, Func<long> Level, Func<long> X2)> _unlocked = new();
+
+    void AppendEntry((string Name, Func<long> Level, Func<long> X2) tier, string namePos, string countPos)
+    {
+        _sb.Append(namePos);
+        _sb.Append($"<color=#cccccc>{tier.Name}</color>");
+        _sb.Append(countPos);
+        _sb.Append($"<color={GreenHex}>{tier.X2()}</color>");
+    }
 
     void Awake()
     {
@@ -79,27 +88,27 @@ public class X2BonusScript : MonoBehaviour
         _sb.Clear();
         _sb.Append($"Current: <color={GreenHex}>{bought}</color>, next: <color={GreenHex}>{next}</color>\r\nBonus: <color={GreenHex}>{PlayerUpgrades.Data.PassiveIncomeX2Multiplier * 100:0}</color>%");
 
-        // Two columns: left entries start at 0%, right entries at 50% of the text width.
-        bool anyListed = false;
-        int column = 0;
+        // Two columns, filled top-to-bottom first (like the upgrade list in the game view), then the right column.
+        _unlocked.Clear();
         foreach (var tier in Tiers)
         {
-            if (tier.Level() <= 0)
-                continue;
+            if (tier.Level() > 0)
+                _unlocked.Add(tier);
+        }
 
-            if (!anyListed)
+        if (_unlocked.Count > 0)
+        {
+            // Left-align just the list; the lines above keep the text's own alignment.
+            _sb.Append("\r\n<align=left>");
+
+            int rows = (_unlocked.Count + 1) / 2;
+            for (int r = 0; r < rows; ++r)
             {
-                // Left-align just the list; the lines above keep the text's own alignment.
-                _sb.Append("\r\n<align=left>");
-                anyListed = true;
+                // Name at the column start, X2 count at a fixed spot so the numbers line up.
+                AppendEntry(_unlocked[r], "\r\n<pos=4%>", "<pos=38%>");
+                if (r + rows < _unlocked.Count)
+                    AppendEntry(_unlocked[r + rows], "<pos=53%>", "<pos=87%>");
             }
-
-            // Name at the column start, X2 count at a fixed spot so the numbers line up.
-            _sb.Append(column == 0 ? "\r\n<pos=4%>" : "<pos=53%>");
-            _sb.Append($"<color=#cccccc>{tier.Name}</color>");
-            _sb.Append(column == 0 ? "<pos=38%>" : "<pos=87%>");
-            _sb.Append($"<color={GreenHex}>{tier.X2()}</color>");
-            column = 1 - column;
         }
 
         string text = _sb.ToString();
