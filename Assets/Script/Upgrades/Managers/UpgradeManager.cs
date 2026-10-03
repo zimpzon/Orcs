@@ -810,7 +810,16 @@ public class UpgradeManager : MonoBehaviour
         long bought = PlayerUpgrades.Data.NumberOfX2Bought;
         long bonuses = bought / 5;
         PlayerUpgrades.Data.PassiveIncomeX2Multiplier = X2BonusPerRank() * bonuses;
+
+        // Celebrate a new X2 rank at the cursor. Skips the first frame (save load) and big jumps (save import);
+        // decreases (ascend, wipe) just resync.
+        if (_lastX2Ranks >= 0 && bonuses > _lastX2Ranks && bonuses - _lastX2Ranks <= 3 && ClickDamage != null)
+            X2RankUpEffect.Spawn(ClickDamage, Input.mousePosition, X2BonusPerRank() * 100, bonuses);
+
+        _lastX2Ranks = bonuses;
     }
+
+    long _lastX2Ranks = -1;
 
     // Base 10% per rank, each X2 Mastery ascend card adds another 10%.
     public static double X2BonusPerRank()
