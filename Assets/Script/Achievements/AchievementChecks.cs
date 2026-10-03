@@ -67,36 +67,36 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckArena5000(List<Achieved> list)
+        public static void CheckArena10000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Arena5000)) return;
+            if (list.Contains(Achieved.Arena10000)) return;
 
-            if (SaveGame.Members.ArenaLevel >= 5000)
+            if (SaveGame.Members.ArenaLevel >= 10000)
             {
-                list.Add(Achieved.Arena5000);
-                NewAchieved(Achieved.Arena5000);
+                list.Add(Achieved.Arena10000);
+                NewAchieved(Achieved.Arena10000);
             }
         }
 
-        public static void CheckArena25000(List<Achieved> list)
+        public static void CheckArena35000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Arena25000)) return;
+            if (list.Contains(Achieved.Arena35000)) return;
 
-            if (SaveGame.Members.ArenaLevel >= 25000)
+            if (SaveGame.Members.ArenaLevel >= 35000)
             {
-                list.Add(Achieved.Arena25000);
-                NewAchieved(Achieved.Arena25000);
+                list.Add(Achieved.Arena35000);
+                NewAchieved(Achieved.Arena35000);
             }
         }
 
-        public static void CheckArena1500(List<Achieved> list)
+        public static void CheckArena81000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Arena50000)) return;
+            if (list.Contains(Achieved.Arena81000)) return;
 
-            if (SaveGame.Members.ArenaLevel >= 50000)
+            if (SaveGame.Members.ArenaLevel >= 81000)
             {
-                list.Add(Achieved.Arena50000);
-                NewAchieved(Achieved.Arena50000);
+                list.Add(Achieved.Arena81000);
+                NewAchieved(Achieved.Arena81000);
             }
         }
 
@@ -243,25 +243,33 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckDiamonds50000(List<Achieved> list)
-        {
-            if (list.Contains(Achieved.Diamonds50000)) return;
+        static float _nextCompletionCheck;
 
-            if (SaveGame.Members.DiamondCount_09_08_2025 >= 50000)
+        // 100% game completion: every enemy, every tier, and every skin except this one (it can't count itself).
+        // Throttled, GameCompletion.GetProgress scans the skin objects.
+        public static void CheckCompletion100(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Completion100)) return;
+
+            if (Time.unscaledTime < _nextCompletionCheck) return;
+            _nextCompletionCheck = Time.unscaledTime + 2.0f;
+
+            var p = GameCompletion.GetProgress();
+            if (p.EnemiesUnlocked >= p.EnemiesTotal && p.TiersBought >= p.TiersTotal && p.SkinsUnlocked >= p.SkinsTotal - 1)
             {
-                list.Add(Achieved.Diamonds50000);
-                NewAchieved(Achieved.Diamonds50000);
+                list.Add(Achieved.Completion100);
+                NewAchieved(Achieved.Completion100);
             }
         }
 
         public static void CheckVoidgazer(List<Achieved> list)
         {
-            if (list.Contains(Achieved.CriticalStrikeTier)) return;
+            if (list.Contains(Achieved.SkullSlicerTier)) return;
 
-            if (SaveGame.Members.LevelCriticalStrike >= 1)
+            if (SaveGame.Members.LevelSkullSlicer >= 1)
             {
-                list.Add(Achieved.CriticalStrikeTier);
-                NewAchieved(Achieved.CriticalStrikeTier);
+                list.Add(Achieved.SkullSlicerTier);
+                NewAchieved(Achieved.SkullSlicerTier);
             }
         }
 

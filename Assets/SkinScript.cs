@@ -70,7 +70,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BigMouth)
         {
-            return (list.Contains(Achieved.Arena25000), "Big Mouth Earl: Reach Arena level 25000");
+            return (list.Contains(Achieved.Arena35000), "Big Mouth Earl: Reach Arena level 35000");
         }
         else if (animationName == SkinAnimation.Pirate)
         {
@@ -90,15 +90,15 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Wig)
         {
-            return (list.Contains(Achieved.Arena5000), "Wig Earl: Reach Arena level 5000");
+            return (list.Contains(Achieved.Arena10000), "Wig Earl: Reach Arena level 10000");
         }
         else if (animationName == SkinAnimation.KaratEarl)
         {
-            return (list.Contains(Achieved.Arena50000), "KaratEarl: Reach Arena level 50000");
+            return (list.Contains(Achieved.Arena81000), "KaratEarl: Reach Arena level 81000");
         }
         else if (animationName == SkinAnimation.Voidgazer)
         {
-            return (list.Contains(Achieved.CriticalStrikeTier), "Voidgazer Earl: Reach Critical Strike");
+            return (list.Contains(Achieved.SkullSlicerTier), "Voidgazer Earl: Reach Skull Slicer");
         }
         else if (animationName == SkinAnimation.Wizard)
         {
@@ -130,7 +130,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SecretiveEarl)
         {
-            return (list.Contains(Achieved.X2_150), "Secretive Earl: Reach 100 X2 bonus");
+            return (list.Contains(Achieved.X2_150), "Secretive Earl: Reach 150 X2 bonus");
         }
         else if (animationName == SkinAnimation.SkaterEarl)
         {
@@ -178,7 +178,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.MonochromeEarl)
         {
-            return (list.Contains(Achieved.Diamonds50000), "Monochrome Earl: Have at least 50000 diamonds");
+            return (list.Contains(Achieved.Completion100), "Monochrome Earl: Reach 100% game completion");
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {

@@ -8,15 +8,15 @@ public enum Achieved
     WitchDoctor25,
     Necromancer200,
     SkullCrusher5,
-    Arena5000,
+    Arena10000,
     Rebirth2,
-    Arena25000,
+    Arena35000,
     Rebirth3,
     Mystery100,
     Chest50,
     Diamonds10,
-    CriticalStrikeTier,
-    Arena50000,
+    SkullSlicerTier,
+    Arena81000,
     MasterWizardTier,
     Diamonds250,
     Rebirth8,
@@ -39,7 +39,7 @@ public enum Achieved
     Buy1PercentTotal500,
     Rebirth20,
     Diamonds5000,
-    Diamonds50000,
+    Completion100,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -51,9 +51,9 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckNecro200(list);
         AchievementChecks.CheckSkullCrusher5(list);
         AchievementChecks.CheckArena1000(list);
-        AchievementChecks.CheckArena5000(list);
-        AchievementChecks.CheckArena25000(list);
-        AchievementChecks.CheckArena1500(list);
+        AchievementChecks.CheckArena10000(list);
+        AchievementChecks.CheckArena35000(list);
+        AchievementChecks.CheckArena81000(list);
         AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckChest50(list);
         AchievementChecks.CheckVoidgazer(list);
@@ -78,7 +78,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckDiamonds250(list);
         AchievementChecks.CheckDiamonds1000(list);
         AchievementChecks.CheckDiamonds5000(list);
-        AchievementChecks.CheckDiamonds50000(list);
+        AchievementChecks.CheckCompletion100(list);
         AchievementChecks.CheckChestMaster200(list);
         AchievementChecks.Have1Percent50(list);
         AchievementChecks.Buy1PercentTotal500(list);
