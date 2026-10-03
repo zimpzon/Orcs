@@ -34,6 +34,14 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         {
             SaveGame.Members.SoundEnabled = on;
             SaveGame.Save();
+
+            // Little confirmation that sound is back: the buy sound (unmute right away, AudioManager would only
+            // do it next frame).
+            if (on)
+            {
+                AudioListener.volume = 1f;
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+            }
         });
     }
 
