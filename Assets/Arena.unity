@@ -23343,17 +23343,17 @@ MonoBehaviour:
 
     Earl'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 96d2d582cee15a341b80ff825e23c83f, type: 2}
-  m_sharedMaterial: {fileID: -1915754978567311717, guid: 96d2d582cee15a341b80ff825e23c83f,
+  m_fontAsset: {fileID: 11400000, guid: 68155ca2396f0c446b39a681c17ff01b, type: 2}
+  m_sharedMaterial: {fileID: 8786306135487539263, guid: 68155ca2396f0c446b39a681c17ff01b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4284047723
-  m_fontColor: {r: 0.41960788, g: 0.3803922, b: 0.34901962, a: 1}
-  m_enableVertexGradient: 1
+    rgba: 4284640118
+  m_fontColor: {r: 0.462, g: 0.41882244, b: 0.38428038, a: 1}
+  m_enableVertexGradient: 0
   m_colorMode: 0
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
@@ -23375,7 +23375,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 33
+  m_fontStyle: 32
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -117005,16 +117005,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: GAME INFO
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 96d2d582cee15a341b80ff825e23c83f, type: 2}
-  m_sharedMaterial: {fileID: -1915754978567311717, guid: 96d2d582cee15a341b80ff825e23c83f,
+  m_fontAsset: {fileID: 11400000, guid: 68155ca2396f0c446b39a681c17ff01b, type: 2}
+  m_sharedMaterial: {fileID: 8786306135487539263, guid: 68155ca2396f0c446b39a681c17ff01b,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282876888
-  m_fontColor: {r: 0.8470589, g: 0.5137255, b: 0.2784314, a: 1}
+    rgba: 4281365976
+  m_fontColor: {r: 0.84705883, g: 0.46074155, b: 0.188047, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
