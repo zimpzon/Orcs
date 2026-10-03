@@ -1700,6 +1700,13 @@ public class GameManager : MonoBehaviour
             ToggleCheatSpeed();
         }
 
+        // Preview the X2 rank-up text at the cursor.
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl) && UpgradeManager.Instance.ClickDamage != null)
+        {
+            X2RankUpEffect.Spawn(UpgradeManager.Instance.ClickDamage, Input.mousePosition,
+                UpgradeManager.X2BonusPerRank() * 100, PlayerUpgrades.Data.NumberOfX2Bought / 5 + 1);
+        }
+
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))
         {
             PlayerUpgrades.Data.TimeScale += 0.1f;

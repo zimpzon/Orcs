@@ -44326,7 +44326,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=#8DBE4C><size=75%>x</size>2</color>
+  m_text: <color=#8DBE4C>X2</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -57637,7 +57637,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e, type: 3}
+  m_Sprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
