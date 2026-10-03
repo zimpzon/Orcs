@@ -57748,6 +57748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProgressText: {fileID: 991000008}
+  CrownSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e, type: 3}
 --- !u!1 &991000006
 GameObject:
   m_ObjectHideFlags: 0

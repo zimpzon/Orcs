@@ -1,10 +1,12 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ProgressPopupScript : MonoBehaviour
 {
     public TextMeshProUGUI ProgressText;
+    public Sprite CrownSprite;
 
     const string GreenHex = "#8DBE4C";
     const string GoldHex = "#FFD54A";
@@ -17,6 +19,14 @@ public class ProgressPopupScript : MonoBehaviour
     float _textBaseHeight;
     string _lastText;
 
+    // A crown on each side of the "GLORIOUS VICTORY" header line, gently bobbing up and down.
+    const float CrownHeightMul = 0.7f;  // crown size relative to the header's drawn glyph height
+    const float CrownGap = 8f;          // glyph edge of the header to the crown's edge
+    const float BobAmount = 3f;
+    const float BobSpeed = 2.2f;
+    RectTransform[] _crowns;
+    Vector3[] _crownBase;
+
     void Awake()
     {
         _popupRect = (RectTransform)transform;
@@ -28,6 +38,76 @@ public class ProgressPopupScript : MonoBehaviour
 
         _popupBaseHeight = _popupRect.sizeDelta.y;
         _textBaseHeight = textRect.sizeDelta.y;
+
+        if (CrownSprite != null)
+        {
+            _crowns = new RectTransform[2];
+            _crownBase = new Vector3[2];
+            for (int i = 0; i < 2; ++i)
+            {
+                var go = new GameObject(i == 0 ? "CrownLeft" : "CrownRight", typeof(RectTransform));
+                go.transform.SetParent(textRect, false);
+                var image = go.AddComponent<Image>();
+                image.sprite = CrownSprite;
+                image.preserveAspect = true;
+                image.raycastTarget = false;
+                var rect = (RectTransform)go.transform;
+                rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
+                _crowns[i] = rect;
+            }
+        }
+    }
+
+    // Place the crowns from the drawn glyphs of the first (header) line, in the text's local space.
+    void PlaceCrowns()
+    {
+        if (_crowns == null)
+            return;
+
+        ProgressText.ForceMeshUpdate();
+        var info = ProgressText.textInfo;
+        if (info.lineCount == 0)
+            return;
+
+        var line = info.lineInfo[0];
+        bool any = false;
+        Vector3 min = Vector3.zero, max = Vector3.zero;
+        for (int c = line.firstCharacterIndex; c <= line.lastCharacterIndex && c < info.characterCount; ++c)
+        {
+            var ch = info.characterInfo[c];
+            if (!ch.isVisible)
+                continue;
+
+            Vector3 bl = ch.vertex_BL.position, tr = ch.vertex_TR.position;
+            min = any ? Vector3.Min(min, bl) : bl;
+            max = any ? Vector3.Max(max, tr) : tr;
+            any = true;
+        }
+
+        if (!any)
+            return;
+
+        float size = (max.y - min.y) * CrownHeightMul;
+        float centerY = (min.y + max.y) * 0.5f;
+        for (int i = 0; i < 2; ++i)
+        {
+            _crowns[i].sizeDelta = new Vector2(size, size);
+            float x = i == 0 ? min.x - CrownGap - size * 0.5f : max.x + CrownGap + size * 0.5f;
+            _crownBase[i] = new Vector3(x, centerY, 0);
+        }
+    }
+
+    void BobCrowns()
+    {
+        if (_crowns == null)
+            return;
+
+        for (int i = 0; i < _crowns.Length; ++i)
+        {
+            // Up and down only, slightly out of step with each other.
+            float wave = Mathf.Sin(Time.unscaledTime * BobSpeed + i * 1.0f);
+            _crowns[i].localPosition = _crownBase[i] + new Vector3(0, wave * BobAmount, 0);
+        }
     }
 
     public void Show()
@@ -51,6 +131,8 @@ public class ProgressPopupScript : MonoBehaviour
 
     void Update()
     {
+        BobCrowns();
+
         (int enemiesUnlocked, int enemiesTotal) = EnemySpawner.GetTierUnlockProgress();
         (int skinsUnlocked, int skinsTotal) = SkinScript.GetUnlockProgress();
 
@@ -93,5 +175,8 @@ public class ProgressPopupScript : MonoBehaviour
         float textHeight = Mathf.Max(_textBaseHeight, needed);
         textRect.sizeDelta = new Vector2(textRect.sizeDelta.x, textHeight);
         _popupRect.sizeDelta = new Vector2(_popupRect.sizeDelta.x, _popupBaseHeight + (textHeight - _textBaseHeight));
+
+        PlaceCrowns();
+        BobCrowns();
     }
 }
