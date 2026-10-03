@@ -12,33 +12,8 @@ public class X2BonusScript : MonoBehaviour
     const string GreenHex = "#8DBE4C";
 
     // X2s bought per tier, listed for unlocked tiers only (level > 0) so the full roster stays a surprise.
-    // Tier order matches the upgrade list.
-    static readonly (string Name, Func<long> Level, Func<long> X2)[] Tiers =
-    {
-        ("Chain Zapping",   () => SaveGame.Members.LevelClickDamage,        () => SaveGame.Members.LevelClickDamageX2),
-        ("Dagger Damage",   () => SaveGame.Members.LevelKnifeDamage,        () => SaveGame.Members.LevelKnifeDamageX2),
-        ("Gold Value",      () => SaveGame.Members.LevelMoneyPerGold,       () => SaveGame.Members.LevelMoneyPerGoldX2),
-        ("Dagger Cooldown", () => SaveGame.Members.LevelKnifeCd,            () => SaveGame.Members.LevelKnifeCdX2),
-        ("Witch Doctor",    () => SaveGame.Members.LevelWitchDoctor,        () => SaveGame.Members.LevelWitchDoctorX2),
-        ("Gold Per Dagger", () => SaveGame.Members.LevelGoldPerKnifeThrown, () => SaveGame.Members.LevelGoldPerKnifeThrownX2),
-        ("Wizard",          () => SaveGame.Members.LevelWizard,             () => SaveGame.Members.LevelWizardX2),
-        ("Master Wizard",   () => SaveGame.Members.LevelHoarder,            () => SaveGame.Members.LevelHoarderX2),
-        ("Frenzy",          () => SaveGame.Members.LevelZapDamage,          () => SaveGame.Members.LevelZapDamageX2),
-        ("Necromancer",     () => SaveGame.Members.LevelMoneyMaker,         () => SaveGame.Members.LevelMoneyMakerX2),
-        ("Dagger Master",   () => SaveGame.Members.LevelDaggerMaster,       () => SaveGame.Members.LevelDaggerMasterX2),
-        ("Necro Ninja",     () => SaveGame.Members.LevelNecroNinja,         () => SaveGame.Members.LevelNecroNinjaX2),
-        ("Skull Crusher",   () => SaveGame.Members.LevelSkullCrusher,       () => SaveGame.Members.LevelSkullCrusherX2),
-        ("Bountiful",       () => SaveGame.Members.LevelChestMaster,        () => SaveGame.Members.LevelChestMasterX2),
-        ("Voidgazer",       () => SaveGame.Members.LevelVoidgazer,          () => SaveGame.Members.LevelVoidgazerX2),
-        ("Smart Daggers",   () => SaveGame.Members.LevelSmartDaggers,       () => SaveGame.Members.LevelSmartDaggersX2),
-        ("Windwalker",      () => SaveGame.Members.LevelFastFeet,           () => SaveGame.Members.LevelFastFeetX2),
-        ("Crypt Master",    () => SaveGame.Members.LevelCryptMaster,        () => SaveGame.Members.LevelCryptMasterX2),
-        ("Angry Fireballs", () => SaveGame.Members.LevelSmartFireballs,     () => SaveGame.Members.LevelSmartFireballsX2),
-        ("Beefy Earl",      () => SaveGame.Members.LevelBeefyEarl,          () => SaveGame.Members.LevelBeefyEarlX2),
-        ("Critical Strike", () => SaveGame.Members.LevelCriticalStrike,     () => SaveGame.Members.LevelCriticalStrikeX2),
-        ("Power Zap",       () => SaveGame.Members.LevelPowerZap,           () => SaveGame.Members.LevelPowerZapX2),
-        ("Skull Slicer",    () => SaveGame.Members.LevelSkullSlicer,        () => SaveGame.Members.LevelSkullSlicerX2),
-    };
+    // Tier list is shared with the progress popup (UpgradeTierList).
+    static (string Name, Func<long> Level, Func<long> X2)[] Tiers => UpgradeTierList.Tiers;
 
     // The popup grows downward (top-left pivot, children top-anchored, OK button bottom-anchored) to fit the list.
     RectTransform _popupRect;
