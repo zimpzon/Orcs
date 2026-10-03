@@ -37,7 +37,7 @@ public class CreditsPopupScript : MonoBehaviour
     }
 
     // An idle-animated Earl on each side of the header line, both facing the text.
-    const float EarlHeightMul = 2.2f;  // relative to the header's drawn glyph height
+    const float EarlHeightMul = 1.8f;  // relative to the header's drawn glyph height
     const float EarlGap = 6f;          // header glyph edge to the Earl's edge
     const float EarlFrameTime = 0.15f; // same as the skin preview
     Image[] _earls;

@@ -174,7 +174,6 @@ public class GlobalPopupManager : MonoBehaviour
             _gameObjects.Add(popup.GetInstanceID(), popupBaseValues);
         }
 
-        Debug.Log("AfterShowPopup: Setting current pop up: " + popup.name);
         CurrentPopup = popup;
         ShowDarken(popup);
 
