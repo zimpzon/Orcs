@@ -119,20 +119,23 @@ public class PercentageBonusScript : MonoBehaviour
         SetEnabled(canAfford);
         ButtonText.text = $"${Format512.Format(totalPrice)}";
 
-        long displayBuyPct = (long)(buyAmount * bonusMultiplier);
-        string bonusText = $"+{displayBuyPct}% passive income";
+        // Buying shows plain levels; with the 10x Bonuses card the multiplier is shown next to it and the total
+        // explains itself as "(levels x 10)", instead of every number being silently multiplied by 10.
+        bool hasX10 = SaveGame.Members.BoughtPercentBonusX10;
+        string bonusText = $"+{buyAmount}% passive income" + (hasX10 ? " <color=#8DBE4C>x10</color>" : "");
         long displayTotalPct = (long)(SaveGame.Members.LevelPctBought * bonusMultiplier);
-        TextBonusStatus.text = $"{bonusText}\n<size=-3><color=#cccccc>Bonus: {displayTotalPct}%";
+        string totalBreakdown = hasX10 ? $" <color=#999999>({SaveGame.Members.LevelPctBought} x 10)</color>" : "";
+        TextBonusStatus.text = $"{bonusText}\n<size=-3><color=#cccccc>Bonus: {displayTotalPct}%</color>{totalBreakdown}";
 
         if (TextBuyAmount != null)
         {
-            TextBuyAmount.text = $"Buy {displayBuyPct}";
+            TextBuyAmount.text = $"Buy {buyAmount}";
         }
 
         if (TextButtonBuy1Label != null)
-            TextButtonBuy1Label.text = $"{(long)(1 * bonusMultiplier)}";
+            TextButtonBuy1Label.text = "1";
         if (TextButtonBuy10Label != null)
-            TextButtonBuy10Label.text = $"{(long)(10 * bonusMultiplier)}";
+            TextButtonBuy10Label.text = "10";
     }
 
     float _nextUpdate;
