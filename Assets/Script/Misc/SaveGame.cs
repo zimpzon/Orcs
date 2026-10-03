@@ -338,7 +338,7 @@ public static class SaveGame
         }
     }
 
-    const string SaveGameKey = "idle-earl-save-v1.json";
+    const string SaveGameKey = "idle-earl-save-v2.json";
 
     public static void Load()
     {
