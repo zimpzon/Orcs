@@ -80,6 +80,9 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
+        if (SaveGame.Members != null)
+            AudioListener.volume = SaveGame.Members.SoundEnabled ? 1f : 0f;
+
         RepeatingSawblade.Update(G.D.GameDeltaTime);
     }
 

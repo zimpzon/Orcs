@@ -91,6 +91,7 @@ public class SaveGameMembers
     public bool ShowFloatingGoldNumbers = true;
     public bool UseScientificNotation = false;
     public bool ShowDetailsOnHover = true;
+    public bool SoundEnabled = true;
 
     // Progress
     public List<ActorTypeEnum> BeastsSeen = new List<ActorTypeEnum>();

@@ -16,6 +16,26 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle ShowDetailsOnHoverToggle;
 
     private int _clickCount;
+    private Toggle _soundToggle;
+
+    // The Sound toggle is cloned from "Show damage numbers" and placed in a third row below it, to avoid a scene edit.
+    void Awake()
+    {
+        const float RowSpacing = 23.5f;
+        var source = ShowFloatingDamageToggle;
+        var go = Instantiate(source.gameObject, source.transform.parent, false);
+        go.name = "SoundToggle";
+        ((RectTransform)go.transform).anchoredPosition = ((RectTransform)source.transform).anchoredPosition - new Vector2(0, 2 * RowSpacing);
+        go.GetComponentInChildren<Text>(true).text = "Sound";
+
+        _soundToggle = go.GetComponent<Toggle>();
+        _soundToggle.onValueChanged = new Toggle.ToggleEvent();
+        _soundToggle.onValueChanged.AddListener(on =>
+        {
+            SaveGame.Members.SoundEnabled = on;
+            SaveGame.Save();
+        });
+    }
 
     void SetPopupEnabled(bool enabled)
     {
@@ -39,6 +59,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
         UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
         ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
+        _soundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
     }
 
     //public void OnExportSaveClick()

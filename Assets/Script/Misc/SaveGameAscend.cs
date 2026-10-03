@@ -57,6 +57,7 @@ static class SaveGameAscend
         newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
         newSave.UseScientificNotation = oldSave.UseScientificNotation;
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
+        newSave.SoundEnabled = oldSave.SoundEnabled;
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
