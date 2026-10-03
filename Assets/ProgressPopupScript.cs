@@ -44,7 +44,7 @@ public class ProgressPopupScript : MonoBehaviour
 
     // One aligned row: label with its count right after it (grey), percentage in a fixed column.
     static string Row(string label, double pct, int have, int total)
-        => $"<pos=4%><color=#cccccc>{label}</color> <color=#aaaaaa>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
+        => $"<pos=4%><color=#cccccc>{label}</color> <color=#999999>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
 
     // Percentage column, just past the longest row ("Upgrade tiers bought (23/23)").
     const string PctColumn = "62%";

@@ -194,9 +194,16 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     // with no unlock rule and no in-game representation.
     public static (int unlocked, int total) GetUnlockProgress()
     {
+        // Count distinct skins (by animation), not objects: the scene has several objects sharing one skin
+        // (e.g. 5 with animation 19), which made the total 39 instead of 35.
         var allSkins = FindObjectsOfType<SkinScript>(true);
-        int unlocked = allSkins.Count(s => GetUnlockStatus(s.AnimationName).isUnlocked);
-        return (unlocked, allSkins.Length);
+        int total = allSkins.Select(s => s.AnimationName).Distinct().Count();
+        int unlocked = allSkins
+            .Where(s => GetUnlockStatus(s.AnimationName).isUnlocked)
+            .Select(s => s.AnimationName)
+            .Distinct()
+            .Count();
+        return (unlocked, total);
     }
 
     private void Update()
