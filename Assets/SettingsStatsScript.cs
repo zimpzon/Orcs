@@ -10,8 +10,27 @@ public class SettingsStatsScript : MonoBehaviour
 
     public string GetIncomeDescription()
     {
-        string BuildLine(string left, string right)
-            => $"<align=left>{left}<line-height=0>\n<align=right><color=#EEEEEE>{right}</color><line-height=1em>";
+        // Grey label left, bold value right (same line). Value colors are per kind of stat; all white for now.
+        const string Multiplier = "#FFFFFF";
+        const string Money = "#FFFFFF";
+        const string Rebirth = "#FFFFFF";
+        const string Plain = "#FFFFFF";
+
+        string BuildLine(string left, string right, string valueColor = Plain, string labelColor = "#AAAAAA")
+            => $"<align=left><color={labelColor}>{left}</color><line-height=0>\n<align=right><b><color={valueColor}>{right}</color></b><line-height=1em>";
+
+        // Raw multiplier value: two decimals with thousands separators up to a million ("1,234.56"), then the
+        // game's short big-number format ("12.3M") so huge late-game values stay short.
+        string Num(double value)
+        {
+            if (value < 1_000_000)
+                return value.ToString("#,0.00");
+            if (value < 9e18)
+                return Format512.Format((long)value);
+            return value.ToString("0.00e0");
+        }
+
+        string Mul(double value) => $"x{Num(value)}";
 
         var lifetimeIncome = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
         var timePlayed = TimeSpan.FromSeconds(SaveGame.Members.EstimatedOnlineSeconds2);
@@ -30,29 +49,29 @@ public class SettingsStatsScript : MonoBehaviour
             $"${Format512.Format(SaveGame.Members.MaxIncome)}";
 
         var sb = new StringBuilder();
-        sb.AppendLine(BuildLine("Passive income", $"{Format512.Format((long)Math.Round(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier * 100))}%"));
-        sb.AppendLine(BuildLine("X2 multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier:0.00}"));
-        sb.AppendLine(BuildLine("Bestiary multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses:0.00}"));
-        sb.AppendLine(BuildLine("Bought 1% multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses:0.00}"));
-        sb.AppendLine(BuildLine("Mystery multiplier", $"{PlayerUpgrades.Data.PassiveIncomeTempMultiplier:0.00}"));
-        sb.AppendLine(BuildLine("Rebirth cards multiplier", $"{PlayerUpgrades.Data.PassiveIncomeAscendMultiplier:0.00}"));
-        sb.AppendLine(BuildLine("Diamond multiplier", $"{1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier:0.00}"));
-        sb.AppendLine();
-        sb.AppendLine(BuildLine("Max Money", strTextMoney));
-        sb.AppendLine(BuildLine("Max Income", strMaxIncome));
+        sb.AppendLine(BuildLine("<b>Passive income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));
+        sb.AppendLine(BuildLine("X2 multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier), Multiplier));
+        sb.AppendLine(BuildLine("Bestiary multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses), Multiplier));
+        sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
+        sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
+        sb.AppendLine(BuildLine("Rebirth cards multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));
+        sb.AppendLine(BuildLine("Diamond multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier), Multiplier));
+        sb.AppendLine("<size=50%> </size>");
+        sb.AppendLine(BuildLine("Max Money", strTextMoney, Money));
+        sb.AppendLine(BuildLine("Max Income", strMaxIncome, Money));
         //sb.AppendLine(BuildLine("Total Income", strTotalIncome));
         sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine(BuildLine("X2 Bought", Format512.Format(SaveGame.Members.TotalX2UpgradesBought)));
         sb.AppendLine(BuildLine("1% Bonuses Bought", Format512.Format(SaveGame.Members.TotalLevelPctBought)));
-        sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025)));
-        sb.AppendLine(BuildLine("Rebirths", Format512.Format(SaveGame.Members.TimesAscended_09_08_2025)));
+        sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025), Rebirth));
+        sb.AppendLine(BuildLine("Rebirths", Format512.Format(SaveGame.Members.TimesAscended_09_08_2025), Rebirth));
         if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
         {
-            sb.AppendLine(BuildLine("Time Since Last Rebirth", $"{FormatTime.Format(timeSinceLastAscend.Days, timeSinceLastAscend.Hours, timeSinceLastAscend.Minutes, useShorthand: true)}"));
+            sb.AppendLine(BuildLine("Time Since Last Rebirth", $"{FormatTime.Format(timeSinceLastAscend.Days, timeSinceLastAscend.Hours, timeSinceLastAscend.Minutes, useShorthand: true)}", Rebirth));
         }
         else
         {
-            sb.AppendLine(BuildLine("Time Since Last Rebirth", $"-"));
+            sb.AppendLine(BuildLine("Time Since Last Rebirth", "-", Rebirth));
         }
         sb.AppendLine(BuildLine("Chests", SaveGame.Members.ChestsCollected.ToString()));
         sb.AppendLine(BuildLine("Mystery Bonuses", SaveGame.Members.MysteryCollected.ToString()));
