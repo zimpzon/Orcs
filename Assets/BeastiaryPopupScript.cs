@@ -34,6 +34,8 @@ public class BeastiaryPopupScript : MonoBehaviour
             beastScript.Hovertext = Hovertext;
             _beasts.Add(new Beast { Actor = actor, Icon = image, BeastiaryBeastScript = beastScript });
         }
+
+        CreateProgressText();
     }
 
     public void Show()
@@ -50,10 +52,38 @@ public class BeastiaryPopupScript : MonoBehaviour
 
     private void Update()
     {
+        int unlocked = 0;
         foreach(var beast in _beasts)
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beast.Actor.ActorType);
             beast.Icon.color = isUnlocked ? Color.white : Color.black;
+            if (isUnlocked)
+                unlocked++;
         }
+
+        if (_progressText != null)
+            _progressText.text = $"({unlocked}/{_beasts.Count})";
+    }
+
+    // "(unlocked/total)" under the "Bestiary" header. Everything below the header (bonus lines and the beast grid) is
+    // moved down to make room, and the popup grows a bit taller (top-left pivot, so it grows downward; the hover text
+    // and OK button are bottom-anchored and follow).
+    TextMeshProUGUI _progressText;
+    const float ProgressLineRoom = 14f;
+    const float ExtraPopupHeight = 20f;
+
+    void CreateProgressText()
+    {
+        _progressText = PopupHeaderProgress.Create(transform, "TextBestiary");
+        if (_progressText == null)
+            return;
+
+        foreach (var childName in new[] { "TextBonusHeader", "TextBonus", "Layout" })
+        {
+            if (transform.Find(childName) is RectTransform rt)
+                rt.anchoredPosition -= new Vector2(0, ProgressLineRoom);
+        }
+
+        ((RectTransform)transform).sizeDelta += new Vector2(0, ExtraPopupHeight);
     }
 }
