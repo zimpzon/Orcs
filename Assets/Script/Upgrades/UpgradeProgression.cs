@@ -35,11 +35,12 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 80;
         // Trimmed from *80 to *60 to make room for CriticalStrike, which now slots in at BeefyEarl's old price.
         public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 60;
-        // Last tiers keep the same x60 step as the late tiers before them. Critical Strike used to be
-        // SmartFireballs * 80, only 1.3x Beefy Earl, so it came almost free right after it.
-        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 60;
-        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 60;
-        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 60;
+        // Last tiers step x10: each only earns x4 more, and since the diamond cut (240% -> 80%/diamond) late income is
+        // lower, so x60 put them months-to-years away. Critical Strike used to be SmartFireballs * 80, only 1.3x Beefy
+        // Earl, so it came almost free right after it - now 10x Beefy.
+        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 10;
+        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 10;
+        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 10;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -208,12 +209,14 @@ namespace Assets.Script.Upgrades
 
         public static double GetCurrentDiamondMultiplier()
         {
-            const double BaseMultiplier = 0.1;
-            const double ShinyDiamondsBonus = 0.1;
-            const double ShinyDiamonds2Bonus = 0.2;
-            const double ShinyDiamonds3Bonus = 0.4;
-            const double ShinyDiamonds4Bonus = 0.6;
-            const double ShinyDiamonds5Bonus = 1.0;
+            // Total 80% per diamond with all Shiny Diamonds (was 240%), so the other income cards matter more.
+            // The 5% base also lets the 4th X2 card cost 14 without lowering income when bought with your last diamonds.
+            const double BaseMultiplier = 0.05;
+            const double ShinyDiamondsBonus = 0.05;
+            const double ShinyDiamonds2Bonus = 0.1;
+            const double ShinyDiamonds3Bonus = 0.15;
+            const double ShinyDiamonds4Bonus = 0.2;
+            const double ShinyDiamonds5Bonus = 0.25;
 
             double diamondMultiplier = BaseMultiplier;
 
