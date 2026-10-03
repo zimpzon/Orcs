@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using Assets.Script.Upgrades.Managers;
 using System;
 using System.Text;
@@ -44,8 +45,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Extra zap jumps: <color=COLOR-ARENA>+{ExtraJumpsForLevel(Math.Max(1, level))}</color>");
-            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>x{DamageMulForLevel(level):0.0}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>x{DamageMulForLevel(level + 1):0.0}</color>");
+            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>");
 
             return sb.ToString();
         }

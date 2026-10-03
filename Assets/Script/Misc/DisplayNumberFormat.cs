@@ -25,6 +25,10 @@ namespace Assets.Script.Misc
 #endif
         }
 
+        // value.ToString(format) with the player's separators. Use this for any UI number with decimals - plain
+        // ToString/interpolation would use the en-US thread culture.
+        public static string Format(double value, string format) => value.ToString(format, Info);
+
         // "12.500" -> "12.5", "10.000" -> "10" (using the display decimal separator).
         public static string TrimTrailingDecimals(string formatted)
         {

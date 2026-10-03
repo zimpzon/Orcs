@@ -24,10 +24,10 @@ public class SettingsStatsScript : MonoBehaviour
         string Num(double value)
         {
             if (value < 1_000_000)
-                return value.ToString("#,0.00");
+                return DisplayNumberFormat.Format(value, "#,0.00");
             if (value < 9e18)
                 return Format512.Format((long)value);
-            return value.ToString("0.00e0");
+            return DisplayNumberFormat.Format(value, "0.00e0");
         }
 
         string Mul(double value) => $"x{Num(value)}";

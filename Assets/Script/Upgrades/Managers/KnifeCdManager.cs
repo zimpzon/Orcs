@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using Assets.Script.Upgrades.Managers;
 using System;
 using System.Text;
@@ -15,8 +16,8 @@ namespace Assets.Script.Upgrades
 
             double maxReduction = StartValue - EndValue;
             double step = maxReduction / MaxLevel;
-            string cdReductionNow = $"{ClampLevelToMax(level) * step / StartValue * 100:0.0}";
-            string cdReductionNext = $"{ClampLevelToMax(level + 1) * step / StartValue * 100:0.0}";
+            string cdReductionNow = DisplayNumberFormat.Format(ClampLevelToMax(level) * step / StartValue * 100, "0.0");
+            string cdReductionNext = DisplayNumberFormat.Format(ClampLevelToMax(level + 1) * step / StartValue * 100, "0.0");
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelKnifeCd,
