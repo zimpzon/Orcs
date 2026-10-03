@@ -21,7 +21,7 @@ public enum Achieved
     Diamonds250,
     Rebirth8,
     ChainZap200,
-    Chest100,
+    Played5Days,
     X2_300,
     X2_150,
     Diamonds50,
@@ -59,7 +59,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckVoidgazer(list);
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
-        AchievementChecks.CheckChest100(list);
+        AchievementChecks.CheckPlayed5Days(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);

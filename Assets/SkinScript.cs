@@ -118,7 +118,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WellDressedOrc)
         {
-            return (list.Contains(Achieved.Chest100), "Well-dressed Orc Earl: Loot 100 chests");
+            return (list.Contains(Achieved.Played5Days), "Well-dressed Orc Earl: Play for 5 days");
         }
         else if (animationName == SkinAnimation.Alien)
         {

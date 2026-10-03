@@ -177,14 +177,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckChest100(List<Achieved> list)
+        public static void CheckPlayed5Days(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Chest100)) return;
+            if (list.Contains(Achieved.Played5Days)) return;
 
-            if (SaveGame.Members.ChestsCollected >= 100)
+            if (SaveGame.Members.EstimatedOnlineSeconds2 >= 5 * 24 * 60 * 60)
             {
-                list.Add(Achieved.Chest100);
-                NewAchieved(Achieved.Chest100);
+                list.Add(Achieved.Played5Days);
+                NewAchieved(Achieved.Played5Days);
             }
         }
 
