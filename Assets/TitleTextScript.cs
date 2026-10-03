@@ -20,6 +20,9 @@ public class TitleTextScript : MonoBehaviour
 
     public void UpdateTitle()
     {
+        Text.text = "";
+        return;
+
         string beastName = "Nothing";
         if (SaveGame.Members.BeastsSeen.Count > 0)
         {
