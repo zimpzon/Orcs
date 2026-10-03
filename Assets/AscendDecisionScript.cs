@@ -22,10 +22,103 @@ public class AscendDecisionScript : MonoBehaviour
     private string _whatYouLoseTemplate;
     private int _clickCount;
 
+    // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
+    // "Rebirth<sprite=0>"), so no scene wiring is needed.
+    const float DiamondGap = 24f;  // glyph edge of "Rebirth" to diamond center
+    const float DiamondScale = 0.75f;  // relative to the header font size
+    const float BobAmount = 3f;
+    const float BobSpeed = 2.2f;
+    RectTransform[] _headerDiamonds;
+    Vector3[] _headerDiamondBase;
+
     private void Awake()
     {
         Instance = this;
         _whatYouLoseTemplate = TextWhatYouLose.text;
+        SetupHeaderDiamonds();
+    }
+
+    void SetupHeaderDiamonds()
+    {
+        Transform headerTransform = null;
+        for (var t = transform.parent; t != null && headerTransform == null; t = t.parent)
+            headerTransform = t.Find("HeaderSection/TextHeader");
+        if (headerTransform == null)
+            return;
+
+        var header = headerTransform.GetComponent<TextMeshProUGUI>();
+        header.text = "Rebirth";
+        // Drawn glyph bounds in the header's local space, so placement doesn't depend on the rect's pivot/anchors.
+        Bounds bounds = DrawnGlyphBounds(header);
+
+        _headerDiamonds = new RectTransform[2];
+        _headerDiamondBase = new Vector3[2];
+        for (int i = 0; i < 2; ++i)
+        {
+            var diamond = Instantiate(header, header.rectTransform, false);
+            diamond.name = i == 0 ? "HeaderDiamondLeft" : "HeaderDiamondRight";
+            diamond.text = "<sprite=0>";
+            diamond.raycastTarget = false;
+
+            diamond.fontSize = header.fontSize * DiamondScale;
+
+            var rect = diamond.rectTransform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(40f, header.rectTransform.rect.height);
+
+            // The sprite glyph isn't centered in its own rect (sprite bearing), which pushed both diamonds right.
+            // Measure it and center the glyph itself on the target spot.
+            Vector3 glyphCenter = DrawnGlyphBounds(diamond).center;
+
+            float x = i == 0 ? bounds.min.x - DiamondGap : bounds.max.x + DiamondGap;
+            _headerDiamondBase[i] = new Vector3(x - glyphCenter.x, bounds.center.y - glyphCenter.y, 0);
+            rect.localPosition = _headerDiamondBase[i];
+            _headerDiamonds[i] = rect;
+        }
+    }
+
+    // Bounds of the visible glyph quads only. TMP's textBounds includes the last character's trailing advance, which
+    // made the right side measure wider than it looks.
+    static Bounds DrawnGlyphBounds(TextMeshProUGUI text)
+    {
+        text.ForceMeshUpdate();
+        var info = text.textInfo;
+        bool any = false;
+        var bounds = new Bounds();
+        for (int i = 0; i < info.characterCount; ++i)
+        {
+            var c = info.characterInfo[i];
+            if (!c.isVisible)
+                continue;
+
+            var min = c.vertex_BL.position;
+            var max = c.vertex_TR.position;
+            if (!any)
+            {
+                bounds = new Bounds((min + max) * 0.5f, max - min);
+                any = true;
+            }
+            else
+            {
+                bounds.Encapsulate(min);
+                bounds.Encapsulate(max);
+            }
+        }
+
+        return any ? bounds : text.textBounds;
+    }
+
+    private void Update()
+    {
+        if (_headerDiamonds == null)
+            return;
+
+        for (int i = 0; i < _headerDiamonds.Length; ++i)
+        {
+            // Up and down only, slightly out of step with each other.
+            float wave = Mathf.Sin(Time.unscaledTime * BobSpeed + i * 1.0f);
+            _headerDiamonds[i].localPosition = _headerDiamondBase[i] + new Vector3(0, wave * BobAmount, 0);
+        }
     }
 
     public void OnAscendClick()
