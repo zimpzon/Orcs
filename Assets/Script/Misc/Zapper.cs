@@ -6,17 +6,7 @@ namespace Assets.Script.Misc
     {
         public static void DoZap(Vector2 from, Vector2 to)
         {
-            Trails.DrawJaggedTrail(from, to, ArenaBoundsScript.Instance.LineRenderer);
-
-            LeanTween.cancel(ArenaBoundsScript.Instance.LineRenderer.gameObject);
-            LeanTween.value(
-                ArenaBoundsScript.Instance.LineRenderer.gameObject,
-                ArenaBoundsScript.Instance.LineRendererBaseWidth, to: 0.0f, time: 0.3f)
-                .setOnUpdate((float val) =>
-                {
-                    ArenaBoundsScript.Instance.LineRenderer.startWidth = val;
-                    ArenaBoundsScript.Instance.LineRenderer.endWidth = val;
-                });
+            LightningBolts.Zap(from, to);
         }
 
         public static bool TryZapEnemy(Vector2 from, ActorBase actor, long damage, ActorDamageSource damageSource)
