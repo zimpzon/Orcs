@@ -222,22 +222,104 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         return (unlocked, total);
     }
 
+    // Progress toward a skin's requirement, shown on hover as "(345/1000)". Null for yes/no requirements.
+    // Keep the stats and targets in sync with AchievementChecks.
+    static (double current, double target)? GetRequirementProgress(SkinAnimation skin)
+    {
+        var m = SaveGame.Members;
+        return skin switch
+        {
+            SkinAnimation.WitchDoctor => (m.LevelWitchDoctor, 25),
+            SkinAnimation.Necromancer => (m.LevelMoneyMaker, 200),
+            SkinAnimation.Alien => (m.LevelClickDamage, 200),
+            SkinAnimation.Zombie => (m.LevelSkullCrusher, 5),
+            SkinAnimation.SlickEarl => (m.LevelSmartDaggers, 10),
+            SkinAnimation.GangsterEarl => (m.LevelChestMaster, 200),
+            SkinAnimation.NeonEarl => (m.LevelStormLord, 5),
+
+            SkinAnimation.WhiteWalkerEarl => (m.TimesAscended_09_08_2025, 1),
+            SkinAnimation.Orc => (m.TimesAscended_09_08_2025, 2),
+            SkinAnimation.UndeadBeauty => (m.TimesAscended_09_08_2025, 8),
+            SkinAnimation.SaturatedEarl => (m.TimesAscended_09_08_2025, 20),
+
+            SkinAnimation.Monster => (m.DiamondCount_09_08_2025, 10),
+            SkinAnimation.NinjaEarl => (m.DiamondCount_09_08_2025, 50),
+            SkinAnimation.HonorableKnight => (m.DiamondCount_09_08_2025, 250),
+            SkinAnimation.FreakyEarl => (m.DiamondCount_09_08_2025, 1000),
+            SkinAnimation.BallEarl => (m.DiamondCount_09_08_2025, 5000),
+
+            SkinAnimation.EvilEyesEarl => (m.ArenaLevel, 1000),
+            SkinAnimation.Wig => (m.ArenaLevel, 10000),
+            SkinAnimation.BigMouth => (m.ArenaLevel, 35000),
+            SkinAnimation.KaratEarl => (m.ArenaLevel, 81000),
+
+            SkinAnimation.Pirate => (m.ChestsCollected, 50),
+            SkinAnimation.Slug => (m.MysteryCollected, 100),
+            SkinAnimation.SecretiveEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 150),
+            SkinAnimation.SkaterEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 300),
+            SkinAnimation.ChickenEarl => (m.LevelPctBought, 50),
+            SkinAnimation.YoungEarl => (m.TotalLevelPctBought, 500),
+            SkinAnimation.AttentivePigEarl => (m.TotalUpgradesBought, 500),
+            SkinAnimation.ToxicEarl => (m.TotalUpgradesBought, 2500),
+            SkinAnimation.DisguisedMonsterEarl => (m.TotalUpgradesBought, 100000),
+            SkinAnimation.PrettyEarl => (m.Achieved.Count, 20),
+
+            SkinAnimation.WhiteEarl => (m.TotalArenas - m.TotalArenasWon, 100),
+            SkinAnimation.BlackEarl => (m.SuperFastClears, 1000),
+            SkinAnimation.InvertedEarl => (m.MonsterCreditsLifetime_09_08_2025, 1000),
+            SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 5),
+            SkinAnimation.MonochromeEarl => (GameCompletion.GetProgress().TotalPct, 100),
+
+            _ => null,
+        };
+    }
+
+    string GetHoverText()
+    {
+        (bool isUnlocked, string hovertext) = GetUnlockStatus(AnimationName);
+        var progress = isUnlocked ? null : GetRequirementProgress(AnimationName);
+        if (progress == null)
+            return hovertext;
+
+        (double current, double target) = progress.Value;
+        current = Math.Min(Math.Max(current, 0), target);
+        // Days played gets a decimal, everything else is a whole number. Floor so it never shows the target early.
+        string format = AnimationName == SkinAnimation.WellDressedOrc ? "0.0" : "#,0";
+        if (format == "#,0")
+            current = Math.Floor(current);
+        string cur = Assets.Script.Misc.DisplayNumberFormat.Format(current, format);
+        string tgt = Assets.Script.Misc.DisplayNumberFormat.Format(target, "#,0");
+        return $"{hovertext} <color=#999999>({cur}/{tgt})</color>";
+    }
+
+    bool _hovered;
+    float _nextHoverRefresh;
+
     private void Update()
     {
         (bool isUnlocked, string text) = GetUnlockStatus(AnimationName);
         SkinImage.color = isUnlocked ? Color.white : Color.black;
         Button.interactable = isUnlocked;
         Button.Select();
+
+        // Keep the progress ticking while hovered.
+        if (_hovered && Time.unscaledTime >= _nextHoverRefresh)
+        {
+            _nextHoverRefresh = Time.unscaledTime + 0.5f;
+            Hovertext.text = GetHoverText();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        (_, string hovertext) = GetUnlockStatus(AnimationName);
-        Hovertext.text = hovertext;
+        _hovered = true;
+        _nextHoverRefresh = Time.unscaledTime + 0.5f;
+        Hovertext.text = GetHoverText();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        _hovered = false;
         SetDefaultHovertext();
     }
 }
