@@ -29,5 +29,6 @@ public static class UpgradeTierList
         ("Critical Strike", () => SaveGame.Members.LevelCriticalStrike,     () => SaveGame.Members.LevelCriticalStrikeX2),
         ("Power Zap",       () => SaveGame.Members.LevelPowerZap,           () => SaveGame.Members.LevelPowerZapX2),
         ("Skull Slicer",    () => SaveGame.Members.LevelSkullSlicer,        () => SaveGame.Members.LevelSkullSlicerX2),
+        ("Storm Lord",      () => SaveGame.Members.LevelStormLord,        () => SaveGame.Members.LevelStormLordX2),
     };
 }

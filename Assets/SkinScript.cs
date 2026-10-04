@@ -98,7 +98,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Voidgazer)
         {
-            return (list.Contains(Achieved.SkullSlicerTier), "Voidgazer Earl: Reach Skull Slicer");
+            return (list.Contains(Achieved.StormLordTier), "Voidgazer Earl: Reach Storm Lord");
         }
         else if (animationName == SkinAnimation.Wizard)
         {

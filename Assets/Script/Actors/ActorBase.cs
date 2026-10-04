@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard, Necromancer };
+public enum ActorDamageSource { Unkonwn, ChainZap, DaggerThrow, WitchDoctor, Wizard, Necromancer, StormLord };
 
 public enum ActorForcedTargetType { Absolute, Direction };
 

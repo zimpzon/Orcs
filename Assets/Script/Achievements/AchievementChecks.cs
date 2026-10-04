@@ -264,12 +264,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckVoidgazer(List<Achieved> list)
         {
-            if (list.Contains(Achieved.SkullSlicerTier)) return;
+            if (list.Contains(Achieved.StormLordTier)) return;
 
-            if (SaveGame.Members.LevelSkullSlicer >= 1)
+            if (SaveGame.Members.LevelStormLord >= 1)
             {
-                list.Add(Achieved.SkullSlicerTier);
-                NewAchieved(Achieved.SkullSlicerTier);
+                list.Add(Achieved.StormLordTier);
+                NewAchieved(Achieved.StormLordTier);
             }
         }
 

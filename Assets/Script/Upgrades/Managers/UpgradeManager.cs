@@ -42,6 +42,7 @@ public class UpgradeManager : MonoBehaviour
     public UpgradeItemScript CriticalStrike;
     public UpgradeItemScript PowerZap;
     public UpgradeItemScript SkullSlicer;
+    public UpgradeItemScript StormLord;
 
     public UpgradeDisplayStatus DisplayStatusClickDamage = UpgradeDisplayStatus.NotSet;
     public UpgradeDisplayStatus DisplayStatusKnife = UpgradeDisplayStatus.NotSet;
@@ -80,6 +81,7 @@ public class UpgradeManager : MonoBehaviour
         CriticalStrikeManager.UpdateAll();
         PowerZapManager.UpdateAll();
         SkullSlicerManager.UpdateAll();
+        StormLordManager.UpdateAll();
 
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
@@ -134,6 +136,8 @@ public class UpgradeManager : MonoBehaviour
             return GetDisplayStatus(SaveGame.Members.LevelCriticalStrike, SaveGame.Members.LevelPowerZap);
         else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
             return GetDisplayStatus(SaveGame.Members.LevelPowerZap, SaveGame.Members.LevelSkullSlicer);
+        else if (StormLord != null && upgradeUiScript == StormLord)
+            return GetDisplayStatus(SaveGame.Members.LevelSkullSlicer, SaveGame.Members.LevelStormLord);
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -186,6 +190,8 @@ public class UpgradeManager : MonoBehaviour
             return PowerZapManager.PriceForNext();
         else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
             return SkullSlicerManager.PriceForNext();
+        else if (StormLord != null && upgradeUiScript == StormLord)
+            return StormLordManager.PriceForNext();
         else
             throw new NotImplementedException(upgradeUiScript.name);
     }
@@ -250,6 +256,8 @@ public class UpgradeManager : MonoBehaviour
             text = GetUpgradeDisplayStatus(PowerZap) == UpgradeDisplayStatus.FullyShown ? PowerZapManager.GetText() : GetLockedText(PowerZap);
         else if (SkullSlicer != null && upgradeUiScript == SkullSlicer)
             text = GetUpgradeDisplayStatus(SkullSlicer) == UpgradeDisplayStatus.FullyShown ? SkullSlicerManager.GetText() : GetLockedText(SkullSlicer);
+        else if (StormLord != null && upgradeUiScript == StormLord)
+            text = GetUpgradeDisplayStatus(StormLord) == UpgradeDisplayStatus.FullyShown ? StormLordManager.GetText() : GetLockedText(StormLord);
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
@@ -296,6 +304,7 @@ public class UpgradeManager : MonoBehaviour
         SaveGame.Members.TotalIncomeCriticalStrike += CriticalStrikeManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomePowerZap += PowerZapManager.PassiveIncome() * incomeFactorPerFrame;
         SaveGame.Members.TotalIncomeSkullSlicer += SkullSlicerManager.PassiveIncome() * incomeFactorPerFrame;
+        SaveGame.Members.TotalIncomeStormLord += StormLordManager.PassiveIncome() * incomeFactorPerFrame;
 
         Decimal512 fullSum = 0;
         fullSum += ClickDamageManager.PassiveIncome();
@@ -321,6 +330,7 @@ public class UpgradeManager : MonoBehaviour
         fullSum += CriticalStrikeManager.PassiveIncome();
         fullSum += PowerZapManager.PassiveIncome();
         fullSum += SkullSlicerManager.PassiveIncome();
+        fullSum += StormLordManager.PassiveIncome();
         return fullSum;
     }
 
@@ -367,6 +377,8 @@ public class UpgradeManager : MonoBehaviour
             SetIsVisble(PowerZap);
         if (SkullSlicer != null)
             SetIsVisble(SkullSlicer);
+        if (StormLord != null)
+            SetIsVisble(StormLord);
 
         ClickDamageManager.UpdateUi();
         KnifeDamageManager.UpdateUi();
@@ -391,6 +403,7 @@ public class UpgradeManager : MonoBehaviour
         CriticalStrikeManager.UpdateUi();
         PowerZapManager.UpdateUi();
         SkullSlicerManager.UpdateUi();
+        StormLordManager.UpdateUi();
     }
 
     void OnItemBought(long actualBuyAmount)
@@ -745,10 +758,25 @@ public class UpgradeManager : MonoBehaviour
         OnItemBought(buyAmount);
     }
 
+    public void OnBuyStormLord()
+    {
+        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelStormLord, SaveGame.Members.LevelStormLordX2);
+        StormLordManager.OnBuy();
+        StormLord.SetPopupText();
+        OnItemBought(buyAmount);
+    }
+
     public void OnBuySkullSlicerX2()
     {
         SkullSlicerManager.OnBuyX2();
         SkullSlicer.SetPopupText();
+        OnX2ItemBought();
+    }
+
+    public void OnBuyStormLordX2()
+    {
+        StormLordManager.OnBuyX2();
+        StormLord.SetPopupText();
         OnX2ItemBought();
     }
 
@@ -777,6 +805,7 @@ public class UpgradeManager : MonoBehaviour
         CriticalStrikeManager.UpdatePlayerUpgrades();
         PowerZapManager.UpdatePlayerUpgrades();
         SkullSlicerManager.UpdatePlayerUpgrades();
+        StormLordManager.UpdatePlayerUpgrades();
     }
 
     void UpdateNumberOfX2Bought()
@@ -805,6 +834,7 @@ public class UpgradeManager : MonoBehaviour
         total += SaveGame.Members.LevelCriticalStrikeX2;
         total += SaveGame.Members.LevelPowerZapX2;
         total += SaveGame.Members.LevelSkullSlicerX2;
+        total += SaveGame.Members.LevelStormLordX2;
         PlayerUpgrades.Data.NumberOfX2Bought = total;
 
         long bought = PlayerUpgrades.Data.NumberOfX2Bought;

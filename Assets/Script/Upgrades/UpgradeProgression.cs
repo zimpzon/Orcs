@@ -41,6 +41,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 10;
         public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 10;
         public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 10;
+        public static Decimal512 InitialPrice_StormLord = InitialPrice_SkullSlicer * 10;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
@@ -68,6 +69,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_CriticalStrike_X2 = InitialPrice_CriticalStrike * 10;
         public static Decimal512 InitialPrice_PowerZap_X2 = InitialPrice_PowerZap * 10;
         public static Decimal512 InitialPrice_SkullSlicer_X2 = InitialPrice_SkullSlicer * 10;
+        public static Decimal512 InitialPrice_StormLord_X2 = InitialPrice_StormLord * 10;
 
         public static Decimal512 BaseIncome_Clickdamage = 0.2;
         public static Decimal512 BaseIncome_DaggerDamage = 2;
@@ -92,6 +94,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
         public static Decimal512 BaseIncome_PowerZap =    170_010_000_000_000;
         public static Decimal512 BaseIncome_SkullSlicer = 680_040_000_000_000;
+        public static Decimal512 BaseIncome_StormLord = 2_720_160_000_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {

@@ -15,7 +15,7 @@ public enum Achieved
     Mystery100,
     Chest50,
     Diamonds10,
-    SkullSlicerTier,
+    StormLordTier,
     Arena81000,
     MasterWizardTier,
     Diamonds250,

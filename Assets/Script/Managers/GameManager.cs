@@ -350,6 +350,42 @@ public class GameManager : MonoBehaviour
             });
     }
 
+    // Storm Lord (final tier): every StormInterval seconds, bolts come down from the sky on random enemies.
+    float _nextStorm;
+    readonly List<ActorBase> _stormTargets = new();
+
+    void CheckStorm()
+    {
+        int strikes = PlayerUpgrades.Data.StormLordStrikes;
+        if (strikes <= 0 || PlayerUpgrades.Data.EffectiveZapDamage <= 0)
+            return;
+
+        if (G.D.GameTime < _nextStorm)
+            return;
+        _nextStorm = G.D.GameTime + Assets.Script.Upgrades.StormLordManager.StormInterval;
+
+        long damage = (long)(PlayerUpgrades.Data.EffectiveZapDamage * PlayerUpgrades.Data.StormLordDamageMul);
+        _stormTargets.Clear();
+        bool anyHit = false;
+        for (int i = 0; i < strikes; ++i)
+        {
+            // A distinct random enemy: the closest one to a random point in the arena.
+            var randomPoint = new Vector3(
+                UnityEngine.Random.Range(ArenaBounds.xMin, ArenaBounds.xMax),
+                UnityEngine.Random.Range(ArenaBounds.yMin, ArenaBounds.yMax), 0);
+            var target = BlackboardScript.GetClosestEnemy(randomPoint, radius: 20f, _stormTargets);
+            if (target == null)
+                break;
+
+            _stormTargets.Add(target);
+            Vector2 sky = (Vector2)target.transform.position + new Vector2(UnityEngine.Random.Range(-0.6f, 0.6f), 4.5f);
+            anyHit |= Zapper.TryZapEnemy(sky, target, damage, ActorDamageSource.StormLord);
+        }
+
+        if (anyHit)
+            ShakeCamera(1.0f);
+    }
+
     void CheckZapping(ActorDamageSource damageSource)
     {
         if (PlayerUpgrades.Data.EffectiveZapDamage > 0 && G.D.GameTime > _nextZap)
@@ -506,6 +542,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 CheckZapping(ActorDamageSource.ChainZap);
+                CheckStorm();
 
                 float delta = GameDeltaTime;
                 ProjectileManager.Instance.Tick(delta);
@@ -1001,6 +1038,7 @@ public class GameManager : MonoBehaviour
         switch (damageSource)
         {
             case ActorDamageSource.ChainZap:
+            case ActorDamageSource.StormLord: // lightning too
                 SaveGame.Members.TotalDamageChainZap += damage;
                 break;
 
@@ -1029,7 +1067,7 @@ public class GameManager : MonoBehaviour
     {
         return source switch
         {
-            ActorDamageSource.ChainZap or ActorDamageSource.WitchDoctor or ActorDamageSource.Wizard => ColorDamageNumbersZap,
+            ActorDamageSource.ChainZap or ActorDamageSource.StormLord or ActorDamageSource.WitchDoctor or ActorDamageSource.Wizard => ColorDamageNumbersZap,
             _ => ColorDamageNumbersDagger,
         };
     }

@@ -15,6 +15,8 @@ public class UpgradeData
 
     // Skull Slicer: all damage to an enemy with a skull attached is multiplied by this.
     public double SkullSlicerDamageMul = 1.0;
+    public int StormLordStrikes = 0;
+    public double StormLordDamageMul = 0.0;
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);
