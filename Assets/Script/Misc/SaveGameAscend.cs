@@ -75,6 +75,7 @@ static class SaveGameAscend
         newSave.MaxArena = oldSave.MaxArena;
         newSave.TotalArenas = oldSave.TotalArenas;
         newSave.TotalArenasWon = oldSave.TotalArenasWon;
+        newSave.SuperFastClears = oldSave.SuperFastClears;
         newSave.MaxIncome = oldSave.MaxIncome;
         newSave.MaxMoney = oldSave.MaxMoney;
         newSave.MaxCredits = oldSave.MaxCredits;

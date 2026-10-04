@@ -40,6 +40,10 @@ public enum Achieved
     Rebirth20,
     Diamonds5000,
     Completion100,
+    ArenasLost100,
+    SuperClears1000,
+    Credits1000,
+    StormLord5,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -115,6 +119,10 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
         AchievementChecks.CheckPlayed5Days(list);
+        AchievementChecks.CheckArenasLost100(list);
+        AchievementChecks.CheckSuperClears1000(list);
+        AchievementChecks.CheckCredits1000(list);
+        AchievementChecks.CheckStormLord5(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);

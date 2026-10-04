@@ -105,6 +105,7 @@ public class SaveGameMembers
     public long MaxArena = 1;
     public long TotalArenas = 0;
     public long TotalArenasWon = 0;
+    public long SuperFastClears = 0;
     public Decimal512 MaxIncome;
     public Decimal512 MaxMoney;
     public long MaxCredits;

@@ -404,5 +404,49 @@ namespace Assets.Script.Achievements
                 NewAchieved(Achieved.Buy1PercentTotal500);
             }
         }
+
+        public static void CheckArenasLost100(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.ArenasLost100)) return;
+
+            if (SaveGame.Members.TotalArenas - SaveGame.Members.TotalArenasWon >= 100)
+            {
+                list.Add(Achieved.ArenasLost100);
+                NewAchieved(Achieved.ArenasLost100);
+            }
+        }
+
+        public static void CheckSuperClears1000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.SuperClears1000)) return;
+
+            if (SaveGame.Members.SuperFastClears >= 1000)
+            {
+                list.Add(Achieved.SuperClears1000);
+                NewAchieved(Achieved.SuperClears1000);
+            }
+        }
+
+        public static void CheckCredits1000(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Credits1000)) return;
+
+            if (SaveGame.Members.MonsterCreditsLifetime_09_08_2025 >= 1000)
+            {
+                list.Add(Achieved.Credits1000);
+                NewAchieved(Achieved.Credits1000);
+            }
+        }
+
+        public static void CheckStormLord5(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.StormLord5)) return;
+
+            if (SaveGame.Members.LevelStormLord >= 5)
+            {
+                list.Add(Achieved.StormLord5);
+                NewAchieved(Achieved.StormLord5);
+            }
+        }
     }
 }

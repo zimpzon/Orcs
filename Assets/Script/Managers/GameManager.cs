@@ -584,6 +584,7 @@ public class GameManager : MonoBehaviour
             if (secondsLeftAtRoundEnd >= 15 && fasterArena && GameState == State.Idle_WonFight)
             {
                 arenaStep = fasterArena2 ? 100L : 25L;
+                SaveGame.Members.SuperFastClears++;
                 Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);
                 FloatingTextSpawner.Instance.Spawn(
                     superStepPos,
@@ -1759,6 +1760,12 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightControl))
         {
             ToggleCheatSpeed();
+        }
+
+        // Test: unlock the White Earl skin (normally 100 arenas lost to the timer).
+        if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightControl) && !SaveGame.Members.Achieved.Contains(Achieved.ArenasLost100))
+        {
+            SaveGame.Members.Achieved.Add(Achieved.ArenasLost100);
         }
 
         // Preview the X2 rank-up text at the cursor.

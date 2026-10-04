@@ -184,6 +184,22 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return (list.Contains(Achieved.Rebirth20), "Saturated Earl: Rebirth 20 times");
         }
+        else if (animationName == SkinAnimation.WhiteEarl)
+        {
+            return (list.Contains(Achieved.ArenasLost100), "White Earl: Run out of time in 100 arenas");
+        }
+        else if (animationName == SkinAnimation.BlackEarl)
+        {
+            return (list.Contains(Achieved.SuperClears1000), "Black Earl: Get 1000 super fast arena clears");
+        }
+        else if (animationName == SkinAnimation.InvertedEarl)
+        {
+            return (list.Contains(Achieved.Credits1000), "Inverted Earl: Earn 1000 monster credits");
+        }
+        else if (animationName == SkinAnimation.NeonEarl)
+        {
+            return (list.Contains(Achieved.StormLord5), "Neon Earl: Reach Storm Lord level 5");
+        }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
     }
