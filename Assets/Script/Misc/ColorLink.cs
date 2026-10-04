@@ -2,7 +2,6 @@ using Assets.Script.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 [ExecuteAlways]
 public class ColorLink : MonoBehaviour
@@ -106,7 +105,7 @@ public class ColorLink : MonoBehaviour
     }
 
     const float PressedFactor = 0.857f;
-    const float DisabledFactor = 0.6f;
+    const float DisabledFactor = 0.7f;
 
     static Color Darker(Color c, float factor) => new Color(c.r * factor, c.g * factor, c.b * factor, c.a);
 
