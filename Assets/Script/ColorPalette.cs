@@ -21,6 +21,8 @@ public class ColorPalette : ScriptableObject
     public Color ButtonTextDisabled = Color.green;
     public Color ArenaBackground = Color.green;
     public Color ArenaHpBar = Color.green;
+    // All panel-3 panels and dialogs (ColorLink with ColorType.DialogPanel).
+    public Color DialogPanel = new Color(0.4509804f, 0.4117647f, 0.3764706f, 1f);
 
     public event Action OnColorsChanged;
 

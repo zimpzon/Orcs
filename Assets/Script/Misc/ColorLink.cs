@@ -45,6 +45,7 @@ public class ColorLink : MonoBehaviour
         // For buttons, track interactable state and update text color live
         if (uiButton == null) uiButton = GetComponent<Button>();
         if (uiButton == null) return;
+        if (colorType == ColorType.DialogPanel) return; // panel tint only, its text is owned by the panel's own script
 
         if (tmpText == null) tmpText = GetComponentInChildren<TextMeshProUGUI>();
         if (tmpText == null) return;
@@ -121,6 +122,18 @@ public class ColorLink : MonoBehaviour
 
             case ColorType.ButtonTextDisabled:
                 UpdateButtonTextColorBasedOnInteractable();
+                break;
+
+            case ColorType.DialogPanel:
+                // A panel that is also a button (e.g. the QuestionMark): its Image stays white and the button's
+                // color tint provides the panel color, the same in every state.
+                {
+                    Color panelColor = useOverrideColor ? overrideColor : ColorFromEnum.Get(palette, colorType);
+                    var colors = button.colors;
+                    colors.normalColor = colors.highlightedColor = colors.pressedColor =
+                        colors.selectedColor = colors.disabledColor = panelColor;
+                    button.colors = colors;
+                }
                 break;
 
             default:
