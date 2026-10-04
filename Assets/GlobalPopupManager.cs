@@ -158,6 +158,8 @@ public class GlobalPopupManager : MonoBehaviour
             CancelTweens(CurrentPopup);
         }
 
+        CenterOnScreen(popup);
+
         // get base values and add CanvasGroup if not present.
         if (!_gameObjects.TryGetValue(popup.GetInstanceID(), out PopupBaseValues popupBaseValues))
         {
@@ -182,6 +184,21 @@ public class GlobalPopupManager : MonoBehaviour
         popup.transform.position = popupBaseValues.Position + new Vector3(0, -20f, 0); // start slightly lower
 
         LeanTween.moveY(popup, popupBaseValues.Position.y, 0.2f).setEaseOutCubic();
+    }
+
+    // Every popup opens centered on the screen, wherever it was placed in the scene (some are nested, e.g. settings
+    // inside its icon). Pivot goes to the center too, so popups that grow to fit their text after opening (victory,
+    // X2, credits) grow evenly up and down and stay centered.
+    void CenterOnScreen(GameObject popup)
+    {
+        var rt = popup.transform as RectTransform;
+        var rootCanvas = popup.GetComponentInParent<Canvas>()?.rootCanvas;
+        if (rt == null || rootCanvas == null)
+            return;
+
+        var canvasRt = (RectTransform)rootCanvas.transform;
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.position = canvasRt.TransformPoint(canvasRt.rect.center);
     }
 
     public void AfterHidePopup()
