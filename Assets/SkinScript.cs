@@ -178,7 +178,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.MonochromeEarl)
         {
-            return (list.Contains(Achieved.Completion100), "Monochrome Earl: Reach 100% game completion");
+            return (list.Contains(Achieved.Completion100), "Earl Grey: Reach 100% game completion");
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {
