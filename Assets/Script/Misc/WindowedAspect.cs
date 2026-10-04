@@ -2,24 +2,19 @@ using UnityEngine;
 
 // Standalone builds (Windows/Linux) must render at exactly 16:9 - parts of the UI can't scale to other aspect ratios.
 // The game always runs in a resizable window that is kept at 16:9:
-// - Start: the window size Unity remembered from last time if it's 16:9 and fits, else the largest standard 16:9
-//   size that fits in 90% of the usable desktop area (taskbar excluded), leaving room for title bar and borders.
+// - Start: the window size from the previous run if it's 16:9 and fits, else (first run) 60% of the usable desktop
+//   width (taskbar excluded) at 16:9.
 // - Resizing / maximizing: once the size has settled, it snaps back to 16:9, following the dimension the player
 //   changed most, clamped to what fits on the monitor.
 // Editor and WebGL are untouched. Player settings disable Alt+Enter (no fullscreen).
 public class WindowedAspect : MonoBehaviour
 {
-    const float StartAreaFraction = 0.9f;  // initial window: at most this much of the usable desktop area
+    const float StartWidthFraction = 0.6f; // first-run window width, as a fraction of the usable desktop width
+    const string SizeChosenKey = "WindowedAspect.SizeChosen"; // set once we've picked a size, so later runs keep the player's
     const int TitleBarMargin = 60;         // title bar + borders, so a window of the max size still fits
     const int SideMargin = 20;
     const int MinHeight = 360;             // 640x360
     const float SettleTime = 0.25f;        // snap only after the size stopped changing (don't fight a drag)
-
-    static readonly Vector2Int[] StartSizes =
-    {
-        new(3840, 2160), new(3200, 1800), new(2560, 1440), new(1920, 1080),
-        new(1600, 900), new(1360, 765), new(1280, 720), new(1024, 576),
-    };
 
 #if UNITY_STANDALONE && !UNITY_EDITOR
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -60,6 +55,7 @@ public class WindowedAspect : MonoBehaviour
         h = h / 9 * 9;
         _appliedW = _seenW = w;
         _appliedH = _seenH = h;
+        PlayerPrefs.SetInt(SizeChosenKey, 1);
         if (Screen.fullScreenMode != FullScreenMode.Windowed || Screen.width != w || Screen.height != h)
             Screen.SetResolution(w, h, FullScreenMode.Windowed);
     }
@@ -70,22 +66,16 @@ public class WindowedAspect : MonoBehaviour
         int maxH = MaxHeight(availW, availH);
 
         // Keep the size the player left it at last time (Unity remembers it), if it's still valid on this monitor.
-        if (Screen.fullScreenMode == FullScreenMode.Windowed && Is16x9(Screen.width, Screen.height)
+        // On the very first run Unity starts at the Player Settings default (1280x720), which is 16:9 too - so only
+        // trust it once we've chosen a size ourselves.
+        if (PlayerPrefs.GetInt(SizeChosenKey, 0) == 1 && Screen.fullScreenMode == FullScreenMode.Windowed && Is16x9(Screen.width, Screen.height)
             && Screen.height >= MinHeight && Screen.height <= maxH)
         {
             SetSize(Screen.height);
             return;
         }
 
-        int startH = MaxHeight((int)(availW * StartAreaFraction), (int)(availH * StartAreaFraction));
-        foreach (var size in StartSizes)
-        {
-            if (size.x <= availW * StartAreaFraction && size.y <= availH * StartAreaFraction)
-            {
-                startH = size.y;
-                break;
-            }
-        }
+        int startH = (int)(availW * StartWidthFraction) * 9 / 16;
         SetSize(Mathf.Clamp(startH, MinHeight, maxH));
     }
 
