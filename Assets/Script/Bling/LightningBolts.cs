@@ -10,7 +10,7 @@ public class LightningBolts : MonoBehaviour
     const int MaxForks = 1;
     const float Life = 0.45f;
     const float CrackleInterval = 0.8f;   // re-shape the bolt this often while it lives
-    const float Displacement = 0.25f;      // initial sideways displacement, relative to bolt length
+    const float Displacement = 0.15f;      // initial sideways displacement, relative to bolt length
     const float GlowWidthMul = 4.5f;
     const float GlowAlpha = 0.4f;
     const float ForkChance = 0.1f;
