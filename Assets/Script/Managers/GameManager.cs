@@ -490,7 +490,7 @@ public class GameManager : MonoBehaviour
 
             UpdateMoneyText();
 
-            TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
+            TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}{ArenaCappedSuffix()}";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -601,6 +601,7 @@ public class GameManager : MonoBehaviour
                 // Last enemy already threw round gold, NOT done here.
                 // Speed cheat also multiplies the jump (timeouts still only step back the normal amount).
                 long winStep = arenaStep * (long)G.CheatSpeed;
+                long levelBeforeWin = SaveGame.Members.ArenaLevel;
                 SaveGame.Members.ArenaLevel += winStep;
 
                 if (winStep > 1)
@@ -611,10 +612,26 @@ public class GameManager : MonoBehaviour
                         SaveGame.Members.ArenaLevel = 1;
                 }
 
+                // The last enemies are reserved for Storm Lord: no climbing past the cap without it. (A level already
+                // above the cap, from the arena cheats, just doesn't climb further.)
+                if (ArenaCapped && SaveGame.Members.ArenaLevel > ArenaCapWithoutStormLord)
+                {
+                    SaveGame.Members.ArenaLevel = Math.Max(ArenaCapWithoutStormLord, levelBeforeWin);
+                    FloatingTextSpawner.Instance.Spawn(
+                        new Vector2(ArenaBounds.center.x, ArenaBounds.center.y - 1.0f),
+                        "<size=+3>Only a Storm Lord can go further!",
+                        new Color(0.8f, 0.8f, 0.8f),
+                        speed: 0.05f,
+                        timeToLive: 3.0f,
+                        fadeTime: 0.5f,
+                        fontStyle: TMPro.FontStyles.Bold,
+                        FontTarragon);
+                }
+
                 SaveGame.Members.TotalArenasWon++;
                 SaveGame.Members.MaxArena = Math.Max(SaveGame.Members.ArenaLevel, SaveGame.Members.MaxArena);
 
-                yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}", delay: 1);
+                yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}{ArenaCappedSuffix()}", delay: 1);
                 yield return new WaitForSeconds(0.25f);
                 yield return null;
             }
@@ -637,6 +654,12 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
+
+    // Dark Wizard (63,500), The Grey and From The Void unlock past this arena; they require the final tier, Storm Lord.
+    const long ArenaCapWithoutStormLord = 60_000;
+    static bool ArenaCapped => SaveGame.Members.LevelStormLord <= 0;
+    static string ArenaCappedSuffix()
+        => ArenaCapped && SaveGame.Members.ArenaLevel >= ArenaCapWithoutStormLord ? " (capped)" : "";
 
     static int Rounds = 0;
 
