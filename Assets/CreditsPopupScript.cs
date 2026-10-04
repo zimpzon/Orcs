@@ -37,7 +37,9 @@ public class CreditsPopupScript : MonoBehaviour
     }
 
     // An idle-animated Earl on each side of the header line, both facing the text.
-    const float EarlHeightMul = 1.8f;  // relative to the header's drawn glyph height
+    const float EarlHeightMul = 1.8f;  // relative to one header line's drawn glyph height (fallback)
+    const float EarlHeightMulHeader = 0.5f;
+    const float EarlFeetRefMul = 0.9f;  // feet line: where the bottom of a 0.9x-block-height Earl would be // relative to the whole header block (TextGameName, may be 2 lines)
     const float EarlGap = 6f;          // header glyph edge to the Earl's edge
     const float EarlFrameTime = 0.15f; // same as the skin preview
     Image[] _earls;
@@ -63,37 +65,31 @@ public class CreditsPopupScript : MonoBehaviour
             return;
         }
 
-        // Header line bounds from the drawn glyphs of line 0, in the text's local space.
-        ProgressText.ForceMeshUpdate();
-        var info = ProgressText.textInfo;
-        if (info.lineCount == 0)
+        // The "Idle Earl" header is its own text object (TextGameName...). Use all its drawn glyphs (it may be two
+        // lines). Fallback: the first line of the main text that has visible characters.
+        var header = GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.StartsWith("TextGameName"));
+        TextMeshProUGUI anchorText = header != null ? header : ProgressText;
+        if (!GlyphBounds(anchorText, wholeText: header != null, out Vector3 min, out Vector3 max))
         {
-            Debug.LogWarning("CreditsPopupScript: header text has no lines, Earls not placed");
+            Debug.LogWarning("CreditsPopupScript: no visible header text, Earls not placed");
             return;
         }
-        var line = info.lineInfo[0];
-        bool any = false;
-        Vector3 min = Vector3.zero, max = Vector3.zero;
-        for (int c = line.firstCharacterIndex; c <= line.lastCharacterIndex && c < info.characterCount; ++c)
-        {
-            var ch = info.characterInfo[c];
-            if (!ch.isVisible)
-                continue;
-            Vector3 bl = ch.vertex_BL.position, tr = ch.vertex_TR.position;
-            min = any ? Vector3.Min(min, bl) : bl;
-            max = any ? Vector3.Max(max, tr) : tr;
-            any = true;
-        }
-        if (!any)
-            return;
 
-        float size = (max.y - min.y) * EarlHeightMul;
+        float size = (max.y - min.y) * (header != null ? EarlHeightMulHeader : EarlHeightMul);
         float centerY = (min.y + max.y) * 0.5f;
+        // Next to the header block, keep the Earls' feet where the old 0.9-size Earls stood (bottom-aligned)
+        // instead of centering, so shrinking them moves them down rather than shrinking toward the middle.
+        if (header != null)
+        {
+            float blockHeight = max.y - min.y;
+            float feetY = centerY - blockHeight * EarlFeetRefMul * 0.5f;
+            centerY = feetY + size * 0.5f;
+        }
         _earls = new Image[2];
         for (int i = 0; i < 2; ++i)
         {
             var go = new GameObject(i == 0 ? "EarlLeft" : "EarlRight", typeof(RectTransform));
-            go.transform.SetParent(ProgressText.rectTransform, false);
+            go.transform.SetParent(anchorText.rectTransform, false);
             var image = go.AddComponent<Image>();
             image.sprite = _earlFrames[0];
             image.preserveAspect = true;
@@ -108,6 +104,32 @@ public class CreditsPopupScript : MonoBehaviour
             rect.localScale = new Vector3(i == 0 ? 1f : -1f, 1f, 1f);
             _earls[i] = image;
         }
+    }
+
+    // Drawn glyph bounds (text-local space) of all visible characters, or of the first line that has any.
+    static bool GlyphBounds(TextMeshProUGUI text, bool wholeText, out Vector3 min, out Vector3 max)
+    {
+        min = max = Vector3.zero;
+        bool any = false;
+        text.ForceMeshUpdate();
+        var info = text.textInfo;
+        for (int l = 0; l < info.lineCount; ++l)
+        {
+            var line = info.lineInfo[l];
+            for (int c = line.firstCharacterIndex; c <= line.lastCharacterIndex && c < info.characterCount; ++c)
+            {
+                var ch = info.characterInfo[c];
+                if (!ch.isVisible)
+                    continue;
+                Vector3 bl = ch.vertex_BL.position, tr = ch.vertex_TR.position;
+                min = any ? Vector3.Min(min, bl) : bl;
+                max = any ? Vector3.Max(max, tr) : tr;
+                any = true;
+            }
+            if (!wholeText && any)
+                return true;
+        }
+        return any;
     }
 
     void Update()
