@@ -32,6 +32,10 @@ public class X2RankUpEffect : MonoBehaviour
     Material _fontMaterial;
 
     public static void Spawn(Component anyUiElement, Vector2 screenPos, double pctPerRank, long rank)
+        => SpawnText(anyUiElement, screenPos, $"+{pctPerRank:0}% income!\n<size=80%>X2 rank {rank}</size>");
+
+    // Same floating text with any content (also used for "New skin unlocked!").
+    public static void SpawnText(Component anyUiElement, Vector2 screenPos, string content)
     {
         if (_instance == null)
         {
@@ -62,10 +66,10 @@ public class X2RankUpEffect : MonoBehaviour
             _instance._fontMaterial = source != null ? source.fontSharedMaterial : null;
         }
 
-        _instance.DoSpawn(screenPos, pctPerRank, rank);
+        _instance.DoSpawn(screenPos, content);
     }
 
-    void DoSpawn(Vector2 screenPos, double pctPerRank, long rank)
+    void DoSpawn(Vector2 screenPos, string content)
     {
         transform.SetAsLastSibling();
 
@@ -74,7 +78,7 @@ public class X2RankUpEffect : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_rect, screenPos, cam, out Vector2 local);
 
         // Yellow with drop shadow - green/orange would clash with the upgrade buttons it floats over.
-        var text = CreateText($"+{pctPerRank:0}% income!\n<size=80%>X2 rank {rank}</size>", 16f);
+        var text = CreateText(content, 16f);
         _items.Add(new Item { Text = text, Start = local + new Vector2(0, StartAboveCursor) });
 
         Update();

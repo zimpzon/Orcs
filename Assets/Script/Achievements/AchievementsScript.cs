@@ -44,9 +44,64 @@ public enum Achieved
 
 public class AchievementsScript : MonoBehaviour
 {
+    // Don't celebrate unlocks that happen while the save loads (e.g. thresholds an old save already meets).
+    const float AnnounceAfterSeconds = 3f;
+    readonly System.Collections.Generic.List<Achieved> _newThisFrame = new();
+
     void Update()
     {
         var list = SaveGame.Members.Achieved;
+        int countBefore = list.Count;
+        RunChecks(list);
+
+        if (list.Count > countBefore && Time.timeSinceLevelLoad > AnnounceAfterSeconds)
+            AnnounceNewSkins(list, countBefore);
+    }
+
+    // Floating "New skin unlocked!" text (same effect as the X2 rank-up), for every skin the new achievements unlocked.
+    void AnnounceNewSkins(System.Collections.Generic.List<Achieved> list, int countBefore)
+    {
+        _newThisFrame.Clear();
+        for (int i = countBefore; i < list.Count; ++i)
+            _newThisFrame.Add(list[i]);
+
+        foreach (SkinAnimation skin in System.Enum.GetValues(typeof(SkinAnimation)))
+        {
+            (bool isUnlocked, string hoverText) status;
+            try { status = SkinScript.GetUnlockStatus(skin); }
+            catch (System.ArgumentException) { continue; } // enum entries with no skin (GhostEarl)
+            if (!status.isUnlocked)
+                continue;
+
+            // Unlocked now - was it unlocked without this frame's achievements?
+            list.RemoveRange(countBefore, _newThisFrame.Count);
+            bool wasUnlocked = SkinScript.GetUnlockStatus(skin).isUnlocked;
+            list.AddRange(_newThisFrame);
+            if (wasUnlocked)
+                continue;
+
+            int colon = status.hoverText.IndexOf(':');
+            string skinName = colon > 0 ? status.hoverText.Substring(0, colon) : status.hoverText;
+            AnnounceAtCursorOrCenter($"New skin unlocked!\n<size=80%>{skinName}</size>");
+        }
+    }
+
+    static void AnnounceAtCursorOrCenter(string text)
+    {
+        var anchor = UpgradeManager.Instance != null ? UpgradeManager.Instance.ClickDamage : null;
+        if (anchor == null)
+            return;
+
+        // Unlocks can happen passively (arena level, time played), so fall back to the screen center when the
+        // cursor isn't over the game.
+        Vector2 pos = Input.mousePosition;
+        if (pos.x < 0 || pos.y < 0 || pos.x > Screen.width || pos.y > Screen.height)
+            pos = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+        X2RankUpEffect.SpawnText(anchor, pos, text);
+    }
+
+    void RunChecks(System.Collections.Generic.List<Achieved> list)
+    {
         AchievementChecks.CheckWitchDoctor(list);
         AchievementChecks.CheckNecro200(list);
         AchievementChecks.CheckSkullCrusher5(list);
