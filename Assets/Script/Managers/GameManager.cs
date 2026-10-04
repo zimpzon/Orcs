@@ -929,7 +929,9 @@ public class GameManager : MonoBehaviour
         // Early-run floor: income is ~0 at the start of a run, so the first arenas must pay well above it for the
         // player to buy anything. Arena 1 pays exactly the first upgrade (1 zap), then the floor grows
         // EarlyFloorGrowth per arena up to EarlyFloorLastLevel, after which income-based gold takes over.
-        const double EarlyFloorGrowth = 1.35;
+        // Kept only a bit above the 1.15 per-level price growth: at 1.35 each round bought ~2 more levels than the
+        // last and the early game snowballed from arena 7 (and overshot income-based gold at arena 20).
+        const double EarlyFloorGrowth = 1.2;
         const long EarlyFloorLastLevel = 20;
         long level = SaveGame.Members.ArenaLevel;
         if (level <= EarlyFloorLastLevel)
