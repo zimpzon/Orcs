@@ -29,6 +29,6 @@ MonoBehaviour:
   ButtonTextDisabled: {r: 0, g: 1, b: 0, a: 1}
   ArenaBackground: {r: 0.93710685, g: 0.74497586, b: 0.5923222, a: 1}
   ArenaHpBar: {r: 0, g: 1, b: 0, a: 1}
-  DialogPanel: {r: 0.4509804, g: 0.3869537, b: 0.32966667, a: 1}
-  ButtonMain: {r: 0.7372549, g: 0.62773407, b: 0.53893334, a: 1}
-  ButtonIcon: {r: 0.67, g: 0.5702128, b: 0.4882447, a: 1}
+  DialogPanel: {r: 0.5, g: 0.43165466, b: 0.3705036, a: 1}
+  ButtonMain: {r: 0.769, g: 0.6544681, b: 0.5603883, a: 1}
+  ButtonIcon: {r: 0.72199994, g: 0.6112169, b: 0.5271746, a: 1}
