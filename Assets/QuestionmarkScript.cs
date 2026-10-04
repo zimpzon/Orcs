@@ -210,16 +210,16 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             float endRealTime = startRealTime + (60 * 5);
 
-            ShowMessage($"Time runs {Highlight(33)}% faster and income is {Highlight("X2.5")} for {Highlight(5)} minutes!");
+            ShowMessage($"Time runs {Highlight(25)}% faster and income is {Highlight("X2.5")} for {Highlight(5)} minutes!");
 
             MoneyMultiplierText.text = "X2.5";
             MoneyMultiplierText.gameObject.SetActive(true);
 
-            PlayerUpgrades.Data.TimeScale = 1.33f;
+            PlayerUpgrades.Data.TimeScale = 1.25f;
             // Compare by EXTRA income over the 1x baseline, not total: FasterIncomeCo's 10x for 60s
             // gives (10-1)*60 = 540 extra income-seconds. At 2.5x over this 300s duration we give
             // (2.5-1)*300 = 450 extra income-seconds, matching FixedIncomeCo's 450 target - with
-            // the 33% time speedup remaining a genuine bonus on top, uncounted in that math.
+            // the 25% time speedup remaining a genuine bonus on top, uncounted in that math.
             PlayerUpgrades.Data.PassiveIncomeTempMultiplier = 2.5f;
 
             while (G.D.RealTime < endRealTime)
