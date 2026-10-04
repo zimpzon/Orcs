@@ -23,6 +23,8 @@ namespace Assets.Script.Misc
         ArenaBackground,
         ArenaHpBar,
         DialogPanel,
+        ButtonMain,
+        ButtonIcon,
     }
 
     public static class ColorFromEnum
@@ -49,6 +51,8 @@ namespace Assets.Script.Misc
                 ColorType.ArenaBackground => palette.ArenaBackground,
                 ColorType.ArenaHpBar => palette.ArenaHpBar,
                 ColorType.DialogPanel => palette.DialogPanel,
+                ColorType.ButtonMain => palette.ButtonMain,
+                ColorType.ButtonIcon => palette.ButtonIcon,
                 _ => Color.magenta
             };
         }

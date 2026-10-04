@@ -23,6 +23,11 @@ public class ColorPalette : ScriptableObject
     public Color ArenaHpBar = Color.green;
     // All panel-3 panels and dialogs (ColorLink with ColorType.DialogPanel).
     public Color DialogPanel = new Color(0.4509804f, 0.4117647f, 0.3764706f, 1f);
+    // Buttons (ColorLink ButtonMain / ButtonIcon): normal color; pressed and disabled are darker versions of it.
+    // ButtonIcon = the top icon buttons (skins, bestiary, X2, victory...), ButtonMain = everything else.
+    // Not used by the blue tier buy / X2 buttons.
+    public Color ButtonMain = new Color(0.7372549f, 0.67058825f, 0.6156863f, 1f);
+    public Color ButtonIcon = new Color(0.7372549f, 0.67058825f, 0.6156863f, 1f);
 
     public event Action OnColorsChanged;
 

@@ -45,7 +45,8 @@ public class ColorLink : MonoBehaviour
         // For buttons, track interactable state and update text color live
         if (uiButton == null) uiButton = GetComponent<Button>();
         if (uiButton == null) return;
-        if (colorType == ColorType.DialogPanel) return; // panel tint only, its text is owned by the panel's own script
+        // Tint-only types: the button's text is owned by its own script.
+        if (colorType == ColorType.DialogPanel || colorType == ColorType.ButtonMain || colorType == ColorType.ButtonIcon) return;
 
         if (tmpText == null) tmpText = GetComponentInChildren<TextMeshProUGUI>();
         if (tmpText == null) return;
@@ -104,6 +105,11 @@ public class ColorLink : MonoBehaviour
         if (tmpText != null) tmpText.color = colorToUse;
     }
 
+    const float PressedFactor = 0.857f;
+    const float DisabledFactor = 0.6f;
+
+    static Color Darker(Color c, float factor) => new Color(c.r * factor, c.g * factor, c.b * factor, c.a);
+
     private void ApplyButtonColors(Button button)
     {
         if (tmpText == null) tmpText = GetComponentInChildren<TextMeshProUGUI>();
@@ -122,6 +128,20 @@ public class ColorLink : MonoBehaviour
 
             case ColorType.ButtonTextDisabled:
                 UpdateButtonTextColorBasedOnInteractable();
+                break;
+
+            case ColorType.ButtonMain:
+            case ColorType.ButtonIcon:
+                // Image stays white, the button tint gives the color: palette color normally, darker when pressed
+                // and much darker when disabled (same ratios the buttons were authored with).
+                {
+                    Color normal = useOverrideColor ? overrideColor : ColorFromEnum.Get(palette, colorType);
+                    var colors = button.colors;
+                    colors.normalColor = colors.highlightedColor = colors.selectedColor = normal;
+                    colors.pressedColor = Darker(normal, PressedFactor);
+                    colors.disabledColor = Darker(normal, DisabledFactor);
+                    button.colors = colors;
+                }
                 break;
 
             case ColorType.DialogPanel:

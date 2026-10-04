@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 6867789493089753466}
   - component: {fileID: 5143532985702686174}
   - component: {fileID: 3682364658607709734}
+  - component: {fileID: 999200001}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -692,5 +693,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   palette: {fileID: 11400000, guid: 1b838c0d15bb063409070b466b47cf4f, type: 2}
   colorType: 18
+  useOverrideColor: 0
+  overrideColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &999200001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241867324528583958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933fff2bc4f1d4f4d81980e7460b43d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  palette: {fileID: 11400000, guid: 1b838c0d15bb063409070b466b47cf4f, type: 2}
+  colorType: 19
   useOverrideColor: 0
   overrideColor: {r: 0, g: 0, b: 0, a: 0}

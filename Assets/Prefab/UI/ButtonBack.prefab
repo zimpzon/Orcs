@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7627080447361557433}
   - component: {fileID: 8660353226280984920}
   - component: {fileID: 2286750103609397966}
+  - component: {fileID: 999300001}
   m_Layer: 5
   m_Name: ButtonBack
   m_TagString: Untagged
@@ -271,3 +272,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &999300001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692811644596149166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933fff2bc4f1d4f4d81980e7460b43d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  palette: {fileID: 11400000, guid: 1b838c0d15bb063409070b466b47cf4f, type: 2}
+  colorType: 19
+  useOverrideColor: 0
+  overrideColor: {r: 0, g: 0, b: 0, a: 0}
