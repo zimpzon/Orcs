@@ -454,12 +454,6 @@ public class GameManager : MonoBehaviour
     // main loop
     IEnumerator GameStateCo()
     {
-        GameCanvasScript.Instance.ShowPopup(
-            "<color=yellow>Welcome to Idle Earl</color>\n<size=-3><color=#c0c0d0>Game is saved every 5 sec</color></size>\n\n" +
-            "<size=-2>Fight in the arena\n" + 
-            "Buy upgrades to get stronger\n" +
-            "Teach them to not mess with <color=yellow>Earl\n");
-
         Decimal512 v1 = 1_234_456;
         Decimal512 v2 = 5_000_000;
         Decimal512 v3 = 2_100_000;
