@@ -31,6 +31,8 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     void SetSkin(SkinAnimation skinAnimation)
     {
         SelectedSkinScript.Instance.SelectedSkinAnimation = MyAnimations;
+        SaveGame.Members.SelectedSkin = AnimationName;
+        SaveGame.Save();
     }
 
     public void OnClick()

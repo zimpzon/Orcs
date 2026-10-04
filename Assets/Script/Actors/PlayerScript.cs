@@ -380,8 +380,10 @@ public class PlayerScript : MonoBehaviour
         bool isRunning = isMoving_;
 
         Sprite[] sprites;
-        var idleSprites = SelectedSkinScript.Instance?.SelectedSkinAnimation?.IdleSprites ?? IdleSprites;
-        var runSprites = SelectedSkinScript.Instance?.SelectedSkinAnimation?.RunSprites ?? RunSprites;
+        // Saved skin, resolved even if the Skins popup was never opened.
+        var skin = SelectedSkinScript.Current;
+        var idleSprites = skin?.IdleSprites ?? IdleSprites;
+        var runSprites = skin?.RunSprites ?? RunSprites;
 
         sprites = isRunning ? runSprites : idleSprites;
         //sprites = isRunning ? RunSprites : IdleSprites;

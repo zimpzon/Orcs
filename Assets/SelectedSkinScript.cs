@@ -13,7 +13,37 @@ public class SelectedSkinScript : MonoBehaviour
     public void Awake()
     {
         Instance = this;
-        SelectedSkinAnimation = SkinAnimations.SkinAnimations.Where(x => x.Animation == SkinAnimation.Default).Single();
+        SelectedSkinAnimation = Current ?? SkinAnimations.SkinAnimations.Where(x => x.Animation == SkinAnimation.Default).Single();
+    }
+
+    // The skin saved in SaveGame.Members.SelectedSkin, resolved without needing this (Skins popup) object to be
+    // active. Falls back to Default if the saved skin is missing or not unlocked (e.g. after importing a save).
+    static SkinsAnimationList _list;
+    static SkinAnimation _cachedFor = SkinAnimation.NotSet;
+    static SkinAnimations _cached;
+
+    public static SkinAnimations Current
+    {
+        get
+        {
+            var wanted = SaveGame.Members.SelectedSkin;
+            if (wanted == _cachedFor && _cached != null)
+                return _cached;
+
+            if (_list == null)
+                _list = Instance != null ? Instance.SkinAnimations : Resources.FindObjectsOfTypeAll<SkinsAnimationList>().FirstOrDefault();
+            if (_list == null)
+                return null;
+
+            bool unlocked;
+            try { unlocked = SkinScript.GetUnlockStatus(wanted).isUnlocked; }
+            catch (System.ArgumentException) { unlocked = false; }
+
+            _cached = (unlocked ? _list.SkinAnimations.FirstOrDefault(x => x.Animation == wanted) : null)
+                ?? _list.SkinAnimations.FirstOrDefault(x => x.Animation == SkinAnimation.Default);
+            _cachedFor = wanted;
+            return _cached;
+        }
     }
 
     float _nextSwitch;

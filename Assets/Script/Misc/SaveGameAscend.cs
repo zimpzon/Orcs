@@ -58,6 +58,7 @@ static class SaveGameAscend
         newSave.UseScientificNotation = oldSave.UseScientificNotation;
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
         newSave.SoundEnabled = oldSave.SoundEnabled;
+        newSave.SelectedSkin = oldSave.SelectedSkin;
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
