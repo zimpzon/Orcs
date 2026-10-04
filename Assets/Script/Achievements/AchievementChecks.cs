@@ -341,12 +341,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckUpgrades10000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Upgrades100000)) return;
+            if (list.Contains(Achieved.Upgrades10000)) return;
 
-            if (SaveGame.Members.TotalUpgradesBought >= 100000)
+            if (SaveGame.Members.TotalUpgradesBought >= 10000)
             {
-                list.Add(Achieved.Upgrades100000);
-                NewAchieved(Achieved.Upgrades100000);
+                list.Add(Achieved.Upgrades10000);
+                NewAchieved(Achieved.Upgrades10000);
             }
         }
 
@@ -446,6 +446,17 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.StormLord5);
                 NewAchieved(Achieved.StormLord5);
+            }
+        }
+
+        public static void CheckMystery50(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.Mystery50)) return;
+
+            if (SaveGame.Members.MysteryCollected >= 50)
+            {
+                list.Add(Achieved.Mystery50);
+                NewAchieved(Achieved.Mystery50);
             }
         }
     }

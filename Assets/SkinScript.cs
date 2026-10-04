@@ -150,7 +150,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.DisguisedMonsterEarl)
         {
-            return (list.Contains(Achieved.Upgrades100000), "Disguised Monster Earl: Buy 100000 upgrades");
+            return (list.Contains(Achieved.Upgrades10000), "Disguised Monster Earl: Buy 10000 upgrades");
         }
         else if (animationName == SkinAnimation.ScaryEarl)
         {
@@ -199,6 +199,10 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (animationName == SkinAnimation.NeonEarl)
         {
             return (list.Contains(Achieved.StormLord5), "Neon Earl: Reach Storm Lord level 5");
+        }
+        else if (animationName == SkinAnimation.ExpressionistEarl)
+        {
+            return (list.Contains(Achieved.Mystery50), "Expressionist Earl: Get 50 mystery rewards");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
@@ -255,13 +259,14 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
             SkinAnimation.Pirate => (m.ChestsCollected, 50),
             SkinAnimation.Slug => (m.MysteryCollected, 100),
+            SkinAnimation.ExpressionistEarl => (m.MysteryCollected, 50),
             SkinAnimation.SecretiveEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 150),
             SkinAnimation.SkaterEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 300),
             SkinAnimation.ChickenEarl => (m.LevelPctBought, 50),
             SkinAnimation.YoungEarl => (m.TotalLevelPctBought, 500),
             SkinAnimation.AttentivePigEarl => (m.TotalUpgradesBought, 500),
             SkinAnimation.ToxicEarl => (m.TotalUpgradesBought, 2500),
-            SkinAnimation.DisguisedMonsterEarl => (m.TotalUpgradesBought, 100000),
+            SkinAnimation.DisguisedMonsterEarl => (m.TotalUpgradesBought, 10000),
             SkinAnimation.PrettyEarl => (m.Achieved.Count, 20),
 
             SkinAnimation.WhiteEarl => (m.TotalArenas - m.TotalArenasWon, 100),

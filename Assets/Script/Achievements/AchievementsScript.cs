@@ -30,7 +30,7 @@ public enum Achieved
     Rebirth1,
     Upgrades500,
     Upgrades2500,
-    Upgrades100000,
+    Upgrades10000,
     BuyCardScaryEarl,
     SmartDagger10,
     Diamonds1000,
@@ -44,6 +44,7 @@ public enum Achieved
     SuperClears1000,
     Credits1000,
     StormLord5,
+    Mystery50,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -123,6 +124,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckSuperClears1000(list);
         AchievementChecks.CheckCredits1000(list);
         AchievementChecks.CheckStormLord5(list);
+        AchievementChecks.CheckMystery50(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);

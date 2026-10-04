@@ -453,3 +453,14 @@ MonoBehaviour:
     - {fileID: 8167873352243726792, guid: 26b7c448d3dd3d5498d086bcef579cb7, type: 3}
     - {fileID: 7319155262460776111, guid: 26b7c448d3dd3d5498d086bcef579cb7, type: 3}
     - {fileID: -6316757980433568741, guid: 26b7c448d3dd3d5498d086bcef579cb7, type: 3}
+  - Animation: 41
+    IdleSprites:
+    - {fileID: -7235175319021294232, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: 6417706091738909605, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: -4280122626660612292, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: -4222579338556877804, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    RunSprites:
+    - {fileID: -3620401590551328871, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: 862139127597847899, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: 3823801604542694198, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
+    - {fileID: 6358148741736985433, guid: b82e70b0f7741cb49a1b417a8ef592ea, type: 3}
