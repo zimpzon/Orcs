@@ -65,28 +65,32 @@ public class X2BonusScript : MonoBehaviour
         GlobalPopupManager.Instance.AfterHidePopup();
     }
 
-    // Horizontal divider (settings-popup style) between the summary lines and the tier table, on the spacer line.
-    RectTransform _divider;
+    // Horizontal divider between the summary lines and the tier table, on the spacer line. It's a scene object (child
+    // of BonusText) so its color/thickness can be set in the Inspector; this script only sets its position and width.
+    public RectTransform Divider;
     const int SpacerLine = 2;
     const float DividerSideMargin = 0.04f; // fraction of the text width left free on each side
 
     void PlaceDivider()
     {
-        if (_divider == null)
-            _divider = UiDivider.Create(BonusText.rectTransform, "Divider");
+        if (Divider == null)
+        {
+            Divider = UiDivider.Create(BonusText.rectTransform, "Divider");
+            Divider.sizeDelta = new Vector2(0, UiDivider.Thickness);
+        }
 
         BonusText.ForceMeshUpdate();
         var info = BonusText.textInfo;
         bool show = _unlocked.Count > 0 && info.lineCount > SpacerLine;
-        _divider.gameObject.SetActive(show);
+        Divider.gameObject.SetActive(show);
         if (!show)
             return;
 
         var line = info.lineInfo[SpacerLine];
         var rect = BonusText.rectTransform.rect;
         float y = (line.ascender + line.descender) * 0.5f;
-        _divider.localPosition = new Vector3(rect.center.x, y, 0);
-        _divider.sizeDelta = new Vector2(rect.width * (1f - 2f * DividerSideMargin), UiDivider.Thickness);
+        Divider.localPosition = new Vector3(rect.center.x, y, 0);
+        Divider.sizeDelta = new Vector2(rect.width * (1f - 2f * DividerSideMargin), Divider.sizeDelta.y); // keep the authored thickness
     }
 
     void Update()
