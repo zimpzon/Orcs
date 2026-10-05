@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4509804, g: 0.4117647, b: 0.3764706, a: 1}
+  m_Color: {r: 0.509, g: 0.46473914, b: 0.42490435, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -164,4 +164,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379a7e06a0ec63b488583cc30b291e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hovertext: {fileID: 0}
