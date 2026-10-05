@@ -124,10 +124,12 @@ public class ProgressPopupScript : MonoBehaviour
 
     // One aligned row: label with its count right after it (grey), percentage in a fixed column.
     static string Row(string label, double pct, int have, int total)
-        => $"<pos=4%><color=#cccccc>{label}</color> <color=#999999>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
+        => $"<pos={LabelColumn}><color=#cccccc>{label}</color> <color=#999999>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
 
     // Percentage column, just past the longest row ("Upgrade tiers bought (23/23)").
-    const string PctColumn = "62%";
+    // Shifted right so the table sits centered in the dialog (it spans about 62% of the width).
+    const string LabelColumn = "16%";
+    const string PctColumn = "74%";
 
     void Update()
     {
@@ -161,7 +163,7 @@ public class ProgressPopupScript : MonoBehaviour
             Row("Skins unlocked", skinPct, skinsUnlocked, skinsTotal) + "\r\n" +
             Row("Upgrade tiers bought", tierPct, tiersBought, tiersTotal) + "\r\n" +
             "\r\n" +
-            $"<pos=4%><b>Total completion</b><pos={PctColumn}><b><color={GreenHex}>{totalPct:0}%</color></b>";
+            $"<pos={LabelColumn}><b>Total completion</b><pos={PctColumn}><b><color={GreenHex}>{totalPct:0}%</color></b>";
 
         if (text == _lastText)
             return;
