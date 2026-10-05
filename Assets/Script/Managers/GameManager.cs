@@ -446,7 +446,8 @@ public class GameManager : MonoBehaviour
             {
                 // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
-                TitleTextScript.Instance.UpdateTitle();
+                // Would have updated title here (nemesis of...)
+                //TitleTextScript.Instance.UpdateTitle();
             }
         }
     }
@@ -1277,7 +1278,6 @@ public class GameManager : MonoBehaviour
         SaveGame.OnSave += OnSaveGame;
 
         UpgradeManager.Instance.UpdateAllUpgrades();
-        TitleTextScript.Instance.UpdateTitle();
 
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
