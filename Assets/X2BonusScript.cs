@@ -23,6 +23,17 @@ public class X2BonusScript : MonoBehaviour
     readonly System.Text.StringBuilder _sb = new();
     readonly System.Collections.Generic.List<(string Name, Func<long> Level, Func<long> X2)> _unlocked = new();
 
+    // Up to this many unlocked tiers are listed in one centered column, more in two columns.
+    const int SingleColumnMax = 6;
+
+    void AppendHeader(string namePos, string countPos)
+    {
+        _sb.Append(namePos);
+        _sb.Append("<size=85%><color=#999999>Tier</color></size>");
+        _sb.Append(countPos);
+        _sb.Append("<size=85%><color=#999999>X2</color></size>");
+    }
+
     void AppendEntry((string Name, Func<long> Level, Func<long> X2) tier, string namePos, string countPos)
     {
         _sb.Append(namePos);
@@ -63,7 +74,8 @@ public class X2BonusScript : MonoBehaviour
         _sb.Clear();
         _sb.Append($"Current: <color={GreenHex}>{bought}</color>, next: <color={GreenHex}>{next}</color>\r\nBonus: <color={GreenHex}>{PlayerUpgrades.Data.PassiveIncomeX2Multiplier * 100:0}</color>%");
 
-        // Two columns, filled top-to-bottom first (like the upgrade list in the game view), then the right column.
+        // Unlocked tiers: one centered column when there are few, else two columns filled top-to-bottom first (like
+        // the upgrade list in the game view), then the right column.
         _unlocked.Clear();
         foreach (var tier in Tiers)
         {
@@ -76,13 +88,25 @@ public class X2BonusScript : MonoBehaviour
             // Left-align just the list; the lines above keep the text's own alignment.
             _sb.Append("\r\n<align=left>");
 
-            int rows = (_unlocked.Count + 1) / 2;
-            for (int r = 0; r < rows; ++r)
+            if (_unlocked.Count <= SingleColumnMax)
             {
-                // Name at the column start, X2 count at a fixed spot so the numbers line up.
-                AppendEntry(_unlocked[r], "\r\n<pos=4%>", "<pos=38%>");
-                if (r + rows < _unlocked.Count)
-                    AppendEntry(_unlocked[r + rows], "<pos=53%>", "<pos=87%>");
+                // Few tiers: one centered column, so a short list still reads as a table.
+                AppendHeader("\r\n<pos=24%>", "<pos=70%>");
+                foreach (var tier in _unlocked)
+                    AppendEntry(tier, "\r\n<pos=24%>", "<pos=70%>");
+            }
+            else
+            {
+                AppendHeader("\r\n<pos=4%>", "<pos=38%>");
+                AppendHeader("<pos=53%>", "<pos=87%>");
+                int rows = (_unlocked.Count + 1) / 2;
+                for (int r = 0; r < rows; ++r)
+                {
+                    // Name at the column start, X2 count at a fixed spot so the numbers line up.
+                    AppendEntry(_unlocked[r], "\r\n<pos=4%>", "<pos=38%>");
+                    if (r + rows < _unlocked.Count)
+                        AppendEntry(_unlocked[r + rows], "<pos=53%>", "<pos=87%>");
+                }
             }
         }
 
