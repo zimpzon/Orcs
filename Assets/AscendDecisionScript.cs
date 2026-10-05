@@ -57,6 +57,9 @@ public class AscendDecisionScript : MonoBehaviour
         {
             var diamond = Instantiate(header, header.rectTransform, false);
             diamond.name = i == 0 ? "HeaderDiamondLeft" : "HeaderDiamondRight";
+            // The copy also copied the header's children (the left diamond, when making the right one): drop them.
+            foreach (Transform child in diamond.transform)
+                Destroy(child.gameObject);
             diamond.text = "<sprite=0>";
             diamond.raycastTarget = false;
 

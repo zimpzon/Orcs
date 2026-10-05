@@ -27,6 +27,8 @@ public class ColorPalette : ScriptableObject
     // ButtonIcon = the top icon buttons (skins, bestiary, X2, victory...), ButtonMain = everything else.
     // Not used by the blue tier buy / X2 buttons.
     public Color ButtonMain = new Color(0.7372549f, 0.67058825f, 0.6156863f, 1f);
+    // Panels inside a dialog (e.g. the rebirth dialog sections), a bit darker than DialogPanel so they show.
+    public Color InnerPanel = new Color(0.41f, 0.354f, 0.304f, 1f);
     public Color ButtonIcon = new Color(0.7372549f, 0.67058825f, 0.6156863f, 1f);
 
     public event Action OnColorsChanged;

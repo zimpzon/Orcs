@@ -25,6 +25,7 @@ namespace Assets.Script.Misc
         DialogPanel,
         ButtonMain,
         ButtonIcon,
+        InnerPanel,
     }
 
     public static class ColorFromEnum
@@ -53,6 +54,7 @@ namespace Assets.Script.Misc
                 ColorType.DialogPanel => palette.DialogPanel,
                 ColorType.ButtonMain => palette.ButtonMain,
                 ColorType.ButtonIcon => palette.ButtonIcon,
+                ColorType.InnerPanel => palette.InnerPanel,
                 _ => Color.magenta
             };
         }
