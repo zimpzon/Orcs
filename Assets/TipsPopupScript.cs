@@ -15,7 +15,7 @@ public class TipsPopupScript : MonoBehaviour
 
     const string HeaderHex = "#8DBE4C"; // the game's standard green header color (TIPS uses it too, in the scene text)
     const int MinPower = 6;   // million
-    const int MaxPower = 39;  // duodecillion
+    const int MaxPower = 45;  // quattuordecillion (powers come in steps of 3)
 
     void OnEnable() => FillNumbers();
     void OnValidate() => FillNumbers();
