@@ -38,7 +38,7 @@ public class BestiaryScript : MonoBehaviour
             idx++;
         }
 
-        TextBonus.text = $"Bonus: +{incomeBonus}% passive income";
+        TextBonus.text = $"Bonus: +<color=#8DBE4C>{incomeBonus}</color>% passive income";
         PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses = incomeBonus * 0.01f;
     }
 }
