@@ -98142,7 +98142,7 @@ PrefabInstance:
     - target: {fileID: 4798023425040870849, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}
       propertyPath: m_text
-      value: Gold Value
+      value: Richer Chests
       objectReference: {fileID: 0}
     - target: {fileID: 5136827376998017461, guid: d54dc8cfc5b0424428b7058dbabecf19,
         type: 3}

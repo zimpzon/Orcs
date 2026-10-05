@@ -18,6 +18,7 @@ namespace Assets.Script.Upgrades
             double step = maxReduction / MaxLevel;
             string cdReductionNow = DisplayNumberFormat.Format(ClampLevelToMax(level) * step / StartValue * 100, "0.0");
             string cdReductionNext = DisplayNumberFormat.Format(ClampLevelToMax(level + 1) * step / StartValue * 100, "0.0");
+            string cdReductionMax = DisplayNumberFormat.Format(maxReduction / StartValue * 100, "0.0");
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelKnifeCd,
@@ -50,8 +51,9 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Dagger CD reduction: <color=COLOR-ARENA>{cdReductionNow}%</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevelToMax(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "Max reduction reached" : $"{cdReductionNext}%")}</color>");
+            sb.AppendLine(level >= MaxLevel
+                ? $"<color=#dddddd>Maxed ({cdReductionMax}%)"
+                : $"<color=#dddddd>Next: <color=COLOR-ARENA>{cdReductionNext}%</color> (max {cdReductionMax}%)");
 
             return sb.ToString();
         }

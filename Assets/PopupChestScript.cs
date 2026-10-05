@@ -119,7 +119,8 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
         void DoReward()
         {
-            long numberOfSeconds = Random.Range(100, 200);
+            // Richer Chests (Gold Value tier) adds +1 per level, up to GoldPerRoundManager.MaxChestBonus.
+            long numberOfSeconds = Random.Range(100, 200) + PlayerUpgrades.Data.ChestBonusSeconds;
             Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             if (PlayerUpgrades.Data.BetterChests)
                 reward *= 2;

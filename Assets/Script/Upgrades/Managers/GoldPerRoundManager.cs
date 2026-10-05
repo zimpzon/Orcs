@@ -12,8 +12,8 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeGoldPerRound;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentValue = (long)(ValueForLevel(level) * 100);
-            long nextValue = (long)(ValueForLevel(level + 1) * 100);
+            long currentBonus = ChestBonusForLevel(level);
+            long nextBonus = ChestBonusForLevel(level + 1);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelMoneyPerGold,
@@ -29,8 +29,8 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Gold Value</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Get more $ from gold.");
+            sb.AppendLine("<size=+4><b><color=#8DBE4C>Richer Chests</color></b></size>");
+            sb.AppendLine("<color=#dddddd>Chests pay more: each level adds +1 to the chest reward.");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.Format(baseIncome)}</color> per second.");
@@ -46,14 +46,23 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("");
 
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Gold value: <color=COLOR-ARENA>{currentValue}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{nextValue}%</color>");
+            sb.AppendLine($"<color=#dddddd>Chest reward bonus: <color=COLOR-ARENA>+{currentBonus}</color>");
+            sb.AppendLine(currentBonus >= MaxChestBonus
+                ? $"<color=#dddddd>Maxed (+{MaxChestBonus})"
+                : $"<color=#dddddd>Next: <color=COLOR-ARENA>+{nextBonus}</color> (max +{MaxChestBonus})");
 
             return sb.ToString();
         }
 
         private static double ValueForLevel(long level)
             => 1 + 0.25 * level;
+
+        // Each level adds +1 second of income to chest rewards (PopupChestScript: 100-199 x income), capped so it
+        // stays a small bonus however high the level gets.
+        public const int MaxChestBonus = 30;
+
+        private static int ChestBonusForLevel(long level)
+            => (int)Math.Min(Math.Max(level, 0), MaxChestBonus);
 
         private static Decimal512 BaseIncome()
         {
@@ -84,6 +93,7 @@ namespace Assets.Script.Upgrades
         public static void UpdatePlayerUpgrades()
         {
             PlayerUpgrades.Data.MoneyPerGold = ValueForLevel(SaveGame.Members.LevelMoneyPerGold);
+            PlayerUpgrades.Data.ChestBonusSeconds = ChestBonusForLevel(SaveGame.Members.LevelMoneyPerGold);
         }
 
         public static void OnBuy()

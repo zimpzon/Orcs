@@ -8,7 +8,7 @@ public static class UpgradeTierList
     {
         ("Chain Zapping",   () => SaveGame.Members.LevelClickDamage,        () => SaveGame.Members.LevelClickDamageX2),
         ("Dagger Damage",   () => SaveGame.Members.LevelKnifeDamage,        () => SaveGame.Members.LevelKnifeDamageX2),
-        ("Gold Value",      () => SaveGame.Members.LevelMoneyPerGold,       () => SaveGame.Members.LevelMoneyPerGoldX2),
+        ("Richer Chests",   () => SaveGame.Members.LevelMoneyPerGold,       () => SaveGame.Members.LevelMoneyPerGoldX2),
         ("Dagger Cooldown", () => SaveGame.Members.LevelKnifeCd,            () => SaveGame.Members.LevelKnifeCdX2),
         ("Witch Doctor",    () => SaveGame.Members.LevelWitchDoctor,        () => SaveGame.Members.LevelWitchDoctorX2),
         ("Gold Per Dagger", () => SaveGame.Members.LevelGoldPerKnifeThrown, () => SaveGame.Members.LevelGoldPerKnifeThrownX2),

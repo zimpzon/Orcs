@@ -49,6 +49,7 @@ public class UpgradeData
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
     public double MoneyPerGold = 2;
+    public int ChestBonusSeconds = 0; // Richer Chests: +1 to the chest reward per level (capped)
     public double GoldPerKnifeThrown = 0;
     public bool BetterChests = false;
 

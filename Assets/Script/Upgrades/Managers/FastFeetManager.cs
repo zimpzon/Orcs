@@ -14,6 +14,7 @@ namespace Assets.Script.Upgrades
             Decimal512 totalIncome = PassiveIncome();
             long speedAddNow = (long)Math.Round(ValueForLevel(level) * 100.0f);
             long speedAddNext = (long)Math.Round(ValueForLevel(level + 1) * 100.0f);
+            long speedAddMax = (long)Math.Round(ValueForLevel(MaxLevel) * 100.0f);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelFastFeet,
@@ -45,9 +46,10 @@ namespace Assets.Script.Upgrades
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
-            sb.AppendLine($"<color=#dddddd>Run speed bonus: <color=COLOR-ARENA>{speedAddNow}%</color>");
-            sb.AppendLine($"<color=#dddddd>Level: <color=COLOR-ARENA>{ClampLevel(level)} / {MaxLevel}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{(level >= MaxLevel ? "<color=#DF8749>max reached" : $"{speedAddNext}%")}</color>");
+            sb.AppendLine($"<color=#dddddd>Run speed bonus: <color=COLOR-ARENA>+{speedAddNow}%</color>");
+            sb.AppendLine(level >= MaxLevel
+                ? $"<color=#dddddd>Maxed (+{speedAddMax}%)"
+                : $"<color=#dddddd>Next: <color=COLOR-ARENA>+{speedAddNext}%</color> (max +{speedAddMax}%)");
 
             return sb.ToString();
         }
