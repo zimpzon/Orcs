@@ -16,7 +16,7 @@ public enum Achieved
     Chest50,
     Diamonds10,
     StormLordTier,
-    Arena81000,
+    Arena75000,
     MasterWizardTier,
     Diamonds250,
     Rebirth8,
@@ -113,7 +113,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArena1000(list);
         AchievementChecks.CheckArena10000(list);
         AchievementChecks.CheckArena35000(list);
-        AchievementChecks.CheckArena81000(list);
+        AchievementChecks.CheckArena75000(list);
         AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckChest50(list);
         AchievementChecks.CheckVoidgazer(list);

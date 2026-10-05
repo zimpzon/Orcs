@@ -97,7 +97,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.KaratEarl)
         {
-            return (list.Contains(Achieved.Arena81000), "KaratEarl: Reach Arena level 81000");
+            return (list.Contains(Achieved.Arena75000), "KaratEarl: Reach Arena level 75000");
         }
         else if (animationName == SkinAnimation.Voidgazer)
         {
@@ -258,7 +258,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.EvilEyesEarl => (m.ArenaLevel, 1000),
             SkinAnimation.Wig => (m.ArenaLevel, 10000),
             SkinAnimation.BigMouth => (m.ArenaLevel, 35000),
-            SkinAnimation.KaratEarl => (m.ArenaLevel, 81000),
+            SkinAnimation.KaratEarl => (m.ArenaLevel, 75000),
 
             SkinAnimation.Pirate => (m.ChestsCollected, 50),
             SkinAnimation.Slug => (m.MysteryCollected, 100),
