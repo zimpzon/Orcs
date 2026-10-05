@@ -39,7 +39,8 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         SetSkin(AnimationName);
         (_, string beastDescription) = GetUnlockStatus(AnimationName);
-        TitleTextScript.Instance.SetName(beastDescription.Substring(0, beastDescription.IndexOf(':')));
+        // Title (nemesis of...) removed
+        //TitleTextScript.Instance?.SetName(beastDescription.Substring(0, beastDescription.IndexOf(':')));
     }
 
     public static (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)

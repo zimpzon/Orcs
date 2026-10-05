@@ -447,7 +447,7 @@ public class GameManager : MonoBehaviour
                 // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
                 // Would have updated title here (nemesis of...)
-                //TitleTextScript.Instance.UpdateTitle();
+                //TitleTextScript.Instance?.UpdateTitle();
             }
         }
     }
