@@ -1764,6 +1764,14 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.Achieved.Add(Achieved.ArenasLost100);
         }
 
+        // Toggle the victory button's 100%-completion crown pulse, to preview it. (Not Ctrl+P: that's the Editor's
+        // play/stop shortcut.)
+        if (G.GetCheatKeyDown(KeyCode.G) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            CrownPulse.CheatForceShow = !CrownPulse.CheatForceShow;
+            Debug.Log("Cheat: crown pulse preview " + (CrownPulse.CheatForceShow ? "ON" : "OFF"));
+        }
+
         // Preview the X2 rank-up text at the cursor.
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl) && UpgradeManager.Instance.ClickDamage != null)
         {
