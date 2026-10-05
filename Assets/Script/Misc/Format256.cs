@@ -5,6 +5,9 @@ using Assets.Script.Misc;
 
 public static class Format512
 {
+    // Largest first. Long names start with a space. Also listed in the Tips popup (TipsPopupScript).
+    public static System.Collections.Generic.IReadOnlyList<(BigInteger Threshold, string Short, string Long)> SuffixList => Suffixes;
+
     private static readonly (BigInteger Threshold, string Short, string Long)[] Suffixes =
     {
         (BigInteger.Pow(10, 63), "Vg", " vigintillion"),

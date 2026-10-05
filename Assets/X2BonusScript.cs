@@ -65,6 +65,30 @@ public class X2BonusScript : MonoBehaviour
         GlobalPopupManager.Instance.AfterHidePopup();
     }
 
+    // Horizontal divider (settings-popup style) between the summary lines and the tier table, on the spacer line.
+    RectTransform _divider;
+    const int SpacerLine = 2;
+    const float DividerSideMargin = 0.04f; // fraction of the text width left free on each side
+
+    void PlaceDivider()
+    {
+        if (_divider == null)
+            _divider = UiDivider.Create(BonusText.rectTransform, "Divider");
+
+        BonusText.ForceMeshUpdate();
+        var info = BonusText.textInfo;
+        bool show = _unlocked.Count > 0 && info.lineCount > SpacerLine;
+        _divider.gameObject.SetActive(show);
+        if (!show)
+            return;
+
+        var line = info.lineInfo[SpacerLine];
+        var rect = BonusText.rectTransform.rect;
+        float y = (line.ascender + line.descender) * 0.5f;
+        _divider.localPosition = new Vector3(rect.center.x, y, 0);
+        _divider.sizeDelta = new Vector2(rect.width * (1f - 2f * DividerSideMargin), UiDivider.Thickness);
+    }
+
     void Update()
     {
         long bought = PlayerUpgrades.Data.NumberOfX2Bought;
@@ -85,8 +109,9 @@ public class X2BonusScript : MonoBehaviour
 
         if (_unlocked.Count > 0)
         {
-            // Left-align just the list; the lines above keep the text's own alignment.
-            _sb.Append("\r\n<align=left>");
+            // Left-align just the list; the lines above keep the text's own alignment. A short spacer line (line 2)
+            // makes room for the divider between the summary and the table.
+            _sb.Append("\r\n<align=left><size=130%> </size>");
 
             if (_unlocked.Count <= SingleColumnMax)
             {
@@ -122,6 +147,8 @@ public class X2BonusScript : MonoBehaviour
             float textHeight = Mathf.Max(_bonusTextBaseHeight, needed);
             textRect.sizeDelta = new Vector2(textRect.sizeDelta.x, textHeight);
             _popupRect.sizeDelta = new Vector2(_popupRect.sizeDelta.x, _popupBaseHeight + (textHeight - _bonusTextBaseHeight));
+
+            PlaceDivider();
         }
 
         if (_descriptionText != null)
