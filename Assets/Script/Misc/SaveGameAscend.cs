@@ -9,6 +9,7 @@ static class SaveGameAscend
         // ---------------------- Copy permanent data ----------------------
         newSave.PlayerId = oldSave.PlayerId;
         newSave.UserId = oldSave.UserId;
+        newSave.SaveId = oldSave.SaveId;
         newSave.LastSeenUtcStr = oldSave.LastSeenUtcStr;
 
         // Ascending

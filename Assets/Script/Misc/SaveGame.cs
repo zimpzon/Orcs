@@ -122,6 +122,12 @@ public class SaveGameMembers
     // Tracking
     public double QuestionMarkRealTimeLeft = -1;
 
+    // Save identity, to tell which save got loaded. SaveId is a random GUID given to a save when it is created (or
+    // found missing on an old save) and kept through rebirth; a save wipe starts a new one. SavedAtUtc is updated on
+    // every save (ISO 8601 UTC).
+    public string SaveId;
+    public string SavedAtUtc;
+
     // Time
     public string TimeLastSeenUtc;
     public double LifeTimeSessionSeconds;
@@ -295,6 +301,9 @@ public static class SaveGame
 
         OnSave?.Invoke();
 
+        EnsureSaveId();
+        Members.SavedAtUtc = DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);
 
@@ -395,11 +404,16 @@ public static class SaveGame
 
             if (playerPrefsAvailable && jsMappingsAvailable)
             {
-                // Both available - prefer PlayerPrefs (more recent since it survives localStorage issues)
-                GameManager.GameLoadInfo.Add("Both saves available, using PlayerPrefs");
-                dataToLoad = playerPrefsData;
+                // Both available - use the more recently saved one when both have a timestamp, else PlayerPrefs
+                // (more recent since it survives localStorage issues).
+                string prefsSavedAt = DescribeSave("PlayerPrefs", playerPrefsData, out DateTime prefsTime);
+                string jsSavedAt = DescribeSave("JsMappings", jsMappingsData, out DateTime jsTime);
+                GameManager.GameLoadInfo.Add(prefsSavedAt);
+                GameManager.GameLoadInfo.Add(jsSavedAt);
 
-                // Optional: You could compare timestamps or save versions here if you store that info
+                bool useJs = jsTime != DateTime.MinValue && prefsTime != DateTime.MinValue && jsTime > prefsTime;
+                GameManager.GameLoadInfo.Add(useJs ? "Both saves available, using JsMappings (newer)" : "Both saves available, using PlayerPrefs");
+                dataToLoad = useJs ? jsMappingsData : playerPrefsData;
             }
             else if (playerPrefsAvailable)
             {
@@ -435,6 +449,34 @@ public static class SaveGame
             }
         }
     }
+    // Gives the current save a SaveId if it has none (new save, or an old save from before SaveId existed).
+    static bool EnsureSaveId()
+    {
+        if (!string.IsNullOrEmpty(Members.SaveId))
+            return false;
+
+        Members.SaveId = Guid.NewGuid().ToString();
+        return true;
+    }
+
+    // "PlayerPrefs: save <id> saved at <time>" for the load log; time is MinValue if unknown.
+    static string DescribeSave(string source, string json, out DateTime savedAt)
+    {
+        savedAt = DateTime.MinValue;
+        try
+        {
+            var m = SaveGameMembers.FromJson(json);
+            if (m != null && DateTime.TryParse(m.SavedAtUtc, System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.RoundtripKind, out var t))
+                savedAt = t;
+            return $"{source}: save {m?.SaveId ?? "?"} saved at {m?.SavedAtUtc ?? "?"}";
+        }
+        catch (Exception e)
+        {
+            return $"{source}: unreadable ({e.Message})";
+        }
+    }
+
     public static void LoadJson(string json, bool isRestore = false)
     {
         if (isRestore)
@@ -449,6 +491,12 @@ public static class SaveGame
 
         Members ??= new SaveGameMembers();
         Members.SaveKillSwitch_CanSave = true; // Guard against lost data if Members are reset.
+
+        string loaded = $"Loaded save {(string.IsNullOrEmpty(Members.SaveId) ? "(no id yet)" : Members.SaveId)}, saved at {(string.IsNullOrEmpty(Members.SavedAtUtc) ? "(unknown)" : Members.SavedAtUtc)} UTC";
+        GameManager.GameLoadInfo.Add(loaded);
+        Debug.Log(loaded);
+        if (EnsureSaveId())
+            Save();
 
         if (string.IsNullOrEmpty(Members.UserId))
         {
