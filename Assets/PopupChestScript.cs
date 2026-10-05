@@ -131,7 +131,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             SaveGame.Members.ChestsCollected += 1;
 
             string text = PlayerUpgrades.Data.BetterChests ?
-                $"<size=+2><color=#{ColorUtility.ToHtmlStringRGBA(ColorDefault)}>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})\n<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>2 X {numberOfSeconds}</color> X income = $<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{Format512.Format(reward)}</color>" :
+                $"<size=+2><color=#{ColorUtility.ToHtmlStringRGBA(ColorDefault)}>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})\n<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>2</color> X <color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{numberOfSeconds}</color> X income = $<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{Format512.Format(reward)}</color>" :
                 $"<size=+2><color=#{ColorUtility.ToHtmlStringRGBA(ColorDefault)}>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})\n<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{numberOfSeconds}</color> X income = $<color=#{ColorUtility.ToHtmlStringRGBA(ColorHighlight)}>{Format512.Format(reward)}</color>";
 
             FloatingTextSpawner.Instance.Spawn(
