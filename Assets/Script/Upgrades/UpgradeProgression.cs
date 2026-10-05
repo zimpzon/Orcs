@@ -212,14 +212,13 @@ namespace Assets.Script.Upgrades
 
         public static double GetCurrentDiamondMultiplier()
         {
-            // Total 80% per diamond with all Shiny Diamonds (was 240%), so the other income cards matter more.
-            // The 5% base also lets the 4th X2 card cost 14 without lowering income when bought with your last diamonds.
-            const double BaseMultiplier = 0.05;
-            const double ShinyDiamondsBonus = 0.05;
-            const double ShinyDiamonds2Bonus = 0.1;
-            const double ShinyDiamonds3Bonus = 0.15;
+            // 8% per held diamond, +8/12/16/20/24% from the Shiny Diamonds cards: 88% per diamond with all of them.
+            const double BaseMultiplier = 0.08;
+            const double ShinyDiamondsBonus = 0.08;
+            const double ShinyDiamonds2Bonus = 0.12;
+            const double ShinyDiamonds3Bonus = 0.16;
             const double ShinyDiamonds4Bonus = 0.2;
-            const double ShinyDiamonds5Bonus = 0.25;
+            const double ShinyDiamonds5Bonus = 0.24;
 
             double diamondMultiplier = BaseMultiplier;
 
