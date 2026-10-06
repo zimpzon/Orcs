@@ -11951,7 +11951,6 @@ MonoBehaviour:
   Popup: {fileID: 345903027}
   ButtonDeleteSave: {fileID: 1617254176}
   TextButtonDeleteSave: {fileID: 498355350}
-  TextImportInputField: {fileID: 0}
   TextDiscordLink: {fileID: 2092282463}
   ShowFloatingDamageToggle: {fileID: 1726439860}
   ShowFloatingGoldToggle: {fileID: 1002482084}
@@ -74866,7 +74865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -285.7, y: 10.3}
+  m_AnchoredPosition: {x: -294.9, y: 10.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1185076947
@@ -113226,7 +113225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 260.4, y: 108.9}
+  m_AnchoredPosition: {x: 260.4, y: 134.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 0}
 --- !u!1001 &1952717329
