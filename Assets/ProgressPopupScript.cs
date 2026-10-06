@@ -155,7 +155,7 @@ public class ProgressPopupScript : MonoBehaviour
             "<align=left>" +
             Row("Enemies unlocked", enemyPct, enemiesUnlocked, enemiesTotal) + "\r\n" +
             Row("Skins unlocked", skinPct, skinsUnlocked, skinsTotal) + "\r\n" +
-            Row("Upgrade tiers reached", tierPct, tiersBought, tiersTotal) + "\r\n" +
+            Row("Upgrade tier reached", tierPct, tiersBought, tiersTotal) + "\r\n" +
             "\r\n" +
             $"<pos={LabelColumn}><b>Total completion</b><pos={PctColumn}><b><color={GreenHex}>{totalPct:0}%</color></b>";
 
