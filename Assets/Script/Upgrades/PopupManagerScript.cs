@@ -10,7 +10,17 @@ public class PopupManagerScript : MonoBehaviour
     private float _hideTime;
     private bool _hidePending;
 
+    // The hovered item, re-placed against every frame while shown: the text refreshes (and can grow) and a freshly
+    // bought tier can still be moving into place, so a one-time clamp could leave the popup off the bottom.
+    private RectTransform _target;
+
     public void PlaceNextToTarget(RectTransform hoveredRect)
+    {
+        _target = hoveredRect;
+        Place(hoveredRect, forceLayout: true);
+    }
+
+    void Place(RectTransform hoveredRect, bool forceLayout)
     {
         // Compute world corners and convert to screen space for placement anchors
         Vector3[] corners = new Vector3[4];
@@ -47,7 +57,7 @@ public class PopupManagerScript : MonoBehaviour
 
         popupPos.y -= hoveredHeight * 0.5f;
 
-        Show(popupPos);
+        Show(popupPos, forceLayout);
     }
 
     public void SetText(string text)
@@ -55,13 +65,15 @@ public class PopupManagerScript : MonoBehaviour
         Label.text = text;
     }
 
-    public void Show(Vector2 position)
+    public void Show(Vector2 position, bool forceLayout = true)
     {
         // Activate popup first to ensure it's in the hierarchy for calculations
         PopupRoot.gameObject.SetActive(true);
 
-        // Force canvas to update layouts immediately so we get accurate dimensions
-        Canvas.ForceUpdateCanvases();
+        // Force canvas to update layouts immediately so we get accurate dimensions (the per-frame re-placement skips
+        // this and uses last frame's layout, which is at most one frame behind).
+        if (forceLayout)
+            Canvas.ForceUpdateCanvases();
 
         // Get popup dimensions in screen space
         RectTransform popupRectTransform = PopupRoot.GetComponent<RectTransform>();
@@ -105,7 +117,14 @@ public class PopupManagerScript : MonoBehaviour
             PopupRoot.transform.position = Vector2.left * 1000;
             PopupRoot.gameObject.SetActive(false);
             _hidePending = false;
+            _target = null;
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (_target != null && !_hidePending && PopupRoot.gameObject.activeSelf)
+            Place(_target, forceLayout: false);
     }
 
     private void Awake()
