@@ -122,11 +122,13 @@ namespace Assets.Script.Upgrades
             }
         }
 
-        // Credit pacing. Credit XP comes from passive income, which restarts near zero after a rebirth, so a fresh
-        // run used to earn almost no credits for hours. The floor keeps credit XP at a quarter of the best income
-        // reached (mystery buff excluded, so a 10x spike can't inflate it), and all credits cost half.
+        // All credits cost half of the curve above (credits felt too slow around 90+ lifetime credits).
         const double CreditCostMul = 0.5;
-        const double CreditSpeedFloorFraction = 0.25;
+
+        // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
+        // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
+        // restarts near zero: still slow (~5 h per credit) but the bar visibly moves. Real income takes over soon.
+        const double CreditSpeedFloorFraction = 0.02;
 
         public static Decimal512 CreditXpPerSecond()
         {

@@ -57,7 +57,7 @@ public class AscendProgressScript : MonoBehaviour
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 
-        // Passive income, but never below the credit speed floor (see UpgradeProgression.CreditXpPerSecond).
+        // Passive income, but never below the small credit speed floor (UpgradeProgression.CreditXpPerSecond).
         Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond();
 
         const float CreditUpdateRate = 1.0f;
