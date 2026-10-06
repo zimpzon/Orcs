@@ -115,6 +115,7 @@ public class SaveGameMembers
     public long TotalArenasWon = 0;
     public long SuperFastClears = 0;
     public Decimal512 MaxIncome;
+    public Decimal512 MaxCreditIncome; // best passive income without the mystery buff; floors credit XP (UpgradeProgression)
     public Decimal512 MaxMoney;
     public long MaxCredits;
     public long TotalUpgradesBought = 0;

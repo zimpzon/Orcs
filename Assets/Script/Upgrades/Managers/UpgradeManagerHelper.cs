@@ -38,11 +38,13 @@ namespace Assets.Script.Upgrades.Managers
             return $"<color=#dddddd>Price: $<color={GetColorPriceX2(x2PriceMet: false)}>{Format512.Format(priceForNext)} ({timeStr})";
         }
 
-        public static string FormatTimeLeft(Decimal512 valueForNext, Decimal512 current, double MaxSeconds = double.MaxValue)
+        // ratePerSecond: defaults to passive income (credits pass their floored XP rate instead).
+        public static string FormatTimeLeft(Decimal512 valueForNext, Decimal512 current, double MaxSeconds = double.MaxValue, Decimal512? ratePerSecond = null)
         {
             var money = SaveGame.Members.Money;
+            Decimal512 rate = ratePerSecond ?? GameManager.Instance.TotalPassiveIncome;
 
-            if (GameManager.Instance.TotalPassiveIncome < 0.01)
+            if (rate < 0.01)
                 return string.Empty;
 
             // Handle case where current >= valueForNext (already achieved or exceeded the target)
@@ -50,7 +52,7 @@ namespace Assets.Script.Upgrades.Managers
                 return string.Empty;
 
             Decimal512 amountLeft = valueForNext - current;
-            double secondsLeft = (amountLeft / GameManager.Instance.TotalPassiveIncome).ToDouble();
+            double secondsLeft = (amountLeft / rate).ToDouble();
 
             // Handle edge cases before creating TimeSpan
             if (secondsLeft <= 0 || secondsLeft > MaxSeconds || double.IsInfinity(secondsLeft) || double.IsNaN(secondsLeft))

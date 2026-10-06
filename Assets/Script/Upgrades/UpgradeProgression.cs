@@ -109,7 +109,7 @@ namespace Assets.Script.Upgrades
             if (level <= 8)
             {
                 // Original quadratic curve for first 8 levels
-                return 5 * OneBillion * (1 + 2 * n * n);
+                return 5 * OneBillion * (1 + 2 * n * n) * CreditCostMul;
             }
             else
             {
@@ -118,8 +118,27 @@ namespace Assets.Script.Upgrades
                 Decimal512 baseXp = 495 * OneBillion;
                 long d = level - 8;
                 Decimal512 extraXp = 58.0 * OneBillion * d * d * d; // Cubic growth
-                return baseXp + extraXp;
+                return (baseXp + extraXp) * CreditCostMul;
             }
+        }
+
+        // Credit pacing. Credit XP comes from passive income, which restarts near zero after a rebirth, so a fresh
+        // run used to earn almost no credits for hours. The floor keeps credit XP at a quarter of the best income
+        // reached (mystery buff excluded, so a 10x spike can't inflate it), and all credits cost half.
+        const double CreditCostMul = 0.5;
+        const double CreditSpeedFloorFraction = 0.25;
+
+        public static Decimal512 CreditXpPerSecond()
+        {
+            var m = SaveGame.Members;
+            Decimal512 income = GameManager.Instance.TotalPassiveIncome;
+            double temp = PlayerUpgrades.Data.PassiveIncomeTempMultiplier;
+            Decimal512 baseIncome = temp > 1.0 ? income / temp : income;
+            if (baseIncome > m.MaxCreditIncome)
+                m.MaxCreditIncome = baseIncome;
+
+            Decimal512 floor = m.MaxCreditIncome * CreditSpeedFloorFraction;
+            return income > floor ? income : floor;
         }
 
         // Comparison with original:

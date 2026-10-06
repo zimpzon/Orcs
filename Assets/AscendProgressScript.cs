@@ -57,6 +57,9 @@ public class AscendProgressScript : MonoBehaviour
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 
+        // Passive income, but never below the credit speed floor (see UpgradeProgression.CreditXpPerSecond).
+        Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond();
+
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
@@ -76,7 +79,7 @@ public class AscendProgressScript : MonoBehaviour
 
             // Add scaled income
             SaveGame.Members.MonsterCreditsXp_09_08_2025 +=
-                GameManager.Instance.TotalPassiveIncome * delta;
+                creditXpPerSecond * delta;
 
             Decimal512 xpForNextLevelCommit = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
             if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevelCommit)
@@ -94,7 +97,7 @@ public class AscendProgressScript : MonoBehaviour
         // using the current income rate, without touching saved XP/credits state.
         Decimal512 xpForNextLevel = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
         double projectedElapsed = G.D.RealTime - _lastCreditCommitTime;
-        Decimal512 displayedXp = SaveGame.Members.MonsterCreditsXp_09_08_2025 + GameManager.Instance.TotalPassiveIncome * projectedElapsed;
+        Decimal512 displayedXp = SaveGame.Members.MonsterCreditsXp_09_08_2025 + creditXpPerSecond * projectedElapsed;
 
         double t = displayedXp.ToDouble() / xpForNextLevel.ToDouble();
         if (t < 0) t = 0;
@@ -106,6 +109,6 @@ public class AscendProgressScript : MonoBehaviour
         TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3><color=#cccccc>Next: {pct:#0}%";
 
         const double MaxSeconds = 60 * 60 * 12;
-        TextTimeLeft.text = UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds);
+        TextTimeLeft.text = UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds, creditXpPerSecond);
     }
 }
