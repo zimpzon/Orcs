@@ -1796,6 +1796,8 @@ public class GameManager : MonoBehaviour
             PlayerUpgrades.Data.TimeScale -= 0.1f;
         }
 
+        SaveTransferPopupScript.CheckHotkey();
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             TextFps.enabled = !TextFps.enabled;

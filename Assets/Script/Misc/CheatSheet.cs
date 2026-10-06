@@ -33,6 +33,7 @@ public class CheatSheet : MonoBehaviour
         ("", ""),
         ("F", "Toggle fullscreen"),
         ("I", "Toggle FPS counter"),
+        ("LeftShift+S", "Save game import/export dialog (player shortcut)"),
         ("Escape", "Close the open dialog / collapse the upgrade list"),
     };
 

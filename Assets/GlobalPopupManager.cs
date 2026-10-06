@@ -13,6 +13,7 @@ public class GlobalPopupManager : MonoBehaviour
     public static GlobalPopupManager Instance { get; private set; }
 
     private GameObject CurrentPopup;
+    public bool HasOpenPopup => CurrentPopup != null && CurrentPopup.activeSelf;
     private Dictionary<int, PopupBaseValues> _gameObjects = new();
 
     // Darkens everything behind the open popup, same look as the rebirth popup's AscendDarkenBackground.

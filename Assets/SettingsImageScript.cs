@@ -8,7 +8,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public GameObject Popup;
     public Button ButtonDeleteSave;
     public TextMeshProUGUI TextButtonDeleteSave;
-    public TMP_InputField TextImportInputField;
     public TMP_InputField TextDiscordLink;
     public Toggle ShowFloatingDamageToggle;
     public Toggle ShowFloatingGoldToggle;
@@ -50,9 +49,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         _clickCount = 0;
         TextButtonDeleteSave.text = "DELETE SAVE GAME";
 
-        // Save game export text
-        TextImportInputField.text = SaveGame.GetObfuscatedSaveGame();
-
         Popup.SetActive(enabled);
         if (enabled)
         {
@@ -79,12 +75,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public void OnOpenDiscordLink()
     {
         Application.OpenURL(TextDiscordLink.text);
-    }
-
-    public void OnImportSaveClick()
-    {
-        if (SaveGame.ImportObfuscatedSaveGame(TextImportInputField.text))
-            GameCanvasScript.Instance.ShowPopup("Save game was imported");
     }
 
     public void ShowFloatingDamageNumbers(bool show)
