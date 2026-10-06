@@ -48,6 +48,7 @@ static class SaveGameAscend
         newSave.BoughtCardDiscount = oldSave.BoughtCardDiscount;
         newSave.BoughtSkinCollector = oldSave.BoughtSkinCollector;
         newSave.BoughtSkinCollector2 = oldSave.BoughtSkinCollector2;
+        newSave.BoughtCompletionist = oldSave.BoughtCompletionist;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings

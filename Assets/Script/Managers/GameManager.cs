@@ -1664,21 +1664,32 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
-    // Skin Collector rebirth cards: +5% passive income per unlocked skin, per card owned. Counting skins scans the
-    // skin objects, so only every couple of seconds.
+    // Rebirth cards that pay for collecting: Skin Collector 1/2 (+5% passive income per unlocked skin, per card) and
+    // Completionist (+5% per game completion %). Counting scans the skin objects, so only every couple of seconds.
     const double SkinCollectorPctPerSkin = 0.05;
-    const float SkinCollectorRecalcInterval = 2f;
-    float _nextSkinCollectorRecalc;
+    const double CompletionistPctPerPoint = 0.05;
+    const float CollectionBonusRecalcInterval = 2f;
+    float _nextCollectionBonusRecalc;
 
-    void UpdateSkinCollectorBonus()
+    void UpdateCollectionBonuses()
     {
-        if (Time.unscaledTime < _nextSkinCollectorRecalc)
+        if (Time.unscaledTime < _nextCollectionBonusRecalc)
             return;
 
-        _nextSkinCollectorRecalc = Time.unscaledTime + SkinCollectorRecalcInterval;
-        int cards = (SaveGame.Members.BoughtSkinCollector ? 1 : 0) + (SaveGame.Members.BoughtSkinCollector2 ? 1 : 0);
-        PlayerUpgrades.Data.PassiveIncomeSkinBonus = cards > 0
-            ? SkinScript.GetUnlockProgress().unlocked * SkinCollectorPctPerSkin * cards
+        _nextCollectionBonusRecalc = Time.unscaledTime + CollectionBonusRecalcInterval;
+        var members = SaveGame.Members;
+        int skinCards = (members.BoughtSkinCollector ? 1 : 0) + (members.BoughtSkinCollector2 ? 1 : 0);
+        if (skinCards == 0 && !members.BoughtCompletionist)
+        {
+            PlayerUpgrades.Data.PassiveIncomeSkinBonus = 0.0;
+            PlayerUpgrades.Data.PassiveIncomeCompletionBonus = 0.0;
+            return;
+        }
+
+        var progress = GameCompletion.GetProgress();
+        PlayerUpgrades.Data.PassiveIncomeSkinBonus = progress.SkinsUnlocked * SkinCollectorPctPerSkin * skinCards;
+        PlayerUpgrades.Data.PassiveIncomeCompletionBonus = members.BoughtCompletionist
+            ? System.Math.Floor(progress.TotalPct) * CompletionistPctPerPoint
             : 0.0;
     }
 
@@ -1815,7 +1826,7 @@ public class GameManager : MonoBehaviour
         }
 
         SaveTransferPopupScript.CheckHotkey();
-        UpdateSkinCollectorBonus();
+        UpdateCollectionBonuses();
 
         if (Input.GetKeyDown(KeyCode.I))
         {

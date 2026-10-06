@@ -35,6 +35,7 @@ public enum AscendUpgradeCardId
     CardDiscount,
     SkinCollector,
     SkinCollector2,
+    Completionist,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -113,6 +114,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.CardDiscount => SaveGame.Members.BoughtCardDiscount,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
             AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
+            AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
             _ => throw new NotImplementedException()
         };
 
@@ -273,6 +275,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.SkinCollector2)
         {
             SaveGame.Members.BoughtSkinCollector2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Completionist)
+        {
+            SaveGame.Members.BoughtCompletionist = true;
         }
         else
             throw new NotImplementedException();
