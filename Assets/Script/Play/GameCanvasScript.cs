@@ -16,7 +16,8 @@ public class GameCanvasScript : MonoBehaviour
 
     const int MessageSortingOrder = 110; // above GlobalPopupManager's dialogs (100) and their dark overlay (99)
 
-    public void ShowPopup(string message)
+    // celebrate: reward effects (RewardPopupFx) for chest/mystery pickups.
+    public void ShowPopup(string message, bool celebrate = false)
     {
         var popup = Instantiate(GenericPopupPrefab, GenericPopupUiParent);
         var text = popup.GetComponentInChildren<TextMeshProUGUI>();
@@ -31,6 +32,9 @@ public class GameCanvasScript : MonoBehaviour
         canvas.sortingOrder = MessageSortingOrder;
         if (!popup.TryGetComponent<GraphicRaycaster>(out _))
             popup.AddComponent<GraphicRaycaster>();
+
+        if (celebrate)
+            popup.AddComponent<RewardPopupFx>();
 
         // Optionally force layout update (usually not needed unless immediate measurement required)
         //LayoutRebuilder.ForceRebuildLayoutImmediate(popup.GetComponent<RectTransform>());

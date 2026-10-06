@@ -138,7 +138,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             string multiplier = PlayerUpgrades.Data.BetterChests ? "2 X " : "";
             GameCanvasScript.Instance.ShowPopup(
                 $"<color=yellow><size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n\n</color>" +
-                $"{multiplier}{numberOfSeconds}X income\n<size=+2>+${amount}</size>");
+                $"{multiplier}{numberOfSeconds}X income\n<size=+2><color=#FFD54A>+${amount}</color></size>", celebrate: true);
         }
     }
 

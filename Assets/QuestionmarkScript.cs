@@ -287,7 +287,7 @@ public class QuestionmarkScript : MonoBehaviour
         void ShowMessage(string msg)
         {
             string messageWithHeader = $"<color=yellow><size=+1>MYSTERY COLLECTED ({SaveGame.Members.MysteryCollected})</size>\n\n</color>{msg}";
-            GameCanvasScript.Instance.ShowPopup(messageWithHeader);
+            GameCanvasScript.Instance.ShowPopup(messageWithHeader, celebrate: true);
         }
     }
 
