@@ -124,7 +124,7 @@ public class PercentageBonusScript : MonoBehaviour
         bool hasX10 = SaveGame.Members.BoughtPercentBonusX10;
         string bonusText = $"+{buyAmount}% passive income" + (hasX10 ? " <color=#8DBE4C>x10</color>" : "");
         long displayTotalPct = (long)(SaveGame.Members.LevelPctBought * bonusMultiplier);
-        string totalBreakdown = hasX10 ? $" <color=#999999>({SaveGame.Members.LevelPctBought} x 10)</color>" : "";
+        string totalBreakdown = hasX10 ? $" <color=#AAAAAA>({SaveGame.Members.LevelPctBought} x 10)</color>" : "";
         TextBonusStatus.text = $"{bonusText}\n<size=-3><color=#cccccc>Bonus: {displayTotalPct}%</color>{totalBreakdown}";
 
         if (TextBuyAmount != null)

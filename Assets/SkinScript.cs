@@ -297,7 +297,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             current = Math.Floor(current);
         string cur = Assets.Script.Misc.DisplayNumberFormat.Format(current, format);
         string tgt = Assets.Script.Misc.DisplayNumberFormat.Format(target, "#,0");
-        return $"{hovertext} <color=#999999>({cur}/{tgt})</color>";
+        return $"{hovertext} <color=#AAAAAA>({cur}/{tgt})</color>";
     }
 
     bool _hovered;

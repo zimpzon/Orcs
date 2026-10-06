@@ -29,9 +29,9 @@ public class X2BonusScript : MonoBehaviour
     void AppendHeader(string namePos, string countPos)
     {
         _sb.Append(namePos);
-        _sb.Append("<size=85%><color=#999999>Tier</color></size>");
+        _sb.Append("<size=85%><color=#AAAAAA>Tier</color></size>");
         _sb.Append(countPos);
-        _sb.Append("<size=85%><color=#999999>X2</color></size>");
+        _sb.Append("<size=85%><color=#AAAAAA>X2</color></size>");
     }
 
     void AppendEntry((string Name, Func<long> Level, Func<long> X2) tier, string namePos, string countPos)

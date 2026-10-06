@@ -16,7 +16,7 @@ public class SettingsStatsScript : MonoBehaviour
         const string Rebirth = "#FFFFFF";
         const string Plain = "#FFFFFF";
 
-        string BuildLine(string left, string right, string valueColor = Plain, string labelColor = "#AAAAAA")
+        string BuildLine(string left, string right, string valueColor = Plain, string labelColor = "#BBBBBB")
             => $"<align=left><color={labelColor}>{left}</color><line-height=0>\n<align=right><b><color={valueColor}>{right}</color></b><line-height=1em>";
 
         // Raw multiplier value: two decimals with thousands separators up to a million ("1,234.56"), then the

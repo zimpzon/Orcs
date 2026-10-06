@@ -87,7 +87,7 @@ public class CheatSheet : MonoBehaviour
 
         var sb = new StringBuilder();
         sb.Append($"<align=center><size=150%><b><color={HeaderHex}>CHEATS & SHORTCUTS</color></b></size></align>\n");
-        sb.Append("<align=center><size=80%><color=#999999>Click the Game view first so it gets the keys. Click or press Escape to close.</color></size></align>\n\n");
+        sb.Append("<align=center><size=80%><color=#AAAAAA>Click the Game view first so it gets the keys. Click or press Escape to close.</color></size></align>\n\n");
         foreach (var (keys, what) in Entries)
         {
             if (keys.Length == 0)

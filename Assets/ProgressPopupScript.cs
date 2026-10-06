@@ -124,7 +124,7 @@ public class ProgressPopupScript : MonoBehaviour
 
     // One aligned row: label with its count right after it (grey), percentage in a fixed column.
     static string Row(string label, double pct, int have, int total)
-        => $"<pos={LabelColumn}><color=#cccccc>{label}</color> <color=#999999>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
+        => $"<pos={LabelColumn}><color=#cccccc>{label}</color> <color=#AAAAAA>({have}/{total})</color><pos={PctColumn}><color={GreenHex}>{pct:0}%</color>";
 
     // Percentage column, just past the longest row ("Upgrade tiers bought (23/23)").
     // Shifted right so the table sits centered in the dialog (it spans about 62% of the width).

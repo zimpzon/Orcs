@@ -52,7 +52,7 @@ public class TipsPopupScript : MonoBehaviour
     {
         var sb = new StringBuilder();
         sb.Append($"<align=left><size=100%><b><color={HeaderHex}>Big Numbers</color></b></size>\n<size=90%>");
-        sb.Append(Row("Short", "Name", "Value", "#999999"));
+        sb.Append(Row("Short", "Name", "Value", "#AAAAAA"));
 
         var rows = Format512.SuffixList
             .Select(s => (s.Short, Name: s.Long.Trim(), Power: (int)System.Math.Round(BigInteger.Log10(s.Threshold))))
