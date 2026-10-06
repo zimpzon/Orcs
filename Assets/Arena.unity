@@ -90463,12 +90463,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Copy the text below to back up your save.
+  m_text: 'Copy the text below to back up your save (ctrl-C).
 
-    Paste a save here and press
-    IMPORT to load it.
+    Paste a save here
+    (ctrl-V) and press IMPORT to load it.
 
-    <color=#999999>Left Shift + S opens this window.</color>'
+    <color=#999999>Left Shift + S opens
+    this window.</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

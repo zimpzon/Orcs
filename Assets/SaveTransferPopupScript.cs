@@ -46,9 +46,8 @@ public class SaveTransferPopupScript : MonoBehaviour
         gameObject.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
 
-        // Focus the field; it selects all on focus, so Ctrl+C copies the save right away.
-        SaveText.Select();
-        SaveText.ActivateInputField();
+        // Don't focus the field from code: on WebGL that seemed to break the browser's right-click copy menu. Clicking into it
+        // selects everything (select-all on focus), same as the old settings popup.
     }
 
     public void OnClose()
