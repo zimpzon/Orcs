@@ -33,6 +33,8 @@ public enum AscendUpgradeCardId
     X2Mastery3,
     FasterArena2,
     CardDiscount,
+    SkinCollector,
+    SkinCollector2,
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -109,6 +111,8 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.X2Mastery3 => SaveGame.Members.BoughtX2Mastery3,
             AscendUpgradeCardId.FasterArena2 => SaveGame.Members.BoughtFasterArena2,
             AscendUpgradeCardId.CardDiscount => SaveGame.Members.BoughtCardDiscount,
+            AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
+            AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
             _ => throw new NotImplementedException()
         };
 
@@ -261,6 +265,14 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.CardDiscount)
         {
             SaveGame.Members.BoughtCardDiscount = true;
+        }
+        else if (CardId == AscendUpgradeCardId.SkinCollector)
+        {
+            SaveGame.Members.BoughtSkinCollector = true;
+        }
+        else if (CardId == AscendUpgradeCardId.SkinCollector2)
+        {
+            SaveGame.Members.BoughtSkinCollector2 = true;
         }
         else
             throw new NotImplementedException();

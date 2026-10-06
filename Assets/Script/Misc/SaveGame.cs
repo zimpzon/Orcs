@@ -51,6 +51,8 @@ public class SaveGameMembers
     public bool BoughtX2Mastery3 = false;
     public bool BoughtFasterArena2 = false;
     public bool BoughtCardDiscount = false;
+    public bool BoughtSkinCollector = false;
+    public bool BoughtSkinCollector2 = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -79,7 +81,9 @@ public class SaveGameMembers
         $"{nameof(BoughtX2Mastery2)} = {SaveGame.Members.BoughtX2Mastery2} | " +
         $"{nameof(BoughtX2Mastery3)} = {SaveGame.Members.BoughtX2Mastery3} | " +
         $"{nameof(BoughtFasterArena2)} = {SaveGame.Members.BoughtFasterArena2} | " +
-        $"{nameof(BoughtCardDiscount)} = {SaveGame.Members.BoughtCardDiscount}";
+        $"{nameof(BoughtCardDiscount)} = {SaveGame.Members.BoughtCardDiscount} | " +
+        $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
+        $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2}";
 
     // Settings
     public int Version;

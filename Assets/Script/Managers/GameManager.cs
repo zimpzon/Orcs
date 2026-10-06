@@ -1664,6 +1664,24 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
+    // Skin Collector rebirth cards: +5% passive income per unlocked skin, per card owned. Counting skins scans the
+    // skin objects, so only every couple of seconds.
+    const double SkinCollectorPctPerSkin = 0.05;
+    const float SkinCollectorRecalcInterval = 2f;
+    float _nextSkinCollectorRecalc;
+
+    void UpdateSkinCollectorBonus()
+    {
+        if (Time.unscaledTime < _nextSkinCollectorRecalc)
+            return;
+
+        _nextSkinCollectorRecalc = Time.unscaledTime + SkinCollectorRecalcInterval;
+        int cards = (SaveGame.Members.BoughtSkinCollector ? 1 : 0) + (SaveGame.Members.BoughtSkinCollector2 ? 1 : 0);
+        PlayerUpgrades.Data.PassiveIncomeSkinBonus = cards > 0
+            ? SkinScript.GetUnlockProgress().unlocked * SkinCollectorPctPerSkin * cards
+            : 0.0;
+    }
+
     void Update()
     {
         TrySaveGame();
@@ -1797,6 +1815,7 @@ public class GameManager : MonoBehaviour
         }
 
         SaveTransferPopupScript.CheckHotkey();
+        UpdateSkinCollectorBonus();
 
         if (Input.GetKeyDown(KeyCode.I))
         {
