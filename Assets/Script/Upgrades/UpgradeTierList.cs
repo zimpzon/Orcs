@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 // All upgrade tiers in shop order, with display name, level and X2 level. Single source for anything that lists or
 // counts tiers (X2 popup, progress popup). Add a line here whenever a new upgrade tier is added to the shop.
@@ -31,4 +32,7 @@ public static class UpgradeTierList
         ("Skull Slicer",    () => SaveGame.Members.LevelSkullSlicer,        () => SaveGame.Members.LevelSkullSlicerX2),
         ("Storm Lord",      () => SaveGame.Members.LevelStormLord,        () => SaveGame.Members.LevelStormLordX2),
     };
+
+    // A tier counts as bought once at least one level of it has been purchased this run.
+    public static int CountBought() => Tiers.Count(t => t.Level() > 0);
 }

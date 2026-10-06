@@ -75,6 +75,7 @@ static class SaveGameAscend
         // Stats
         newSave.MaxDps = oldSave.MaxDps;
         newSave.MaxArena = oldSave.MaxArena;
+        newSave.MaxUpgradeTiersBought = System.Math.Max(oldSave.MaxUpgradeTiersBought, UpgradeTierList.CountBought()); // SaveGame.Members is still the old run here
         newSave.TotalArenas = oldSave.TotalArenas;
         newSave.TotalArenasWon = oldSave.TotalArenasWon;
         newSave.SuperFastClears = oldSave.SuperFastClears;

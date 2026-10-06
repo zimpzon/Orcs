@@ -104,6 +104,7 @@ public class SaveGameMembers
     // HOW TO ALIGN left/right: https://discussions.unity.com/t/textmeshpro-right-and-left-align-on-same-line/672190/6
     public long MaxDps = 0;
     public long MaxArena = 1;
+    public long MaxUpgradeTiersBought = 0; // permanent: most upgrade tiers ever bought in one run (game completion)
     public long TotalArenas = 0;
     public long TotalArenasWon = 0;
     public long SuperFastClears = 0;

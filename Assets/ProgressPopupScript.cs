@@ -135,20 +135,14 @@ public class ProgressPopupScript : MonoBehaviour
     {
         BobCrowns();
 
-        (int enemiesUnlocked, int enemiesTotal) = EnemySpawner.GetTierUnlockProgress();
-        (int skinsUnlocked, int skinsTotal) = SkinScript.GetUnlockProgress();
-
-        // A tier counts as bought once at least one level of it has been purchased. Uses the shared tier list, so new
-        // tiers are counted automatically.
-        var tiers = UpgradeTierList.Tiers;
-        int tiersBought = tiers.Count(t => t.Level() > 0);
-        int tiersTotal = tiers.Length;
-
-        double enemyPct = enemiesTotal > 0 ? (double)enemiesUnlocked / enemiesTotal * 100 : 0;
-        double skinPct = skinsTotal > 0 ? (double)skinsUnlocked / skinsTotal * 100 : 0;
-        double tierPct = tiersTotal > 0 ? (double)tiersBought / tiersTotal * 100 : 0;
-        double totalPct = (enemyPct + skinPct + tierPct) / 3.0;
-        bool won = totalPct >= 99.999;
+        // Shared with the achievement check and the bottom bar; tiers count the most ever bought, so a rebirth
+        // doesn't undo victory.
+        var p = GameCompletion.GetProgress();
+        int enemiesUnlocked = p.EnemiesUnlocked, enemiesTotal = p.EnemiesTotal;
+        int skinsUnlocked = p.SkinsUnlocked, skinsTotal = p.SkinsTotal;
+        int tiersBought = p.TiersBought, tiersTotal = p.TiersTotal;
+        double enemyPct = p.EnemyPct, skinPct = p.SkinPct, tierPct = p.TierPct, totalPct = p.TotalPct;
+        bool won = totalPct >= 99.999 || SaveGame.Members.Achieved.Contains(Achieved.Completion100);
 
         string subtitle = won
             ? $"<color={GoldHex}>is yours, champion!</color>"
@@ -161,7 +155,7 @@ public class ProgressPopupScript : MonoBehaviour
             "<align=left>" +
             Row("Enemies unlocked", enemyPct, enemiesUnlocked, enemiesTotal) + "\r\n" +
             Row("Skins unlocked", skinPct, skinsUnlocked, skinsTotal) + "\r\n" +
-            Row("Upgrade tiers bought", tierPct, tiersBought, tiersTotal) + "\r\n" +
+            Row("Upgrade tiers reached", tierPct, tiersBought, tiersTotal) + "\r\n" +
             "\r\n" +
             $"<pos={LabelColumn}><b>Total completion</b><pos={PctColumn}><b><color={GreenHex}>{totalPct:0}%</color></b>";
 

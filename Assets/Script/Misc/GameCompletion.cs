@@ -19,10 +19,16 @@ public static class GameCompletion
         (p.EnemiesUnlocked, p.EnemiesTotal) = EnemySpawner.GetTierUnlockProgress();
         (p.SkinsUnlocked, p.SkinsTotal) = SkinScript.GetUnlockProgress();
 
-        // A tier counts as bought once at least one level of it has been purchased.
-        var tiers = UpgradeTierList.Tiers;
-        p.TiersBought = tiers.Count(t => t.Level() > 0);
-        p.TiersTotal = tiers.Length;
+        // Most tiers ever bought in one run, so a rebirth doesn't take completion away. Winning implies all tiers,
+        // which also repairs saves that won (and rebirthed) before MaxUpgradeTiersBought existed.
+        var members = SaveGame.Members;
+        int current = UpgradeTierList.CountBought();
+        if (current > members.MaxUpgradeTiersBought)
+            members.MaxUpgradeTiersBought = current;
+        p.TiersTotal = UpgradeTierList.Tiers.Length;
+        p.TiersBought = members.Achieved.Contains(Achieved.Completion100)
+            ? p.TiersTotal
+            : (int)System.Math.Min(members.MaxUpgradeTiersBought, p.TiersTotal);
 
         p.EnemyPct = p.EnemiesTotal > 0 ? (double)p.EnemiesUnlocked / p.EnemiesTotal * 100 : 0;
         p.SkinPct = p.SkinsTotal > 0 ? (double)p.SkinsUnlocked / p.SkinsTotal * 100 : 0;
