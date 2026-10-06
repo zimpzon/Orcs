@@ -61585,19 +61585,23 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=left><size=100%><b><color=#8DBE4C>TIPS</color></b></size>
 
-
+    
 
     <color=yellow>Tip
-    #1:</color> Holding diamonds will give you bonus income. 8% per diamond by default
+    #1:</color> Holding diamonds will give you bonus income. 8% per diamond by default,
     but you can upgrade it. You don''t have to spend your diamonds!
 
-
+    
 
     <color=yellow>Tip
     #2:</color> Buying diamond bonus upgrades too early may cost you income! Each
-    may be worth more, but you also lose income from the fewer diamonds you now have.
+    diamond may be worth more, but you also lose income from the fewer diamonds you
+    now have.
 
-'
+    
+
+    <color=yellow>Tip #3:</color> Your credit earning speed
+    is determined by your income. The higher your income, the faster you earn credits.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -61625,8 +61629,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 11
+  m_fontSizeBase: 11
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
