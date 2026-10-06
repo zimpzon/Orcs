@@ -75929,7 +75929,7 @@ MonoBehaviour:
   RadialRoot: {fileID: 1760089298}
   RadialImage: {fileID: 947266333}
   MoneyMultiplierText: {fileID: 33727676}
-  TextColorEnabled: {r: 0.9764706, g: 0.627451, b: 0.03529412, a: 1}
+  TextColorEnabled: {r: 1, g: 0.64257026, b: 0.036144555, a: 1}
   TextColorDisabled: {r: 0.76729554, g: 0.74418217, b: 0.6587159, a: 1}
 --- !u!114 &1223022140
 MonoBehaviour:
