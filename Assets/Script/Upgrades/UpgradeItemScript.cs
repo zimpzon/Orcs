@@ -69,7 +69,32 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void SetPopupText()
     {
-        PopupManagerScript.Instance.SetText(UpgradeManager.Instance.GetText(this));
+        PopupManagerScript.Instance.SetText(UpgradeManager.Instance.GetText(this) +
+            "\n<size=85%><color=#AAAAAA>Hold Shift to buy max</color></size>");
+    }
+
+    // While Shift is held (buy max, UpgradeManager.BuyMaxHeld) the X2 button reads "MAX" instead of "X2".
+    TextMeshProUGUI _x2Label;
+    string _x2LabelText;
+    bool _x2ShowsMax;
+
+    void UpdateX2Label()
+    {
+        if (_x2Label == null)
+        {
+            if (X2Button == null)
+                return;
+            _x2Label = X2Button.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (_x2Label == null)
+                return;
+            _x2LabelText = _x2Label.text;
+        }
+
+        bool max = UpgradeManager.BuyMaxHeld;
+        if (max == _x2ShowsMax)
+            return;
+        _x2ShowsMax = max;
+        _x2Label.text = max ? "MAX" : _x2LabelText;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -112,6 +137,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         // Smoothly interpolate towards target color
         _background.color = Color.Lerp(_background.color, _targetColor, ColorTransitionSpeed * Time.deltaTime);
+        UpdateX2Label();
 
         if (_isHovering && G.D.GameTime > _nextUpdate)
         {

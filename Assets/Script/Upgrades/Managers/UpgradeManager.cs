@@ -413,371 +413,400 @@ public class UpgradeManager : MonoBehaviour
         UpdateAllUpgrades();
     }
 
-    void OnX2ItemBought()
+    void OnX2ItemBought(long count)
     {
-        SaveGame.Members.TotalX2UpgradesBought++;
+        SaveGame.Members.TotalX2UpgradesBought += count;
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+        _x2BoughtByClick = count > 0;
         UpdateAllUpgrades();
+        _x2BoughtByClick = false;
+    }
+
+    // Holding Shift while clicking buys as many as affordable (levels and X2), instead of the selected amount / one.
+    public static bool BuyMaxHeld => Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+    const int MaxBuyIterations = 10_000;
+
+    // Buys the selected amount once; with Shift held, single levels until the next one is unaffordable. Returns the
+    // number of levels actually bought.
+    long BuyLevels(Action buyOnce, Func<long> level)
+    {
+        long start = level();
+        if (!BuyMaxHeld)
+        {
+            buyOnce();
+            return level() - start;
+        }
+
+        var selection = GameManager.Instance.SelectedBuyAmount;
+        GameManager.Instance.SelectedBuyAmount = GameManager.BuyAmountSelection.Buy1;
+        try
+        {
+            for (int i = 0; i < MaxBuyIterations; ++i)
+            {
+                long before = level();
+                buyOnce();
+                if (level() == before)
+                    break;
+            }
+        }
+        finally
+        {
+            GameManager.Instance.SelectedBuyAmount = selection;
+        }
+        return level() - start;
+    }
+
+    // Buys one X2; with Shift held, keeps going while the next X2 is level-unlocked and affordable (the manager's
+    // OnBuyX2 checks the price). Returns the number of X2s actually bought.
+    long BuyX2(Action buyOnce, Func<long> level, Func<long> x2)
+    {
+        long start = x2();
+        for (int i = 0; i < MaxBuyIterations; ++i)
+        {
+            long before = x2();
+            buyOnce();
+            if (x2() == before || !BuyMaxHeld)
+                break;
+            if (level() < UpgradeProgression.LevelRequirementX2(x2() + 1))
+                break;
+        }
+        return x2() - start;
     }
 
     public void OnBuyClickDamage()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelClickDamage, SaveGame.Members.LevelClickDamageX2);
-        ClickDamageManager.OnBuy();
+        long bought = BuyLevels(ClickDamageManager.OnBuy, () => SaveGame.Members.LevelClickDamage);
         ClickDamage.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyClickDamageX2()
     {
-        ClickDamageManager.OnBuyX2();
+        long bought = BuyX2(ClickDamageManager.OnBuyX2, () => SaveGame.Members.LevelClickDamage, () => SaveGame.Members.LevelClickDamageX2);
         ClickDamage.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyKnifeDamage()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelKnifeDamage, SaveGame.Members.LevelKnifeDamageX2);
-        KnifeDamageManager.OnBuy();
+        long bought = BuyLevels(KnifeDamageManager.OnBuy, () => SaveGame.Members.LevelKnifeDamage);
         KnifeDamage.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyKnifeDamageX2()
     {
-        KnifeDamageManager.OnBuyX2();
+        long bought = BuyX2(KnifeDamageManager.OnBuyX2, () => SaveGame.Members.LevelKnifeDamage, () => SaveGame.Members.LevelKnifeDamageX2);
         KnifeDamage.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyArenaGold()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelMoneyPerGold, SaveGame.Members.LevelMoneyPerGoldX2);
-        ArenaGoldManager.OnBuy();
+        long bought = BuyLevels(ArenaGoldManager.OnBuy, () => SaveGame.Members.LevelMoneyPerGold);
         GoldPerRound.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyArenaGoldX2()
     {
-        ArenaGoldManager.OnBuyX2();
+        long bought = BuyX2(ArenaGoldManager.OnBuyX2, () => SaveGame.Members.LevelMoneyPerGold, () => SaveGame.Members.LevelMoneyPerGoldX2);
         GoldPerRound.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyKnifeCooldown()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelKnifeCd, SaveGame.Members.LevelKnifeCdX2);
-        KnifeCdManager.OnBuy();
+        long bought = BuyLevels(KnifeCdManager.OnBuy, () => SaveGame.Members.LevelKnifeCd);
         KnifeCd.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyKnifeCooldownX2()
     {
-        KnifeCdManager.OnBuyX2();
+        long bought = BuyX2(KnifeCdManager.OnBuyX2, () => SaveGame.Members.LevelKnifeCd, () => SaveGame.Members.LevelKnifeCdX2);
         KnifeCd.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyWitchDoctorDamage()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelWitchDoctor, SaveGame.Members.LevelWitchDoctorX2);
-        WitchDoctorManager.OnBuy();
+        long bought = BuyLevels(WitchDoctorManager.OnBuy, () => SaveGame.Members.LevelWitchDoctor);
         WitchDoctor.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyWitchDoctorDamageX2()
     {
-        WitchDoctorManager.OnBuyX2();
+        long bought = BuyX2(WitchDoctorManager.OnBuyX2, () => SaveGame.Members.LevelWitchDoctor, () => SaveGame.Members.LevelWitchDoctorX2);
         WitchDoctor.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyGoldPerKnife()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelGoldPerKnifeThrown, SaveGame.Members.LevelGoldPerKnifeThrownX2);
-        GoldPerKnifeThrowManager.OnBuy();
+        long bought = BuyLevels(GoldPerKnifeThrowManager.OnBuy, () => SaveGame.Members.LevelGoldPerKnifeThrown);
         GoldPerKnife.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyGoldPerKnifeX2()
     {
-        GoldPerKnifeThrowManager.OnBuyX2();
+        long bought = BuyX2(GoldPerKnifeThrowManager.OnBuyX2, () => SaveGame.Members.LevelGoldPerKnifeThrown, () => SaveGame.Members.LevelGoldPerKnifeThrownX2);
         GoldPerKnife.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyHoarder()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelHoarder, SaveGame.Members.LevelHoarderX2);
-        HoarderManager.OnBuy();
+        long bought = BuyLevels(HoarderManager.OnBuy, () => SaveGame.Members.LevelHoarder);
         Hoarder.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyHoarderX2()
     {
-        HoarderManager.OnBuyX2();
+        long bought = BuyX2(HoarderManager.OnBuyX2, () => SaveGame.Members.LevelHoarder, () => SaveGame.Members.LevelHoarderX2);
         Hoarder.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyWizard()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelWizard, SaveGame.Members.LevelWizardX2);
-        WizardManager.OnBuy();
+        long bought = BuyLevels(WizardManager.OnBuy, () => SaveGame.Members.LevelWizard);
         Wizard.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyWizardX2()
     {
-        WizardManager.OnBuyX2();
+        long bought = BuyX2(WizardManager.OnBuyX2, () => SaveGame.Members.LevelWizard, () => SaveGame.Members.LevelWizardX2);
         Wizard.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyZapDamage()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelZapDamage, SaveGame.Members.LevelZapDamageX2);
-        ZapDamageManager.OnBuy();
+        long bought = BuyLevels(ZapDamageManager.OnBuy, () => SaveGame.Members.LevelZapDamage);
         ZapDamage.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyZapDamageX2()
     {
-        ZapDamageManager.OnBuyX2();
+        long bought = BuyX2(ZapDamageManager.OnBuyX2, () => SaveGame.Members.LevelZapDamage, () => SaveGame.Members.LevelZapDamageX2);
         ZapDamage.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyMoneyMaker()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelMoneyMaker, SaveGame.Members.LevelMoneyMakerX2);
-        MoneyMakerManager.OnBuy();
+        long bought = BuyLevels(MoneyMakerManager.OnBuy, () => SaveGame.Members.LevelMoneyMaker);
         MoneyMaker.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyMoneyMakerX2()
     {
-        MoneyMakerManager.OnBuyX2();
+        long bought = BuyX2(MoneyMakerManager.OnBuyX2, () => SaveGame.Members.LevelMoneyMaker, () => SaveGame.Members.LevelMoneyMakerX2);
         MoneyMaker.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyDaggerMaster()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelDaggerMaster, SaveGame.Members.LevelDaggerMasterX2);
-        DaggerMasterManager.OnBuy();
+        long bought = BuyLevels(DaggerMasterManager.OnBuy, () => SaveGame.Members.LevelDaggerMaster);
         DaggerMaster.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyDaggerMasterX2()
     {
-        DaggerMasterManager.OnBuyX2();
+        long bought = BuyX2(DaggerMasterManager.OnBuyX2, () => SaveGame.Members.LevelDaggerMaster, () => SaveGame.Members.LevelDaggerMasterX2);
         DaggerMaster.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyNecroNinja()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelNecroNinja, SaveGame.Members.LevelNecroNinjaX2);
-        NecroNinjaManager.OnBuy();
+        long bought = BuyLevels(NecroNinjaManager.OnBuy, () => SaveGame.Members.LevelNecroNinja);
         NecroNinja.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyNecroNinjaX2()
     {
-        NecroNinjaManager.OnBuyX2();
+        long bought = BuyX2(NecroNinjaManager.OnBuyX2, () => SaveGame.Members.LevelNecroNinja, () => SaveGame.Members.LevelNecroNinjaX2);
         NecroNinja.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuySkullCrusher()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSkullCrusher, SaveGame.Members.LevelSkullCrusherX2);
-        SkullCrusherManager.OnBuy();
+        long bought = BuyLevels(SkullCrusherManager.OnBuy, () => SaveGame.Members.LevelSkullCrusher);
         SkullCrusher.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuySkullCrusherX2()
     {
-        SkullCrusherManager.OnBuyX2();
+        long bought = BuyX2(SkullCrusherManager.OnBuyX2, () => SaveGame.Members.LevelSkullCrusher, () => SaveGame.Members.LevelSkullCrusherX2);
         SkullCrusher.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyChestMaster()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelChestMaster, SaveGame.Members.LevelChestMasterX2);
-        ChestMasterManager.OnBuy();
+        long bought = BuyLevels(ChestMasterManager.OnBuy, () => SaveGame.Members.LevelChestMaster);
         ChestMaster.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyChestMasterX2()
     {
-        ChestMasterManager.OnBuyX2();
+        long bought = BuyX2(ChestMasterManager.OnBuyX2, () => SaveGame.Members.LevelChestMaster, () => SaveGame.Members.LevelChestMasterX2);
         ChestMaster.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyVoidgazer()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelVoidgazer, SaveGame.Members.LevelVoidgazerX2);
-        VoidgazerManager.OnBuy();
+        long bought = BuyLevels(VoidgazerManager.OnBuy, () => SaveGame.Members.LevelVoidgazer);
         Voidgazer.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyVoidgazerX2()
     {
-        VoidgazerManager.OnBuyX2();
+        long bought = BuyX2(VoidgazerManager.OnBuyX2, () => SaveGame.Members.LevelVoidgazer, () => SaveGame.Members.LevelVoidgazerX2);
         Voidgazer.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuySmartDaggers()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSmartDaggers, SaveGame.Members.LevelSmartDaggersX2);
-        SmartDaggersManager.OnBuy();
+        long bought = BuyLevels(SmartDaggersManager.OnBuy, () => SaveGame.Members.LevelSmartDaggers);
         SmartDaggers.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuySmartDaggersX2()
     {
-        SmartDaggersManager.OnBuyX2();
+        long bought = BuyX2(SmartDaggersManager.OnBuyX2, () => SaveGame.Members.LevelSmartDaggers, () => SaveGame.Members.LevelSmartDaggersX2);
         SmartDaggers.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyFastFeet()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelFastFeet, SaveGame.Members.LevelFastFeetX2);
-        FastFeetManager.OnBuy();
+        long bought = BuyLevels(FastFeetManager.OnBuy, () => SaveGame.Members.LevelFastFeet);
         FastFeet.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyFastFeetX2()
     {
-        FastFeetManager.OnBuyX2();
+        long bought = BuyX2(FastFeetManager.OnBuyX2, () => SaveGame.Members.LevelFastFeet, () => SaveGame.Members.LevelFastFeetX2);
         FastFeet.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyCryptMaster()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelCryptMaster, SaveGame.Members.LevelCryptMasterX2);
-        CryptMasterManager.OnBuy();
+        long bought = BuyLevels(CryptMasterManager.OnBuy, () => SaveGame.Members.LevelCryptMaster);
         CryptMaster.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyCryptMasterX2()
     {
-        CryptMasterManager.OnBuyX2();
+        long bought = BuyX2(CryptMasterManager.OnBuyX2, () => SaveGame.Members.LevelCryptMaster, () => SaveGame.Members.LevelCryptMasterX2);
         CryptMaster.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuySmartFireballs()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSmartFireballs, SaveGame.Members.LevelSmartFireballsX2);
-        SmartFireballsManager.OnBuy();
+        long bought = BuyLevels(SmartFireballsManager.OnBuy, () => SaveGame.Members.LevelSmartFireballs);
         SmartFireballs.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuySmartFireballsX2()
     {
-        SmartFireballsManager.OnBuyX2();
+        long bought = BuyX2(SmartFireballsManager.OnBuyX2, () => SaveGame.Members.LevelSmartFireballs, () => SaveGame.Members.LevelSmartFireballsX2);
         SmartFireballs.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyBeefyEarl()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelBeefyEarl, SaveGame.Members.LevelBeefyEarlX2);
-        BeefyEarlManager.OnBuy();
+        long bought = BuyLevels(BeefyEarlManager.OnBuy, () => SaveGame.Members.LevelBeefyEarl);
         BeefyEarl.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyBeefyEarlX2()
     {
-        BeefyEarlManager.OnBuyX2();
+        long bought = BuyX2(BeefyEarlManager.OnBuyX2, () => SaveGame.Members.LevelBeefyEarl, () => SaveGame.Members.LevelBeefyEarlX2);
         BeefyEarl.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyCriticalStrike()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelCriticalStrike, SaveGame.Members.LevelCriticalStrikeX2);
-        CriticalStrikeManager.OnBuy();
+        long bought = BuyLevels(CriticalStrikeManager.OnBuy, () => SaveGame.Members.LevelCriticalStrike);
         CriticalStrike.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyCriticalStrikeX2()
     {
-        CriticalStrikeManager.OnBuyX2();
+        long bought = BuyX2(CriticalStrikeManager.OnBuyX2, () => SaveGame.Members.LevelCriticalStrike, () => SaveGame.Members.LevelCriticalStrikeX2);
         CriticalStrike.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyPowerZap()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelPowerZap, SaveGame.Members.LevelPowerZapX2);
-        PowerZapManager.OnBuy();
+        long bought = BuyLevels(PowerZapManager.OnBuy, () => SaveGame.Members.LevelPowerZap);
         PowerZap.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyPowerZapX2()
     {
-        PowerZapManager.OnBuyX2();
+        long bought = BuyX2(PowerZapManager.OnBuyX2, () => SaveGame.Members.LevelPowerZap, () => SaveGame.Members.LevelPowerZapX2);
         PowerZap.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuySkullSlicer()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelSkullSlicer, SaveGame.Members.LevelSkullSlicerX2);
-        SkullSlicerManager.OnBuy();
+        long bought = BuyLevels(SkullSlicerManager.OnBuy, () => SaveGame.Members.LevelSkullSlicer);
         SkullSlicer.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuyStormLord()
     {
-        long buyAmount = UpgradeProgression.GetActualBuyAmountFromSelectedBuyAmount(SaveGame.Members.LevelStormLord, SaveGame.Members.LevelStormLordX2);
-        StormLordManager.OnBuy();
+        long bought = BuyLevels(StormLordManager.OnBuy, () => SaveGame.Members.LevelStormLord);
         StormLord.SetPopupText();
-        OnItemBought(buyAmount);
+        OnItemBought(bought);
     }
 
     public void OnBuySkullSlicerX2()
     {
-        SkullSlicerManager.OnBuyX2();
+        long bought = BuyX2(SkullSlicerManager.OnBuyX2, () => SaveGame.Members.LevelSkullSlicer, () => SaveGame.Members.LevelSkullSlicerX2);
         SkullSlicer.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     public void OnBuyStormLordX2()
     {
-        StormLordManager.OnBuyX2();
+        long bought = BuyX2(StormLordManager.OnBuyX2, () => SaveGame.Members.LevelStormLord, () => SaveGame.Members.LevelStormLordX2);
         StormLord.SetPopupText();
-        OnX2ItemBought();
+        OnX2ItemBought(bought);
     }
 
     private void UpdatePlayerUpgrades()
@@ -843,13 +872,15 @@ public class UpgradeManager : MonoBehaviour
 
         // Celebrate a new X2 rank at the cursor. Skips the first frame (save load) and big jumps (save import);
         // decreases (ascend, wipe) just resync.
-        if (_lastX2Ranks >= 0 && bonuses > _lastX2Ranks && bonuses - _lastX2Ranks <= 3 && ClickDamage != null)
+        // A Shift max-buy can cross several ranks at once, so any gain right after a click counts.
+        if (_lastX2Ranks >= 0 && bonuses > _lastX2Ranks && (bonuses - _lastX2Ranks <= 3 || _x2BoughtByClick) && ClickDamage != null)
             X2RankUpEffect.Spawn(ClickDamage, Input.mousePosition, X2BonusPerRank() * 100, bonuses);
 
         _lastX2Ranks = bonuses;
     }
 
     long _lastX2Ranks = -1;
+    bool _x2BoughtByClick;
 
     // Base 10% per rank, each X2 Mastery ascend card adds another 10%.
     public static double X2BonusPerRank()
