@@ -1684,7 +1684,14 @@ public class GameManager : MonoBehaviour
             Screen.fullScreen = !Screen.fullScreen;
         }
 
-        // CHEATS
+        // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all)
+
+        if (G.GetCheatKeyDown(KeyCode.H) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            var canvas = GetComponentInParent<Canvas>() ?? FindAnyObjectByType<Canvas>();
+            if (canvas != null)
+                CheatSheet.Toggle(canvas.rootCanvas);
+        }
 
         // C is taken
         //if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
