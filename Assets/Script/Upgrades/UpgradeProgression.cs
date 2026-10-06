@@ -118,12 +118,20 @@ namespace Assets.Script.Upgrades
                 Decimal512 baseXp = 495 * OneBillion;
                 long d = level - 8;
                 Decimal512 extraXp = 58.0 * OneBillion * d * d * d; // Cubic growth
-                return (baseXp + extraXp) * CreditCostMul;
+                Decimal512 xp = (baseXp + extraXp) * CreditCostMul;
+
+                // Exponential tail: income grows by multiples per run while the cubic curve only adds a few % per
+                // credit up here, so credits snowballed (1 min per credit at 130). Each credit past 90 costs 8% more.
+                if (level > CreditExpStartLevel)
+                    xp *= Math.Pow(CreditExpGrowth, level - CreditExpStartLevel);
+                return xp;
             }
         }
 
         // All credits cost half of the curve above (credits felt too slow around 90+ lifetime credits).
         const double CreditCostMul = 0.5;
+        const long CreditExpStartLevel = 90;
+        const double CreditExpGrowth = 1.08;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
