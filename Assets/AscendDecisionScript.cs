@@ -16,6 +16,8 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextButtonRebirth;
     public TextMeshProUGUI TextWhatYouLose;
     public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
+    public Image CreditBonusBarFill;        // filled image: shown bonus % of 500
+    public TextMeshProUGUI CreditBonusBarText; // "123%/500%" on the bar
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
@@ -177,8 +179,13 @@ public class AscendDecisionScript : MonoBehaviour
 
         // Rebirth credit bonus (UpgradeProgression.CreditBonusProgress): 500% after a rebirth, falls to 100%. The text
         // is authored in the scene; [BONUS] is replaced with the current %.
-        if (TextCreditBonus != null)
-            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", UpgradeProgression.CreditBonusDisplayPct().ToString());
+        int creditBonusPct = UpgradeProgression.CreditBonusDisplayPct();
+        //if (TextCreditBonus != null)
+        //    TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", creditBonusPct.ToString());
+        if (CreditBonusBarFill != null)
+            CreditBonusBarFill.fillAmount = creditBonusPct / 500f;
+        if (CreditBonusBarText != null)
+            CreditBonusBarText.text = $"{creditBonusPct}%/500%";
 
         int diamondValue = UpgradeProgression.GetCurrentDiamondMultiplierPct();
         TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");
