@@ -15,11 +15,13 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextAscendNowGain;
     public TextMeshProUGUI TextButtonRebirth;
     public TextMeshProUGUI TextWhatYouLose;
+    public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
 
     private string _whatYouLoseTemplate;
+    private string _creditBonusTemplate;
     private int _clickCount;
 
     // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
@@ -35,6 +37,8 @@ public class AscendDecisionScript : MonoBehaviour
     {
         Instance = this;
         _whatYouLoseTemplate = TextWhatYouLose.text;
+        if (TextCreditBonus != null)
+            _creditBonusTemplate = TextCreditBonus.text;
         SetupHeaderDiamonds();
     }
 
@@ -170,6 +174,11 @@ public class AscendDecisionScript : MonoBehaviour
         TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
+
+        // Rebirth credit bonus (UpgradeProgression.CreditBonusProgress): 500% after a rebirth, falls to 100%. The text
+        // is authored in the scene; [BONUS] is replaced with the current %.
+        if (TextCreditBonus != null)
+            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", UpgradeProgression.CreditBonusDisplayPct().ToString());
 
         int diamondValue = UpgradeProgression.GetCurrentDiamondMultiplierPct();
         TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");

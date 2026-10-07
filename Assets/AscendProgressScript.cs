@@ -58,13 +58,15 @@ public class AscendProgressScript : MonoBehaviour
         ApplyAscendPermanentBonuses();
 
         // Passive income, but never below the small credit speed floor (UpgradeProgression.CreditXpPerSecond).
-        Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond();
+        // Times the rebirth credit bonus (x1.0 after a rebirth, falling to x0.1; UpgradeProgression.CreditBonusMultiplier).
+        Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond() * UpgradeProgression.CreditBonusMultiplier();
 
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
-        // Commit actual XP/credit gain at most once per second, so we can't award more than
-        // one credit per second even though the display below updates every frame.
+        // Commit actual XP/credit gain once per second (the display below updates every frame). Cheap credits can
+        // mean several per second: award all of them and keep the leftover XP, otherwise the rebirth credit bonus
+        // (x1.0 -> x0.1) would make no visible difference while credits come faster than one per second.
         if (G.D.RealTime >= _nextCreditUpdate)
         {
             // Calculate how much time actually passed since last update
@@ -81,14 +83,18 @@ public class AscendProgressScript : MonoBehaviour
             SaveGame.Members.MonsterCreditsXp_09_08_2025 +=
                 creditXpPerSecond * delta;
 
-            Decimal512 xpForNextLevelCommit = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
-            if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpForNextLevelCommit)
+            const int MaxCreditsPerCommit = 1000; // safety cap; the rest of the XP carries over to the next second
+            for (int i = 0; i < MaxCreditsPerCommit; ++i)
             {
-                SaveGame.Members.MonsterCreditsXp_09_08_2025 = 0;
+                Decimal512 xpForNextLevelCommit = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
+                if (SaveGame.Members.MonsterCreditsXp_09_08_2025 < xpForNextLevelCommit)
+                    break;
+
+                SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevelCommit;
                 SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
                 SaveGame.Members.MonsterCredits_09_08_2025++;
-                SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
             }
+            SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
 
             _lastCreditCommitTime = G.D.RealTime;
         }

@@ -21,6 +21,7 @@ public class SaveGameMembers
     public long TimesAscended_09_08_2025;
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;
+    public long CreditBonusStartLifetime = -1; // lifetime credits at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these

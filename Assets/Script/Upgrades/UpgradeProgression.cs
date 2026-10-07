@@ -103,35 +103,14 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
         {
-            // Original progression for levels 1-8: 5B, 15B, 45B, 95B, 165B, 255B, 365B, 495B
-            // Steep cubic growth starting from level 9
+            // One quadratic curve for all levels: 5B x (1 + 2(L-1)^2) x CreditCostMul.
             long n = level - 1;
-            if (level <= 8)
-            {
-                // Original quadratic curve for first 8 levels
-                return 5 * OneBillion * (1 + 2 * n * n) * CreditCostMul;
-            }
-            else
-            {
-                // Steep cubic growth starting from level 9
-                // Base XP at level 8 is 495B
-                Decimal512 baseXp = 495 * OneBillion;
-                long d = level - 8;
-                Decimal512 extraXp = 58.0 * OneBillion * d * d * d; // Cubic growth
-                Decimal512 xp = (baseXp + extraXp) * CreditCostMul;
-
-                // Exponential tail: income grows by multiples per run while the cubic curve only adds a few % per
-                // credit up here, so credits snowballed (1 min per credit at 130). Each credit past 90 costs 8% more.
-                if (level > CreditExpStartLevel)
-                    xp *= Math.Pow(CreditExpGrowth, level - CreditExpStartLevel);
-                return xp;
-            }
+            return 5 * OneBillion * (1 + 2 * (double)n * n) * CreditCostMul;
         }
 
-        // All credits cost half of the curve above (credits felt too slow around 90+ lifetime credits).
-        const double CreditCostMul = 0.5;
-        const long CreditExpStartLevel = 90;
-        const double CreditExpGrowth = 1.08;
+        // All credits cost 1/8 of the curve above (was 1/2: credits felt too slow around 90+ lifetime credits; then
+        // another 1/4 on top).
+        const double CreditCostMul = 0.125;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
@@ -150,6 +129,37 @@ namespace Assets.Script.Upgrades
             Decimal512 floor = m.MaxCreditIncome * CreditSpeedFloorFraction;
             return income > floor ? income : floor;
         }
+
+        // Rebirth credit bonus: credits are cheap, so to still force a rebirth now and then the credit XP rate is
+        // multiplied by x1.0 right after a rebirth, falling in a straight line to x0.1 when lifetime credits reach
+        // 3x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
+        // x1.0. Shown to the player as a bonus going from 500% down to 100%.
+        const long CreditBonusMinLifetime = 20;
+        const double CreditBonusEndFactor = 3.0;
+        const double CreditBonusMinMul = 0.1;
+
+        // 0 = just rebirthed (x1.0, 500%), 1 = reached 3x the start (x0.1, 100%).
+        public static double CreditBonusProgress()
+        {
+            var m = SaveGame.Members;
+            long lifetime = m.MonsterCreditsLifetime_09_08_2025;
+            if (m.CreditBonusStartLifetime < 0)
+                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 500%
+
+            if (lifetime < CreditBonusMinLifetime)
+                return 0.0;
+
+            double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
+            double t = (lifetime - start) / ((CreditBonusEndFactor - 1.0) * start);
+            return Math.Clamp(t, 0.0, 1.0);
+        }
+
+        public static double CreditBonusMultiplier()
+            => 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
+
+        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.1).
+        public static int CreditBonusDisplayPct()
+            => (int)Math.Round(500 - 400 * CreditBonusProgress());
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
