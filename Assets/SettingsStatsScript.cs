@@ -33,8 +33,10 @@ public class SettingsStatsScript : MonoBehaviour
         string Mul(double value) => $"x{Num(value)}";
 
         var lifetimeIncome = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
-        var timePlayed = TimeSpan.FromSeconds(SaveGame.Members.EstimatedOnlineSeconds2);
-        var timeSinceLastAscend = TimeSpan.FromSeconds(SaveGame.Members.TimeSinceLastAscend);
+        // Counted every minute (GameManager.UpdateTimePlayed) but shown in whole 10 minutes.
+        static TimeSpan RoundedTo10Min(double seconds) => TimeSpan.FromSeconds(Math.Floor(seconds / 600) * 600);
+        var timePlayed = RoundedTo10Min(SaveGame.Members.EstimatedOnlineSeconds2);
+        var timeSinceLastAscend = RoundedTo10Min(SaveGame.Members.TimeSinceLastAscend);
 
         string strTextMoney = SaveGame.Members.UseScientificNotation ?
             $"${FormatScientific.Format(SaveGame.Members.MaxMoney)}" :

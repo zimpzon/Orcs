@@ -1584,25 +1584,44 @@ public class GameManager : MonoBehaviour
         _cheatSpeedLabel.gameObject.SetActive(isOn);
     }
 
+    // Time played and time since last rebirth are counted every minute (stats display rounds them down to 10 minutes).
+    // Counted in G.D.RealTime, so the speed cheat makes them grow faster too. A long gap (sleep) adds at most a
+    // couple of intervals.
+    const float TimePlayedInterval = 60;
+    float _nextTimePlayedUpdate;
+    float _lastTimePlayedScaled = -1;
+
+    void UpdateTimePlayed()
+    {
+        if (Time.realtimeSinceStartup < _nextTimePlayedUpdate)
+            return;
+
+        _nextTimePlayedUpdate = Time.realtimeSinceStartup + TimePlayedInterval;
+        float scaledNow = G.D.RealTime;
+        if (_lastTimePlayedScaled < 0)
+        {
+            _lastTimePlayedScaled = scaledNow; // session start: only the baseline, nothing played yet
+            return;
+        }
+
+        float maxSeconds = 2 * TimePlayedInterval * G.CheatSpeed;
+        int secondsPlayed = (int)Mathf.Min(scaledNow - _lastTimePlayedScaled, maxSeconds);
+        _lastTimePlayedScaled += secondsPlayed;
+        if (scaledNow - _lastTimePlayedScaled > maxSeconds)
+            _lastTimePlayedScaled = scaledNow; // drop the clamped-away part instead of carrying it over
+
+        SaveGame.Members.EstimatedOnlineSeconds2 += secondsPlayed;
+        if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
+            SaveGame.Members.TimeSinceLastAscend += secondsPlayed;
+    }
+
     float _nextSendStats;
-    float _statsScaledTimeNext;
     void TrySendStats()
     {
+        UpdateTimePlayed();
+
         if (Time.realtimeSinceStartup > _nextSendStats)
         {
-            // Time played is counted in G.D.RealTime so the speed cheat makes it grow faster too. Without the cheat
-            // this is SendStatsInterval per send, same as before.
-            float scaledNow = G.D.RealTime;
-            int secondsPlayed = _statsScaledTimeNext == 0 ? SendStatsInterval : (int)(scaledNow - _statsScaledTimeNext + SendStatsInterval);
-            _statsScaledTimeNext = scaledNow + SendStatsInterval;
-
-            // Update estimated time every time we save, we only need it for stats anyways (for now...)
-            SaveGame.Members.EstimatedOnlineSeconds2 += secondsPlayed;
-            if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
-            {
-                SaveGame.Members.TimeSinceLastAscend += secondsPlayed;
-            }
-
             // Don't pollute the PlayFab leaderboards while testing with the speed cheat.
             if (G.CheatSpeed == 1.0f)
             {
