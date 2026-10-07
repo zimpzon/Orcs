@@ -185,7 +185,7 @@ public class AscendDecisionScript : MonoBehaviour
         if (CreditBonusBarFill != null)
             CreditBonusBarFill.fillAmount = creditBonusPct / 500f;
         if (CreditBonusBarText != null)
-            CreditBonusBarText.text = $"{creditBonusPct}%/500%";
+            CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
 
         int diamondValue = UpgradeProgression.GetCurrentDiamondMultiplierPct();
         TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");
