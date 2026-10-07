@@ -21,7 +21,7 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+A", "Arena +500"),
         ("RightCtrl+S", "Arena -25"),
         ("RightCtrl+Z", "Set a mid-game upgrade loadout + arena +5000"),
-        ("RightCtrl+T", "Toggle cheat speed (x10 time, arena jumps x10)"),
+        ("RightCtrl+T", "Toggle cheat speed (x50 time, arena jumps x50)"),
         ("RightCtrl+Right / Left", "Game time scale +0.1 / -0.1"),
         ("", ""),
         ("RightCtrl+Q", "Mystery question mark ready now"),

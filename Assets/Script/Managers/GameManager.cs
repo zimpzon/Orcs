@@ -1560,7 +1560,7 @@ public class GameManager : MonoBehaviour
 
     // Test cheat: passive income, credits, mystery timer and time played run CheatSpeedMultiplier times faster,
     // and arena wins jump CheatSpeedMultiplier times further. Arena combat itself runs at normal speed.
-    const float CheatSpeedMultiplier = 10.0f;
+    const float CheatSpeedMultiplier = 50.0f;
     TextMeshProUGUI _cheatSpeedLabel;
 
     void ToggleCheatSpeed()
