@@ -8,6 +8,7 @@ using UnityEngine;
 public static class EnemySpawner
 {
     public const long HpScale = 5;
+    public const long EnemyHpMul = 500; // all enemies x500 HP (applied per enemy in SpawnEnemies)
     public const long MaxEnemies = 50;
 
     // Enemy type definitions with base HP (before HpScale) and the arena level at which the type
@@ -383,6 +384,10 @@ public static class EnemySpawner
                 spawned = SpawnUtil.Random(type, count);
                 break;
         }
+
+        // Every enemy has EnemyHpMul x the HP the spawn budget was planned with (same enemy count, tougher enemies).
+        // Clamped: at extreme arena levels the multiplier could overflow a long.
+        hp = hp > long.MaxValue / 4 / EnemyHpMul ? long.MaxValue / 4 : hp * EnemyHpMul;
 
         // Permanent rebirth upgrade: halves enemy HP everywhere, for any level.
         long effectiveSpawnHp = SaveGame.Members.BoughtHalfEnemyHp ? hp / 2 : hp;

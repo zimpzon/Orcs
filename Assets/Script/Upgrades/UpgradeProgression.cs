@@ -108,10 +108,13 @@ namespace Assets.Script.Upgrades
             // (x0.125) the first 10 are ~10-20% cheaper, credit 100 x2, 250 x4, 1000 x16.
             // Late factor 1 + (n/CreditCostLateScale)^CreditCostLatePower on top: ~x1 up to credit 100, then steep
             // (200 x2, 300 x5, 400 x13, 500 x27, 600 x50, 1000 x286) - at ~600 credits came about once per second.
+            // Extra factor 1 + CreditCostExtra * n^2 / (n^2 + CreditCostExtraStart^2): +50% overall but sparing the start
+            // (credit 10 x1.08, 20 x1.24, 50 x1.43, 100+ ~x1.5).
             double n = level - 1;
             double ramp = Math.Pow(1 + n / CreditCostRamp, CreditCostRampPower);
             double late = 1 + Math.Pow(n / CreditCostLateScale, CreditCostLatePower);
-            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late);
+            double extra = 1 + CreditCostExtra * n * n / (n * n + CreditCostExtraStart * CreditCostExtraStart);
+            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late * extra);
         }
 
         const double CreditCostMul = 0.1;
@@ -119,6 +122,8 @@ namespace Assets.Script.Upgrades
         const double CreditCostRampPower = 1.17;
         const double CreditCostLateScale = 195;
         const double CreditCostLatePower = 3.46;
+        const double CreditCostExtra = 0.5;
+        const double CreditCostExtraStart = 20;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income

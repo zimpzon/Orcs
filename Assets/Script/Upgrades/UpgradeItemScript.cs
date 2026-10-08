@@ -70,13 +70,14 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void SetPopupText()
     {
         PopupManagerScript.Instance.SetText(UpgradeManager.Instance.GetText(this) +
-            "\n<size=85%><color=#AAAAAA>Hold Shift to buy max</color></size>");
+            "\n<size=85%><color=#AAAAAA>Hold Shift to buy max, Ctrl to buy all X2</color></size>");
     }
 
-    // While Shift is held (buy max, UpgradeManager.BuyMaxHeld) the X2 button reads "MAX" instead of "X2".
+    // While Shift is held (buy max, UpgradeManager.BuyMaxHeld) the X2 button reads "MAX" instead of "X2"; while Ctrl
+    // is held (all tiers, UpgradeManager.BuyAllX2Held) it reads "ALL".
     TextMeshProUGUI _x2Label;
     string _x2LabelText;
-    bool _x2ShowsMax;
+    string _x2ShownText;
 
     void UpdateX2Label()
     {
@@ -88,13 +89,14 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
             if (_x2Label == null)
                 return;
             _x2LabelText = _x2Label.text;
+            _x2ShownText = _x2LabelText;
         }
 
-        bool max = UpgradeManager.BuyMaxHeld;
-        if (max == _x2ShowsMax)
+        string text = UpgradeManager.BuyAllX2Held ? "ALL" : UpgradeManager.BuyMaxHeld ? "MAX" : _x2LabelText;
+        if (text == _x2ShownText)
             return;
-        _x2ShowsMax = max;
-        _x2Label.text = max ? "MAX" : _x2LabelText;
+        _x2ShownText = text;
+        _x2Label.text = text;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

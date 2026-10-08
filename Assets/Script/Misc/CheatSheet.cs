@@ -34,6 +34,8 @@ public class CheatSheet : MonoBehaviour
         ("F", "Toggle fullscreen"),
         ("I", "Toggle FPS counter"),
         ("LeftShift+S", "Save game import/export dialog (player shortcut)"),
+        ("Shift+click buy / X2", "Buy as many as affordable on that tier"),
+        ("Ctrl+click X2", "Buy every affordable X2 on all tiers, cheapest first"),
         ("Escape", "Close the open dialog / collapse the upgrade list"),
     };
 

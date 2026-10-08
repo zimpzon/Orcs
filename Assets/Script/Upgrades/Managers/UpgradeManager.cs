@@ -458,8 +458,78 @@ public class UpgradeManager : MonoBehaviour
 
     // Buys one X2; with Shift held, keeps going while the next X2 is level-unlocked and affordable (the manager's
     // OnBuyX2 checks the price). Returns the number of X2s actually bought.
+    // Holding Ctrl while clicking an X2 button buys every affordable X2 on all tiers, cheapest first.
+    public static bool BuyAllX2Held => Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+
+    // Every tier's X2: buy action, level, X2 count and initial X2 price (same order as the shop).
+    static readonly (Action Buy, Func<long> Level, Func<long> X2, Func<Decimal512> InitialPrice)[] AllX2 =
+    {
+        (ClickDamageManager.OnBuyX2, () => SaveGame.Members.LevelClickDamage, () => SaveGame.Members.LevelClickDamageX2, () => UpgradeProgression.InitialPrice_Clickdamage_X2),
+        (KnifeDamageManager.OnBuyX2, () => SaveGame.Members.LevelKnifeDamage, () => SaveGame.Members.LevelKnifeDamageX2, () => UpgradeProgression.InitialPrice_DaggerDamage_X2),
+        (ArenaGoldManager.OnBuyX2, () => SaveGame.Members.LevelMoneyPerGold, () => SaveGame.Members.LevelMoneyPerGoldX2, () => UpgradeProgression.InitialPrice_GoldValue_X2),
+        (KnifeCdManager.OnBuyX2, () => SaveGame.Members.LevelKnifeCd, () => SaveGame.Members.LevelKnifeCdX2, () => UpgradeProgression.InitialPrice_DaggerCd_X2),
+        (WitchDoctorManager.OnBuyX2, () => SaveGame.Members.LevelWitchDoctor, () => SaveGame.Members.LevelWitchDoctorX2, () => UpgradeProgression.InitialPrice_WitchDoctor_X2),
+        (GoldPerKnifeThrowManager.OnBuyX2, () => SaveGame.Members.LevelGoldPerKnifeThrown, () => SaveGame.Members.LevelGoldPerKnifeThrownX2, () => UpgradeProgression.InitialPrice_GoldPerKnifeThrown_X2),
+        (HoarderManager.OnBuyX2, () => SaveGame.Members.LevelHoarder, () => SaveGame.Members.LevelHoarderX2, () => UpgradeProgression.InitialPrice_Hoarder_X2),
+        (WizardManager.OnBuyX2, () => SaveGame.Members.LevelWizard, () => SaveGame.Members.LevelWizardX2, () => UpgradeProgression.InitialPrice_Wizard_X2),
+        (ZapDamageManager.OnBuyX2, () => SaveGame.Members.LevelZapDamage, () => SaveGame.Members.LevelZapDamageX2, () => UpgradeProgression.InitialPrice_ZapDamage_X2),
+        (MoneyMakerManager.OnBuyX2, () => SaveGame.Members.LevelMoneyMaker, () => SaveGame.Members.LevelMoneyMakerX2, () => UpgradeProgression.InitialPrice_MoneyMaker_X2),
+        (DaggerMasterManager.OnBuyX2, () => SaveGame.Members.LevelDaggerMaster, () => SaveGame.Members.LevelDaggerMasterX2, () => UpgradeProgression.InitialPrice_DaggerMaster_X2),
+        (NecroNinjaManager.OnBuyX2, () => SaveGame.Members.LevelNecroNinja, () => SaveGame.Members.LevelNecroNinjaX2, () => UpgradeProgression.InitialPrice_NecroNinja_X2),
+        (SkullCrusherManager.OnBuyX2, () => SaveGame.Members.LevelSkullCrusher, () => SaveGame.Members.LevelSkullCrusherX2, () => UpgradeProgression.InitialPrice_SkullCrusher_X2),
+        (ChestMasterManager.OnBuyX2, () => SaveGame.Members.LevelChestMaster, () => SaveGame.Members.LevelChestMasterX2, () => UpgradeProgression.InitialPrice_ChestMaster_X2),
+        (VoidgazerManager.OnBuyX2, () => SaveGame.Members.LevelVoidgazer, () => SaveGame.Members.LevelVoidgazerX2, () => UpgradeProgression.InitialPrice_Voidgazer_X2),
+        (SmartDaggersManager.OnBuyX2, () => SaveGame.Members.LevelSmartDaggers, () => SaveGame.Members.LevelSmartDaggersX2, () => UpgradeProgression.InitialPrice_SmartDaggers_X2),
+        (FastFeetManager.OnBuyX2, () => SaveGame.Members.LevelFastFeet, () => SaveGame.Members.LevelFastFeetX2, () => UpgradeProgression.InitialPrice_FastFeet_X2),
+        (CryptMasterManager.OnBuyX2, () => SaveGame.Members.LevelCryptMaster, () => SaveGame.Members.LevelCryptMasterX2, () => UpgradeProgression.InitialPrice_CryptMaster_X2),
+        (SmartFireballsManager.OnBuyX2, () => SaveGame.Members.LevelSmartFireballs, () => SaveGame.Members.LevelSmartFireballsX2, () => UpgradeProgression.InitialPrice_SmartFireballs_X2),
+        (BeefyEarlManager.OnBuyX2, () => SaveGame.Members.LevelBeefyEarl, () => SaveGame.Members.LevelBeefyEarlX2, () => UpgradeProgression.InitialPrice_BeefyEarl_X2),
+        (CriticalStrikeManager.OnBuyX2, () => SaveGame.Members.LevelCriticalStrike, () => SaveGame.Members.LevelCriticalStrikeX2, () => UpgradeProgression.InitialPrice_CriticalStrike_X2),
+        (PowerZapManager.OnBuyX2, () => SaveGame.Members.LevelPowerZap, () => SaveGame.Members.LevelPowerZapX2, () => UpgradeProgression.InitialPrice_PowerZap_X2),
+        (SkullSlicerManager.OnBuyX2, () => SaveGame.Members.LevelSkullSlicer, () => SaveGame.Members.LevelSkullSlicerX2, () => UpgradeProgression.InitialPrice_SkullSlicer_X2),
+        (StormLordManager.OnBuyX2, () => SaveGame.Members.LevelStormLord, () => SaveGame.Members.LevelStormLordX2, () => UpgradeProgression.InitialPrice_StormLord_X2),
+    };
+
+    // Buys the cheapest affordable, level-unlocked X2 on any tier, repeatedly. Returns the number bought.
+    long BuyAllX2()
+    {
+        long bought = 0;
+        for (int i = 0; i < MaxBuyIterations; ++i)
+        {
+            int best = -1;
+            Decimal512 bestPrice = 0;
+            for (int t = 0; t < AllX2.Length; ++t)
+            {
+                var tier = AllX2[t];
+                long next = tier.X2() + 1;
+                if (tier.Level() < 1 || tier.Level() < UpgradeProgression.LevelRequirementX2(next))
+                    continue;
+                Decimal512 price = UpgradeProgression.PriceX2(tier.InitialPrice(), next);
+                if (price > SaveGame.Members.Money)
+                    continue;
+                if (best < 0 || price < bestPrice)
+                {
+                    best = t;
+                    bestPrice = price;
+                }
+            }
+            if (best < 0)
+                break;
+
+            long before = AllX2[best].X2();
+            AllX2[best].Buy();
+            if (AllX2[best].X2() == before)
+                break;
+            bought++;
+        }
+        return bought;
+    }
+
     long BuyX2(Action buyOnce, Func<long> level, Func<long> x2)
     {
+        if (BuyAllX2Held)
+            return BuyAllX2();
+
         long start = x2();
         for (int i = 0; i < MaxBuyIterations; ++i)
         {
