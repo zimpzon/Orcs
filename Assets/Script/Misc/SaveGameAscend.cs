@@ -67,7 +67,7 @@ static class SaveGameAscend
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
-        // Rebirth bonus: set (not added) to 10% per hour played in total.
+        // Rebirth bonus: set (not added) to 5% per hour played in total.
         newSave.RebirthIncomeBonus = Assets.Script.Upgrades.UpgradeProgression.RebirthBonusPerHour * oldSave.EstimatedOnlineSeconds2 / 3600.0;
         newSave.SaveKillSwitch_CanSave = true;
 

@@ -195,7 +195,7 @@ public class AscendDecisionScript : MonoBehaviour
         if (CreditBonusBarText != null)
             CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
 
-        // Rebirth bonus (10% income per hour played, set at each rebirth; UpgradeProgression.RebirthBonus): the current
+        // Rebirth bonus (5% income per hour played, set at each rebirth; UpgradeProgression.RebirthBonus): the current
         // bonus and what it becomes when rebirthing now.
         if (TextRebirthBonus != null)
         {
