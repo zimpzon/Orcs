@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8745098, g: 0.5294118, b: 0.28627452, a: 1}
+  m_Color: {r: 0.8745098, g: 0.56078434, b: 0.3372549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -372,10 +372,10 @@ MonoBehaviour:
   X2Button: {fileID: 6609570323282823315}
   PriceLabel: {fileID: 8735675063525337174}
   LevelLabel: {fileID: 615192009212399493}
-  CanAffordColor: {r: 0.5529412, g: 0.74509805, b: 0.29803923, a: 1}
-  CanAffordfHighlightColor: {r: 0.6731507, g: 0.91, b: 0.36150688, a: 1}
-  CannotAffordColor: {r: 0.8745098, g: 0.5294118, b: 0.28627452, a: 1}
-  CannotAffordHighlightColor: {r: 1, g: 0.60240966, b: 0.32931727, a: 1}
+  CanAffordColor: {r: 0.5727974, g: 0.74509805, b: 0.3442353, a: 1}
+  CanAffordfHighlightColor: {r: 0.60399693, g: 0.74509805, b: 0.418, a: 1}
+  CannotAffordColor: {r: 0.8745098, g: 0.5600128, b: 0.33843532, a: 1}
+  CannotAffordHighlightColor: {r: 0.8745098, g: 0.5854748, b: 0.37953728, a: 1}
 --- !u!114 &3704979357923190176
 MonoBehaviour:
   m_ObjectHideFlags: 0
