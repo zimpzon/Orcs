@@ -8,7 +8,17 @@ using UnityEngine;
 public static class EnemySpawner
 {
     public const long HpScale = 5;
-    public const long EnemyHpMul = 500; // all enemies x500 HP (applied per enemy in SpawnEnemies)
+    // Extra enemy HP, applied per enemy in SpawnEnemies. Phased in with the arena level: x1 at arena 1, rising in a
+    // straight line to the full EnemyHpMul at arena EnemyHpMulFullLevel (and beyond), so the early game is unchanged.
+    public const long EnemyHpMul = 500;
+    public const long EnemyHpMulFullLevel = 10_000;
+    static double _hpMulForLevel = 1.0; // set per wave in GetEnemies
+
+    public static double EnemyHpMulForLevel(long level)
+    {
+        double t = Math.Clamp((level - 1) / (double)(EnemyHpMulFullLevel - 1), 0.0, 1.0);
+        return 1.0 + (EnemyHpMul - 1) * t;
+    }
     public const long MaxEnemies = 50;
 
     // Enemy type definitions with base HP (before HpScale) and the arena level at which the type
@@ -101,6 +111,7 @@ public static class EnemySpawner
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
         long hpTarget = CalculateHpTarget(level);
+        _hpMulForLevel = EnemyHpMulForLevel(level);
         var enemies = new List<ActorBase>();
 
 
@@ -385,9 +396,11 @@ public static class EnemySpawner
                 break;
         }
 
-        // Every enemy has EnemyHpMul x the HP the spawn budget was planned with (same enemy count, tougher enemies).
+        // Every enemy gets the level-scaled extra HP (EnemyHpMulForLevel) on top of what the spawn budget was planned
+        // with: same enemy count, tougher enemies.
         // Clamped: at extreme arena levels the multiplier could overflow a long.
-        hp = hp > long.MaxValue / 4 / EnemyHpMul ? long.MaxValue / 4 : hp * EnemyHpMul;
+        double scaledHp = hp * _hpMulForLevel;
+        hp = scaledHp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)scaledHp;
 
         // Permanent rebirth upgrade: halves enemy HP everywhere, for any level.
         long effectiveSpawnHp = SaveGame.Members.BoughtHalfEnemyHp ? hp / 2 : hp;
