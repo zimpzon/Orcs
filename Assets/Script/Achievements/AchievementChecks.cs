@@ -409,7 +409,9 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.ArenasLost100)) return;
 
-            if (SaveGame.Members.TotalArenas - SaveGame.Members.TotalArenasWon >= 100)
+            // White Earl skin. Was "run out of time in 100 arenas" - too rare once the game gets easy - now 25000
+            // upgrades bought. Enum name kept so existing saves keep the skin.
+            if (SaveGame.Members.TotalUpgradesBought >= 25000)
             {
                 list.Add(Achieved.ArenasLost100);
                 NewAchieved(Achieved.ArenasLost100);

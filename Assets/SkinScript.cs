@@ -189,7 +189,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WhiteEarl)
         {
-            return (list.Contains(Achieved.ArenasLost100), "White Earl: Run out of time in 100 arenas");
+            return (list.Contains(Achieved.ArenasLost100), "White Earl: Buy 25000 upgrades");
         }
         else if (animationName == SkinAnimation.BlackEarl)
         {
@@ -272,7 +272,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.DisguisedMonsterEarl => (m.TotalUpgradesBought, 10000),
             SkinAnimation.PrettyEarl => (m.Achieved.Count, 20),
 
-            SkinAnimation.WhiteEarl => (m.TotalArenas - m.TotalArenasWon, 100),
+            SkinAnimation.WhiteEarl => (m.TotalUpgradesBought, 25000),
             SkinAnimation.BlackEarl => (m.SuperFastClears, 1000),
             SkinAnimation.InvertedEarl => (m.MonsterCreditsLifetime_09_08_2025, 1000),
             SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 5),

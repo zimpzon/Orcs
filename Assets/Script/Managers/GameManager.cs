@@ -1814,7 +1814,7 @@ public class GameManager : MonoBehaviour
             ToggleCheatSpeed();
         }
 
-        // Test: unlock the White Earl skin (normally 100 arenas lost to the timer).
+        // Test: unlock the White Earl skin (normally 25000 upgrades bought).
         if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightControl) && !SaveGame.Members.Achieved.Contains(Achieved.ArenasLost100))
         {
             SaveGame.Members.Achieved.Add(Achieved.ArenasLost100);
