@@ -144,14 +144,14 @@ namespace Assets.Script.Upgrades
         }
 
         // Rebirth credit bonus: credits are cheap, so to still force a rebirth now and then the credit XP rate is
-        // multiplied by x1.0 right after a rebirth, falling in a straight line to x0.1 when lifetime credits reach
-        // 1.5x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
+        // multiplied by x1.0 right after a rebirth, falling by the same % per credit to CreditBonusMinMul when lifetime credits reach
+        // 1.75x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
         // x1.0. Shown to the player as a bonus going from 500% down to 100%.
         const long CreditBonusMinLifetime = 20;
-        const double CreditBonusEndFactor = 1.5;
-        const double CreditBonusMinMul = 0.005;
+        const double CreditBonusEndFactor = 1.75;
+        const double CreditBonusMinMul = 0.02;
 
-        // 0 = just rebirthed (x1.0, 500%), 1 = reached 1.5x the start (x0.005, 100%).
+        // 0 = just rebirthed (x1.0, 500%), 1 = reached 1.75x the start (x0.02, 100%).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
@@ -167,10 +167,12 @@ namespace Assets.Script.Upgrades
             return Math.Clamp(t, 0.0, 1.0);
         }
 
+        // Falls geometrically (same % per credit) from x1.0 to CreditBonusMinMul. A straight line made the last credits
+        // of the window x1.5-x2 slower each (x0.01 -> x0.005 halves speed in one credit) while already showing ~100%.
         public static double CreditBonusMultiplier()
-            => 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
+            => Math.Pow(CreditBonusMinMul, CreditBonusProgress());
 
-        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.005).
+        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.02).
         public static int CreditBonusDisplayPct()
             => (int)Math.Round(500 - 400 * CreditBonusProgress());
 
