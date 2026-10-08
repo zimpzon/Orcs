@@ -37,7 +37,7 @@ public class UpgradeData
     public double PassiveIncomePercentageBonuses = 0.0f;
     public double PassiveIncomeBestiaryBonuses = 0.0f;
     public double PassiveIncomeSkinBonus = 0.0; // Skin Collector cards: +5% per unlocked skin each (GameManager)
-    public double PassiveIncomeRebirthBonus = 0.0; // +25% per rebirth done (AscendProgressScript)
+    public double PassiveIncomeRebirthBonus = 0.0; // 10% per hour played, set at each rebirth (AscendProgressScript)
     public double PassiveIncomeTierLoreMultiplier = 1.0; // Lore cards: x(1 + level/100) per owned card (AscendProgressScript)
     public double PassiveIncomeCompletionBonus = 0.0; // Completionist card: +5% per game completion % (GameManager)
 

@@ -154,6 +154,8 @@ public class AscendDecisionScript : MonoBehaviour
 
                 string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
                 string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
+                if (SaveGame.Members.BoughtHeadStart)
+                    msg += $"\nHEAD START: +${Format512.Format(SaveGame.Members.Money)}";
                 GameCanvasScript.Instance.ShowPopup(msg);
             }
             else
@@ -189,16 +191,18 @@ public class AscendDecisionScript : MonoBehaviour
         if (CreditBonusBarText != null)
             CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
 
-        // Rebirth bonus (+25% income per rebirth, UpgradeProgression.RebirthBonus): current total and after this rebirth.
+        // Rebirth bonus (10% income per hour played, set at each rebirth; UpgradeProgression.RebirthBonus): the current
+        // bonus and what it becomes when rebirthing now.
         if (TextRebirthBonus != null)
         {
             long rebirths = SaveGame.Members.TimesAscended_09_08_2025;
             int bonusPct = (int)Math.Round(UpgradeProgression.RebirthBonus() * 100);
-            int nextPct = (int)Math.Round((rebirths + 1) * UpgradeProgression.RebirthBonusPerRebirth * 100);
+            int nextPct = (int)Math.Round(UpgradeProgression.RebirthBonusIfRebirthNow() * 100);
             TextRebirthBonus.text = _rebirthBonusTemplate
                 .Replace("[BONUS]", bonusPct.ToString())
-                .Replace("[REBIRTHS]", rebirths.ToString())
                 .Replace("[NEXT]", nextPct.ToString())
+                .Replace("[HOURS]", Math.Floor(UpgradeProgression.HoursPlayed()).ToString())
+                .Replace("[REBIRTHS]", rebirths.ToString())
                 .Replace("[PLURAL]", rebirths == 1 ? "" : "s");
         }
 

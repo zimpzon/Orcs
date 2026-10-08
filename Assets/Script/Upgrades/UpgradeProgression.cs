@@ -278,11 +278,23 @@ namespace Assets.Script.Upgrades
         public static double TierLoreTotalMultiplier()
             => ZapLoreMultiplier() * ChestLoreMultiplier() * VoodooLoreMultiplier() * WizardLoreMultiplier();
 
-        // Rebirth bonus: every rebirth permanently gives +25% passive income (additive: x(1 + 0.25 x rebirths)).
-        // Shown in the rebirth dialog (AscendDecisionScript) and on the stats page.
-        public const double RebirthBonusPerRebirth = 0.25;
+        // Rebirth bonus: at every rebirth the passive income bonus is set to 10% per hour played in total
+        // (SaveGameAscend), x(1 + bonus). The number of rebirths doesn't matter, so tiny 1-credit rebirths can't farm
+        // it. Shown in the rebirth dialog (AscendDecisionScript) and on the stats page.
+        public const double RebirthBonusPerHour = 0.10;
 
+        public static double HoursPlayed()
+            => SaveGame.Members.EstimatedOnlineSeconds2 / 3600.0;
+
+        // Current bonus (set at the last rebirth).
         public static double RebirthBonus()
-            => RebirthBonusPerRebirth * SaveGame.Members.TimesAscended_09_08_2025;
+            => SaveGame.Members.RebirthIncomeBonus;
+
+        // What the bonus becomes when rebirthing now.
+        public static double RebirthBonusIfRebirthNow()
+            => RebirthBonusPerHour * HoursPlayed();
+
+        // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
+        public const double HeadStartSeconds = 60;
     }
 }

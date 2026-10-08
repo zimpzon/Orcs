@@ -38,6 +38,7 @@ public enum AscendUpgradeCardId
     SkinCollector,
     SkinCollector2,
     Completionist,
+    HeadStart,   // start every run with 1 minute of the best-ever income
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -116,6 +117,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
             AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
             AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
+            AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
             _ => throw new NotImplementedException()
         };
 
@@ -276,6 +278,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.Completionist)
         {
             SaveGame.Members.BoughtCompletionist = true;
+        }
+        else if (CardId == AscendUpgradeCardId.HeadStart)
+        {
+            SaveGame.Members.BoughtHeadStart = true;
         }
         else
             throw new NotImplementedException();

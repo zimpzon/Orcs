@@ -49,6 +49,7 @@ static class SaveGameAscend
         newSave.BoughtSkinCollector = oldSave.BoughtSkinCollector;
         newSave.BoughtSkinCollector2 = oldSave.BoughtSkinCollector2;
         newSave.BoughtCompletionist = oldSave.BoughtCompletionist;
+        newSave.BoughtHeadStart = oldSave.BoughtHeadStart;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
@@ -66,6 +67,8 @@ static class SaveGameAscend
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
+        // Rebirth bonus: set (not added) to 10% per hour played in total.
+        newSave.RebirthIncomeBonus = Assets.Script.Upgrades.UpgradeProgression.RebirthBonusPerHour * oldSave.EstimatedOnlineSeconds2 / 3600.0;
         newSave.SaveKillSwitch_CanSave = true;
 
         newSave.Achieved = oldSave.Achieved;
@@ -90,6 +93,14 @@ static class SaveGameAscend
         newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
         newSave.TotalLevelPctBought = oldSave.TotalLevelPctBought;
 
+
+        // Head Start card: the new run starts with a minute of the best-ever passive income (mystery buff excluded).
+        if (oldSave.BoughtHeadStart)
+        {
+            Decimal512 headStart = oldSave.MaxCreditIncome * Assets.Script.Upgrades.UpgradeProgression.HeadStartSeconds;
+            if (headStart > newSave.Money)
+                newSave.Money = headStart;
+        }
 
         // Replace old save with new save
         SaveGame.Members = newSave;

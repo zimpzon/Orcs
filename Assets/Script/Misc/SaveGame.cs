@@ -19,6 +19,7 @@ public class SaveGameMembers
 
     public int TimeSinceLastAscend;
     public long TimesAscended_09_08_2025;
+    public double RebirthIncomeBonus; // set at each rebirth to 10% per hour played (UpgradeProgression.RebirthBonus)
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;
     public long CreditBonusStartLifetime = -1; // lifetime credits at the last rebirth, drives the credit bonus (-1 = not set yet)
@@ -54,6 +55,7 @@ public class SaveGameMembers
     public bool BoughtSkinCollector = false;
     public bool BoughtSkinCollector2 = false;
     public bool BoughtCompletionist = false;
+    public bool BoughtHeadStart = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -84,7 +86,8 @@ public class SaveGameMembers
         $"{nameof(BoughtWizardLore)} = {SaveGame.Members.BoughtWizardLore} | " +
         $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
         $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2} | " +
-        $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist}";
+        $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist} | " +
+        $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart}";
 
     // Settings
     public int Version;
