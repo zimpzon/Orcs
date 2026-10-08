@@ -51,6 +51,7 @@ public class SaveGameMembers
     public bool BoughtChestLore = false;
     public bool BoughtVoodooLore = false;
     public bool BoughtWizardLore = false;
+    public bool BoughtVeteran = false;
     public bool BoughtSkinCollector = false;
     public bool BoughtSkinCollector2 = false;
     public bool BoughtCompletionist = false;
@@ -82,6 +83,7 @@ public class SaveGameMembers
         $"{nameof(BoughtChestLore)} = {SaveGame.Members.BoughtChestLore} | " +
         $"{nameof(BoughtVoodooLore)} = {SaveGame.Members.BoughtVoodooLore} | " +
         $"{nameof(BoughtWizardLore)} = {SaveGame.Members.BoughtWizardLore} | " +
+        $"{nameof(BoughtVeteran)} = {SaveGame.Members.BoughtVeteran} | " +
         $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
         $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2} | " +
         $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist}";

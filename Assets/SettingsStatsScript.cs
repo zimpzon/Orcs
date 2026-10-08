@@ -57,14 +57,11 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Bestiary multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses), Multiplier));
         sb.AppendLine(BuildLine("Skin multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeSkinBonus), Multiplier));
         sb.AppendLine(BuildLine("Completion multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeCompletionBonus), Multiplier));
-        if (SaveGame.Members.BoughtZapLore)
-            sb.AppendLine(BuildLine("Zap Lore multiplier", Mul(UpgradeProgression.ZapLoreMultiplier()), Multiplier));
-        if (SaveGame.Members.BoughtChestLore)
-            sb.AppendLine(BuildLine("Chest Lore multiplier", Mul(UpgradeProgression.ChestLoreMultiplier()), Multiplier));
-        if (SaveGame.Members.BoughtVoodooLore)
-            sb.AppendLine(BuildLine("Voodoo Lore multiplier", Mul(UpgradeProgression.VoodooLoreMultiplier()), Multiplier));
-        if (SaveGame.Members.BoughtWizardLore)
-            sb.AppendLine(BuildLine("Wizard Lore multiplier", Mul(UpgradeProgression.WizardLoreMultiplier()), Multiplier));
+        sb.AppendLine(BuildLine("Zap Lore multiplier", Mul(UpgradeProgression.ZapLoreMultiplier()), Multiplier));
+        sb.AppendLine(BuildLine("Chest Lore multiplier", Mul(UpgradeProgression.ChestLoreMultiplier()), Multiplier));
+        sb.AppendLine(BuildLine("Voodoo Lore multiplier", Mul(UpgradeProgression.VoodooLoreMultiplier()), Multiplier));
+        sb.AppendLine(BuildLine("Wizard Lore multiplier", Mul(UpgradeProgression.WizardLoreMultiplier()), Multiplier));
+        sb.AppendLine(BuildLine("Veteran multiplier", Mul(1 + UpgradeProgression.VeteranBonus()), Multiplier));
         sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
         sb.AppendLine(BuildLine("Rebirth cards multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));
