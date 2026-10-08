@@ -117955,7 +117955,7 @@ MonoBehaviour:
   PlayerScript: {fileID: 1038077829}
   PlayerTrans: {fileID: 1038077830}
   PlayerCenterOffset: {x: 0.055, y: -0.15, z: 0}
-  UISaturationBoost: 0.3
+  UISaturationBoost: 0.2
 --- !u!114 &1919188413
 MonoBehaviour:
   m_ObjectHideFlags: 0
