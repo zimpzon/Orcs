@@ -263,5 +263,19 @@ namespace Assets.Script.Upgrades
             double exponent = level - 3;
             return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }
+
+        // Lore rebirth cards: +1% passive income per level owned (this run) of one tier each; the four multiply.
+        const double TierLorePctPerLevel = 0.01;
+
+        public static double TierLoreMultiplier(bool bought, long level)
+            => bought ? 1.0 + TierLorePctPerLevel * Math.Max(0, level) : 1.0;
+
+        public static double ZapLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtZapLore, SaveGame.Members.LevelClickDamage);
+        public static double ChestLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtChestLore, SaveGame.Members.LevelMoneyPerGold);
+        public static double VoodooLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtVoodooLore, SaveGame.Members.LevelWitchDoctor);
+        public static double WizardLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtWizardLore, SaveGame.Members.LevelWizard);
+
+        public static double TierLoreTotalMultiplier()
+            => ZapLoreMultiplier() * ChestLoreMultiplier() * VoodooLoreMultiplier() * WizardLoreMultiplier();
     }
 }

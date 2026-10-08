@@ -65,6 +65,10 @@ def current_credit_cost(level):
 
 
 MONEY_FACTOR = 1.4
+# Lore cards (bought in this order): Zap / Chest / Voodoo / Wizard Lore -> tiers Chain Zapping, Richer Chests,
+# Witch Doctor, Wizard (indices into TIER_INCOMES); prices in diamonds.
+LORE_TIERS = (0, 2, 4, 6)
+LORE_COSTS = (50, 100, 150, 250)
 EXTRA_MULT = 1.0  # see simulate(): unsimulated bonuses at the last tier; ~10-20 is realistic with skins+completion
 DT = 20.0  # seconds per simulation step
 
@@ -97,7 +101,7 @@ def simulate(cfg, days=12.0, show_runs=False):
         return c
 
     perm = dict(diamonds=0, x2c=0, shiny=0, haggler=0, pct10=False, mastery=0, discount=False,
-                lifetime=0, rebirth_pct=0, max_income=0.0, best_tier=0)
+                lifetime=0, rebirth_pct=0, max_income=0.0, best_tier=0, lore=0)
     total = 0.0
     first_credit = None
     tier_reached = {}
@@ -126,6 +130,8 @@ def simulate(cfg, days=12.0, show_runs=False):
             m *= diamond_mult(perm["diamonds"]) * (1 + perm["rebirth_pct"] / 100) * bestiary
             m *= 1 + (0.1 + 0.1 * perm["mastery"]) * (sum(x2) // 5)
             m *= 1 + 0.01 * pct * (10 if perm["pct10"] else 1)
+            for k, tier in enumerate(LORE_TIERS[:perm["lore"]]):  # Lore cards: x(1 + level/100) per owned card
+                m *= 1 + 0.01 * lv[tier]
             income = sum(TIER_INCOMES[i] * lv[i] * 2 ** x2[i] for i in range(N)) * m
             perm["max_income"] = max(perm["max_income"], income)
             money += (income * MONEY_FACTOR + (5 if t < 600 else 0)) * DT  # small early-arena floor
@@ -202,6 +208,8 @@ def simulate(cfg, days=12.0, show_runs=False):
                 options.append(("mastery", (1500, 3000, 6000)[perm["mastery"]] * disc))
             if not perm["discount"]:
                 options.append(("discount", 1000))
+            if perm["lore"] < len(LORE_COSTS):
+                options.append(("lore", LORE_COSTS[perm["lore"]] * disc))
             for name, c in sorted(options, key=lambda o: o[1]):
                 c = max(1, round(c))
                 if c > d:
@@ -218,7 +226,9 @@ def simulate(cfg, days=12.0, show_runs=False):
                 else:
                     if loss > 1.5:  # utility cards: only when it doesn't hurt income much
                         continue
-                    if name == "haggler":
+                    if name == "lore":
+                        perm["lore"] += 1
+                    elif name == "haggler":
                         perm["haggler"] += 1
                     elif name == "pct10":
                         perm["pct10"] = True

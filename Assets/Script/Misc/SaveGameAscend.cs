@@ -42,6 +42,10 @@ static class SaveGameAscend
         newSave.BoughtX2Mastery3 = oldSave.BoughtX2Mastery3;
         newSave.BoughtFasterArena2 = oldSave.BoughtFasterArena2;
         newSave.BoughtCardDiscount = oldSave.BoughtCardDiscount;
+        newSave.BoughtZapLore = oldSave.BoughtZapLore;
+        newSave.BoughtChestLore = oldSave.BoughtChestLore;
+        newSave.BoughtVoodooLore = oldSave.BoughtVoodooLore;
+        newSave.BoughtWizardLore = oldSave.BoughtWizardLore;
         newSave.BoughtSkinCollector = oldSave.BoughtSkinCollector;
         newSave.BoughtSkinCollector2 = oldSave.BoughtSkinCollector2;
         newSave.BoughtCompletionist = oldSave.BoughtCompletionist;

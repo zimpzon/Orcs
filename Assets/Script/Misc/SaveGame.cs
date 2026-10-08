@@ -47,6 +47,10 @@ public class SaveGameMembers
     public bool BoughtX2Mastery3 = false;
     public bool BoughtFasterArena2 = false;
     public bool BoughtCardDiscount = false;
+    public bool BoughtZapLore = false;
+    public bool BoughtChestLore = false;
+    public bool BoughtVoodooLore = false;
+    public bool BoughtWizardLore = false;
     public bool BoughtSkinCollector = false;
     public bool BoughtSkinCollector2 = false;
     public bool BoughtCompletionist = false;
@@ -74,6 +78,10 @@ public class SaveGameMembers
         $"{nameof(BoughtX2Mastery3)} = {SaveGame.Members.BoughtX2Mastery3} | " +
         $"{nameof(BoughtFasterArena2)} = {SaveGame.Members.BoughtFasterArena2} | " +
         $"{nameof(BoughtCardDiscount)} = {SaveGame.Members.BoughtCardDiscount} | " +
+        $"{nameof(BoughtZapLore)} = {SaveGame.Members.BoughtZapLore} | " +
+        $"{nameof(BoughtChestLore)} = {SaveGame.Members.BoughtChestLore} | " +
+        $"{nameof(BoughtVoodooLore)} = {SaveGame.Members.BoughtVoodooLore} | " +
+        $"{nameof(BoughtWizardLore)} = {SaveGame.Members.BoughtWizardLore} | " +
         $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
         $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2} | " +
         $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist}";

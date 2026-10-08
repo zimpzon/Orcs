@@ -15,10 +15,10 @@ public enum AscendUpgradeCardId
     PassiveIncomeX7_1,
     // Removed cards (Shiny Diamonds 1-5). Kept as placeholders: card ids are stored as numbers in the scene, so
     // deleting them would shift every card after them.
-    RemovedShinyDiamonds1,
-    RemovedShinyDiamonds2,
-    RemovedShinyDiamonds3,
-    RemovedShinyDiamonds4,
+    ZapLore,     // +1% income per Chain Zapping level (was Shiny Diamonds 1)
+    ChestLore,   // +1% income per Richer Chests level (was Shiny Diamonds 2)
+    VoodooLore,  // +1% income per Witch Doctor level (was Shiny Diamonds 3)
+    WizardLore,  // +1% income per Wizard level (was Shiny Diamonds 4)
     RemovedShinyDiamonds5,
     FasterMystery,
     FasterArena,
@@ -109,6 +109,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.X2Mastery3 => SaveGame.Members.BoughtX2Mastery3,
             AscendUpgradeCardId.FasterArena2 => SaveGame.Members.BoughtFasterArena2,
             AscendUpgradeCardId.CardDiscount => SaveGame.Members.BoughtCardDiscount,
+            AscendUpgradeCardId.ZapLore => SaveGame.Members.BoughtZapLore,
+            AscendUpgradeCardId.ChestLore => SaveGame.Members.BoughtChestLore,
+            AscendUpgradeCardId.VoodooLore => SaveGame.Members.BoughtVoodooLore,
+            AscendUpgradeCardId.WizardLore => SaveGame.Members.BoughtWizardLore,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
             AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
             AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
@@ -244,6 +248,22 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.CardDiscount)
         {
             SaveGame.Members.BoughtCardDiscount = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ZapLore)
+        {
+            SaveGame.Members.BoughtZapLore = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ChestLore)
+        {
+            SaveGame.Members.BoughtChestLore = true;
+        }
+        else if (CardId == AscendUpgradeCardId.VoodooLore)
+        {
+            SaveGame.Members.BoughtVoodooLore = true;
+        }
+        else if (CardId == AscendUpgradeCardId.WizardLore)
+        {
+            SaveGame.Members.BoughtWizardLore = true;
         }
         else if (CardId == AscendUpgradeCardId.SkinCollector)
         {
