@@ -18,6 +18,10 @@ public class ModalDialogCloser : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void Update()
     {
+        // A message popup on top (e.g. "Welcome back" after a rebirth): its clicks are not "outside this dialog".
+        if (GenericPopupScript.OpenCount > 0)
+            return;
+
         if (!pointerInside && Input.GetMouseButtonDown(0))
         {
             dialog.SetActive(false);

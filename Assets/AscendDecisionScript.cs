@@ -156,14 +156,18 @@ public class AscendDecisionScript : MonoBehaviour
                 string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
                 if (SaveGame.Members.BoughtHeadStart)
                     msg += $"\nHEAD START: +${Format512.Format(SaveGame.Members.Money)}";
+                msg += "\n\nSpend your diamonds on the cards!";
                 GameCanvasScript.Instance.ShowPopup(msg);
+
+                // Stay on the rebirth screen so the new diamonds can be spent right away (0 credits now, so the
+                // Rebirth button disables itself).
+                ResetDialogState();
             }
             else
             {
                 GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
+                AscendProgressScript.OnCloseClick();
             }
-
-            AscendProgressScript.OnCloseClick();
         }
     }
 
@@ -211,7 +215,10 @@ public class AscendDecisionScript : MonoBehaviour
         ButtonAscend.interactable = SaveGame.Members.MonsterCredits_09_08_2025 > 0;
     }
 
-    private void OnEnable()
+    private void OnEnable() => ResetDialogState();
+
+    // Fresh numbers and button state; also used right after a rebirth, since the screen stays open then.
+    void ResetDialogState()
     {
         MonsterCreditsAtStart = SaveGame.Members.MonsterCredits_09_08_2025;
         DiamondsGainedAtRebirth = UpgradeProgression.DiamondsForMonsterCredits(MonsterCreditsAtStart);

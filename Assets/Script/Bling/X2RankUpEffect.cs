@@ -17,6 +17,7 @@ public class X2RankUpEffect : MonoBehaviour
     const float SwaySpeed = 4.5f;
     const float SwayAmount = 4f;
     const float TiltDegrees = 3f;
+    const float EdgeMargin = 8f; // min distance from the screen edge (also covers the tilt and the pop overshoot)
 
     class Item
     {
@@ -79,7 +80,18 @@ public class X2RankUpEffect : MonoBehaviour
 
         // Yellow with drop shadow - green/orange would clash with the upgrade buttons it floats over.
         var text = CreateText(content, 16f);
-        _items.Add(new Item { Text = text, Start = local + new Vector2(0, StartAboveCursor) });
+
+        // Keep the whole text on screen for its entire animation: measure it, then push the start point inward from
+        // the edges (room for the sway sideways and for the rise at the top).
+        Vector2 size = text.GetPreferredValues(content);
+        text.rectTransform.sizeDelta = size;
+        Rect area = _rect.rect;
+        Vector2 start = local + new Vector2(0, StartAboveCursor);
+        float halfW = size.x * 0.5f + EdgeMargin + SwayAmount;
+        float halfH = size.y * 0.5f + EdgeMargin;
+        start.x = area.width > 2 * halfW ? Mathf.Clamp(start.x, area.xMin + halfW, area.xMax - halfW) : area.center.x;
+        start.y = area.height > 2 * halfH + Rise ? Mathf.Clamp(start.y, area.yMin + halfH, area.yMax - halfH - Rise) : area.center.y;
+        _items.Add(new Item { Text = text, Start = start });
 
         Update();
     }

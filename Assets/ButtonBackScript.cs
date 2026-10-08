@@ -12,7 +12,8 @@ public class ButtonBackScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown( KeyCode.Escape))
+        // Escape closes a message popup on top first (GenericPopupScript), not the dialog behind it.
+        if (Input.GetKeyDown( KeyCode.Escape) && GenericPopupScript.OpenCount == 0)
         {
             _myButton.onClick.Invoke();
         }
