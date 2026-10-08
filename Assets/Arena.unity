@@ -64026,13 +64026,9 @@ MonoBehaviour:
 
     
 
-    
-
-    <color=yellow>Tip #2:</color> Buying
-    diamond bonus upgrades too early may cost you income! Each diamond may be worth
-    more, but you also lose income from having fewer diamonds.
-
-    
+    <color=yellow>Tip #2:</color> Buying diamond
+    bonus upgrades too early may cost you income! Each diamond may be worth more,
+    but you also lose income from having fewer diamonds.
 
     
 
@@ -64040,8 +64036,6 @@ MonoBehaviour:
     #3:</color> Your credit earning speed is determined by your income. The higher
     your income, the faster you earn credits. However, each credit costs more than
     the previous one. Rebirth at the right times to significantly increase your income.
-
-    
 
     
 
@@ -118730,7 +118724,7 @@ GameObject:
   - component: {fileID: 1954013132}
   - component: {fileID: 1954013131}
   m_Layer: 5
-  m_Name: TextTips
+  m_Name: TextTipsHeader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
