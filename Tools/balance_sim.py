@@ -78,7 +78,7 @@ def simulate(cfg, days=12.0, show_runs=False):
     floor = cfg.get("credit_floor", 0.02)
     x2_cards = cfg.get("x2_cards", (2, 2, 2, 2))
     x2_card_cost = cfg.get("x2_card_cost", (1, 2, 6, 12, 25, 50, 100, 200))
-    diamond_pct = cfg.get("diamond_pct", 0.08)  # per diamond (game: linear 8% + Shiny cards)
+    diamond_pct = cfg.get("diamond_pct", 0.0)  # per diamond; the game no longer gives a diamond income bonus
     # Bonuses the model doesn't simulate (Skin Collector, Completionist, mystery buffs): a flat factor that grows
     # with the best tier reached, up to extra_mult at the last tier.
     extra_mult = cfg.get("extra_mult", EXTRA_MULT)
@@ -192,7 +192,7 @@ def simulate(cfg, days=12.0, show_runs=False):
             options = []
             if perm["x2c"] < len(x2_cards):
                 options.append(("x2", x2_card_cost[perm["x2c"]] * disc))
-            if perm["shiny"] < 5:
+            if False:  # Shiny Diamonds cards were removed from the game
                 options.append(("shiny", shiny_cost[perm["shiny"]] * disc))
             if perm["haggler"] < 3:
                 options.append(("haggler", (2500, 5000, 10000)[perm["haggler"]] * disc))

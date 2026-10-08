@@ -59,7 +59,6 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
         sb.AppendLine(BuildLine("Rebirth cards multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));
-        sb.AppendLine(BuildLine("Diamond multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier), Multiplier));
         sb.AppendLine("<size=50%> </size>");
         sb.AppendLine(BuildLine("Max Money", strTextMoney, Money));
         sb.AppendLine(BuildLine("Max Income", strMaxIncome, Money));
@@ -98,7 +97,6 @@ public class SettingsStatsScript : MonoBehaviour
     //sb.AppendLine($"Bought 1% multiplier: {1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses:0.00}");
     //sb.AppendLine($"Mystery multiplier: {PlayerUpgrades.Data.PassiveIncomeTempMultiplier:0.00}");
     //sb.AppendLine($"Rebirth cards multiplier: {PlayerUpgrades.Data.PassiveIncomeAscendMultiplier:0.00}");
-    //sb.AppendLine($"Diamond multiplier: {1 + PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier:0.00}");
 
     float _nextUpdate = 0;
     void Update()

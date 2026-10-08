@@ -47,9 +47,6 @@ public class AscendProgressScript : MonoBehaviour
         //passiveMultiplier *= SaveGame.Members.BoughtPassiveX7_1 ? 4 : 1;
 
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
-
-        double diamondBonus = UpgradeProgression.GetCurrentDiamondMultiplier();
-        PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier = SaveGame.Members.DiamondCount_09_08_2025 * diamondBonus;
     }
 
     void Update()

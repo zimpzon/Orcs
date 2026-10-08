@@ -30975,170 +30975,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!1001 &349117283
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1407321676}
-    m_Modifications:
-    - target: {fileID: 1181655217942921267, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Name
-      value: AscendUpgradeCardBetterDiamonds
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3785708566642184140, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.399994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: '+8% to diamond bonus. <Color=yellow>Careful: may lower income'
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: Cost
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: CardId
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 211
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -154
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: Shiny Diamonds 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91603a0b84878464696ea968efd188ac, type: 3}
---- !u!224 &349117284 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 349117283}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &351174287
 GameObject:
   m_ObjectHideFlags: 0
@@ -46844,7 +46680,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 626
+      value: 211
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47162,7 +46998,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 709
+      value: 294
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47321,12 +47157,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 45
+      value: 377
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47480,12 +47316,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 128
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47639,12 +47475,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 211
+      value: 543
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47798,12 +47634,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 294
+      value: 626
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -47957,12 +47793,12 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 377
+      value: 709
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -255
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -48116,7 +47952,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 460
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -48275,7 +48111,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 543
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -48593,7 +48429,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 709
+      value: 294
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -64020,28 +63856,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<align=left><color=yellow>Tip #1:</color> Holding diamonds will give you
-    bonus income. 8% per diamond by default, but you can upgrade it. You don''t have
-    to spend your diamonds!
+  m_text: '<color=yellow>Tip #1:</color> Your credit earning speed is determined
+    by your income. The higher your income, the faster you earn credits. However,
+    each credit costs more than the previous one. Rebirth at the right times to significantly
+    increase your income.
 
     
 
-    <color=yellow>Tip #2:</color> Buying diamond
-    bonus upgrades too early may cost you income! Each diamond may be worth more,
-    but you also lose income from having fewer diamonds.
-
-    
-
-    <color=yellow>Tip
-    #3:</color> Your credit earning speed is determined by your income. The higher
-    your income, the faster you earn credits. However, each credit costs more than
-    the previous one. Rebirth at the right times to significantly increase your income.
-
-    
-
-    <color=yellow>Tip
-    #4:</color> Hold SHIFT while buying to buy the maximum affordable amount. Hold
-    CTRL while buying an X2 to buy ALL the X2 you can afford!'
+    <color=yellow>Tip #2:</color> Hold SHIFT while
+    buying to buy the maximum affordable amount. Hold CTRL while buying an X2 to
+    buy ALL the X2 you can afford!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -71759,172 +71583,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1001 &1149861105
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1407321676}
-    m_Modifications:
-    - target: {fileID: 1181655217942921267, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Name
-      value: AscendUpgradeCardBetterDiamonds3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3785708566642184140, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.399994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: '+16% to diamond bonus.
-
-        <Color=yellow>Careful: may lower income'
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: Cost
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: CardId
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 377
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -154
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: Shiny Diamonds 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91603a0b84878464696ea968efd188ac, type: 3}
---- !u!224 &1149861106 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1149861105}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1155211979
 GameObject:
   m_ObjectHideFlags: 0
@@ -91752,11 +91410,6 @@ RectTransform:
   - {fileID: 1338041039}
   - {fileID: 696067992}
   - {fileID: 900000014}
-  - {fileID: 349117284}
-  - {fileID: 1736436338}
-  - {fileID: 1149861106}
-  - {fileID: 1529139702}
-  - {fileID: 1736154218}
   - {fileID: 900000012}
   - {fileID: 900000016}
   - {fileID: 900000018}
@@ -95298,172 +94951,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6799598996399911737, guid: 14e941e90bad1cf4dbd0309771f2f207,
     type: 3}
   m_PrefabInstance: {fileID: 1528296595}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1529139701
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1407321676}
-    m_Modifications:
-    - target: {fileID: 1181655217942921267, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Name
-      value: AscendUpgradeCardBetterDiamonds4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3785708566642184140, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.399994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: '+20% to diamond bonus.
-
-        <Color=yellow>Careful: may lower income'
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: Cost
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: CardId
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 460
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -154
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: Shiny Diamonds 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91603a0b84878464696ea968efd188ac, type: 3}
---- !u!224 &1529139702 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1529139701}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1533609553
 MonoBehaviour:
@@ -103669,7 +103156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1710414174
 GameObject:
   m_ObjectHideFlags: 0
@@ -108959,336 +108446,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549558399}
   m_CullTransparentMesh: 1
---- !u!1001 &1736154217
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1407321676}
-    m_Modifications:
-    - target: {fileID: 1181655217942921267, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Name
-      value: AscendUpgradeCardBetterDiamonds5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3785708566642184140, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.399994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: "+24% to diamond bonus. \n<Color=yellow>Careful: may lower income"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: Cost
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: CardId
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 543
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -154
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: Shiny Diamonds 5
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91603a0b84878464696ea968efd188ac, type: 3}
---- !u!224 &1736154218 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1736154217}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1736436337
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1407321676}
-    m_Modifications:
-    - target: {fileID: 1181655217942921267, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.199997
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Name
-      value: AscendUpgradeCardBetterDiamonds2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2338658252643694615, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2720253100799231240, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.000015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 3785708566642184140, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.399994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: '+12% to diamond bonus.
-
-        <Color=yellow>Careful: may lower income'
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: Cost
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: CardId
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 294
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -154
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9194215571841827815, guid: 91603a0b84878464696ea968efd188ac,
-        type: 3}
-      propertyPath: m_text
-      value: Shiny Diamonds 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91603a0b84878464696ea968efd188ac, type: 3}
---- !u!224 &1736436338 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1736436337}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1739010382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115819,7 +114976,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 626
+      value: 211
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -117493,12 +116650,7 @@ MonoBehaviour:
   m_text: 'Rebirth resets most of your progress, but gives you precious <sprite=0>
 
     Use
-    them to buy powerful upgrades.
-
-    Each you hold gives <color=#9DE05C>[VALUE]%</color>
-    income bonus.
-
-'
+    them to buy powerful upgrades.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

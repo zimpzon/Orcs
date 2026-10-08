@@ -170,10 +170,8 @@ public class AscendDecisionScript : MonoBehaviour
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
-        int diamondBonusPct = (int)Math.Round(PlayerUpgrades.Data.PassiveIncomeDiamondMultiplier * 100.0f);
-        string diamondIncomeBonustext = $"(+<color=#9DE05C>{Assets.Script.Misc.Format64.Format(diamondBonusPct)}</color>% income)";
 
-        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0>  {diamondIncomeBonustext}";
+        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0>";
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
@@ -187,8 +185,7 @@ public class AscendDecisionScript : MonoBehaviour
         if (CreditBonusBarText != null)
             CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
 
-        int diamondValue = UpgradeProgression.GetCurrentDiamondMultiplierPct();
-        TextWhatYouLose.text = _whatYouLoseTemplate.Replace("[VALUE]", $"<color=#9DE05C>{diamondValue}</color>");
+        TextWhatYouLose.text = _whatYouLoseTemplate;
 
         ButtonAscend.interactable = SaveGame.Members.MonsterCredits_09_08_2025 > 0;
     }

@@ -263,38 +263,5 @@ namespace Assets.Script.Upgrades
             double exponent = level - 3;
             return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }
-
-        public static int GetCurrentDiamondMultiplierPct()
-            => (int)Math.Round(GetCurrentDiamondMultiplier() * 100);
-
-        public static double GetCurrentDiamondMultiplier()
-        {
-            // 8% per held diamond, +8/12/16/20/24% from the Shiny Diamonds cards: 88% per diamond with all of them.
-            const double BaseMultiplier = 0.08;
-            const double ShinyDiamondsBonus = 0.08;
-            const double ShinyDiamonds2Bonus = 0.12;
-            const double ShinyDiamonds3Bonus = 0.16;
-            const double ShinyDiamonds4Bonus = 0.2;
-            const double ShinyDiamonds5Bonus = 0.24;
-
-            double diamondMultiplier = BaseMultiplier;
-
-            if (SaveGame.Members.BoughtShinyDiamonds)
-                diamondMultiplier += ShinyDiamondsBonus;
-
-            if (SaveGame.Members.BoughtShinyDiamonds2)
-                diamondMultiplier += ShinyDiamonds2Bonus;
-
-            if (SaveGame.Members.BoughtShinyDiamonds3)
-                diamondMultiplier += ShinyDiamonds3Bonus;
-
-            if (SaveGame.Members.BoughtShinyDiamonds4)
-                diamondMultiplier += ShinyDiamonds4Bonus;
-    
-            if (SaveGame.Members.BoughtShinyDiamonds5)
-                diamondMultiplier += ShinyDiamonds5Bonus;
-
-            return diamondMultiplier;
-        }
     }
 }

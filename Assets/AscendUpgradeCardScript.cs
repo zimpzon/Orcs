@@ -13,11 +13,13 @@ public enum AscendUpgradeCardId
     PassiveIncomeX4_3,
     PassiveIncomeX6_1,
     PassiveIncomeX7_1,
-    ShinyDiamonds,
-    ShinyDiamonds2,
-    ShinyDiamonds3,
-    ShinyDiamonds4,
-    ShinyDiamonds5,
+    // Removed cards (Shiny Diamonds 1-5). Kept as placeholders: card ids are stored as numbers in the scene, so
+    // deleting them would shift every card after them.
+    RemovedShinyDiamonds1,
+    RemovedShinyDiamonds2,
+    RemovedShinyDiamonds3,
+    RemovedShinyDiamonds4,
+    RemovedShinyDiamonds5,
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
@@ -93,11 +95,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.PassiveIncomeX6_1 => SaveGame.Members.BoughtPassiveX6_1,
             AscendUpgradeCardId.PassiveIncomeX7_1 => SaveGame.Members.BoughtPassiveX7_1,
             AscendUpgradeCardId.FasterMystery => SaveGame.Members.BoughtFasterMystery,
-            AscendUpgradeCardId.ShinyDiamonds => SaveGame.Members.BoughtShinyDiamonds,
-            AscendUpgradeCardId.ShinyDiamonds2 => SaveGame.Members.BoughtShinyDiamonds2,
-            AscendUpgradeCardId.ShinyDiamonds3 => SaveGame.Members.BoughtShinyDiamonds3,
-            AscendUpgradeCardId.ShinyDiamonds4 => SaveGame.Members.BoughtShinyDiamonds4,
-            AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
             AscendUpgradeCardId.PercentBonusX10 => SaveGame.Members.BoughtPercentBonusX10,
@@ -187,26 +184,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
         //{
         //    SaveGame.Members.BoughtPassiveX7_1 = true;
         //}
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds)
-        {
-            SaveGame.Members.BoughtShinyDiamonds = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds2)
-        {
-            SaveGame.Members.BoughtShinyDiamonds2 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds3)
-        {
-            SaveGame.Members.BoughtShinyDiamonds3 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds4)
-        {
-            SaveGame.Members.BoughtShinyDiamonds4 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds5)
-        {
-            SaveGame.Members.BoughtShinyDiamonds5 = true;
-        }
         else if (CardId == AscendUpgradeCardId.FasterMystery)
         {
             SaveGame.Members.BoughtFasterMystery = true;
