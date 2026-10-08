@@ -167,10 +167,13 @@ namespace Assets.Script.Upgrades
             return Math.Clamp(t, 0.0, 1.0);
         }
 
-        // Falls geometrically (same % per credit) from x1.0 to CreditBonusMinMul. A straight line made the last credits
-        // of the window x1.5-x2 slower each (x0.01 -> x0.005 halves speed in one credit) while already showing ~100%.
+        // MinMul^(t^power): x1.0 -> CreditBonusMinMul. A straight line made the last credits x1.5-x2 slower each
+        // (x0.01 -> x0.005 halves speed in one credit); a plain MinMul^t (power 1) dropped most of it early (x0.38 at
+        // 25%). Power 2 is in between: x0.96 / 0.78 / 0.38 / 0.11 at 10/25/50/75%, at most ~3% slower per credit.
+        const double CreditBonusCurvePower = 2.0;
+
         public static double CreditBonusMultiplier()
-            => Math.Pow(CreditBonusMinMul, CreditBonusProgress());
+            => Math.Pow(CreditBonusMinMul, Math.Pow(CreditBonusProgress(), CreditBonusCurvePower));
 
         // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.02).
         public static int CreditBonusDisplayPct()
