@@ -278,10 +278,11 @@ namespace Assets.Script.Upgrades
         public static double TierLoreTotalMultiplier()
             => ZapLoreMultiplier() * ChestLoreMultiplier() * VoodooLoreMultiplier() * WizardLoreMultiplier();
 
-        // Veteran rebirth card: +50% passive income per rebirth done (all of them, also before buying the card).
-        const double VeteranPctPerRebirth = 0.5;
+        // Rebirth bonus: every rebirth permanently gives +25% passive income (additive: x(1 + 0.25 x rebirths)).
+        // Shown in the rebirth dialog (AscendDecisionScript) and on the stats page.
+        public const double RebirthBonusPerRebirth = 0.25;
 
-        public static double VeteranBonus()
-            => SaveGame.Members.BoughtVeteran ? VeteranPctPerRebirth * SaveGame.Members.TimesAscended_09_08_2025 : 0.0;
+        public static double RebirthBonus()
+            => RebirthBonusPerRebirth * SaveGame.Members.TimesAscended_09_08_2025;
     }
 }

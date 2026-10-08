@@ -48,7 +48,7 @@ public class AscendProgressScript : MonoBehaviour
 
         PlayerUpgrades.Data.PassiveIncomeAscendMultiplier = passiveMultiplier;
         PlayerUpgrades.Data.PassiveIncomeTierLoreMultiplier = UpgradeProgression.TierLoreTotalMultiplier();
-        PlayerUpgrades.Data.PassiveIncomeVeteranBonus = UpgradeProgression.VeteranBonus();
+        PlayerUpgrades.Data.PassiveIncomeRebirthBonus = UpgradeProgression.RebirthBonus();
     }
 
     void Update()

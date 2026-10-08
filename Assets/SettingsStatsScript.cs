@@ -61,7 +61,7 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Chest Lore multiplier", Mul(UpgradeProgression.ChestLoreMultiplier()), Multiplier));
         sb.AppendLine(BuildLine("Voodoo Lore multiplier", Mul(UpgradeProgression.VoodooLoreMultiplier()), Multiplier));
         sb.AppendLine(BuildLine("Wizard Lore multiplier", Mul(UpgradeProgression.WizardLoreMultiplier()), Multiplier));
-        sb.AppendLine(BuildLine("Veteran multiplier", Mul(1 + UpgradeProgression.VeteranBonus()), Multiplier));
+        sb.AppendLine(BuildLine("Rebirth multiplier", Mul(1 + UpgradeProgression.RebirthBonus()), Multiplier));
         sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
         sb.AppendLine(BuildLine("Rebirth cards multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));

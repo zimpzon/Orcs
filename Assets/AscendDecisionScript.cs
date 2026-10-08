@@ -18,12 +18,14 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
     public Image CreditBonusBarFill;        // filled image: shown bonus % of 500
     public TextMeshProUGUI CreditBonusBarText; // "123%/500%" on the bar
+    public TextMeshProUGUI TextRebirthBonus; // scene text with [BONUS], [REBIRTHS] and [NEXT] placeholders
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
 
     private string _whatYouLoseTemplate;
     private string _creditBonusTemplate;
+    private string _rebirthBonusTemplate;
     private int _clickCount;
 
     // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
@@ -41,6 +43,8 @@ public class AscendDecisionScript : MonoBehaviour
         _whatYouLoseTemplate = TextWhatYouLose.text;
         if (TextCreditBonus != null)
             _creditBonusTemplate = TextCreditBonus.text;
+        if (TextRebirthBonus != null)
+            _rebirthBonusTemplate = TextRebirthBonus.text;
         SetupHeaderDiamonds();
     }
 
@@ -184,6 +188,19 @@ public class AscendDecisionScript : MonoBehaviour
             CreditBonusBarFill.fillAmount = creditBonusPct / 500f;
         if (CreditBonusBarText != null)
             CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
+
+        // Rebirth bonus (+25% income per rebirth, UpgradeProgression.RebirthBonus): current total and after this rebirth.
+        if (TextRebirthBonus != null)
+        {
+            long rebirths = SaveGame.Members.TimesAscended_09_08_2025;
+            int bonusPct = (int)Math.Round(UpgradeProgression.RebirthBonus() * 100);
+            int nextPct = (int)Math.Round((rebirths + 1) * UpgradeProgression.RebirthBonusPerRebirth * 100);
+            TextRebirthBonus.text = _rebirthBonusTemplate
+                .Replace("[BONUS]", bonusPct.ToString())
+                .Replace("[REBIRTHS]", rebirths.ToString())
+                .Replace("[NEXT]", nextPct.ToString())
+                .Replace("[PLURAL]", rebirths == 1 ? "" : "s");
+        }
 
         TextWhatYouLose.text = _whatYouLoseTemplate;
 

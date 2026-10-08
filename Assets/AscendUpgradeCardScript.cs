@@ -19,7 +19,7 @@ public enum AscendUpgradeCardId
     ChestLore,   // +1% income per Richer Chests level (was Shiny Diamonds 2)
     VoodooLore,  // +1% income per Witch Doctor level (was Shiny Diamonds 3)
     WizardLore,  // +1% income per Wizard level (was Shiny Diamonds 4)
-    Veteran,     // +50% income per rebirth done (was Shiny Diamonds 5)
+    RemovedVeteran, // removed card (the per-rebirth bonus is now built in); placeholder so ids don't shift
     FasterMystery,
     FasterArena,
     SkinScaryEarl,
@@ -113,7 +113,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ChestLore => SaveGame.Members.BoughtChestLore,
             AscendUpgradeCardId.VoodooLore => SaveGame.Members.BoughtVoodooLore,
             AscendUpgradeCardId.WizardLore => SaveGame.Members.BoughtWizardLore,
-            AscendUpgradeCardId.Veteran => SaveGame.Members.BoughtVeteran,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
             AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
             AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
@@ -265,10 +264,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.WizardLore)
         {
             SaveGame.Members.BoughtWizardLore = true;
-        }
-        else if (CardId == AscendUpgradeCardId.Veteran)
-        {
-            SaveGame.Members.BoughtVeteran = true;
         }
         else if (CardId == AscendUpgradeCardId.SkinCollector)
         {
