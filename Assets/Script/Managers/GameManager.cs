@@ -1558,16 +1558,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Test cheat: passive income, credits, mystery timer and time played run CheatSpeedMultiplier times faster,
-    // and arena wins jump CheatSpeedMultiplier times further. Arena combat itself runs at normal speed.
-    const float CheatSpeedMultiplier = 50.0f;
+    // Test cheat: passive income, credits, mystery timer and time played run CheatSpeed times faster, and arena wins
+    // jump CheatSpeed times further. Arena combat itself runs at normal speed. Each press steps to the next speed.
+    static readonly float[] CheatSpeedSteps = { 1.0f, 10.0f, 50.0f };
     TextMeshProUGUI _cheatSpeedLabel;
 
     void ToggleCheatSpeed()
     {
         // Deliberately not Time.timeScale - the arena can't handle running that fast. Combat stays at normal speed,
         // everything driven by G.D.RealTime runs faster, and arena wins jump further instead.
-        G.CheatSpeed = G.CheatSpeed == 1.0f ? CheatSpeedMultiplier : 1.0f;
+        int current = Array.IndexOf(CheatSpeedSteps, G.CheatSpeed);
+        G.CheatSpeed = CheatSpeedSteps[(current + 1) % CheatSpeedSteps.Length];
         bool isOn = G.CheatSpeed != 1.0f;
         Debug.Log($"Cheat speed x{G.CheatSpeed}");
 

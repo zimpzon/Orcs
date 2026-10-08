@@ -103,14 +103,17 @@ namespace Assets.Script.Upgrades
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
         {
-            // One quadratic curve for all levels: 5B x (1 + 2(L-1)^2) x CreditCostMul.
-            long n = level - 1;
-            return 5 * OneBillion * (1 + 2 * (double)n * n) * CreditCostMul;
+            // One smooth, always-rising curve: 5B x (1 + 2n^2) x CreditCostMul x (1 + n/CreditCostRamp)^CreditCostRampPower,
+            // n = level - 1. The ramp factor makes later credits progressively pricier: vs the previous pure quadratic
+            // (x0.125) the first 10 are ~10-20% cheaper, credit 100 x2, 250 x4, 1000 x16.
+            double n = level - 1;
+            double ramp = Math.Pow(1 + n / CreditCostRamp, CreditCostRampPower);
+            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp);
         }
 
-        // All credits cost 1/8 of the curve above (was 1/2: credits felt too slow around 90+ lifetime credits; then
-        // another 1/4 on top).
-        const double CreditCostMul = 0.125;
+        const double CreditCostMul = 0.1;
+        const double CreditCostRamp = 85;
+        const double CreditCostRampPower = 1.17;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
@@ -133,18 +136,18 @@ namespace Assets.Script.Upgrades
         // Rebirth credit bonus: credits are cheap, so to still force a rebirth now and then the credit XP rate is
         // multiplied by x1.0 right after a rebirth, falling in a straight line to x0.1 when lifetime credits reach
         // 3x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
-        // x1.0. Shown to the player as a bonus going from 500% down to 100%.
+        // x1.0. Shown to the player as a bonus going from 1000% down to 100%.
         const long CreditBonusMinLifetime = 20;
         const double CreditBonusEndFactor = 3.0;
-        const double CreditBonusMinMul = 0.1;
+        const double CreditBonusMinMul = 0.05;
 
-        // 0 = just rebirthed (x1.0, 500%), 1 = reached 3x the start (x0.1, 100%).
+        // 0 = just rebirthed (x1.0, 1000%), 1 = reached 3x the start (x0.05, 100%).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
             long lifetime = m.MonsterCreditsLifetime_09_08_2025;
             if (m.CreditBonusStartLifetime < 0)
-                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 500%
+                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 1000%
 
             if (lifetime < CreditBonusMinLifetime)
                 return 0.0;
@@ -157,9 +160,9 @@ namespace Assets.Script.Upgrades
         public static double CreditBonusMultiplier()
             => 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
 
-        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.1).
+        // Shown from 1000% (just rebirthed, x1.0) down to 100% (x0.05).
         public static int CreditBonusDisplayPct()
-            => (int)Math.Round(500 - 400 * CreditBonusProgress());
+            => (int)Math.Round(1000 - 900 * CreditBonusProgress());
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
