@@ -17,7 +17,7 @@ static class SaveGameAscend
         newSave.TimesAscended_09_08_2025 = oldSave.TimesAscended_09_08_2025;
         newSave.MonsterCredits_09_08_2025 = oldSave.MonsterCredits_09_08_2025;
         newSave.MonsterCreditsLifetime_09_08_2025 = oldSave.MonsterCreditsLifetime_09_08_2025;
-        newSave.CreditBonusStartLifetime = oldSave.MonsterCreditsLifetime_09_08_2025; // credit bonus back to 1000%
+        newSave.CreditBonusStartLifetime = oldSave.MonsterCreditsLifetime_09_08_2025; // credit bonus back to 500%
         newSave.DiamondCount_09_08_2025 = oldSave.DiamondCount_09_08_2025;
 
         // Permanent upgrades

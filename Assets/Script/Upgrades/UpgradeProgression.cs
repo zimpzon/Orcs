@@ -135,19 +135,19 @@ namespace Assets.Script.Upgrades
 
         // Rebirth credit bonus: credits are cheap, so to still force a rebirth now and then the credit XP rate is
         // multiplied by x1.0 right after a rebirth, falling in a straight line to x0.1 when lifetime credits reach
-        // 3x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
-        // x1.0. Shown to the player as a bonus going from 1000% down to 100%.
+        // 1.5x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
+        // x1.0. Shown to the player as a bonus going from 500% down to 100%.
         const long CreditBonusMinLifetime = 20;
-        const double CreditBonusEndFactor = 3.0;
-        const double CreditBonusMinMul = 0.05;
+        const double CreditBonusEndFactor = 1.5;
+        const double CreditBonusMinMul = 0.005;
 
-        // 0 = just rebirthed (x1.0, 1000%), 1 = reached 3x the start (x0.05, 100%).
+        // 0 = just rebirthed (x1.0, 500%), 1 = reached 1.5x the start (x0.005, 100%).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
             long lifetime = m.MonsterCreditsLifetime_09_08_2025;
             if (m.CreditBonusStartLifetime < 0)
-                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 1000%
+                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 500%
 
             if (lifetime < CreditBonusMinLifetime)
                 return 0.0;
@@ -160,9 +160,9 @@ namespace Assets.Script.Upgrades
         public static double CreditBonusMultiplier()
             => 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
 
-        // Shown from 1000% (just rebirthed, x1.0) down to 100% (x0.05).
+        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.005).
         public static int CreditBonusDisplayPct()
-            => (int)Math.Round(1000 - 900 * CreditBonusProgress());
+            => (int)Math.Round(500 - 400 * CreditBonusProgress());
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
