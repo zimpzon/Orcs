@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5529412, g: 0.74509805, b: 0.29803923, a: 1}
+  m_Color: {r: 0.5737255, g: 0.74509805, b: 0.33529413, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -369,8 +369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cost: 1
-  CanAffordColor: {r: 0.5920314, g: 0.74509805, b: 0.3904314, a: 1}
-  CannotAffordColor: {r: 0.8745098, g: 0.5661552, b: 0.3506784, a: 1}
+  CanAffordColor: {r: 0.57254905, g: 0.74509805, b: 0.3372549, a: 1}
+  CannotAffordColor: {r: 0.8745098, g: 0.5634342, b: 0.3498039, a: 1}
   OwnedColor: {r: 0.755, g: 0.755, b: 0.755, a: 1}
   ButtonOverlay: {fileID: 8582976546675710129}
   CardOverlay: {fileID: 1817257581003230922}
