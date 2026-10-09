@@ -4,11 +4,12 @@ using UnityEngine.UI;
 // Victory button crown that pulses once the game is 100% complete (Completion100 achievement): a larger,
 // semi-transparent crown pops up over the icon, then shrinks toward the icon size while fading, and repeats.
 // Never fully opaque and never size zero, so the real icon always shows and it stays a gentle hint.
-// Also used on the rebirth (diamond) button: pulses while the player has credits but never rebirthed.
+// Also used as a big button pulse: on the rebirth (diamond) button while the player has credits but never rebirthed,
+// and on the Victory button after 100% until the victory dialog has been opened once.
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -30,9 +31,12 @@ public class CrownPulse : MonoBehaviour
     void Update()
     {
         var m = SaveGame.Members;
-        bool conditionMet = Condition == PulseCondition.FirstRebirthReady
-            ? m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0
-            : m.Achieved.Contains(Achieved.Completion100);
+        bool conditionMet = Condition switch
+        {
+            PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0,
+            PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
+            _ => m.Achieved.Contains(Achieved.Completion100),
+        };
         bool show = ForceShow || CheatForceShow || conditionMet;
         if (_image.enabled != show)
             _image.enabled = show;

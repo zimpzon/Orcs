@@ -24,6 +24,7 @@ public class SaveGameMembers
     public long MonsterCreditsLifetime_09_08_2025;
     public long CreditBonusStartLifetime = -1; // lifetime credits at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
+    public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these
     public bool BoughtPassiveX2_1 = false;

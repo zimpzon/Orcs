@@ -72,6 +72,7 @@ static class SaveGameAscend
         newSave.SaveKillSwitch_CanSave = true;
 
         newSave.Achieved = oldSave.Achieved;
+        newSave.ViewedVictoryDialog = oldSave.ViewedVictoryDialog;
         newSave.BeastsSeen = oldSave.BeastsSeen;
 
         // Collectables

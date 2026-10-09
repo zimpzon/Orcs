@@ -114,6 +114,8 @@ public class ProgressPopupScript : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
+        if (SaveGame.Members.Achieved.Contains(Achieved.Completion100))
+            SaveGame.Members.ViewedVictoryDialog = true; // stops the big Victory button pulse (CrownPulse)
     }
 
     public void OnClose()
