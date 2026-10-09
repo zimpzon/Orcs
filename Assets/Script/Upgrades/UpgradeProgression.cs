@@ -25,11 +25,11 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_ZapDamage =                       20_500_000_000;
         public static Decimal512 InitialPrice_MoneyMaker =                     210_000_000_000;
         public static Decimal512 InitialPrice_DaggerMaster =                 2_300_000_000_000;
-        public static Decimal512 InitialPrice_NecroNinja =                  21_100_000_000_000;
-        public static Decimal512 InitialPrice_SkullCrusher =               330_100_000_000_000;
-        public static Decimal512 InitialPrice_ChestMaster =              6_500_100_000_000_000;
-        public static Decimal512 InitialPrice_Voidgazer =              250_000_000_000_000_000;
-        public static Decimal512 InitialPrice_SmartDaggers =        15_250_000_000_000_000_000;
+        public static Decimal512 InitialPrice_NecroNinja =                  26_375_000_000_000;
+        public static Decimal512 InitialPrice_SkullCrusher =               412_625_000_000_000;
+        public static Decimal512 InitialPrice_ChestMaster =              8_125_125_000_000_000;
+        public static Decimal512 InitialPrice_Voidgazer =              312_500_000_000_000_000;
+        public static Decimal512 InitialPrice_SmartDaggers =        19_062_500_000_000_000_000.0; // .0: too big for an integer literal
         public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
         public static Decimal512 InitialPrice_CryptMaster = InitialPrice_FastFeet * 100;
         public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 80;
