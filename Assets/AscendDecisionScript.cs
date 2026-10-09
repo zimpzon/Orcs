@@ -16,8 +16,8 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextButtonRebirth;
     public TextMeshProUGUI TextWhatYouLose;
     public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
-    public Image CreditBonusBarFill;        // filled image: shown bonus % of 500
-    public TextMeshProUGUI CreditBonusBarText; // "123%/500%" on the bar
+    public Image CreditBonusBarFill;        // filled image: empty at x1, full at x2
+    public TextMeshProUGUI CreditBonusBarText; // "x1.73 / x2.00" on the bar
     public TextMeshProUGUI TextRebirthBonus; // scene text with [BONUS], [REBIRTHS] and [NEXT] placeholders
 
     [NonSerialized] public long MonsterCreditsAtStart;
@@ -185,15 +185,12 @@ public class AscendDecisionScript : MonoBehaviour
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
         TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
-        // Rebirth credit bonus (UpgradeProgression.CreditBonusProgress): 500% after a rebirth, falls to 100%. The text
-        // is authored in the scene; [BONUS] is replaced with the current %.
-        int creditBonusPct = UpgradeProgression.CreditBonusDisplayPct();
-        //if (TextCreditBonus != null)
-        //    TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", creditBonusPct.ToString());
+        // Rebirth credit bonus (UpgradeProgression.CreditBonusProgress): x2.00 after a rebirth, falls to x1.00.
+        double creditBonusMul = UpgradeProgression.CreditBonusDisplayMul();
         if (CreditBonusBarFill != null)
-            CreditBonusBarFill.fillAmount = creditBonusPct / 500f;
+            CreditBonusBarFill.fillAmount = Mathf.Clamp01((float)creditBonusMul - 1f); // empty at x1, full at x2
         if (CreditBonusBarText != null)
-            CreditBonusBarText.text = $"<color=#9DE05C>{creditBonusPct}%</color> / 500%";
+            CreditBonusBarText.text = $"<color=#9DE05C>x{creditBonusMul:0.00}</color> / x2.00";
 
         // Rebirth bonus (5% income per hour played, set at each rebirth; UpgradeProgression.RebirthBonus): the current
         // bonus and what it becomes when rebirthing now.

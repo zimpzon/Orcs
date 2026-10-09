@@ -148,41 +148,43 @@ namespace Assets.Script.Upgrades
             return income > floor ? income : floor;
         }
 
-        // Rebirth credit bonus: credits are cheap, so to still force a rebirth now and then the credit XP rate is
-        // multiplied by x1.0 right after a rebirth, falling by the same % per credit to CreditBonusMinMul when lifetime credits reach
-        // 1.75x what they were at that rebirth (CreditBonusStartLifetime, min 20). Below 20 lifetime credits it's always
-        // x1.0. Shown to the player as a bonus going from 500% down to 100%.
+        // Rebirth credit bonus: a mild perk, not a forced rebirth (diamonds give no income, so a forced rebirth with
+        // nothing to buy felt terrible). The credit XP rate is multiplied by x1.0 right after a rebirth, falling to
+        // CreditBonusMinMul when lifetime credits reach 1.75x what they were at that rebirth (CreditBonusStartLifetime,
+        // min 20). Below 20 lifetime credits it's always x1.0. Shown to the player as x2.00 going down to x1.00.
         const long CreditBonusMinLifetime = 20;
         const double CreditBonusEndFactor = 1.75;
-        const double CreditBonusMinMul = 0.02;
+        const double CreditBonusMinMul = 0.5;
 
-        // 0 = just rebirthed (x1.0, 500%), 1 = reached 1.75x the start (x0.02, 100%).
+        // 0 = just rebirthed (x1.0, shown x2.00), 1 = reached 1.75x the start (x0.5, shown x1.00).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
             long lifetime = m.MonsterCreditsLifetime_09_08_2025;
             if (m.CreditBonusStartLifetime < 0)
-                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at 500%
+                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at x2.00
 
             if (lifetime < CreditBonusMinLifetime)
                 return 0.0;
 
+            // Count the XP towards the next credit too, so the bonus slides smoothly instead of stepping per credit.
+            double partial = Math.Clamp((m.MonsterCreditsXp_09_08_2025 / MonsterCreditXpForNextLevel(lifetime + 1)).ToDouble(), 0.0, 1.0);
+            double earned = lifetime + partial;
+
             double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
-            double t = (lifetime - start) / ((CreditBonusEndFactor - 1.0) * start);
+            double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
             return Math.Clamp(t, 0.0, 1.0);
         }
 
-        // MinMul^(t^power): x1.0 -> CreditBonusMinMul. A straight line made the last credits x1.5-x2 slower each
-        // (x0.01 -> x0.005 halves speed in one credit); a plain MinMul^t (power 1) dropped most of it early (x0.38 at
-        // 25%). Power 2 is in between: x0.96 / 0.78 / 0.38 / 0.11 at 10/25/50/75%, at most ~3% slower per credit.
+        // MinMul^(t^power): x1.0 -> CreditBonusMinMul, slow at first, steeper towards the end.
         const double CreditBonusCurvePower = 2.0;
 
         public static double CreditBonusMultiplier()
             => Math.Pow(CreditBonusMinMul, Math.Pow(CreditBonusProgress(), CreditBonusCurvePower));
 
-        // Shown from 500% (just rebirthed, x1.0) down to 100% (x0.02).
-        public static int CreditBonusDisplayPct()
-            => (int)Math.Round(500 - 400 * CreditBonusProgress());
+        // Shown to the player as a multiplier: x2.00 (just rebirthed, x1.0) down to x1.00 (x0.5).
+        public static double CreditBonusDisplayMul()
+            => CreditBonusMultiplier() / CreditBonusMinMul;
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)

@@ -79624,7 +79624,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 123%/500%
+  m_text: x1.73 / x2.00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -116311,8 +116311,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Rebirth grants a <color=#9DE05C>500%</color> credit income bonus that
-    decays over time.
+  m_text: 'Rebirth doubles your credit income (<color=#9DE05C>x2</color>), slowly
+    falling back to x1.
 
     Current credit bonus:'
   m_isRightToLeft: 0
