@@ -4,12 +4,13 @@ using UnityEngine.UI;
 // Victory button crown that pulses once the game is 100% complete (Completion100 achievement): a larger,
 // semi-transparent crown pops up over the icon, then shrinks toward the icon size while fading, and repeats.
 // Never fully opaque and never size zero, so the real icon always shows and it stays a gentle hint.
-// Also used as a big button pulse: on the rebirth (diamond) button while the player has credits but never rebirthed,
-// and on the Victory button after 100% until the victory dialog has been opened once.
+// Also used as a button pulse: on the rebirth (diamond) button while the player has credits but never rebirthed
+// (big until the dialog was opened, small after), and on the Victory button after 100% until the victory dialog has
+// been opened once.
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -33,7 +34,10 @@ public class CrownPulse : MonoBehaviour
         var m = SaveGame.Members;
         bool conditionMet = Condition switch
         {
-            PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0,
+            // Big pulse until the rebirth dialog has been opened with credits, then a small one until the first rebirth:
+            // the player may keep collecting credits, so the big one would get annoying.
+            PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && !m.ViewedRebirthDialog,
+            PulseCondition.FirstRebirthReadySeen => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && m.ViewedRebirthDialog,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             _ => m.Achieved.Contains(Achieved.Completion100),
         };

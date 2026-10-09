@@ -25,6 +25,7 @@ public class SaveGameMembers
     public long CreditBonusStartLifetime = -1; // lifetime credits at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
+    public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these
     public bool BoughtPassiveX2_1 = false;
