@@ -102895,7 +102895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Rebirth income bonus: <color=#9DE05C>+104%</color>
+  m_text: 'Rebirth income bonus: <color=#9DE05C>+[BONUS]%</color>
 
     <size=90%><color=#DDDDDD>At
     rebirth this is set to <color=#9DE05C>5%</color> times hours played.
