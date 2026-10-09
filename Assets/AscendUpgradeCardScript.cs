@@ -39,6 +39,7 @@ public enum AscendUpgradeCardId
     SkinCollector2,
     Completionist,
     HeadStart,   // start every run with 1 minute of the best-ever income
+    DiamondHoard, // +1% income per diamond ever earned
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -118,6 +119,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.SkinCollector2 => SaveGame.Members.BoughtSkinCollector2,
             AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
             AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
+            AscendUpgradeCardId.DiamondHoard => SaveGame.Members.BoughtDiamondHoard,
             _ => throw new NotImplementedException()
         };
 
@@ -282,6 +284,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.HeadStart)
         {
             SaveGame.Members.BoughtHeadStart = true;
+        }
+        else if (CardId == AscendUpgradeCardId.DiamondHoard)
+        {
+            SaveGame.Members.BoughtDiamondHoard = true;
         }
         else
             throw new NotImplementedException();

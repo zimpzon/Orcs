@@ -50,6 +50,7 @@ static class SaveGameAscend
         newSave.BoughtSkinCollector2 = oldSave.BoughtSkinCollector2;
         newSave.BoughtCompletionist = oldSave.BoughtCompletionist;
         newSave.BoughtHeadStart = oldSave.BoughtHeadStart;
+        newSave.BoughtDiamondHoard = oldSave.BoughtDiamondHoard;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings

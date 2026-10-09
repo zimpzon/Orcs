@@ -312,6 +312,17 @@ namespace Assets.Script.Upgrades
         public static double RebirthBonusIfRebirthNow()
             => RebirthBonusPerHour * HoursPlayed();
 
+        // Diamond Hoard rebirth card: +1% income per diamond ever earned (multiplied). Credits only leave the wallet by
+        // being converted to diamonds at rebirth, so diamonds ever earned = lifetime credits - unconverted credits.
+        // Spending diamonds on cards doesn't lower it.
+        public const double DiamondHoardPerDiamond = 0.01;
+
+        public static long DiamondsEverEarned()
+            => Math.Max(0, SaveGame.Members.MonsterCreditsLifetime_09_08_2025 - SaveGame.Members.MonsterCredits_09_08_2025);
+
+        public static double DiamondHoardMultiplier()
+            => SaveGame.Members.BoughtDiamondHoard ? 1.0 + DiamondHoardPerDiamond * DiamondsEverEarned() : 1.0;
+
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
         public const double HeadStartSeconds = 60;
     }

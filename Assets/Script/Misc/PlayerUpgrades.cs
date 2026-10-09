@@ -40,6 +40,7 @@ public class UpgradeData
     public double PassiveIncomeRebirthBonus = 0.0; // 5% per hour played, set at each rebirth (AscendProgressScript)
     public double PassiveIncomeTierLoreMultiplier = 1.0; // Lore cards: x(1 + level/100) per owned card (AscendProgressScript)
     public double PassiveIncomeCompletionBonus = 0.0; // Completionist card: +5% per game completion % (GameManager)
+    public double PassiveIncomeDiamondHoardMultiplier = 1.0; // Diamond Hoard card: x(1 + 1% per diamond ever earned) (AscendProgressScript)
 
     public double PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
@@ -50,6 +51,7 @@ public class UpgradeData
         (1.0 + PassiveIncomeSkinBonus) *
         (1.0 + PassiveIncomeCompletionBonus) *
         PassiveIncomeTierLoreMultiplier *
+        PassiveIncomeDiamondHoardMultiplier *
         (1.0 + PassiveIncomeRebirthBonus);
 
     // gold

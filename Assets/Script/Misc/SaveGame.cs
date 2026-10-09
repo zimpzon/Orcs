@@ -58,6 +58,7 @@ public class SaveGameMembers
     public bool BoughtSkinCollector2 = false;
     public bool BoughtCompletionist = false;
     public bool BoughtHeadStart = false;
+    public bool BoughtDiamondHoard = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -89,7 +90,8 @@ public class SaveGameMembers
         $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
         $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2} | " +
         $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist} | " +
-        $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart}";
+        $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart} | " +
+        $"{nameof(BoughtDiamondHoard)} = {SaveGame.Members.BoughtDiamondHoard}";
 
     // Settings
     public int Version;
