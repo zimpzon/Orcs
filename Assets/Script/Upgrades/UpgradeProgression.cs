@@ -151,8 +151,8 @@ namespace Assets.Script.Upgrades
         // Rebirth credit bonus: a mild perk, not a forced rebirth (diamonds give no income, so a forced rebirth with
         // nothing to buy felt terrible). The credit XP rate is multiplied by x1.0 right after a rebirth, falling to
         // CreditBonusMinMul when lifetime credits reach 1.75x what they were at that rebirth (CreditBonusStartLifetime,
-        // min 20). Below 20 lifetime credits it's always x1.0. Shown to the player as x2.00 going down to x1.00.
-        const long CreditBonusMinLifetime = 20;
+        // min 2). Below 2 lifetime credits it's always x1.0. Shown to the player as x2.00 going down to x1.00.
+        const long CreditBonusMinLifetime = 2;
         const double CreditBonusEndFactor = 1.75;
         const double CreditBonusMinMul = 0.5;
 
@@ -176,11 +176,15 @@ namespace Assets.Script.Upgrades
             return Math.Clamp(t, 0.0, 1.0);
         }
 
-        // MinMul^(t^power): x1.0 -> CreditBonusMinMul, slow at first, steeper towards the end.
-        const double CreditBonusCurvePower = 2.0;
-
+        // Linear: x1.0 -> CreditBonusMinMul (shown x2.00 -> x1.00 at an even pace). No bonus before the first rebirth:
+        // it's a rebirth reward, and on a fresh save it made credit 2 come ~3x faster than credit 1.
         public static double CreditBonusMultiplier()
-            => Math.Pow(CreditBonusMinMul, Math.Pow(CreditBonusProgress(), CreditBonusCurvePower));
+        {
+            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
+                return CreditBonusMinMul;
+
+            return 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
+        }
 
         // Shown to the player as a multiplier: x2.00 (just rebirthed, x1.0) down to x1.00 (x0.5).
         public static double CreditBonusDisplayMul()
