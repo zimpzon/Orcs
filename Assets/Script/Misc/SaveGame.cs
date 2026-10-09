@@ -22,7 +22,7 @@ public class SaveGameMembers
     public double RebirthIncomeBonus; // set at each rebirth to 5% per hour played (UpgradeProgression.RebirthBonus)
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;
-    public long CreditBonusStartLifetime = -1; // lifetime credits at the last rebirth, drives the credit bonus (-1 = not set yet)
+    public double CreditBonusStartLifetime = -1; // credits earned incl. partial at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small

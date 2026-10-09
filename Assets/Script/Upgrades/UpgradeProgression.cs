@@ -156,20 +156,27 @@ namespace Assets.Script.Upgrades
         const double CreditBonusEndFactor = 1.75;
         const double CreditBonusMinMul = 0.5;
 
+        // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
+        // Also stored at rebirth (SaveGameAscend): the leftover XP carries over, so a whole-credit start made the new
+        // run begin at ~x1.98.
+        public static double CreditsEarnedWithPartial(SaveGameMembers m)
+        {
+            long lifetime = m.MonsterCreditsLifetime_09_08_2025;
+            double partial = Math.Clamp((m.MonsterCreditsXp_09_08_2025 / MonsterCreditXpForNextLevel(lifetime + 1)).ToDouble(), 0.0, 1.0);
+            return lifetime + partial;
+        }
+
         // 0 = just rebirthed (x1.0, shown x2.00), 1 = reached 1.75x the start (x0.5, shown x1.00).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
             long lifetime = m.MonsterCreditsLifetime_09_08_2025;
+            double earned = CreditsEarnedWithPartial(m);
             if (m.CreditBonusStartLifetime < 0)
-                m.CreditBonusStartLifetime = lifetime; // saves from before this existed start fresh at x2.00
+                m.CreditBonusStartLifetime = earned; // saves from before this existed start fresh at x2.00
 
             if (lifetime < CreditBonusMinLifetime)
                 return 0.0;
-
-            // Count the XP towards the next credit too, so the bonus slides smoothly instead of stepping per credit.
-            double partial = Math.Clamp((m.MonsterCreditsXp_09_08_2025 / MonsterCreditXpForNextLevel(lifetime + 1)).ToDouble(), 0.0, 1.0);
-            double earned = lifetime + partial;
 
             double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
             double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
