@@ -18,14 +18,12 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
     public Image CreditBonusBarFill;        // filled image: empty at x1, full at x2
     public TextMeshProUGUI CreditBonusBarText; // "x1.73 / x2.00" on the bar
-    public TextMeshProUGUI TextRebirthBonus; // scene text with [BONUS], [REBIRTHS] and [NEXT] placeholders
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
 
     private string _whatYouLoseTemplate;
     private string _creditBonusTemplate;
-    private string _rebirthBonusTemplate;
     private int _clickCount;
 
     // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
@@ -43,8 +41,6 @@ public class AscendDecisionScript : MonoBehaviour
         _whatYouLoseTemplate = TextWhatYouLose.text;
         if (TextCreditBonus != null)
             _creditBonusTemplate = TextCreditBonus.text;
-        if (TextRebirthBonus != null)
-            _rebirthBonusTemplate = TextRebirthBonus.text;
         SetupHeaderDiamonds();
     }
 
@@ -192,20 +188,6 @@ public class AscendDecisionScript : MonoBehaviour
         if (CreditBonusBarText != null)
             CreditBonusBarText.text = $"<color=#9DE05C>x{creditBonusMul:0.00}</color> / x2.00";
 
-        // Rebirth bonus (5% income per hour played, set at each rebirth; UpgradeProgression.RebirthBonus): the current
-        // bonus and what it becomes when rebirthing now.
-        if (TextRebirthBonus != null)
-        {
-            long rebirths = SaveGame.Members.TimesAscended_09_08_2025;
-            int bonusPct = (int)Math.Round(UpgradeProgression.RebirthBonus() * 100);
-            int nextPct = (int)Math.Round(UpgradeProgression.RebirthBonusIfRebirthNow() * 100);
-            TextRebirthBonus.text = _rebirthBonusTemplate
-                .Replace("[BONUS]", bonusPct.ToString())
-                .Replace("[NEXT]", nextPct.ToString())
-                .Replace("[HOURS]", Math.Floor(UpgradeProgression.HoursPlayed()).ToString())
-                .Replace("[REBIRTHS]", rebirths.ToString())
-                .Replace("[PLURAL]", rebirths == 1 ? "" : "s");
-        }
 
         TextWhatYouLose.text = _whatYouLoseTemplate;
 

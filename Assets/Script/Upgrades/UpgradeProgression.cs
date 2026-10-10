@@ -117,7 +117,12 @@ namespace Assets.Script.Upgrades
             // Early bump: the first credits (up to ~20) a bit pricier, credit 1 unchanged, gone again by ~50-75
             // (credit 2 x1.03, 5 x1.16, 10-20 ~x1.22, 30 x1.13, 50 x1.03).
             double early = 1 + CreditCostEarly * (n * n / (n * n + 9)) / (1 + Math.Pow(n / CreditCostEarlyFade, 4));
-            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late * extra * early);
+            // Exponential tail: income climbs many powers of ten per run, and with the polynomial alone a x10 income jump
+            // was worth ever more credits (77 at credit 100, 344 at 1400, 564 at 3000), so credits exploded once tier
+            // upgrades kicked in. The tail makes the price grow by a near-fixed factor per credit, so a x10 income jump
+            // stays worth ~85-130 credits from ~300 on (CreditCostTailScale = 150 / ln 10). ~x1 up to ~100 credits.
+            double tail = Math.Exp(n / CreditCostTailScale * (n * n / (n * n + CreditCostTailStart * CreditCostTailStart)));
+            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late * extra * early * tail);
         }
 
         const double CreditCostMul = 0.1;
@@ -129,6 +134,8 @@ namespace Assets.Script.Upgrades
         const double CreditCostExtraStart = 20;
         const double CreditCostEarly = 0.25;
         const double CreditCostEarlyFade = 30;
+        const double CreditCostTailScale = 65;
+        const double CreditCostTailStart = 600;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
@@ -295,22 +302,6 @@ namespace Assets.Script.Upgrades
 
         public static double TierLoreTotalMultiplier()
             => ZapLoreMultiplier() * ChestLoreMultiplier() * VoodooLoreMultiplier() * WizardLoreMultiplier();
-
-        // Rebirth bonus: at every rebirth the passive income bonus is set to 5% per hour played in total
-        // (SaveGameAscend), x(1 + bonus). The number of rebirths doesn't matter, so tiny 1-credit rebirths can't farm
-        // it. Shown in the rebirth dialog (AscendDecisionScript) and on the stats page.
-        public const double RebirthBonusPerHour = 0.05;
-
-        public static double HoursPlayed()
-            => SaveGame.Members.EstimatedOnlineSeconds2 / 3600.0;
-
-        // Current bonus (set at the last rebirth).
-        public static double RebirthBonus()
-            => SaveGame.Members.RebirthIncomeBonus;
-
-        // What the bonus becomes when rebirthing now.
-        public static double RebirthBonusIfRebirthNow()
-            => RebirthBonusPerHour * HoursPlayed();
 
         // Diamond Hoard rebirth card: +1% income per diamond ever earned (multiplied). Credits only leave the wallet by
         // being converted to diamonds at rebirth, so diamonds ever earned = lifetime credits - unconverted credits.

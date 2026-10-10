@@ -19,7 +19,6 @@ public class SaveGameMembers
 
     public int TimeSinceLastAscend;
     public long TimesAscended_09_08_2025;
-    public double RebirthIncomeBonus; // set at each rebirth to 5% per hour played (UpgradeProgression.RebirthBonus)
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;
     public double CreditBonusStartLifetime = -1; // credits earned incl. partial at the last rebirth, drives the credit bonus (-1 = not set yet)
