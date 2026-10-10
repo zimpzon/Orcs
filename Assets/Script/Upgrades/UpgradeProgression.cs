@@ -104,11 +104,16 @@ namespace Assets.Script.Upgrades
         // Credits 1-20: the tuned early curve below. From credit 21: the cubic shape of the released game's curve
         // (495B + 58B * (level - 8)^3), scaled to join the early curve at credit 20. Starting point, to be tuned.
         const long CreditCurveJoin = 20;
+        const double EarlyCreditDiscount = 0.2;
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
         {
             if (level <= CreditCurveJoin)
-                return EarlyCreditXp(level);
+            {
+                // Early discount fading out linearly: -20% at credit 1, none at credit 20, so the curve stays continuous.
+                double discount = EarlyCreditDiscount * (CreditCurveJoin - level) / (CreditCurveJoin - 1);
+                return EarlyCreditXp(level) * (1 - discount);
+            }
 
             return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin));
         }
