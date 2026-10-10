@@ -122,13 +122,17 @@ namespace Assets.Script.Upgrades
             return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper * LateTail(level));
         }
 
-        // Endgame tail: the polynomial above flattens (at ~2000 credits a x10 income jump was worth ~1300 credits, and the
-        // last tiers multiply income many times). A wide, smooth bend: the extra per-credit price growth ramps linearly
-        // from 0 at CreditTailStart to CreditTailRate at CreditTailEnd, then stays there. Credits per x10 income: ~870 at
-        // 2900, ~740 at 3550, ~530 at 5000, ~380 from 7000 on. Playtest: ~30 s per credit at 3550 with upgrades bought.
-        const double CreditTailStart = 1500;
-        const double CreditTailEnd = 7000;
-        const double CreditTailRate = 0.00569;
+        // Endgame tail: extra per-credit price growth on top of the polynomial. The rate rises linearly from 0 at
+        // CreditTailStart to CreditTailPeakRate at CreditTailPeak (the playtest point: ~27 s per credit at ~4050 with
+        // income near the run's ceiling), then eases off to CreditTailFinalRate at CreditTailEnd and stays there. The
+        // 1-per-second credit cap handles floods, so the late curve can be flat; the remaining tiers and beasts (~x1000-
+        // 5000 income) should bring credits to ~1 s by the end. Credits per x10 income: ~720 at 4050, ~1000 at 4500,
+        // ~1770 at 5000, ~2100 at 7000.
+        const double CreditTailStart = 2000;
+        const double CreditTailPeak = 4050;
+        const double CreditTailEnd = 5000;
+        const double CreditTailPeakRate = 0.00235;
+        const double CreditTailFinalRate = 0.0006;
 
         static double LateTail(long level)
         {
@@ -136,10 +140,20 @@ namespace Assets.Script.Upgrades
             if (x <= 0)
                 return 1.0;
 
-            double width = CreditTailEnd - CreditTailStart;
-            double exponent = x <= width
-                ? CreditTailRate * x * x / (2 * width)
-                : CreditTailRate * (width / 2 + (x - width));
+            double rise = CreditTailPeak - CreditTailStart;
+            double fall = CreditTailEnd - CreditTailPeak;
+            double exponent;
+            if (x <= rise)
+            {
+                exponent = CreditTailPeakRate * x * x / (2 * rise);
+            }
+            else
+            {
+                double atPeak = CreditTailPeakRate * rise / 2;
+                double y = Math.Min(x - rise, fall);
+                exponent = atPeak + CreditTailPeakRate * y - (CreditTailPeakRate - CreditTailFinalRate) * y * y / (2 * fall);
+                exponent += CreditTailFinalRate * Math.Max(0, x - rise - fall);
+            }
             return Math.Exp(Math.Min(700, exponent)); // no double overflow
         }
 
