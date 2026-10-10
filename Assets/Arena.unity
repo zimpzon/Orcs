@@ -12392,7 +12392,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.6745098, g: 0.7490196, b: 1, a: 1}
+    m_NormalColor: {r: 0.566, g: 0.6653494, b: 1, a: 1}
     m_HighlightedColor: {r: 0.6745098, g: 0.7490196, b: 1, a: 1}
     m_PressedColor: {r: 0.88199997, g: 0.4392706, b: 0, a: 1}
     m_SelectedColor: {r: 1, g: 0.49803925, b: 0, a: 1}
@@ -45582,12 +45582,12 @@ PrefabInstance:
     - target: {fileID: 6254918193843212427, guid: 41873e0e404a1ec4e8b95433839ce6ee,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 28.200012
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 6254918193843212427, guid: 41873e0e404a1ec4e8b95433839ce6ee,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 6254918193843212427, guid: 41873e0e404a1ec4e8b95433839ce6ee,
         type: 3}
