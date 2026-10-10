@@ -105,6 +105,7 @@ namespace Assets.Script.Upgrades
         // (495B + 58B * (level - 8)^3), scaled to join the early curve at credit 20. Starting point, to be tuned.
         const long CreditCurveJoin = 20;
         const double EarlyCreditDiscount = 0.2;
+        const double CreditLateSteepness = 0.486;
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
         {
@@ -115,7 +116,10 @@ namespace Assets.Script.Upgrades
                 return EarlyCreditXp(level) * (1 - discount);
             }
 
-            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin));
+            // Steepened: ((level - 8) / 12)^CreditLateSteepness is x1 at the join (credit 20), x6 at credit 487 (2 min per
+            // credit there instead of 20 s, playtest), x2.7 at 100, x8.7 at 1000.
+            double steeper = Math.Pow((level - 8) / (double)(CreditCurveJoin - 8), CreditLateSteepness);
+            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper);
         }
 
         static double ReleaseCurveShape(long level)
