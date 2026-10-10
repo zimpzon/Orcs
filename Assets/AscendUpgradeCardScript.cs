@@ -24,6 +24,7 @@ public enum AscendUpgradeCardId
     ShinyDiamonds5, // +100%
     HalfEnemyHp,    // all enemies have half HP
     Haggler,        // tier upgrades and X2 cost half
+    HeadStart,      // every run starts with 10 seconds of the best-ever income
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -91,6 +92,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
             AscendUpgradeCardId.HalfEnemyHp => SaveGame.Members.BoughtHalfEnemyHp,
             AscendUpgradeCardId.Haggler => SaveGame.Members.BoughtHaggler,
+            AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
             _ => throw new NotImplementedException()
         };
 
@@ -198,6 +200,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.Haggler)
         {
             SaveGame.Members.BoughtHaggler = true;
+        }
+        else if (CardId == AscendUpgradeCardId.HeadStart)
+        {
+            SaveGame.Members.BoughtHeadStart = true;
         }
         else
             throw new NotImplementedException();

@@ -58,7 +58,8 @@ public class AscendProgressScript : MonoBehaviour
         ApplyAscendPermanentBonuses();
 
         // Passive income, but never below the small credit speed floor (UpgradeProgression.CreditXpPerSecond).
-        Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond();
+        // Times the rebirth credit bonus (x1.0 after a rebirth, falling to x0.5; UpgradeProgression.CreditBonusMultiplier).
+        Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond() * UpgradeProgression.CreditBonusMultiplier();
 
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes

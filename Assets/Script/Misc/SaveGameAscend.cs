@@ -17,6 +17,7 @@ static class SaveGameAscend
         newSave.TimesAscended_09_08_2025 = oldSave.TimesAscended_09_08_2025;
         newSave.MonsterCredits_09_08_2025 = oldSave.MonsterCredits_09_08_2025;
         newSave.MonsterCreditsLifetime_09_08_2025 = oldSave.MonsterCreditsLifetime_09_08_2025;
+        newSave.CreditBonusStartLifetime = Assets.Script.Upgrades.UpgradeProgression.CreditsEarnedWithPartial(oldSave); // credit bonus back to 100%
         newSave.DiamondCount_09_08_2025 = oldSave.DiamondCount_09_08_2025;
 
         // Permanent upgrades
@@ -37,6 +38,7 @@ static class SaveGameAscend
         newSave.BoughtShinyDiamonds5 = oldSave.BoughtShinyDiamonds5;
         newSave.BoughtHalfEnemyHp = oldSave.BoughtHalfEnemyHp;
         newSave.BoughtHaggler = oldSave.BoughtHaggler;
+        newSave.BoughtHeadStart = oldSave.BoughtHeadStart;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
@@ -80,6 +82,14 @@ static class SaveGameAscend
         newSave.TotalUpgradesBought = oldSave.TotalUpgradesBought;
         newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
         newSave.TotalLevelPctBought = oldSave.TotalLevelPctBought;
+
+        // Head Start card: the new run starts with 10 seconds of the best-ever passive income (mystery buff excluded).
+        if (oldSave.BoughtHeadStart)
+        {
+            Decimal512 headStart = oldSave.MaxCreditIncome * Assets.Script.Upgrades.UpgradeProgression.HeadStartSeconds;
+            if (headStart > newSave.Money)
+                newSave.Money = headStart;
+        }
 
         // Replace old save with new save
         SaveGame.Members = newSave;

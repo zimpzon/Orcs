@@ -21,6 +21,7 @@ public class SaveGameMembers
     public long TimesAscended_09_08_2025;
     public long MonsterCredits_09_08_2025;
     public long MonsterCreditsLifetime_09_08_2025;
+    public double CreditBonusStartLifetime = -1; // credits earned incl. partial at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
@@ -45,6 +46,7 @@ public class SaveGameMembers
     public bool BoughtShinyDiamonds5 = false;
     public bool BoughtHalfEnemyHp = false;
     public bool BoughtHaggler = false;
+    public bool BoughtHeadStart = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -64,7 +66,8 @@ public class SaveGameMembers
         $"{nameof(BoughtShinyDiamonds4)} = {SaveGame.Members.BoughtShinyDiamonds4} | " +
         $"{nameof(BoughtShinyDiamonds5)} = {SaveGame.Members.BoughtShinyDiamonds5} | " +
         $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp} | " +
-        $"{nameof(BoughtHaggler)} = {SaveGame.Members.BoughtHaggler}";
+        $"{nameof(BoughtHaggler)} = {SaveGame.Members.BoughtHaggler} | " +
+        $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart}";
 
     // Settings
     public int Version;

@@ -139,7 +139,8 @@ namespace Assets.Script.Upgrades
             return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * extra * early);
         }
 
-        const double CreditCostMul = 0.1024; // 0.2 minus three 20% cuts (whole curve, so it stays continuous at credit 20)
+        // 0.1024 x 0.5: the rebirth credit bonus bottoms out at x0.5 (shown 0%), which then matches the tuned pace.
+        const double CreditCostMul = 0.0512;
         const double CreditCostRamp = 85;
         const double CreditCostRampPower = 1.17;
         const double CreditCostExtra = 0.5;
@@ -165,6 +166,47 @@ namespace Assets.Script.Upgrades
             return income > floor ? income : floor;
         }
 
+        // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling in a straight line to x0.5 when lifetime
+        // credits reach 1.75x what they were at that rebirth (CreditBonusStartLifetime, min 2). Shown as 100% -> 0%.
+        // No bonus (x0.5, 0%) before the first rebirth.
+        const long CreditBonusMinLifetime = 2;
+        const double CreditBonusEndFactor = 1.75;
+        const double CreditBonusMinMul = 0.5;
+
+        // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
+        // Also stored at rebirth (SaveGameAscend), since the leftover XP carries over.
+        public static double CreditsEarnedWithPartial(SaveGameMembers m)
+        {
+            long lifetime = m.MonsterCreditsLifetime_09_08_2025;
+            double partial = Math.Clamp((m.MonsterCreditsXp_09_08_2025 / MonsterCreditXpForNextLevel(lifetime + 1)).ToDouble(), 0.0, 1.0);
+            return lifetime + partial;
+        }
+
+        // 0 = just rebirthed (100%), 1 = reached 1.75x the start (0%).
+        public static double CreditBonusProgress()
+        {
+            var m = SaveGame.Members;
+            double earned = CreditsEarnedWithPartial(m);
+            if (m.CreditBonusStartLifetime < 0)
+                m.CreditBonusStartLifetime = earned;
+
+            double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
+            double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
+            return Math.Clamp(t, 0.0, 1.0);
+        }
+
+        public static double CreditBonusMultiplier()
+        {
+            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
+                return CreditBonusMinMul;
+
+            return 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
+        }
+
+        // 100 (just rebirthed) down to 0, linear like the multiplier.
+        public static int CreditBonusDisplayPct()
+            => (int)Math.Round((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * 100);
+
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
         // Level 30: Original ~82815B, New ~103519B (+25%) 
@@ -174,6 +216,9 @@ namespace Assets.Script.Upgrades
             Decimal512 result = initialPrice * Math.Pow(3, levelX2);
             return result * ShopPriceMul();
         }
+
+        // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
+        public const double HeadStartSeconds = 10;
 
         // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
         public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
