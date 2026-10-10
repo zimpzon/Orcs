@@ -124,12 +124,11 @@ namespace Assets.Script.Upgrades
 
         // Endgame tail: the polynomial above flattens (at ~2000 credits a x10 income jump was worth ~1300 credits, and the
         // last tiers multiply income many times). A wide, smooth bend: the extra per-credit price growth ramps linearly
-        // from 0 at CreditTailStart to CreditTailRate at CreditTailEnd, then stays there. Credits per x10 income go
-        // 1320 (2080) -> 777 (2500) -> 541 (2900) -> ~300 (3880+). Price vs no tail: x1.4 at 2500, x3.5 at 2900 (playtest:
-        // 7 s -> ~25 s per credit there), x43 at 3500.
-        const double CreditTailStart = 2080;
-        const double CreditTailEnd = 3880;
-        const double CreditTailRate = 0.0067;
+        // from 0 at CreditTailStart to CreditTailRate at CreditTailEnd, then stays there; endgame ~380 credits per x10
+        // income. Playtest: ~24 s per credit at 2900, ~46 s at 3500 (the earlier 2080-3880 / 0.0067 bend gave 2:40 there).
+        const double CreditTailStart = 1500;
+        const double CreditTailEnd = 5500;
+        const double CreditTailRate = 0.005;
 
         static double LateTail(long level)
         {
