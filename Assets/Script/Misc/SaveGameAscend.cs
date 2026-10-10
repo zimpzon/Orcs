@@ -30,27 +30,7 @@ static class SaveGameAscend
         newSave.BoughtPassiveX7_1 = oldSave.BoughtPassiveX7_1;
         newSave.BoughtFasterMystery = oldSave.BoughtFasterMystery;
         newSave.BoughtFasterArena = oldSave.BoughtFasterArena;
-        newSave.BoughtPercentBonusX10 = oldSave.BoughtPercentBonusX10;
-        newSave.BoughtHalfEnemyHp = oldSave.BoughtHalfEnemyHp;
-        newSave.BoughtHaggler1 = oldSave.BoughtHaggler1;
-        newSave.BoughtHaggler2 = oldSave.BoughtHaggler2;
-        newSave.BoughtHaggler3 = oldSave.BoughtHaggler3;
-        newSave.BoughtBeastScholar1 = oldSave.BoughtBeastScholar1;
-        newSave.BoughtBeastScholar2 = oldSave.BoughtBeastScholar2;
-        newSave.BoughtX2Mastery1 = oldSave.BoughtX2Mastery1;
-        newSave.BoughtX2Mastery2 = oldSave.BoughtX2Mastery2;
-        newSave.BoughtX2Mastery3 = oldSave.BoughtX2Mastery3;
         newSave.BoughtFasterArena2 = oldSave.BoughtFasterArena2;
-        newSave.BoughtCardDiscount = oldSave.BoughtCardDiscount;
-        newSave.BoughtZapLore = oldSave.BoughtZapLore;
-        newSave.BoughtChestLore = oldSave.BoughtChestLore;
-        newSave.BoughtVoodooLore = oldSave.BoughtVoodooLore;
-        newSave.BoughtWizardLore = oldSave.BoughtWizardLore;
-        newSave.BoughtSkinCollector = oldSave.BoughtSkinCollector;
-        newSave.BoughtSkinCollector2 = oldSave.BoughtSkinCollector2;
-        newSave.BoughtCompletionist = oldSave.BoughtCompletionist;
-        newSave.BoughtHeadStart = oldSave.BoughtHeadStart;
-        newSave.BoughtDiamondHoard = oldSave.BoughtDiamondHoard;
         newSave.BoughtScaryEarlSkin = oldSave.BoughtScaryEarlSkin;
 
         // Settings
@@ -93,15 +73,6 @@ static class SaveGameAscend
         newSave.TotalUpgradesBought = oldSave.TotalUpgradesBought;
         newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
         newSave.TotalLevelPctBought = oldSave.TotalLevelPctBought;
-
-
-        // Head Start card: the new run starts with a minute of the best-ever passive income (mystery buff excluded).
-        if (oldSave.BoughtHeadStart)
-        {
-            Decimal512 headStart = oldSave.MaxCreditIncome * Assets.Script.Upgrades.UpgradeProgression.HeadStartSeconds;
-            if (headStart > newSave.Money)
-                newSave.Money = headStart;
-        }
 
         // Replace old save with new save
         SaveGame.Members = newSave;

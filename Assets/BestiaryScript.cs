@@ -16,15 +16,6 @@ public class BestiaryScript : MonoBehaviour
         }
     }
 
-    // Bonus step per beast index. Base 1%, each Beast Scholar ascend card adds +1% (max 3%).
-    public static int PctPerBeast()
-    {
-        int pct = 1;
-        if (SaveGame.Members.BoughtBeastScholar1) pct++;
-        if (SaveGame.Members.BoughtBeastScholar2) pct++;
-        return pct;
-    }
-
     void Update()
     {
         int incomeBonus = 0;
@@ -33,8 +24,8 @@ public class BestiaryScript : MonoBehaviour
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beastActor.ActorType);
 
-            // Step per beast index is PctPerBeast() (1%, +1% per Beast Scholar card). Calc is both here and in BeastiaryBeastScript.
-            incomeBonus += isUnlocked ? (idx + 1) * PctPerBeast() : 0;
+            // +1% per beast index. Calc is both here and in BeastiaryBeastScript.
+            incomeBonus += isUnlocked ? idx + 1 : 0;
             idx++;
         }
 

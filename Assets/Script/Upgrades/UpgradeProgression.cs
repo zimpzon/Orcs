@@ -211,17 +211,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 PriceX2(Decimal512 initialPrice, long levelX2)
         {
             Decimal512 result = initialPrice * Math.Pow(3, levelX2);
-            return result * ShopPriceMul();
-        }
-
-        // Haggler ascend cards: each owned tier halves all gold shop prices (not the 1% bonus).
-        public static double ShopPriceMul()
-        {
-            double mul = 1.0;
-            if (SaveGame.Members.BoughtHaggler1) mul *= 0.5;
-            if (SaveGame.Members.BoughtHaggler2) mul *= 0.5;
-            if (SaveGame.Members.BoughtHaggler3) mul *= 0.5;
-            return mul;
+            return result;
         }
 
         public static long LevelRequirementX2(long levelX2)
@@ -274,7 +264,7 @@ namespace Assets.Script.Upgrades
                 Decimal512 priceForLevel = initialPrice * Math.Pow(1.15, currentLevel + i);
                 sum += priceForLevel;
             }
-            return sum * ShopPriceMul();
+            return sum;
         }
 
         public static Decimal512 PriceNextPercentageBonus(long level)
@@ -288,33 +278,5 @@ namespace Assets.Script.Upgrades
             double exponent = level - 3;
             return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }
-
-        // Lore rebirth cards: +1% passive income per level owned (this run) of one tier each; the four multiply.
-        const double TierLorePctPerLevel = 0.01;
-
-        public static double TierLoreMultiplier(bool bought, long level)
-            => bought ? 1.0 + TierLorePctPerLevel * Math.Max(0, level) : 1.0;
-
-        public static double ZapLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtZapLore, SaveGame.Members.LevelClickDamage);
-        public static double ChestLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtChestLore, SaveGame.Members.LevelMoneyPerGold);
-        public static double VoodooLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtVoodooLore, SaveGame.Members.LevelWitchDoctor);
-        public static double WizardLoreMultiplier() => TierLoreMultiplier(SaveGame.Members.BoughtWizardLore, SaveGame.Members.LevelWizard);
-
-        public static double TierLoreTotalMultiplier()
-            => ZapLoreMultiplier() * ChestLoreMultiplier() * VoodooLoreMultiplier() * WizardLoreMultiplier();
-
-        // Diamond Hoard rebirth card: +1% income per diamond ever earned (multiplied). Credits only leave the wallet by
-        // being converted to diamonds at rebirth, so diamonds ever earned = lifetime credits - unconverted credits.
-        // Spending diamonds on cards doesn't lower it.
-        public const double DiamondHoardPerDiamond = 0.01;
-
-        public static long DiamondsEverEarned()
-            => Math.Max(0, SaveGame.Members.MonsterCreditsLifetime_09_08_2025 - SaveGame.Members.MonsterCredits_09_08_2025);
-
-        public static double DiamondHoardMultiplier()
-            => SaveGame.Members.BoughtDiamondHoard ? 1.0 + DiamondHoardPerDiamond * DiamondsEverEarned() : 1.0;
-
-        // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
-        public const double HeadStartSeconds = 60;
     }
 }

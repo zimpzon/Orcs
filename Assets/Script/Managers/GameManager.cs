@@ -1684,35 +1684,6 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
-    // Rebirth cards that pay for collecting: Skin Collector 1/2 (+5% passive income per unlocked skin, per card) and
-    // Completionist (+5% per game completion %). Counting scans the skin objects, so only every couple of seconds.
-    const double SkinCollectorPctPerSkin = 0.05;
-    const double CompletionistPctPerPoint = 0.05;
-    const float CollectionBonusRecalcInterval = 2f;
-    float _nextCollectionBonusRecalc;
-
-    void UpdateCollectionBonuses()
-    {
-        if (Time.unscaledTime < _nextCollectionBonusRecalc)
-            return;
-
-        _nextCollectionBonusRecalc = Time.unscaledTime + CollectionBonusRecalcInterval;
-        var members = SaveGame.Members;
-        int skinCards = (members.BoughtSkinCollector ? 1 : 0) + (members.BoughtSkinCollector2 ? 1 : 0);
-        if (skinCards == 0 && !members.BoughtCompletionist)
-        {
-            PlayerUpgrades.Data.PassiveIncomeSkinBonus = 0.0;
-            PlayerUpgrades.Data.PassiveIncomeCompletionBonus = 0.0;
-            return;
-        }
-
-        var progress = GameCompletion.GetProgress();
-        PlayerUpgrades.Data.PassiveIncomeSkinBonus = progress.SkinsUnlocked * SkinCollectorPctPerSkin * skinCards;
-        PlayerUpgrades.Data.PassiveIncomeCompletionBonus = members.BoughtCompletionist
-            ? System.Math.Floor(progress.TotalPct) * CompletionistPctPerPoint
-            : 0.0;
-    }
-
     void Update()
     {
         TrySaveGame();
@@ -1846,7 +1817,6 @@ public class GameManager : MonoBehaviour
         }
 
         SaveTransferPopupScript.CheckHotkey();
-        UpdateCollectionBonuses();
 
         if (Input.GetKeyDown(KeyCode.I))
         {

@@ -952,16 +952,8 @@ public class UpgradeManager : MonoBehaviour
     long _lastX2Ranks = -1;
     bool _x2BoughtByClick;
 
-    // Base 10% per rank, each X2 Mastery ascend card adds another 10%.
-    public static double X2BonusPerRank()
-    {
-        const double BonusPerRank = 0.1;
-        int cards = 0;
-        if (SaveGame.Members.BoughtX2Mastery1) cards++;
-        if (SaveGame.Members.BoughtX2Mastery2) cards++;
-        if (SaveGame.Members.BoughtX2Mastery3) cards++;
-        return BonusPerRank * (1 + cards);
-    }
+    // 10% passive income per X2 rank.
+    public static double X2BonusPerRank() => 0.1;
 
     private void Awake()
     {

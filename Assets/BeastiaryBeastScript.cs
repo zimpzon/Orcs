@@ -20,7 +20,7 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         if (isUnlocked)
         {
             // Calc is both here and in BeastiaryScript
-            int bonus = (Index + 1) * BestiaryScript.PctPerBeast();
+            int bonus = Index + 1;
             ActorBase.Names.TryGetValue(ActorType, out string name);
             Hovertext.text = $"{name}\n +{bonus}% passive income";
         }

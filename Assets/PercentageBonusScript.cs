@@ -109,8 +109,7 @@ public class PercentageBonusScript : MonoBehaviour
 
     void UpdateAll()
     {
-        double bonusMultiplier = SaveGame.Members.BoughtPercentBonusX10 ? 10.0 : 1.0;
-        PlayerUpgrades.Data.PassiveIncomePercentageBonuses = SaveGame.Members.LevelPctBought * 0.01f * bonusMultiplier;
+        PlayerUpgrades.Data.PassiveIncomePercentageBonuses = SaveGame.Members.LevelPctBought * 0.01f;
 
         Decimal512 totalPrice = GetTotalPriceForBuyAmount();
         int buyAmount = GetBuyAmount();
@@ -119,13 +118,7 @@ public class PercentageBonusScript : MonoBehaviour
         SetEnabled(canAfford);
         ButtonText.text = $"${Format512.Format(totalPrice)}";
 
-        // Buying shows plain levels; with the 10x Bonuses card the multiplier is shown next to it and the total
-        // explains itself as "(levels x 10)", instead of every number being silently multiplied by 10.
-        bool hasX10 = SaveGame.Members.BoughtPercentBonusX10;
-        string bonusText = $"+{buyAmount}% passive income" + (hasX10 ? " <color=#8DBE4C>x10</color>" : "");
-        long displayTotalPct = (long)(SaveGame.Members.LevelPctBought * bonusMultiplier);
-        string totalBreakdown = hasX10 ? $" <color=#AAAAAA>({SaveGame.Members.LevelPctBought} x 10)</color>" : "";
-        TextBonusStatus.text = $"{bonusText}\n<size=-3><color=#cccccc>Bonus: {displayTotalPct}%</color>{totalBreakdown}";
+        TextBonusStatus.text = $"+{buyAmount}% passive income\n<size=-3><color=#cccccc>Bonus: {SaveGame.Members.LevelPctBought}%</color>";
 
         if (TextBuyAmount != null)
         {

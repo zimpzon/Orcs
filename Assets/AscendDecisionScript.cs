@@ -150,8 +150,6 @@ public class AscendDecisionScript : MonoBehaviour
 
                 string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
                 string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
-                if (SaveGame.Members.BoughtHeadStart)
-                    msg += $"\nHEAD START: +${Format512.Format(SaveGame.Members.Money)}";
                 msg += "\n\nSpend your diamonds on the cards!";
                 GameCanvasScript.Instance.ShowPopup(msg);
 

@@ -37,27 +37,7 @@ public class SaveGameMembers
     public bool BoughtFasterMystery = false;
     public bool BoughtFasterArena = false;
     public bool BoughtScaryEarlSkin = false;
-    public bool BoughtPercentBonusX10 = false;
-    public bool BoughtHalfEnemyHp = false;
-    public bool BoughtHaggler1 = false;
-    public bool BoughtHaggler2 = false;
-    public bool BoughtHaggler3 = false;
-    public bool BoughtBeastScholar1 = false;
-    public bool BoughtBeastScholar2 = false;
-    public bool BoughtX2Mastery1 = false;
-    public bool BoughtX2Mastery2 = false;
-    public bool BoughtX2Mastery3 = false;
     public bool BoughtFasterArena2 = false;
-    public bool BoughtCardDiscount = false;
-    public bool BoughtZapLore = false;
-    public bool BoughtChestLore = false;
-    public bool BoughtVoodooLore = false;
-    public bool BoughtWizardLore = false;
-    public bool BoughtSkinCollector = false;
-    public bool BoughtSkinCollector2 = false;
-    public bool BoughtCompletionist = false;
-    public bool BoughtHeadStart = false;
-    public bool BoughtDiamondHoard = false;
 
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
@@ -70,27 +50,7 @@ public class SaveGameMembers
         $"{nameof(BoughtFasterMystery)} = {SaveGame.Members.BoughtFasterMystery} | " +
         $"{nameof(BoughtFasterArena)} = {SaveGame.Members.BoughtFasterArena} | " +
         $"{nameof(BoughtScaryEarlSkin)} = {SaveGame.Members.BoughtScaryEarlSkin} | " +
-        $"{nameof(BoughtPercentBonusX10)} = {SaveGame.Members.BoughtPercentBonusX10} | " +
-        $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp} | " +
-        $"{nameof(BoughtHaggler1)} = {SaveGame.Members.BoughtHaggler1} | " +
-        $"{nameof(BoughtHaggler2)} = {SaveGame.Members.BoughtHaggler2} | " +
-        $"{nameof(BoughtHaggler3)} = {SaveGame.Members.BoughtHaggler3} | " +
-        $"{nameof(BoughtBeastScholar1)} = {SaveGame.Members.BoughtBeastScholar1} | " +
-        $"{nameof(BoughtBeastScholar2)} = {SaveGame.Members.BoughtBeastScholar2} | " +
-        $"{nameof(BoughtX2Mastery1)} = {SaveGame.Members.BoughtX2Mastery1} | " +
-        $"{nameof(BoughtX2Mastery2)} = {SaveGame.Members.BoughtX2Mastery2} | " +
-        $"{nameof(BoughtX2Mastery3)} = {SaveGame.Members.BoughtX2Mastery3} | " +
-        $"{nameof(BoughtFasterArena2)} = {SaveGame.Members.BoughtFasterArena2} | " +
-        $"{nameof(BoughtCardDiscount)} = {SaveGame.Members.BoughtCardDiscount} | " +
-        $"{nameof(BoughtZapLore)} = {SaveGame.Members.BoughtZapLore} | " +
-        $"{nameof(BoughtChestLore)} = {SaveGame.Members.BoughtChestLore} | " +
-        $"{nameof(BoughtVoodooLore)} = {SaveGame.Members.BoughtVoodooLore} | " +
-        $"{nameof(BoughtWizardLore)} = {SaveGame.Members.BoughtWizardLore} | " +
-        $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +
-        $"{nameof(BoughtSkinCollector2)} = {SaveGame.Members.BoughtSkinCollector2} | " +
-        $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist} | " +
-        $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart} | " +
-        $"{nameof(BoughtDiamondHoard)} = {SaveGame.Members.BoughtDiamondHoard}";
+        $"{nameof(BoughtFasterArena2)} = {SaveGame.Members.BoughtFasterArena2}";
 
     // Settings
     public int Version;

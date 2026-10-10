@@ -402,14 +402,11 @@ public static class EnemySpawner
         double scaledHp = hp * _hpMulForLevel;
         hp = scaledHp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)scaledHp;
 
-        // Permanent rebirth upgrade: halves enemy HP everywhere, for any level.
-        long effectiveSpawnHp = SaveGame.Members.BoughtHalfEnemyHp ? hp / 2 : hp;
-
         foreach (var enemy in spawned)
         {
-            enemy.BaseHp = effectiveSpawnHp;
+            enemy.BaseHp = hp;
             // Reset() (Hp = BaseHp) only runs when returning to the cache, i.e. with the previous BaseHp.
-            enemy.Hp = effectiveSpawnHp;
+            enemy.Hp = hp;
             enemies.Add(enemy);
         }
     }
