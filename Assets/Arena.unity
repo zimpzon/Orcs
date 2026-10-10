@@ -60508,10 +60508,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Credit bonus: <color=#9DE05C>[BONUS]</color>% / 100%
+  m_text: 'Credit income bonus: <color=#9DE05C>[BONUS]</color>% / 100%
 
-    Refills on every
-    rebirth.'
+    Refills
+    on every rebirth.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
