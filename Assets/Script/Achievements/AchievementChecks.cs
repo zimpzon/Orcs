@@ -422,7 +422,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.SuperClears1000)) return;
 
-            if (SaveGame.Members.SuperFastClears >= 1000)
+            // Name kept for saves; the requirement is now 500.
+            if (SaveGame.Members.SuperFastClears >= 500)
             {
                 list.Add(Achieved.SuperClears1000);
                 NewAchieved(Achieved.SuperClears1000);
