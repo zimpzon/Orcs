@@ -119,7 +119,29 @@ namespace Assets.Script.Upgrades
             // Steepened: ((level - 8) / 12)^CreditLateSteepness is x1 at the join (credit 20), x6 at credit 487 (2 min per
             // credit there instead of 20 s, playtest), x2.7 at 100, x8.7 at 1000.
             double steeper = Math.Pow((level - 8) / (double)(CreditCurveJoin - 8), CreditLateSteepness);
-            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper);
+            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper * LateTail(level));
+        }
+
+        // Endgame tail: the polynomial above flattens (at ~2000 credits a x10 income jump was worth ~1300 credits, and the
+        // last tiers multiply income many times). A wide, smooth bend: the extra per-credit price growth ramps linearly
+        // from 0 at CreditTailStart to CreditTailRate at CreditTailEnd, then stays there. Credits per x10 income go
+        // 1320 (2080) -> 777 (2500) -> 541 (2900) -> ~300 (3880+). Price vs no tail: x1.4 at 2500, x3.5 at 2900 (playtest:
+        // 7 s -> ~25 s per credit there), x43 at 3500.
+        const double CreditTailStart = 2080;
+        const double CreditTailEnd = 3880;
+        const double CreditTailRate = 0.0067;
+
+        static double LateTail(long level)
+        {
+            double x = level - CreditTailStart;
+            if (x <= 0)
+                return 1.0;
+
+            double width = CreditTailEnd - CreditTailStart;
+            double exponent = x <= width
+                ? CreditTailRate * x * x / (2 * width)
+                : CreditTailRate * (width / 2 + (x - width));
+            return Math.Exp(Math.Min(700, exponent)); // no double overflow
         }
 
         static double ReleaseCurveShape(long level)
