@@ -24,7 +24,7 @@ public enum AscendUpgradeCardId
     ShinyDiamonds5, // +100%
     HalfEnemyHp,    // all enemies have half HP
     Haggler,        // tier upgrades and X2 cost half
-    HeadStart,      // every run starts with 10 seconds of the best-ever income
+    HeadStart,      // every run starts with 1 second of the best-ever income
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
