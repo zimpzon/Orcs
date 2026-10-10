@@ -64,9 +64,8 @@ public class AscendProgressScript : MonoBehaviour
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
-        // Commit actual XP/credit gain once per second (the display below updates every frame). Cheap credits can
-        // mean several per second: award all of them and keep the leftover XP, otherwise the rebirth credit bonus
-        // (x1.0 -> x0.1) would make no visible difference while credits come faster than one per second.
+        // Commit actual XP/credit gain once per second (the display below updates every frame). Hard cap: at most one
+        // credit per second (per second of delta after a stall); XP beyond that is dropped, not banked.
         if (G.D.RealTime >= _nextCreditUpdate)
         {
             // Calculate how much time actually passed since last update
@@ -83,8 +82,8 @@ public class AscendProgressScript : MonoBehaviour
             SaveGame.Members.MonsterCreditsXp_09_08_2025 +=
                 creditXpPerSecond * delta;
 
-            const int MaxCreditsPerCommit = 1000; // safety cap; the rest of the XP carries over to the next second
-            for (int i = 0; i < MaxCreditsPerCommit; ++i)
+            int maxCredits = Math.Max(1, (int)Math.Floor(delta));
+            for (int i = 0; i < maxCredits; ++i)
             {
                 Decimal512 xpForNextLevelCommit = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
                 if (SaveGame.Members.MonsterCreditsXp_09_08_2025 < xpForNextLevelCommit)
@@ -94,6 +93,11 @@ public class AscendProgressScript : MonoBehaviour
                 SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
                 SaveGame.Members.MonsterCredits_09_08_2025++;
             }
+
+            // Capped: keep the bar just short of full instead of banking a backlog.
+            Decimal512 xpCap = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1) * 0.999;
+            if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpCap)
+                SaveGame.Members.MonsterCreditsXp_09_08_2025 = xpCap;
             SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
 
             _lastCreditCommitTime = G.D.RealTime;
