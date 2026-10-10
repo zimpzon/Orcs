@@ -36,13 +36,15 @@ public class UpgradeData
 
     public double PassiveIncomePercentageBonuses = 0.0f;
     public double PassiveIncomeBestiaryBonuses = 0.0f;
+    public double PassiveIncomeDiamondBonus = 0.0; // % per diamond held x diamonds held (AscendProgressScript)
 
     public double PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
         PassiveIncomeAscendMultiplier *
         (1.0 + PassiveIncomeX2Multiplier) *
         (1.0 + PassiveIncomePercentageBonuses) *
-        (1.0 + PassiveIncomeBestiaryBonuses);
+        (1.0 + PassiveIncomeBestiaryBonuses) *
+        (1.0 + PassiveIncomeDiamondBonus);
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;

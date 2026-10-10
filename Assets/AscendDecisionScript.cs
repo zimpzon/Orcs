@@ -15,15 +15,13 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextAscendNowGain;
     public TextMeshProUGUI TextButtonRebirth;
     public TextMeshProUGUI TextWhatYouLose;
-    public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder
-    public Image CreditBonusBarFill;        // filled image: empty at x1, full at x2
-    public TextMeshProUGUI CreditBonusBarText; // "x1.73 / x2.00" on the bar
+    public TextMeshProUGUI TextDiamondEach; // scene text with a [PCT] placeholder
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
 
     private string _whatYouLoseTemplate;
-    private string _creditBonusTemplate;
+    private string _diamondEachTemplate;
     private int _clickCount;
 
     // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
@@ -39,8 +37,8 @@ public class AscendDecisionScript : MonoBehaviour
     {
         Instance = this;
         _whatYouLoseTemplate = TextWhatYouLose.text;
-        if (TextCreditBonus != null)
-            _creditBonusTemplate = TextCreditBonus.text;
+        if (TextDiamondEach != null)
+            _diamondEachTemplate = TextDiamondEach.text;
         SetupHeaderDiamonds();
     }
 
@@ -174,18 +172,14 @@ public class AscendDecisionScript : MonoBehaviour
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
+        long diamondIncomePct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
+        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color=#{gainTextColorStr}>{diamondIncomePct}</color>% income)";
 
-        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0>";
+        // Scene text with a [PCT] placeholder: income bonus per diamond held (base + Shiny Diamonds cards).
+        if (TextDiamondEach != null)
+            TextDiamondEach.text = _diamondEachTemplate.Replace("[PCT]", Math.Round(UpgradeProgression.DiamondBonusPerDiamond() * 100).ToString());
         TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
-        TextAscendNowGain.text = $"Rebirth now to gain: +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
-
-        // Rebirth credit bonus (UpgradeProgression.CreditBonusProgress): x2.00 after a rebirth, falls to x1.00.
-        double creditBonusMul = UpgradeProgression.CreditBonusDisplayMul();
-        if (CreditBonusBarFill != null)
-            CreditBonusBarFill.fillAmount = Mathf.Clamp01((float)creditBonusMul - 1f); // empty at x1, full at x2
-        if (CreditBonusBarText != null)
-            CreditBonusBarText.text = $"<color=#9DE05C>x{creditBonusMul:0.00}</color> / x2.00";
-
+        TextAscendNowGain.text = $"Rebirth now to gain +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
         TextWhatYouLose.text = _whatYouLoseTemplate;
 

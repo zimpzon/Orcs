@@ -402,6 +402,10 @@ public static class EnemySpawner
         double scaledHp = hp * _hpMulForLevel;
         hp = scaledHp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)scaledHp;
 
+        // Weaken rebirth card: all enemies have half HP.
+        if (SaveGame.Members.BoughtHalfEnemyHp)
+            hp /= 2;
+
         foreach (var enemy in spawned)
         {
             enemy.BaseHp = hp;

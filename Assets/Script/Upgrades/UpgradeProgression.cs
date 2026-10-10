@@ -125,7 +125,7 @@ namespace Assets.Script.Upgrades
             return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late * extra * early * tail);
         }
 
-        const double CreditCostMul = 0.1;
+        const double CreditCostMul = 0.2; // was 0.1 with the removed rebirth credit bonus at its x0.5 floor
         const double CreditCostRamp = 85;
         const double CreditCostRampPower = 1.17;
         const double CreditCostLateScale = 195;
@@ -155,55 +155,6 @@ namespace Assets.Script.Upgrades
             return income > floor ? income : floor;
         }
 
-        // Rebirth credit bonus: a mild perk, not a forced rebirth (diamonds give no income, so a forced rebirth with
-        // nothing to buy felt terrible). The credit XP rate is multiplied by x1.0 right after a rebirth, falling to
-        // CreditBonusMinMul when lifetime credits reach 1.75x what they were at that rebirth (CreditBonusStartLifetime,
-        // min 2). Below 2 lifetime credits it's always x1.0. Shown to the player as x2.00 going down to x1.00.
-        const long CreditBonusMinLifetime = 2;
-        const double CreditBonusEndFactor = 1.75;
-        const double CreditBonusMinMul = 0.5;
-
-        // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
-        // Also stored at rebirth (SaveGameAscend): the leftover XP carries over, so a whole-credit start made the new
-        // run begin at ~x1.98.
-        public static double CreditsEarnedWithPartial(SaveGameMembers m)
-        {
-            long lifetime = m.MonsterCreditsLifetime_09_08_2025;
-            double partial = Math.Clamp((m.MonsterCreditsXp_09_08_2025 / MonsterCreditXpForNextLevel(lifetime + 1)).ToDouble(), 0.0, 1.0);
-            return lifetime + partial;
-        }
-
-        // 0 = just rebirthed (x1.0, shown x2.00), 1 = reached 1.75x the start (x0.5, shown x1.00).
-        public static double CreditBonusProgress()
-        {
-            var m = SaveGame.Members;
-            long lifetime = m.MonsterCreditsLifetime_09_08_2025;
-            double earned = CreditsEarnedWithPartial(m);
-            if (m.CreditBonusStartLifetime < 0)
-                m.CreditBonusStartLifetime = earned; // saves from before this existed start fresh at x2.00
-
-            if (lifetime < CreditBonusMinLifetime)
-                return 0.0;
-
-            double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
-            double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
-            return Math.Clamp(t, 0.0, 1.0);
-        }
-
-        // Linear: x1.0 -> CreditBonusMinMul (shown x2.00 -> x1.00 at an even pace). No bonus before the first rebirth:
-        // it's a rebirth reward, and on a fresh save it made credit 2 come ~3x faster than credit 1.
-        public static double CreditBonusMultiplier()
-        {
-            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
-                return CreditBonusMinMul;
-
-            return 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
-        }
-
-        // Shown to the player as a multiplier: x2.00 (just rebirthed, x1.0) down to x1.00 (x0.5).
-        public static double CreditBonusDisplayMul()
-            => CreditBonusMultiplier() / CreditBonusMinMul;
-
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
         // Level 30: Original ~82815B, New ~103519B (+25%) 
@@ -211,8 +162,30 @@ namespace Assets.Script.Upgrades
         public static Decimal512 PriceX2(Decimal512 initialPrice, long levelX2)
         {
             Decimal512 result = initialPrice * Math.Pow(3, levelX2);
-            return result;
+            return result * ShopPriceMul();
         }
+
+        // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
+        public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
+
+        // Diamonds held give passive income: base 10% per diamond, Shiny Diamonds cards 1-5 add 10/20/40/60/100%.
+        // Returned as the bonus fraction, income x(1 + bonus). Spending diamonds on cards lowers it.
+        const double DiamondBonusBase = 0.10;
+
+        public static double DiamondBonusPerDiamond()
+        {
+            var m = SaveGame.Members;
+            double pct = DiamondBonusBase;
+            if (m.BoughtShinyDiamonds1) pct += 0.10;
+            if (m.BoughtShinyDiamonds2) pct += 0.20;
+            if (m.BoughtShinyDiamonds3) pct += 0.40;
+            if (m.BoughtShinyDiamonds4) pct += 0.60;
+            if (m.BoughtShinyDiamonds5) pct += 1.00;
+            return pct;
+        }
+
+        public static double DiamondIncomeBonus()
+            => DiamondBonusPerDiamond() * SaveGame.Members.DiamondCount_09_08_2025;
 
         public static long LevelRequirementX2(long levelX2)
         {
@@ -264,7 +237,7 @@ namespace Assets.Script.Upgrades
                 Decimal512 priceForLevel = initialPrice * Math.Pow(1.15, currentLevel + i);
                 sum += priceForLevel;
             }
-            return sum;
+            return sum * ShopPriceMul();
         }
 
         public static Decimal512 PriceNextPercentageBonus(long level)

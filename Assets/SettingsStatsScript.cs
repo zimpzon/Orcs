@@ -55,6 +55,7 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("<b>Passive income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));
         sb.AppendLine(BuildLine("X2 multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier), Multiplier));
         sb.AppendLine(BuildLine("Bestiary multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses), Multiplier));
+        sb.AppendLine(BuildLine("Diamond multiplier", Mul(1 + UpgradeProgression.DiamondIncomeBonus()), Multiplier));
         sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
         sb.AppendLine(BuildLine("Rebirth cards multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));

@@ -17,6 +17,13 @@ public enum AscendUpgradeCardId
     FasterArena,
     SkinScaryEarl,
     FasterArena2,
+    ShinyDiamonds1, // income bonus per diamond held: +10% (on top of the base 10%)
+    ShinyDiamonds2, // +20%
+    ShinyDiamonds3, // +40%
+    ShinyDiamonds4, // +60%
+    ShinyDiamonds5, // +100%
+    HalfEnemyHp,    // all enemies have half HP
+    Haggler,        // tier upgrades and X2 cost half
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -77,6 +84,13 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.FasterArena => SaveGame.Members.BoughtFasterArena,
             AscendUpgradeCardId.SkinScaryEarl => SaveGame.Members.BoughtScaryEarlSkin,
             AscendUpgradeCardId.FasterArena2 => SaveGame.Members.BoughtFasterArena2,
+            AscendUpgradeCardId.ShinyDiamonds1 => SaveGame.Members.BoughtShinyDiamonds1,
+            AscendUpgradeCardId.ShinyDiamonds2 => SaveGame.Members.BoughtShinyDiamonds2,
+            AscendUpgradeCardId.ShinyDiamonds3 => SaveGame.Members.BoughtShinyDiamonds3,
+            AscendUpgradeCardId.ShinyDiamonds4 => SaveGame.Members.BoughtShinyDiamonds4,
+            AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
+            AscendUpgradeCardId.HalfEnemyHp => SaveGame.Members.BoughtHalfEnemyHp,
+            AscendUpgradeCardId.Haggler => SaveGame.Members.BoughtHaggler,
             _ => throw new NotImplementedException()
         };
 
@@ -156,6 +170,34 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.FasterArena2)
         {
             SaveGame.Members.BoughtFasterArena2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds1)
+        {
+            SaveGame.Members.BoughtShinyDiamonds1 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds2)
+        {
+            SaveGame.Members.BoughtShinyDiamonds2 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds3)
+        {
+            SaveGame.Members.BoughtShinyDiamonds3 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds4)
+        {
+            SaveGame.Members.BoughtShinyDiamonds4 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.ShinyDiamonds5)
+        {
+            SaveGame.Members.BoughtShinyDiamonds5 = true;
+        }
+        else if (CardId == AscendUpgradeCardId.HalfEnemyHp)
+        {
+            SaveGame.Members.BoughtHalfEnemyHp = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Haggler)
+        {
+            SaveGame.Members.BoughtHaggler = true;
         }
         else
             throw new NotImplementedException();
