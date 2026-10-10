@@ -24,7 +24,7 @@ public class BestiaryScript : MonoBehaviour
         {
             bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(beastActor.ActorType);
 
-            // +1% per beast index. Calc is both here and in BeastiaryBeastScript.
+            // Bonus grows by 1 per beast: 1, 2, 3... %. Calc is both here and in BeastiaryBeastScript.
             incomeBonus += isUnlocked ? idx + 1 : 0;
             idx++;
         }

@@ -173,7 +173,7 @@ public class AscendDecisionScript : MonoBehaviour
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
         long diamondIncomePct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
-        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color=#{gainTextColorStr}>{diamondIncomePct}</color>% income)";
+        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Assets.Script.Misc.Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color=#9DE05C>{diamondIncomePct}</color>% income)";
 
         // Scene text with a [PCT] placeholder: income bonus per diamond held (base + Shiny Diamonds cards).
         if (TextDiamondEach != null)

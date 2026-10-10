@@ -101,41 +101,42 @@ namespace Assets.Script.Upgrades
             return monsterCredits;
         }
 
+        // Credits 1-20: the tuned early curve below. From credit 21: the cubic shape of the released game's curve
+        // (495B + 58B * (level - 8)^3), scaled to join the early curve at credit 20. Starting point, to be tuned.
+        const long CreditCurveJoin = 20;
+
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
         {
-            // One smooth, always-rising curve: 5B x (1 + 2n^2) x CreditCostMul x (1 + n/CreditCostRamp)^CreditCostRampPower,
-            // n = level - 1. The ramp factor makes later credits progressively pricier: vs the previous pure quadratic
-            // (x0.125) the first 10 are ~10-20% cheaper, credit 100 x2, 250 x4, 1000 x16.
-            // Late factor 1 + (n/CreditCostLateScale)^CreditCostLatePower on top: ~x1 up to credit 100, then steep
-            // (200 x2, 300 x5, 400 x13, 500 x27, 600 x50, 1000 x286) - at ~600 credits came about once per second.
-            // Extra factor 1 + CreditCostExtra * n^2 / (n^2 + CreditCostExtraStart^2): +50% overall but sparing the start
-            // (credit 10 x1.08, 20 x1.24, 50 x1.43, 100+ ~x1.5).
-            double n = level - 1;
-            double ramp = Math.Pow(1 + n / CreditCostRamp, CreditCostRampPower);
-            double late = 1 + Math.Pow(n / CreditCostLateScale, CreditCostLatePower);
-            double extra = 1 + CreditCostExtra * n * n / (n * n + CreditCostExtraStart * CreditCostExtraStart);
-            // Early bump: the first credits (up to ~20) a bit pricier, credit 1 unchanged, gone again by ~50-75
-            // (credit 2 x1.03, 5 x1.16, 10-20 ~x1.22, 30 x1.13, 50 x1.03).
-            double early = 1 + CreditCostEarly * (n * n / (n * n + 9)) / (1 + Math.Pow(n / CreditCostEarlyFade, 4));
-            // Exponential tail: income climbs many powers of ten per run, and with the polynomial alone a x10 income jump
-            // was worth ever more credits (77 at credit 100, 344 at 1400, 564 at 3000), so credits exploded once tier
-            // upgrades kicked in. The tail makes the price grow by a near-fixed factor per credit, so a x10 income jump
-            // stays worth ~85-130 credits from ~300 on (CreditCostTailScale = 150 / ln 10). ~x1 up to ~100 credits.
-            double tail = Math.Exp(n / CreditCostTailScale * (n * n / (n * n + CreditCostTailStart * CreditCostTailStart)));
-            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * late * extra * early * tail);
+            if (level <= CreditCurveJoin)
+                return EarlyCreditXp(level);
+
+            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin));
         }
 
-        const double CreditCostMul = 0.2; // was 0.1 with the removed rebirth credit bonus at its x0.5 floor
+        static double ReleaseCurveShape(long level)
+        {
+            double d = level - 8;
+            return 495 + 58 * d * d * d;
+        }
+
+        // 1B x (1 + 2n^2), n = level - 1, with three gentle factors: ramp (1 + n/85)^1.17, extra
+        // 1 + 0.5 * n^2 / (n^2 + 20^2) and an early bump (credit 2 x1.03, 5 x1.16, 10-20 ~x1.22).
+        static Decimal512 EarlyCreditXp(long level)
+        {
+            double n = level - 1;
+            double ramp = Math.Pow(1 + n / CreditCostRamp, CreditCostRampPower);
+            double extra = 1 + CreditCostExtra * n * n / (n * n + CreditCostExtraStart * CreditCostExtraStart);
+            double early = 1 + CreditCostEarly * (n * n / (n * n + 9)) / (1 + Math.Pow(n / CreditCostEarlyFade, 4));
+            return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * extra * early);
+        }
+
+        const double CreditCostMul = 0.1024; // 0.2 minus three 20% cuts (whole curve, so it stays continuous at credit 20)
         const double CreditCostRamp = 85;
         const double CreditCostRampPower = 1.17;
-        const double CreditCostLateScale = 195;
-        const double CreditCostLatePower = 3.46;
         const double CreditCostExtra = 0.5;
         const double CreditCostExtraStart = 20;
         const double CreditCostEarly = 0.25;
         const double CreditCostEarlyFade = 30;
-        const double CreditCostTailScale = 65;
-        const double CreditCostTailStart = 600;
 
         // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
         // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income

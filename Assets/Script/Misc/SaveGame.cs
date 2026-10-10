@@ -24,6 +24,7 @@ public class SaveGameMembers
     public long DiamondCount_09_08_2025;
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
+    public bool ViewedTipsDialog = false; // opened the tips popup: stops the tips icon pulse
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these
     public bool BoughtPassiveX2_1 = false;

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -38,6 +38,7 @@ public class CrownPulse : MonoBehaviour
             // the player may keep collecting credits, so the big one would get annoying.
             PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && !m.ViewedRebirthDialog,
             PulseCondition.FirstRebirthReadySeen => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && m.ViewedRebirthDialog,
+            PulseCondition.TipsUnseen => !m.ViewedTipsDialog,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             _ => m.Achieved.Contains(Achieved.Completion100),
         };

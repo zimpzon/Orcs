@@ -34,6 +34,7 @@ public class TipsPopupScript : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
+        SaveGame.Members.ViewedTipsDialog = true; // stops the tips icon pulse (CrownPulse)
     }
 
     public void OnClose()
