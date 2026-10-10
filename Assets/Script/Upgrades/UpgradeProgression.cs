@@ -203,9 +203,10 @@ namespace Assets.Script.Upgrades
             return 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
         }
 
-        // 100 (just rebirthed) down to 0, linear like the multiplier.
+        // 100 (just rebirthed) down to 0, linear like the multiplier. Rounded up: rounding to nearest showed 99% within
+        // seconds of a rebirth. Still exactly 0 at the end.
         public static int CreditBonusDisplayPct()
-            => (int)Math.Round((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * 100);
+            => (int)Math.Ceiling((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * 100 - 1e-9);
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
