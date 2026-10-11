@@ -39,8 +39,8 @@ public static class EnemySpawner
     // instead of #6). MinLevel x0.5 everywhere, BaseHp ~x0.25 so budget/effectiveHp at each type's gate is the
     // same as before (the HP budget is quadratic in level). The level/HP numbers in the comments above and below
     // refer to the pre-halving values.
-    // 2026-10: top 20 BaseHp raised: x10 for the last (FromTheVoid), the added part scaling down linearly to x1.45
-    // for the 20th (IronMask). Everything below unchanged.
+    // 2026-10: top 8 BaseHp raised: x10 for the last (FromTheVoid), the added part scaling down linearly to x1.45
+    // for the 8th (InnocentOrc). Everything below unchanged.
     private static readonly EnemyType[] EnemyTypes = new[]
     {
         // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
@@ -53,25 +53,25 @@ public static class EnemySpawner
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
         new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000,  81_000),
-        new EnemyType(ActorTypeEnum.TheGrey,        439_300_000_000,  72_000),
-        new EnemyType(ActorTypeEnum.DarkWizard,     364_000_000_000,  63_500),
-        new EnemyType(ActorTypeEnum.TheKaren,       302_750_000_000,  56_000),
-        new EnemyType(ActorTypeEnum.ShirlieShaman,  246_000_000_000,  49_000),
-        new EnemyType(ActorTypeEnum.UndeadPig,      201_500_000_000,  43_000),
-        new EnemyType(ActorTypeEnum.ChillZombie,    167_900_000_000,  38_000),
-        new EnemyType(ActorTypeEnum.InnocentOrc,    137_000_000_000,  33_000),
-        new EnemyType(ActorTypeEnum.AngryDude,      108_800_000_000,  28_000),
-        new EnemyType(ActorTypeEnum.HrDude,          89_250_000_000,  24_000),
-        new EnemyType(ActorTypeEnum.OrangeMan,       77_000_000_000,  21_000),
-        new EnemyType(ActorTypeEnum.BabyOrc,         55_550_000_000,  17_750),
-        new EnemyType(ActorTypeEnum.NakedDude,       46_000_000_000,  15_000),
-        new EnemyType(ActorTypeEnum.TheDarkness,     36_100_000_000,  12_500),
-        new EnemyType(ActorTypeEnum.PigFromSpace,    19_240_000_000,  10_250),
-        new EnemyType(ActorTypeEnum.FromTheDeep,      8_120_000_000,   8_250),
-        new EnemyType(ActorTypeEnum.Faceless,         3_080_000_000,   6_500),
-        new EnemyType(ActorTypeEnum.AfroOrc,          1_600_000_000,   5_250),
-        new EnemyType(ActorTypeEnum.BrainZombie,        680_000_000,   4_000),
-        new EnemyType(ActorTypeEnum.IronMask,           320_000_000,   3_250),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  72_000),
+        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  63_500),
+        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  56_000),
+        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  49_000),
+        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  43_000),
+        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  38_000),
+        new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  33_000),
+        new EnemyType(ActorTypeEnum.AngryDude,       17_000_000_000,  28_000),
+        new EnemyType(ActorTypeEnum.HrDude,          15_000_000_000,  24_000),
+        new EnemyType(ActorTypeEnum.OrangeMan,       14_000_000_000,  21_000),
+        new EnemyType(ActorTypeEnum.BabyOrc,         11_000_000_000,  17_750),
+        new EnemyType(ActorTypeEnum.NakedDude,       10_000_000_000,  15_000),
+        new EnemyType(ActorTypeEnum.TheDarkness,      8_700_000_000,  12_500),
+        new EnemyType(ActorTypeEnum.PigFromSpace,     5_200_000_000,  10_250),
+        new EnemyType(ActorTypeEnum.FromTheDeep,      2_500_000_000,   8_250),
+        new EnemyType(ActorTypeEnum.Faceless,         1_100_000_000,   6_500),
+        new EnemyType(ActorTypeEnum.AfroOrc,            680_000_000,   5_250),
+        new EnemyType(ActorTypeEnum.BrainZombie,        360_000_000,   4_000),
+        new EnemyType(ActorTypeEnum.IronMask,           220_000_000,   3_250),
         new EnemyType(ActorTypeEnum.Snout,              150_000_000,   2_500),
         new EnemyType(ActorTypeEnum.Karateeth,           73_000_000,   2_000),
         new EnemyType(ActorTypeEnum.WannabeNecro,        44_000_000,   1_750),
