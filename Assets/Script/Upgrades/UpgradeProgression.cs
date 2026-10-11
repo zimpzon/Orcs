@@ -318,6 +318,10 @@ namespace Assets.Script.Upgrades
                 throw new NotImplementedException($"{selection}");
         }
 
+        // Each tier level costs this much more than the previous one. Was 1.15: runs stalled too early (level 100 now x0.17,
+        // level 300 x0.005 of the old price). 1.14 is the middle step if this turns out too generous.
+        const double LevelPriceGrowth = 1.13;
+
         public static Decimal512 PriceForNextUpgrade(Decimal512 initialPrice, long currentLevel, long currentLevelX2)
         {
             long buyAmount = GetActualBuyAmountFromSelectedBuyAmount(currentLevel, currentLevelX2);
@@ -325,7 +329,7 @@ namespace Assets.Script.Upgrades
             Decimal512 sum = 0;
             for (int i = 0; i < buyAmount; ++i)
             {
-                Decimal512 priceForLevel = initialPrice * Math.Pow(1.15, currentLevel + i);
+                Decimal512 priceForLevel = initialPrice * Math.Pow(LevelPriceGrowth, currentLevel + i);
                 sum += priceForLevel;
             }
             return sum * ShopPriceMul();
@@ -338,7 +342,7 @@ namespace Assets.Script.Upgrades
             if (level == 2) return 100_000;
             if (level == 3) return 250_000;
             Decimal512 basePrice = 500_000;
-            double growthRate = 1.2378; // Reduced from 1.245 to halve level 100 cost
+            double growthRate = 1.2; // was 1.2378 (and 1.245 before that): level 100 x0.05 of the 1.2378 price
             double exponent = level - 3;
             return basePrice * (Decimal512)Math.Pow(growthRate, exponent);
         }

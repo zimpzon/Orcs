@@ -10,7 +10,7 @@ public static class EnemySpawner
     public const long HpScale = 5;
     // Extra enemy HP, applied per enemy in SpawnEnemies. Phased in with the arena level: x1 at arena 1, rising in a
     // straight line to the full EnemyHpMul at arena EnemyHpMulFullLevel (and beyond), so the early game is unchanged.
-    public const long EnemyHpMul = 500;
+    public const long EnemyHpMul = 150; // was 500: more arena progress per hour played
     public const long EnemyHpMulFullLevel = 10_000;
     static double _hpMulForLevel = 1.0; // set per wave in GetEnemies
 
