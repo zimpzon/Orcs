@@ -296,6 +296,22 @@ namespace Assets.Script.Upgrades
             return Math.Max(1, CreditLimitSlowestSeconds - (top - CreditLimitFirstTier) * (CreditLimitSlowestSeconds - 1) / (last - CreditLimitFirstTier));
         }
 
+        // Soft speed limit in the last tiers (tier >= CreditLimitFirstTier): the credit speed approaches the limit instead of
+        // being cut off at it, so more income keeps mattering. Effective credits/s = natural / (1 + natural * T), T =
+        // MinSecondsPerCredit: half the limit when natural speed equals it, 90% at 9x, 95% at 19x. Returned as a factor
+        // for the credit XP rate. Earlier tiers: x1 (only the plain 1 s cap).
+        public static double CreditSoftLimitFactor(Decimal512 creditXpPerSecond)
+        {
+            if (UpgradeTierList.CountBought() < CreditLimitFirstTier)
+                return 1.0;
+
+            Decimal512 price = MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
+            double naturalCreditsPerSecond = (creditXpPerSecond / price).ToDouble();
+            if (naturalCreditsPerSecond <= 0 || double.IsNaN(naturalCreditsPerSecond))
+                return 1.0;
+            return 1.0 / (1.0 + naturalCreditsPerSecond * MinSecondsPerCredit());
+        }
+
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
         public const double HeadStartSeconds = 25 * 60;
 

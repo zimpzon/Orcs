@@ -31,7 +31,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine("<size=+4><b><color=#8DBE4C>Beefy Earl</color></b></size>");
-            sb.AppendLine("<color=#dddddd>More daggers and stronger too!");
+            sb.AppendLine("<color=#dddddd>More daggers, more power!");
             sb.AppendLine("");
             sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.FormatWithDecimals(baseIncome)}</color> per second.");
