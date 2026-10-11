@@ -26,18 +26,21 @@ public class PercentageBonusScript : MonoBehaviour
     private void Start()
     {
         GameEvents.OnSaveWiped += OnSaveWiped;
-        SetBuyAmount((int)PercentageBonusBuyAmount.Buy1);
+        SetBuyAmount(SaveGame.Members.PctBonusBuyAmount); // remembered in the save
         UpdateAll();
     }
 
     void OnSaveWiped(GameEvents.SaveWipeReason reason)
     {
-        UpdateAll();
+        SetBuyAmount(SaveGame.Members.PctBonusBuyAmount); // the (new) save's choice
     }
 
     public void SetBuyAmount(int selection)
     {
+        if (selection != (int)PercentageBonusBuyAmount.Buy10)
+            selection = (int)PercentageBonusBuyAmount.Buy1;
         SelectedBuyAmount = (PercentageBonusBuyAmount)selection;
+        SaveGame.Members.PctBonusBuyAmount = selection;
 
         if (ButtonBuy1 != null) ButtonBuy1.interactable = true;
         if (ButtonBuy10 != null) ButtonBuy10.interactable = true;

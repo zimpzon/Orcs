@@ -84,6 +84,7 @@ public class SaveGameMembers
     public bool UseScientificNotation = false;
     public bool ShowDetailsOnHover = true;
     public bool SoundEnabled = true;
+    public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
     public SkinAnimation SelectedSkin = SkinAnimation.Default;
 
     // Progress
