@@ -1701,6 +1701,11 @@ public class GameManager : MonoBehaviour
         PlayerUpgrades.Data.PassiveIncomeSkinBonus = SaveGame.Members.BoughtSkinCollector
             ? SkinScript.GetUnlockProgress().unlocked * Assets.Script.Upgrades.UpgradeProgression.SkinCollectorPerSkin
             : 0.0;
+
+        // Completionist card: +1% passive income per game completion % (whole percents).
+        PlayerUpgrades.Data.PassiveIncomeCompletionBonus = SaveGame.Members.BoughtCompletionist
+            ? System.Math.Floor(GameCompletion.GetProgress().TotalPct) * Assets.Script.Upgrades.UpgradeProgression.CompletionistPerPct
+            : 0.0;
     }
 
     void Update()

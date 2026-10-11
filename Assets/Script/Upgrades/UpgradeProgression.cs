@@ -256,6 +256,9 @@ namespace Assets.Script.Upgrades
         // Skin Collector rebirth card: passive income bonus per unlocked skin.
         public const double SkinCollectorPerSkin = 0.05;
 
+        // Completionist rebirth card: passive income bonus per game completion % (GameCompletion.TotalPct).
+        public const double CompletionistPerPct = 0.01;
+
         // Credit speed limit in the last tiers, where income explodes: with tier 15 as the highest tier bought (tiers unlock
         // in order, so count = highest tier) credits can't come faster than every 10 s, tier 16 every 9 s ... Storm Lord
         // (tier 24) every 1 s. Below tier 15 only the normal 1-per-second cap applies.

@@ -38,6 +38,7 @@ public class UpgradeData
     public double PassiveIncomeBestiaryBonuses = 0.0f;
     public double PassiveIncomeDiamondBonus = 0.0; // % per diamond held x diamonds held (AscendProgressScript)
     public double PassiveIncomeSkinBonus = 0.0; // Skin Collector card: +5% per unlocked skin (GameManager)
+    public double PassiveIncomeCompletionBonus = 0.0; // Completionist card: +1% per game completion % (GameManager)
 
     public double PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
@@ -46,7 +47,8 @@ public class UpgradeData
         (1.0 + PassiveIncomePercentageBonuses) *
         (1.0 + PassiveIncomeBestiaryBonuses) *
         (1.0 + PassiveIncomeDiamondBonus) *
-        (1.0 + PassiveIncomeSkinBonus);
+        (1.0 + PassiveIncomeSkinBonus) *
+        (1.0 + PassiveIncomeCompletionBonus);
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;

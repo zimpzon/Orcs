@@ -27,6 +27,7 @@ public enum AscendUpgradeCardId
     HeadStart,      // every run starts with 1 minute of the best-ever income
     SkinCollector,  // +5% income per unlocked skin
     BeastScholar,   // enables the bestiary income bonus (+1%, +2%, +3%... per unlocked beast)
+    Completionist,  // +1% income per game completion %
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -97,6 +98,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
             AscendUpgradeCardId.BeastScholar => SaveGame.Members.BoughtBeastScholar,
+            AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
             _ => throw new NotImplementedException()
         };
 
@@ -216,6 +218,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.BeastScholar)
         {
             SaveGame.Members.BoughtBeastScholar = true;
+        }
+        else if (CardId == AscendUpgradeCardId.Completionist)
+        {
+            SaveGame.Members.BoughtCompletionist = true;
         }
         else
             throw new NotImplementedException();
