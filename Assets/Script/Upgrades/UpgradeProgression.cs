@@ -278,7 +278,7 @@ namespace Assets.Script.Upgrades
         }
 
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
-        public const double HeadStartSeconds = 60;
+        public const double HeadStartSeconds = 25 * 60;
 
         // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
         public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
