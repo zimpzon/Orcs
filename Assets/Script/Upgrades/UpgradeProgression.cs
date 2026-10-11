@@ -297,9 +297,12 @@ namespace Assets.Script.Upgrades
         }
 
         // Soft speed limit in the last tiers (tier >= CreditLimitFirstTier): the credit speed approaches the limit instead of
-        // being cut off at it, so more income keeps mattering. Effective credits/s = natural / (1 + natural * T), T =
-        // MinSecondsPerCredit: half the limit when natural speed equals it, 90% at 9x, 95% at 19x. Returned as a factor
-        // for the credit XP rate. Earlier tiers: x1 (only the plain 1 s cap).
+        // being cut off at it, so more income keeps mattering. Effective credits/s = natural / (1 + (natural * T)^p)^(1/p),
+        // T = MinSecondsPerCredit, p = CreditSoftLimitSharpness. p = 2: 71% of the limit when natural speed equals it,
+        // 89% at 2x, 95% at 3x (p = 1 was 50% / 67% / 75%: too slow at Beefy Earl). Returned as a factor for the credit
+        // XP rate. Earlier tiers: x1 (only the plain 1 s cap).
+        const double CreditSoftLimitSharpness = 2.0;
+
         public static double CreditSoftLimitFactor(Decimal512 creditXpPerSecond)
         {
             if (UpgradeTierList.CountBought() < CreditLimitFirstTier)
@@ -309,7 +312,8 @@ namespace Assets.Script.Upgrades
             double naturalCreditsPerSecond = (creditXpPerSecond / price).ToDouble();
             if (naturalCreditsPerSecond <= 0 || double.IsNaN(naturalCreditsPerSecond))
                 return 1.0;
-            return 1.0 / (1.0 + naturalCreditsPerSecond * MinSecondsPerCredit());
+            double x = naturalCreditsPerSecond * MinSecondsPerCredit();
+            return 1.0 / Math.Pow(1.0 + Math.Pow(x, CreditSoftLimitSharpness), 1.0 / CreditSoftLimitSharpness);
         }
 
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
