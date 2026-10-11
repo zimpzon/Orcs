@@ -12,6 +12,7 @@ public class PlayerScript : MonoBehaviour
     float chaseSwitch_ = 0;
     public Sprite[] RunSprites;
     public Sprite[] IdleSprites;
+    public Sprite CrownSprite; // worn at 100% completion (PlayerCrown)
 
     public GameObject Follower;
 
@@ -356,6 +357,7 @@ public class PlayerScript : MonoBehaviour
         material_ = renderer_.material;
 
         shadowRenderer_ = trans_.Find("BlobShadow").GetComponent<SpriteRenderer>();
+        gameObject.AddComponent<PlayerCrown>().Init(renderer_, CrownSprite);
     }
 
     // STALKED by a ghostly presence from the void
