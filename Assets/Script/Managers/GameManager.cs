@@ -596,8 +596,8 @@ public class GameManager : MonoBehaviour
             if (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here.
-                // Speed cheat also multiplies the jump (timeouts still only step back the normal amount).
-                long winStep = arenaStep * (long)G.CheatSpeed;
+                // Arena jump cheat (RightCtrl+J): a fixed jump per win (timeouts still only step back the normal amount).
+                long winStep = CheatArenaJump > 0 ? CheatArenaJump : arenaStep;
                 long levelBeforeWin = SaveGame.Members.ArenaLevel;
                 SaveGame.Members.ArenaLevel += winStep;
 
@@ -1569,13 +1569,28 @@ public class GameManager : MonoBehaviour
 
     void ToggleCheatSpeed()
     {
-        // Deliberately not Time.timeScale - the arena can't handle running that fast. Combat stays at normal speed,
-        // everything driven by G.D.RealTime runs faster, and arena wins jump further instead.
+        // Deliberately not Time.timeScale - the arena can't handle running that fast. Combat stays at normal speed and
+        // everything driven by G.D.RealTime runs faster. (Arena jumps are their own cheat: RightCtrl+J.)
         int current = Array.IndexOf(CheatSpeedSteps, G.CheatSpeed);
         G.CheatSpeed = CheatSpeedSteps[(current + 1) % CheatSpeedSteps.Length];
-        bool isOn = G.CheatSpeed != 1.0f;
         Debug.Log($"Cheat speed x{G.CheatSpeed}");
+        UpdateCheatLabel();
+    }
 
+    // Arena jump cheat: every won arena jumps this many levels (0 = normal jumps). RightCtrl+J cycles.
+    static readonly long[] CheatArenaJumpSteps = { 0, 100, 1000, 5000 };
+    [NonSerialized] public long CheatArenaJump;
+
+    void ToggleCheatArenaJump()
+    {
+        int current = Array.IndexOf(CheatArenaJumpSteps, CheatArenaJump);
+        CheatArenaJump = CheatArenaJumpSteps[(current + 1) % CheatArenaJumpSteps.Length];
+        Debug.Log($"Cheat arena jump {CheatArenaJump}");
+        UpdateCheatLabel();
+    }
+
+    void UpdateCheatLabel()
+    {
         if (_cheatSpeedLabel == null)
         {
             // Clone the ARENA N text so it matches the arena view style, and put it just below it.
@@ -1585,8 +1600,13 @@ public class GameManager : MonoBehaviour
             _cheatSpeedLabel.color = new Color(1.0f, 0.35f, 0.25f);
         }
 
-        _cheatSpeedLabel.text = $"CHEAT SPEED x{G.CheatSpeed:0}";
-        _cheatSpeedLabel.gameObject.SetActive(isOn);
+        var parts = new List<string>();
+        if (G.CheatSpeed != 1.0f)
+            parts.Add($"CHEAT SPEED x{G.CheatSpeed:0}");
+        if (CheatArenaJump > 0)
+            parts.Add($"ARENA JUMP {CheatArenaJump}");
+        _cheatSpeedLabel.text = string.Join("  ", parts);
+        _cheatSpeedLabel.gameObject.SetActive(parts.Count > 0);
     }
 
     // Time played and time since last rebirth are counted every minute (stats display rounds them down to 10 minutes).
@@ -1808,6 +1828,11 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightControl))
         {
             ToggleCheatSpeed();
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.J) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            ToggleCheatArenaJump();
         }
 
         // Test: unlock the White Earl skin (normally 25000 upgrades bought).

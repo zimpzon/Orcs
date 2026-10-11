@@ -36,7 +36,6 @@ static class SaveGameAscend
         newSave.BoughtShinyDiamonds3 = oldSave.BoughtShinyDiamonds3;
         newSave.BoughtShinyDiamonds4 = oldSave.BoughtShinyDiamonds4;
         newSave.BoughtShinyDiamonds5 = oldSave.BoughtShinyDiamonds5;
-        newSave.BoughtHalfEnemyHp = oldSave.BoughtHalfEnemyHp;
         newSave.BoughtHaggler = oldSave.BoughtHaggler;
         newSave.BoughtHeadStart = oldSave.BoughtHeadStart;
         newSave.BoughtSkinCollector = oldSave.BoughtSkinCollector;

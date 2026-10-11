@@ -21,7 +21,8 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+A", "Arena +500"),
         ("RightCtrl+S", "Arena -25"),
         ("RightCtrl+Z", "Set a mid-game upgrade loadout + arena +5000"),
-        ("RightCtrl+T", "Cheat speed: cycles x1 -> x10 -> x50 (time and arena jumps)"),
+        ("RightCtrl+T", "Cheat speed: cycles x1 -> x10 -> x50 (time)"),
+        ("RightCtrl+J", "Arena jump per win: cycles off -> 100 -> 1000 -> 5000"),
         ("RightCtrl+Right / Left", "Game time scale +0.1 / -0.1"),
         ("", ""),
         ("RightCtrl+Q", "Mystery question mark ready now"),
@@ -30,13 +31,6 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+R", "Preview the X2 rank-up text at the cursor"),
         ("RightShift+G", "Toggle 100% victory effects preview (crown pulse, victory dialog)"),
         ("RightShift+L", "Show save game load info"),
-        ("", ""),
-        ("F", "Toggle fullscreen"),
-        ("I", "Toggle FPS counter"),
-        ("LeftShift+S", "Save game import/export dialog (player shortcut)"),
-        ("Shift+click buy / X2", "Buy as many as affordable on that tier"),
-        ("Ctrl+click X2", "Buy every affordable X2 on all tiers, cheapest first"),
-        ("Escape", "Close the open dialog / collapse the upgrade list"),
     };
 
     const string KeyHex = "#FFD54A";

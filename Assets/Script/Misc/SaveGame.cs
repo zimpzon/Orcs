@@ -44,7 +44,6 @@ public class SaveGameMembers
     public bool BoughtShinyDiamonds3 = false;
     public bool BoughtShinyDiamonds4 = false;
     public bool BoughtShinyDiamonds5 = false;
-    public bool BoughtHalfEnemyHp = false;
     public bool BoughtHaggler = false;
     public bool BoughtHeadStart = false;
     public bool BoughtSkinCollector = false;
@@ -68,7 +67,6 @@ public class SaveGameMembers
         $"{nameof(BoughtShinyDiamonds3)} = {SaveGame.Members.BoughtShinyDiamonds3} | " +
         $"{nameof(BoughtShinyDiamonds4)} = {SaveGame.Members.BoughtShinyDiamonds4} | " +
         $"{nameof(BoughtShinyDiamonds5)} = {SaveGame.Members.BoughtShinyDiamonds5} | " +
-        $"{nameof(BoughtHalfEnemyHp)} = {SaveGame.Members.BoughtHalfEnemyHp} | " +
         $"{nameof(BoughtHaggler)} = {SaveGame.Members.BoughtHaggler} | " +
         $"{nameof(BoughtHeadStart)} = {SaveGame.Members.BoughtHeadStart} | " +
         $"{nameof(BoughtSkinCollector)} = {SaveGame.Members.BoughtSkinCollector} | " +

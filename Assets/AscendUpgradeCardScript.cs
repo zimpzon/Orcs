@@ -22,7 +22,6 @@ public enum AscendUpgradeCardId
     ShinyDiamonds3, // +40%
     ShinyDiamonds4, // +60%
     ShinyDiamonds5, // +100%
-    HalfEnemyHp,    // all enemies have half HP
     Haggler,        // tier upgrades and X2 cost half
     HeadStart,      // every run starts with 1 minute of the best-ever income
     SkinCollector,  // +5% income per unlocked skin
@@ -93,7 +92,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.ShinyDiamonds3 => SaveGame.Members.BoughtShinyDiamonds3,
             AscendUpgradeCardId.ShinyDiamonds4 => SaveGame.Members.BoughtShinyDiamonds4,
             AscendUpgradeCardId.ShinyDiamonds5 => SaveGame.Members.BoughtShinyDiamonds5,
-            AscendUpgradeCardId.HalfEnemyHp => SaveGame.Members.BoughtHalfEnemyHp,
             AscendUpgradeCardId.Haggler => SaveGame.Members.BoughtHaggler,
             AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
@@ -198,10 +196,6 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.ShinyDiamonds5)
         {
             SaveGame.Members.BoughtShinyDiamonds5 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.HalfEnemyHp)
-        {
-            SaveGame.Members.BoughtHalfEnemyHp = true;
         }
         else if (CardId == AscendUpgradeCardId.Haggler)
         {
