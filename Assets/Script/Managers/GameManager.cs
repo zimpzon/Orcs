@@ -446,6 +446,10 @@ public class GameManager : MonoBehaviour
             {
                 // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
+                ActorBase.Names.TryGetValue(actor.ActorType, out string beastName);
+                AchievementsScript.AnnounceAtCursorOrCenter(string.IsNullOrEmpty(beastName)
+                    ? "New beast unlocked!"
+                    : $"New beast unlocked!\n<size=80%>{beastName}</size>");
                 // Would have updated title here (nemesis of...)
                 //TitleTextScript.Instance?.UpdateTitle();
             }

@@ -91,7 +91,8 @@ public class AchievementsScript : MonoBehaviour
         }
     }
 
-    static void AnnounceAtCursorOrCenter(string text)
+    // Also used for "New beast unlocked!" (GameManager).
+    public static void AnnounceAtCursorOrCenter(string text)
     {
         var anchor = UpgradeManager.Instance != null ? UpgradeManager.Instance.ClickDamage : null;
         if (anchor == null)
