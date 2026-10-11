@@ -253,6 +253,9 @@ namespace Assets.Script.Upgrades
             return result * ShopPriceMul();
         }
 
+        // Skin Collector rebirth card: passive income bonus per unlocked skin.
+        public const double SkinCollectorPerSkin = 0.05;
+
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
         public const double HeadStartSeconds = 30;
 

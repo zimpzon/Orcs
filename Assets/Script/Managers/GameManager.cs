@@ -1684,10 +1684,26 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
+    // Skin Collector card: +5% passive income per unlocked skin. Counting scans the skin objects, so only every couple
+    // of seconds.
+    float _nextSkinBonusRecalc;
+
+    void UpdateSkinBonus()
+    {
+        if (Time.unscaledTime < _nextSkinBonusRecalc)
+            return;
+
+        _nextSkinBonusRecalc = Time.unscaledTime + 2f;
+        PlayerUpgrades.Data.PassiveIncomeSkinBonus = SaveGame.Members.BoughtSkinCollector
+            ? SkinScript.GetUnlockProgress().unlocked * Assets.Script.Upgrades.UpgradeProgression.SkinCollectorPerSkin
+            : 0.0;
+    }
+
     void Update()
     {
         TrySaveGame();
         TrySendStats();
+        UpdateSkinBonus();
 
         UpdatePassiveIncome();
         UpdateMoneyText();
