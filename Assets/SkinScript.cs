@@ -300,8 +300,17 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         return $"{hovertext} <color=#AAAAAA>({cur}/{tgt})</color>";
     }
 
-    bool _hovered;
+    // The one skin currently allowed to write the hover text. A per-skin flag could get stuck (no pointer-exit when the
+    // dialog closed under the cursor), and then two skins took turns overwriting the text every 0.5 s.
+    static SkinScript _hoveredSkin;
+    bool _hovered => _hoveredSkin == this;
     float _nextHoverRefresh;
+
+    void OnDisable()
+    {
+        if (_hoveredSkin == this)
+            _hoveredSkin = null;
+    }
 
     private void Update()
     {
@@ -320,14 +329,16 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _hovered = true;
+        _hoveredSkin = this;
         _nextHoverRefresh = Time.unscaledTime + 0.5f;
         Hovertext.text = GetHoverText();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _hovered = false;
+        if (_hoveredSkin != this)
+            return; // another skin already took over the text
+        _hoveredSkin = null;
         SetDefaultHovertext();
     }
 }
