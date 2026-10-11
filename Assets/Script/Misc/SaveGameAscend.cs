@@ -84,7 +84,7 @@ static class SaveGameAscend
         newSave.TotalX2UpgradesBought = oldSave.TotalX2UpgradesBought;
         newSave.TotalLevelPctBought = oldSave.TotalLevelPctBought;
 
-        // Head Start card: the new run starts with 30 seconds of the best-ever passive income (mystery buff excluded).
+        // Head Start card: the new run starts with 1 minute of the best-ever passive income (mystery buff excluded).
         if (oldSave.BoughtHeadStart)
         {
             Decimal512 headStart = oldSave.MaxCreditIncome * Assets.Script.Upgrades.UpgradeProgression.HeadStartSeconds;

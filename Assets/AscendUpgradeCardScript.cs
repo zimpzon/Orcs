@@ -24,7 +24,7 @@ public enum AscendUpgradeCardId
     ShinyDiamonds5, // +100%
     HalfEnemyHp,    // all enemies have half HP
     Haggler,        // tier upgrades and X2 cost half
-    HeadStart,      // every run starts with 30 seconds of the best-ever income
+    HeadStart,      // every run starts with 1 minute of the best-ever income
     SkinCollector,  // +5% income per unlocked skin
 };
 

@@ -257,7 +257,7 @@ namespace Assets.Script.Upgrades
         public const double SkinCollectorPerSkin = 0.05;
 
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
-        public const double HeadStartSeconds = 30;
+        public const double HeadStartSeconds = 60;
 
         // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
         public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
