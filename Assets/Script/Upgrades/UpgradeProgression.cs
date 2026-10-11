@@ -256,6 +256,22 @@ namespace Assets.Script.Upgrades
         // Skin Collector rebirth card: passive income bonus per unlocked skin.
         public const double SkinCollectorPerSkin = 0.05;
 
+        // Credit speed limit in the last tiers, where income explodes: with tier 15 as the highest tier bought (tiers unlock
+        // in order, so count = highest tier) credits can't come faster than every 10 s, tier 16 every 9 s ... Storm Lord
+        // (tier 24) every 1 s. Below tier 15 only the normal 1-per-second cap applies.
+        const int CreditLimitFirstTier = 15;
+        const int CreditLimitSlowestSeconds = 10;
+
+        public static double MinSecondsPerCredit()
+        {
+            int top = UpgradeTierList.CountBought();
+            if (top < CreditLimitFirstTier)
+                return 1.0;
+
+            int last = UpgradeTierList.Tiers.Length; // 24 = Storm Lord
+            return Math.Max(1, CreditLimitSlowestSeconds - (top - CreditLimitFirstTier) * (CreditLimitSlowestSeconds - 1) / (last - CreditLimitFirstTier));
+        }
+
         // Head Start rebirth card: seconds of best-ever passive income the new run starts with (SaveGameAscend).
         public const double HeadStartSeconds = 60;
 

@@ -14,6 +14,7 @@ public class AscendProgressScript : MonoBehaviour
     public GameObject AscendRoot;
     private float _nextCreditUpdate;
     private float _lastCreditCommitTime;
+    private double _creditAllowance = 1.0; // credits allowed by the speed limit right now (MinSecondsPerCredit)
 
     [NonSerialized] public bool RebirthEnabled = true;
 
@@ -64,8 +65,10 @@ public class AscendProgressScript : MonoBehaviour
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
-        // Commit actual XP/credit gain once per second (the display below updates every frame). Hard cap: at most one
-        // credit per second (per second of delta after a stall); XP beyond that is dropped, not banked.
+        // Commit actual XP/credit gain once per second (the display below updates every frame). Speed limit: at most one
+        // credit per UpgradeProgression.MinSecondsPerCredit() (1 s, up to 10 s in the last tiers); XP beyond that is
+        // dropped, not banked. The allowance can't be saved up beyond one credit (or one per limit period of a stall).
+        double minSecondsPerCredit = UpgradeProgression.MinSecondsPerCredit();
         if (G.D.RealTime >= _nextCreditUpdate)
         {
             // Calculate how much time actually passed since last update
@@ -82,8 +85,9 @@ public class AscendProgressScript : MonoBehaviour
             SaveGame.Members.MonsterCreditsXp_09_08_2025 +=
                 creditXpPerSecond * delta;
 
-            int maxCredits = Math.Max(1, (int)Math.Floor(delta));
-            for (int i = 0; i < maxCredits; ++i)
+            double allowanceGain = delta / minSecondsPerCredit;
+            _creditAllowance = Math.Min(_creditAllowance + allowanceGain, Math.Max(1.0, allowanceGain));
+            while (_creditAllowance >= 1.0)
             {
                 Decimal512 xpForNextLevelCommit = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
                 if (SaveGame.Members.MonsterCreditsXp_09_08_2025 < xpForNextLevelCommit)
@@ -92,6 +96,7 @@ public class AscendProgressScript : MonoBehaviour
                 SaveGame.Members.MonsterCreditsXp_09_08_2025 -= xpForNextLevelCommit;
                 SaveGame.Members.MonsterCreditsLifetime_09_08_2025++;
                 SaveGame.Members.MonsterCredits_09_08_2025++;
+                _creditAllowance -= 1.0;
             }
 
             // Capped: keep the bar just short of full instead of banking a backlog.
@@ -119,6 +124,12 @@ public class AscendProgressScript : MonoBehaviour
         TextCredits.text = $"Credits: {SaveGame.Members.MonsterCredits_09_08_2025}\n<size=-3><color=#cccccc>Next: {pct:#0}%";
 
         const double MaxSeconds = 60 * 60 * 12;
-        TextTimeLeft.text = UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds, creditXpPerSecond);
+        // When the speed limit is what holds the next credit back, show that wait instead of the (shorter) XP wait.
+        double limitWait = (1.0 - _creditAllowance) * minSecondsPerCredit - projectedElapsed;
+        double xpWait = creditXpPerSecond > 0.01 ? ((xpForNextLevel - displayedXp) / creditXpPerSecond).ToDouble() : double.MaxValue;
+        if (limitWait > 0 && limitWait > xpWait)
+            TextTimeLeft.text = Assets.Script.Misc.Format.FormatTimeShort(TimeSpan.FromSeconds(Math.Ceiling(limitWait)));
+        else
+            TextTimeLeft.text = UpgradeManagerHelper.FormatTimeLeft(xpForNextLevel, displayedXp, MaxSeconds, creditXpPerSecond);
     }
 }
