@@ -1492,6 +1492,8 @@ public class GameManager : MonoBehaviour
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
         ButtonBuy50.interactable = true;
+        if (ButtonBuy100 != null)
+            ButtonBuy100.interactable = true;
 
         if (SelectedBuyAmount == BuyAmountSelection.Buy1)
         {
@@ -1503,7 +1505,8 @@ public class GameManager : MonoBehaviour
         }
         else if (SelectedBuyAmount == BuyAmountSelection.Buy100)
         {
-            ButtonBuy100.interactable = false;
+            if (ButtonBuy100 != null)
+                ButtonBuy100.interactable = false;
         }
         else if (SelectedBuyAmount == BuyAmountSelection.Buy50)
         {
