@@ -51355,7 +51355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &925415016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108882,24 +108882,21 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
-    
 
     <color=#cccccc>A game by</color> <b>PWE</b>
 
     <color=#cccccc>Amazing
     PixelDudes art by</color> <b>0x72</b> (itch.io)
 
-    
 
-    <color=#cccccc>Big
-    thanks to (alphabetical)</color>
+    <color=#cccccc>Big thanks
+    to (alphabetical)</color>
 
-    
 
     462n, caiburn, Edaw, Hateyou,
 
-    Haus,
-    Krismunich, Lanx, loophoc,
+    Haus, Krismunich,
+    Lanx, loophoc,
 
     Runnen'
   m_isRightToLeft: 0
