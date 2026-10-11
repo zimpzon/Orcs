@@ -60,8 +60,9 @@ public static class EnemySpawner
     // 2026-10: top 8 BaseHp raised: x10 for the last (FromTheVoid), the added part scaling down linearly to x1.45
     // for the 8th (InnocentOrc). Everything below unchanged.
     // 2026-10: top 8 MinLevel compressed into ~40k-100k so arena numbers stay below ~100k. BaseHp only changes how many
-    // enemies fill a round's HP budget; late difficulty comes from LateHpMul (all enemies). An optional 4th arg
-    // (Toughness) adds extra HP for one type at spawn, outside the budget - currently unused (all x1).
+    // enemies fill a round's HP budget; late difficulty comes from LateHpMul (all enemies). The 4th arg (Toughness)
+    // adds extra HP for one type at spawn, outside the budget, so rounds with it really get harder without moving its
+    // unlock arena: x10 for the last, scaling linearly down to x1.45 for the 8th from the top.
     private static readonly EnemyType[] EnemyTypes = new[]
     {
         // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
@@ -73,14 +74,14 @@ public static class EnemySpawner
         // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
-        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000),
-        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000),
-        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000),
-        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000),
-        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000),
-        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000),
-        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000),
-        new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  40_000),
+        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 10),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 8.78),
+        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 7.56),
+        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000, 6.34),
+        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 5.11),
+        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000, 3.89),
+        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000, 2.67),
+        new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  40_000, 1.45),
         new EnemyType(ActorTypeEnum.AngryDude,       17_000_000_000,  28_000),
         new EnemyType(ActorTypeEnum.HrDude,          15_000_000_000,  24_000),
         new EnemyType(ActorTypeEnum.OrangeMan,       14_000_000_000,  21_000),
