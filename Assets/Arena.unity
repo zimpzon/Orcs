@@ -60515,7 +60515,7 @@ MonoBehaviour:
   m_text: 'Credit income bonus: <color=#9DE05C>[BONUS]</color>% / 100%
 
     Refills
-    on every rebirth.'
+    on every Rebirth.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -61004,7 +61004,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 377
+      value: 626
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -108722,24 +108722,24 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
-    
+
 
     <color=#cccccc>A game by</color> <b>PWE</b>
 
     <color=#cccccc>Amazing
     PixelDudes art by</color> <b>0x72</b> (itch.io)
 
-    
 
-    <color=#cccccc>Big
-    thanks to (alphabetical)</color>
 
-    
+    <color=#cccccc>Big thanks
+    to (alphabetical)</color>
+
+
 
     462n, caiburn, Edaw, Hateyou,
 
-    Haus,
-    Krismunich, Lanx, loophoc,
+    Haus, Krismunich,
+    Lanx, loophoc,
 
     Runnen'
   m_isRightToLeft: 0
@@ -115328,7 +115328,7 @@ PrefabInstance:
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -53
+      value: -154
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
