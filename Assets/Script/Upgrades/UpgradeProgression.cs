@@ -121,7 +121,22 @@ namespace Assets.Script.Upgrades
             // Steepened: ((level - 8) / 12)^CreditLateSteepness is x1 at the join (credit 20), x6 at credit 487 (2 min per
             // credit there instead of 20 s, playtest), x2.7 at 100, x8.7 at 1000.
             double steeper = Math.Pow((level - 8) / (double)(CreditCurveJoin - 8), CreditLateSteepness);
-            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper * LateTail(level));
+            return EarlyCreditXp(CreditCurveJoin) * (ReleaseCurveShape(level) / ReleaseCurveShape(CreditCurveJoin) * steeper * LateTail(level) * LateDiscount(level));
+        }
+
+        // Late discount: x1 up to CreditLateDiscountStart, smoothstep down to CreditLateDiscountMul by CreditLateDiscountEnd,
+        // then flat. Playtest (2026-10): at 9,200 lifetime credits with 19 tiers credits took ~40 s; x1/3 makes it ~13 s.
+        // Floods stay capped by the tier speed limit (MinSecondsPerCredit). Fades in slower than prices grow, so the
+        // price keeps rising every credit (checked to 40,000).
+        const double CreditLateDiscountStart = 3_000;
+        const double CreditLateDiscountEnd = 9_000;
+        const double CreditLateDiscountMul = 1.0 / 3.0;
+
+        static double LateDiscount(long level)
+        {
+            double t = Math.Clamp((level - CreditLateDiscountStart) / (CreditLateDiscountEnd - CreditLateDiscountStart), 0.0, 1.0);
+            double s = t * t * (3 - 2 * t);
+            return 1.0 - (1.0 - CreditLateDiscountMul) * s;
         }
 
         // Endgame tail: extra per-credit price growth on top of the polynomial. The rate rises linearly from 0 at

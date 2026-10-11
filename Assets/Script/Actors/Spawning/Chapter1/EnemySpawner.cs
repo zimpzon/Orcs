@@ -20,19 +20,22 @@ public static class EnemySpawner
         return (1.0 + (EnemyHpMul - 1) * t) * LateHpMul(level);
     }
 
-    // Late arena ramp, on top of the above: x1 up to LateHpStart, then 10^(LateHpLog * sqrt((L - start) / LateHpScale)):
-    // x15 at 40K, x27 at 45K, x54 at 52K, x132 at 63K, x247 at 72K, x547 at 85K, x1228 at 100K. Playtest (2026-10): with
-    // 19 of 24 tiers the player beat arena 80K; this puts that damage's frontier at ~42-45K (8th-last enemy), and the
-    // last 5 tiers (~x3 damage each) are needed to reach ~100K (last enemy). Max enemy HP stays under the long clamp.
+    // Late arena ramp, on top of the above: x1 up to LateHpStart, then 10^(LateHpLog * ((L - start) / LateHpScale)^LateHpPower):
+    // x3.3 at 32K, x12 at 40K, x32 at 52K, x65 at 63K, x103 at 72K, x187 at 85K, x338 at 100K. Playtest (2026-10): with 19
+    // of 24 tiers the player stalls at ~32K (9th-last enemy). Together with the round budget (grows with level^2), clearing
+    // 100K takes ~x1000 the damage of that wall - the estimate for the last 5 tiers (crit x24-77, Beefy/Power Zap/Storm
+    // x16-52 per stream, Skull Slicer x10-31) plus the earlier tiers' extra levels. LateHpLog scales the whole ramp,
+    // LateHpPower only how much it keeps growing later. Max enemy HP stays far under the long clamp.
     const double LateHpStart = 30_000;
     const double LateHpScale = 15_000;
-    const double LateHpLog = 1.43;
+    const double LateHpLog = 1.274;
+    const double LateHpPower = 0.445;
 
     static double LateHpMul(long level)
     {
         if (level <= LateHpStart)
             return 1.0;
-        return Math.Pow(10.0, LateHpLog * Math.Sqrt((level - LateHpStart) / LateHpScale));
+        return Math.Pow(10.0, LateHpLog * Math.Pow((level - LateHpStart) / LateHpScale, LateHpPower));
     }
     public const long MaxEnemies = 50;
 
