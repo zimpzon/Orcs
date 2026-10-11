@@ -121,7 +121,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WellDressedOrc)
         {
-            return (list.Contains(Achieved.Played5Days), "Well-dressed Orc Earl: Play for 5 days");
+            return (list.Contains(Achieved.Played5Days), "Well-dressed Orc Earl: Play for 4 days");
         }
         else if (animationName == SkinAnimation.Alien)
         {
@@ -275,7 +275,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.WhiteEarl => (m.TotalUpgradesBought, 25000),
             SkinAnimation.BlackEarl => (m.SuperFastClears, 500),
             SkinAnimation.InvertedEarl => (m.MonsterCreditsLifetime_09_08_2025, 1000),
-            SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 5),
+            SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 4),
             SkinAnimation.MonochromeEarl => (GameCompletion.GetProgress().TotalPct, 100),
 
             _ => null,
