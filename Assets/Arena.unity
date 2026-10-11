@@ -108722,25 +108722,26 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
+    
 
     <color=#cccccc>A game by</color> <b>PWE</b>
 
     <color=#cccccc>Amazing
     PixelDudes art by</color> <b>0x72</b> (itch.io)
 
+    
 
-    <color=#cccccc>Big thanks
-    to (alphabetical)</color>
+    <color=#cccccc>Big
+    thanks to (alphabetical)</color>
 
+    
 
     462n, caiburn, Edaw, Hateyou,
 
-    Haus, Krismunich,
-    Lanx, loophoc,
+    Haus,
+    Krismunich, Lanx, loophoc,
 
-    Runnen, and the rest :-)
-
-'
+    Runnen'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
