@@ -31,17 +31,16 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_Voidgazer =              312_500_000_000_000_000;
         public static Decimal512 InitialPrice_SmartDaggers =        19_062_500_000_000_000_000.0; // .0: too big for an integer literal
         public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
-        public static Decimal512 InitialPrice_CryptMaster = InitialPrice_FastFeet * 100;
-        public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 80;
-        // Trimmed from *80 to *60 to make room for CriticalStrike, which now slots in at BeefyEarl's old price.
-        public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 60;
-        // Last tiers step x10: each only earns x4 more, and since the diamond cut (240% -> 80%/diamond) late income is
-        // lower, so x60 put them months-to-years away. Critical Strike used to be SmartFireballs * 80, only 1.3x Beefy
-        // Earl, so it came almost free right after it - now 10x Beefy.
-        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 10;
-        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 10;
-        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 10;
-        public static Decimal512 InitialPrice_StormLord = InitialPrice_SkullSlicer * 10;
+        // 2026-10: the late price steps outgrew income (each tier earns only ~x4-5 more): stagnating at Beefy Earl with
+        // Critical Strike ~2 days away. Steps cut: Crypt Master x100 -> x40, Angry Fireballs x80 -> x30, Beefy Earl
+        // x60 -> x25, Critical Strike .. Storm Lord x10 -> x6 each (Critical Strike ~27x cheaper, Storm Lord ~124x).
+        public static Decimal512 InitialPrice_CryptMaster = InitialPrice_FastFeet * 40;
+        public static Decimal512 InitialPrice_SmartFireballs = InitialPrice_CryptMaster * 30;
+        public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 25;
+        public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 6;
+        public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 6;
+        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 6;
+        public static Decimal512 InitialPrice_StormLord = InitialPrice_SkullSlicer * 6;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
