@@ -574,10 +574,10 @@ public class GameManager : MonoBehaviour
 
             SaveGame.Members.TotalArenas++;
 
-            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 10 / 100 (either card alone works).
+            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 20 / 100 (either card alone works).
             bool fasterArena2 = SaveGame.Members.BoughtFasterArena2;
             bool fasterArena = SaveGame.Members.BoughtFasterArena || fasterArena2;
-            long arenaStep = fasterArena2 ? 10L : fasterArena ? 5L : 1L;
+            long arenaStep = fasterArena2 ? 20L : fasterArena ? 5L : 1L;
             int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
             // If faster Arena and >= 15 seconds left take a big jump.
             if (secondsLeftAtRoundEnd >= 15 && fasterArena && GameState == State.Idle_WonFight)
