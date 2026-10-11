@@ -26,6 +26,7 @@ public enum AscendUpgradeCardId
     Haggler,        // tier upgrades and X2 cost half
     HeadStart,      // every run starts with 1 minute of the best-ever income
     SkinCollector,  // +5% income per unlocked skin
+    BeastScholar,   // enables the bestiary income bonus (+1%, +2%, +3%... per unlocked beast)
 };
 
 public class AscendUpgradeCardScript : MonoBehaviour
@@ -95,6 +96,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             AscendUpgradeCardId.Haggler => SaveGame.Members.BoughtHaggler,
             AscendUpgradeCardId.HeadStart => SaveGame.Members.BoughtHeadStart,
             AscendUpgradeCardId.SkinCollector => SaveGame.Members.BoughtSkinCollector,
+            AscendUpgradeCardId.BeastScholar => SaveGame.Members.BoughtBeastScholar,
             _ => throw new NotImplementedException()
         };
 
@@ -210,6 +212,10 @@ public class AscendUpgradeCardScript : MonoBehaviour
         else if (CardId == AscendUpgradeCardId.SkinCollector)
         {
             SaveGame.Members.BoughtSkinCollector = true;
+        }
+        else if (CardId == AscendUpgradeCardId.BeastScholar)
+        {
+            SaveGame.Members.BoughtBeastScholar = true;
         }
         else
             throw new NotImplementedException();
