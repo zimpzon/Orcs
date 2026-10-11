@@ -288,7 +288,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.X2_300)) return;
 
-            if (PlayerUpgrades.Data.NumberOfX2Bought >= 300)
+            // Name kept for saves; the requirement is now 250.
+            if (PlayerUpgrades.Data.NumberOfX2Bought >= 250)
             {
                 list.Add(Achieved.X2_300);
                 NewAchieved(Achieved.X2_300);

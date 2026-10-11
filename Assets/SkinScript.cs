@@ -137,7 +137,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SkaterEarl)
         {
-            return (list.Contains(Achieved.X2_300), "Skater Earl: Reach 300 X2 bonus");
+            return (list.Contains(Achieved.X2_300), "Skater Earl: Reach 250 X2 bonus");
         }
         else if (animationName == SkinAnimation.PrettyEarl)
         {
@@ -264,7 +264,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.Slug => (m.MysteryCollected, 100),
             SkinAnimation.ExpressionistEarl => (m.MysteryCollected, 50),
             SkinAnimation.SecretiveEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 150),
-            SkinAnimation.SkaterEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 300),
+            SkinAnimation.SkaterEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 250),
             SkinAnimation.ChickenEarl => (m.LevelPctBought, 50),
             SkinAnimation.YoungEarl => (m.TotalLevelPctBought, 500),
             SkinAnimation.AttentivePigEarl => (m.TotalUpgradesBought, 500),
