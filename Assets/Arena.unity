@@ -59986,7 +59986,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: All enemies have half as much HP.
+      value: All enemies have half as much HP!
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -64640,7 +64640,8 @@ MonoBehaviour:
   - {fileID: -466936562, guid: 89392364497182349a92dccc1c074f13, type: 3}
   - {fileID: 423808389, guid: 89392364497182349a92dccc1c074f13, type: 3}
   - {fileID: 684149785, guid: 89392364497182349a92dccc1c074f13, type: 3}
-  CrownSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e, type: 3}
+  CrownSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e,
+    type: 3}
   Follower: {fileID: 2087142832}
   RoundComplete: 0
   UpgradesActive: 0
