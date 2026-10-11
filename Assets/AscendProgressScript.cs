@@ -126,7 +126,10 @@ public class AscendProgressScript : MonoBehaviour
         const double MaxSeconds = 60 * 60 * 12;
         // When the speed limit is what holds the next credit back, show that wait instead of the (shorter) XP wait.
         double limitWait = (1.0 - _creditAllowance) * minSecondsPerCredit - projectedElapsed;
-        double xpWait = creditXpPerSecond > 0.01 ? ((xpForNextLevel - displayedXp) / creditXpPerSecond).ToDouble() : double.MaxValue;
+        // Decimal512 throws below 0, and the projected XP can pass the cost while the limit holds the credit back.
+        double xpWait = displayedXp >= xpForNextLevel ? 0.0
+            : creditXpPerSecond > 0.01 ? ((xpForNextLevel - displayedXp) / creditXpPerSecond).ToDouble()
+            : double.MaxValue;
         if (limitWait > 0 && limitWait > xpWait)
             TextTimeLeft.text = Assets.Script.Misc.Format.FormatTimeShort(TimeSpan.FromSeconds(Math.Ceiling(limitWait)));
         else
