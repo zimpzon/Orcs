@@ -17,7 +17,22 @@ public static class EnemySpawner
     public static double EnemyHpMulForLevel(long level)
     {
         double t = Math.Clamp((level - 1) / (double)(EnemyHpMulFullLevel - 1), 0.0, 1.0);
-        return 1.0 + (EnemyHpMul - 1) * t;
+        return (1.0 + (EnemyHpMul - 1) * t) * LateHpMul(level);
+    }
+
+    // Late arena ramp, on top of the above: x1 up to LateHpStart, then 10^(LateHpLog * sqrt((L - start) / LateHpScale)):
+    // x15 at 40K, x27 at 45K, x54 at 52K, x132 at 63K, x247 at 72K, x547 at 85K, x1228 at 100K. Playtest (2026-10): with
+    // 19 of 24 tiers the player beat arena 80K; this puts that damage's frontier at ~42-45K (8th-last enemy), and the
+    // last 5 tiers (~x3 damage each) are needed to reach ~100K (last enemy). Max enemy HP stays under the long clamp.
+    const double LateHpStart = 30_000;
+    const double LateHpScale = 15_000;
+    const double LateHpLog = 1.43;
+
+    static double LateHpMul(long level)
+    {
+        if (level <= LateHpStart)
+            return 1.0;
+        return Math.Pow(10.0, LateHpLog * Math.Sqrt((level - LateHpStart) / LateHpScale));
     }
     public const long MaxEnemies = 50;
 
@@ -41,6 +56,9 @@ public static class EnemySpawner
     // refer to the pre-halving values.
     // 2026-10: top 8 BaseHp raised: x10 for the last (FromTheVoid), the added part scaling down linearly to x1.45
     // for the 8th (InnocentOrc). Everything below unchanged.
+    // 2026-10: top 8 MinLevel compressed into ~40k-100k so arena numbers stay below ~100k. BaseHp only changes how many
+    // enemies fill a round's HP budget; late difficulty comes from LateHpMul (all enemies). An optional 4th arg
+    // (Toughness) adds extra HP for one type at spawn, outside the budget - currently unused (all x1).
     private static readonly EnemyType[] EnemyTypes = new[]
     {
         // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
@@ -52,14 +70,14 @@ public static class EnemySpawner
         // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
-        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000,  81_000),
-        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  72_000),
-        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  63_500),
-        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  56_000),
-        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  49_000),
-        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  43_000),
-        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  38_000),
-        new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  33_000),
+        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000),
+        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000),
+        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000),
+        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000),
+        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000),
+        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000),
+        new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  40_000),
         new EnemyType(ActorTypeEnum.AngryDude,       17_000_000_000,  28_000),
         new EnemyType(ActorTypeEnum.HrDude,          15_000_000_000,  24_000),
         new EnemyType(ActorTypeEnum.OrangeMan,       14_000_000_000,  21_000),
@@ -98,14 +116,28 @@ public static class EnemySpawner
         public ActorTypeEnum Type { get; }
         public long BaseHp { get; }
         public long MinLevel { get; }
+        // Extra HP multiplier applied at spawn, NOT counted against the round's HP budget: makes rounds with this
+        // enemy really harder (the budget alone only changes how many enemies fill a round, not its total HP).
+        public double Toughness { get; }
         public long ScaledHp => BaseHp * HpScale;
 
-        public EnemyType(ActorTypeEnum type, long baseHp, long minLevel)
+        public EnemyType(ActorTypeEnum type, long baseHp, long minLevel, double toughness = 1.0)
         {
             Type = type;
             BaseHp = baseHp;
             MinLevel = minLevel;
+            Toughness = toughness;
         }
+    }
+
+    static double ToughnessOf(ActorTypeEnum type)
+    {
+        foreach (var e in EnemyTypes)
+        {
+            if (e.Type == type)
+                return e.Toughness;
+        }
+        return 1.0;
     }
 
     private enum SpawnPattern { None, Circle, FilledCircle, Square, Line, Triangle }
@@ -401,7 +433,7 @@ public static class EnemySpawner
         // Every enemy gets the level-scaled extra HP (EnemyHpMulForLevel) on top of what the spawn budget was planned
         // with: same enemy count, tougher enemies.
         // Clamped: at extreme arena levels the multiplier could overflow a long.
-        double scaledHp = hp * _hpMulForLevel;
+        double scaledHp = hp * _hpMulForLevel * ToughnessOf(type);
         hp = scaledHp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)scaledHp;
         foreach (var enemy in spawned)
         {
