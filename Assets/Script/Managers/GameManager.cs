@@ -1720,7 +1720,7 @@ public class GameManager : MonoBehaviour
         ActorBase.ResetClosestEnemy();
     }
 
-    // Skin Collector card: +5% passive income per unlocked skin. Counting scans the skin objects, so only every couple
+    // Skin Collector card: +10% passive income per unlocked skin. Counting scans the skin objects, so only every couple
     // of seconds.
     float _nextSkinBonusRecalc;
 

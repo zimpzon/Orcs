@@ -24,7 +24,7 @@ public enum AscendUpgradeCardId
     ShinyDiamonds5, // +100%
     Haggler,        // tier upgrades and X2 cost half
     HeadStart,      // every run starts with 25 minutes of the best-ever income
-    SkinCollector,  // +5% income per unlocked skin
+    SkinCollector,  // +10% income per unlocked skin
     BeastScholar,   // enables the bestiary income bonus (+1%, +2%, +3%... per unlocked beast)
     Completionist,  // +1% income per game completion %
 };

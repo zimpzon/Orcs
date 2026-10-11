@@ -275,7 +275,7 @@ namespace Assets.Script.Upgrades
         }
 
         // Skin Collector rebirth card: passive income bonus per unlocked skin.
-        public const double SkinCollectorPerSkin = 0.05;
+        public const double SkinCollectorPerSkin = 0.10;
 
         // Completionist rebirth card: passive income bonus per game completion % (GameCompletion.TotalPct).
         public const double CompletionistPerPct = 0.01;
