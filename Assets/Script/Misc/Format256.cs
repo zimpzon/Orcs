@@ -12,10 +12,11 @@ public static class Format512
     {
         (BigInteger.Pow(10, 63), "Vg", " vigintillion"),
         (BigInteger.Pow(10, 60), "Nv", " novemdecillion"),
-        (BigInteger.Pow(10, 57), "Oc", " octodecillion"),
-        (BigInteger.Pow(10, 54), "Sp", " septendecillion"),
-        (BigInteger.Pow(10, 51), "Sx", " sexdecillion"),
-        (BigInteger.Pow(10, 48), "Qi", " quindecillion"),
+        // The -decillion ones need their own abbreviations: Oc/Sp/Sx/Qi are already octillion..quintillion below.
+        (BigInteger.Pow(10, 57), "Ocd", " octodecillion"),
+        (BigInteger.Pow(10, 54), "Spd", " septendecillion"),
+        (BigInteger.Pow(10, 51), "Sxd", " sexdecillion"),
+        (BigInteger.Pow(10, 48), "Qid", " quindecillion"),
         (BigInteger.Pow(10, 45), "Qt", " quattuordecillion"),
         (BigInteger.Pow(10, 42), "Tr", " tredecillion"),
         (BigInteger.Pow(10, 39), "Dd", " duodecillion"),

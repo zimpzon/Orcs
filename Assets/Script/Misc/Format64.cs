@@ -8,6 +8,12 @@ namespace Assets.Script.Misc
     {
         public static string Format(long number, bool abbreviate = true, bool alwaysThreeDecimalsForLargeNumbers = false)
         {
+            if (number < 0)
+            {
+                // long.MinValue can't be negated; it's far out of any real range here anyway.
+                return number == long.MinValue ? number.ToString() : "-" + Format(-number, abbreviate, alwaysThreeDecimalsForLargeNumbers);
+            }
+
             if (number < 1000)
                 return number.ToString(); // No formatting for numbers under 1000
 
@@ -15,9 +21,9 @@ namespace Assets.Script.Misc
                 return FormatThousands(number, abbreviate, alwaysThreeDecimalsForLargeNumbers);
 
             if (number >= 1_000_000_000_000_000_000)
-                return FormatLargeNumber(number, 1_000_000_000_000_000_000D, abbreviate, "Qn", " quintillion", alwaysThreeDecimalsForLargeNumbers);
+                return FormatLargeNumber(number, 1_000_000_000_000_000_000D, abbreviate, "Qi", " quintillion", alwaysThreeDecimalsForLargeNumbers); // same suffixes as Format512
             if (number >= 1_000_000_000_000_000)
-                return FormatLargeNumber(number, 1_000_000_000_000_000D, abbreviate, "Q", " quadrillion", alwaysThreeDecimalsForLargeNumbers);
+                return FormatLargeNumber(number, 1_000_000_000_000_000D, abbreviate, "Qd", " quadrillion", alwaysThreeDecimalsForLargeNumbers);
             if (number >= 1_000_000_000_000)
                 return FormatLargeNumber(number, 1_000_000_000_000D, abbreviate, "T", " trillion", alwaysThreeDecimalsForLargeNumbers);
             if (number >= 1_000_000_000)
@@ -28,7 +34,7 @@ namespace Assets.Script.Misc
 
         private static string FormatThousands(long number, bool abbreviate, bool alwaysThreeDecimalsForLargeNumbers)
         {
-            double value = number / 1000.0;
+            double value = Truncate3(number / 1000.0);
 
             // Remove trailing zeros from decimal representation
             string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", DisplayNumberFormat.Info) : value.ToString("0.###", DisplayNumberFormat.Info);
@@ -36,9 +42,13 @@ namespace Assets.Script.Misc
             return formatted + (abbreviate ? "K" : " thousand");
         }
 
+        // Cut to 3 decimals instead of letting the format string round: rounding turned 999,999,999 into "1000M" (same
+        // at every suffix boundary from M up). The epsilon keeps e.g. 1.23 (1229.9999... x 1000) at 1.23.
+        private static double Truncate3(double value) => Math.Floor(value * 1000.0 + 1e-6) / 1000.0;
+
         private static string FormatLargeNumber(long number, double divisor, bool abbreviate, string shortSuffix, string longSuffix, bool alwaysThreeDecimalsForLargeNumbers)
         {
-            double value = number / divisor;
+            double value = Truncate3(number / divisor);
 
             // Remove trailing zeros from decimal representation
             string formatted = alwaysThreeDecimalsForLargeNumbers ? value.ToString("N3", DisplayNumberFormat.Info) : value.ToString("0.###", DisplayNumberFormat.Info);
