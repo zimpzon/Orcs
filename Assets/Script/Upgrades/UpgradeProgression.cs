@@ -105,7 +105,10 @@ namespace Assets.Script.Upgrades
         // (495B + 58B * (level - 8)^3), scaled to join the early curve at credit 20. Starting point, to be tuned.
         const long CreditCurveJoin = 20;
         const double EarlyCreditDiscount = 0.2;
-        const double FirstCreditMul = 0.8; // credit 1 only: 20% cheaper on top of the early discount
+        // Credits 1-4, on top of the early discount. Credit 1: ~28M XP; a model of a first run buying every ~10 min
+        // (calibrated on the old 6 h playtest) puts it at ~3 h (was ~4.5 h). Credits 2-4 (x0.5, x0.6, x0.75, fading back
+        // to x1 at credit 5) so x4 income (4 diamonds) comes sooner. Prices: 28M, 324M, 1.26B, 3.59B, then 8.88B.
+        static readonly double[] FirstCreditsMul = { 0.136, 0.5, 0.6, 0.75 };
         const double CreditLateSteepness = 0.486;
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
@@ -115,7 +118,8 @@ namespace Assets.Script.Upgrades
                 // Early discount fading out linearly: -20% at credit 1, none at credit 20, so the curve stays continuous.
                 double discount = EarlyCreditDiscount * (CreditCurveJoin - level) / (CreditCurveJoin - 1);
                 Decimal512 price = EarlyCreditXp(level) * (1 - discount);
-                return level == 1 ? price * FirstCreditMul : price; // the very first credit a bit cheaper still
+                // The first credits cheaper still, so the first x2 cards (x4 at 4 diamonds) come sooner.
+                return level <= FirstCreditsMul.Length ? price * FirstCreditsMul[level - 1] : price;
             }
 
             // Steepened: ((level - 8) / 12)^CreditLateSteepness is x1 at the join (credit 20), x6 at credit 487 (2 min per
