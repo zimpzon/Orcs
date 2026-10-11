@@ -600,7 +600,7 @@ public class GameManager : MonoBehaviour
             if (GameState == State.Idle_WonFight)
             {
                 // Last enemy already threw round gold, NOT done here.
-                // Arena jump cheat (RightCtrl+J): a fixed jump per win (timeouts still only step back the normal amount).
+                // Arena jump cheat (RightCtrl+J): a fixed jump per win (and the same step back on a timeout).
                 long winStep = CheatArenaJump > 0 ? CheatArenaJump : arenaStep;
                 long levelBeforeWin = SaveGame.Members.ArenaLevel;
                 SaveGame.Members.ArenaLevel += winStep;
@@ -642,9 +642,9 @@ public class GameManager : MonoBehaviour
                 yield return ShowInfoTextFlashy("OUT OF TIME", delay: 1);
                 yield return new WaitForSeconds(0.5f);
 
-                // Go back one arena level on timeout
+                // Go back on timeout: the normal step, or the arena jump cheat's amount when that is on (RightCtrl+J).
                 if (SaveGame.Members.ArenaLevel > 1)
-                    SaveGame.Members.ArenaLevel -= arenaStep;
+                    SaveGame.Members.ArenaLevel -= CheatArenaJump > 0 ? CheatArenaJump : arenaStep;
 
                 if (SaveGame.Members.ArenaLevel < 1)
                     SaveGame.Members.ArenaLevel = 1;
