@@ -1570,6 +1570,37 @@ public class GameManager : MonoBehaviour
         UpdateCheatLabel();
     }
 
+    void CheatRelockLatestBeast()
+    {
+        var roster = Assets.Script.Enemies.ActorCache.Instance != null ? Assets.Script.Enemies.ActorCache.Instance.EnemyPrefabs : null;
+        if (roster == null)
+            return;
+
+        for (int i = roster.Enemies.Count - 1; i >= 0; --i)
+        {
+            var actor = roster.Enemies[i] != null ? roster.Enemies[i].GetComponent<ActorBase>() : null;
+            if (actor == null || !SaveGame.Members.BeastsSeen.Contains(actor.ActorType))
+                continue;
+
+            SaveGame.Members.BeastsSeen.Remove(actor.ActorType);
+            ActorBase.Names.TryGetValue(actor.ActorType, out string name);
+            string text = $"Re-locked: {name ?? actor.ActorType.ToString()}";
+            Debug.Log(text);
+            FloatingTextSpawner.Instance.Spawn(
+                new Vector2(ArenaBounds.center.x, ArenaBounds.center.y),
+                $"<size=+3>{text}",
+                new Color(1.0f, 0.35f, 0.25f),
+                speed: 0.05f,
+                timeToLive: 2.0f,
+                fadeTime: 0.5f,
+                fontStyle: TMPro.FontStyles.Bold,
+                FontTarragon);
+            return;
+        }
+
+        Debug.Log("Nothing to re-lock");
+    }
+
     void UpdateCheatLabel()
     {
         if (_cheatSpeedLabel == null)
@@ -1814,6 +1845,12 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.J) && G.GetCheatKey(KeyCode.RightControl))
         {
             ToggleCheatArenaJump();
+        }
+
+        // Re-lock the latest unlocked enemy (bestiary order), to test its unlock again. (Not Ctrl+U: Unity editor uses it.)
+        if (G.GetCheatKeyDown(KeyCode.U) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            CheatRelockLatestBeast();
         }
 
         // Test: unlock the White Earl skin (normally 25000 upgrades bought).
