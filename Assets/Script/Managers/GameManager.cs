@@ -578,12 +578,13 @@ public class GameManager : MonoBehaviour
             // If faster Arena and >= 15 seconds left take a big jump.
             if (secondsLeftAtRoundEnd >= 15 && fasterArena && GameState == State.Idle_WonFight)
             {
+                string text = fasterArena2 ? "Fast Arena clear! Making <color=#9DE05C>GIGA</color jump!" : "Fast Arena clear! Making super jump!";
                 arenaStep = fasterArena2 ? 100L : 25L;
                 SaveGame.Members.SuperFastClears++;
                 Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);
                 FloatingTextSpawner.Instance.Spawn(
                     superStepPos,
-                    $"<size=+3>Super fast Arena clear! Making super jump!",
+                    $"<size=+3>{text}",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
                     timeToLive: 3.0f,
