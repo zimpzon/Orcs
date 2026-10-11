@@ -574,16 +574,16 @@ public class GameManager : MonoBehaviour
 
             SaveGame.Members.TotalArenas++;
 
-            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 20 / 100 (either card alone works).
+            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 50 / 250 (either card alone works).
             bool fasterArena2 = SaveGame.Members.BoughtFasterArena2;
             bool fasterArena = SaveGame.Members.BoughtFasterArena || fasterArena2;
-            long arenaStep = fasterArena2 ? 20L : fasterArena ? 5L : 1L;
+            long arenaStep = fasterArena2 ? 50L : fasterArena ? 5L : 1L;
             int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
             // If faster Arena and >= 15 seconds left take a big jump.
             if (secondsLeftAtRoundEnd >= 15 && fasterArena && GameState == State.Idle_WonFight)
             {
                 string text = fasterArena2 ? "Fast Arena clear! Making <color=#9DE05C>GIGA</color> jump!" : "Fast Arena clear! Making super jump!";
-                arenaStep = fasterArena2 ? 100L : 25L;
+                arenaStep = fasterArena2 ? 250L : 25L;
                 SaveGame.Members.SuperFastClears++;
                 Vector2 superStepPos = new Vector2(ArenaBounds.center.x, ArenaBounds.center.y);
                 FloatingTextSpawner.Instance.Spawn(
