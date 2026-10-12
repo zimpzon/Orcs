@@ -80,6 +80,7 @@ public class ActorBase : MonoBehaviour
 
     public int CacheReviveCount = 0;
     public bool IsBoss = false;
+    [NonSerialized] public BossLook BossLook; // final boss only
     [NonSerialized] public bool NoFlashFx; // final boss: no white flash circles on it when zaps jump from it
     [NonSerialized] public float HitFlashAmount = 2.0f; // white flash on hit; the final boss gets a light one so it stays visible
     public float Mass = 1.0f;
@@ -218,7 +219,7 @@ public class ActorBase : MonoBehaviour
 
         if (ActorType == ActorTypeEnum.FromTheVoid)
         {
-            gameObject.AddComponent<BossLook>();
+            BossLook = gameObject.AddComponent<BossLook>();
             HitFlashAmount = 0.35f;
             NoFlashFx = true;
         }

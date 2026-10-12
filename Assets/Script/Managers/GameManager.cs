@@ -1153,7 +1153,9 @@ public class GameManager : MonoBehaviour
 
         HpBarScript.AddHp(-intAmount);
 
-        if (!enemy.NoFlashFx)
+        if (enemy.BossLook != null)
+            enemy.BossLook.OnHit();
+        else
             MakeCircle(enemy.transform.position, 1.0f);
 
         // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
