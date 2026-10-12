@@ -99,6 +99,7 @@ public class PercentageBonusScript : MonoBehaviour
 
         SaveGame.Members.LevelPctBought += buyAmount;
         SaveGame.Members.TotalLevelPctBought += buyAmount;
+        X2RankUpEffect.SpawnSmall(Button, Input.mousePosition, $"+{buyAmount}%"); // shows the selected buy amount
         UpdateAll();
     }
 

@@ -430,6 +430,15 @@ public class UpgradeManager : MonoBehaviour
     // number of levels actually bought.
     long BuyLevels(Action buyOnce, Func<long> level)
     {
+        long bought = BuyLevelsInner(buyOnce, level);
+        // Small "+N" at the cursor, so the selected buy amount (1/10/50/100, or the Shift max) is easy to see.
+        if (bought > 0 && ClickDamage != null)
+            X2RankUpEffect.SpawnSmall(ClickDamage, Input.mousePosition, $"+{bought}");
+        return bought;
+    }
+
+    long BuyLevelsInner(Action buyOnce, Func<long> level)
+    {
         long start = level();
         if (!BuyMaxHeld)
         {

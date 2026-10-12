@@ -11,7 +11,6 @@ public class X2RankUpEffect : MonoBehaviour
     const float FadeInTime = 0.3f;
     const float HoldTime = 2.0f;
     const float FadeOutTime = 0.8f;
-    const float Life = FadeInTime + HoldTime + FadeOutTime;
     const float Rise = 45f;
     const float PopTime = 0.35f;
     const float SwaySpeed = 4.5f;
@@ -19,11 +18,34 @@ public class X2RankUpEffect : MonoBehaviour
     const float TiltDegrees = 3f;
     const float EdgeMargin = 8f; // min distance from the screen edge (also covers the tilt and the pop overshoot)
 
+    // Animation preset: the big rank-up / unlock text, or the small "+N" buy feedback.
+    class Style
+    {
+        public float FontSize, StartAbove, FadeIn, Hold, FadeOut, Rise, Tilt;
+        public bool Pop;
+        public Color Color;
+        public float Life => FadeIn + Hold + FadeOut;
+    }
+
+    static readonly Style Big = new()
+    {
+        FontSize = 16f, StartAbove = StartAboveCursor, FadeIn = FadeInTime, Hold = HoldTime, FadeOut = FadeOutTime,
+        Rise = X2RankUpEffect.Rise, Tilt = TiltDegrees, Pop = true, Color = new Color(1.0f, 0.835f, 0.29f),
+    };
+
+    // Small, quick and discreet: "+10" when buying levels, so the selected buy amount is easy to see.
+    static readonly Style Small = new()
+    {
+        FontSize = 11f, StartAbove = 18f, FadeIn = 0.1f, Hold = 0.35f, FadeOut = 0.35f,
+        Rise = 22f, Tilt = 0f, Pop = false, Color = new Color(1f, 1f, 1f, 0.85f),
+    };
+
     class Item
     {
         public TextMeshProUGUI Text;
         public Vector2 Start;
         public float Age;
+        public Style Style;
     }
 
     static X2RankUpEffect _instance;
@@ -37,6 +59,13 @@ public class X2RankUpEffect : MonoBehaviour
 
     // Same floating text with any content (also used for "New skin unlocked!").
     public static void SpawnText(Component anyUiElement, Vector2 screenPos, string content)
+        => Spawn(anyUiElement, screenPos, content, Big);
+
+    // Small, short "+N" at the cursor after a buy (UpgradeManager.BuyLevels, PercentageBonusScript).
+    public static void SpawnSmall(Component anyUiElement, Vector2 screenPos, string content)
+        => Spawn(anyUiElement, screenPos, content, Small);
+
+    static void Spawn(Component anyUiElement, Vector2 screenPos, string content, Style style)
     {
         if (_instance == null)
         {
@@ -67,10 +96,10 @@ public class X2RankUpEffect : MonoBehaviour
             _instance._fontMaterial = source != null ? source.fontSharedMaterial : null;
         }
 
-        _instance.DoSpawn(screenPos, content);
+        _instance.DoSpawn(screenPos, content, style);
     }
 
-    void DoSpawn(Vector2 screenPos, string content)
+    void DoSpawn(Vector2 screenPos, string content, Style style)
     {
         transform.SetAsLastSibling();
 
@@ -79,24 +108,24 @@ public class X2RankUpEffect : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_rect, screenPos, cam, out Vector2 local);
 
         // Yellow with drop shadow - green/orange would clash with the upgrade buttons it floats over.
-        var text = CreateText(content, 16f);
+        var text = CreateText(content, style.FontSize, style.Color);
 
         // Keep the whole text on screen for its entire animation: measure it, then push the start point inward from
         // the edges (room for the sway sideways and for the rise at the top).
         Vector2 size = text.GetPreferredValues(content);
         text.rectTransform.sizeDelta = size;
         Rect area = _rect.rect;
-        Vector2 start = local + new Vector2(0, StartAboveCursor);
+        Vector2 start = local + new Vector2(0, style.StartAbove);
         float halfW = size.x * 0.5f + EdgeMargin + SwayAmount;
         float halfH = size.y * 0.5f + EdgeMargin;
         start.x = area.width > 2 * halfW ? Mathf.Clamp(start.x, area.xMin + halfW, area.xMax - halfW) : area.center.x;
-        start.y = area.height > 2 * halfH + Rise ? Mathf.Clamp(start.y, area.yMin + halfH, area.yMax - halfH - Rise) : area.center.y;
-        _items.Add(new Item { Text = text, Start = start });
+        start.y = area.height > 2 * halfH + style.Rise ? Mathf.Clamp(start.y, area.yMin + halfH, area.yMax - halfH - style.Rise) : area.center.y;
+        _items.Add(new Item { Text = text, Start = start, Style = style });
 
         Update();
     }
 
-    TextMeshProUGUI CreateText(string content, float fontSize)
+    TextMeshProUGUI CreateText(string content, float fontSize, Color color)
     {
         var go = new GameObject("Fx", typeof(RectTransform));
         go.transform.SetParent(transform, false);
@@ -108,7 +137,7 @@ public class X2RankUpEffect : MonoBehaviour
         text.text = content;
         text.fontSize = fontSize;
         text.fontStyle = FontStyles.Bold;
-        text.color = new Color(1.0f, 0.835f, 0.29f);
+        text.color = color;
         text.alignment = TextAlignmentOptions.Center;
         text.enableWordWrapping = false;
         text.raycastTarget = false;
@@ -122,8 +151,9 @@ public class X2RankUpEffect : MonoBehaviour
         for (int i = _items.Count - 1; i >= 0; --i)
         {
             var item = _items[i];
+            var s = item.Style;
             item.Age += dt;
-            if (item.Age >= Life)
+            if (item.Age >= s.Life)
             {
                 Destroy(item.Text.gameObject);
                 _items.RemoveAt(i);
@@ -131,22 +161,26 @@ public class X2RankUpEffect : MonoBehaviour
             }
 
             // Soft pop in (slight overshoot), then rise with ease-out while swaying and tilting gently side to side.
-            float t = item.Age / Life;
+            float t = item.Age / s.Life;
             var rt = item.Text.rectTransform;
             float rise = 1f - (1f - t) * (1f - t) * (1f - t);
             float sway = Mathf.Sin(item.Age * SwaySpeed) * SwayAmount;
-            rt.anchoredPosition = item.Start + new Vector2(sway, Rise * rise);
-            rt.localRotation = Quaternion.Euler(0, 0, -Mathf.Sin(item.Age * SwaySpeed + 0.6f) * TiltDegrees);
+            rt.anchoredPosition = item.Start + new Vector2(sway, s.Rise * rise);
+            rt.localRotation = Quaternion.Euler(0, 0, -Mathf.Sin(item.Age * SwaySpeed + 0.6f) * s.Tilt);
 
-            float pop = Mathf.Clamp01(item.Age / PopTime);
-            float c = 1.70158f;
-            float scale = 0.6f + 0.4f * (1f + (c + 1f) * Mathf.Pow(pop - 1f, 3) + c * Mathf.Pow(pop - 1f, 2));
+            float scale = 1f;
+            if (s.Pop)
+            {
+                float pop = Mathf.Clamp01(item.Age / PopTime);
+                float c = 1.70158f;
+                scale = 0.6f + 0.4f * (1f + (c + 1f) * Mathf.Pow(pop - 1f, 3) + c * Mathf.Pow(pop - 1f, 2));
+            }
             rt.localScale = Vector3.one * scale;
 
-            float alpha = item.Age < FadeInTime
-                ? item.Age / FadeInTime
-                : item.Age > FadeInTime + HoldTime ? 1f - (item.Age - FadeInTime - HoldTime) / FadeOutTime : 1f;
-            item.Text.alpha = Mathf.SmoothStep(0f, 1f, alpha);
+            float alpha = item.Age < s.FadeIn
+                ? item.Age / s.FadeIn
+                : item.Age > s.FadeIn + s.Hold ? 1f - (item.Age - s.FadeIn - s.Hold) / s.FadeOut : 1f;
+            item.Text.alpha = Mathf.SmoothStep(0f, 1f, alpha) * s.Color.a;
         }
     }
 }
