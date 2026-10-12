@@ -22,7 +22,9 @@ namespace Assets.Script.Misc
             damage = (long)(damage * PlayerUpgrades.Data.PowerZapDamageMul);
 
             var direction = (to - from).normalized;
-            GameManager.Instance.DamageEnemy(actor, damage, direction, forceModifier: 1.5f, damageSource: damageSource);
+            // Storm Lord bolts push a bit harder than regular zaps.
+            float forceModifier = damageSource == ActorDamageSource.StormLord ? 2.25f : 1.5f;
+            GameManager.Instance.DamageEnemy(actor, damage, direction, forceModifier: forceModifier, damageSource: damageSource);
 
             return true;
         }
