@@ -1019,12 +1019,33 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.EnemiesKilled += 1;
 
         if (actor.ActorType == ActorTypeEnum.FromTheVoid)
+        {
             Assets.Script.Achievements.AchievementChecks.FinalEnemyKilled = true;
+            BossDeathFx(actor.transform.position);
+        }
 
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
         {
             OnLastEnemyKilled(actor);
+        }
+    }
+
+    float _nextBossShake;
+
+    // The Night Creeper (final enemy) dies big: Explosions.Explode's look without the damage. Shake throttled so
+    // several dying together don't shake the screen to bits.
+    void BossDeathFx(Vector3 pos)
+    {
+        MakeFlash(pos, 3f);
+        MakePoof(pos, 12, 3f);
+        Particles.I.ExplosionSpread.transform.position = pos;
+        Particles.I.ExplosionSpread.Emit(40);
+
+        if (GameTime >= _nextBossShake)
+        {
+            _nextBossShake = GameTime + 0.4f;
+            ShakeCamera(3f);
         }
     }
 

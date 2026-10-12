@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 100007}
@@ -147,14 +147,14 @@ MonoBehaviour:
   - {fileID: 1170325452305533542, guid: 2205fbce012e7b34281af1d39fe0c0ba, type: 3}
   CanBeFrozen: 1
   CanBePoisened: 1
-  Speed: 1.1
+  Speed: 0.8
   AvoidCrowds: 1
   CrowdScanRadius: 1
   CrowdMaxNearby: 0
   CrowdOutOfTheWayRange: 3
   CacheReviveCount: 0
   IsBoss: 0
-  Mass: 5
+  Mass: 25
   XpValue: 30
   XpCount: 1
   GoldCountMin: 0

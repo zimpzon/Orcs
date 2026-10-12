@@ -63,7 +63,7 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.TheKaren, "The Karen" },
         { ActorTypeEnum.DarkWizard, "Dark Wizard" },
         { ActorTypeEnum.TheGrey, "The Grey" },
-        { ActorTypeEnum.FromTheVoid, "From The Void" },
+        { ActorTypeEnum.FromTheVoid, "The Night Creeper" },
     };
 
     const float PaintBallTickTime = 1.0f;
@@ -213,6 +213,9 @@ public class ActorBase : MonoBehaviour
         BodyOffset *= transform_.localScale.x;
 
         scale_ = transform_.localScale;
+
+        if (ActorType == ActorTypeEnum.FromTheVoid)
+            gameObject.AddComponent<BossLook>();
     }
 
     public void Start()

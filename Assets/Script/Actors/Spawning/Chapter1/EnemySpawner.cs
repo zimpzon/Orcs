@@ -68,7 +68,7 @@ public static class EnemySpawner
         // AI-Added pixel dudes: 13 new tiers extending the roster past TheDarkness, continuing the
         // same accelerating MinLevel-gap convention as the stretch above (gaps growing from ~5,000
         // up to ~18,000). BaseHp is deliberately compressed to a ~1.148x-per-tier geometric curve
-        // topping out at 6x TheDarkness's HP (FromTheVoid), not a straight continuation of the
+        // topping out at 6x TheDarkness's HP (FromTheVoid, shown as The Night Creeper), not a straight continuation of the
         // lower tiers' ~1.37x-per-tier spacing. The uncapped combat-damage multipliers (Zap Damage
         // +20%/level, Smart Daggers +80%/level, Beefy Earl +5%/level, all linear-per-level against
         // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would

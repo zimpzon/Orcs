@@ -443,7 +443,7 @@ namespace Assets.Script.Achievements
             }
         }
 
-        // Set by GameManager.OnEnemyKill when the final enemy (From The Void) dies; granted here so the regular
+        // Set by GameManager.OnEnemyKill when the final enemy (The Night Creeper) dies; granted here so the regular
         // poll announces the Neon Earl skin like every other unlock.
         public static bool FinalEnemyKilled;
 

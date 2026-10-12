@@ -43,7 +43,7 @@ public enum Achieved
     ArenasLost100,
     SuperClears1000,
     Credits1000,
-    FinalEnemyDefeated, // was StormLord5; granted on killing From The Void (GameManager.OnEnemyKill)
+    FinalEnemyDefeated, // was StormLord5; granted on killing The Night Creeper (GameManager.OnEnemyKill)
     Mystery50,
 };
 
