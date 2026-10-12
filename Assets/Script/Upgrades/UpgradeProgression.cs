@@ -152,11 +152,22 @@ namespace Assets.Script.Upgrades
         const double CreditLateDiscountEnd = 9_000;
         const double CreditLateDiscountMul = 1.0 / 3.0;
 
+        // Second step (2026-10 playtest: ~12 s per credit at 14K with stalled income, wanted ~8 s): from
+        // CreditLateDiscountEnd it fades on to CreditLateDiscount2Mul more by CreditLateDiscount2End (total x0.222).
+        const double CreditLateDiscount2End = 14_000;
+        const double CreditLateDiscount2Mul = 2.0 / 3.0;
+
         static double LateDiscount(long level)
         {
-            double t = Math.Clamp((level - CreditLateDiscountStart) / (CreditLateDiscountEnd - CreditLateDiscountStart), 0.0, 1.0);
-            double s = t * t * (3 - 2 * t);
-            return 1.0 - (1.0 - CreditLateDiscountMul) * s;
+            double step1 = 1.0 - (1.0 - CreditLateDiscountMul) * SmoothStep(level, CreditLateDiscountStart, CreditLateDiscountEnd);
+            double step2 = 1.0 - (1.0 - CreditLateDiscount2Mul) * SmoothStep(level, CreditLateDiscountEnd, CreditLateDiscount2End);
+            return step1 * step2;
+        }
+
+        static double SmoothStep(long level, double from, double to)
+        {
+            double t = Math.Clamp((level - from) / (to - from), 0.0, 1.0);
+            return t * t * (3 - 2 * t);
         }
 
         // Endgame tail: extra per-credit price growth on top of the polynomial. The rate rises linearly from 0 at
