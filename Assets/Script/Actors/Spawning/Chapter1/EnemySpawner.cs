@@ -74,13 +74,13 @@ public static class EnemySpawner
         // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
-        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 4.5),
-        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 4.0),
-        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 3.5),
-        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000, 3.0),
-        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 2.5),
-        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000, 2.0),
-        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000, 2.0),
+        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 3.0),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 2.5),
+        new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 2.25),
+        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000, 2.0),
+        new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 1.75),
+        new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000, 1.5),
+        new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000, 1.25),
         new EnemyType(ActorTypeEnum.InnocentOrc,     29_000_000_000,  40_000, 1),
         new EnemyType(ActorTypeEnum.AngryDude,       17_000_000_000,  28_000),
         new EnemyType(ActorTypeEnum.HrDude,          15_000_000_000,  24_000),

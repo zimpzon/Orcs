@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_ChestMaster =              8_125_125_000_000_000;
         public static Decimal512 InitialPrice_Voidgazer =              312_500_000_000_000_000;
         public static Decimal512 InitialPrice_SmartDaggers =        19_062_500_000_000_000_000.0; // .0: too big for an integer literal
-        public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 100;
+        public static Decimal512 InitialPrice_FastFeet = InitialPrice_SmartDaggers * 50;
         // 2026-10: the late price steps outgrew income (each tier earns only ~x4-5 more): stagnating at Beefy Earl with
         // Critical Strike ~2 days away. Steps cut: Crypt Master x100 -> x40, Angry Fireballs x80 -> x30, Beefy Earl
         // x60 -> x25, Critical Strike .. Storm Lord x10 -> x6 each (Critical Strike ~27x cheaper, Storm Lord ~124x).
