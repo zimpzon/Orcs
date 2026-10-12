@@ -853,13 +853,19 @@ public class GameManager : MonoBehaviour
         MakeFlash(pos, Color.white, size);
     }
 
-    public void MakeCircle(Vector3 pos, float size = 1.0f)
+    // Alpha of the hit circle on enemies; the particle system's own (~0.106) is kept for explosions.
+    const float HitCircleAlpha = 0.065f;
+
+    public void MakeCircle(Vector3 pos, float size = 1.0f, float alpha = -1f)
     {
         pos.z = 0;
         CircleParticles.transform.position = pos;
         var main = CircleParticles.main;
         main.startSize = size;
-        CircleParticles.Emit(1);
+        if (alpha < 0f)
+            CircleParticles.Emit(1);
+        else
+            CircleParticles.Emit(new ParticleSystem.EmitParams { startColor = new Color(1f, 1f, 1f, alpha) }, 1);
     }
 
     public void EmitFlame(Vector3 pos, float size = 1.0f)
@@ -1156,7 +1162,7 @@ public class GameManager : MonoBehaviour
         if (enemy.BossLook != null)
             enemy.BossLook.OnHit();
         else
-            MakeCircle(enemy.transform.position, 1.0f);
+            MakeCircle(enemy.transform.position, 1.0f, HitCircleAlpha);
 
         // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
         if (HpBarScript.CurrentHp < 0)

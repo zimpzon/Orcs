@@ -82,7 +82,7 @@ public class ActorBase : MonoBehaviour
     public bool IsBoss = false;
     [NonSerialized] public BossLook BossLook; // final boss only
     [NonSerialized] public bool NoFlashFx; // final boss: no white flash circles on it when zaps jump from it
-    [NonSerialized] public float HitFlashAmount = 2.0f; // white flash on hit; the final boss gets a light one so it stays visible
+    [NonSerialized] public float HitFlashAmount = 0.6f; // flash on hit (was 2 = solid white); the final boss gets a lighter one
     public float Mass = 1.0f;
     public int XpValue = 1;
     public int XpCount = 1;
