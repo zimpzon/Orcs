@@ -237,7 +237,7 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Diamonds5000)) return;
 
-            if (SaveGame.Members.DiamondCount_09_08_2025 >= 5000)
+            if (SaveGame.Members.DiamondCount_09_08_2025 >= 10000)
             {
                 list.Add(Achieved.Diamonds5000);
                 NewAchieved(Achieved.Diamonds5000);

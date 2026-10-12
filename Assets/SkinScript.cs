@@ -177,7 +177,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BallEarl)
         {
-            return (list.Contains(Achieved.Diamonds5000), "Ball Earl: Have at least 5000 diamonds");
+            return (list.Contains(Achieved.Diamonds5000), "Ball Earl: Have at least 10000 diamonds");
         }
         else if (animationName == SkinAnimation.MonochromeEarl)
         {
@@ -253,7 +253,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.NinjaEarl => (m.DiamondCount_09_08_2025, 50),
             SkinAnimation.HonorableKnight => (m.DiamondCount_09_08_2025, 250),
             SkinAnimation.FreakyEarl => (m.DiamondCount_09_08_2025, 1000),
-            SkinAnimation.BallEarl => (m.DiamondCount_09_08_2025, 5000),
+            SkinAnimation.BallEarl => (m.DiamondCount_09_08_2025, 10000),
 
             SkinAnimation.EvilEyesEarl => (m.ArenaLevel, 1000),
             SkinAnimation.Wig => (m.ArenaLevel, 10000),
