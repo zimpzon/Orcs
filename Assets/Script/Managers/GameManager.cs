@@ -384,11 +384,42 @@ public class GameManager : MonoBehaviour
             // Weaken first, so the strike itself already hits the weakened enemy.
             target.StormWeakenMul = Math.Max(target.StormWeakenMul, PlayerUpgrades.Data.StormLordWeakenMul);
             Vector2 sky = (Vector2)target.transform.position + new Vector2(UnityEngine.Random.Range(-1.5f, 1.5f), 6.5f);
-            anyHit |= Zapper.TryZapEnemy(sky, target, damage, ActorDamageSource.StormLord);
+            Vector3 impact = target.transform.position;
+            if (Zapper.TryZapEnemy(sky, target, damage, ActorDamageSource.StormLord))
+            {
+                anyHit = true;
+                StormImpactFx(impact, bigFlash: !target.NoFlashFx);
+            }
         }
 
+        // Shakes like the regular zap (arena background + camera), the camera a bit harder: it's several bolts at once.
         if (anyHit)
-            ShakeCamera(1.0f);
+        {
+            ShakeArenaBackground();
+            ShakeCamera(2.0f);
+            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.8f, pitch: 0.7f);
+        }
+    }
+
+    static readonly Color StormFlashColor = new Color(1f, 0.9f, 0.4f, 1f);
+    static readonly Color StormSparkA = new Color(1f, 0.95f, 0.5f, 1f);
+    static readonly Color StormSparkB = new Color(1f, 0.7f, 0.2f, 1f);
+
+    // Storm Lord impact: yellow flash, a yellow shockwave ring, a burst of yellow sparks and a dust poof.
+    // No flash/ring on the final boss, it would hide him (same as the regular hit circle).
+    void StormImpactFx(Vector3 pos, bool bigFlash)
+    {
+        if (bigFlash)
+        {
+            MakeFlash(pos, StormFlashColor, 2.5f);
+            MakeCircle(pos, 1.8f, StormFlashColor, 0.4f);
+        }
+        MakePoof(pos, 4, 1.0f);
+
+        var spread = Particles.I.ExplosionSpread;
+        spread.transform.position = pos;
+        for (int i = 0; i < 4; ++i)
+            spread.Emit(new ParticleSystem.EmitParams { startColor = Color.Lerp(StormSparkA, StormSparkB, UnityEngine.Random.value) }, 5);
     }
 
     void CheckZapping(ActorDamageSource damageSource)
@@ -857,6 +888,9 @@ public class GameManager : MonoBehaviour
     const float HitCircleAlpha = 0.065f;
 
     public void MakeCircle(Vector3 pos, float size = 1.0f, float alpha = -1f)
+        => MakeCircle(pos, size, Color.white, alpha);
+
+    public void MakeCircle(Vector3 pos, float size, Color color, float alpha)
     {
         pos.z = 0;
         CircleParticles.transform.position = pos;
@@ -865,7 +899,7 @@ public class GameManager : MonoBehaviour
         if (alpha < 0f)
             CircleParticles.Emit(1);
         else
-            CircleParticles.Emit(new ParticleSystem.EmitParams { startColor = new Color(1f, 1f, 1f, alpha) }, 1);
+            CircleParticles.Emit(new ParticleSystem.EmitParams { startColor = new Color(color.r, color.g, color.b, alpha) }, 1);
     }
 
     public void EmitFlame(Vector3 pos, float size = 1.0f)
