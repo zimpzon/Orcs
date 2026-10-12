@@ -152,10 +152,11 @@ namespace Assets.Script.Upgrades
         const double CreditLateDiscountEnd = 9_000;
         const double CreditLateDiscountMul = 1.0 / 3.0;
 
-        // Second step (2026-10 playtest: ~12 s per credit at 14K with stalled income, wanted ~8 s): from
-        // CreditLateDiscountEnd it fades on to CreditLateDiscount2Mul more by CreditLateDiscount2End (total x0.222).
+        // Second step: from CreditLateDiscountEnd it fades on to CreditLateDiscount2Mul more by CreditLateDiscount2End.
+        // Playtests (2026-10): ~12 s per credit at 14K -> x2/3 (total x0.222); then at 14.2K with Storm Lord ~7 s, wanted
+        // ~3 s (1 s limit + soft limit: natural 6.9 s -> 2.8 s) -> x0.272 (total x0.091 from 14K).
         const double CreditLateDiscount2End = 14_000;
-        const double CreditLateDiscount2Mul = 2.0 / 3.0;
+        const double CreditLateDiscount2Mul = 0.272;
 
         static double LateDiscount(long level)
         {
