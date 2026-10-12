@@ -68,8 +68,9 @@ public class AscendProgressScript : MonoBehaviour
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
         // Commit actual XP/credit gain once per second (the display below updates every frame). Speed limit: at most one
-        // credit per UpgradeProgression.MinSecondsPerCredit() (1 s, up to 10 s in the last tiers); XP beyond that is
-        // dropped, not banked. The allowance can't be saved up beyond one credit (or one per limit period of a stall).
+        // credit per UpgradeProgression.MinSecondsPerCredit() (1 s, up to 10 s in the last tiers); XP beyond the next
+        // credit's cost is dropped, not banked. The allowance can't be saved up beyond one credit (or one per limit period
+        // of a stall).
         double minSecondsPerCredit = UpgradeProgression.MinSecondsPerCredit();
         if (G.D.RealTime >= _nextCreditUpdate)
         {
@@ -101,8 +102,10 @@ public class AscendProgressScript : MonoBehaviour
                 _creditAllowance -= 1.0;
             }
 
-            // Capped: keep the bar just short of full instead of banking a backlog.
-            Decimal512 xpCap = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1) * 0.999;
+            // Only when the speed limit held a credit back (XP is past the cost): keep XP at the cost so no backlog builds
+            // up; the credit lands as soon as the limit allows. Progress below the cost is never cut. (Capping at 99.9%
+            // every commit threw away early progress: with gain < 0.1% of the cost per second, credit 1 never landed.)
+            Decimal512 xpCap = UpgradeProgression.MonsterCreditXpForNextLevel(SaveGame.Members.MonsterCreditsLifetime_09_08_2025 + 1);
             if (SaveGame.Members.MonsterCreditsXp_09_08_2025 > xpCap)
                 SaveGame.Members.MonsterCreditsXp_09_08_2025 = xpCap;
             SaveGame.Members.MaxCredits = Math.Max(SaveGame.Members.MaxCredits, SaveGame.Members.MonsterCredits_09_08_2025);
