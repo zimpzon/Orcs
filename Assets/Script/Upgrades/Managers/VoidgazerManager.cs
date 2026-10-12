@@ -29,15 +29,15 @@ namespace Assets.Script.Upgrades
 
             sb.AppendLine("<size=+4><b><color=#8DBE4C>Voidgazer</color></b></size>");
             sb.AppendLine("<color=#dddddd>A ghostly presence from the void stalks Earl.");
-            sb.AppendLine("");
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Income</color></i></size>");
+            sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
+            sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.Format(baseIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Current: $<color=COLOR-ARENA>{Format512.Format(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: $<color=COLOR-ARENA>{Format512.Format(earnedSoFar)}</color>.");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
 
-            sb.AppendLine("");
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Income X2</color></i></size>");
+            sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
+            sb.AppendLine("<size=+4><color=#aaaaff>Income X2</color></size>");
             sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-ARENA>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));

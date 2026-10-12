@@ -30,20 +30,20 @@ namespace Assets.Script.Upgrades
 
             sb.AppendLine("<size=+4><b><color=#8DBE4C>Storm Lord</color></b></size>");
             sb.AppendLine("<color=#dddddd>Lightning storms strike random enemies from above.");
-            sb.AppendLine("");
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Income</color></i></size>");
+            sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
+            sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.Format(baseIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Current: $<color=COLOR-ARENA>{Format512.Format(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: $<color=COLOR-ARENA>{Format512.Format(earnedSoFar)}</color>.");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
 
-            sb.AppendLine("");
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Income X2</color></i></size>");
+            sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
+            sb.AppendLine("<size=+4><color=#aaaaff>Income X2</color></size>");
             sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-ARENA>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
-            sb.AppendLine("");
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
+            sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
+            sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
             sb.AppendLine($"<color=#dddddd>A storm every <color=COLOR-ARENA>{StormInterval:0}</color> seconds.");
             sb.AppendLine($"<color=#dddddd>Strikes: <color=COLOR-ARENA>{StrikesForLevel(level)}</color>, damage: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color> zap damage");
             sb.AppendLine($"<color=#dddddd>Struck enemies take <color=COLOR-ARENA>x{DisplayNumberFormat.Format(WeakenMulForLevel(Math.Max(1, level)), "0.0")}</color> damage from everything.");
