@@ -380,7 +380,7 @@ public class GameManager : MonoBehaviour
             _stormTargets.Add(target);
             // Weaken first, so the strike itself already hits the weakened enemy.
             target.StormWeakenMul = Math.Max(target.StormWeakenMul, PlayerUpgrades.Data.StormLordWeakenMul);
-            Vector2 sky = (Vector2)target.transform.position + new Vector2(UnityEngine.Random.Range(-0.6f, 0.6f), 4.5f);
+            Vector2 sky = (Vector2)target.transform.position + new Vector2(UnityEngine.Random.Range(-1.5f, 1.5f), 6.5f);
             anyHit |= Zapper.TryZapEnemy(sky, target, damage, ActorDamageSource.StormLord);
         }
 

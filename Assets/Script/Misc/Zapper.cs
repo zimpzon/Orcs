@@ -4,15 +4,15 @@ namespace Assets.Script.Misc
 {
     public static class Zapper
     {
-        public static void DoZap(Vector2 from, Vector2 to)
+        public static void DoZap(Vector2 from, Vector2 to, bool storm = false)
         {
-            LightningBolts.Zap(from, to);
+            LightningBolts.Zap(from, to, storm);
         }
 
         public static bool TryZapEnemy(Vector2 from, ActorBase actor, long damage, ActorDamageSource damageSource)
         {
             Vector2 to = actor is null ? from + (Vector2)Random.insideUnitCircle * 5 : actor.transform.position;
-            DoZap(from, to);
+            DoZap(from, to, storm: damageSource == ActorDamageSource.StormLord);
 
             if (actor is null)
                 return false;
