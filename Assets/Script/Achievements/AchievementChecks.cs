@@ -443,14 +443,18 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckStormLord5(List<Achieved> list)
-        {
-            if (list.Contains(Achieved.StormLord5)) return;
+        // Set by GameManager.OnEnemyKill when the final enemy (From The Void) dies; granted here so the regular
+        // poll announces the Neon Earl skin like every other unlock.
+        public static bool FinalEnemyKilled;
 
-            if (SaveGame.Members.LevelStormLord >= 5)
+        public static void CheckFinalEnemyDefeated(List<Achieved> list)
+        {
+            if (list.Contains(Achieved.FinalEnemyDefeated)) return;
+
+            if (FinalEnemyKilled)
             {
-                list.Add(Achieved.StormLord5);
-                NewAchieved(Achieved.StormLord5);
+                list.Add(Achieved.FinalEnemyDefeated);
+                NewAchieved(Achieved.FinalEnemyDefeated);
             }
         }
 

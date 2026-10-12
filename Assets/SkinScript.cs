@@ -201,7 +201,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.NeonEarl)
         {
-            return (list.Contains(Achieved.StormLord5), "Neon Earl: Reach Storm Lord level 5");
+            return (list.Contains(Achieved.FinalEnemyDefeated), "Neon Earl: Defeat the final enemy");
         }
         else if (animationName == SkinAnimation.ExpressionistEarl)
         {
@@ -242,7 +242,6 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.Zombie => (m.LevelSkullCrusher, 5),
             SkinAnimation.SlickEarl => (m.LevelSmartDaggers, 10),
             SkinAnimation.GangsterEarl => (m.LevelChestMaster, 200),
-            SkinAnimation.NeonEarl => (m.LevelStormLord, 5),
 
             SkinAnimation.WhiteWalkerEarl => (m.TimesAscended_09_08_2025, 1),
             SkinAnimation.Orc => (m.TimesAscended_09_08_2025, 2),

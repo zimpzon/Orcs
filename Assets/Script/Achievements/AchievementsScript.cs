@@ -43,7 +43,7 @@ public enum Achieved
     ArenasLost100,
     SuperClears1000,
     Credits1000,
-    StormLord5,
+    FinalEnemyDefeated, // was StormLord5; granted on killing From The Void (GameManager.OnEnemyKill)
     Mystery50,
 };
 
@@ -109,6 +109,7 @@ public class AchievementsScript : MonoBehaviour
     void RunChecks(System.Collections.Generic.List<Achieved> list)
     {
         AchievementChecks.CheckWitchDoctor(list);
+        AchievementChecks.CheckFinalEnemyDefeated(list);
         AchievementChecks.CheckNecro200(list);
         AchievementChecks.CheckSkullCrusher5(list);
         AchievementChecks.CheckArena1000(list);
@@ -124,7 +125,6 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArenasLost100(list);
         AchievementChecks.CheckSuperClears1000(list);
         AchievementChecks.CheckCredits1000(list);
-        AchievementChecks.CheckStormLord5(list);
         AchievementChecks.CheckMystery50(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);

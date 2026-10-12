@@ -1018,6 +1018,9 @@ public class GameManager : MonoBehaviour
 
         SaveGame.Members.EnemiesKilled += 1;
 
+        if (actor.ActorType == ActorTypeEnum.FromTheVoid)
+            Assets.Script.Achievements.AchievementChecks.FinalEnemyKilled = true;
+
         bool wasLastEnemy = --livingEnemyCount == 0;
         if (wasLastEnemy)
         {
