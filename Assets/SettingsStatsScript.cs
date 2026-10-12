@@ -52,7 +52,7 @@ public class SettingsStatsScript : MonoBehaviour
             $"${Format512.Format(SaveGame.Members.MaxIncome)}";
 
         var sb = new StringBuilder();
-        sb.AppendLine(BuildLine("<b>Passive income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));
+        sb.AppendLine(BuildLine("<b>Income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));
         sb.AppendLine(BuildLine("X2 multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier), Multiplier));
         sb.AppendLine(BuildLine("Bestiary multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses), Multiplier));
         sb.AppendLine(BuildLine("Skin multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeSkinBonus), Multiplier));

@@ -122,7 +122,7 @@ public class PercentageBonusScript : MonoBehaviour
         SetEnabled(canAfford);
         ButtonText.text = $"${Format512.Format(totalPrice)}";
 
-        TextBonusStatus.text = $"+{buyAmount}% passive income\n<size=-3><color=#cccccc>Bonus: {SaveGame.Members.LevelPctBought}%</color>";
+        TextBonusStatus.text = $"+{buyAmount}% income\n<size=-3><color=#cccccc>Bonus: {SaveGame.Members.LevelPctBought}%</color>";
 
         if (TextBuyAmount != null)
         {

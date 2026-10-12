@@ -11,9 +11,9 @@ public class LightningBolts : MonoBehaviour
     const float Life = 0.45f;
     const float StormLife = 0.7f;
     const float StormCrackleInterval = 0.12f;
-    const float StormWidthMul = 1.6f;
+    const float StormWidthMul = 1.4f;
     const float StormDetourMin = 0.18f;   // sideways push of each zig-zag waypoint, relative to bolt length
-    const float StormDetourMax = 0.32f;
+    const float StormDetourMax = 0.1f;
     const float StormScreenMargin = 0.4f; // world units kept free inside the screen edge for the zig-zag's jaggies
     const float CrackleInterval = 0.8f;   // re-shape the bolt this often while it lives
     const float Displacement = 0.15f;      // initial sideways displacement, relative to bolt length

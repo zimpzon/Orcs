@@ -35,14 +35,14 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#dddddd>Fireballs do increased damage and continue on to nearby targets.");
             sb.AppendLine("");
 
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income</color></i></size>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Income</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.Format(baseIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Current: $<color=COLOR-ARENA>{Format512.Format(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: $<color=COLOR-ARENA>{Format512.Format(earnedSoFar)}</color>.");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
             sb.AppendLine("");
 
-            sb.AppendLine("<size=+4><i><color=#aaaaff>Passive Income X2</color></i></size>");
+            sb.AppendLine("<size=+4><i><color=#aaaaff>Income X2</color></i></size>");
             sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-ARENA>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
