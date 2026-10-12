@@ -104,12 +104,12 @@ namespace Assets.Script.Upgrades
         // (495B + 58B * (level - 8)^3), scaled to join the early curve at credit 20. Starting point, to be tuned.
         const long CreditCurveJoin = 20;
         const double EarlyCreditDiscount = 0.2;
-        // Credits 1-4, on top of the early discount. Credit 1: ~28M XP; a model of a first run buying every ~10 min
-        // (calibrated on the old 6 h playtest) puts it at ~3 h (was ~4.5 h). Credits 2-6 cut hard so x4 (credit 3) lands at
-        // ~5 h instead of ~7 h (playtest 2026-10), and 4-6 fade back to x1 at credit 7 so there's no 2 h stall after x4.
-        // Prices: 28M, 71M, 116M, 1.2B, 4.4B, 10.9B, then 21.8B. Model (x2.75 credit XP per hour, x2 income at x4):
-        // credits at ~3, 4.3, 5, 6.3, 7.6, 8.6 h, back on the old schedule by credit ~10.
-        static readonly double[] FirstCreditsMul = { 0.136, 0.11, 0.055, 0.25, 0.5, 0.75 };
+        // Credits 1-10, on top of the early discount. Playtests (2026-10): x4 (credit 3) took ~7 h, and credit 1 took 4 h
+        // without constant buying. Set as a smooth price ladder (x2-3 per credit, easing to x1.5-1.8 back into the curve
+        // at credit 11) instead of a few cut credits, so there's no stall after x4: 21M, 48M, 95M, 280M, 850M, 2.6B, 7B,
+        // 15B, 27B, 46B, then 71.6B. Model (x2.75 credit XP per hour, x2 income at x4): credits at ~2.8, 3.9, 4.8, 5.4,
+        // 6.2, 7.2, 8.2, 9.1, 9.7, 10.3 h - about one per hour, back on the old schedule by credit ~11.
+        static readonly double[] FirstCreditsMul = { 0.103, 0.074, 0.045, 0.058, 0.096, 0.179, 0.321, 0.484, 0.639, 0.826 };
         const double CreditLateSteepness = 0.486;
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
