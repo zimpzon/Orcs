@@ -23,6 +23,7 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+Z", "Set a mid-game upgrade loadout + arena +5000"),
         ("RightCtrl+T", "Cheat speed: cycles x1 -> x10 -> x50 (time)"),
         ("RightCtrl+J", "Arena jump per win / loss: cycles off -> 100 -> 1000 -> 5000"),
+        ("RightCtrl+B", "Boss test: arena to 100K (final enemy) + toggle one-shot kills"),
         ("RightShift+U", "Re-lock the latest unlocked enemy (to test its unlock again)"),
         ("RightCtrl+Right / Left", "Game time scale +0.1 / -0.1"),
         ("", ""),

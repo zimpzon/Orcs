@@ -154,7 +154,7 @@ MonoBehaviour:
   CrowdOutOfTheWayRange: 3
   CacheReviveCount: 0
   IsBoss: 0
-  Mass: 25
+  Mass: 1000
   XpValue: 30
   XpCount: 1
   GoldCountMin: 0

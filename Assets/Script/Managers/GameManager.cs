@@ -1117,6 +1117,9 @@ public class GameManager : MonoBehaviour
         // Storm Lord: an enemy struck by its lightning takes more damage from everything (StormLordManager).
         amount *= enemy.StormWeakenMul;
 
+        if (CheatOneShot)
+            amount = Math.Max(amount, enemy.Hp);
+
         // Critical Strike upgrade: BaseCritChance/CritChanceMul/CritValueMul already existed as
         // unused hooks in PlayerUpgrades - this is the first thing to actually read them.
         bool isCrit = UnityEngine.Random.value < PlayerUpgrades.Data.BaseCritChance * PlayerUpgrades.Data.CritChanceMul;
@@ -1590,6 +1593,7 @@ public class GameManager : MonoBehaviour
     // Arena jump cheat: every won arena jumps this many levels (0 = normal jumps). RightCtrl+J cycles.
     static readonly long[] CheatArenaJumpSteps = { 0, 100, 1000, 5000 };
     [NonSerialized] public long CheatArenaJump;
+    [NonSerialized] public bool CheatOneShot;
 
     void ToggleCheatArenaJump()
     {
@@ -1646,6 +1650,8 @@ public class GameManager : MonoBehaviour
             parts.Add($"CHEAT SPEED x{G.CheatSpeed:0}");
         if (CheatArenaJump > 0)
             parts.Add($"ARENA JUMP {CheatArenaJump}");
+        if (CheatOneShot)
+            parts.Add("ONE SHOT");
         _cheatSpeedLabel.text = string.Join("  ", parts);
         _cheatSpeedLabel.gameObject.SetActive(parts.Count > 0);
     }
@@ -1874,6 +1880,15 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.J) && G.GetCheatKey(KeyCode.RightControl))
         {
             ToggleCheatArenaJump();
+        }
+
+        // Boss test: jump to the final enemy's arena (The Night Creeper, 100K) and one-shot everything.
+        if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightControl))
+        {
+            CheatOneShot = !CheatOneShot;
+            if (CheatOneShot)
+                SaveGame.Members.ArenaLevel = Math.Max(SaveGame.Members.ArenaLevel, 100_000);
+            UpdateCheatLabel();
         }
 
         // Re-lock the latest unlocked enemy (bestiary order), to test its unlock again. (Not Ctrl+U: Unity editor uses it.)
