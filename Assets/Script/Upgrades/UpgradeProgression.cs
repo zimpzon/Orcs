@@ -111,6 +111,23 @@ namespace Assets.Script.Upgrades
         const double CreditLateSteepness = 0.486;
 
         public static Decimal512 MonsterCreditXpForNextLevel(long level)
+            => CreditXpCurve(level) * CreditTierDiscount();
+
+        // Last 5 tiers (highest tier owned >= CreditTierDiscountFirstTier): credits get cheaper with each tier,
+        // 1 / (1 + 0.15 * (tier - 19)): Beefy Earl x0.87, Critical Strike x0.77, Power Zap x0.69, Skull Slicer x0.63,
+        // Storm Lord x0.57. The tier speed limit and the soft limit stay as they are.
+        const int CreditTierDiscountFirstTier = 20;
+        const double CreditTierDiscountPerTier = 0.15;
+
+        static double CreditTierDiscount()
+        {
+            int top = UpgradeTierList.CountBought();
+            if (top < CreditTierDiscountFirstTier)
+                return 1.0;
+            return 1.0 / (1.0 + CreditTierDiscountPerTier * (top - CreditTierDiscountFirstTier + 1));
+        }
+
+        static Decimal512 CreditXpCurve(long level)
         {
             if (level <= CreditCurveJoin)
             {
