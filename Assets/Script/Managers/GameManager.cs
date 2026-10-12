@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour
 
     long _roundTotalHp = -1;
 
-    private bool TryZapEnemy(Vector2 from, ActorBase enemy, ActorDamageSource damageSource)
+    private bool TryZapEnemy(Vector2 from, ActorBase enemy, ActorDamageSource damageSource, ActorBase fromEnemy = null)
     {
         if (PlayerUpgrades.Data.EffectiveZapDamage == 0)
             return false;
@@ -317,8 +317,11 @@ public class GameManager : MonoBehaviour
         if (!success)
             return false;
 
-        MakeFlash(from, 2.0f);
-        MakePoof(from, 3, 0.5f);
+        if (fromEnemy is null || !fromEnemy.NoFlashFx)
+        {
+            MakeFlash(from, 2.0f);
+            MakePoof(from, 3, 0.5f);
+        }
 
         for (int i = 0; i < 10; ++i)
         {
@@ -430,7 +433,7 @@ public class GameManager : MonoBehaviour
                 radius: 6.0f, // 4.0 + 50%
                 ZapTargetIgnoreList);
 
-            if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy, damageSource))
+            if (!TryZapEnemy(prevEnemy.transform.position, nextEnemy, damageSource, prevEnemy))
                 break;
 
             GameManager.Instance.ShakeCamera(1.0f);
@@ -1150,7 +1153,8 @@ public class GameManager : MonoBehaviour
 
         HpBarScript.AddHp(-intAmount);
 
-        MakeCircle(enemy.transform.position, 1.0f);
+        if (!enemy.NoFlashFx)
+            MakeCircle(enemy.transform.position, 1.0f);
 
         // PWE: Colossal hack for now. HP does often not end at 0 when all enemies are dead...
         if (HpBarScript.CurrentHp < 0)

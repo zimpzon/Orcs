@@ -80,6 +80,8 @@ public class ActorBase : MonoBehaviour
 
     public int CacheReviveCount = 0;
     public bool IsBoss = false;
+    [NonSerialized] public bool NoFlashFx; // final boss: no white flash circles on it when zaps jump from it
+    [NonSerialized] public float HitFlashAmount = 2.0f; // white flash on hit; the final boss gets a light one so it stays visible
     public float Mass = 1.0f;
     public int XpValue = 1;
     public int XpCount = 1;
@@ -215,7 +217,11 @@ public class ActorBase : MonoBehaviour
         scale_ = transform_.localScale;
 
         if (ActorType == ActorTypeEnum.FromTheVoid)
+        {
             gameObject.AddComponent<BossLook>();
+            HitFlashAmount = 0.35f;
+            NoFlashFx = true;
+        }
     }
 
     public void Start()
@@ -546,7 +552,7 @@ public class ActorBase : MonoBehaviour
             float force = Mathf.Clamp(amount * 0.2f, 0.1f, 3.0f);
             AddForce(direction * (force * 0.2f * massInverse_ * forceModifier));
 
-            material_.SetFloat(flashParamId_, 2.0f);
+            material_.SetFloat(flashParamId_, HitFlashAmount);
             flashEndTime_ = GameManager.Instance.GameTime + 0.05f;
         }
     }
@@ -748,7 +754,8 @@ public class ActorBase : MonoBehaviour
                                 if (!Zapper.TryZapEnemy(prevEnemy.transform.position, nextEnemy, jumpDamage, ActorDamageSource.WitchDoctor))
                                     break;
 
-                                GameManager.Instance.MakeFlash(prevEnemy.transform.position, size: 1);
+                                if (!prevEnemy.NoFlashFx)
+                                    GameManager.Instance.MakeFlash(prevEnemy.transform.position, size: 1);
                                 CorpseZapSkipList.Add(nextEnemy);
                                 prevEnemy = nextEnemy;
                             }
