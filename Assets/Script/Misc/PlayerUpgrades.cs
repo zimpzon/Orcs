@@ -17,6 +17,7 @@ public class UpgradeData
     public double SkullSlicerDamageMul = 1.0;
     public int StormLordStrikes = 0;
     public double StormLordDamageMul = 0.0;
+    public double StormLordWeakenMul = 1.0; // struck enemies take this much more damage from everything (ActorBase.StormWeakenMul)
     public float TimeScale = 1.0f;
     public bool SpawnChestUnlocked = false;
     public TimeSpan SpawnChestUnlockCriteria_GameTime = new(0, 5, 0);

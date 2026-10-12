@@ -378,6 +378,8 @@ public class GameManager : MonoBehaviour
                 break;
 
             _stormTargets.Add(target);
+            // Weaken first, so the strike itself already hits the weakened enemy.
+            target.StormWeakenMul = Math.Max(target.StormWeakenMul, PlayerUpgrades.Data.StormLordWeakenMul);
             Vector2 sky = (Vector2)target.transform.position + new Vector2(UnityEngine.Random.Range(-0.6f, 0.6f), 4.5f);
             anyHit |= Zapper.TryZapEnemy(sky, target, damage, ActorDamageSource.StormLord);
         }
@@ -1087,6 +1089,9 @@ public class GameManager : MonoBehaviour
         // Skull Slicer: all damage to an enemy with a skull attached is multiplied.
         if (enemy.SkullMarkedUntil > GameTime)
             amount *= PlayerUpgrades.Data.SkullSlicerDamageMul;
+
+        // Storm Lord: an enemy struck by its lightning takes more damage from everything (StormLordManager).
+        amount *= enemy.StormWeakenMul;
 
         // Critical Strike upgrade: BaseCritChance/CritChanceMul/CritValueMul already existed as
         // unused hooks in PlayerUpgrades - this is the first thing to actually read them.

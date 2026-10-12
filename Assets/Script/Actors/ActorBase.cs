@@ -146,6 +146,7 @@ public class ActorBase : MonoBehaviour
     static int UniqueIdCounter = 1;
     // Skull Slicer: game time until which this enemy counts as having a skull attached (set by ProjectileManager).
     [NonSerialized] public float SkullMarkedUntil;
+    [NonSerialized] public double StormWeakenMul = 1.0; // Storm Lord: struck enemies take this much more damage (reset on spawn)
 
     // Shared scratch list for Power Zap corpse-zap chains; only used inside one synchronous loop, so sharing is safe.
     static readonly List<ActorBase> CorpseZapSkipList = new();
@@ -170,6 +171,7 @@ public class ActorBase : MonoBehaviour
 
         Hp = BaseHp;
         SkullMarkedUntil = 0;
+        StormWeakenMul = 1.0;
         distanceToPlayer_ = float.MaxValue;
         position_ = Vector3.zero;
         IsCorpse = false;

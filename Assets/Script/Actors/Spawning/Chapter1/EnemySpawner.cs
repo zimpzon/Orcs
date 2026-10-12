@@ -74,8 +74,8 @@ public static class EnemySpawner
         // the same 1.15^level exponential price curve) mean a much steeper HP ceiling here would
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
-        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 1.7),
-        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 1.6),
+        new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 10.0),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 5.0),
         new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 1.5),
         new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000, 1.4),
         new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 1.3),

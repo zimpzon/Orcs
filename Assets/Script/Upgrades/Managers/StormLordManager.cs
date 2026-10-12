@@ -46,20 +46,27 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<size=+4><i><color=#aaaaff>Arena</color></i></size>");
             sb.AppendLine($"<color=#dddddd>A storm every <color=COLOR-ARENA>{StormInterval:0}</color> seconds.");
             sb.AppendLine($"<color=#dddddd>Strikes: <color=COLOR-ARENA>{StrikesForLevel(level)}</color>, damage: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color> zap damage");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{StrikesForLevel(level + 1)}</color> strikes, <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>");
+            sb.AppendLine($"<color=#dddddd>Struck enemies take <color=COLOR-ARENA>x{DisplayNumberFormat.Format(WeakenMulForLevel(Math.Max(1, level)), "0.0")}</color> damage from everything.");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{StrikesForLevel(level + 1)}</color> strikes, <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>, weaken <color=COLOR-ARENA>x{DisplayNumberFormat.Format(WeakenMulForLevel(level + 1), "0.0")}</color>");
 
             return sb.ToString();
         }
 
         // Every StormInterval seconds of arena time, StrikesForLevel bolts hit random enemies for zap damage times
-        // DamageMulForLevel (GameManager.CheckStorm). Strong from level 1 since it's the final tier.
+        // DamageMulForLevel (GameManager.CheckStorm), and weaken them: a struck enemy takes WeakenMulForLevel damage from
+        // everything for the rest of its life (ActorBase.StormWeakenMul). The final tier, so it's the big turning point:
+        // ~x5 total damage from level 1, enough to reach the last enemy. Players realistically reach level ~1-5 of the
+        // final tier, so every level counts: L1 5 strikes / x20 / weaken x5, L3 7 / x40 / x7, L5 9 / x60 / x9.
         public const float StormInterval = 4f;
 
         private static int StrikesForLevel(long level)
-            => level <= 0 ? 0 : (int)Math.Min(8, 2 + level / 25);
+            => level <= 0 ? 0 : (int)Math.Min(12, 4 + level);
 
         private static double DamageMulForLevel(long level)
-            => level <= 0 ? 0 : 2.0 + 0.5 * level;
+            => level <= 0 ? 0 : 10.0 + 10.0 * level;
+
+        private static double WeakenMulForLevel(long level)
+            => level <= 0 ? 1.0 : 4.0 + level;
 
         private static Decimal512 BaseIncome()
         {
@@ -91,6 +98,7 @@ namespace Assets.Script.Upgrades
         {
             PlayerUpgrades.Data.StormLordStrikes = StrikesForLevel(SaveGame.Members.LevelStormLord);
             PlayerUpgrades.Data.StormLordDamageMul = DamageMulForLevel(SaveGame.Members.LevelStormLord);
+            PlayerUpgrades.Data.StormLordWeakenMul = WeakenMulForLevel(SaveGame.Members.LevelStormLord);
         }
 
         public static void OnBuy()
