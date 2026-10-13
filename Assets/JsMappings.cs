@@ -22,6 +22,9 @@ public class JsMappings : MonoBehaviour
     [DllImport("__Internal")]
     public static extern string Load();
 
+    [DllImport("__Internal")]
+    public static extern void SaveBackup(int slot, string json);
+
     // New methods for file operations
     [DllImport("__Internal")]
     public static extern void DownloadFile(string filename, string content);

@@ -62,7 +62,7 @@ public class ActorOgreShamanBossShoot : MonoBehaviour
         basic.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
         ProjectileManager.Instance.Fire(basic);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.EnemyShoot, 0.5f);
+        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.FireballShoot, 0.5f);
     }
 
     IEnumerator Think()

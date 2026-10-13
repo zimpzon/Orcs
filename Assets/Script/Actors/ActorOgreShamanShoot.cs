@@ -63,7 +63,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.OnEndOfLife = OnProjectileEndOfLife;
 
         ProjectileManager.Instance.Fire(basic);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.EnemyShoot, 0.5f);
+        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.FireballShoot, 0.5f);
     }
 
     void OnProjectileEndOfLife(ProjectileManager.Basic p, bool hitEnemy)

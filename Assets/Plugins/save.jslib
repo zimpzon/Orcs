@@ -3,6 +3,11 @@ mergeInto(LibraryManager.library, {
   Save: function (json) {
     window.localStorage.setItem("super-knight-v1-savegame", UTF8ToString(json));
   },
+
+  // Rolling hourly backups (SaveGame.BackupIfDue): one localStorage key per slot.
+  SaveBackup: function (slot, json) {
+    window.localStorage.setItem("super-knight-v1-backup-" + slot, UTF8ToString(json));
+  },
   
     GetHostInfo: function () {
         var url = window.location.href;

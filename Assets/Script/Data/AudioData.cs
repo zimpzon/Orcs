@@ -3,6 +3,12 @@
 [CreateAssetMenu()]
 public class AudioData : ScriptableObject
 {
+    public AudioClip FireballShoot;
+    public AudioClip EnemyDie;
+    public AudioClip MoneyPickup;
+    public AudioClip DaggerThrow;
+
+
     public AudioClip PlayerStaffFire;
     public AudioClip PlayerStaffHit;
     public AudioClip PlayerShotgunFire;
@@ -15,7 +21,6 @@ public class AudioData : ScriptableObject
     public AudioClip BombFuseBurn;
     public AudioClip BombExplode;
     public AudioClip Menu;
-    public AudioClip EnemyShoot;
     public AudioClip OrcPickup;
     public AudioClip OrcHorn;
     public AudioClip UnarmedBlast;
@@ -24,7 +29,6 @@ public class AudioData : ScriptableObject
     public AudioClip SaberSwing;
     public AudioClip SaberHit;
     public AudioClip Chainsaw;
-    public AudioClip MoneyPickup;
     public AudioClip LevelUp;
     public AudioClip SqueakyDie;
     public AudioClip ShortDeepBump;
@@ -32,5 +36,4 @@ public class AudioData : ScriptableObject
     public AudioClip Oink;
     public AudioClip Ackack;
     public AudioClip NewRound;
-    public AudioClip EnemyDie;
 }

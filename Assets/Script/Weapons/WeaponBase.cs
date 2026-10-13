@@ -122,7 +122,7 @@ public class WeaponBase
                     Machinegun.Scale = new Vector3(0.2f, 0.08f, 1.0f);
                     Machinegun.BulletSprite = SpriteData.Instance.PlayerDagger;
                     Machinegun.Muzzle = new Vector3(0.5f, 0.013f, 0.0f);
-                    Machinegun.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
+                    Machinegun.FireAudio = AudioManager.Instance.AudioData.FireballShoot;
                     Machinegun.MoveSpeedModifier = 1.0f;
                 }
                 return Machinegun;
@@ -149,7 +149,7 @@ public class WeaponBase
                     PaintballRandom.Scale = new Vector3(1.5f, 4.0f, 1.0f);
                     PaintballRandom.BulletSprite = SpriteData.Instance.IcyShamanProjectile;
                     PaintballRandom.Muzzle = new Vector3(0.0f, 0.0f, 0.0f);
-                    PaintballRandom.FireAudio = AudioManager.Instance.AudioData.EnemyShoot;
+                    PaintballRandom.FireAudio = AudioManager.Instance.AudioData.FireballShoot;
                     PaintballRandom.MoveSpeedModifier = 1.0f;
                 }
                 return PaintballRandom;

@@ -302,6 +302,8 @@ public static class SaveGame
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);
 
+        BackupIfDue(json);
+
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             //Debug.Log("saving WEBGL - dual save for safety");
@@ -348,6 +350,38 @@ public static class SaveGame
     }
 
     const string SaveGameKey = "idle-earl-save-v2.json";
+
+    // Rolling backups: a copy of the save every BackupIntervalSeconds of play, cycling through BackupSlots slots so the
+    // oldest gets overwritten. WebGL: localStorage keys super-knight-v1-backup-N (jslib), else PlayerPrefs. The next slot
+    // is kept in PlayerPrefs; if that gets wiped it just restarts at 0.
+    const float BackupIntervalSeconds = 60 * 60;
+    const int BackupSlots = 20;
+    const string BackupKeyPrefix = "idle-earl-backup-";
+    const string BackupNextSlotKey = "idle-earl-backup-next";
+    static float _nextBackupTime = BackupIntervalSeconds;
+
+    static void BackupIfDue(string json)
+    {
+        if (Time.realtimeSinceStartup < _nextBackupTime)
+            return;
+        _nextBackupTime = Time.realtimeSinceStartup + BackupIntervalSeconds;
+
+        try
+        {
+            int slot = Mathf.Clamp(PlayerPrefs.GetInt(BackupNextSlotKey, 0), 0, BackupSlots - 1);
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+                JsMappings.SaveBackup(slot, json);
+            else
+                PlayerPrefs.SetString(BackupKeyPrefix + slot, json);
+
+            PlayerPrefs.SetInt(BackupNextSlotKey, (slot + 1) % BackupSlots);
+            PlayerPrefs.Save();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Save backup failed: " + e.Message);
+        }
+    }
 
     public static void Load()
     {
