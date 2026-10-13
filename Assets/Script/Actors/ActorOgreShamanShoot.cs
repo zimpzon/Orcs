@@ -31,7 +31,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         ProjectileManager.Basic basic = ProjectileManager.Instance.GetProjectile();
         basic.SpriteInfo = ProjectileCache.Instance.GetSprite();
         basic.Type = ProjectileManager.ProjectileType.HarmsEnemies;
-        basic.SwayFactor = 0.05f;
+        basic.SwayFactor = 0.01f;
         basic.Speed = 7.0f;
         basic.Damage = PlayerUpgrades.Data.WizardEffectiveDamage;
         basic.DamageCd = DamageTickCd;
