@@ -79,14 +79,45 @@ public class G : MonoBehaviour
     public static bool SelectionTap()
         => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
 
+    // Cheats are off until RightShift is held while typing C H E A T (any other key restarts it). Not saved: per session.
+    public static bool CheatsEnabled;
+    static readonly KeyCode[] CheatUnlockCode = { KeyCode.C, KeyCode.H, KeyCode.E, KeyCode.A, KeyCode.T };
+    static int _cheatUnlockIndex;
+
+    // Call once per frame. Returns true on the frame cheats get enabled.
+    public static bool UpdateCheatUnlock()
+    {
+        if (CheatsEnabled || !Input.anyKeyDown)
+            return false;
+
+        if (!Input.GetKey(KeyCode.RightShift))
+        {
+            _cheatUnlockIndex = 0;
+            return false;
+        }
+
+        if (Input.GetKeyDown(CheatUnlockCode[_cheatUnlockIndex]))
+        {
+            if (++_cheatUnlockIndex < CheatUnlockCode.Length)
+                return false;
+            CheatsEnabled = true;
+            return true;
+        }
+
+        // Pressing RightShift itself doesn't break the sequence.
+        if (!Input.GetKeyDown(KeyCode.RightShift))
+            _cheatUnlockIndex = Input.GetKeyDown(CheatUnlockCode[0]) ? 1 : 0;
+        return false;
+    }
+
     public static bool GetCheatKeyDown(KeyCode code)
     {
-        return Input.GetKeyDown(code);
+        return CheatsEnabled && Input.GetKeyDown(code);
     }
 
     public static bool GetCheatKey(KeyCode code)
     {
-        return Input.GetKey(code);
+        return CheatsEnabled && Input.GetKey(code);
     }
 
     [Header("UI saturation (buttons, panels and text). 0 = unchanged, 0.25 = +25%, negative = less.")]

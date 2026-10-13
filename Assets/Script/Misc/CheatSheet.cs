@@ -11,6 +11,7 @@ public class CheatSheet : MonoBehaviour
 {
     static readonly (string Keys, string What)[] Entries =
     {
+        ("RightShift + C H E A T", "Enable cheats (off every session until typed)"),
         ("RightShift+H", "Show / hide this cheat sheet"),
         ("", ""),
         ("RightCtrl+M", "+45 octillion money"),

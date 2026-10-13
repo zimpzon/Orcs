@@ -1842,7 +1842,9 @@ public class GameManager : MonoBehaviour
             Screen.fullScreen = !Screen.fullScreen;
         }
 
-        // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all)
+        // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all). All off until RightShift + C H E A T.
+        if (G.UpdateCheatUnlock())
+            AchievementsScript.AnnounceAtCursorOrCenter("Cheats enabled");
 
         if (G.GetCheatKeyDown(KeyCode.H) && G.GetCheatKey(KeyCode.RightShift))
         {
@@ -1986,7 +1988,7 @@ public class GameManager : MonoBehaviour
             TextFps.text = string.Format("{0} fps", Mathf.RoundToInt(1.0f / Time.unscaledDeltaTime));
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
+        if (G.GetCheatKeyDown(KeyCode.Z) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.LevelClickDamage = 400;
             SaveGame.Members.LevelKnifeDamage = 300;
