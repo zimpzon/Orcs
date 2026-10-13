@@ -31450,7 +31450,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 111.39, y: 16.700012}
+  m_AnchoredPosition: {x: 100, y: 12}
   m_SizeDelta: {x: 35, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &356444593
@@ -33092,8 +33092,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.42, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 33.47618, y: -51.1}
-  m_SizeDelta: {x: -53.4762, y: -87.8352}
+  m_AnchoredPosition: {x: 33.47618, y: -47}
+  m_SizeDelta: {x: -53.4762, y: -97.9752}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &429233258
 GameObject:
@@ -40202,7 +40202,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.42, y: 1}
-  m_AnchoredPosition: {x: 20, y: -21}
+  m_AnchoredPosition: {x: 20, y: -17}
   m_SizeDelta: {x: -28, y: -70.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &550880669
@@ -44921,7 +44921,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 319.2, y: -85.803345}
-  m_SizeDelta: {x: 501.31, y: 346.2122}
+  m_SizeDelta: {x: 501.31, y: 382.03}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &804203910
 RectTransform:
@@ -64931,30 +64931,30 @@ MonoBehaviour:
   m_text: '<color=yellow>Tip #1:</color> Rebirth to convert credits to diamonds.
     Diamonds are very valuable.
 
-    
+
 
     <color=yellow>Tip #2:</color> <color=#8DBE4C>HOLD
     ON TO YOUR DIAMONDS!</color> Well, not forever. Each diamond you hold gives you
     a great income bonus, and buying an upgrade will cost you diamonds, possibly
     lowering your income. Be careful!
 
-    
 
-    <color=yellow>Tip #3:</color>
-    The higher your income, the faster you earn credits. However, each credit costs
-    more than the previous one.
 
-    
+    <color=yellow>Tip #3:</color> The higher
+    your income, the faster you earn credits. However, each credit costs more than
+    the previous one.
 
-    <color=yellow>Tip #4:</color> You get
-    a large bonus to credit income after Rebirth. It will slowly decay over time.
-    Keep an eye on it and consider a Rebirth when it runs out.
 
-    
 
-    <color=yellow>Tip
-    #5:</color> Hold SHIFT while buying to buy the maximum affordable amount. Hold
-    CTRL while buying an X2 to buy ALL the X2 you can afford!'
+    <color=yellow>Tip #4:</color> You get a large bonus
+    to credit income after Rebirth. It will slowly decay over time. Keep an eye on
+    it and consider a Rebirth when it runs out.
+
+
+
+    <color=yellow>Tip #5:</color>
+    Hold SHIFT while buying to buy the maximum affordable amount. Hold CTRL while
+    buying an X2 to buy ALL the X2 you can afford!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -119361,7 +119361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91.8, y: 127.8}
+  m_AnchoredPosition: {x: 91.8, y: 146}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1954013131
