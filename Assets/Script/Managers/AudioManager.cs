@@ -141,7 +141,7 @@ public class AudioManager : MonoBehaviour
     readonly Dictionary<AudioClip, float> _lastPlayTime = new();
 
     // minInterval: seconds (real time); the clip is skipped if it was played less than this long ago. 0 = no limit.
-    public void PlayClipForReal(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false, float minInterval = 0f)
+    public void PlayClipForReal(AudioClip clip, float volumeScale = 1.0f, float pitch = 1.0f, bool ignoreListenerPause = false, float minInterval = 0f, bool fixedPitch = false)
     {
         if (clip == null)
             return; // unassigned AudioData slot
@@ -156,7 +156,7 @@ public class AudioManager : MonoBehaviour
         int count = CountPlayingInstancesOfClip(clip, out AudioSource existingPlayingSource);
         AudioSource selectedSource = count >= maxInstances ? existingPlayingSource : GetSourceForNewSound(replaceIfNoneAvailable: true);
 
-        float randomPitchOffset = Random.Range(lowPitchRange, highPitchRange);
+        float randomPitchOffset = fixedPitch ? 1.0f : Random.Range(lowPitchRange, highPitchRange);
 
         if (selectedSource != null)
         {

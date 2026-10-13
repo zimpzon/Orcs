@@ -57,9 +57,12 @@ public class X2RankUpEffect : MonoBehaviour
     public static void Spawn(Component anyUiElement, Vector2 screenPos, double pctPerRank, long rank)
         => SpawnText(anyUiElement, screenPos, $"+{pctPerRank:0}% income!\n<size=80%>X2 rank {rank}</size>");
 
-    // Same floating text with any content (also used for "New skin unlocked!").
+    // Same floating text with any content (also used for "New skin unlocked!"). Big texts chime, small ones don't.
     public static void SpawnText(Component anyUiElement, Vector2 screenPos, string content)
-        => Spawn(anyUiElement, screenPos, content, Big);
+    {
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
+        Spawn(anyUiElement, screenPos, content, Big);
+    }
 
     // Small, short "+N" at the cursor after a buy (UpgradeManager.BuyLevels, PercentageBonusScript).
     public static void SpawnSmall(Component anyUiElement, Vector2 screenPos, string content)

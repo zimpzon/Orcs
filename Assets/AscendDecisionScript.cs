@@ -147,6 +147,7 @@ public class AscendDecisionScript : MonoBehaviour
                 SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
                 SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
                 SaveGame.Members.TimesAscended_09_08_2025++;
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
                 SaveGame.Members.TimeSinceLastAscend = 0;
 
                 GameManager.Instance.ResetAllProgress(ascend: true);
