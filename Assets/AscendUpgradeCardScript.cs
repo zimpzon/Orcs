@@ -132,6 +132,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
             return;
 
         Debug.Log("Bought " + CardId);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f);
         if (CardId == AscendUpgradeCardId.PassiveIncomeX2_1)
         {
             SaveGame.Members.BoughtPassiveX2_1 = true;
