@@ -225,7 +225,7 @@ namespace Assets.Script.Upgrades
             return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * extra * early);
         }
 
-        // 0.1024 x 0.5: tuned for the first run's flat x0.5 credit multiplier (CreditFirstRunMul).
+        // 0.1024 x 0.5: tuned for the first run's x0.5 credit pace (full bonus x CreditFirstRunPaceMul).
         const double CreditCostMul = 0.0512;
         const double CreditCostRamp = 85;
         const double CreditCostRampPower = 1.17;
@@ -256,12 +256,16 @@ namespace Assets.Script.Upgrades
         // what they were at that rebirth (CreditBonusStartLifetime, min 2). Curved (1 - 0.75 * t^2): stays high for a
         // while, then drops fast at the end - waiting it out gets slow, so rebirthing is the better move (playtest
         // 2026-10: was linear down to x0.5, and waiting beat rebirthing). Shown as 200% -> 0% (150% halfway).
-        // First run (never rebirthed): flat x0.5, no bonus shown - the early credit curve is tuned for that.
+        // First run (never rebirthed): shows the same bonus and drain, held full until CreditFirstRunBonusStart lifetime
+        // credits: 200% until ~15.7, 174% at 20, 100% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20).
+        // Its actual speed is scaled by CreditFirstRunPaceMul, so at full bonus it's exactly the old flat x0.5 that the
+        // early credit curve is tuned for - only the late drain is new.
         const long CreditBonusMinLifetime = 2;
+        const double CreditFirstRunBonusStart = 15.68;
+        const double CreditFirstRunPaceMul = 0.5;
         const double CreditBonusEndFactor = 1.75;
         const double CreditBonusMinMul = 0.25;
         const double CreditBonusCurvePower = 2;
-        const double CreditFirstRunMul = 0.5;
         const double CreditBonusDisplayMax = 200;
 
         // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
@@ -273,7 +277,7 @@ namespace Assets.Script.Upgrades
             return lifetime + partial;
         }
 
-        // 0 = just rebirthed (100%), 1 = reached 1.75x the start (0%).
+        // 0 = just rebirthed (200%), 1 = reached 1.75x the start (0%).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
@@ -281,27 +285,24 @@ namespace Assets.Script.Upgrades
             if (m.CreditBonusStartLifetime < 0)
                 m.CreditBonusStartLifetime = earned;
 
-            double start = Math.Max(CreditBonusMinLifetime, m.CreditBonusStartLifetime);
+            double minStart = m.TimesAscended_09_08_2025 == 0 ? CreditFirstRunBonusStart : CreditBonusMinLifetime;
+            double start = Math.Max(minStart, m.CreditBonusStartLifetime);
             double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
             return Math.Clamp(t, 0.0, 1.0);
         }
 
+        // The bonus curve itself: x1.0 (full) down to CreditBonusMinMul (drained).
+        static double CreditBonusCurve()
+            => 1.0 - (1.0 - CreditBonusMinMul) * Math.Pow(CreditBonusProgress(), CreditBonusCurvePower);
+
+        // What credit XP is multiplied by. First run: scaled to its tuned pace (see CreditFirstRunPaceMul).
         public static double CreditBonusMultiplier()
-        {
-            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
-                return CreditFirstRunMul;
+            => CreditBonusCurve() * (SaveGame.Members.TimesAscended_09_08_2025 == 0 ? CreditFirstRunPaceMul : 1.0);
 
-            return 1.0 - (1.0 - CreditBonusMinMul) * Math.Pow(CreditBonusProgress(), CreditBonusCurvePower);
-        }
-
-        // 200 (just rebirthed) down to 0, a straight map of the multiplier. 0 before the first rebirth (no bonus there).
-        // Rounded up: rounding to nearest showed 199% within seconds of a rebirth. Still exactly 0 at the end.
+        // 200 (full bonus) down to 0, a straight map of the bonus curve. Rounded up: rounding to nearest showed 199%
+        // within seconds of a rebirth. Still exactly 0 at the end.
         public static int CreditBonusDisplayPct()
-        {
-            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
-                return 0;
-            return (int)Math.Ceiling((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * CreditBonusDisplayMax - 1e-9);
-        }
+            => (int)Math.Ceiling((CreditBonusCurve() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * CreditBonusDisplayMax - 1e-9);
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
