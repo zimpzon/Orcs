@@ -99,7 +99,7 @@ public class PercentageBonusScript : MonoBehaviour
 
         SaveGame.Members.LevelPctBought += buyAmount;
         SaveGame.Members.TotalLevelPctBought += buyAmount;
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+        AudioManager.Instance.PlayMenuClick();
         X2RankUpEffect.SpawnSmall(Button, Input.mousePosition, $"+{buyAmount}%"); // shows the selected buy amount
         UpdateAll();
     }

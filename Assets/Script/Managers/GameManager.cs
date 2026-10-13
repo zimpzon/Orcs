@@ -365,7 +365,10 @@ public class GameManager : MonoBehaviour
 
         if (G.D.GameTime < _nextStorm)
             return;
+
         _nextStorm = G.D.GameTime + Assets.Script.Upgrades.StormLordManager.StormInterval;
+
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.StormLordZap, volumeScale: 0.5f, pitch: 1.0f, minInterval: 0.2f);
 
         long damage = (long)(PlayerUpgrades.Data.EffectiveZapDamage * PlayerUpgrades.Data.StormLordDamageMul);
         _stormTargets.Clear();
@@ -447,6 +450,8 @@ public class GameManager : MonoBehaviour
 
         if (!TryZapEnemy(G.D.PlayerPos, firstTarget, damageSource))
             yield break;
+
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 0.6f, pitch: 1.0f);
 
         ZapTargetIgnoreList.Add(firstTarget);
         var prevEnemy = firstTarget;
@@ -1052,11 +1057,11 @@ public class GameManager : MonoBehaviour
 
     public void OnEnemyKill(ActorBase actor)
     {
-        if (UnityEngine.Random.value > 0.75)
+        //if (UnityEngine.Random.value > 0.75)
         {
-            float pitch = 1.6f + UnityEngine.Random.value * 0.2f;
-            float volume = 0.7f + UnityEngine.Random.value * 0.1f;
-            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.EnemyDie, volume, pitch);
+            float pitch = 0.9f + UnityEngine.Random.value * 0.2f;
+            float volume = 0.5f + UnityEngine.Random.value * 0.1f;
+            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.EnemyDie, volume, pitch, minInterval: 0.25f);
         }
 
         SaveGame.Members.EnemiesKilled += 1;
@@ -1331,6 +1336,13 @@ public class GameManager : MonoBehaviour
         TextFps.enabled = false;
     }
 
+    // Volume slider (VolumeMaster) on top of the music / sfx volumes.
+    public void ApplyVolume()
+    {
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
+        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
+    }
+
     private void Start()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -1339,8 +1351,8 @@ public class GameManager : MonoBehaviour
 
         UpgradeManager.Instance.UpdateAllUpgrades();
 
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
-        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
+        ApplyVolume();
+        AudioManager.Instance.ApplySoundSettings();
 
         ResetGame(autoStartGame: true);
         SetBuyMultiple((int)BuyAmountSelection.Buy1);

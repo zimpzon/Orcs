@@ -63,7 +63,7 @@ public class ActorOgreShamanShoot : MonoBehaviour
         basic.OnEndOfLife = OnProjectileEndOfLife;
 
         ProjectileManager.Instance.Fire(basic);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.FireballShoot, 0.5f);
+        AudioManager.Instance.PlayClipWithRandomPitchForReal(AudioManager.Instance.AudioData.FireballShoot, 0.35f);
     }
 
     void OnProjectileEndOfLife(ProjectileManager.Basic p, bool hitEnemy)
@@ -75,6 +75,9 @@ public class ActorOgreShamanShoot : MonoBehaviour
         Particles.I.ExplosionSpread.Emit(40);
         GameManager.Instance.MakeCircle(pos, 2.0f);
         GameManager.Instance.MakeFlash(pos, 1.0f);
+
+        // Fireball explose
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Explosion, volumeScale: 0.1f, pitch: 1.0f, minInterval: 0.2f);
     }
 
     IEnumerator Think()

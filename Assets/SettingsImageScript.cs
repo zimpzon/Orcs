@@ -14,33 +14,35 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle UseScientificNotationToggle;
     public Toggle ShowDetailsOnHoverToggle;
 
-    private int _clickCount;
-    private Toggle _soundToggle;
+    public Toggle SoundToggle;
+    public Toggle MenuSoundToggle;
+    public Slider VolumeSlider;
 
-    // The Sound toggle is cloned from "Show damage numbers" and placed in a third row below it, to avoid a scene edit.
+    private int _clickCount;
+
+    // Listeners in code, so the scene needs no persistent calls for them.
     void Awake()
     {
-        const float RowSpacing = 23.5f;
-        var source = ShowFloatingDamageToggle;
-        var go = Instantiate(source.gameObject, source.transform.parent, false);
-        go.name = "SoundToggle";
-        ((RectTransform)go.transform).anchoredPosition = ((RectTransform)source.transform).anchoredPosition - new Vector2(0, 2 * RowSpacing);
-        go.GetComponentInChildren<Text>(true).text = "Sound";
-
-        _soundToggle = go.GetComponent<Toggle>();
-        _soundToggle.onValueChanged = new Toggle.ToggleEvent();
-        _soundToggle.onValueChanged.AddListener(on =>
+        SoundToggle.onValueChanged.AddListener(on =>
         {
             SaveGame.Members.SoundEnabled = on;
+            AudioManager.Instance.ApplySoundSettings();
             SaveGame.Save();
+        });
 
-            // Little confirmation that sound is back: the buy sound (unmute right away, AudioManager would only
-            // do it next frame).
+        MenuSoundToggle.onValueChanged.AddListener(on =>
+        {
+            SaveGame.Members.MenuSoundEnabled = on;
+            SaveGame.Save();
             if (on)
-            {
-                AudioListener.volume = 1f;
-                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
-            }
+                AudioManager.Instance.PlayMenuClick(); // little confirmation
+        });
+
+        // Saved by the regular auto-save (every 5 s), not on every drag step.
+        VolumeSlider.onValueChanged.AddListener(value =>
+        {
+            SaveGame.Members.VolumeMaster = value;
+            GameManager.Instance.ApplyVolume();
         });
     }
 
@@ -63,7 +65,9 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
         UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
         ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
-        _soundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
+        SoundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
+        MenuSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.MenuSoundEnabled);
+        VolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
     }
 
     //public void OnExportSaveClick()

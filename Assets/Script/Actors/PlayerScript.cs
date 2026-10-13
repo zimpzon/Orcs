@@ -167,7 +167,7 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator FireSalvo(Vector2 fireDir)
     {
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.DaggerThrow, 0.5f);
+        AudioManager.Instance.PlayClipWithRandomPitchForReal(AudioManager.Instance.AudioData.DaggerThrow, volumeScale: 0.6f, minInterval: 0.1f);
 
         double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
         double mainDamage = PlayerUpgrades.Data.MagicMissileMultiShots == 0 ? baseDamage * SingleDaggerDamageBonus : baseDamage;
@@ -334,7 +334,7 @@ public class PlayerScript : MonoBehaviour
     public void OnGoldPickedUp(bool isLargeCoin, double value)
     {
         float pitch = Math.Min(1.1f, 0.9f + accumulatedCount * 0.01f);
-        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.MoneyPickup, volumeScale: 0.7f, pitch: pitch);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.MoneyPickup, volumeScale: 0.7f, pitch: pitch, minInterval: 0.2f);
         accumulatedCount++;
 
         if (G.D.GameTime > lastAccumulatedAdd + 0.25f)

@@ -55,7 +55,7 @@ public class ActorOgreIcyShamanShoot : MonoBehaviour
         basic.SwayFactor = 0.2f;
 
         ProjectileManager.Instance.Fire(basic);
-        AudioManager.Instance.PlayClipWithRandomPitch(AudioManager.Instance.AudioData.FireballShoot, 0.5f);
+        AudioManager.Instance.PlayClipWithRandomPitchForReal(AudioManager.Instance.AudioData.FireballShoot, 0.5f);
     }
 
     IEnumerator Think()

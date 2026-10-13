@@ -409,14 +409,14 @@ public class UpgradeManager : MonoBehaviour
     void OnItemBought(long actualBuyAmount)
     {
         SaveGame.Members.TotalUpgradesBought += actualBuyAmount;
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+        AudioManager.Instance.PlayMenuClick();
         UpdateAllUpgrades();
     }
 
     void OnX2ItemBought(long count)
     {
         SaveGame.Members.TotalX2UpgradesBought += count;
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Menu);
+        AudioManager.Instance.PlayMenuClick();
         _x2BoughtByClick = count > 0;
         UpdateAllUpgrades();
         _x2BoughtByClick = false;

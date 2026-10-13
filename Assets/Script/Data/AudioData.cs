@@ -7,6 +7,9 @@ public class AudioData : ScriptableObject
     public AudioClip EnemyDie;
     public AudioClip MoneyPickup;
     public AudioClip DaggerThrow;
+    public AudioClip Zap;
+    public AudioClip Explosion;
+    public AudioClip StormLordZap;
 
 
     public AudioClip PlayerStaffFire;

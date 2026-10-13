@@ -722,8 +722,6 @@ public class ActorBase : MonoBehaviour
                     long damage = (long)(PlayerUpgrades.Data.WitchDoctorEffectiveDamage * tierMultiplier);
                     if (Zapper.TryZapEnemy(transform.position, closestEnemy, damage, ActorDamageSource.WitchDoctor))
                     {
-                        AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.PlayerStaffHit, volumeScale: 0.6f, pitch: 1.2f);
-
                         var direction = (closestEnemy.transform.position - transform.position).normalized;
                         AddForce(direction * -0.1f);
 
@@ -788,7 +786,8 @@ public class ActorBase : MonoBehaviour
 
             GameManager.Instance.ShakeCamera(1.0f);
 
-            AudioManager.Instance.PlayClip(AudioManager.Instance.AudioData.UnarmedBlast, volumeScale: 0.1f, pitch: 1.2f);
+            // Witchdoctor corpse explode
+            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Explosion, volumeScale: 0.2f, pitch: 1.0f, minInterval: 0.2f);
         }
         else
         {
