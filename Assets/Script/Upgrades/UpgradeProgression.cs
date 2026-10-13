@@ -225,7 +225,7 @@ namespace Assets.Script.Upgrades
             return 5 * OneBillion * (1 + 2 * n * n) * (CreditCostMul * ramp * extra * early);
         }
 
-        // 0.1024 x 0.5: the rebirth credit bonus bottoms out at x0.5 (shown 0%), which then matches the tuned pace.
+        // 0.1024 x 0.5: tuned for the first run's flat x0.5 credit multiplier (CreditFirstRunMul).
         const double CreditCostMul = 0.0512;
         const double CreditCostRamp = 85;
         const double CreditCostRampPower = 1.17;
@@ -252,12 +252,17 @@ namespace Assets.Script.Upgrades
             return income > floor ? income : floor;
         }
 
-        // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling in a straight line to x0.5 when lifetime
-        // credits reach 1.75x what they were at that rebirth (CreditBonusStartLifetime, min 2). Shown as 100% -> 0%.
-        // No bonus (x0.5, 0%) before the first rebirth.
+        // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling to x0.25 when lifetime credits reach 1.75x
+        // what they were at that rebirth (CreditBonusStartLifetime, min 2). Curved (1 - 0.75 * t^2): stays high for a
+        // while, then drops fast at the end - waiting it out gets slow, so rebirthing is the better move (playtest
+        // 2026-10: was linear down to x0.5, and waiting beat rebirthing). Shown as 200% -> 0% (150% halfway).
+        // First run (never rebirthed): flat x0.5, no bonus shown - the early credit curve is tuned for that.
         const long CreditBonusMinLifetime = 2;
         const double CreditBonusEndFactor = 1.75;
-        const double CreditBonusMinMul = 0.5;
+        const double CreditBonusMinMul = 0.25;
+        const double CreditBonusCurvePower = 2;
+        const double CreditFirstRunMul = 0.5;
+        const double CreditBonusDisplayMax = 200;
 
         // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
         // Also stored at rebirth (SaveGameAscend), since the leftover XP carries over.
@@ -284,15 +289,19 @@ namespace Assets.Script.Upgrades
         public static double CreditBonusMultiplier()
         {
             if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
-                return CreditBonusMinMul;
+                return CreditFirstRunMul;
 
-            return 1.0 - (1.0 - CreditBonusMinMul) * CreditBonusProgress();
+            return 1.0 - (1.0 - CreditBonusMinMul) * Math.Pow(CreditBonusProgress(), CreditBonusCurvePower);
         }
 
-        // 100 (just rebirthed) down to 0, linear like the multiplier. Rounded up: rounding to nearest showed 99% within
-        // seconds of a rebirth. Still exactly 0 at the end.
+        // 200 (just rebirthed) down to 0, a straight map of the multiplier. 0 before the first rebirth (no bonus there).
+        // Rounded up: rounding to nearest showed 199% within seconds of a rebirth. Still exactly 0 at the end.
         public static int CreditBonusDisplayPct()
-            => (int)Math.Ceiling((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * 100 - 1e-9);
+        {
+            if (SaveGame.Members.TimesAscended_09_08_2025 == 0)
+                return 0;
+            return (int)Math.Ceiling((CreditBonusMultiplier() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * CreditBonusDisplayMax - 1e-9);
+        }
 
         // Comparison with original:
         // Level 20: Original ~25000B, New ~31250B (+25%)
