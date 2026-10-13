@@ -4,6 +4,19 @@ mergeInto(LibraryManager.library, {
     window.localStorage.setItem("super-knight-v1-savegame", UTF8ToString(json));
   },
 
+  // Page minimized / tab hidden: tells AudioManager.OnPageVisibility (1 = hidden). An event, not polled from Update,
+  // since browsers stop running frames in a hidden tab.
+  RegisterVisibilityListener: function (gameObjectNamePtr) {
+    var gameObjectName = UTF8ToString(gameObjectNamePtr);
+    document.addEventListener("visibilitychange", function () {
+      var hidden = document.hidden ? 1 : 0;
+      if (typeof unityInstance !== "undefined" && unityInstance)
+        unityInstance.SendMessage(gameObjectName, "OnPageVisibility", hidden);
+      else if (typeof SendMessage === "function")
+        SendMessage(gameObjectName, "OnPageVisibility", hidden);
+    });
+  },
+
   // Rolling hourly backups (SaveGame.BackupIfDue): one localStorage key per slot.
   SaveBackup: function (slot, json) {
     window.localStorage.setItem("super-knight-v1-backup-" + slot, UTF8ToString(json));

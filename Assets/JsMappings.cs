@@ -25,6 +25,9 @@ public class JsMappings : MonoBehaviour
     [DllImport("__Internal")]
     public static extern void SaveBackup(int slot, string json);
 
+    [DllImport("__Internal")]
+    public static extern void RegisterVisibilityListener(string gameObjectName);
+
     // New methods for file operations
     [DllImport("__Internal")]
     public static extern void DownloadFile(string filename, string content);

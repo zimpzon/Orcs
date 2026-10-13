@@ -84,6 +84,26 @@ public class AudioManager : MonoBehaviour
 
     float _nextApplySoundSettings;
 
+    // Muted while the game is minimized. WebGL: the page's visibilitychange event (a focus event would also fire on a
+    // click outside the game frame, which shouldn't mute). Other platforms: losing window focus (minimize, alt-tab).
+    void Start()
+    {
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            try { JsMappings.RegisterVisibilityListener(gameObject.name); }
+            catch (System.Exception e) { Debug.LogError("Visibility listener failed: " + e.Message); }
+        }
+    }
+
+    // Called from save.jslib (SendMessage), 1 = page hidden.
+    public void OnPageVisibility(int hidden) => AudioListener.pause = hidden != 0;
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (Application.platform != RuntimePlatform.WebGLPlayer)
+            AudioListener.pause = !hasFocus;
+    }
+
     private void Update()
     {
         // Re-applied every second too, to catch audio sources created later.
