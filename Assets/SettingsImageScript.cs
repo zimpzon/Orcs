@@ -136,6 +136,11 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        // The popup is a child of this icon, so clicks inside it bubble up here - they'd toggle it closed.
+        var clicked = eventData.rawPointerPress != null ? eventData.rawPointerPress : eventData.pointerCurrentRaycast.gameObject;
+        if (clicked != null && clicked.transform.IsChildOf(Popup.transform))
+            return;
+
         SetPopupEnabled(true);
     }
 }
