@@ -326,6 +326,8 @@ public class GameManager : MonoBehaviour
         if (!success)
             return false;
 
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 1.1f, pitch: 1.0f);
+
         if (fromEnemy is null || !fromEnemy.NoFlashFx)
         {
             MakeFlash(from, 2.0f);
@@ -459,8 +461,6 @@ public class GameManager : MonoBehaviour
 
         if (!TryZapEnemy(G.D.PlayerPos, firstTarget, damageSource))
             yield break;
-
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 1.1f, pitch: 1.0f);
 
         ZapTargetIgnoreList.Add(firstTarget);
         var prevEnemy = firstTarget;
