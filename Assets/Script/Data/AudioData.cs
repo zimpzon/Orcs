@@ -11,6 +11,7 @@ public class AudioData : ScriptableObject
     public AudioClip Explosion;
     public AudioClip StormLordZap;
     public AudioClip Chime;
+    public AudioClip ArenaInfoText;
 
 
     public AudioClip PlayerStaffFire;

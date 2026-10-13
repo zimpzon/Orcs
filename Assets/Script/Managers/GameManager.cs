@@ -264,6 +264,7 @@ public class GameManager : MonoBehaviour
         go.transform.localScale = Vector3.zero;
 
         LeanTween.cancel(go);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.ArenaInfoText);
 
         // Pop in with punch-like bounce
         LeanTween.scale(go, Vector3.one * 1.2f, 0.1f)
@@ -276,6 +277,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Fade out and scale down
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.ArenaInfoText);
         LeanTween.alphaCanvas(canvasGroup, 0f, 0.3f);
         LeanTween.scale(go, Vector3.zero, 0.3f).setEase(LeanTweenType.easeInBack);
         yield return new WaitForSeconds(0.35f);
@@ -284,8 +286,10 @@ public class GameManager : MonoBehaviour
     IEnumerator ShowInfoText(string text, float delay = 1.0f)
     {
         TextGameInfo.text = text;
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.ArenaInfoText);
         LeanTween.scale(TextGameInfo.gameObject, Vector3.one, 0.2f);
         yield return new WaitForSeconds(delay);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.ArenaInfoText);
         LeanTween.scale(TextGameInfo.gameObject, Vector3.zero, 0.25f);
     }
 
