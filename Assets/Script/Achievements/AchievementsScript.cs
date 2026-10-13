@@ -13,7 +13,7 @@ public enum Achieved
     Arena35000,
     Rebirth3,
     Mystery100,
-    Chest50,
+    Chest30,
     Diamonds10,
     StormLordTier,
     Arena75000,
@@ -38,7 +38,7 @@ public enum Achieved
     Have1Percent50,
     Buy1PercentTotal500,
     Rebirth20,
-    Diamonds5000,
+    Diamonds10000,
     Completion100,
     ArenasLost100,
     SuperClears1000,
@@ -117,7 +117,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArena35000(list);
         AchievementChecks.CheckArena75000(list);
         AchievementChecks.CheckMystery25(list);
-        AchievementChecks.CheckChest50(list);
+        AchievementChecks.CheckChest30(list);
         AchievementChecks.CheckVoidgazer(list);
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
@@ -143,7 +143,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckDiamonds50(list);
         AchievementChecks.CheckDiamonds250(list);
         AchievementChecks.CheckDiamonds1000(list);
-        AchievementChecks.CheckDiamonds5000(list);
+        AchievementChecks.CheckDiamonds10000(list);
         AchievementChecks.CheckCompletion100(list);
         AchievementChecks.CheckChestMaster200(list);
         AchievementChecks.Have1Percent50(list);

@@ -166,14 +166,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckChest50(List<Achieved> list)
+        public static void CheckChest30(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Chest50)) return;
+            if (list.Contains(Achieved.Chest30)) return;
 
-            if (SaveGame.Members.ChestsCollected >= 50)
+            if (SaveGame.Members.ChestsCollected >= 30)
             {
-                list.Add(Achieved.Chest50);
-                NewAchieved(Achieved.Chest50);
+                list.Add(Achieved.Chest30);
+                NewAchieved(Achieved.Chest30);
             }
         }
 
@@ -233,14 +233,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckDiamonds5000(List<Achieved> list)
+        public static void CheckDiamonds10000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Diamonds5000)) return;
+            if (list.Contains(Achieved.Diamonds10000)) return;
 
             if (SaveGame.Members.DiamondCount_09_08_2025 >= 10000)
             {
-                list.Add(Achieved.Diamonds5000);
-                NewAchieved(Achieved.Diamonds5000);
+                list.Add(Achieved.Diamonds10000);
+                NewAchieved(Achieved.Diamonds10000);
             }
         }
 

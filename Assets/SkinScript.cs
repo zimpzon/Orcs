@@ -77,7 +77,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Pirate)
         {
-            return (list.Contains(Achieved.Chest50), "Pirate Earl: Loot 50 Chests");
+            return (list.Contains(Achieved.Chest30), "Pirate Earl: Loot 30 Chests");
         }
         else if (animationName == SkinAnimation.Slug)
         {
@@ -177,7 +177,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BallEarl)
         {
-            return (list.Contains(Achieved.Diamonds5000), "Ball Earl: Have at least 10000 diamonds");
+            return (list.Contains(Achieved.Diamonds10000), "Ball Earl: Have at least 10000 diamonds");
         }
         else if (animationName == SkinAnimation.MonochromeEarl)
         {
@@ -259,7 +259,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.BigMouth => (m.ArenaLevel, 35000),
             SkinAnimation.KaratEarl => (m.ArenaLevel, 75000),
 
-            SkinAnimation.Pirate => (m.ChestsCollected, 50),
+            SkinAnimation.Pirate => (m.ChestsCollected, 30),
             SkinAnimation.Slug => (m.MysteryCollected, 100),
             SkinAnimation.ExpressionistEarl => (m.MysteryCollected, 50),
             SkinAnimation.SecretiveEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 150),

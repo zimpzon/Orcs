@@ -368,7 +368,7 @@ public class GameManager : MonoBehaviour
 
         _nextStorm = G.D.GameTime + Assets.Script.Upgrades.StormLordManager.StormInterval;
 
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.StormLordZap, volumeScale: 0.5f, pitch: 1.0f, minInterval: 0.2f);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.StormLordZap, volumeScale: 0.8f, pitch: 1.0f, minInterval: 0.2f);
 
         long damage = (long)(PlayerUpgrades.Data.EffectiveZapDamage * PlayerUpgrades.Data.StormLordDamageMul);
         _stormTargets.Clear();
@@ -451,7 +451,7 @@ public class GameManager : MonoBehaviour
         if (!TryZapEnemy(G.D.PlayerPos, firstTarget, damageSource))
             yield break;
 
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 0.6f, pitch: 1.0f);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 1.1f, pitch: 1.0f);
 
         ZapTargetIgnoreList.Add(firstTarget);
         var prevEnemy = firstTarget;
@@ -1059,9 +1059,7 @@ public class GameManager : MonoBehaviour
     {
         //if (UnityEngine.Random.value > 0.75)
         {
-            float pitch = 0.9f + UnityEngine.Random.value * 0.2f;
-            float volume = 0.5f + UnityEngine.Random.value * 0.1f;
-            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.EnemyDie, volume, pitch, minInterval: 0.25f);
+            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.EnemyDie, minInterval: 0.25f);
         }
 
         SaveGame.Members.EnemiesKilled += 1;

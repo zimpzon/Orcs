@@ -167,7 +167,7 @@ public class PlayerScript : MonoBehaviour
 
     IEnumerator FireSalvo(Vector2 fireDir)
     {
-        AudioManager.Instance.PlayClipWithRandomPitchForReal(AudioManager.Instance.AudioData.DaggerThrow, volumeScale: 0.6f, minInterval: 0.1f);
+        AudioManager.Instance.PlayClipWithRandomPitchForReal(AudioManager.Instance.AudioData.DaggerThrow, volumeScale: 1.0f, minInterval: 0.1f);
 
         double baseDamage = PlayerUpgrades.Data.MagicMissileEffectiveDamage;
         double mainDamage = PlayerUpgrades.Data.MagicMissileMultiShots == 0 ? baseDamage * SingleDaggerDamageBonus : baseDamage;
