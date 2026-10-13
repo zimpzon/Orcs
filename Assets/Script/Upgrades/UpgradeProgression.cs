@@ -253,15 +253,15 @@ namespace Assets.Script.Upgrades
         }
 
         // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling to x0.25 when lifetime credits reach 1.75x
-        // what they were at that rebirth (CreditBonusStartLifetime, min 2). Curved (1 - 0.75 * t^2): stays high for a
+        // what they were at that rebirth (CreditBonusStartLifetime, min CreditBonusMinStart). Curved (1 - 0.75 * t^2): stays high for a
         // while, then drops fast at the end - waiting it out gets slow, so rebirthing is the better move (playtest
         // 2026-10: was linear down to x0.5, and waiting beat rebirthing). Shown as 200% -> 0% (150% halfway).
-        // First run (never rebirthed): shows the same bonus and drain, held full until CreditFirstRunBonusStart lifetime
-        // credits: 200% until ~15.7, 174% at 20, 100% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20).
-        // Its actual speed is scaled by CreditFirstRunPaceMul, so at full bonus it's exactly the old flat x0.5 that the
-        // early credit curve is tuned for - only the late drain is new.
-        const long CreditBonusMinLifetime = 2;
-        const double CreditFirstRunBonusStart = 15.68;
+        // The drain never starts before CreditBonusMinStart lifetime credits, first run or after an early rebirth:
+        // 200% until ~15.7, 174% at 20, 100% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20; it
+        // was min 2, which drained an early rebirth within ~1.5 credits). Rebirths later than that: L -> 1.75 L.
+        // First run (never rebirthed): actual speed scaled by CreditFirstRunPaceMul, so at full bonus it's exactly the
+        // old flat x0.5 that the early credit curve is tuned for - only the late drain is new.
+        const double CreditBonusMinStart = 15.68;
         const double CreditFirstRunPaceMul = 0.5;
         const double CreditBonusEndFactor = 1.75;
         const double CreditBonusMinMul = 0.25;
@@ -285,8 +285,7 @@ namespace Assets.Script.Upgrades
             if (m.CreditBonusStartLifetime < 0)
                 m.CreditBonusStartLifetime = earned;
 
-            double minStart = m.TimesAscended_09_08_2025 == 0 ? CreditFirstRunBonusStart : CreditBonusMinLifetime;
-            double start = Math.Max(minStart, m.CreditBonusStartLifetime);
+            double start = Math.Max(CreditBonusMinStart, m.CreditBonusStartLifetime);
             double t = (earned - start) / ((CreditBonusEndFactor - 1.0) * start);
             return Math.Clamp(t, 0.0, 1.0);
         }
