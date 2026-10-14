@@ -1856,6 +1856,15 @@ public class GameManager : MonoBehaviour
                 Screen.fullScreen = !Screen.fullScreen;
         }
 
+        // Alt+Enter: same as the settings Fullscreen checkbox - standalone builds on a 16:9 / 16:10 monitor only.
+        // (Unity's own Alt+Enter is off in Player Settings, so it can't bypass WindowedAspect.)
+        bool altHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+        if (altHeld && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            && WindowedAspect.IsActive && (WindowedAspect.IsFullscreen || WindowedAspect.MonitorSupportsFullscreen))
+        {
+            WindowedAspect.SetFullscreen(!WindowedAspect.IsFullscreen);
+        }
+
         // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all). All off until RightShift + C H E A T.
         if (G.UpdateCheatUnlock())
             AchievementsScript.AnnounceAtCursorOrCenter("Cheats enabled");
