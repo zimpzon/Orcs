@@ -38,6 +38,10 @@ public class GameCanvasScript : MonoBehaviour
             popup.AddComponent<RewardPopupFx>();
             AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true); // chest / mystery reward
         }
+        else
+        {
+            AudioManager.Instance.PlayDialogShow();
+        }
 
         // Optionally force layout update (usually not needed unless immediate measurement required)
         //LayoutRebuilder.ForceRebuildLayoutImmediate(popup.GetComponent<RectTransform>());

@@ -108,6 +108,7 @@ public class GlobalPopupManager : MonoBehaviour
             popup.SetActive(false);
             CancelTweens(popup);
             CurrentPopup = null;
+            AudioManager.Instance.PlayDialogClose();
             _closedByOutsideClick = popup;
             _closedByOutsideClickTime = Time.unscaledTime;
         }
@@ -148,6 +149,7 @@ public class GlobalPopupManager : MonoBehaviour
             CancelTweens(popup);
             CurrentPopup = null;
             HideDarken();
+            AudioManager.Instance.PlayDialogClose();
             return;
         }
 
@@ -183,6 +185,7 @@ public class GlobalPopupManager : MonoBehaviour
 
         CurrentPopup = popup;
         ShowDarken(popup);
+        AudioManager.Instance.PlayDialogShow();
 
         // Reset starting state
         //popupBaseValues.CanvasGroup.alpha = 0f;
@@ -208,6 +211,8 @@ public class GlobalPopupManager : MonoBehaviour
 
     public void AfterHidePopup()
     {
+        if (CurrentPopup != null)
+            AudioManager.Instance.PlayDialogClose();
         CurrentPopup = null;
         HideDarken();
     }

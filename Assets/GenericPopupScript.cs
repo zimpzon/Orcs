@@ -54,8 +54,15 @@ public class GenericPopupScript : MonoBehaviour
         return false;
     }
 
+    bool _closed;
+
     public void OnClose()
     {
+        if (!_closed)
+        {
+            _closed = true;
+            AudioManager.Instance.PlayDialogClose();
+        }
         Destroy(gameObject);
     }
 }

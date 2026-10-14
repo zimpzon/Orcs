@@ -27,12 +27,15 @@ public class AscendProgressScript : MonoBehaviour
     public void OnShowClick()
     {
         AscendRoot.SetActive(true);
+        AudioManager.Instance.PlayDialogShow();
         if (SaveGame.Members.MonsterCredits_09_08_2025 > 0)
             SaveGame.Members.ViewedRebirthDialog = true; // big rebirth button pulse -> small (CrownPulse)
     }
 
     public void OnCloseClick()
     {
+        if (AscendRoot.activeSelf)
+            AudioManager.Instance.PlayDialogClose();
         AscendRoot.SetActive(false);
     }
 

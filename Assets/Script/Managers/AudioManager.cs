@@ -123,7 +123,7 @@ public class AudioManager : MonoBehaviour
     // Sound setup: UI sounds (menu click, chime, money pickup) and music always play, only the volume slider affects
     // them. Everything else is combat sound, behind the Combat sound setting (off by default).
     bool IsUiClip(AudioClip clip)
-        => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup;
+        => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup || clip == AudioData.DialogShow || clip == AudioData.DialogClose;
 
     bool CombatSoundEnabled => SaveGame.Members != null && SaveGame.Members.CombatSoundEnabled;
 
@@ -145,6 +145,14 @@ public class AudioManager : MonoBehaviour
             source.mute = mute;
         }
     }
+
+    // A dialog opened (GlobalPopupManager, rebirth dialog, plain message popups). UI sound, always plays.
+    public void PlayDialogShow()
+        => PlayClipForReal(AudioData.DialogShow, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
+
+    // A dialog closed (close button, Escape, click outside, clicking its open button again). UI sound, always plays.
+    public void PlayDialogClose()
+        => PlayClipForReal(AudioData.DialogClose, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
 
     // Menu click (buying upgrades etc.): always plays.
     public void PlayMenuClick()
