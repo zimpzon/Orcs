@@ -77675,6 +77675,7 @@ GameObject:
   - component: {fileID: 1163345973}
   - component: {fileID: 1163345974}
   - component: {fileID: 1163345975}
+  - component: {fileID: 962158717}
   m_Layer: 5
   m_Name: ArenaUi
   m_TagString: Untagged
@@ -95139,6 +95140,7 @@ GameObject:
   - component: {fileID: 1497543159}
   - component: {fileID: 1497543158}
   - component: {fileID: 1497543157}
+  - component: {fileID: 1584818308}
   m_Layer: 5
   m_Name: CanvasGame
   m_TagString: Untagged
@@ -128645,3 +128647,27 @@ SceneRoots:
   - {fileID: 989351134}
   - {fileID: 1574873026}
   - {fileID: 296540595}
+--- !u!114 &962158717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163345972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda6867c33424f7c8f1e80966ffc6a06, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: 
+--- !u!114 &1584818308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497543154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dda6867c33424f7c8f1e80966ffc6a06, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: 

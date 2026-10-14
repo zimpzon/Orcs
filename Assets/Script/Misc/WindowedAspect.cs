@@ -1,11 +1,12 @@
 using UnityEngine;
 
-// Standalone builds (Windows/Linux) must render at exactly 16:9 - parts of the UI can't scale to other aspect ratios.
-// The game always runs in a resizable window that is kept at 16:9:
+// Standalone builds (Windows/Linux) run in a resizable window kept at 16:9 or 16:10 (other aspects are letterboxed
+// anyway by AspectUtility + UiAspectFrame, but these two look best):
 // - Start: the window size from the previous run if it's 16:9 and fits, else (first run) 60% of the usable desktop
 //   width (taskbar excluded) at 16:9.
-// - Resizing / maximizing: once the size has settled, it snaps back to 16:9, following the dimension the player
-//   changed most, clamped to what fits on the monitor.
+// - Resizing / maximizing: once the size has settled, it snaps back to 16:9 (16:10 sizes are kept), following the
+//   dimension the player changed most, clamped to what fits on the monitor.
+// Steam Deck: skipped - the game runs fullscreen at the native 1280x800 (16:10) and letterboxes itself.
 // Editor and WebGL are untouched. Player settings disable Alt+Enter (no fullscreen).
 public class WindowedAspect : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class WindowedAspect : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Init()
     {
+        if (System.Environment.GetEnvironmentVariable("SteamDeck") == "1")
+            return;
+
         var go = new GameObject("WindowedAspect");
         go.hideFlags = HideFlags.HideInHierarchy;
         DontDestroyOnLoad(go);
@@ -32,6 +36,8 @@ public class WindowedAspect : MonoBehaviour
     float _sizeChangedAt;
 
     static bool Is16x9(int w, int h) => h > 0 && Mathf.Abs(w * 9 - h * 16) <= 16;
+    static bool Is16x10(int w, int h) => h > 0 && Mathf.Abs(w * 10 - h * 16) <= 16;
+    static bool IsSupported(int w, int h) => Is16x9(w, h) || Is16x10(w, h);
 
     // Usable desktop area of the window's monitor, minus room for the window frame.
     static (int w, int h) Available()
@@ -68,10 +74,19 @@ public class WindowedAspect : MonoBehaviour
         // Keep the size the player left it at last time (Unity remembers it), if it's still valid on this monitor.
         // On the very first run Unity starts at the Player Settings default (1280x720), which is 16:9 too - so only
         // trust it once we've chosen a size ourselves.
-        if (PlayerPrefs.GetInt(SizeChosenKey, 0) == 1 && Screen.fullScreenMode == FullScreenMode.Windowed && Is16x9(Screen.width, Screen.height)
+        if (PlayerPrefs.GetInt(SizeChosenKey, 0) == 1 && Screen.fullScreenMode == FullScreenMode.Windowed && IsSupported(Screen.width, Screen.height)
             && Screen.height >= MinHeight && Screen.height <= maxH)
         {
-            SetSize(Screen.height);
+            if (Is16x10(Screen.width, Screen.height))
+            {
+                // Keep a 16:10 window as it is (SetSize always makes 16:9).
+                _appliedW = _seenW = Screen.width;
+                _appliedH = _seenH = Screen.height;
+            }
+            else
+            {
+                SetSize(Screen.height);
+            }
             return;
         }
 
@@ -96,9 +111,9 @@ public class WindowedAspect : MonoBehaviour
 
         var (availW, availH) = Available();
         int maxH = MaxHeight(availW, availH);
-        if (!wrongMode && Is16x9(w, h) && h >= MinHeight && h <= maxH)
+        if (!wrongMode && IsSupported(w, h) && h >= MinHeight && h <= maxH)
         {
-            // Player resized to a valid 16:9 size (or it already was): accept it.
+            // Player resized to a valid 16:9 / 16:10 size (or it already was): accept it.
             _appliedW = w;
             _appliedH = h;
             return;

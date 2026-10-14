@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// Letterboxes / pillarboxes the world camera to 16:9 (black bars). The overlay UI does the same via UiAspectFrame.
 public class AspectUtility : MonoBehaviour
 {
     public static float WantedAspectRatio = 16.0f / 9.0f;
