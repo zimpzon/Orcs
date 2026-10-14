@@ -66,7 +66,7 @@ public class AscendProgressScript : MonoBehaviour
         ApplyAscendPermanentBonuses();
 
         // Passive income, but never below the small credit speed floor (UpgradeProgression.CreditXpPerSecond).
-        // Times the rebirth credit bonus (x1.0 after a rebirth, falling to x0.25; UpgradeProgression.CreditBonusMultiplier).
+        // Times the rebirth credit bonus (x1.0 after a rebirth, falling to x0.1; UpgradeProgression.CreditBonusMultiplier).
         Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond() * UpgradeProgression.CreditBonusMultiplier();
         // Last tiers: soft speed limit, so credits approach the tier limit instead of being cut off at it.
         creditXpPerSecond *= UpgradeProgression.CreditSoftLimitFactor(creditXpPerSecond);

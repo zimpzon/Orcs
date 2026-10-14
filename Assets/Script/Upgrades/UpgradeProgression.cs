@@ -252,10 +252,10 @@ namespace Assets.Script.Upgrades
             return income > floor ? income : floor;
         }
 
-        // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling to x0.25 when lifetime credits reach 1.75x
-        // what they were at that rebirth (CreditBonusStartLifetime, min CreditBonusMinStart). Curved (1 - 0.75 * t^2): stays high for a
+        // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling to x0.1 when lifetime credits reach 1.75x
+        // what they were at that rebirth (CreditBonusStartLifetime, min CreditBonusMinStart). Curved (1 - 0.9 * t^2): stays high for a
         // while, then drops fast at the end - waiting it out gets slow, so rebirthing is the better move (playtest
-        // 2026-10: was linear down to x0.5, and waiting beat rebirthing). Shown as 200% -> 0% (150% halfway).
+        // 2026-10: was linear down to x0.5, then x0.25; waiting still beat rebirthing). Shown as 200% -> 0% (150% halfway).
         // The drain never starts before CreditBonusMinStart lifetime credits, first run or after an early rebirth:
         // 200% until ~15.7, 174% at 20, 100% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20; it
         // was min 2, which drained an early rebirth within ~1.5 credits). Rebirths later than that: L -> 1.75 L.
@@ -264,7 +264,7 @@ namespace Assets.Script.Upgrades
         const double CreditBonusMinStart = 15.68;
         const double CreditFirstRunPaceMul = 0.5;
         const double CreditBonusEndFactor = 1.75;
-        const double CreditBonusMinMul = 0.25;
+        const double CreditBonusMinMul = 0.1;
         const double CreditBonusCurvePower = 2;
         const double CreditBonusDisplayMax = 200;
 
