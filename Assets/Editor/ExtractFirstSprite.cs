@@ -16,7 +16,7 @@ public class ExtractFirstSprite : MonoBehaviour
             return;
         }
 
-        string outputDir = Path.Combine(@"c:\IdleEarl\", "ExtractedSprites");
+        string outputDir = Path.Combine(@"c:\IdleEarlExtra\", "ExtractedSprites");
 
         if (!Directory.Exists(outputDir))
         {

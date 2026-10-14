@@ -83,8 +83,7 @@ public class SaveGameMembers
     public bool ShowFloatingGoldNumbers = true;
     public bool UseScientificNotation = false;
     public bool ShowDetailsOnHover = true;
-    public bool SoundEnabled = true; // all sound except menu clicks (AudioManager.ApplySoundSettings)
-    public bool MenuSoundEnabled = true; // menu clicks only (AudioManager.PlayMenuClick)
+    public bool CombatSoundEnabled = false; // all game sounds except UI ones (menu click, chime, money pickup) and music
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
     public SkinAnimation SelectedSkin = SkinAnimation.Default;
 

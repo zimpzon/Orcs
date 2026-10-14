@@ -34,7 +34,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Dagger Cooldown</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Dagger Cooldown</color></b></size>");
             sb.AppendLine("<color=#dddddd>Throw daggers faster.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");

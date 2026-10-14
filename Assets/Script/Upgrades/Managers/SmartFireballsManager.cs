@@ -31,7 +31,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Angry Fireballs</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Angry Fireballs</color></b></size>");
             sb.AppendLine("<color=#dddddd>Fireballs do increased damage and continue on to nearby targets.");
 
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");

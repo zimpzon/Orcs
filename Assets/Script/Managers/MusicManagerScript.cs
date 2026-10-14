@@ -18,6 +18,17 @@ public class MusicManagerScript : MonoBehaviour
         audioSource_.ignoreListenerPause = true;
     }
 
+    // Music ignores AudioListener.pause (ignoreListenerPause), so minimizing pauses it here (AudioManager).
+    public void SetPaused(bool paused)
+    {
+        if (paused)
+            audioSource_.Pause();
+        else
+            audioSource_.UnPause();
+    }
+
+    public AudioSource Source => audioSource_;
+
     public void SetVolume(float volume)
     {
         volume_ = volume;

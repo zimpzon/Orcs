@@ -36,7 +36,7 @@ public class BestiaryScript : MonoBehaviour
                 incomeBonus += isUnlocked ? idx + 1 : 0;
                 idx++;
             }
-            TextBonus.text = $"Bonus: +<color=#8DBE4C>{incomeBonus}</color>% income";
+            TextBonus.text = $"Bonus: +<color={TextColors.Green}>{incomeBonus}</color>% income";
         }
 
         PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses = incomeBonus * 0.01f;

@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Dagger Damage</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Dagger Damage</color></b></size>");
             sb.AppendLine("<color=#dddddd>Each dagger does more damage.");
 
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");

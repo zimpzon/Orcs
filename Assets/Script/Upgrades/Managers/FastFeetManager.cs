@@ -30,7 +30,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Windwalker</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Windwalker</color></b></size>");
             sb.AppendLine("<color=#dddddd>Haunted by a creepy ghost, Earl runs faster.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");

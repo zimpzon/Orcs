@@ -96,12 +96,19 @@ public class AudioManager : MonoBehaviour
     }
 
     // Called from save.jslib (SendMessage), 1 = page hidden.
-    public void OnPageVisibility(int hidden) => AudioListener.pause = hidden != 0;
+    public void OnPageVisibility(int hidden) => SetMinimized(hidden != 0);
 
     void OnApplicationFocus(bool hasFocus)
     {
         if (Application.platform != RuntimePlatform.WebGLPlayer)
-            AudioListener.pause = !hasFocus;
+            SetMinimized(!hasFocus);
+    }
+
+    void SetMinimized(bool minimized)
+    {
+        AudioListener.pause = minimized;
+        if (MusicManagerScript.Instance != null)
+            MusicManagerScript.Instance.SetPaused(minimized); // music ignores the listener pause
     }
 
     private void Update()
@@ -113,8 +120,15 @@ public class AudioManager : MonoBehaviour
         RepeatingSawblade.Update(G.D.GameDeltaTime);
     }
 
-    // Sound setting: mutes every audio source (music, sfx, ...) except the menu click source, which has its own
-    // Menu sound setting. Per source, since AudioListener.volume can't leave one sound out.
+    // Sound setup: UI sounds (menu click, chime, money pickup) and music always play, only the volume slider affects
+    // them. Everything else is combat sound, behind the Combat sound setting (off by default).
+    bool IsUiClip(AudioClip clip)
+        => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup;
+
+    bool CombatSoundEnabled => SaveGame.Members != null && SaveGame.Members.CombatSoundEnabled;
+
+    // Sources that don't go through PlayClipForReal (sawblade loop, grenade fuse, ...) are muted per source. The sfx
+    // pool is gated per clip in PlayClipForReal instead, since UI and combat sounds share it.
     public void ApplySoundSettings()
     {
         _nextApplySoundSettings = Time.unscaledTime + 1f;
@@ -122,18 +136,20 @@ public class AudioManager : MonoBehaviour
             return;
 
         AudioListener.volume = 1f;
-        bool mute = !SaveGame.Members.SoundEnabled;
+        bool mute = !CombatSoundEnabled;
+        var music = MusicManagerScript.Instance != null ? MusicManagerScript.Instance.Source : null;
         foreach (var source in FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
-            if (source != MenuAudioSource)
-                source.mute = mute;
+            if (source == MenuAudioSource || source == music || sfxSources_.Contains(source))
+                continue;
+            source.mute = mute;
         }
     }
 
-    // Menu click (buying upgrades etc.): only the Menu sound setting applies, not Sound.
+    // Menu click (buying upgrades etc.): always plays.
     public void PlayMenuClick()
     {
-        if (SaveGame.Members == null || !SaveGame.Members.MenuSoundEnabled || AudioData.Menu == null)
+        if (SaveGame.Members == null || AudioData.Menu == null)
             return;
 
         MenuAudioSource.Stop();
@@ -165,6 +181,9 @@ public class AudioManager : MonoBehaviour
     {
         if (clip == null)
             return; // unassigned AudioData slot
+
+        if (!CombatSoundEnabled && !IsUiClip(clip))
+            return;
 
         float now = Time.unscaledTime;
         if (minInterval > 0f && _lastPlayTime.TryGetValue(clip, out float last) && now - last < minInterval)

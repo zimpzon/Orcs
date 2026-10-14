@@ -28,7 +28,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Power Zap</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Power Zap</color></b></size>");
             sb.AppendLine("<color=#dddddd>Zaps jump to one more enemy and hit much harder.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");

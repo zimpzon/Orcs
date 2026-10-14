@@ -13,7 +13,7 @@ public class TipsPopupScript : MonoBehaviour
     public TextMeshProUGUI ProgressText; // the tips (authored in the scene)
     public TextMeshProUGUI NumbersText;  // filled by this script
 
-    const string HeaderHex = "#8DBE4C"; // the game's standard green header color (TIPS uses it too, in the scene text)
+    const string HeaderHex = TextColors.Green; // the game's standard green header color (TIPS uses it too, in the scene text)
     const int MinPower = 6;   // million
     const int MaxPower = 45;  // quattuordecillion (powers come in steps of 3)
 

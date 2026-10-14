@@ -42,7 +42,7 @@ public class VictoryCelebration : MonoBehaviour
     public Color[] ConfettiColors =
     {
         new(1f, 0.835f, 0.29f),       // gold  #FFD54A
-        new(0.553f, 0.745f, 0.298f),  // green #8DBE4C
+        TextColors.GreenColor,
         Color.white,
     };
 

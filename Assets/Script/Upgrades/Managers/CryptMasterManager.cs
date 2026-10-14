@@ -27,7 +27,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Crypt Master</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Crypt Master</color></b></size>");
             sb.AppendLine("<color=#dddddd>A fourth skull is summoned from the depths of the crypt.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");

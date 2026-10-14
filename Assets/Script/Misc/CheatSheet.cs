@@ -38,7 +38,7 @@ public class CheatSheet : MonoBehaviour
 
     const string KeyHex = "#FFD54A";
     const string TextHex = "#DDDDDD";
-    const string HeaderHex = "#8DBE4C";
+    const string HeaderHex = TextColors.Green;
     const int SortingOrder = 130; // above dialogs (100) and messages (110)
 
     static CheatSheet _instance;

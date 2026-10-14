@@ -8,7 +8,7 @@ public class ProgressPopupScript : MonoBehaviour
     public TextMeshProUGUI ProgressText;
     public Sprite CrownSprite;
 
-    const string GreenHex = "#8DBE4C";
+    const string GreenHex = TextColors.Green;
     const string GoldHex = "#FFD54A";
 
     // The popup is authored narrow; widen it (staying centered where it was) and grow it downward to fit the text.

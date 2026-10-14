@@ -53,8 +53,7 @@ static class SaveGameAscend
         newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
         newSave.UseScientificNotation = oldSave.UseScientificNotation;
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
-        newSave.SoundEnabled = oldSave.SoundEnabled;
-        newSave.MenuSoundEnabled = oldSave.MenuSoundEnabled;
+        newSave.CombatSoundEnabled = oldSave.CombatSoundEnabled;
         newSave.PctBonusBuyAmount = oldSave.PctBonusBuyAmount;
         newSave.SelectedSkin = oldSave.SelectedSkin;
 

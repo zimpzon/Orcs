@@ -14,8 +14,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle UseScientificNotationToggle;
     public Toggle ShowDetailsOnHoverToggle;
 
-    public Toggle SoundToggle;
-    public Toggle MenuSoundToggle;
+    public Toggle CombatSoundToggle;
     public Slider VolumeSlider;
 
     private int _clickCount;
@@ -23,16 +22,10 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     // Listeners in code, so the scene needs no persistent calls for them.
     void Awake()
     {
-        SoundToggle.onValueChanged.AddListener(on =>
+        CombatSoundToggle.onValueChanged.AddListener(on =>
         {
-            SaveGame.Members.SoundEnabled = on;
+            SaveGame.Members.CombatSoundEnabled = on;
             AudioManager.Instance.ApplySoundSettings();
-            SaveGame.Save();
-        });
-
-        MenuSoundToggle.onValueChanged.AddListener(on =>
-        {
-            SaveGame.Members.MenuSoundEnabled = on;
             SaveGame.Save();
             if (on)
                 AudioManager.Instance.PlayMenuClick(); // little confirmation
@@ -65,8 +58,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
         UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
         ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
-        SoundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
-        MenuSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.MenuSoundEnabled);
+        CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
         VolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
     }
 

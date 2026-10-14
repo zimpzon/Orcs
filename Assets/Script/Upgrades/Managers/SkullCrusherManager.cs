@@ -29,7 +29,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Skull Crusher</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Skull Crusher</color></b></size>");
             sb.AppendLine("<color=#dddddd>Skulls crush their target for more damage.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");

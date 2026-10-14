@@ -28,7 +28,7 @@ namespace Assets.Script.Upgrades
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("<size=+4><b><color=#8DBE4C>Storm Lord</color></b></size>");
+            sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Storm Lord</color></b></size>");
             sb.AppendLine("<color=#dddddd>Lightning storms strike random enemies from above.");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");
