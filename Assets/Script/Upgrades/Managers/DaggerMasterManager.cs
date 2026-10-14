@@ -28,7 +28,7 @@ namespace Assets.Script.Upgrades
             var sb = new StringBuilder();
 
             sb.AppendLine($"<size=+4><b><color={TextColors.Green}>Dagger Master</color></b></size>");
-            sb.AppendLine("<color=#dddddd>Throw 3 daggers instead of one. Extra daggers do extra damage.");
+            sb.AppendLine("<color=#dddddd>Throw 3 daggers instead of one!");
             sb.AppendLine("<color=#bbbbbb>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income</color></size>");
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.FormatWithDecimals(baseIncome)}</color> per second.");

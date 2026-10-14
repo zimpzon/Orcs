@@ -59964,7 +59964,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +10% income per diamond you hold. <color=yellow>Don't buy too early!</color>
+      value: +5% income per diamond you hold. <color=yellow>Don't buy too early!</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -60123,7 +60123,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +20% income per diamond you hold. <color=yellow>Don't buy too early!</color>
+      value: +10% income per diamond you hold. <color=yellow>Don't buy too early!</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -60282,7 +60282,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +40% income per diamond you hold. <color=yellow>Don't buy too early!</color>
+      value: +20% income per diamond you hold. <color=yellow>Don't buy too early!</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -60441,7 +60441,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +60% income per diamond you hold. <color=yellow>Don't buy too early!</color>
+      value: +30% income per diamond you hold. <color=yellow>Don't buy too early!</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -60600,7 +60600,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: +100% income per diamond you hold. <color=yellow>Don't buy too early!</color>
+      value: +50% income per diamond you hold. <color=yellow>Don't buy too early!</color>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -61124,7 +61124,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Credit income bonus: [BONUS]% / 500%
 
-    Refills on every Rebirth.'
+    Decays over time. Refills on
+    every Rebirth.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

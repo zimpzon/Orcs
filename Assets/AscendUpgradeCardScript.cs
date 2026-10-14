@@ -17,11 +17,11 @@ public enum AscendUpgradeCardId
     FasterArena,
     SkinScaryEarl,
     FasterArena2,
-    ShinyDiamonds1, // income bonus per diamond held: +10% (on top of the base 10%)
-    ShinyDiamonds2, // +20%
-    ShinyDiamonds3, // +40%
-    ShinyDiamonds4, // +60%
-    ShinyDiamonds5, // +100%
+    ShinyDiamonds1, // income bonus per diamond held: +5% (on top of the base 5%)
+    ShinyDiamonds2, // +10%
+    ShinyDiamonds3, // +20%
+    ShinyDiamonds4, // +30%
+    ShinyDiamonds5, // +50%
     Haggler,        // tier upgrades and X2 cost half
     HeadStart,      // every run starts with 25 minutes of the best-ever income
     SkinCollector,  // +10% income per unlocked skin

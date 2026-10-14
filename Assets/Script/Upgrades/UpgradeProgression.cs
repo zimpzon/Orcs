@@ -78,16 +78,20 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_GoldPerKnifeThrown = 1_400;
         public static Decimal512 BaseIncome_Wizard = 10_000;
         public static Decimal512 BaseIncome_Hoarder = 50_000;
-        public static Decimal512 BaseIncome_ZapDamage = 275_000;
-        public static Decimal512 BaseIncome_MoneyMaker =            1_750_000;
-        public static Decimal512 BaseIncome_DaggerMaster =         10_000_000;
-        public static Decimal512 BaseIncome_NecroNinja =           62_000_000;
-        public static Decimal512 BaseIncome_SkullCrusher =        300_000_000;
-        public static Decimal512 BaseIncome_ChestMaster =       1_400_000_000;
-        public static Decimal512 BaseIncome_Voidgazer =         5_500_000_000;
-        public static Decimal512 BaseIncome_SmartDaggers =     25_200_000_000;
-        public static Decimal512 BaseIncome_FastFeet =        110_100_000_000;
-        public static Decimal512 BaseIncome_CryptMaster =     500_250_000_000;
+        // Middle tiers lowered (2026-10): around the first x16 + minor cards and the first rebirth, income jumped so much
+        // that players skipped through these tiers. Two even geometric ramps instead: Frenzy 200K -> Chest Master 600M
+        // (~x5 per tier, was ~x5.5-6.4) -> Angry Fireballs 2.5T (~x5.3 per tier). Ends unchanged. Was: 275K, 1.75M, 10M,
+        // 62M, 300M, 1.4B, 5.5B, 25.2B, 110.1B, 500.25B.
+        public static Decimal512 BaseIncome_ZapDamage =               200_000;
+        public static Decimal512 BaseIncome_MoneyMaker =            1_000_000;
+        public static Decimal512 BaseIncome_DaggerMaster =          4_900_000;
+        public static Decimal512 BaseIncome_NecroNinja =           24_000_000;
+        public static Decimal512 BaseIncome_SkullCrusher =        120_000_000;
+        public static Decimal512 BaseIncome_ChestMaster =         600_000_000;
+        public static Decimal512 BaseIncome_Voidgazer =         3_200_000_000;
+        public static Decimal512 BaseIncome_SmartDaggers =     17_000_000_000;
+        public static Decimal512 BaseIncome_FastFeet =         90_000_000_000;
+        public static Decimal512 BaseIncome_CryptMaster =     480_000_000_000;
         public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000;
         public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000;
         public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
@@ -358,19 +362,21 @@ namespace Assets.Script.Upgrades
         // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
         public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
 
-        // Diamonds held give passive income: base 10% per diamond, Shiny Diamonds cards 1-5 add 10/20/40/60/100%.
-        // Returned as the bonus fraction, income x(1 + bonus). Spending diamonds on cards lowers it.
-        const double DiamondBonusBase = 0.10;
+        // Diamonds held give passive income: base 5% per diamond, Shiny Diamonds cards 1-5 add 5/10/20/30/50% (max
+        // 120% per diamond). Halved in 2026-10 (was 10% + 10/20/40/60/100%, max 240%): with ~1,300 diamonds a fresh run
+        // hit the credit speed cap already at Windwalker. Returned as the bonus fraction, income x(1 + bonus).
+        // Spending diamonds on cards lowers it.
+        const double DiamondBonusBase = 0.05;
 
         public static double DiamondBonusPerDiamond()
         {
             var m = SaveGame.Members;
             double pct = DiamondBonusBase;
-            if (m.BoughtShinyDiamonds1) pct += 0.10;
-            if (m.BoughtShinyDiamonds2) pct += 0.20;
-            if (m.BoughtShinyDiamonds3) pct += 0.40;
-            if (m.BoughtShinyDiamonds4) pct += 0.60;
-            if (m.BoughtShinyDiamonds5) pct += 1.00;
+            if (m.BoughtShinyDiamonds1) pct += 0.05;
+            if (m.BoughtShinyDiamonds2) pct += 0.10;
+            if (m.BoughtShinyDiamonds3) pct += 0.20;
+            if (m.BoughtShinyDiamonds4) pct += 0.30;
+            if (m.BoughtShinyDiamonds5) pct += 0.50;
             return pct;
         }
 
