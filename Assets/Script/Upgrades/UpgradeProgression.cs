@@ -362,21 +362,20 @@ namespace Assets.Script.Upgrades
         // Haggler rebirth card: tier upgrades and X2 cost half (not the 1% bonus).
         public static double ShopPriceMul() => SaveGame.Members.BoughtHaggler ? 0.5 : 1.0;
 
-        // Diamonds held give passive income: base 5% per diamond, Shiny Diamonds cards 1-5 add 5/10/20/30/50% (max
-        // 120% per diamond). Halved in 2026-10 (was 10% + 10/20/40/60/100%, max 240%): with ~1,300 diamonds a fresh run
-        // hit the credit speed cap already at Windwalker. Returned as the bonus fraction, income x(1 + bonus).
-        // Spending diamonds on cards lowers it.
-        const double DiamondBonusBase = 0.05;
+        // Diamonds held give passive income: base 10% per diamond, Shiny Diamonds cards 1-5 add 10/20/40/60/100% (max
+        // 240% per diamond). (Briefly halved in 2026-10; back to these values, the middle tier incomes were lowered
+        // instead.) Returned as the bonus fraction, income x(1 + bonus). Spending diamonds on cards lowers it.
+        const double DiamondBonusBase = 0.10;
 
         public static double DiamondBonusPerDiamond()
         {
             var m = SaveGame.Members;
             double pct = DiamondBonusBase;
-            if (m.BoughtShinyDiamonds1) pct += 0.05;
-            if (m.BoughtShinyDiamonds2) pct += 0.10;
-            if (m.BoughtShinyDiamonds3) pct += 0.20;
-            if (m.BoughtShinyDiamonds4) pct += 0.30;
-            if (m.BoughtShinyDiamonds5) pct += 0.50;
+            if (m.BoughtShinyDiamonds1) pct += 0.10;
+            if (m.BoughtShinyDiamonds2) pct += 0.20;
+            if (m.BoughtShinyDiamonds3) pct += 0.40;
+            if (m.BoughtShinyDiamonds4) pct += 0.60;
+            if (m.BoughtShinyDiamonds5) pct += 1.00;
             return pct;
         }
 
