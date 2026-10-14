@@ -36,6 +36,7 @@ public class EscapeMenuScript : MonoBehaviour
     {
         // Quitting only makes sense in a desktop build (not the Editor, not WebGL); shown disabled elsewhere.
         QuitButton.interactable = Application.platform is RuntimePlatform.WindowsPlayer or RuntimePlatform.LinuxPlayer or RuntimePlatform.OSXPlayer;
+        _openedFrame = Time.frameCount;
         Popup.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(Popup);
     }
@@ -45,6 +46,17 @@ public class EscapeMenuScript : MonoBehaviour
         Popup.SetActive(false);
         GlobalPopupManager.Instance.AfterHidePopup();
     }
+
+    // Close button (ButtonBack prefab, top right like the other dialogs). Its ButtonBackScript also clicks it on
+    // Escape: ignored in the frame the menu opened, so the Escape that opened it can't close it again right away.
+    public void OnCloseClick()
+    {
+        if (Time.frameCount == _openedFrame || !IsOpen)
+            return;
+        Close();
+    }
+
+    int _openedFrame = -1;
 
     public void OnQuitClick()
     {
