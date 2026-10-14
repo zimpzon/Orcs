@@ -1849,7 +1849,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Screen.fullScreen = !Screen.fullScreen;
+            // Standalone: through WindowedAspect (16:9 / 16:10 monitors only). WebGL / Editor: plain toggle.
+            if (WindowedAspect.IsActive)
+                WindowedAspect.SetFullscreen(!WindowedAspect.IsFullscreen);
+            else
+                Screen.fullScreen = !Screen.fullScreen;
         }
 
         // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all). All off until RightShift + C H E A T.

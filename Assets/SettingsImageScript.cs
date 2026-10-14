@@ -15,13 +15,19 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle ShowDetailsOnHoverToggle;
 
     public Toggle CombatSoundToggle;
+    public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
     public Slider VolumeSlider;
+
+    const float DisabledAlpha = 0.4f;
 
     private int _clickCount;
 
     // Listeners in code, so the scene needs no persistent calls for them.
     void Awake()
     {
+        if (FullscreenToggle != null)
+            FullscreenToggle.onValueChanged.AddListener(on => WindowedAspect.SetFullscreen(on));
+
         CombatSoundToggle.onValueChanged.AddListener(on =>
         {
             SaveGame.Members.CombatSoundEnabled = on;
@@ -59,6 +65,18 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
         ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
+
+        // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
+        // is fullscreen already) and on a 16:9 / 16:10 monitor. Elsewhere it's shown disabled.
+        if (FullscreenToggle != null)
+        {
+            bool canFullscreen = WindowedAspect.IsActive && WindowedAspect.MonitorSupportsFullscreen;
+            FullscreenToggle.interactable = canFullscreen;
+            FullscreenToggle.SetIsOnWithoutNotify(WindowedAspect.IsFullscreen);
+            // Faded when disabled (the toggle itself has no disabled look). CanvasGroup is on the toggle in the scene.
+            if (FullscreenToggle.TryGetComponent<CanvasGroup>(out var group))
+                group.alpha = canFullscreen ? 1f : DisabledAlpha;
+        }
         VolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
     }
 

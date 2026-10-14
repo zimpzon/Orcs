@@ -6,8 +6,10 @@ using UnityEngine;
 //   width (taskbar excluded) at 16:9.
 // - Resizing / maximizing: once the size has settled, it snaps back to 16:9 (16:10 sizes are kept), following the
 //   dimension the player changed most, clamped to what fits on the monitor.
+// - Fullscreen (settings checkbox / F key, SetFullscreen): only on a 16:9 or 16:10 monitor, borderless at the
+//   monitor's resolution; no snapping while in it. Remembered in PlayerPrefs.
 // Steam Deck: skipped - the game runs fullscreen at the native 1280x800 (16:10) and letterboxes itself.
-// Editor and WebGL are untouched. Player settings disable Alt+Enter (no fullscreen).
+// Editor and WebGL are untouched. Player settings disable Alt+Enter (fullscreen only through SetFullscreen).
 public class WindowedAspect : MonoBehaviour
 {
     const float StartWidthFraction = 0.6f; // first-run window width, as a fraction of the usable desktop width
@@ -16,6 +18,9 @@ public class WindowedAspect : MonoBehaviour
     const int SideMargin = 20;
     const int MinHeight = 360;             // 640x360
     const float SettleTime = 0.25f;        // snap only after the size stopped changing (don't fight a drag)
+    const string FullscreenKey = "WindowedAspect.Fullscreen";
+
+    static WindowedAspect _instance;
 
 #if UNITY_STANDALONE && !UNITY_EDITOR
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -27,9 +32,64 @@ public class WindowedAspect : MonoBehaviour
         var go = new GameObject("WindowedAspect");
         go.hideFlags = HideFlags.HideInHierarchy;
         DontDestroyOnLoad(go);
-        go.AddComponent<WindowedAspect>().ApplyStartSize();
+        _instance = go.AddComponent<WindowedAspect>();
+        _instance.ApplyStartSize();
     }
 #endif
+
+    // Settings checkbox / F key. Without an instance (Editor, WebGL, Steam Deck) these do nothing / report false.
+    public static bool IsActive => _instance != null;
+
+    public static bool MonitorSupportsFullscreen
+    {
+        get
+        {
+            var (w, h) = MonitorSize();
+            return IsSupported(w, h);
+        }
+    }
+
+    public static bool IsFullscreen => _instance != null && Screen.fullScreenMode != FullScreenMode.Windowed;
+
+    public static void SetFullscreen(bool on)
+    {
+        if (_instance == null)
+            return;
+        if (on && !MonitorSupportsFullscreen)
+            return;
+
+        PlayerPrefs.SetInt(FullscreenKey, on ? 1 : 0);
+        PlayerPrefs.Save();
+        if (on)
+            _instance.GoFullscreen();
+        else
+            _instance.RestoreWindow();
+    }
+
+    static (int w, int h) MonitorSize()
+    {
+        var display = Screen.mainWindowDisplayInfo;
+        int w = display.width > 0 ? display.width : Screen.currentResolution.width;
+        int h = display.height > 0 ? display.height : Screen.currentResolution.height;
+        return (w, h);
+    }
+
+    static bool WantsFullscreen => PlayerPrefs.GetInt(FullscreenKey, 0) == 1;
+
+    void GoFullscreen()
+    {
+        var (w, h) = MonitorSize();
+        Screen.SetResolution(w, h, FullScreenMode.FullScreenWindow);
+    }
+
+    // Back to the last windowed size we set or accepted.
+    void RestoreWindow()
+    {
+        int w = _appliedW > 0 ? _appliedW : 1280, h = _appliedH > 0 ? _appliedH : 720;
+        _seenW = w;
+        _seenH = h;
+        Screen.SetResolution(w, h, FullScreenMode.Windowed);
+    }
 
     int _appliedW, _appliedH;   // last size we set (or accepted)
     int _seenW, _seenH;         // last size observed, for the settle timer
@@ -74,7 +134,7 @@ public class WindowedAspect : MonoBehaviour
         // Keep the size the player left it at last time (Unity remembers it), if it's still valid on this monitor.
         // On the very first run Unity starts at the Player Settings default (1280x720), which is 16:9 too - so only
         // trust it once we've chosen a size ourselves.
-        if (PlayerPrefs.GetInt(SizeChosenKey, 0) == 1 && Screen.fullScreenMode == FullScreenMode.Windowed && IsSupported(Screen.width, Screen.height)
+        if (PlayerPrefs.GetInt(SizeChosenKey, 0) == 1 && !WantsFullscreen && Screen.fullScreenMode == FullScreenMode.Windowed && IsSupported(Screen.width, Screen.height)
             && Screen.height >= MinHeight && Screen.height <= maxH)
         {
             if (Is16x10(Screen.width, Screen.height))
@@ -94,8 +154,18 @@ public class WindowedAspect : MonoBehaviour
         SetSize(Mathf.Clamp(startH, MinHeight, maxH));
     }
 
+    void Start()
+    {
+        // After the windowed size is known (ApplyStartSize), so un-fullscreening returns to it.
+        if (WantsFullscreen && MonitorSupportsFullscreen)
+            GoFullscreen();
+    }
+
     void Update()
     {
+        if (WantsFullscreen)
+            return; // fullscreen: no snapping
+
         int w = Screen.width, h = Screen.height;
         if (w != _seenW || h != _seenH)
         {
