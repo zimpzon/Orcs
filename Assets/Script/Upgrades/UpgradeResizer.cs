@@ -19,6 +19,19 @@ public class UpgradeResizer : MonoBehaviour
     static readonly Vector2 ItemPanelExpandedSize = new(760, 396);
     Vector2 itemPanelCollapsedSize;
     bool isExpanded = false;
+
+    // How many upgrade panels are expanded: Escape collapses them, so the Escape menu (EscapeMenuScript) waits.
+    public static int ExpandedCount;
+
+    void SetExpanded(bool expanded)
+    {
+        if (expanded == isExpanded)
+            return;
+        isExpanded = expanded;
+        ExpandedCount += expanded ? 1 : -1;
+    }
+
+    void OnDisable() => SetExpanded(false);
     bool isAnimating = false;
 
     const float AnimationDuration = 0.3f;
@@ -61,7 +74,7 @@ public class UpgradeResizer : MonoBehaviour
     {
         if (isAnimating) return;
 
-        isExpanded = false;
+        SetExpanded(false);
         isAnimating = false;
 
         // Cancel any running animations
@@ -95,7 +108,7 @@ public class UpgradeResizer : MonoBehaviour
     {
         if (isAnimating) return;
 
-        isExpanded = true;
+        SetExpanded(true);
         isAnimating = true;
 
         if (GridLayoutGroup != null)
