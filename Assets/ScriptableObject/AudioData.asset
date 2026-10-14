@@ -22,7 +22,7 @@ MonoBehaviour:
   Chime: {fileID: 8300000, guid: d354e54328962474b8c8c6f84ddb534d, type: 3}
   ArenaInfoText: {fileID: 0}
   DialogShow: {fileID: 8300000, guid: 0975f85cfa9bb214ebbfa28030facca3, type: 3}
-  DialogClose: {fileID: 8300000, guid: 0975f85cfa9bb214ebbfa28030facca3, type: 3}
+  DialogClose: {fileID: 0}
   ExpandTierList: {fileID: 8300000, guid: 0975f85cfa9bb214ebbfa28030facca3, type: 3}
   CloseTierList: {fileID: 8300000, guid: 0975f85cfa9bb214ebbfa28030facca3, type: 3}
   PlayerStaffFire: {fileID: 8300000, guid: 4259debc58b7bdc4e85507edcc45ff4b, type: 3}
