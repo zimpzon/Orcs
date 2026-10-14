@@ -122,6 +122,11 @@ public class AscendDecisionScript : MonoBehaviour
 
     private void Update()
     {
+        // Credits keep coming while the dialog is open (late game every few seconds): keep the numbers live, so the
+        // rebirth converts all of them and the dialog shows what it will really give.
+        if (SaveGame.Members.MonsterCredits_09_08_2025 != MonsterCreditsAtStart)
+            RefreshCredits();
+
         if (_headerDiamonds == null)
             return;
 
@@ -144,6 +149,7 @@ public class AscendDecisionScript : MonoBehaviour
         {
             if (AscendProgressScript.RebirthEnabled)
             {
+                RefreshCredits(); // every credit right now, not the count from when the dialog opened
                 SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
                 SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
                 SaveGame.Members.TimesAscended_09_08_2025++;
@@ -204,12 +210,17 @@ public class AscendDecisionScript : MonoBehaviour
 
     private void OnEnable() => ResetDialogState();
 
-    // Fresh numbers and button state; also used right after a rebirth, since the screen stays open then.
-    void ResetDialogState()
+    void RefreshCredits()
     {
         MonsterCreditsAtStart = SaveGame.Members.MonsterCredits_09_08_2025;
         DiamondsGainedAtRebirth = UpgradeProgression.DiamondsForMonsterCredits(MonsterCreditsAtStart);
         UpdateUi();
+    }
+
+    // Fresh numbers and button state; also used right after a rebirth, since the screen stays open then.
+    void ResetDialogState()
+    {
+        RefreshCredits();
 
         _clickCount = 0;
         TextButtonRebirth.text = "REBIRTH!";

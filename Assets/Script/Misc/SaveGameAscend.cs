@@ -13,11 +13,14 @@ static class SaveGameAscend
         newSave.LastSeenUtcStr = oldSave.LastSeenUtcStr;
 
         // Ascending
-        newSave.MonsterCreditsXp_09_08_2025 = oldSave.MonsterCreditsXp_09_08_2025;
+        // Partial progress toward the next credit carries over (lifetime is unchanged, so the price and the % stay the
+        // same), but at most 99%: a finished credit held back by the speed cap must not land for free after a rebirth.
+        Decimal512 maxCarry = Assets.Script.Upgrades.UpgradeProgression.MonsterCreditXpForNextLevel(oldSave.MonsterCreditsLifetime_09_08_2025 + 1) * 0.99;
+        newSave.MonsterCreditsXp_09_08_2025 = oldSave.MonsterCreditsXp_09_08_2025 > maxCarry ? maxCarry : oldSave.MonsterCreditsXp_09_08_2025;
         newSave.TimesAscended_09_08_2025 = oldSave.TimesAscended_09_08_2025;
         newSave.MonsterCredits_09_08_2025 = oldSave.MonsterCredits_09_08_2025;
         newSave.MonsterCreditsLifetime_09_08_2025 = oldSave.MonsterCreditsLifetime_09_08_2025;
-        newSave.CreditBonusStartLifetime = Assets.Script.Upgrades.UpgradeProgression.CreditsEarnedWithPartial(oldSave); // credit bonus back to 100%
+        newSave.CreditBonusStartLifetime = Assets.Script.Upgrades.UpgradeProgression.CreditsEarnedWithPartial(oldSave); // credit bonus back to full
         newSave.DiamondCount_09_08_2025 = oldSave.DiamondCount_09_08_2025;
 
         // Permanent upgrades

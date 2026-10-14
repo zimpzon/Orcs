@@ -317,7 +317,7 @@ public class GameManager : MonoBehaviour
         if (!success)
             return false;
 
-        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 1.1f, pitch: 1.0f);
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Zap, volumeScale: 1.1f, pitch: 1.0f, minInterval: 0.2f);
 
         if (fromEnemy is null || !fromEnemy.NoFlashFx)
         {

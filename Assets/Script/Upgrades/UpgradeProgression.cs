@@ -270,7 +270,7 @@ namespace Assets.Script.Upgrades
         const double CreditBonusDisplayMax = 500;
 
         // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
-        // Also stored at rebirth (SaveGameAscend), since the leftover XP carries over.
+        // Also stored at rebirth (SaveGameAscend), since the partial XP carries over.
         public static double CreditsEarnedWithPartial(SaveGameMembers m)
         {
             long lifetime = m.MonsterCreditsLifetime_09_08_2025;
