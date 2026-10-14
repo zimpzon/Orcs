@@ -172,15 +172,14 @@ public class AscendDecisionScript : MonoBehaviour
 
     public void UpdateUi()
     {
-        //Color gainTextColor = DiamondsGainedAtRebirth == 0 ? new Color(0.9f, 0.2f, 0.1f) : Color.yellow;
-        string gainTextColorStr = DiamondsGainedAtRebirth == 0 ?  "E35125" : "9DE05C";// ColorUtility.ToHtmlStringRGBA(gainTextColor);
+        string gainTextColorStr = DiamondsGainedAtRebirth == 0 ? TextColors.Orange : TextColors.Green;
 
         string diamondTxt = SaveGame.Members.DiamondCount_09_08_2025 == 1 ? "diamond" : "diamonds";
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
         long diamondIncomePct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
-        TextCurrentDiamonds.text = $"You have <color=#9DE05C>{Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color=#9DE05C>{Format64.Format(diamondIncomePct)}</color>% income)";
+        TextCurrentDiamonds.text = $"You have <color={TextColors.Green}>{Format64.Format(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color={TextColors.Green}>{Format64.Format(diamondIncomePct)}</color>% income)";
 
         // Scene text with a [PCT] placeholder: income bonus per diamond held (base + Shiny Diamonds cards).
         if (TextDiamondEach != null)
@@ -188,9 +187,15 @@ public class AscendDecisionScript : MonoBehaviour
 
         // Rebirth credit bonus (UpgradeProgression.CreditBonusMultiplier): 200% after a rebirth, falls to 0%.
         if (TextCreditBonus != null)
-            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", UpgradeProgression.CreditBonusDisplayPct().ToString());
-        TextCurrentMonsterCredits.text = $"You have <color=#{gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
-        TextAscendNowGain.text = $"Rebirth now to gain +<color=#{gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
+        {
+            int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
+            string color = bonusPct <= 25 ? TextColors.Orange : TextColors.Green;
+            string bonusText = $"<color={color}>{bonusPct}</color>";
+            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText);
+        }
+
+        TextCurrentMonsterCredits.text = $"You have <color={gainTextColorStr}>{MonsterCreditsAtStart}</color> {creditTxt}";
+        TextAscendNowGain.text = $"Rebirth now to gain +<color={gainTextColorStr}>{DiamondsGainedAtRebirth}</color> {diamondGainTxt}<sprite=0>";
 
         TextWhatYouLose.text = _whatYouLoseTemplate;
 
