@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// Heart icon below the settings icon; opens the credits popup.
+// Opens the credits popup on click: the heart icon below the settings icon, and the Idle Earl logo text.
 public class CreditsImageScript : MonoBehaviour, IPointerClickHandler
 {
     public CreditsPopupScript CreditsPopup;
