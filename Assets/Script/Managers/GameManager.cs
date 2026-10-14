@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
 
-        SetBuyMultiple((int)BuyAmountSelection.Buy1);
+        ApplyBuyMultiple((int)BuyAmountSelection.Buy1);
     }
 
     public IEnumerator ShowInfoTextFlashy(string text, float delay = 1.0f)
@@ -1353,7 +1353,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.ApplySoundSettings();
 
         ResetGame(autoStartGame: true);
-        SetBuyMultiple((int)BuyAmountSelection.Buy1);
+        ApplyBuyMultiple((int)BuyAmountSelection.Buy1);
 
         StartCoroutine(GameStateCo());
     }
@@ -1554,7 +1554,14 @@ public class GameManager : MonoBehaviour
     }
 
     // selection is BuyAmountSelection
+    // Buy 1 / 10 / 50 / 100 buttons (scene): click sound, then apply. Code (reset, start) uses ApplyBuyMultiple.
     public void SetBuyMultiple(int selection)
+    {
+        AudioManager.Instance.PlayMenuClick();
+        ApplyBuyMultiple(selection);
+    }
+
+    void ApplyBuyMultiple(int selection)
     {
         SelectedBuyAmount = (BuyAmountSelection)selection;
 

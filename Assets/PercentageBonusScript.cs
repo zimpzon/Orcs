@@ -26,16 +26,23 @@ public class PercentageBonusScript : MonoBehaviour
     private void Start()
     {
         GameEvents.OnSaveWiped += OnSaveWiped;
-        SetBuyAmount(SaveGame.Members.PctBonusBuyAmount); // remembered in the save
+        ApplyBuyAmount(SaveGame.Members.PctBonusBuyAmount); // remembered in the save
         UpdateAll();
     }
 
     void OnSaveWiped(GameEvents.SaveWipeReason reason)
     {
-        SetBuyAmount(SaveGame.Members.PctBonusBuyAmount); // the (new) save's choice
+        ApplyBuyAmount(SaveGame.Members.PctBonusBuyAmount); // the (new) save's choice
     }
 
+    // Buy 1 / 10 buttons (scene): click sound, then apply. Code (start, save wipe) uses ApplyBuyAmount.
     public void SetBuyAmount(int selection)
+    {
+        AudioManager.Instance.PlayMenuClick();
+        ApplyBuyAmount(selection);
+    }
+
+    void ApplyBuyAmount(int selection)
     {
         if (selection != (int)PercentageBonusBuyAmount.Buy10)
             selection = (int)PercentageBonusBuyAmount.Buy1;
