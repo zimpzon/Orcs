@@ -17,7 +17,7 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextButtonRebirth;
     public TextMeshProUGUI TextWhatYouLose;
     public TextMeshProUGUI TextDiamondEach; // scene text with a [PCT] placeholder
-    public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder (200..0)
+    public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder (500..0)
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
@@ -185,11 +185,11 @@ public class AscendDecisionScript : MonoBehaviour
         if (TextDiamondEach != null)
             TextDiamondEach.text = _diamondEachTemplate.Replace("[PCT]", $"<color={TextColors.GreenBright}>{Math.Round(UpgradeProgression.DiamondBonusPerDiamond() * 100)}</color>");
 
-        // Rebirth credit bonus (UpgradeProgression.CreditBonusMultiplier): 200% after a rebirth, falls to 0%.
+        // Rebirth credit bonus (UpgradeProgression.CreditBonusMultiplier): 500% after a rebirth, falls to 0%.
         if (TextCreditBonus != null)
         {
             int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
-            string color = bonusPct <= 25 ? TextColors.Orange : TextColors.GreenBright;
+            string color = bonusPct <= 62 ? TextColors.Orange : TextColors.GreenBright; // orange in the last 1/8
             string bonusText = $"<color={color}>{bonusPct}</color>";
             TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText);
         }

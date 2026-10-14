@@ -234,11 +234,9 @@ namespace Assets.Script.Upgrades
         const double CreditCostEarly = 0.25;
         const double CreditCostEarlyFade = 30;
 
-        // Small credit speed floor: credit XP per second never drops below 2% of the best passive income reached
-        // (mystery buff excluded, so a 10x spike can't inflate it). Only matters right after a rebirth, when income
-        // restarts near zero: still slow (~5 h per credit) but the bar visibly moves. Real income takes over soon.
-        const double CreditSpeedFloorFraction = 0.02;
-
+        // Credit XP per second = passive income. (There was a floor of 2% of the best income ever, meant as "~5 h per
+        // credit right after a rebirth", but late game that best income is so high it gave ~1 credit per minute with zero
+        // income - removed, playtest 2026-10.) Still tracks the best income (mystery buff excluded) for Head Start.
         public static Decimal512 CreditXpPerSecond()
         {
             var m = SaveGame.Members;
@@ -248,16 +246,15 @@ namespace Assets.Script.Upgrades
             if (baseIncome > m.MaxCreditIncome)
                 m.MaxCreditIncome = baseIncome;
 
-            Decimal512 floor = m.MaxCreditIncome * CreditSpeedFloorFraction;
-            return income > floor ? income : floor;
+            return income;
         }
 
         // Rebirth credit bonus: credit XP x1.0 right after a rebirth, falling to x0.1 when lifetime credits reach 1.75x
         // what they were at that rebirth (CreditBonusStartLifetime, min CreditBonusMinStart). Curved (1 - 0.9 * t^2): stays high for a
         // while, then drops fast at the end - waiting it out gets slow, so rebirthing is the better move (playtest
-        // 2026-10: was linear down to x0.5, then x0.25; waiting still beat rebirthing). Shown as 200% -> 0% (150% halfway).
+        // 2026-10: was linear down to x0.5, then x0.25; waiting still beat rebirthing). Shown as 500% -> 0% (375% halfway; text only, was 200% but full vs drained is x10).
         // The drain never starts before CreditBonusMinStart lifetime credits, first run or after an early rebirth:
-        // 200% until ~15.7, 174% at 20, 100% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20; it
+        // 500% until ~15.7, 435% at 20, 250% at 24, 0% at ~27.4 (playtest: the drain shouldn't be felt before ~20; it
         // was min 2, which drained an early rebirth within ~1.5 credits). Rebirths later than that: L -> 1.75 L.
         // First run (never rebirthed): actual speed scaled by CreditFirstRunPaceMul, so at full bonus it's exactly the
         // old flat x0.5 that the early credit curve is tuned for - only the late drain is new.
@@ -266,7 +263,7 @@ namespace Assets.Script.Upgrades
         const double CreditBonusEndFactor = 1.75;
         const double CreditBonusMinMul = 0.1;
         const double CreditBonusCurvePower = 2;
-        const double CreditBonusDisplayMax = 200;
+        const double CreditBonusDisplayMax = 500;
 
         // Lifetime credits plus the XP towards the next one, so the bonus slides smoothly instead of stepping per credit.
         // Also stored at rebirth (SaveGameAscend), since the leftover XP carries over.
@@ -277,7 +274,7 @@ namespace Assets.Script.Upgrades
             return lifetime + partial;
         }
 
-        // 0 = just rebirthed (200%), 1 = reached 1.75x the start (0%).
+        // 0 = just rebirthed (500%), 1 = reached 1.75x the start (0%).
         public static double CreditBonusProgress()
         {
             var m = SaveGame.Members;
@@ -298,7 +295,7 @@ namespace Assets.Script.Upgrades
         public static double CreditBonusMultiplier()
             => CreditBonusCurve() * (SaveGame.Members.TimesAscended_09_08_2025 == 0 ? CreditFirstRunPaceMul : 1.0);
 
-        // 200 (full bonus) down to 0, a straight map of the bonus curve. Rounded up: rounding to nearest showed 199%
+        // 500 (full bonus) down to 0, a straight map of the bonus curve. Rounded up: rounding to nearest showed 499%
         // within seconds of a rebirth. Still exactly 0 at the end.
         public static int CreditBonusDisplayPct()
             => (int)Math.Ceiling((CreditBonusCurve() - CreditBonusMinMul) / (1.0 - CreditBonusMinMul) * CreditBonusDisplayMax - 1e-9);

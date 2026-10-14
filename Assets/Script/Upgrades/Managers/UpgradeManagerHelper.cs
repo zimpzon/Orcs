@@ -38,7 +38,7 @@ namespace Assets.Script.Upgrades.Managers
             return $"<color=#dddddd>Price: $<color={GetColorPriceX2(x2PriceMet: false)}>{Format512.Format(priceForNext)} ({timeStr})";
         }
 
-        // ratePerSecond: defaults to passive income (credits pass their floored XP rate instead).
+        // ratePerSecond: defaults to passive income (credits pass their own XP rate instead).
         public static string FormatTimeLeft(Decimal512 valueForNext, Decimal512 current, double MaxSeconds = double.MaxValue, Decimal512? ratePerSecond = null)
         {
             var money = SaveGame.Members.Money;

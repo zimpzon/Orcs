@@ -61122,7 +61122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Credit income bonus: [BONUS]% / 200%
+  m_text: 'Credit income bonus: [BONUS]% / 500%
 
     Refills on every Rebirth.'
   m_isRightToLeft: 0
