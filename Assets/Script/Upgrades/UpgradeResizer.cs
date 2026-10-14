@@ -80,6 +80,8 @@ public class UpgradeResizer : MonoBehaviour
     {
         if (isAnimating) return;
 
+        if (isExpanded)
+            AudioManager.Instance.PlayCloseTierList();
         SetExpanded(false);
         isAnimating = false;
 
@@ -114,6 +116,8 @@ public class UpgradeResizer : MonoBehaviour
     {
         if (isAnimating) return;
 
+        if (!isExpanded)
+            AudioManager.Instance.PlayExpandTierList();
         SetExpanded(true);
         isAnimating = true;
 

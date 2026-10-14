@@ -14,6 +14,8 @@ public class AudioData : ScriptableObject
     public AudioClip ArenaInfoText;
     public AudioClip DialogShow;
     public AudioClip DialogClose;
+    public AudioClip ExpandTierList;
+    public AudioClip CloseTierList;
 
 
     public AudioClip PlayerStaffFire;
