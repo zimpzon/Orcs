@@ -19,7 +19,7 @@ MonoBehaviour:
   Zap: {fileID: 8300000, guid: 35885e86b4bd4e240805459a8c544a51, type: 3}
   Explosion: {fileID: 8300000, guid: 47ed374caf6c7b6408b3bfcd82236d7b, type: 3}
   StormLordZap: {fileID: 8300000, guid: e2be91991d201b0478cc44c769898dd6, type: 3}
-  Chime: {fileID: 8300000, guid: 4fd22c2015518894489f46c774d16a8b, type: 3}
+  Chime: {fileID: 8300000, guid: d354e54328962474b8c8c6f84ddb534d, type: 3}
   ArenaInfoText: {fileID: 0}
   PlayerStaffFire: {fileID: 8300000, guid: 4259debc58b7bdc4e85507edcc45ff4b, type: 3}
   PlayerStaffHit: {fileID: 8300000, guid: 4a56dc21f865f2c4d9c3a35b8e9cce88, type: 3}

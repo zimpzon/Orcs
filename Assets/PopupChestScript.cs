@@ -139,6 +139,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             GameCanvasScript.Instance.ShowPopup(
                 $"<color=yellow><size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n\n</color>" +
                 $"{multiplier}{numberOfSeconds}X income\n<size=+2><color=#FFD54A>+${amount}</color></size>", celebrate: true);
+            SaveGame.Save(); // don't lose a chest reward to a reload before the next auto-save
         }
     }
 

@@ -278,9 +278,8 @@ public class QuestionmarkScript : MonoBehaviour
             Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             reward += 100;
 
+            GameManager.Instance.AddMoney(reward); // before ShowMessage, which saves
             ShowMessage($"{Highlight(450)}X income = ${Highlight(Format512.Format(reward))}");
-
-            GameManager.Instance.AddMoney(reward);
             yield return null;
         }
 
@@ -288,6 +287,7 @@ public class QuestionmarkScript : MonoBehaviour
         {
             string messageWithHeader = $"<color=yellow><size=+1>MYSTERY COLLECTED ({SaveGame.Members.MysteryCollected})</size>\n\n</color>{msg}";
             GameCanvasScript.Instance.ShowPopup(messageWithHeader, celebrate: true);
+            SaveGame.Save(); // don't lose a mystery reward to a reload before the next auto-save
         }
     }
 
