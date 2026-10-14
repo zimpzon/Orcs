@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// Runs before everything else (even the Escape menu) so its Escape check sees the dialogs as they were at the start of
+// the frame - a dialog closed by this same Escape press must still count as open.
+[DefaultExecutionOrder(-600)]
 public class UpgradeResizer : MonoBehaviour
 {
     public GridLayoutGroup GridLayoutGroup;
@@ -22,6 +25,9 @@ public class UpgradeResizer : MonoBehaviour
 
     // How many upgrade panels are expanded: Escape collapses them, so the Escape menu (EscapeMenuScript) waits.
     public static int ExpandedCount;
+
+    // Frame in which Escape collapsed a tier view: that press is used up (the Escape menu runs later this frame).
+    public static int EscapeUsedFrame = -1;
 
     void SetExpanded(bool expanded)
     {
@@ -179,8 +185,10 @@ public class UpgradeResizer : MonoBehaviour
 
     void Update()
     {
-        if (isExpanded && !isAnimating && Input.GetKeyDown(KeyCode.Escape))
+        // With a dialog open, Escape closes that first; the tier view needs another press.
+        if (isExpanded && !isAnimating && Input.GetKeyDown(KeyCode.Escape) && !GlobalPopupManager.AnyDialogOpen)
         {
+            EscapeUsedFrame = Time.frameCount;
             Collapse();
         }
     }

@@ -14,6 +14,14 @@ public class GlobalPopupManager : MonoBehaviour
 
     private GameObject CurrentPopup;
     public bool HasOpenPopup => CurrentPopup != null && CurrentPopup.activeSelf;
+
+    // Anything Escape would close: a managed dialog (incl. the Escape menu), a message popup, the cheat sheet or the
+    // rebirth dialog. The Escape menu and the expanded tier view leave Escape alone while one is open.
+    public static bool AnyDialogOpen
+        => (Instance != null && Instance.HasOpenPopup)
+        || GenericPopupScript.OpenCount > 0
+        || CheatSheet.IsOpen
+        || AscendProgressScript.RebirthDialogOpen;
     private Dictionary<int, PopupBaseValues> _gameObjects = new();
 
     // Darkens everything behind the open popup, same look as the rebirth popup's AscendDarkenBackground.

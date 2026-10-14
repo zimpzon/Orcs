@@ -26011,7 +26011,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Popup: {fileID: 1796917221}
   QuitButton: {fileID: 1274774419}
-  RebirthDialog: {fileID: 1119408385}
 --- !u!1 &323245158
 GameObject:
   m_ObjectHideFlags: 0

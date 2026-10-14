@@ -18,9 +18,13 @@ public class AscendProgressScript : MonoBehaviour
 
     [NonSerialized] public bool RebirthEnabled = true;
 
+    static AscendProgressScript _active;
+    public static bool RebirthDialogOpen => _active != null && _active.AscendRoot.activeInHierarchy;
+
     private void Awake()
     {
         Instance = this;
+        _active = this;
         _lastCreditCommitTime = G.D.RealTime;
     }
 

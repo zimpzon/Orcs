@@ -10,16 +10,12 @@ public class EscapeMenuScript : MonoBehaviour
 {
     public GameObject Popup;
     public Button QuitButton;
-    public GameObject RebirthDialog; // AscendProgressScript.AscendRoot (not a GlobalPopupManager popup)
 
     bool IsOpen => Popup.activeSelf;
 
-    bool AnythingElseOpen()
-        => GlobalPopupManager.Instance.HasOpenPopup
-        || GenericPopupScript.OpenCount > 0
-        || CheatSheet.IsOpen
-        || UpgradeResizer.ExpandedCount > 0
-        || (RebirthDialog != null && RebirthDialog.activeInHierarchy);
+    static bool AnythingElseOpen()
+        => GlobalPopupManager.AnyDialogOpen || UpgradeResizer.ExpandedCount > 0
+        || UpgradeResizer.EscapeUsedFrame == Time.frameCount; // this press just collapsed the tier view
 
     void Update()
     {
