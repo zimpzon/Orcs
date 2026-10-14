@@ -67247,7 +67247,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fullscreen
+  m_Text: Fullscreen (alt+enter)
 --- !u!224 &1079916256
 RectTransform:
   m_ObjectHideFlags: 0
