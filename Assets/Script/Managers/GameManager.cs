@@ -297,7 +297,7 @@ public class GameManager : MonoBehaviour
         if (seconds != _previousSecondsLeft)
         {
             var timeSpan = TimeSpan.FromSeconds(seconds);
-            TextClock.text = $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
+            TextClock.text = $"<color={TextColors.Green}>{timeSpan.Minutes:00}:{timeSpan.Seconds:00}</color>";
             _previousSecondsLeft = seconds;
             _secondsLeft = seconds;
         }
@@ -530,7 +530,7 @@ public class GameManager : MonoBehaviour
 
             UpdateMoneyText();
 
-            TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
+            TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
