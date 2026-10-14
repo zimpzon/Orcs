@@ -1456,7 +1456,7 @@ public class GameManager : MonoBehaviour
         if (_deltaRealTime > MaxRealtimeDelta)
         {
             var ts = TimeSpan.FromSeconds(_deltaRealTime);
-            ShowWelcomeBackDialog(ts);
+            //ShowWelcomeBackDialog(ts);
             Debug.Log($"Realtime delta too high ({(int)_deltaRealTime} sec), was probably on sleep. Clamped to {(int)MaxRealtimeDelta}");
             _deltaRealTime = MaxRealtimeDelta;
         }

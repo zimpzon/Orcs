@@ -26,15 +26,18 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     void Awake()
     {
         if (FullscreenToggle != null)
-            FullscreenToggle.onValueChanged.AddListener(on => WindowedAspect.SetFullscreen(on));
+            FullscreenToggle.onValueChanged.AddListener(on =>
+            {
+                AudioManager.Instance.PlayMenuClick();
+                WindowedAspect.SetFullscreen(on);
+            });
 
         CombatSoundToggle.onValueChanged.AddListener(on =>
         {
             SaveGame.Members.CombatSoundEnabled = on;
             AudioManager.Instance.ApplySoundSettings();
             SaveGame.Save();
-            if (on)
-                AudioManager.Instance.PlayMenuClick(); // little confirmation
+            AudioManager.Instance.PlayMenuClick();
         });
 
         // Saved by the regular auto-save (every 5 s), not on every drag step.
@@ -60,10 +63,11 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
             GlobalPopupManager.Instance.AfterHidePopup();
         }
 
-        ShowFloatingDamageToggle.isOn = SaveGame.Members.ShowFloatingDamageNumbers;
-        ShowFloatingGoldToggle.isOn = SaveGame.Members.ShowFloatingGoldNumbers;
-        UseScientificNotationToggle.isOn = SaveGame.Members.UseScientificNotation;
-        ShowDetailsOnHoverToggle.isOn = SaveGame.Members.ShowDetailsOnHover;
+        // Without notify: setting them must not run the handlers (they click and save).
+        ShowFloatingDamageToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingDamageNumbers);
+        ShowFloatingGoldToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingGoldNumbers);
+        UseScientificNotationToggle.SetIsOnWithoutNotify(SaveGame.Members.UseScientificNotation);
+        ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
 
         // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
@@ -95,24 +99,28 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     {
         SaveGame.Members.ShowFloatingDamageNumbers = ShowFloatingDamageToggle.isOn;
         SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
     }
 
     public void ShowFloatingGoldNumbers(bool show)
     {
         SaveGame.Members.ShowFloatingGoldNumbers = ShowFloatingGoldToggle.isOn;
         SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
     }
 
     public void UseScientificNotation(bool show)
     {
         SaveGame.Members.UseScientificNotation = UseScientificNotationToggle.isOn;
         SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
     }
 
     public void ShowDetailsOnHover(bool show)
     {
         SaveGame.Members.ShowDetailsOnHover = ShowDetailsOnHoverToggle.isOn;
         SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
     }
 
     public void OnBackClick()
