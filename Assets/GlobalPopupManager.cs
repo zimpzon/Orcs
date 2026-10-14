@@ -177,6 +177,10 @@ public class GlobalPopupManager : MonoBehaviour
             _gameObjects.Add(popup.GetInstanceID(), popupBaseValues);
         }
 
+        // Screen position, so re-read on every open: cached from the first open, it was stale after the window size
+        // changed (e.g. going fullscreen with the settings popup) and the popup flew off to the old spot.
+        popupBaseValues.Position = popup.transform.position;
+
         CurrentPopup = popup;
         ShowDarken(popup);
 
