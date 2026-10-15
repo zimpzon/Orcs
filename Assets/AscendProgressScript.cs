@@ -65,11 +65,16 @@ public class AscendProgressScript : MonoBehaviour
         // Apply ascend bonuses
         ApplyAscendPermanentBonuses();
 
-        // Passive income, but never below the small credit speed floor (UpgradeProgression.CreditXpPerSecond).
-        // Times the rebirth credit bonus (x1.0 after a rebirth, falling to x0.1; UpgradeProgression.CreditBonusMultiplier).
+        // Passive income (UpgradeProgression.CreditXpPerSecond), times the rebirth credit bonus (x1.0 after a rebirth,
+        // falling to x0.1; UpgradeProgression.CreditBonusMultiplier).
         Decimal512 creditXpPerSecond = UpgradeProgression.CreditXpPerSecond() * UpgradeProgression.CreditBonusMultiplier();
+
+        // The speed limits apply to the default speed: a mystery boost (x10 income, x2.5 faster time) goes past them by
+        // its factor. So the soft limit is worked out on the unboosted rate, then the boost is put back on top.
+        double boost = Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeTempMultiplier);
+        Decimal512 unboosted = creditXpPerSecond / boost;
         // Last tiers: soft speed limit, so credits approach the tier limit instead of being cut off at it.
-        creditXpPerSecond *= UpgradeProgression.CreditSoftLimitFactor(creditXpPerSecond);
+        creditXpPerSecond = unboosted * UpgradeProgression.CreditSoftLimitFactor(unboosted) * boost;
 
         const float CreditUpdateRate = 1.0f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
@@ -78,7 +83,7 @@ public class AscendProgressScript : MonoBehaviour
         // credit per UpgradeProgression.MinSecondsPerCredit() (1 s, up to 10 s in the last tiers); XP beyond the next
         // credit's cost is dropped, not banked. The allowance can't be saved up beyond one credit (or one per limit period
         // of a stall).
-        double minSecondsPerCredit = UpgradeProgression.MinSecondsPerCredit();
+        double minSecondsPerCredit = UpgradeProgression.MinSecondsPerCredit() / boost; // boosted: past the limit too
         if (G.D.RealTime >= _nextCreditUpdate)
         {
             // Calculate how much time actually passed since last update
