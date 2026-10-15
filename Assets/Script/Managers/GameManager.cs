@@ -1481,9 +1481,7 @@ public class GameManager : MonoBehaviour
             _nextPassiveIncomeUpdate = G.D.GameTime + 0.2f;
             _prevPassiveIncome = TotalPassiveIncome;
 
-            string textIncome = SaveGame.Members.UseScientificNotation ?
-                FormatScientific.Format(TotalPassiveIncome) :
-                Format512.FormatWithDecimals(TotalPassiveIncome);
+            string textIncome = Format512.FormatWithDecimals(TotalPassiveIncome);
 
             textIncome = $"{textIncome} per second";
             if (textIncome != TextPassiveIncome.text)
@@ -1529,9 +1527,7 @@ public class GameManager : MonoBehaviour
         _prevMoneyTextNextUpdate = G.D.GameTime + MoneyUpdateDelay;
         _prevMoney = SaveGame.Members.Money;
 
-        string textMoney = SaveGame.Members.UseScientificNotation ?
-            $"${FormatScientific.Format(SaveGame.Members.Money)}" :
-            $"${Format512.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
+        string textMoney = $"${Format512.FormatWithDecimals(SaveGame.Members.Money, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true)}";
 
         TextMoney.text = textMoney;
     }

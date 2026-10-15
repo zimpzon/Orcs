@@ -43,17 +43,11 @@ public class SettingsStatsScript : MonoBehaviour
         var timePlayed = RoundedTo10Min(SaveGame.Members.EstimatedOnlineSeconds2);
         var timeSinceLastAscend = RoundedTo10Min(SaveGame.Members.TimeSinceLastAscend);
 
-        string strTextMoney = SaveGame.Members.UseScientificNotation ?
-            $"${FormatScientific.Format(SaveGame.Members.MaxMoney)}" :
-            $"${Format512.Format(SaveGame.Members.MaxMoney)}";
+        string strTextMoney = $"${Format512.Format(SaveGame.Members.MaxMoney)}";
 
-        string strTotalIncome = SaveGame.Members.UseScientificNotation ?
-            $"${FormatScientific.Format(lifetimeIncome)}" :
-            $"${Format512.Format(lifetimeIncome)}";
+        string strTotalIncome = $"${Format512.Format(lifetimeIncome)}";
 
-        string strMaxIncome = SaveGame.Members.UseScientificNotation ?
-            $"${FormatScientific.Format(SaveGame.Members.MaxIncome)}" :
-            $"${Format512.Format(SaveGame.Members.MaxIncome)}";
+        string strMaxIncome = $"${Format512.Format(SaveGame.Members.MaxIncome)}";
 
         var sb = new StringBuilder();
         sb.AppendLine(BuildLine("<b>Income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));

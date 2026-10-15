@@ -81,7 +81,6 @@ public class SaveGameMembers
 
     public bool ShowFloatingDamageNumbers = true;
     public bool ShowFloatingGoldNumbers = true;
-    public bool UseScientificNotation = false;
     public bool ShowDetailsOnHover = true;
     public bool CombatSoundEnabled = false; // all game sounds except UI ones (menu click, chime, money pickup) and music
     public bool SoundInBackground = false; // keep sound and music playing while minimized / in another tab

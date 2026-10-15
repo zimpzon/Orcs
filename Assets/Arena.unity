@@ -11962,7 +11962,6 @@ MonoBehaviour:
   TextDiscordLink: {fileID: 2092282463}
   ShowFloatingDamageToggle: {fileID: 1726439860}
   ShowFloatingGoldToggle: {fileID: 1002482084}
-  UseScientificNotationToggle: {fileID: 0}
   ShowDetailsOnHoverToggle: {fileID: 67867659}
   CombatSoundToggle: {fileID: 1251078953}
   MusicToggle: {fileID: 531806563}

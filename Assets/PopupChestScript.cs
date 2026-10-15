@@ -139,9 +139,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             SaveGame.Members.ChestsCollected += 1;
 
             // Same blue popup as a mystery bonus, with the full amount received (like the money display at the top).
-            string amount = SaveGame.Members.UseScientificNotation ?
-                FormatScientific.Format(reward) :
-                Format512.FormatWithDecimals(reward, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true);
+            string amount = Format512.FormatWithDecimals(reward, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true);
             string multiplier = PlayerUpgrades.Data.BetterChests ? "2 X " : "";
             GameCanvasScript.Instance.ShowPopup(
                 $"<color=yellow><size=+1>CHEST COLLECTED ({SaveGame.Members.ChestsCollected})</size>\n\n</color>" +

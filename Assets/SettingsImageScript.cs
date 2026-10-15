@@ -11,7 +11,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public TMP_InputField TextDiscordLink;
     public Toggle ShowFloatingDamageToggle;
     public Toggle ShowFloatingGoldToggle;
-    public Toggle UseScientificNotationToggle;
     public Toggle ShowDetailsOnHoverToggle;
 
     public Toggle CombatSoundToggle;
@@ -96,7 +95,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         // Without notify: setting them must not run the handlers (they click and save).
         ShowFloatingDamageToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingDamageNumbers);
         ShowFloatingGoldToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingGoldNumbers);
-        UseScientificNotationToggle.SetIsOnWithoutNotify(SaveGame.Members.UseScientificNotation);
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
         MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
@@ -139,13 +137,6 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public void ShowFloatingGoldNumbers(bool show)
     {
         SaveGame.Members.ShowFloatingGoldNumbers = ShowFloatingGoldToggle.isOn;
-        SaveGame.Save();
-        AudioManager.Instance.PlayMenuClick();
-    }
-
-    public void UseScientificNotation(bool show)
-    {
-        SaveGame.Members.UseScientificNotation = UseScientificNotationToggle.isOn;
         SaveGame.Save();
         AudioManager.Instance.PlayMenuClick();
     }
