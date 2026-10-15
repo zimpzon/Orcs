@@ -159,18 +159,18 @@ public class AudioManager : MonoBehaviour
 
     // A dialog opened (GlobalPopupManager, rebirth dialog, plain message popups). UI sound, always plays.
     public void PlayDialogShow()
-        => PlayClipForReal(AudioData.DialogShow, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
+        => PlayClipForReal(AudioData.DialogShow, volumeScale: 1f, minInterval: 0.1f, fixedPitch: true);
 
     // A dialog closed (close button, Escape, click outside, clicking its open button again). UI sound, always plays.
     public void PlayDialogClose()
-        => PlayClipForReal(AudioData.DialogClose, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
+        => PlayClipForReal(AudioData.DialogClose, volumeScale: 1f, minInterval: 0.1f, fixedPitch: true);
 
     // The upgrade tier list expanding / collapsing (UpgradeResizer). UI sounds, always play.
     public void PlayExpandTierList()
-        => PlayClipForReal(AudioData.ExpandTierList, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
+        => PlayClipForReal(AudioData.ExpandTierList, volumeScale: 1f, minInterval: 0.1f, fixedPitch: true);
 
     public void PlayCloseTierList()
-        => PlayClipForReal(AudioData.CloseTierList, volumeScale: 0.25f, minInterval: 0.1f, fixedPitch: true);
+        => PlayClipForReal(AudioData.CloseTierList, volumeScale: 1f, minInterval: 0.1f, fixedPitch: true);
 
     // Menu click (buying upgrades etc.): always plays.
     public void PlayMenuClick()
