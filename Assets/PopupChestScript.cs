@@ -87,9 +87,10 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 transform.parent.position = Vector2.right * 77777;
                 _particles.Stop();
 
+                // Real time, like the mystery countdown: runs CheatSpeed times faster with the speed cheat.
                 int randomSec = Random.Range(0, MaxRandomExtraHideTime);
-                float showTime = HideTime + randomSec + G.D.GameTime;
-                while (G.D.GameTime < showTime && !_forceShow)
+                float showTime = HideTime + randomSec + G.D.RealTime;
+                while (G.D.RealTime < showTime && !_forceShow)
                     yield return null;
 
                 _forceShow = false;
@@ -100,12 +101,13 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 _particles.Play();
                 AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, volumeScale: 0.25f, fixedPitch: true);
                 _wasClicked = false;
-                float shownEndTime = G.D.RealTime + ShowTime;
-                bool outOfTime = G.D.RealTime > shownEndTime;
+                // Game time, not sped up by the speed cheat (G.D.RealTime is: at x10 the chest was only up for 6 s).
+                float shownEndTime = G.D.GameTime + ShowTime;
+                bool outOfTime = G.D.GameTime > shownEndTime;
 
                 while (true)
                 {
-                    outOfTime = G.D.RealTime > shownEndTime;
+                    outOfTime = G.D.GameTime > shownEndTime;
                     if (_wasClicked || outOfTime)
                     {
                         break;
