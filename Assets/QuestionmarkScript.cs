@@ -110,7 +110,7 @@ public class QuestionmarkScript : MonoBehaviour
                 }
                 #endregion
 
-                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, fixedPitch: true); // just became ready (not when loading a save that already was)
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, volumeScale: 0.25f, fixedPitch: true); // just became ready (not when loading a save that already was)
             }
 
             SaveGame.Members.MysteryReady = true;
