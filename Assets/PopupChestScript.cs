@@ -20,6 +20,8 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
     public SpriteRenderer _spriteRenderer;
     private bool _wasClicked = false;
     private ParticleSystem _particles;
+    private ChestBling _bling;
+    private Vector3 _baseScale;
 
     private void Awake()
     {
@@ -27,7 +29,9 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
         _spriteRenderer = GetComponent<SpriteRenderer>();
         BaseSprite = _spriteRenderer.sprite;
         _wasClicked = false;
-        _particles = GetComponentInChildren<ParticleSystem>();
+        _particles = GetComponentInChildren<ParticleSystem>(true);
+        _bling = gameObject.AddComponent<ChestBling>(); // glints + pickup show
+        _baseScale = transform.localScale;
     }
 
     void Start()
@@ -90,7 +94,8 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
                 _forceShow = false;
 
-                // Show.
+                // Show (at full size again: the pickup show shrinks it to nothing).
+                transform.localScale = _baseScale;
                 SetRandomPos();
                 _particles.Play();
                 _wasClicked = false;
@@ -114,6 +119,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
 
                 // Was clicked.
                 DoReward();
+                yield return _bling.PickupCo(); // pop + shrink away, coins and glints
                 break; // to outermost loop.
             }
         }
