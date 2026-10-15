@@ -20,7 +20,7 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         if (isUnlocked)
         {
             // Calc is both here and in BeastiaryScript
-            int bonus = Index + 1;
+            int bonus = (Index + 1) * 2; // same as BestiaryScript: 2, 4, 6... %
             ActorBase.Names.TryGetValue(ActorType, out string name);
             // The income bonus only exists once the Beast Scholar rebirth card is bought.
             Hovertext.text = SaveGame.Members.BoughtBeastScholar ? $"{name}\n +{bonus}% income" : name;
