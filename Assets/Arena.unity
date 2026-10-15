@@ -33772,7 +33772,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 402.82306, y: -85.803345}
-  m_SizeDelta: {x: 342.3539, y: 321.74}
+  m_SizeDelta: {x: 342.3539, y: 307.1789}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &478506927
 GameObject:
@@ -112236,9 +112236,7 @@ MonoBehaviour:
   m_text: '<align=center>
 
 
-
     <color=#cccccc>A game by</color> <b>PWE</b>
-
 
 
     <color=#cccccc>Amazing
@@ -112248,10 +112246,8 @@ MonoBehaviour:
     music by</color> <b>HeatleyBros</b> (<link="https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA"><color=#8DBE4C><u>YouTube</u></color></link>)
 
 
-
     <color=#cccccc>Big
     thanks to (alphabetical)</color>
-
 
 
     462n, caiburn, Edaw, Hateyou,
