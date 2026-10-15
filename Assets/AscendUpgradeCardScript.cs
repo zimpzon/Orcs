@@ -25,7 +25,7 @@ public enum AscendUpgradeCardId
     Haggler,        // tier upgrades and X2 cost half
     HeadStart,      // every run starts with 25 minutes of the best-ever income
     SkinCollector,  // +10% income per unlocked skin
-    BeastScholar,   // enables the bestiary income bonus (+2%, +4%, +6%... per unlocked beast)
+    BeastScholar,   // enables the bestiary income bonus (step progression per beast, 840% total: BestiaryScript)
     Completionist,  // +1% income per game completion %
 };
 

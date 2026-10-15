@@ -32,10 +32,6 @@ public class SettingsStatsScript : MonoBehaviour
         }
 
         string Mul(double value) => $"x{Num(value)}";
-        string Pct(double value) => $"+{DisplayNumberFormat.Format(Math.Round(value * 100), "#,0")}%"; // whole percents
-
-        // Small grey detail under a line (no right-aligned value), e.g. the parts of the card bonus multiplier.
-        string DetailLine(string text) => $"<align=left><size=80%><color=#BBBBBB>    {text}</color></size>"; // same grey as the labels
 
         var lifetimeIncome = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
         // Counted every minute (GameManager.UpdateTimePlayed) but shown in whole 10 minutes.
@@ -52,11 +48,9 @@ public class SettingsStatsScript : MonoBehaviour
         var sb = new StringBuilder();
         sb.AppendLine(BuildLine("<b>Income</b>", $"x{Num(PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier)}", Multiplier, "#EEEEEE"));
         sb.AppendLine(BuildLine("X2 multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeX2Multiplier), Multiplier));
-        // Bestiary, skin and completion add up into one multiplier (PlayerUpgrades.PassiveIncomeCardBonuses).
-        sb.AppendLine(BuildLine("Card bonus multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeCardBonuses), Multiplier));
-        sb.AppendLine(DetailLine($"Bestiary {Pct(PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses)}"));
-        sb.AppendLine(DetailLine($"Skins {Pct(PlayerUpgrades.Data.PassiveIncomeSkinBonus)}"));
-        sb.AppendLine(DetailLine($"Completion {Pct(PlayerUpgrades.Data.PassiveIncomeCompletionBonus)}"));
+        sb.AppendLine(BuildLine("Bestiary multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeBestiaryBonuses), Multiplier));
+        sb.AppendLine(BuildLine("Skin multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeSkinBonus), Multiplier));
+        sb.AppendLine(BuildLine("Completion multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomeCompletionBonus), Multiplier));
         sb.AppendLine(BuildLine("Diamond multiplier", Mul(1 + UpgradeProgression.DiamondIncomeBonus()), Multiplier));
         sb.AppendLine(BuildLine("Bought 1% multiplier", Mul(1 + PlayerUpgrades.Data.PassiveIncomePercentageBonuses), Multiplier));
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));

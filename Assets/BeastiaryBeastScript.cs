@@ -16,19 +16,13 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // Always shows the beast's income %, locked or not (it applies once Beast Scholar is bought).
+        int bonus = BestiaryScript.BeastBonusPct(Index);
         bool isUnlocked = SaveGame.Members.BeastsSeen.Contains(ActorType);
+        string name = "Locked";
         if (isUnlocked)
-        {
-            // Calc is both here and in BeastiaryScript
-            int bonus = (Index + 1) * 2; // same as BestiaryScript: 2, 4, 6... %
-            ActorBase.Names.TryGetValue(ActorType, out string name);
-            // The income bonus only exists once the Beast Scholar rebirth card is bought.
-            Hovertext.text = SaveGame.Members.BoughtBeastScholar ? $"{name}\n +{bonus}% income" : name;
-        }
-        else
-        {
-            Hovertext.text = $"Locked";
-        }
+            ActorBase.Names.TryGetValue(ActorType, out name);
+        Hovertext.text = $"{name}\n+{bonus}% income";
     }
 
     public void OnPointerExit(PointerEventData eventData)

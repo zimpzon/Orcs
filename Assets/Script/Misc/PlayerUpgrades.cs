@@ -41,17 +41,17 @@ public class UpgradeData
     public double PassiveIncomeSkinBonus = 0.0; // Skin Collector card: +10% per unlocked skin (GameManager)
     public double PassiveIncomeCompletionBonus = 0.0; // Completionist card: +1% per game completion % (GameManager)
 
-    // Beast Scholar, Skin Collector and Completionist added together into one multiplier, so the cards don't compound
-    // each other (multiplied, buying them together right after a rebirth made income jump ~x18 at once).
-    public double PassiveIncomeCardBonuses => PassiveIncomeBestiaryBonuses + PassiveIncomeSkinBonus + PassiveIncomeCompletionBonus;
-
+    // Bestiary, skin and completion bonuses each multiply. (They were briefly added together to stop an early ~x18 jump,
+    // but that made the late game far too slow; instead the bestiary is top-heavy now - BestiaryScript.BeastBonusPct.)
     public double PassiveIncomeEffectiveMultiplier =>
         PassiveIncomeTempMultiplier *
         PassiveIncomeAscendMultiplier *
         (1.0 + PassiveIncomeX2Multiplier) *
         (1.0 + PassiveIncomePercentageBonuses) *
-        (1.0 + PassiveIncomeCardBonuses) *
-        (1.0 + PassiveIncomeDiamondBonus);
+        (1.0 + PassiveIncomeBestiaryBonuses) *
+        (1.0 + PassiveIncomeDiamondBonus) *
+        (1.0 + PassiveIncomeSkinBonus) *
+        (1.0 + PassiveIncomeCompletionBonus);
 
     // gold
     public float GoldXpAttractRange = 100.0f * GameManager.Instance.ArenaScale;
