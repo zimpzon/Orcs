@@ -1,7 +1,10 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-// Background music: plays Tracks in order and starts over after the last one (a single track just loops). Started from
+// Background music: plays Tracks in order and starts over after the last one (a single track just loops). Right / Left
+// arrow: next / previous song (not with RightCtrl - that's the time-scale cheat - or while typing in a text field). Started from
 // GameManager.Start; volume = VolumeMusic x VolumeMaster (GameManager.ApplyVolume). Add more songs to Tracks in the
 // Inspector.
 public class MusicManagerScript : MonoBehaviour
@@ -50,9 +53,28 @@ public class MusicManagerScript : MonoBehaviour
 
     void Update()
     {
+        HandleSongKeys();
+
         // Track finished (not paused by minimizing or the Music checkbox): next one, wrapping around to the first.
         if (_playlistStarted && !_paused && !MusicOff && Tracks.Length > 1 && !audioSource_.isPlaying)
             PlayTrack((_track + 1) % Tracks.Length);
+    }
+
+    void HandleSongKeys()
+    {
+        if (!_playlistStarted || Tracks.Length < 2 || Input.GetKey(KeyCode.RightControl) || IsTyping())
+            return;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            PlayTrack((_track + 1) % Tracks.Length);
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            PlayTrack((_track - 1 + Tracks.Length) % Tracks.Length);
+    }
+
+    static bool IsTyping()
+    {
+        var selected = EventSystem.current != null ? EventSystem.current.currentSelectedGameObject : null;
+        return selected != null && selected.TryGetComponent<TMP_InputField>(out var field) && field.isFocused;
     }
 
     // Music checkbox: off pauses the song (nothing plays in the background), on resumes it where it stopped.
