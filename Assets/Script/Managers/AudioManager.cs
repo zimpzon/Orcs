@@ -134,7 +134,7 @@ public class AudioManager : MonoBehaviour
     // them. Everything else is combat sound, behind the Combat sound setting (off by default).
     bool IsUiClip(AudioClip clip)
         => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup || clip == AudioData.DialogShow || clip == AudioData.DialogClose
-        || clip == AudioData.ExpandTierList || clip == AudioData.CloseTierList;
+        || clip == AudioData.ExpandTierList || clip == AudioData.CloseTierList || clip == AudioData.PickupReady;
 
     bool CombatSoundEnabled => SaveGame.Members != null && SaveGame.Members.CombatSoundEnabled;
 

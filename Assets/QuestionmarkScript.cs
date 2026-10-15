@@ -109,6 +109,8 @@ public class QuestionmarkScript : MonoBehaviour
                     Text.text = GetWaitingText(timeSpan);
                 }
                 #endregion
+
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, fixedPitch: true); // just became ready (not when loading a save that already was)
             }
 
             SaveGame.Members.MysteryReady = true;

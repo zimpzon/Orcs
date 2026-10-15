@@ -25,6 +25,7 @@ MonoBehaviour:
   DialogClose: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   ExpandTierList: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
   CloseTierList: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
+  PickupReady: {fileID: 8300000, guid: 7ca8f20bec7848c4db331833d9c7ccc4, type: 3}
   PlayerStaffFire: {fileID: 8300000, guid: 4259debc58b7bdc4e85507edcc45ff4b, type: 3}
   PlayerStaffHit: {fileID: 8300000, guid: 4a56dc21f865f2c4d9c3a35b8e9cce88, type: 3}
   PlayerShotgunFire: {fileID: 8300000, guid: 5bf1524458a456640b21c1ed4b76ae0e, type: 3}

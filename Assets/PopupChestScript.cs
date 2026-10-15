@@ -98,6 +98,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 transform.localScale = _baseScale;
                 SetRandomPos();
                 _particles.Play();
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, fixedPitch: true);
                 _wasClicked = false;
                 float shownEndTime = G.D.RealTime + ShowTime;
                 bool outOfTime = G.D.RealTime > shownEndTime;
