@@ -15,8 +15,11 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
     public Toggle ShowDetailsOnHoverToggle;
 
     public Toggle CombatSoundToggle;
+    public Toggle MusicToggle;
     public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
-    public Slider VolumeSlider;
+    public Slider MasterVolumeSlider;
+    public Slider MusicVolumeSlider;
+    public Slider SfxVolumeSlider;
 
     const float DisabledAlpha = 0.4f;
 
@@ -40,10 +43,28 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
             AudioManager.Instance.PlayMenuClick();
         });
 
-        // Saved by the regular auto-save (every 5 s), not on every drag step.
-        VolumeSlider.onValueChanged.AddListener(value =>
+        MusicToggle.onValueChanged.AddListener(on =>
+        {
+            SaveGame.Members.MusicEnabled = on;
+            MusicManagerScript.Instance.ApplyMusicEnabled();
+            SaveGame.Save();
+            AudioManager.Instance.PlayMenuClick();
+        });
+
+        // Volumes: saved by the regular auto-save (every 5 s), not on every drag step.
+        MasterVolumeSlider.onValueChanged.AddListener(value =>
         {
             SaveGame.Members.VolumeMaster = value;
+            GameManager.Instance.ApplyVolume();
+        });
+        MusicVolumeSlider.onValueChanged.AddListener(value =>
+        {
+            SaveGame.Members.VolumeMusic = value;
+            GameManager.Instance.ApplyVolume();
+        });
+        SfxVolumeSlider.onValueChanged.AddListener(value =>
+        {
+            SaveGame.Members.VolumeSfx = value;
             GameManager.Instance.ApplyVolume();
         });
     }
@@ -69,6 +90,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         UseScientificNotationToggle.SetIsOnWithoutNotify(SaveGame.Members.UseScientificNotation);
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
+        MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
 
         // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
         // is fullscreen already) and on a 16:9 / 16:10 monitor. Elsewhere it's shown disabled.
@@ -81,7 +103,9 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
             if (FullscreenToggle.TryGetComponent<CanvasGroup>(out var group))
                 group.alpha = canFullscreen ? 1f : DisabledAlpha;
         }
-        VolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
+        MasterVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
+        MusicVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMusic);
+        SfxVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeSfx);
     }
 
     //public void OnExportSaveClick()

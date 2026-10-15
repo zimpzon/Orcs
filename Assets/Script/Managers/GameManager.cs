@@ -1334,7 +1334,7 @@ public class GameManager : MonoBehaviour
         TextFps.enabled = false;
     }
 
-    // Volume slider (VolumeMaster) on top of the music / sfx volumes.
+    // Settings sliders: Master scales both Music and Effects.
     public void ApplyVolume()
     {
         MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
@@ -1351,6 +1351,7 @@ public class GameManager : MonoBehaviour
 
         ApplyVolume();
         AudioManager.Instance.ApplySoundSettings();
+        MusicManagerScript.Instance.StartPlaylist();
 
         ResetGame(autoStartGame: true);
         ApplyBuyMultiple((int)BuyAmountSelection.Buy1);

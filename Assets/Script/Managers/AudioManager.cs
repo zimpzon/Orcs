@@ -170,7 +170,7 @@ public class AudioManager : MonoBehaviour
 
         MenuAudioSource.Stop();
         MenuAudioSource.clip = AudioData.Menu;
-        MenuAudioSource.volume = MasterVolume * SaveGame.Members.VolumeSfx;
+        MenuAudioSource.volume = MasterVolume; // = Effects x Master volume (GameManager.ApplyVolume)
         MenuAudioSource.Play();
     }
 
@@ -220,7 +220,7 @@ public class AudioManager : MonoBehaviour
             selectedSource.Stop();
             selectedSource.clip = clip;
             selectedSource.pitch = pitch * randomPitchOffset;
-            selectedSource.volume = AudioManager.Instance.MasterVolume * SaveGame.Members.VolumeSfx * volumeScale;
+            selectedSource.volume = AudioManager.Instance.MasterVolume * volumeScale; // MasterVolume = Effects x Master
             selectedSource.Play();
         }
     }

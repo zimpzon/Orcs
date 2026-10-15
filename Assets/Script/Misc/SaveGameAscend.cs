@@ -57,6 +57,7 @@ static class SaveGameAscend
         newSave.UseScientificNotation = oldSave.UseScientificNotation;
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
         newSave.CombatSoundEnabled = oldSave.CombatSoundEnabled;
+        newSave.MusicEnabled = oldSave.MusicEnabled;
         newSave.PctBonusBuyAmount = oldSave.PctBonusBuyAmount;
         newSave.SelectedSkin = oldSave.SelectedSkin;
 
