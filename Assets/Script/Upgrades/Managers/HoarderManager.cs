@@ -41,7 +41,6 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Purchased: <color=COLOR-ARENA>{x2LevelsBought}");
             sb.AppendLine($"<color=#dddddd>Level required: <color={colorX2LevelMet}>{x2LevelRequirement}");
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
-            sb.AppendLine("");
 
             return sb.ToString();
         }
