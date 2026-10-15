@@ -1481,9 +1481,9 @@ public class GameManager : MonoBehaviour
             _nextPassiveIncomeUpdate = G.D.GameTime + 0.2f;
             _prevPassiveIncome = TotalPassiveIncome;
 
-            string textIncome = Format512.FormatWithDecimals(TotalPassiveIncome);
+            string textIncome = Format512.FormatWithDecimals(TotalPassiveIncome, abbreviate: false);
 
-            textIncome = $"{textIncome} per second";
+            textIncome = $"{textIncome}/sec";
             if (textIncome != TextPassiveIncome.text)
             {
                 TextPassiveIncome.text = textIncome;
@@ -1497,8 +1497,8 @@ public class GameManager : MonoBehaviour
         var rect = text.rectTransform;
         LeanTween.cancel(rect);
         rect.localScale = Vector3.one;
-        //var colorGreen = new Color(0.553f, 0.785f, 0.298f); // The green used in dps etc
-        var colorGreyish = new Color32(240, 240, 240, 255); // The grayish used for standard text
+
+        var originalColor = TextPassiveIncome.color;
 
         text.color = Color.white;
 
@@ -1510,7 +1510,7 @@ public class GameManager : MonoBehaviour
                     .setEase(LeanTweenType.easeOutBounce);
             });
 
-        LeanTween.value(gameObject, Color.white, colorGreyish, 0.4f)
+        LeanTween.value(gameObject, Color.white, originalColor, 0.4f)
             .setOnUpdate((Color col) => text.color = col);
     }
 
