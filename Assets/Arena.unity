@@ -17935,8 +17935,9 @@ GameObject:
   - component: {fileID: 1589072865}
   - component: {fileID: 511232406}
   - component: {fileID: 1739010382}
+  - component: {fileID: 1739010383}
   m_Layer: 5
-  m_Name: TextProgress
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33713,7 +33714,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 402.82306, y: -85.803345}
-  m_SizeDelta: {x: 342.35388, y: 283.2}
+  m_SizeDelta: {x: 342.3539, y: 321.74}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &478506927
 GameObject:
@@ -52722,7 +52723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &919393396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111827,21 +111828,29 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
+    
 
     <color=#cccccc>A game by</color> <b>PWE</b>
 
+    
+
     <color=#cccccc>Amazing
-    PixelDudes art by</color> <b>0x72</b> (itch.io)
+    PixelDudes art by</color> <b>0x72</b> (<link="https://0x72.itch.io/pixeldudesmaker"><color=#8DBE4C><u>itch.io</u></color></link>)
 
+    <color=#cccccc>Amazing
+    music by</color> <b>HeatleyBros</b> (<link="https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA"><color=#8DBE4C><u>YouTube</u></color></link>)
 
-    <color=#cccccc>Big thanks
-    to (alphabetical)</color>
+    
 
+    <color=#cccccc>Big
+    thanks to (alphabetical)</color>
+
+    
 
     462n, caiburn, Edaw, Hateyou,
 
-    Haus, Krismunich,
-    Lanx, loophoc,
+    Haus,
+    Krismunich, Lanx, loophoc,
 
     Runnen'
   m_isRightToLeft: 0
@@ -111915,6 +111924,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1739010383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150687826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40296b27c7877f54399c93201a2064ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1745715712 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6149504713133850933, guid: d54dc8cfc5b0424428b7058dbabecf19,
