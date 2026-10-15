@@ -417,9 +417,9 @@ public class UpgradeManager : MonoBehaviour
     {
         SaveGame.Members.TotalX2UpgradesBought += count;
         AudioManager.Instance.PlayMenuClick();
+        // Consumed by the next rank check (UpdateNumberOfX2Bought, runs in Update - after this click).
         _x2BoughtByClick = count > 0;
         UpdateAllUpgrades();
-        _x2BoughtByClick = false;
     }
 
     // Holding Shift while clicking buys as many as affordable (levels and X2), instead of the selected amount / one.
@@ -951,11 +951,12 @@ public class UpgradeManager : MonoBehaviour
 
         // Celebrate a new X2 rank at the cursor. Skips the first frame (save load) and big jumps (save import);
         // decreases (ascend, wipe) just resync.
-        // A Shift max-buy can cross several ranks at once, so any gain right after a click counts.
+        // A buy-all (Ctrl on an X2) can cross several ranks at once, so any gain right after a click counts.
         if (_lastX2Ranks >= 0 && bonuses > _lastX2Ranks && (bonuses - _lastX2Ranks <= 3 || _x2BoughtByClick) && ClickDamage != null)
             X2RankUpEffect.Spawn(ClickDamage, Input.mousePosition, X2BonusPerRank() * 100, bonuses);
 
         _lastX2Ranks = bonuses;
+        _x2BoughtByClick = false; // used up (it was cleared before this check ever ran, so big buy-alls never showed)
     }
 
     long _lastX2Ranks = -1;
