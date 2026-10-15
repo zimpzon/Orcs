@@ -68,44 +68,50 @@ public class QuestionmarkScript : MonoBehaviour
         {
             RadialRoot.SetActive(false);
 
-            if (SaveGame.Members.QuestionMarkRealTimeLeft <= 0)
+            // Was ready when the game was closed: straight back to ready, no new countdown.
+            if (!SaveGame.Members.MysteryReady)
             {
-                // Either first run or a cycle completed (will set QuestionMarkRealTimeStart to -1).
-                // If we just loaded a save we just continue from there.
-                //long cycleSeconds = 3;
-                int maxMinutes = SaveGame.Members.BoughtFasterMystery ? 25 : 50;
-                long cycleSeconds = UnityEngine.Random.Range(60 * maxMinutes, 60 * (maxMinutes + 2) - 1);
-                SaveGame.Members.QuestionMarkRealTimeLeft = cycleSeconds;
-
-                _lastRealTime = G.D.RealTime;
-            }
-
-            // Prepare countdown
-            Button.interactable = false;
-            Text.color = TextColorDisabled;
-
-            // Countdown
-            #region Countdown
-            while (true)
-            {
-                yield return null;
-
-                float realTimeDelta = G.D.RealTime - _lastRealTime;
-                _lastRealTime = G.D.RealTime;
-
-                SaveGame.Members.QuestionMarkRealTimeLeft -= realTimeDelta;
-
                 if (SaveGame.Members.QuestionMarkRealTimeLeft <= 0)
-                    break; // Move to awaiting collection.
+                {
+                    // Either first run or a cycle completed (will set QuestionMarkRealTimeStart to -1).
+                    // If we just loaded a save we just continue from there.
+                    //long cycleSeconds = 3;
+                    int maxMinutes = SaveGame.Members.BoughtFasterMystery ? 25 : 50;
+                    long cycleSeconds = UnityEngine.Random.Range(60 * maxMinutes, 60 * (maxMinutes + 2) - 1);
+                    SaveGame.Members.QuestionMarkRealTimeLeft = cycleSeconds;
 
-                var timeSpan = TimeSpan.FromSeconds(SaveGame.Members.QuestionMarkRealTimeLeft);
-                if (timeSpan.Seconds == _lastDisplayedSeconds)
-                    continue;
+                    _lastRealTime = G.D.RealTime;
+                }
 
-                _lastDisplayedSeconds = timeSpan.Seconds;
-                Text.text = GetWaitingText(timeSpan);
+                // Prepare countdown
+                Button.interactable = false;
+                Text.color = TextColorDisabled;
+
+                // Countdown
+                #region Countdown
+                while (true)
+                {
+                    yield return null;
+
+                    float realTimeDelta = G.D.RealTime - _lastRealTime;
+                    _lastRealTime = G.D.RealTime;
+
+                    SaveGame.Members.QuestionMarkRealTimeLeft -= realTimeDelta;
+
+                    if (SaveGame.Members.QuestionMarkRealTimeLeft <= 0)
+                        break; // Move to awaiting collection.
+
+                    var timeSpan = TimeSpan.FromSeconds(SaveGame.Members.QuestionMarkRealTimeLeft);
+                    if (timeSpan.Seconds == _lastDisplayedSeconds)
+                        continue;
+
+                    _lastDisplayedSeconds = timeSpan.Seconds;
+                    Text.text = GetWaitingText(timeSpan);
+                }
+                #endregion
             }
-            #endregion
+
+            SaveGame.Members.MysteryReady = true;
 
             // Prepare collection
             #region
@@ -135,6 +141,7 @@ public class QuestionmarkScript : MonoBehaviour
             LeanTween.cancel(gameObject);
             gameObject.transform.localScale = Vector3.one;
 
+            SaveGame.Members.MysteryReady = false;
             bool isFirst = ++SaveGame.Members.MysteryCollected == 1;
             MysteryReward mysteryReward = GetRandomReward(isFirst);
 

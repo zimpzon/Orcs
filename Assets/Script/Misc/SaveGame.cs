@@ -116,6 +116,7 @@ public class SaveGameMembers
 
     // Tracking
     public double QuestionMarkRealTimeLeft = -1;
+    public bool MysteryReady = false; // countdown done, waiting to be collected: stays ready after a reload
 
     // Save identity, to tell which save got loaded. SaveId is a random GUID given to a save when it is created (or
     // found missing on an old save) and kept through rebirth; a save wipe starts a new one. SavedAtUtc is updated on
