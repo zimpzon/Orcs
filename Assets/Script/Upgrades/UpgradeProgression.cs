@@ -79,19 +79,19 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_Wizard = 10_000;
         public static Decimal512 BaseIncome_Hoarder = 50_000;
         // Middle tiers lowered (2026-10): around the first x16 + minor cards and the first rebirth, income jumped so much
-        // that players skipped through these tiers. Two even geometric ramps instead: Frenzy 200K -> Chest Master 600M
-        // (~x5 per tier, was ~x5.5-6.4) -> Angry Fireballs 2.5T (~x5.3 per tier). Ends unchanged. Was: 275K, 1.75M, 10M,
-        // 62M, 300M, 1.4B, 5.5B, 25.2B, 110.1B, 500.25B.
-        public static Decimal512 BaseIncome_ZapDamage =               200_000;
-        public static Decimal512 BaseIncome_MoneyMaker =            1_000_000;
-        public static Decimal512 BaseIncome_DaggerMaster =          4_900_000;
-        public static Decimal512 BaseIncome_NecroNinja =           24_000_000;
-        public static Decimal512 BaseIncome_SkullCrusher =        120_000_000;
-        public static Decimal512 BaseIncome_ChestMaster =         600_000_000;
-        public static Decimal512 BaseIncome_Voidgazer =         3_200_000_000;
-        public static Decimal512 BaseIncome_SmartDaggers =     17_000_000_000;
-        public static Decimal512 BaseIncome_FastFeet =         90_000_000_000;
-        public static Decimal512 BaseIncome_CryptMaster =     480_000_000_000;
+        // that players skipped through these tiers. Two even geometric ramps instead: Frenzy 230K -> Chest Master 840M
+        // (~x5.2 per tier) -> Angry Fireballs 2.5T (~x5 per tier). Ends unchanged. First cut went to 200K / 600M, then
+        // lightened a bit. Original: 275K, 1.75M, 10M, 62M, 300M, 1.4B, 5.5B, 25.2B, 110.1B, 500.25B.
+        public static Decimal512 BaseIncome_ZapDamage =               230_000;
+        public static Decimal512 BaseIncome_MoneyMaker =            1_200_000;
+        public static Decimal512 BaseIncome_DaggerMaster =          6_200_000;
+        public static Decimal512 BaseIncome_NecroNinja =           32_000_000;
+        public static Decimal512 BaseIncome_SkullCrusher =        165_000_000;
+        public static Decimal512 BaseIncome_ChestMaster =         840_000_000;
+        public static Decimal512 BaseIncome_Voidgazer =         4_100_000_000;
+        public static Decimal512 BaseIncome_SmartDaggers =     20_000_000_000;
+        public static Decimal512 BaseIncome_FastFeet =        100_000_000_000;
+        public static Decimal512 BaseIncome_CryptMaster =     495_000_000_000;
         public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000;
         public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000;
         public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
