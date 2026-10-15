@@ -195,7 +195,7 @@ public class AscendDecisionScript : MonoBehaviour
         if (TextCreditBonus != null)
         {
             int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
-            string color = bonusPct <= 62 ? TextColors.Orange : TextColors.GreenBright; // orange in the last 1/8
+            string color = bonusPct <= 100 ? TextColors.Orange : TextColors.GreenBright; // orange in the last 1/8
             string bonusText = $"<color={color}>{bonusPct}</color>";
             TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText);
         }
