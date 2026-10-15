@@ -126938,6 +126938,7 @@ MonoBehaviour:
   GridLayoutGroup: {fileID: 1780719016}
   UpgradeItemPanel: {fileID: 1034648696}
   ScrollPanel: {fileID: 1780719013}
+  ExpandButtonText: {fileID: 52230015}
 --- !u!1 &2084247468
 GameObject:
   m_ObjectHideFlags: 0

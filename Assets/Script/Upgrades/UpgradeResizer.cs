@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class UpgradeResizer : MonoBehaviour
     public GridLayoutGroup GridLayoutGroup;
     public RectTransform UpgradeItemPanel;
     public RectTransform ScrollPanel;
+    public TextMeshProUGUI ExpandButtonText; // ">>" collapsed, "<<" expanded
 
     const int ExpandedColumnCount = 6;
     int collapsedColumnCount;
@@ -35,6 +37,8 @@ public class UpgradeResizer : MonoBehaviour
             return;
         isExpanded = expanded;
         ExpandedCount += expanded ? 1 : -1;
+        if (ExpandButtonText != null)
+            ExpandButtonText.text = expanded ? "<<" : ">>";
     }
 
     void OnDisable() => SetExpanded(false);
