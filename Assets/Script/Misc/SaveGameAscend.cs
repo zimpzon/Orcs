@@ -58,6 +58,7 @@ static class SaveGameAscend
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
         newSave.CombatSoundEnabled = oldSave.CombatSoundEnabled;
         newSave.MusicEnabled = oldSave.MusicEnabled;
+        newSave.SoundInBackground = oldSave.SoundInBackground;
         newSave.PctBonusBuyAmount = oldSave.PctBonusBuyAmount;
         newSave.SelectedSkin = oldSave.SelectedSkin;
 

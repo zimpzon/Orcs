@@ -104,11 +104,21 @@ public class AudioManager : MonoBehaviour
             SetMinimized(!hasFocus);
     }
 
+    bool _minimized;
+
     void SetMinimized(bool minimized)
     {
-        AudioListener.pause = minimized;
+        _minimized = minimized;
+        ApplyBackgroundPause();
+    }
+
+    // Paused while minimized, unless the "Sound in background" setting is on. Also called when that setting changes.
+    public void ApplyBackgroundPause()
+    {
+        bool pause = _minimized && !(SaveGame.Members != null && SaveGame.Members.SoundInBackground);
+        AudioListener.pause = pause;
         if (MusicManagerScript.Instance != null)
-            MusicManagerScript.Instance.SetPaused(minimized); // music ignores the listener pause
+            MusicManagerScript.Instance.SetPaused(pause); // music ignores the listener pause
     }
 
     private void Update()

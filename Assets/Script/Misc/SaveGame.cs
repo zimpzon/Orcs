@@ -84,6 +84,7 @@ public class SaveGameMembers
     public bool UseScientificNotation = false;
     public bool ShowDetailsOnHover = true;
     public bool CombatSoundEnabled = false; // all game sounds except UI ones (menu click, chime, money pickup) and music
+    public bool SoundInBackground = false; // keep sound and music playing while minimized / in another tab
     public bool MusicEnabled = false; // music on/off (MusicManagerScript), separate from the music volume; off by default
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
     public SkinAnimation SelectedSkin = SkinAnimation.Default;

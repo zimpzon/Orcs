@@ -16,6 +16,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
 
     public Toggle CombatSoundToggle;
     public Toggle MusicToggle;
+    public Toggle SoundInBackgroundToggle;
     public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
     public Slider MasterVolumeSlider;
     public Slider MusicVolumeSlider;
@@ -39,6 +40,14 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         {
             SaveGame.Members.CombatSoundEnabled = on;
             AudioManager.Instance.ApplySoundSettings();
+            SaveGame.Save();
+            AudioManager.Instance.PlayMenuClick();
+        });
+
+        SoundInBackgroundToggle.onValueChanged.AddListener(on =>
+        {
+            SaveGame.Members.SoundInBackground = on;
+            AudioManager.Instance.ApplyBackgroundPause();
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
         });
@@ -91,6 +100,7 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
         MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
+        SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
 
         // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
         // is fullscreen already) and on a 16:9 / 16:10 monitor. Elsewhere it's shown disabled.
