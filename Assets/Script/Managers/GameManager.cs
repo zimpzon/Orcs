@@ -1338,10 +1338,13 @@ public class GameManager : MonoBehaviour
         TextFps.enabled = false;
     }
 
+    // Music at slider 100% plays at 37.5% of the clip volume (the tracks are loud next to the effects; was 0.5, then -25%).
+    const float MusicVolumeScale = 0.375f;
+
     // Settings sliders: Master scales both Music and Effects.
     public void ApplyVolume()
     {
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster);
+        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster * MusicVolumeScale);
         AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
     }
 
