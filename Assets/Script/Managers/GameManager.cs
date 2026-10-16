@@ -1519,7 +1519,7 @@ public class GameManager : MonoBehaviour
                 : Format512.FormatWithDecimals(TotalPassiveIncome, abbreviate: false);
 
             // Short numbers have room for the full words; big ones keep the compact "/sec".
-            textIncome = TotalPassiveIncome < 100_000 ? $"{textIncome} per second" : $"{textIncome}/sec";
+            textIncome = $"{textIncome}/s";
             if (textIncome != TextPassiveIncome.text)
             {
                 TextPassiveIncome.text = textIncome;
