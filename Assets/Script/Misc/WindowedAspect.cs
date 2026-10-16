@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Standalone builds (Windows/Linux) run in a resizable window kept at 16:9 or 16:10 (other aspects are letterboxed
 // anyway by AspectUtility + UiAspectFrame, but these two look best):
-// - Start: the window size from the previous run if it's 16:9 and fits, else (first run) 60% of the usable desktop
+// - Start: the window size from the previous run if it's 16:9 and fits, else (first run) 70% of the usable desktop
 //   width (taskbar excluded) at 16:9.
 // - Resizing / maximizing: once the size has settled, it snaps back to 16:9 (16:10 sizes are kept), following the
 //   dimension the player changed most, clamped to what fits on the monitor.
@@ -12,7 +12,7 @@ using UnityEngine;
 // Editor and WebGL are untouched. Player settings disable Alt+Enter (fullscreen only through SetFullscreen).
 public class WindowedAspect : MonoBehaviour
 {
-    const float StartWidthFraction = 0.6f; // first-run window width, as a fraction of the usable desktop width
+    const float StartWidthFraction = 0.7f; // first-run window width, as a fraction of the usable desktop width
     const string SizeChosenKey = "WindowedAspect.SizeChosen"; // set once we've picked a size, so later runs keep the player's
     const int TitleBarMargin = 60;         // title bar + borders, so a window of the max size still fits
     const int SideMargin = 20;
