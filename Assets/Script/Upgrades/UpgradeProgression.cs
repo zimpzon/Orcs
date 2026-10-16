@@ -70,38 +70,34 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_SkullSlicer_X2 = InitialPrice_SkullSlicer * 10;
         public static Decimal512 InitialPrice_StormLord_X2 = InitialPrice_StormLord * 10;
 
-        // All tier incomes x2 (2026-10): compensates fixing LevelRequirementX2, where X2 #4 also needed level 25 - every
-        // tier above level 25 had one X2 (x2 income) more than intended. The values below are the tuned ones from before.
-        const double BaseIncomeMul = 2.0;
-
-        public static Decimal512 BaseIncome_Clickdamage = 0.2 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_DaggerDamage = 2 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_GoldValue = 10 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_DaggerCd = 50 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_WitchDoctor = 275 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_GoldPerKnifeThrown = 1_400 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_Wizard = 10_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_Hoarder = 50_000 * BaseIncomeMul;
+        public static Decimal512 BaseIncome_Clickdamage = 0.2;
+        public static Decimal512 BaseIncome_DaggerDamage = 2;
+        public static Decimal512 BaseIncome_GoldValue = 10;
+        public static Decimal512 BaseIncome_DaggerCd = 50;
+        public static Decimal512 BaseIncome_WitchDoctor = 275;
+        public static Decimal512 BaseIncome_GoldPerKnifeThrown = 1_400;
+        public static Decimal512 BaseIncome_Wizard = 10_000;
+        public static Decimal512 BaseIncome_Hoarder = 50_000;
         // Middle tiers lowered (2026-10): around the first x16 + minor cards and the first rebirth, income jumped so much
         // that players skipped through these tiers. Two even geometric ramps instead: Frenzy 230K -> Chest Master 840M
         // (~x5.2 per tier) -> Angry Fireballs 2.5T (~x5 per tier). Ends unchanged. First cut went to 200K / 600M, then
         // lightened a bit. Original: 275K, 1.75M, 10M, 62M, 300M, 1.4B, 5.5B, 25.2B, 110.1B, 500.25B.
-        public static Decimal512 BaseIncome_ZapDamage =               230_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_MoneyMaker =            1_200_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_DaggerMaster =          6_200_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_NecroNinja =           32_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_SkullCrusher =        165_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_ChestMaster =         840_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_Voidgazer =         4_100_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_SmartDaggers =     20_000_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_FastFeet =        100_000_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_CryptMaster =     495_000_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_PowerZap =    170_010_000_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_SkullSlicer = 680_040_000_000_000 * BaseIncomeMul;
-        public static Decimal512 BaseIncome_StormLord = 2_720_160_000_000_000 * BaseIncomeMul;
+        public static Decimal512 BaseIncome_ZapDamage =               230_000;
+        public static Decimal512 BaseIncome_MoneyMaker =            1_200_000;
+        public static Decimal512 BaseIncome_DaggerMaster =          6_200_000;
+        public static Decimal512 BaseIncome_NecroNinja =           32_000_000;
+        public static Decimal512 BaseIncome_SkullCrusher =        165_000_000;
+        public static Decimal512 BaseIncome_ChestMaster =         840_000_000;
+        public static Decimal512 BaseIncome_Voidgazer =         4_100_000_000;
+        public static Decimal512 BaseIncome_SmartDaggers =     20_000_000_000;
+        public static Decimal512 BaseIncome_FastFeet =        100_000_000_000;
+        public static Decimal512 BaseIncome_CryptMaster =     495_000_000_000;
+        public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000;
+        public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000;
+        public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
+        public static Decimal512 BaseIncome_PowerZap =    170_010_000_000_000;
+        public static Decimal512 BaseIncome_SkullSlicer = 680_040_000_000_000;
+        public static Decimal512 BaseIncome_StormLord = 2_720_160_000_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {
@@ -388,19 +384,17 @@ namespace Assets.Script.Upgrades
 
         public static long LevelRequirementX2(long levelX2)
         {
-            // Copied from Cookie Clicker
-            // 1: level 1
-            // 2: level 5
-            // 3: level 25
-            // 4: level 50
-            // 5: ...from here it is +25 per level
+            // 1: level 1, 2: level 5, 3: level 10, 4: level 25, then +25 per X2 (50, 75, 100...).
+            // (2026-10: was 1, 5, 25, 25 - a bug that put #3 and #4 both at 25. Fixed by adding the level 10 X2 instead
+            // of moving #4 to 50, so from level 25 on the X2 count, and the tuned pace, stays the same.)
             if (levelX2 == 0) return 0;
             if (levelX2 == 1) return 1;
             if (levelX2 == 2) return 5;
-            if (levelX2 == 3) return 25;
+            if (levelX2 == 3) return 10;
+            if (levelX2 == 4) return 25;
 
-            // > 3: 50, 75, 100, ... (was (levelX2 - 3) * 25, which put #4 at 25 too - two X2s at the same level)
-            return (levelX2 - 2) * 25;
+            // > 4: 50, 75, 100, ...
+            return (levelX2 - 3) * 25;
         }
 
         public static long GetActualBuyAmountFromSelectedBuyAmount(long currentLevel, long currentLevelX2)
