@@ -641,7 +641,7 @@ public class GameManager : MonoBehaviour
                     $"<size=+3>{text}",
                     new Color(0.8f, 0.8f, 0.8f),
                     speed: 0.05f,
-                    timeToLive: 3.0f,
+                    timeToLive: 2.0f,
                     fadeTime: 0.5f,
                     fontStyle: TMPro.FontStyles.Bold,
                     FontTarragon);

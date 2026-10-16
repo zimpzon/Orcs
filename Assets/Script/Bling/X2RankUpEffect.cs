@@ -58,10 +58,23 @@ public class X2RankUpEffect : MonoBehaviour
         => SpawnText(anyUiElement, screenPos, $"+{pctPerRank:0}% income!\n<size=80%>X2 rank {rank}</size>");
 
     // Same floating text with any content (also used for "New skin unlocked!"). Big texts chime, small ones don't.
+    // Big texts are queued, at least BigTextGap apart, so several unlocks at once show one after another.
     public static void SpawnText(Component anyUiElement, Vector2 screenPos, string content)
+        => Spawn(anyUiElement, screenPos, content, Big);
+
+    const float BigTextGap = 1f;
+    readonly Queue<(Vector2 pos, string content)> _bigQueue = new();
+    float _nextBigTime;
+
+    void ShowQueuedBig()
     {
+        if (_bigQueue.Count == 0 || Time.unscaledTime < _nextBigTime)
+            return;
+
+        var (pos, content) = _bigQueue.Dequeue();
+        _nextBigTime = Time.unscaledTime + BigTextGap;
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
-        Spawn(anyUiElement, screenPos, content, Big);
+        DoSpawn(pos, content, Big);
     }
 
     // Small, short "+N" at the cursor after a buy (UpgradeManager.BuyLevels, PercentageBonusScript).
@@ -97,6 +110,13 @@ public class X2RankUpEffect : MonoBehaviour
             }
             _instance._font = source != null ? source.font : null;
             _instance._fontMaterial = source != null ? source.fontSharedMaterial : null;
+        }
+
+        if (style == Big)
+        {
+            _instance._bigQueue.Enqueue((screenPos, content));
+            _instance.ShowQueuedBig(); // right away if nothing was shown in the last second
+            return;
         }
 
         _instance.DoSpawn(screenPos, content, style);
@@ -150,6 +170,8 @@ public class X2RankUpEffect : MonoBehaviour
 
     void Update()
     {
+        ShowQueuedBig();
+
         float dt = Time.unscaledDeltaTime;
         for (int i = _items.Count - 1; i >= 0; --i)
         {
