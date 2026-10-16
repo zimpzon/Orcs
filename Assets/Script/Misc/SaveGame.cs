@@ -76,7 +76,7 @@ public class SaveGameMembers
     // Settings
     public int Version;
     public float VolumeMaster = 1.0f;
-    public float VolumeMusic = 0.25f; // music slider starts at 25%
+    public float VolumeMusic = 0.5f; // music slider starts at 50%
     public float VolumeSfx = 1.0f;
 
     public bool ShowFloatingDamageNumbers = true;
