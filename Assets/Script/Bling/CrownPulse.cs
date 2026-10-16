@@ -19,7 +19,7 @@ public class CrownPulse : MonoBehaviour
     [Range(0, 1)] public float StartAlpha = 0.55f;
     [Range(0, 1)] public float EndAlpha = 0.05f;
     public bool ForceShow;           // testing: pulse even before 100%
-    public static bool CheatForceShow; // toggled with RightShift+G (GameManager cheats)
+    public static bool CheatForceShow; // RightShift+G (GameManager cheats): previews the 100% pulses only
 
     Image _image;
 
@@ -42,7 +42,9 @@ public class CrownPulse : MonoBehaviour
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             _ => m.Achieved.Contains(Achieved.Completion100),
         };
-        bool show = ForceShow || CheatForceShow || conditionMet;
+        // The preview cheat only fakes 100%: rebirth/tips pulses keep following their own conditions.
+        bool cheat = CheatForceShow && (Condition == PulseCondition.Completion100 || Condition == PulseCondition.VictoryUnseen);
+        bool show = ForceShow || cheat || conditionMet;
         if (_image.enabled != show)
             _image.enabled = show;
         if (!show)
