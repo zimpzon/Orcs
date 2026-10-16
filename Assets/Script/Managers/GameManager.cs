@@ -1511,10 +1511,13 @@ public class GameManager : MonoBehaviour
             _nextPassiveIncomeUpdate = G.D.GameTime + 0.2f;
             _prevPassiveIncome = TotalPassiveIncome;
 
-            string textIncome = Format512.FormatWithDecimals(TotalPassiveIncome, abbreviate: false);
+            // 1000 - 1M like diamonds/credits on the rebirth screen (6000, 10.000); below keeps the decimal (0,4).
+            string textIncome = TotalPassiveIncome >= 1000 && TotalPassiveIncome < 1_000_000
+                ? Format64.FormatGrouped((long)TotalPassiveIncome.ToDouble())
+                : Format512.FormatWithDecimals(TotalPassiveIncome, abbreviate: false);
 
             // Short numbers have room for the full words; big ones keep the compact "/sec".
-            textIncome = TotalPassiveIncome < 1000 ? $"{textIncome} per second" : $"{textIncome}/sec";
+            textIncome = TotalPassiveIncome < 100_000 ? $"{textIncome} per second" : $"{textIncome}/sec";
             if (textIncome != TextPassiveIncome.text)
             {
                 TextPassiveIncome.text = textIncome;
