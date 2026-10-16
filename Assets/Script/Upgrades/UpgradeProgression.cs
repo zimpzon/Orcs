@@ -39,9 +39,9 @@ namespace Assets.Script.Upgrades
         public static Decimal512 InitialPrice_BeefyEarl = InitialPrice_SmartFireballs * 25;
         public static Decimal512 InitialPrice_CriticalStrike = InitialPrice_BeefyEarl * 6;
         public static Decimal512 InitialPrice_PowerZap = InitialPrice_CriticalStrike * 6;
-        // Skull Slicer / Storm Lord x6 -> x20 (x25 too much, x15 too little): after finally affording Power Zap, both were affordable right away.
-        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 20;
-        public static Decimal512 InitialPrice_StormLord = InitialPrice_SkullSlicer * 20;
+        // Skull Slicer / Storm Lord x6 -> x30 (x15-x25 still too cheap): after finally affording Power Zap, both were affordable right away.
+        public static Decimal512 InitialPrice_SkullSlicer = InitialPrice_PowerZap * 30;
+        public static Decimal512 InitialPrice_StormLord = InitialPrice_SkullSlicer * 30;
 
         // billion :     1_000_000_000
         // trillion: 1_000_000_000_000
