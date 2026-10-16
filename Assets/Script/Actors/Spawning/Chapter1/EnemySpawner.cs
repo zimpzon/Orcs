@@ -77,7 +77,7 @@ public static class EnemySpawner
         new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 12.0),
         new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 8.0),
         new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 3.0),
-        new EnemyType(ActorTypeEnum.TheKaren,       221_750_000_000,  78_000, 1.4),
+        new EnemyType(ActorTypeEnum.Blueberry,       221_750_000_000,  78_000, 1.4),
         new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 1.3),
         new EnemyType(ActorTypeEnum.UndeadPig,      101_210_000_000,  63_000, 1.2),
         new EnemyType(ActorTypeEnum.ChillZombie,     61_440_000_000,  52_000, 1.1),

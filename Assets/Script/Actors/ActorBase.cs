@@ -18,7 +18,7 @@ public enum ActorTypeEnum
     Snout, IronMask, BrainZombie, AfroOrc, Faceless, FromTheDeep, PigFromSpace, TheDarkness,
     // AI-Added pixel dudes, extending the roster past TheDarkness (arena 25,000+)
     NakedDude, BabyOrc, OrangeMan, HrDude, AngryDude, InnocentOrc, ChillZombie, UndeadPig,
-    ShirlieShaman, TheKaren, DarkWizard, TheGrey, FromTheVoid,
+    ShirlieShaman, Blueberry, DarkWizard, TheGrey, FromTheVoid,
 };
 
 public class ActorBase : MonoBehaviour
@@ -60,7 +60,7 @@ public class ActorBase : MonoBehaviour
         { ActorTypeEnum.ChillZombie, "Chill Zombie" },
         { ActorTypeEnum.UndeadPig, "Undead Pig" },
         { ActorTypeEnum.ShirlieShaman, "Shirlie Shaman" },
-        { ActorTypeEnum.TheKaren, "The Karen" },
+        { ActorTypeEnum.Blueberry, "Blueberry" },
         { ActorTypeEnum.DarkWizard, "Dark Wizard" },
         { ActorTypeEnum.TheGrey, "The Grey" },
         { ActorTypeEnum.FromTheVoid, "The Night Creeper" },
