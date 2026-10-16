@@ -22,7 +22,11 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         string name = "Locked";
         if (isUnlocked)
             ActorBase.Names.TryGetValue(ActorType, out name);
-        Hovertext.text = $"{name}\n+{bonus}% income";
+
+        // Arena level where the beast starts to show up.
+        long unlockLevel = EnemySpawner.UnlockLevelOf(ActorType);
+        string arena = unlockLevel > 0 ? $" <color=#AAAAAA>(arena {unlockLevel:#,0})</color>" : "";
+        Hovertext.text = $"{name}{arena}\n+{bonus}% income";
     }
 
     public void OnPointerExit(PointerEventData eventData)

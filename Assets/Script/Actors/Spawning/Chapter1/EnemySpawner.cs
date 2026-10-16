@@ -134,6 +134,17 @@ public static class EnemySpawner
         }
     }
 
+    // Arena level where this enemy type starts to spawn (its unlock level in the bestiary). -1 if not in the table.
+    public static long UnlockLevelOf(ActorTypeEnum type)
+    {
+        foreach (var e in EnemyTypes)
+        {
+            if (e.Type == type)
+                return e.MinLevel;
+        }
+        return -1;
+    }
+
     static double ToughnessOf(ActorTypeEnum type)
     {
         foreach (var e in EnemyTypes)
