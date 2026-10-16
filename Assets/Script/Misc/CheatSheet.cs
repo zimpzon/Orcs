@@ -20,6 +20,7 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+C", "Diamonds to 0, +1 credit, credit XP almost full"),
         ("RightCtrl+X", "+100 lifetime credits"),
         ("RightCtrl+A", "Arena +500"),
+        ("RightShift+A", "Arena -500"),
         ("RightCtrl+S", "Arena -25"),
         ("RightCtrl+Z", "Set a mid-game upgrade loadout + arena +5000"),
         ("RightCtrl+T", "Cheat speed: cycles x1 -> x10 -> x50 (time)"),

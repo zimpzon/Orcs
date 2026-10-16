@@ -1968,6 +1968,11 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.ArenaLevel += 500;
         }
 
+        if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            SaveGame.Members.ArenaLevel -= 500;
+        }
+
         if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.ArenaLevel -= 25;
