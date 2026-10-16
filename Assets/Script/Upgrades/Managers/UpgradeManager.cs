@@ -952,11 +952,16 @@ public class UpgradeManager : MonoBehaviour
         // Celebrate a new X2 rank at the cursor. Skips the first frame (save load) and big jumps (save import);
         // decreases (ascend, wipe) just resync.
         // A buy-all (Ctrl on an X2) can cross several ranks at once, so any gain right after a click counts.
-        // One popup per rank gained; they go through X2RankUpEffect's queue (1 s apart, shared with beast / skin unlocks).
+        // One popup per rank for the first two, then the rest coalesced into a third ("+N% income! X2 rank 3-8").
+        // They go through X2RankUpEffect's queue (1 s apart, shared with beast / skin unlocks).
         if (_lastX2Ranks >= 0 && bonuses > _lastX2Ranks && (bonuses - _lastX2Ranks <= 3 || _x2BoughtByClick) && ClickDamage != null)
         {
-            for (long rank = _lastX2Ranks + 1; rank <= bonuses; ++rank)
+            const long Separate = 2;
+            long rank = _lastX2Ranks + 1;
+            for (; rank <= bonuses && rank <= _lastX2Ranks + Separate; ++rank)
                 X2RankUpEffect.Spawn(ClickDamage, Input.mousePosition, X2BonusPerRank() * 100, rank);
+            if (rank <= bonuses)
+                X2RankUpEffect.Spawn(ClickDamage, Input.mousePosition, X2BonusPerRank() * 100 * (bonuses - rank + 1), rank, bonuses);
         }
 
         _lastX2Ranks = bonuses;

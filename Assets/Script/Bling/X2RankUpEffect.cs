@@ -54,8 +54,17 @@ public class X2RankUpEffect : MonoBehaviour
     TMP_FontAsset _font;
     Material _fontMaterial;
 
-    public static void Spawn(Component anyUiElement, Vector2 screenPos, double pctPerRank, long rank)
-        => SpawnText(anyUiElement, screenPos, $"+{pctPerRank:0}% income!\n<size=80%>X2 rank {rank}</size>");
+    public static void Spawn(Component anyUiElement, Vector2 screenPos, double pct, long rank)
+        => SpawnText(anyUiElement, screenPos, $"+{pct:0}% income!\n<size=80%>X2 rank {rank}</size>");
+
+    // Several ranks in one text (UpgradeManager coalesces everything after the first two ranks of a buy).
+    public static void Spawn(Component anyUiElement, Vector2 screenPos, double pct, long firstRank, long lastRank)
+    {
+        if (firstRank == lastRank)
+            Spawn(anyUiElement, screenPos, pct, firstRank);
+        else
+            SpawnText(anyUiElement, screenPos, $"+{pct:0}% income!\n<size=80%>X2 rank {firstRank}-{lastRank}</size>");
+    }
 
     // Same floating text with any content (also used for "New skin unlocked!"). Big texts chime, small ones don't.
     // Big texts are queued, at least BigTextGap apart, so several unlocks at once show one after another.
