@@ -21,14 +21,14 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         // Scale the double value directly
         rawValue = new BigInteger(value * ScaleFactorDouble);
         ValidateRange(rawValue);
-        serializedValue = rawValue.ToString();
+        serializedValue = null; // written on save (OnBeforeSerialize)
     }
 
     private Decimal512(BigInteger raw)
     {
         ValidateRange(raw);
         rawValue = raw;
-        serializedValue = raw.ToString();
+        serializedValue = null;
     }
 
     // Static method to create from serialized string (used by parent class)
@@ -44,11 +44,9 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
     // Unity serialization callbacks
     public void OnBeforeSerialize()
     {
-        // Ensure serializedValue is up to date before serialization
-        if (rawValue != default(BigInteger))
-        {
-            serializedValue = rawValue.ToString();
-        }
+        // Ensure serializedValue is up to date before serialization. Only done here (and in SyncSerializedFields): keeping
+        // it current on every operation allocated a big-number string per +,-,*,/ (lots of GC every frame).
+        serializedValue = rawValue.ToString();
     }
 
     public void OnAfterDeserialize()
@@ -69,7 +67,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         var result = rawValue + other.rawValue;
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public void Subtract(Decimal512 other)
@@ -78,7 +75,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         if (result < 0)
             throw new OverflowException("Result below 0.");
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public void Multiply(Decimal512 other)
@@ -88,7 +84,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         result = result / ScaleFactor;
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public void Multiply(float factor)
@@ -98,7 +93,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         var result = rawValue * new BigInteger(scaledFactor) / ScaleFactor;
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public static Decimal512 operator +(Decimal512 left, Decimal512 right)
@@ -188,7 +182,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         var result = (rawValue * ScaleFactor) / other.rawValue;
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public void Divide(float divisor)
@@ -201,7 +194,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         var result = (rawValue * ScaleFactor) / new BigInteger(scaledDivisor);
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     public void Divide(double divisor)
@@ -214,7 +206,6 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
         var result = (rawValue * ScaleFactor) / new BigInteger(scaledDivisor);
         ValidateRange(result);
         rawValue = result;
-        serializedValue = result.ToString();
     }
 
     // Division operators
@@ -276,7 +267,29 @@ public struct Decimal512 : IComparable<Decimal512>, IEquatable<Decimal512>, ISer
     public BigInteger RawValue => rawValue;
 
     // Property to access the serialized value (useful for debugging)
-    public string SerializedValue => serializedValue;
+    public string SerializedValue => rawValue.ToString();
+
+    // Writes every Decimal512 field's save string (SaveGameMembers.ToJson), in case JsonUtility doesn't call
+    // OnBeforeSerialize on nested structs. Only on save, so the reflection cost doesn't matter.
+    static readonly System.Collections.Generic.Dictionary<Type, System.Reflection.FieldInfo[]> _fieldsByType = new();
+
+    public static void SyncSerializedFields(object owner)
+    {
+        var type = owner.GetType();
+        if (!_fieldsByType.TryGetValue(type, out var fields))
+        {
+            fields = Array.FindAll(type.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic),
+                f => f.FieldType == typeof(Decimal512));
+            _fieldsByType[type] = fields;
+        }
+
+        foreach (var field in fields)
+        {
+            var value = (Decimal512)field.GetValue(owner);
+            value.OnBeforeSerialize();
+            field.SetValue(owner, value);
+        }
+    }
 
     public double ToDouble()
     {

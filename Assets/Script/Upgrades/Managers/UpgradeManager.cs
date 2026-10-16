@@ -83,6 +83,7 @@ public class UpgradeManager : MonoBehaviour
         SkullSlicerManager.UpdateAll();
         StormLordManager.UpdateAll();
 
+        GameManager.Instance.InvalidateIncome();
         GameManager.Instance.TrySaveGame(forceSave: true);
     }
 
@@ -269,68 +270,36 @@ public class UpgradeManager : MonoBehaviour
         return text;
     }
 
-    // Will also update statistics, which is bad. Yikes.
-    float _prevCallTimeGetTotalPassiveIncomeForFrame = 0;
-    public Decimal512 GetTotalPassiveIncome()
+    // Sum of all tiers' income per second. Also adds each tier's income * statSeconds to its "earned so far" stat
+    // (GameManager calls this a few times per second, statSeconds = real time since the previous call).
+    public Decimal512 GetTotalPassiveIncome(float statSeconds)
     {
-        if (G.D.GameTime == _prevCallTimeGetTotalPassiveIncomeForFrame)
-            throw new("May not be called twice per frame, it has side effects!");
-
-        _prevCallTimeGetTotalPassiveIncomeForFrame = G.D.GameTime;
-
-        float incomeFactorPerFrame =
-            GameManager.Instance.GetIncomeFactorPerFrame();
-
-        SaveGame.Members.TotalIncomeClickDamage += ClickDamageManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeKnifeDamage += KnifeDamageManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeGoldPerRound += ArenaGoldManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeKnifeCd += KnifeCdManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeWitchDoctor += WitchDoctorManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeGoldPerKnifeThrow += GoldPerKnifeThrowManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeWizard += WizardManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeHoarder += HoarderManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeZapDamage += ZapDamageManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeMoneyMaker += MoneyMakerManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeDaggerMaster += DaggerMasterManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeNecroNinja += NecroNinjaManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeSkullCrusher += SkullCrusherManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeChestMaster += ChestMasterManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeVoidgazer += VoidgazerManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeSmartDaggers += SmartDaggersManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeFastFeet += FastFeetManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeCryptMaster += CryptMasterManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeSmartFireballs += SmartFireballsManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeBeefyEarl += BeefyEarlManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeCriticalStrike += CriticalStrikeManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomePowerZap += PowerZapManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeSkullSlicer += SkullSlicerManager.PassiveIncome() * incomeFactorPerFrame;
-        SaveGame.Members.TotalIncomeStormLord += StormLordManager.PassiveIncome() * incomeFactorPerFrame;
-
         Decimal512 fullSum = 0;
-        fullSum += ClickDamageManager.PassiveIncome();
-        fullSum += KnifeDamageManager.PassiveIncome();
-        fullSum += ArenaGoldManager.PassiveIncome();
-        fullSum += KnifeCdManager.PassiveIncome();
-        fullSum += WitchDoctorManager.PassiveIncome();
-        fullSum += GoldPerKnifeThrowManager.PassiveIncome();
-        fullSum += WizardManager.PassiveIncome();
-        fullSum += HoarderManager.PassiveIncome();
-        fullSum += ZapDamageManager.PassiveIncome();
-        fullSum += MoneyMakerManager.PassiveIncome();
-        fullSum += DaggerMasterManager.PassiveIncome();
-        fullSum += NecroNinjaManager.PassiveIncome();
-        fullSum += SkullCrusherManager.PassiveIncome();
-        fullSum += ChestMasterManager.PassiveIncome();
-        fullSum += VoidgazerManager.PassiveIncome();
-        fullSum += SmartDaggersManager.PassiveIncome();
-        fullSum += FastFeetManager.PassiveIncome();
-        fullSum += CryptMasterManager.PassiveIncome();
-        fullSum += SmartFireballsManager.PassiveIncome();
-        fullSum += BeefyEarlManager.PassiveIncome();
-        fullSum += CriticalStrikeManager.PassiveIncome();
-        fullSum += PowerZapManager.PassiveIncome();
-        fullSum += SkullSlicerManager.PassiveIncome();
-        fullSum += StormLordManager.PassiveIncome();
+        Decimal512 income;
+        income = ClickDamageManager.PassiveIncome(); SaveGame.Members.TotalIncomeClickDamage += income * statSeconds; fullSum += income;
+        income = KnifeDamageManager.PassiveIncome(); SaveGame.Members.TotalIncomeKnifeDamage += income * statSeconds; fullSum += income;
+        income = ArenaGoldManager.PassiveIncome(); SaveGame.Members.TotalIncomeGoldPerRound += income * statSeconds; fullSum += income;
+        income = KnifeCdManager.PassiveIncome(); SaveGame.Members.TotalIncomeKnifeCd += income * statSeconds; fullSum += income;
+        income = WitchDoctorManager.PassiveIncome(); SaveGame.Members.TotalIncomeWitchDoctor += income * statSeconds; fullSum += income;
+        income = GoldPerKnifeThrowManager.PassiveIncome(); SaveGame.Members.TotalIncomeGoldPerKnifeThrow += income * statSeconds; fullSum += income;
+        income = WizardManager.PassiveIncome(); SaveGame.Members.TotalIncomeWizard += income * statSeconds; fullSum += income;
+        income = HoarderManager.PassiveIncome(); SaveGame.Members.TotalIncomeHoarder += income * statSeconds; fullSum += income;
+        income = ZapDamageManager.PassiveIncome(); SaveGame.Members.TotalIncomeZapDamage += income * statSeconds; fullSum += income;
+        income = MoneyMakerManager.PassiveIncome(); SaveGame.Members.TotalIncomeMoneyMaker += income * statSeconds; fullSum += income;
+        income = DaggerMasterManager.PassiveIncome(); SaveGame.Members.TotalIncomeDaggerMaster += income * statSeconds; fullSum += income;
+        income = NecroNinjaManager.PassiveIncome(); SaveGame.Members.TotalIncomeNecroNinja += income * statSeconds; fullSum += income;
+        income = SkullCrusherManager.PassiveIncome(); SaveGame.Members.TotalIncomeSkullCrusher += income * statSeconds; fullSum += income;
+        income = ChestMasterManager.PassiveIncome(); SaveGame.Members.TotalIncomeChestMaster += income * statSeconds; fullSum += income;
+        income = VoidgazerManager.PassiveIncome(); SaveGame.Members.TotalIncomeVoidgazer += income * statSeconds; fullSum += income;
+        income = SmartDaggersManager.PassiveIncome(); SaveGame.Members.TotalIncomeSmartDaggers += income * statSeconds; fullSum += income;
+        income = FastFeetManager.PassiveIncome(); SaveGame.Members.TotalIncomeFastFeet += income * statSeconds; fullSum += income;
+        income = CryptMasterManager.PassiveIncome(); SaveGame.Members.TotalIncomeCryptMaster += income * statSeconds; fullSum += income;
+        income = SmartFireballsManager.PassiveIncome(); SaveGame.Members.TotalIncomeSmartFireballs += income * statSeconds; fullSum += income;
+        income = BeefyEarlManager.PassiveIncome(); SaveGame.Members.TotalIncomeBeefyEarl += income * statSeconds; fullSum += income;
+        income = CriticalStrikeManager.PassiveIncome(); SaveGame.Members.TotalIncomeCriticalStrike += income * statSeconds; fullSum += income;
+        income = PowerZapManager.PassiveIncome(); SaveGame.Members.TotalIncomePowerZap += income * statSeconds; fullSum += income;
+        income = SkullSlicerManager.PassiveIncome(); SaveGame.Members.TotalIncomeSkullSlicer += income * statSeconds; fullSum += income;
+        income = StormLordManager.PassiveIncome(); SaveGame.Members.TotalIncomeStormLord += income * statSeconds; fullSum += income;
         return fullSum;
     }
 
@@ -979,10 +948,20 @@ public class UpgradeManager : MonoBehaviour
         Instance = this;
     }
 
+    // Player upgrades and the upgrade list are refreshed 10x per second, not every frame: every price / affordability
+    // check is big-number math that allocates (GC). Buys refresh right away (UpdateAllUpgrades).
+    const float UiRefreshInterval = 0.1f;
+    float _nextUiRefresh;
+
     private void Update()
     {
-        UpdatePlayerUpgrades();
         UpdateNumberOfX2Bought();
+
+        if (Time.unscaledTime < _nextUiRefresh)
+            return;
+
+        _nextUiRefresh = Time.unscaledTime + UiRefreshInterval;
+        UpdatePlayerUpgrades();
         UpdateUpgradeUi();
     }
 }

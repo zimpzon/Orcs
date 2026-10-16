@@ -236,6 +236,7 @@ public class SaveGameMembers
 
     public string ToJson()
     {
+        Decimal512.SyncSerializedFields(this);
         return JsonUtility.ToJson(this, true);
     }
 
@@ -300,6 +301,7 @@ public static class SaveGame
 
         EnsureSaveId();
         Members.SavedAtUtc = DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
+        Members.LastSeenUtcStr = Assets.Script.Misc.FormatTime.DateTimeToString(DateTime.UtcNow);
 
         string json = Members.ToJson();
         //Debug.Log("saving json: " + json);

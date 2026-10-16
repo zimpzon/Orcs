@@ -238,6 +238,7 @@ public class GameManager : MonoBehaviour
             SaveGame.Members = new SaveGameMembers();
         }
 
+        InvalidateIncome(); // cached income is from the old save
         GameState = State.Idle_RestartRound;
 
         PrepareForNewRound();
@@ -1445,6 +1446,11 @@ public class GameManager : MonoBehaviour
     }
 
     float _nextPassiveIncomeUpdate;
+    const float IncomeRecalcInterval = 0.25f;
+    float _nextIncomeRecalc;
+    float _incomeStatSeconds;
+
+    public void InvalidateIncome() => _nextIncomeRecalc = 0;
     void UpdatePassiveIncome()
     {
         float currentTime = G.D.RealTime;
@@ -1476,10 +1482,17 @@ public class GameManager : MonoBehaviour
 
         _timePrevPassiveIncomeUpdate = currentTime;
 
-        // TotalPassiveIncome is the per/sec income.
-        TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome();
-        if (TotalPassiveIncome > SaveGame.Members.MaxIncome)
-            SaveGame.Members.MaxIncome = TotalPassiveIncome;
+        // TotalPassiveIncome is the per/sec income. Recomputed a few times per second (big-number math allocates), and
+        // right away after a buy (InvalidateIncome); money is still added every frame below.
+        _incomeStatSeconds += _deltaRealTime;
+        if (currentTime >= _nextIncomeRecalc)
+        {
+            _nextIncomeRecalc = currentTime + IncomeRecalcInterval;
+            TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome(_incomeStatSeconds);
+            _incomeStatSeconds = 0;
+            if (TotalPassiveIncome > SaveGame.Members.MaxIncome)
+                SaveGame.Members.MaxIncome = TotalPassiveIncome;
+        }
 
         // MoneyToAdd is the scaled by fps income.
         float incomeFactorPerFrame = GetIncomeFactorPerFrame();
@@ -1495,7 +1508,8 @@ public class GameManager : MonoBehaviour
 
             string textIncome = Format512.FormatWithDecimals(TotalPassiveIncome, abbreviate: false);
 
-            textIncome = $"{textIncome}/sec";
+            // Short numbers have room for the full words; big ones keep the compact "/sec".
+            textIncome = TotalPassiveIncome < 1000 ? $"{textIncome} per second" : $"{textIncome}/sec";
             if (textIncome != TextPassiveIncome.text)
             {
                 TextPassiveIncome.text = textIncome;
@@ -1602,8 +1616,6 @@ public class GameManager : MonoBehaviour
 
     void UpdateBottomStats()
     {
-        Decimal512 total = SaveGame.Members.TotalIncomePassive + SaveGame.Members.TotalIncomeArena;
-
         if (G.D.GameTime < _timeNextTotalIncomeUpdate)
             return;
 
@@ -1860,7 +1872,6 @@ public class GameManager : MonoBehaviour
         TimeSinceStartup = Time.realtimeSinceStartup;
         GameDeltaTime = Math.Min(0.5f, Time.deltaTime * PlayerUpgrades.Data.TimeScale);
         GameTime += GameDeltaTime;
-        SaveGame.Members.LastSeenUtcStr = FormatTime.DateTimeToString(DateTime.UtcNow);
 
 
         if (Input.GetKeyDown(KeyCode.F))
