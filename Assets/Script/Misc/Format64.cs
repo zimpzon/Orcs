@@ -32,9 +32,14 @@ namespace Assets.Script.Misc
             return FormatLargeNumber(number, 1_000_000D, abbreviate, "M", " million", alwaysThreeDecimalsForLargeNumbers);
         }
 
-        // Full number with the player's thousands separator (10.000 / 10,000) below a million, abbreviated (1,5M) above.
+        // Below 10,000 plain (6095), then full with the player's thousands separator (10.000 / 10,000) below a million,
+        // abbreviated (1,5M) above.
         public static string FormatGrouped(long number)
-            => number > -1_000_000 && number < 1_000_000 ? number.ToString("#,0", DisplayNumberFormat.Info) : Format(number);
+        {
+            if (number > -10_000 && number < 10_000)
+                return number.ToString();
+            return number > -1_000_000 && number < 1_000_000 ? number.ToString("#,0", DisplayNumberFormat.Info) : Format(number);
+        }
 
         private static string FormatThousands(long number, bool abbreviate, bool alwaysThreeDecimalsForLargeNumbers)
         {
