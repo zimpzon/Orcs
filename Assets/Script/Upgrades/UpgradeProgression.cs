@@ -89,15 +89,18 @@ namespace Assets.Script.Upgrades
         public static Decimal512 BaseIncome_SkullCrusher =        165_000_000;
         public static Decimal512 BaseIncome_ChestMaster =         840_000_000;
         public static Decimal512 BaseIncome_Voidgazer =         4_100_000_000;
-        public static Decimal512 BaseIncome_SmartDaggers =     20_000_000_000;
-        public static Decimal512 BaseIncome_FastFeet =        100_000_000_000;
-        public static Decimal512 BaseIncome_CryptMaster =     495_000_000_000;
-        public static Decimal512 BaseIncome_SmartFireballs =2_500_250_000_000;
-        public static Decimal512 BaseIncome_BeefyEarl =    10_625_625_000_000;
-        public static Decimal512 BaseIncome_CriticalStrike = 42_502_500_000_000;
-        public static Decimal512 BaseIncome_PowerZap =    170_010_000_000_000;
-        public static Decimal512 BaseIncome_SkullSlicer = 680_040_000_000_000;
-        public static Decimal512 BaseIncome_StormLord = 2_720_160_000_000_000;
+        // Tiers 16-24 raised (2026-10, playtest: ~9,100 credits at tier 21 too slow - credits were at the speed cap, so the
+        // income goes into upgrades / arena / beasts). A smooth bump peaking at tiers 19-20: x1.25, 1.6, 2.1, 2.6, 2.8, 2.6,
+        // 2.2, 1.8, 1.5 (applied to the numbers below).
+        public static Decimal512 BaseIncome_SmartDaggers =     25_000_000_000;
+        public static Decimal512 BaseIncome_FastFeet =        160_000_000_000;
+        public static Decimal512 BaseIncome_CryptMaster =     1_039_500_000_000;
+        public static Decimal512 BaseIncome_SmartFireballs =6_500_650_000_000;
+        public static Decimal512 BaseIncome_BeefyEarl =    29_751_750_000_000;
+        public static Decimal512 BaseIncome_CriticalStrike = 110_506_500_000_000;
+        public static Decimal512 BaseIncome_PowerZap =    374_022_000_000_000;
+        public static Decimal512 BaseIncome_SkullSlicer = 1_224_072_000_000_000;
+        public static Decimal512 BaseIncome_StormLord = 4_080_240_000_000_000;
 
         public static long DiamondsForMonsterCredits(long monsterCredits)
         {
