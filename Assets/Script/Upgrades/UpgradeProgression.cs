@@ -326,17 +326,16 @@ namespace Assets.Script.Upgrades
         // Credit speed limit in the last tiers, where income explodes: with tier 15 as the highest tier bought (tiers unlock
         // in order, so count = highest tier) credits can't come faster than every 10 s, tier 16 every 9 s ... Storm Lord
         // (tier 24) every 1 s. Below tier 15 only the normal 1-per-second cap applies.
-        const int CreditLimitFirstTier = 15;
-        const int CreditLimitSlowestSeconds = 10;
+        const int CreditLimitFirstTier = 15; // soft limit (CreditSoftLimitFactor) from this tier
+        const double CreditLimitSecondsPerTier = 0.5;
 
+        // Hard speed limit, all tiers: 1 s at the last tier (24 = Storm Lord), +0.5 s per tier below it (1.5 s at 23,
+        // 2 s at 22, ..., 5.5 s at 15).
         public static double MinSecondsPerCredit()
         {
             int top = UpgradeTierList.CountBought();
-            if (top < CreditLimitFirstTier)
-                return 1.0;
-
-            int last = UpgradeTierList.Tiers.Length; // 24 = Storm Lord
-            return Math.Max(1, CreditLimitSlowestSeconds - (top - CreditLimitFirstTier) * (CreditLimitSlowestSeconds - 1) / (last - CreditLimitFirstTier));
+            int last = UpgradeTierList.Tiers.Length;
+            return 1.0 + Math.Max(0, last - top) * CreditLimitSecondsPerTier;
         }
 
         // Soft speed limit in the last tiers (tier >= CreditLimitFirstTier): the credit speed approaches the limit instead of

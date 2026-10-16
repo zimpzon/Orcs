@@ -80,7 +80,7 @@ public class AscendProgressScript : MonoBehaviour
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
         // Commit actual XP/credit gain once per second (the display below updates every frame). Speed limit: at most one
-        // credit per UpgradeProgression.MinSecondsPerCredit() (1 s, up to 10 s in the last tiers); XP beyond the next
+        // credit per UpgradeProgression.MinSecondsPerCredit() (1 s at the last tier, +0.5 s per tier below); XP beyond the next
         // credit's cost is dropped, not banked. The allowance can't be saved up beyond one credit (or one per limit period
         // of a stall).
         double minSecondsPerCredit = UpgradeProgression.MinSecondsPerCredit() / boost; // boosted: past the limit too
