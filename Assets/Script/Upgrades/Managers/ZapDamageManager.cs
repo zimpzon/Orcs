@@ -36,7 +36,6 @@ namespace Assets.Script.Upgrades
             sb.AppendLine($"<color=#dddddd>Each level earns $<color=COLOR-ARENA>{Format512.FormatWithDecimals(baseIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Current: $<color=COLOR-ARENA>{Format512.FormatWithDecimals(totalIncome)}</color> per second.");
             sb.AppendLine($"<color=#dddddd>Earned so far: $<color=COLOR-ARENA>{Format512.FormatWithDecimals(earnedSoFar)}</color>.");
-            sb.AppendLine(UpgradeManagerHelper.FormatPrice(PriceForNext()));
 
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Income X2</color></size>");
