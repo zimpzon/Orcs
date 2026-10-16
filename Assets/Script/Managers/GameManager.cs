@@ -1449,6 +1449,7 @@ public class GameManager : MonoBehaviour
     const float IncomeRecalcInterval = 0.25f;
     float _nextIncomeRecalc;
     float _incomeStatSeconds;
+    double _incomeRecalcMultiplier;
 
     public void InvalidateIncome() => _nextIncomeRecalc = 0;
     void UpdatePassiveIncome()
@@ -1484,10 +1485,14 @@ public class GameManager : MonoBehaviour
 
         // TotalPassiveIncome is the per/sec income. Recomputed a few times per second (big-number math allocates), and
         // right away after a buy (InvalidateIncome); money is still added every frame below.
+        // Also right away when the income multiplier changes (X2 rank, mystery boost, ...): the X2 rank bonus is updated
+        // in UpgradeManager.Update, which may run after this in the buy frame.
         _incomeStatSeconds += _deltaRealTime;
-        if (currentTime >= _nextIncomeRecalc)
+        double incomeMultiplier = PlayerUpgrades.Data.PassiveIncomeEffectiveMultiplier;
+        if (currentTime >= _nextIncomeRecalc || incomeMultiplier != _incomeRecalcMultiplier)
         {
             _nextIncomeRecalc = currentTime + IncomeRecalcInterval;
+            _incomeRecalcMultiplier = incomeMultiplier;
             TotalPassiveIncome = UpgradeManager.Instance.GetTotalPassiveIncome(_incomeStatSeconds);
             _incomeStatSeconds = 0;
             if (TotalPassiveIncome > SaveGame.Members.MaxIncome)
