@@ -487,6 +487,11 @@ public class GameManager : MonoBehaviour
             {
                 // New beast
                 SaveGame.Members.BeastsSeen.Add(actor.ActorType);
+
+                // Beasts there from the very first arena (Flaps) count as unlocked, but there's nothing to celebrate.
+                if (EnemySpawner.UnlockLevelOf(actor.ActorType) == 1)
+                    continue;
+
                 ActorBase.Names.TryGetValue(actor.ActorType, out string beastName);
                 AchievementsScript.AnnounceAtCursorOrCenter(string.IsNullOrEmpty(beastName)
                     ? "New beast unlocked!"
