@@ -65,7 +65,7 @@ public class BestiaryScript : MonoBehaviour
         if (TextBonus != null)
         {
             TextBonus.text = bought
-                ? $"Bonus: +<color={TextColors.Green}>{incomeBonus}</color>% income"
+                ? $"Bonus: +<color={TextColors.GreenSmall}>{incomeBonus}</color>% income"
                 : $"Bonus: +{incomeBonus}% income";
             TextBonus.alpha = bought ? 1f : DisabledAlpha;
         }

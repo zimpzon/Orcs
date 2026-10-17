@@ -104,9 +104,9 @@ namespace Assets.Script.Upgrades.Managers
         }
 
         public static string GetColorLevelX2(bool x2LevelMet)
-            => x2LevelMet ? TextColors.Green : TextColors.Orange;
+            => x2LevelMet ? TextColors.GreenSmall : TextColors.OrangeSmall;
 
         public static string GetColorPriceX2(bool x2PriceMet)
-            => x2PriceMet ? TextColors.Green : TextColors.Orange;
+            => x2PriceMet ? TextColors.GreenSmall : TextColors.OrangeSmall;
     }
 }
