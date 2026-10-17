@@ -17,6 +17,8 @@ public class BeastiaryPopupScript : MonoBehaviour
     public GameObject Layout;
     public TextMeshProUGUI Hovertext;
     private List<Beast> _beasts = new List<Beast>();
+    const float FinalBeastInset = 0f; // gap between the final enemy's icon and its frame edge (negative = past it)
+    const float FinalBeastRaise = 3f; // moves it up: the sprite's feet sit low, the frame's bottom edge is thicker
 
     private void Awake()
     {
@@ -33,6 +35,20 @@ public class BeastiaryPopupScript : MonoBehaviour
             beastScript.ActorType = actor.ActorType;
             beastScript.Hovertext = Hovertext;
             _beasts.Add(new Beast { Actor = actor, Icon = image, BeastiaryBeastScript = beastScript });
+        }
+
+        // The final enemy (last in the list) fills its frame instead of the fixed 20x30 icon: stretched to the tile
+        // minus a small inset, aspect kept, so it's as big as fits.
+        if (_beasts.Count > 0)
+        {
+            var finalIcon = _beasts[^1].Icon;
+            var rect = finalIcon.rectTransform;
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = new Vector2(FinalBeastInset, FinalBeastInset + FinalBeastRaise);
+            rect.offsetMax = new Vector2(-FinalBeastInset, -FinalBeastInset + FinalBeastRaise);
+            finalIcon.preserveAspect = true;
+            finalIcon.gameObject.AddComponent<UiVoidSparks>().Active = true; // also on the locked silhouette
         }
 
         CreateProgressText();
