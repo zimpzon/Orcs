@@ -9,7 +9,7 @@ public class ProgressPopupScript : MonoBehaviour
     public Sprite CrownSprite;
 
     const string GreenHex = TextColors.Green;
-    const string GoldHex = "#FFD54A";
+    const string GoldHex = "#F4C430";
 
     // The popup is authored narrow; widen it (staying centered where it was) and grow it downward to fit the text.
     // Top-left pivot, text top-anchored, OK button bottom-center anchored, so both adjustments are safe.

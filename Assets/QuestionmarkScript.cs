@@ -294,7 +294,7 @@ public class QuestionmarkScript : MonoBehaviour
 
         void ShowMessage(string msg)
         {
-            string messageWithHeader = $"<color=yellow><size=+1>MYSTERY COLLECTED ({SaveGame.Members.MysteryCollected})</size>\n\n</color>{msg}";
+            string messageWithHeader = $"<color={TextColors.Yellow}><size=+1>MYSTERY COLLECTED ({SaveGame.Members.MysteryCollected})</size>\n\n</color>{msg}";
             GameCanvasScript.Instance.ShowPopup(messageWithHeader, celebrate: true);
             SaveGame.Save(); // don't lose a mystery reward to a reload before the next auto-save
         }

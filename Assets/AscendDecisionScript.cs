@@ -176,7 +176,7 @@ public class AscendDecisionScript : MonoBehaviour
                 GameManager.Instance.ResetAllProgress(ascend: true);
 
                 string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
-                string msg = $"<color=yellow>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
+                string msg = $"<color={TextColors.Yellow}>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
                 if (SaveGame.Members.BoughtHeadStart)
                     msg += $"\n\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
                 GameCanvasScript.Instance.ShowPopup(msg);
