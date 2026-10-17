@@ -30,7 +30,7 @@ public enum AscendUpgradeCardId
     Completionist,  // +1% income per game completion %
 };
 
-public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public long Cost = 1;
     public Color CanAffordColor = Color.white;
@@ -55,14 +55,21 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
     }
 
     // Hovering a card shows its HoverText in the text below the cards (AscendDecisionScript.TextHover).
-    public void OnPointerEnter(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHoverText(HoverText);
+    public void OnPointerEnter(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHover(this, HoverText);
 
-    public void OnPointerExit(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHoverText(null);
+    // Touchscreens: the tapped card's text stays (a touch exits right away) until another card is tapped.
+    public void OnPointerClick(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHover(this, HoverText);
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!HoverTextFx.IsTouch(eventData))
+            AscendDecisionScript.Instance.SetCardHover(this, null);
+    }
 
     void OnDisable()
     {
         if (AscendDecisionScript.Instance != null)
-            AscendDecisionScript.Instance.SetCardHoverText(null);
+            AscendDecisionScript.Instance.SetCardHover(this, null);
     }
 
     void Update()

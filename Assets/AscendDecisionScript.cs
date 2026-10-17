@@ -39,11 +39,16 @@ public class AscendDecisionScript : MonoBehaviour
 
     string _hoverDefault;
 
-    // AscendUpgradeCardScript hover: null restores the scene text ("Hover over a card to see details").
-    public void SetCardHoverText(string text)
+    // AscendUpgradeCardScript hover (with HoverTextFx pop): null text ends that card's hover and restores the
+    // scene text ("Hover over a card to see details").
+    public void SetCardHover(UnityEngine.Object card, string text)
     {
-        if (TextHover != null)
-            TextHover.text = text ?? _hoverDefault;
+        if (TextHover == null)
+            return;
+        if (text != null)
+            HoverTextFx.Of(TextHover).Hover(card, text);
+        else
+            HoverTextFx.Of(TextHover).Unhover(card, _hoverDefault);
     }
 
     private void Awake()

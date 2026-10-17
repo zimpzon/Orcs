@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public SkinAnimation AnimationName;
     public SkinsAnimationList SkinAnimations;
@@ -16,9 +16,11 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private SkinAnimations MyAnimations;
 
+    const string DefaultHovertext = "Hover over a skin to see unlock requirements";
+
     void SetDefaultHovertext()
     {
-        Hovertext.text = "Hover over a skin to see unlock requirements";
+        Hovertext.text = DefaultHovertext;
     }
 
     public void Awake()
@@ -322,7 +324,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (_hovered && Time.unscaledTime >= _nextHoverRefresh)
         {
             _nextHoverRefresh = Time.unscaledTime + 0.5f;
-            Hovertext.text = GetHoverText();
+            HoverTextFx.Of(Hovertext).Hover(this, GetHoverText()); // same owner: text update only, no pop
         }
     }
 
@@ -330,14 +332,19 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         _hoveredSkin = this;
         _nextHoverRefresh = Time.unscaledTime + 0.5f;
-        Hovertext.text = GetHoverText();
+        HoverTextFx.Of(Hovertext).Hover(this, GetHoverText());
     }
+
+    // Touchscreens: the tapped skin's text stays (a touch exits right away) until another skin is tapped.
+    public void OnPointerClick(PointerEventData eventData) => OnPointerEnter(eventData);
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (HoverTextFx.IsTouch(eventData))
+            return;
         if (_hoveredSkin != this)
             return; // another skin already took over the text
         _hoveredSkin = null;
-        SetDefaultHovertext();
+        HoverTextFx.Of(Hovertext).Unhover(this, DefaultHovertext);
     }
 }
