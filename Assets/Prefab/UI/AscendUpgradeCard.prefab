@@ -375,6 +375,7 @@ MonoBehaviour:
   ButtonOverlay: {fileID: 8582976546675710129}
   CardOverlay: {fileID: 1817257581003230922}
   ButtonBuy: {fileID: 6578033008079990476}
+  HoverText: (hover text missing)
   ButtonBuyText: {fileID: 4928851705164083944}
   OwnedText: {fileID: 8582473283915124599}
   CardId: 0
@@ -580,8 +581,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -925,8 +926,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: -8592083905490870687, guid: 2eb2fbc76f2ef88429e612f7e9e26197,
+    type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
