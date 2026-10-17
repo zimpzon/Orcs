@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AudioData
   m_EditorClassIdentifier: 
   FireballShoot: {fileID: 8300000, guid: 4afd3282d47dea84e9245ed9ab9cabf0, type: 3}
-  EnemyDie: {fileID: 8300000, guid: bc90bfc225ad9c947951048c82a6dac6, type: 3}
+  EnemyDie: {fileID: 8300000, guid: 4afd3282d47dea84e9245ed9ab9cabf0, type: 3}
   MoneyPickup: {fileID: 8300000, guid: aba7b30dc9f3ad74ea81c93afd418c37, type: 3}
   DaggerThrow: {fileID: 8300000, guid: b457a79a4a653a04da386dbffb42eda4, type: 3}
   Zap: {fileID: 8300000, guid: 35885e86b4bd4e240805459a8c544a51, type: 3}
