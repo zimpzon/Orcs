@@ -1,9 +1,8 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
+public class SettingsImageScript : MonoBehaviour
 {
     public GameObject Popup;
     public Button ButtonDeleteSave;
@@ -177,13 +176,9 @@ public class SettingsImageScript : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    // The settings Button (a child next to the popup, so clicks inside the popup don't reach it) calls this.
+    public void OnButtonClick()
     {
-        // The popup is a child of this icon, so clicks inside it bubble up here - they'd toggle it closed.
-        var clicked = eventData.rawPointerPress != null ? eventData.rawPointerPress : eventData.pointerCurrentRaycast.gameObject;
-        if (clicked != null && clicked.transform.IsChildOf(Popup.transform))
-            return;
-
         SetPopupEnabled(true);
     }
 }
