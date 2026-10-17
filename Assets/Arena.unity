@@ -61407,9 +61407,9 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: <color=yellow>Careful:</color> Since you pay with diamonds, your income
-        may decrease if you buy this upgrade too early.\n+10%. Additive with other
-        Shiny Diamonds.
+      value: <color=yellow>Careful:</color> You pay with diamonds and your income
+        may decrease if you buy this too early.\n+10%. Additive with other Shiny
+        Diamonds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -61573,9 +61573,9 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: <color=yellow>Careful:</color> Since you pay with diamonds, your income
-        may decrease if you buy this upgrade too early.\n+20%. Additive with other
-        Shiny Diamonds.
+      value: <color=yellow>Careful:</color> You pay with diamonds and your income
+        may decrease if you buy this too early.\n+20%. Additive with other Shiny
+        Diamonds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -61739,9 +61739,9 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: <color=yellow>Careful:</color> Since you pay with diamonds, your income
-        may decrease if you buy this upgrade too early.\n+40%. Additive with other
-        Shiny Diamonds.
+      value: <color=yellow>Careful:</color> You pay with diamonds and your income
+        may decrease if you buy this too early.\n+40%. Additive with other Shiny
+        Diamonds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -61905,9 +61905,9 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: <color=yellow>Careful:</color> Since you pay with diamonds, your income
-        may decrease if you buy this upgrade too early.\n+60%. Additive with other
-        Shiny Diamonds.
+      value: <color=yellow>Careful:</color> You pay with diamonds and your income
+        may decrease if you buy this too early.\n+60%. Additive with other Shiny
+        Diamonds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -62071,9 +62071,9 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: <color=yellow>Careful:</color> Since you pay with diamonds, your income
-        may decrease if you buy this upgrade too early.\n+100%. Additive with other
-        Shiny Diamonds.
+      value: <color=yellow>Careful:</color> You pay with diamonds and your income
+        may decrease if you buy this too early.\n+100%. Additive with other Shiny
+        Diamonds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
