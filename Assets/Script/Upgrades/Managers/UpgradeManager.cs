@@ -1,5 +1,4 @@
 using Assets.Script.Upgrades;
-using Assets.Script.Misc;
 using Assets.Script.Upgrades.Managers;
 using System;
 using UnityEngine;
@@ -16,7 +15,6 @@ public class UpgradeManager : MonoBehaviour
 {
     public static UpgradeManager Instance;
 
-    public Color ColorPassiveValues = Color.white;
     public Color ColorArenaValues = Color.white;
 
     public UpgradeItemScript ClickDamage;
@@ -262,10 +260,7 @@ public class UpgradeManager : MonoBehaviour
         else
             text = $"unknown UpgradeItemScript: {upgradeUiScript.name}";
 
-        string colorPassiveHex = $"#{ColorUtility.ToHtmlStringRGB(ColorPassiveValues)}";
-        string colorArenaHex = $"#{ColorUtility.ToHtmlStringRGB(ColorArenaValues)}";
-        text = text.Replace("COLOR-PASSIVE", colorPassiveHex);
-        text = text.Replace("COLOR-ARENA", colorArenaHex);
+        text = text.Replace("COLOR-ARENA", TextColors.GreenSmall);
 
         return text;
     }
