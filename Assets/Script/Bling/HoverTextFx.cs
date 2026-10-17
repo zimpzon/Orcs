@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 // Hover description texts (bestiary, skins, rebirth cards): a new item hovered (or tapped) pops the text in (small
-// scale + fade) with a soft tick. Added on demand (Of), so the scene needs no wiring. Unscaled time.
+// scale + fade). Added on demand (Of), so the scene needs no wiring. Unscaled time.
 // Touchscreens: a tap is enter + exit right away, so callers ignore touch exits (IsTouch) - the tapped item's text
 // stays until another item is tapped.
 public class HoverTextFx : MonoBehaviour
@@ -11,8 +11,6 @@ public class HoverTextFx : MonoBehaviour
     const float PopTime = 0.15f;
     const float PopScale = 1.08f;
     const float PopStartAlpha = 0.4f;
-    const float TickVolume = 0.15f;
-    const float TickMinInterval = 0.08f;
 
     TextMeshProUGUI _text;
     Color _baseColor;
@@ -39,7 +37,7 @@ public class HoverTextFx : MonoBehaviour
         _baseScale = transform.localScale;
     }
 
-    // Shows text for this owner (a beast, skin or card). A new owner pops and ticks; the same owner just updates the
+    // Shows text for this owner (a beast, skin or card). A new owner pops; the same owner just updates the
     // text (the skins popup refreshes it while hovered, and a click on the hovered item shows it again).
     public void Hover(Object owner, string text)
     {
@@ -49,9 +47,6 @@ public class HoverTextFx : MonoBehaviour
 
         _owner = owner;
         _popAge = 0f;
-        var audio = AudioManager.Instance;
-        if (audio != null && audio.AudioData != null)
-            audio.PlayClipForReal(audio.AudioData.Menu, volumeScale: TickVolume, minInterval: TickMinInterval, fixedPitch: true);
         Apply();
     }
 
