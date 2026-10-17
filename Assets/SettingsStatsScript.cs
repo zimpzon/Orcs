@@ -56,20 +56,20 @@ public class SettingsStatsScript : MonoBehaviour
         sb.AppendLine(BuildLine("Mystery multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeTempMultiplier), Multiplier));
         sb.AppendLine(BuildLine("Card X2 multiplier", Mul(PlayerUpgrades.Data.PassiveIncomeAscendMultiplier), Multiplier));
         sb.AppendLine();
-        sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine(BuildLine("X2 Bought", Format512.Format(SaveGame.Members.TotalX2UpgradesBought)));
         sb.AppendLine(BuildLine("1% Bonuses Bought", Format512.Format(SaveGame.Members.TotalLevelPctBought)));
+        sb.AppendLine(BuildLine("Upgrades Bought", Format512.Format(SaveGame.Members.TotalUpgradesBought)));
         sb.AppendLine();
         sb.AppendLine(BuildLine("Chests looted", SaveGame.Members.ChestsCollected.ToString()));
         sb.AppendLine(BuildLine("Mystery Bonuses", SaveGame.Members.MysteryCollected.ToString()));
         sb.AppendLine();
-        sb.AppendLine(BuildLine("Max Income", strMaxIncome, Money));
         sb.AppendLine(BuildLine("Credits Earned", Format512.Format(SaveGame.Members.MonsterCreditsLifetime_09_08_2025), Rebirth));
         sb.AppendLine(BuildLine("Max Arena", Format512.Format(SaveGame.Members.MaxArena)));
         sb.AppendLine(BuildLine("Total Arenas", Format512.Format(SaveGame.Members.TotalArenas)));
         sb.AppendLine(BuildLine("Arenas Won", Format512.Format(SaveGame.Members.TotalArenasWon)));
         sb.AppendLine(BuildLine("Enemies Killed", Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)));
         sb.AppendLine(BuildLine("Total Damage", Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)));
+        sb.AppendLine(BuildLine("Max Income", strMaxIncome, Money));
         sb.AppendLine();
         sb.AppendLine(BuildLine("Rebirths", Format512.Format(SaveGame.Members.TimesAscended_09_08_2025), Rebirth));
         if (SaveGame.Members.TimesAscended_09_08_2025 > 0)
