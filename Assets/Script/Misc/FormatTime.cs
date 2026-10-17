@@ -36,11 +36,11 @@ namespace Assets.Script.Misc
             if (useShorthand)
             {
                 // Leading empty units are left out ("2H, 10M", not "0D, 2H, 10M"); minutes always show.
-                string m = seconds.HasValue ? $"{minutes}M, {seconds}S" : $"{minutes}M";
+                string m = seconds.HasValue ? $"{minutes}m, {seconds}s" : $"{minutes}m";
                 if (days > 0)
-                    return $"{days}D, {hours}H, {m}";
+                    return $"{days}d, {hours}h, {m}";
                 if (hours > 0)
-                    return $"{hours}H, {m}";
+                    return $"{hours}h, {m}";
                 return m;
             }
             else
