@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen, ExpandTiersUnseen }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -39,6 +39,8 @@ public class CrownPulse : MonoBehaviour
             PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && !m.ViewedRebirthDialog,
             PulseCondition.FirstRebirthReadySeen => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && m.ViewedRebirthDialog,
             PulseCondition.TipsUnseen => !m.ViewedTipsDialog,
+            // Expand-tiers button: from the first Wizard bought until the expanded tier view has been opened.
+            PulseCondition.ExpandTiersUnseen => m.LevelWizard > 0 && !m.ViewedExpandedTiers,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             _ => m.Achieved.Contains(Achieved.Completion100),
         };

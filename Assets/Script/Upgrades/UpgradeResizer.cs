@@ -123,6 +123,7 @@ public class UpgradeResizer : MonoBehaviour
         if (!isExpanded)
             AudioManager.Instance.PlayExpandTierList();
         SetExpanded(true);
+        SaveGame.Members.ViewedExpandedTiers = true; // stops the expand button pulse (CrownPulse)
         isAnimating = true;
 
         if (GridLayoutGroup != null)

@@ -69,6 +69,7 @@ static class SaveGameAscend
         newSave.ViewedVictoryDialog = oldSave.ViewedVictoryDialog;
         newSave.ViewedRebirthDialog = oldSave.ViewedRebirthDialog;
         newSave.ViewedTipsDialog = oldSave.ViewedTipsDialog;
+        newSave.ViewedExpandedTiers = oldSave.ViewedExpandedTiers;
         newSave.BeastsSeen = oldSave.BeastsSeen;
 
         // Collectables
