@@ -337,14 +337,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9607843, g: 0.5882353, b: 0.32156864, a: 1}
+  m_Color: {r: 0.8745098, g: 0.5294118, b: 0.2901961, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 63f165e90ad96aa4b9af37013343ef33, type: 3}
+  m_Sprite: {fileID: -8592083905490870687, guid: 2eb2fbc76f2ef88429e612f7e9e26197,
+    type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -372,10 +373,10 @@ MonoBehaviour:
   X2Button: {fileID: 6609570323282823315}
   PriceLabel: {fileID: 8735675063525337174}
   LevelLabel: {fileID: 615192009212399493}
-  CanAffordColor: {r: 0.5813572, g: 0.7921569, b: 0.30656472, a: 1}
-  CanAffordfHighlightColor: {r: 0.6117822, g: 0.835, b: 0.32242572, a: 1}
-  CannotAffordColor: {r: 0.9607843, g: 0.5865048, b: 0.32186273, a: 1}
-  CannotAffordHighlightColor: {r: 1, g: 0.6122449, b: 0.33469385, a: 1}
+  CanAffordColor: {r: 0.5568628, g: 0.74509805, b: 0.3019608, a: 1}
+  CanAffordfHighlightColor: {r: 0.59191585, g: 0.792, b: 0.32096845, a: 1}
+  CannotAffordColor: {r: 0.8745098, g: 0.5294118, b: 0.2901961, a: 1}
+  CannotAffordHighlightColor: {r: 0.92, g: 0.5569507, b: 0.30529147, a: 1}
 --- !u!114 &3704979357923190176
 MonoBehaviour:
   m_ObjectHideFlags: 0
