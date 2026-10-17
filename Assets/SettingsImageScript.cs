@@ -19,6 +19,7 @@ public class SettingsImageScript : MonoBehaviour
     public Slider MasterVolumeSlider;
     public Slider MusicVolumeSlider;
     public Slider SfxVolumeSlider;
+    public CreditsPopupScript CreditsPopup;
 
     const float DisabledAlpha = 0.4f;
 
@@ -145,6 +146,14 @@ public class SettingsImageScript : MonoBehaviour
         SaveGame.Members.ShowDetailsOnHover = ShowDetailsOnHoverToggle.isOn;
         SaveGame.Save();
         AudioManager.Instance.PlayMenuClick();
+    }
+
+    // Credits button on the settings page: settings closes, the credits dialog opens on its own (closing it goes back
+    // to the game, not to settings).
+    public void OnCreditsClick()
+    {
+        SetPopupEnabled(false);
+        CreditsPopup.Show();
     }
 
     public void OnBackClick()
