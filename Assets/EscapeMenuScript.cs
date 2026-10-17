@@ -10,6 +10,7 @@ public class EscapeMenuScript : MonoBehaviour
 {
     public GameObject Popup;
     public Button QuitButton;
+    public SettingsImageScript Settings;
 
     bool IsOpen => Popup.activeSelf;
 
@@ -53,6 +54,15 @@ public class EscapeMenuScript : MonoBehaviour
     }
 
     int _openedFrame = -1;
+
+    // Settings button: the menu closes and the settings dialog opens on its own (closing it goes back to the game).
+    public void OnSettingsClick()
+    {
+        if (!IsOpen)
+            return;
+        Close();
+        Settings.OnButtonClick();
+    }
 
     public void OnQuitClick()
     {
