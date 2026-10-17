@@ -1638,6 +1638,14 @@ public class GameManager : MonoBehaviour
             $"Enemies killed: {Format512.FormatWithDecimals(SaveGame.Members.EnemiesKilled, alwaysThreeDecimalsForLargeNumbers: true)} | " +
             $"Damage done: {Format512.FormatWithDecimals(SaveGame.Members.DamageDone, alwaysThreeDecimalsForLargeNumbers: true)}";
 
+        // Only in the browser, where saving to localStorage is something players worry about.
+        if (Application.platform != RuntimePlatform.WebGLPlayer)
+        {
+            if (TextTimeThisSession.text.Length > 0)
+                TextTimeThisSession.text = "";
+            return;
+        }
+
         long timeSinceLastSaveTime = (long)(G.D.GameTime - SaveGame.LastSaveTime);
         if (timeSinceLastSaveTime <= 7 && timeSinceLastSaveTime >= 0)
         {
