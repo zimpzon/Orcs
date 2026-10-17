@@ -18,6 +18,7 @@ public class AscendDecisionScript : MonoBehaviour
     public TextMeshProUGUI TextWhatYouLose;
     public TextMeshProUGUI TextDiamondEach; // scene text with a [PCT] placeholder
     public TextMeshProUGUI TextCreditBonus; // scene text with a [BONUS] placeholder (500..0)
+    public TextMeshProUGUI TextHover; // below the cards: the hovered card's HoverText, else the scene text
 
     [NonSerialized] public long MonsterCreditsAtStart;
     [NonSerialized] public long DiamondsGainedAtRebirth;
@@ -36,6 +37,15 @@ public class AscendDecisionScript : MonoBehaviour
     RectTransform[] _headerDiamonds;
     Vector3[] _headerDiamondBase;
 
+    string _hoverDefault;
+
+    // AscendUpgradeCardScript hover: null restores the scene text ("Hover over a card to see details").
+    public void SetCardHoverText(string text)
+    {
+        if (TextHover != null)
+            TextHover.text = text ?? _hoverDefault;
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -44,6 +54,8 @@ public class AscendDecisionScript : MonoBehaviour
             _diamondEachTemplate = TextDiamondEach.text;
         if (TextCreditBonus != null)
             _creditBonusTemplate = TextCreditBonus.text;
+        if (TextHover != null)
+            _hoverDefault = TextHover.text;
         SetupHeaderDiamonds();
     }
 

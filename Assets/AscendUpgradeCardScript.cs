@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public enum AscendUpgradeCardId
@@ -29,7 +30,7 @@ public enum AscendUpgradeCardId
     Completionist,  // +1% income per game completion %
 };
 
-public class AscendUpgradeCardScript : MonoBehaviour
+public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public long Cost = 1;
     public Color CanAffordColor = Color.white;
@@ -38,6 +39,7 @@ public class AscendUpgradeCardScript : MonoBehaviour
     public Image ButtonOverlay;
     public Image CardOverlay;
     public Button ButtonBuy;
+    public string HoverText = "(hover text missing)";
     public TextMeshProUGUI ButtonBuyText;
     public TextMeshProUGUI OwnedText;
     public AscendUpgradeCardId CardId = AscendUpgradeCardId.NotSet;
@@ -50,6 +52,17 @@ public class AscendUpgradeCardScript : MonoBehaviour
     private void Awake()
     {
         _background = GetComponent<Image>();
+    }
+
+    // Hovering a card shows its HoverText in the text below the cards (AscendDecisionScript.TextHover).
+    public void OnPointerEnter(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHoverText(HoverText);
+
+    public void OnPointerExit(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHoverText(null);
+
+    void OnDisable()
+    {
+        if (AscendDecisionScript.Instance != null)
+            AscendDecisionScript.Instance.SetCardHoverText(null);
     }
 
     void Update()
