@@ -35,9 +35,13 @@ namespace Assets.Script.Misc
         {
             if (useShorthand)
             {
-                return seconds.HasValue ?
-                    $"{days}D, {hours}H, {minutes}M, {seconds}S" :
-                    $"{days}D, {hours}H, {minutes}M";
+                // Leading empty units are left out ("2H, 10M", not "0D, 2H, 10M"); minutes always show.
+                string m = seconds.HasValue ? $"{minutes}M, {seconds}S" : $"{minutes}M";
+                if (days > 0)
+                    return $"{days}D, {hours}H, {m}";
+                if (hours > 0)
+                    return $"{hours}H, {m}";
+                return m;
             }
             else
             {
