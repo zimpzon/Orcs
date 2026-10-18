@@ -236,14 +236,16 @@ public class ActorBase : MonoBehaviour
     [NonSerialized] public bool IsScaryEarl;
     Sprite[] _plainAnimations;
     float _plainMass;
+    float _plainSpeed;
     Vector3 _plainScale;
 
-    public void MakeScaryEarl(Sprite[] animations, float scale, float mass)
+    public void MakeScaryEarl(Sprite[] animations, float scale, float mass, float speedMul)
     {
         if (!IsScaryEarl)
         {
             _plainAnimations = Animations;
             _plainMass = Mass;
+            _plainSpeed = Speed;
             _plainScale = transform.localScale;
         }
         IsScaryEarl = true;
@@ -251,6 +253,7 @@ public class ActorBase : MonoBehaviour
         SetScale(scale);
         Mass = mass;
         massInverse_ = 1.0f / mass;
+        Speed = _plainSpeed * speedMul;
     }
 
     // Also for actors returned to the cache without Reset (never activated): safe before Awake.
@@ -263,6 +266,7 @@ public class ActorBase : MonoBehaviour
         SetScale(_plainScale.x);
         Mass = _plainMass;
         massInverse_ = 1.0f / Mass;
+        Speed = _plainSpeed;
     }
 
     // Uniform scale, keeping the body radius/offset in step. Before Awake (fresh from the cache, never activated) only

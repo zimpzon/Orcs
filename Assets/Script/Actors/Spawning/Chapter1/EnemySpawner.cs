@@ -386,12 +386,12 @@ public static class EnemySpawner
     //    return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 10)) * HpScale;
     //}
 
-    // Roughly a normal round's total enemy HP at this arena level: the round budget with the level's extra HP
-    // (toughness ignored). Used for Scary Earl (ScaryEarlFight). Clamped like SpawnEnemies.
-    public static long RoundHp(long level)
+    // HP of one final enemy (The Night Creeper) at this arena level, as spawned: base HP x the level's extra HP x its
+    // toughness. Scary Earl is a multiple of it (ScaryEarlFight). Clamped like SpawnEnemies.
+    public static double FinalEnemyHp(long level)
     {
-        double hp = (double)CalculateHpTarget(level) * EnemyHpMulForLevel(level);
-        return hp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)hp;
+        var finalEnemy = EnemyTypes.First(e => e.Type == ActorTypeEnum.FromTheVoid);
+        return (double)finalEnemy.ScaledHp * EnemyHpMulForLevel(level) * finalEnemy.Toughness;
     }
 
     private static long CalculateHpTarget(long level)

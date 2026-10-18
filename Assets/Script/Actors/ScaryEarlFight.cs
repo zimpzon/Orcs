@@ -4,14 +4,15 @@ using Assets.Script.Actors.Spawning;
 using UnityEngine;
 
 // After "Touch fog" in the bestiary (SaveGame.FogTouched), Scary Earl is the only enemy in the arena until he's
-// defeated: normal size, heavy, 10x a normal round's HP at the current arena level. The arena level stays put while
+// defeated: normal size, heavy, 10x the final enemy's (The Night Creeper) HP at the current arena level. The arena level stays put while
 // fighting him (no step on a win or back on a timeout); after the win normal arenas resume from it.
 // He is a cached chaser dressed up as Scary Earl (ActorBase.MakeScaryEarl), turned back on its return to the cache.
 public static class ScaryEarlFight
 {
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
-    const long HpMul = 10;
+    const double HpMul = 10; // x one final enemy (The Night Creeper) at the current arena level
     const float Mass = 25f;
+    const float SpeedMul = 1.35f; // faster than the plain chaser
 
     public const string ArenaText = "SCARY EARL";
     public const string StoryFighting =
@@ -33,10 +34,10 @@ public static class ScaryEarlFight
         var earl = SpawnUtil.Random(BaseType, 1).First();
         Current = earl;
         float scale = Mathf.Abs(G.D.PlayerScript.transform.localScale.x);
-        earl.MakeScaryEarl(RunSprites() ?? earl.Animations, scale, Mass);
+        earl.MakeScaryEarl(RunSprites() ?? earl.Animations, scale, Mass, SpeedMul);
 
-        long hp = EnemySpawner.RoundHp(arenaLevel);
-        hp = hp > long.MaxValue / (4 * HpMul) ? long.MaxValue / 4 : hp * HpMul;
+        double hpD = EnemySpawner.FinalEnemyHp(arenaLevel) * HpMul;
+        long hp = hpD > long.MaxValue / 4 ? long.MaxValue / 4 : (long)hpD;
         earl.BaseHp = hp;
         earl.Hp = hp;
         return new List<ActorBase> { earl };

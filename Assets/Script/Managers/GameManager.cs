@@ -1923,6 +1923,11 @@ public class GameManager : MonoBehaviour
             return;
         _storyShown = story;
         TextStory.text = story;
+
+        // Its backdrop (child "Background") only shows with text.
+        var background = TextStory.transform.Find("Background");
+        if (background != null)
+            background.gameObject.SetActive(story.Length > 0);
     }
 
     // Tier levels from 400 (first tier) down to 1 (Storm Lord, the last), linear in between. RightShift+T.

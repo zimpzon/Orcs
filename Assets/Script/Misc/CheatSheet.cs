@@ -80,12 +80,15 @@ public class CheatSheet : MonoBehaviour
             .FirstOrDefault(t => t.font != null && t.font.name.Contains("Lato"));
         if (fontSource != null)
             text.font = fontSource.font;
-        text.fontSize = 14;
+        // Shrinks to fit (14 down to 7) as cheats get added.
+        text.enableAutoSizing = true;
+        text.fontSizeMax = 14;
+        text.fontSizeMin = 7;
         text.raycastTarget = false;
         text.alignment = TextAlignmentOptions.TopLeft;
         var trt = text.rectTransform;
-        trt.anchorMin = new Vector2(0.15f, 0.06f);
-        trt.anchorMax = new Vector2(0.85f, 0.94f);
+        trt.anchorMin = new Vector2(0.1f, 0.03f);
+        trt.anchorMax = new Vector2(0.9f, 0.97f);
         trt.offsetMin = trt.offsetMax = Vector2.zero;
 
         var sb = new StringBuilder();

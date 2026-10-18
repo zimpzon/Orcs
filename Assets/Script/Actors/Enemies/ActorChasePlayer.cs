@@ -57,6 +57,8 @@ public class ActorChasePlayer : MonoBehaviour
     {
         float roll = UnityEngine.Random.value;
         currentMode_ = (roll < 0.3f) ? TargetMode.Chase : TargetMode.Flee;
+        if (actorBase_.IsScaryEarl)
+            currentMode_ = TargetMode.Chase; // Scary Earl never wanders off: always straight for Earl
 
         // Stay in this mode for 1.5–3 seconds
         float duration = UnityEngine.Random.Range(1.5f, 3.0f);

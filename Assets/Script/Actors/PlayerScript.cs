@@ -295,9 +295,19 @@ public class PlayerScript : MonoBehaviour
             {
                 if (distanceToClosest < 2.0f)
                 {
-                    newMoveVec = -toClosest.normalized * speed;
+                    newMoveVec = FleeDirection(toClosest) * speed;
                 }
             }
+        }
+
+        // Nothing to chase or flee but far out near a border: drift back toward the middle at half speed.
+        if (newMoveVec == Vector3.zero && ActorBase.PlayerClosestEnemy != null)
+        {
+            var bounds = GameManager.ArenaBounds;
+            Vector2 toMiddle = bounds.center - (Vector2)trans_.position;
+            float halfSize = 0.5f * Mathf.Min(bounds.width, bounds.height);
+            if (halfSize > 0f && toMiddle.magnitude > halfSize * IdleDriftFrom)
+                newMoveVec = (Vector3)toMiddle.normalized * (speed * 0.5f);
         }
 
         if (newMoveVec == Vector3.zero)
@@ -321,6 +331,49 @@ public class PlayerScript : MonoBehaviour
             flipX_ = moveVec_.x < 0 ? -playerScale_ : playerScale_;
             renderer_.flipX = flipX_ < 0;
         }
+    }
+
+    // Away from the closest enemy, leaning toward the arena's middle (more the farther out Earl is, less when the middle
+    // is past the enemy), and steering off the walls: near a wall the escape turns sideways (around the enemy, toward
+    // the open middle), so Earl slides out of corners and borders instead of hanging there.
+    const float WallMargin = 1.5f;
+    const float MiddlePull = 0.8f;
+    const float IdleDriftFrom = 0.7f; // idle drift toward the middle beyond this share of the half arena size
+
+    Vector3 FleeDirection(Vector3 toClosest)
+    {
+        Vector3 away = -toClosest.normalized;
+        var bounds = GameManager.ArenaBounds;
+        Vector2 pos = trans_.position;
+
+        Vector2 toMiddleVec = bounds.center - pos;
+        float halfSize = 0.5f * Mathf.Min(bounds.width, bounds.height);
+        float outward = halfSize > 0f ? Mathf.Clamp01(toMiddleVec.magnitude / halfSize) : 0f;
+        if (outward > 0f)
+        {
+            Vector3 toMiddleDir = toMiddleVec.normalized;
+            float agree = (Vector3.Dot(toMiddleDir, away) + 1f) * 0.5f; // 1: the middle is away from the enemy
+            away = (away + toMiddleDir * (MiddlePull * outward * (0.35f + 0.65f * agree))).normalized;
+        }
+
+        // Push from each wall that's within the margin, stronger the closer (0..1 per wall).
+        Vector3 wall = Vector3.zero;
+        wall.x += Mathf.Clamp01(1f - (pos.x - bounds.xMin) / WallMargin);
+        wall.x -= Mathf.Clamp01(1f - (bounds.xMax - pos.x) / WallMargin);
+        wall.y += Mathf.Clamp01(1f - (pos.y - bounds.yMin) / WallMargin);
+        wall.y -= Mathf.Clamp01(1f - (bounds.yMax - pos.y) / WallMargin);
+        float w = Mathf.Clamp01(wall.magnitude);
+        if (w <= 0f)
+            return away;
+
+        // Sideways around the enemy, the side that leads toward the arena's middle.
+        Vector3 side = new Vector3(-away.y, away.x, 0f);
+        Vector2 toMiddle = bounds.center - pos;
+        if (Vector2.Dot(side, toMiddle) < 0f)
+            side = -side;
+
+        Vector3 dir = away * (1f - w) + side * w + wall * 0.5f;
+        return dir.sqrMagnitude > 0.0001f ? dir.normalized : side;
     }
 
     public void AddForce(Vector3 f)
