@@ -775,6 +775,18 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
+    // Drops the round in progress (or about to start) and starts over: e.g. right after "Touch fog", so the Scary
+    // Earl fight begins at once instead of after a normal round under the Scary Earl texts. Like a save wipe's
+    // restart (ResetAllProgress); the arena level is unchanged.
+    public void RestartRound()
+    {
+        if (GameState != State.Idle_PresentLevel && GameState != State.Idle_Fighting)
+            return; // between rounds: the next one starts fresh anyway
+
+        GameState = State.Idle_RestartRound;
+        PrepareForNewRound();
+    }
+
     void PrepareForNewRound()
     {
         //KillKillableObjects();

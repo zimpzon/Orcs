@@ -80,6 +80,7 @@ public class BeastiaryPopupScript : MonoBehaviour
         if (ButtonTouchFog != null)
             ButtonTouchFog.SetActive(false);
         _secretTile.Reveal();
+        GameManager.Instance.RestartRound(); // the Scary Earl fight starts now, not after the current normal round
     }
 
     public void Show()
