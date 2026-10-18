@@ -2006,7 +2006,7 @@ public class GameManager : MonoBehaviour
             WindowedAspect.SetFullscreen(!WindowedAspect.IsFullscreen);
         }
 
-        // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all). All off until RightShift + C H E A T.
+        // CHEATS (keep CheatSheet.Entries in sync - RightShift+H shows them all). All off until LeftShift + C H E A T.
         if (G.UpdateCheatUnlock())
             AchievementsScript.AnnounceAtCursorOrCenter("Cheats enabled");
 

@@ -79,7 +79,8 @@ public class G : MonoBehaviour
     public static bool SelectionTap()
         => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
 
-    // Cheats are off until RightShift is held while typing C H E A T (any other key restarts it). Not saved: per session.
+    // Cheats are off until LeftShift is held while typing C H E A T (any other key restarts it). Not saved: per session.
+    // LeftShift, not RightShift: the cheats themselves are on RightShift, and RightShift+T fired the moment T was typed.
     // Always on in the Editor.
 #if UNITY_EDITOR
     public static bool CheatsEnabled = true;
@@ -95,7 +96,7 @@ public class G : MonoBehaviour
         if (CheatsEnabled || !Input.anyKeyDown)
             return false;
 
-        if (!Input.GetKey(KeyCode.RightShift))
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
             _cheatUnlockIndex = 0;
             return false;
@@ -109,8 +110,8 @@ public class G : MonoBehaviour
             return true;
         }
 
-        // Pressing RightShift itself doesn't break the sequence.
-        if (!Input.GetKeyDown(KeyCode.RightShift))
+        // Pressing LeftShift itself doesn't break the sequence.
+        if (!Input.GetKeyDown(KeyCode.LeftShift))
             _cheatUnlockIndex = Input.GetKeyDown(CheatUnlockCode[0]) ? 1 : 0;
         return false;
     }
