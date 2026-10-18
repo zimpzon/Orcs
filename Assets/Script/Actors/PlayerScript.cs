@@ -295,13 +295,16 @@ public class PlayerScript : MonoBehaviour
             {
                 if (distanceToClosest < 2.0f)
                 {
-                    newMoveVec = FleeDirection(toClosest) * speed;
+                    // Against Scary Earl (always chasing, fast) Earl steers toward the middle and off walls; other
+                    // enemies: straight away, as always.
+                    newMoveVec = (FightingScaryEarl ? FleeDirection(toClosest) : -toClosest.normalized) * speed;
                 }
             }
         }
 
-        // Nothing to chase or flee but far out near a border: drift back toward the middle at half speed.
-        if (newMoveVec == Vector3.zero && ActorBase.PlayerClosestEnemy != null)
+        // Scary Earl only: nothing to chase or flee but far out near a border, drift back toward the middle at half
+        // speed. (In normal rounds this fought the chase/flee distances and made Earl jitter while shooting.)
+        if (newMoveVec == Vector3.zero && FightingScaryEarl)
         {
             var bounds = GameManager.ArenaBounds;
             Vector2 toMiddle = bounds.center - (Vector2)trans_.position;
@@ -339,6 +342,8 @@ public class PlayerScript : MonoBehaviour
     const float WallMargin = 1.5f;
     const float MiddlePull = 0.8f;
     const float IdleDriftFrom = 0.7f; // idle drift toward the middle beyond this share of the half arena size
+
+    static bool FightingScaryEarl => ActorBase.PlayerClosestEnemyActor != null && ActorBase.PlayerClosestEnemyActor.IsScaryEarl;
 
     Vector3 FleeDirection(Vector3 toClosest)
     {
