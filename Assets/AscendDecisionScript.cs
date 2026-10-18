@@ -214,7 +214,8 @@ public class AscendDecisionScript : MonoBehaviour
             int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
             string color = bonusPct <= 100 ? TextColors.OrangeSmallest : TextColors.GreenSmallest; // orange in the last 1/8
             string bonusText = $"<color={color}>{bonusPct}</color>";
-            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]",$"<color={TextColors.GreenSmallest}>{bonusText}</color>");
+            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", $"{bonusText}").
+                Replace("[MAXBONUS]", $"<color={TextColors.GreenSmallest}>500</color>");
         }
 
         TextCurrentMonsterCredits.text = $"•<indent=5%>You have <color={gainTextColorStr}>{Format64.FormatGrouped(MonsterCreditsAtStart)}</color> {creditTxt}</indent>";

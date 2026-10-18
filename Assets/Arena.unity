@@ -24774,7 +24774,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -188, y: 107.1}
+  m_AnchoredPosition: {x: -188, y: 110.5}
   m_SizeDelta: {x: 184.0401, y: 18.8726}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &283818037
@@ -44935,7 +44935,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -188, y: 92.90001}
+  m_AnchoredPosition: {x: -188, y: 96.30001}
   m_SizeDelta: {x: 184.0401, y: 18.8726}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &719025057
@@ -62561,8 +62561,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u2022 <indent=5%>Credit income bonus: [BONUS]% / 500%. Decays over time.
-    Refills on Rebirth.</indent>"
+  m_text: "\u2022 <indent=5%>Credit income bonus: [BONUS]% / [MAXBONUS]%. Decays
+    over time. Refills on Rebirth.</indent>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -120297,7 +120297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -188, y: 78.40001}
+  m_AnchoredPosition: {x: -188, y: 81.80001}
   m_SizeDelta: {x: 184.0401, y: 18.8726}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1810895776
