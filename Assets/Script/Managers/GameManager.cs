@@ -236,6 +236,8 @@ public class GameManager : MonoBehaviour
         else
         {
             SaveGame.Members = new SaveGameMembers();
+            // The 100% preview cheat (RightShift+G/F) isn't in the save: a fresh start shouldn't keep faking 100%.
+            CrownPulse.CheatForceShow = false;
         }
 
         InvalidateIncome(); // cached income is from the old save

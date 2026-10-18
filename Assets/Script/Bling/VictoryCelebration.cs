@@ -172,8 +172,8 @@ public class VictoryCelebration : MonoBehaviour
         _nextFirework = Time.unscaledTime + 0.4f;
     }
 
-    // Soft 12-wedge sunburst, alpha fading outward. Generated once.
-    static Sprite RaySprite()
+    // Soft 12-wedge sunburst, alpha fading outward. Generated once. Also used (black) behind Scary Earl (SecretBeastTile).
+    public static Sprite RaySprite()
     {
         if (_raySprite != null)
             return _raySprite;

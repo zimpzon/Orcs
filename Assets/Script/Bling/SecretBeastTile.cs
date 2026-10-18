@@ -16,17 +16,23 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
     const float BlobDrift = 0.12f;       // relative to the tile size
     const float BlobBreath = 0.15f;
     const float RevealTime = 1.0f;
-    const float RevealBlobGrow = 0.6f;   // extra scale while the fog clears
+    const float RevealFlyDistance = 1.3f; // tile widths the fog flies out to its side while clearing
+    const float RevealBlobGrow = 0.2f;    // slight puff while flying out
     const float FoggedIconAlpha = 0.12f;   // Scary Earl behind the fog: only a faint hint
     const float RevealIconPop = 0.1f;      // Scary Earl bumps up this much while the fog clears
     const float FrameTime = 0.15f;       // same as the skin preview
     const float IconInset = 0f;          // like the final enemy's icon (BeastiaryPopupScript)
     const float IconRaise = 3f;
+    // Black god rays behind Scary Earl once revealed: the victory screen's sunburst (VictoryCelebration.RaySprite),
+    // black, slowly turning and breathing. Fade in with the reveal.
+    const float RayAlpha = 0.6f;
+    const float RaySpeed = 10f;          // degrees per second
+    const float RaySizeMul = 1.7f;       // x the tile's longer side (the frame clips it)
     static readonly Color FogColor = new Color(0.86f, 0.86f, 0.88f, 1f); // white/grey, heavy
 
     const string DefaultHovertext = "Hover over a beast to see details";
     const string FogHovertext = "???\n<size=80%>Something hides in the fog</size>";
-    const string RevealedHovertext = "Scary Earl, the MASTER MIND";
+    const string RevealedHovertext = "<size=120%><color=yellow>Scary Earl</color> - the MASTER MIND</size>";
 
     public static SecretBeastTile Instance;
     public static bool Unlocked => SaveGame.Members.Achieved.Contains(Achieved.Completion100) || CrownPulse.CheatForceShow;
@@ -43,6 +49,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     TextMeshProUGUI _hovertext;
     Image _icon;
+    Image _rays;
     Sprite[] _frames;
     int _frame;
     float _nextFrame;
@@ -54,6 +61,14 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         Instance = this;
         _icon = icon;
+
+        var raysGo = new GameObject("GodRays", typeof(RectTransform));
+        raysGo.transform.SetParent(transform, false);
+        raysGo.transform.SetSiblingIndex(_icon.transform.GetSiblingIndex()); // just behind Scary Earl
+        _rays = raysGo.AddComponent<Image>();
+        _rays.sprite = VictoryCelebration.RaySprite();
+        _rays.raycastTarget = false;
+        _rays.rectTransform.anchoredPosition = new Vector2(0, IconRaise);
         _hovertext = hovertext;
         gameObject.AddComponent<RectMask2D>(); // the fog stays inside the frame
 
@@ -100,6 +115,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _reveal = -1f;
         bool revealed = SaveGame.Members.FogTouched;
         SetIcon(revealed ? 1f : FoggedIconAlpha, 1f); // always there, almost invisible behind the fog until it clears
+        SetRays(revealed ? 1f : 0f);
         foreach (var blob in _blobs)
             blob.Image.enabled = !revealed;
     }
@@ -120,6 +136,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
     void Update()
     {
         float dt = Time.unscaledDeltaTime;
+        UpdateRays();
 
         if (_frames != null && _frames.Length > 1 && Time.unscaledTime >= _nextFrame)
         {
@@ -135,6 +152,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
             clear = _reveal;
             float ease = 1f - (1f - _reveal) * (1f - _reveal);
             SetIcon(Mathf.Lerp(FoggedIconAlpha, 1f, ease), 1f + RevealIconPop * Mathf.Sin(ease * Mathf.PI));
+            SetRays(ease);
             if (_reveal >= 1f)
             {
                 _reveal = -1f;
@@ -153,13 +171,35 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
                 continue;
             float a = t * blob.Speed + blob.Phase;
             var drift = new Vector2(Mathf.Sin(a), Mathf.Cos(a * 0.7f)) * BlobDrift;
-            blob.Rect.anchoredPosition = Vector2.Scale(blob.Home + drift - new Vector2(0.5f, 0.5f), size);
+            // Revealing: each blob flies out to its own side (left half left, right half right), speeding up,
+            // with a little vertical spread; the frame's mask clips it.
+            float side = blob.Home.x < 0.5f ? -1f : 1f;
+            float fly = clear * clear;
+            var away = new Vector2(side * RevealFlyDistance, (blob.Home.y - 0.5f) * 0.4f) * fly;
+            blob.Rect.anchoredPosition = Vector2.Scale(blob.Home + drift - new Vector2(0.5f, 0.5f) + away, size);
             float scale = (1f + BlobBreath * Mathf.Sin(a * 1.3f)) * (1f + RevealBlobGrow * clear);
             blob.Rect.sizeDelta = new Vector2(blobSize, blobSize) * scale;
             var c = FogColor;
-            c.a = blob.Alpha * (1f - clear);
+            c.a = blob.Alpha * (1f - clear * clear * clear); // stays thick until it has mostly left
             blob.Image.color = c;
         }
+    }
+
+    void SetRays(float strength)
+    {
+        _rays.enabled = strength > 0f;
+        _rays.color = new Color(0f, 0f, 0f, RayAlpha * strength);
+    }
+
+    void UpdateRays()
+    {
+        if (!_rays.enabled)
+            return;
+        Vector2 size = ((RectTransform)transform).rect.size;
+        float t = Time.unscaledTime;
+        float s = Mathf.Max(size.x, size.y) * RaySizeMul * (1f + 0.05f * Mathf.Sin(t * 1.3f));
+        _rays.rectTransform.sizeDelta = new Vector2(s, s);
+        _rays.rectTransform.localRotation = Quaternion.Euler(0, 0, -t * RaySpeed);
     }
 
     void SetIcon(float alpha, float scale)

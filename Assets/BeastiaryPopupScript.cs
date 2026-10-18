@@ -116,25 +116,13 @@ public class BeastiaryPopupScript : MonoBehaviour
             ButtonTouchFog.SetActive(showFogButton);
     }
 
-    // "(unlocked/total)" under the "Bestiary" header. Everything below the header (bonus lines and the beast grid) is
-    // moved down to make room, and the popup grows a bit taller (top-left pivot, so it grows downward; the hover text
-    // and OK button are bottom-anchored and follow).
+    // "(unlocked/total)" under the "Bestiary" header. The room for it is in the scene (the bonus lines and grid sit lower
+    // and the popup is taller): it used to be made here at runtime, so the editor layout didn't match the game and
+    // anything placed below the grid ended up somewhere else when playing.
     TextMeshProUGUI _progressText;
-    const float ProgressLineRoom = 14f;
-    const float ExtraPopupHeight = 20f;
 
     void CreateProgressText()
     {
         _progressText = PopupHeaderProgress.Create(transform, "TextBestiary");
-        if (_progressText == null)
-            return;
-
-        foreach (var childName in new[] { "TextBonusHeader", "TextBonus", "Layout" })
-        {
-            if (transform.Find(childName) is RectTransform rt)
-                rt.anchoredPosition -= new Vector2(0, ProgressLineRoom);
-        }
-
-        ((RectTransform)transform).sizeDelta += new Vector2(0, ExtraPopupHeight);
     }
 }
