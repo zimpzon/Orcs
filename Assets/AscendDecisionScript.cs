@@ -212,9 +212,13 @@ public class AscendDecisionScript : MonoBehaviour
         if (TextCreditBonus != null)
         {
             int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
-            string color = bonusPct <= 100 ? TextColors.OrangeSmallest : TextColors.GreenSmallest; // orange in the last 1/8
-            string bonusText = $"<color={color}>{bonusPct}</color>";
-            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", $"{bonusText}").
+            bool isLow = bonusPct <= 100;
+                
+            string color = isLow ? TextColors.OrangeSmallest : TextColors.GreenSmallest; // orange in the last x%
+            string colorTag = $"<color={color}>{bonusPct}</color>";
+            string bonusText = isLow ? $"<b>{colorTag}</b>" : $"{colorTag}";
+
+            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText).
                 Replace("[MAXBONUS]", $"<color={TextColors.GreenSmallest}>500</color>");
         }
 
