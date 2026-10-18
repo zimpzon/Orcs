@@ -251,6 +251,15 @@ namespace Assets.Script.Achievements
 
         // 100% game completion: every enemy, every tier, and every skin except this one (it can't count itself).
         // Throttled, GameCompletion.GetProgress scans the skin objects.
+        // Three beats, 1 s apart, queued behind the unlock text that completed it (X2RankUpEffect's queue). Also shown
+        // when the RightShift+G preview is turned on (GameManager), for testing.
+        public static void AnnounceCompletion()
+        {
+            AchievementsScript.AnnounceAtCursorOrCenter("100%");
+            AchievementsScript.AnnounceAtCursorOrCenter("COMPLETION");
+            AchievementsScript.AnnounceAtCursorOrCenter("WELL DONE HERO!");
+        }
+
         public static void CheckCompletion100(List<Achieved> list)
         {
             if (list.Contains(Achieved.Completion100)) return;
@@ -270,8 +279,7 @@ namespace Assets.Script.Achievements
                     m.CompletionSeconds = m.EstimatedOnlineSeconds2;
                     m.CompletionRebirths = m.TimesAscended_09_08_2025;
                 }
-                // Queued behind the unlock text that completed it (X2RankUpEffect's 1 s queue).
-                AchievementsScript.AnnounceAtCursorOrCenter("100% COMPLETE!\n<size=80%>Victory is yours!</size>");
+                AnnounceCompletion();
             }
         }
 

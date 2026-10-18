@@ -2158,6 +2158,8 @@ public class GameManager : MonoBehaviour
         {
             CrownPulse.CheatForceShow = !CrownPulse.CheatForceShow;
             Debug.Log("Cheat: crown pulse preview " + (CrownPulse.CheatForceShow ? "ON" : "OFF"));
+            if (CrownPulse.CheatForceShow)
+                Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
         }
 
         // Preview the X2 rank-up text at the cursor.
