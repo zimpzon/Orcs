@@ -220,6 +220,8 @@ public class AscendDecisionScript : MonoBehaviour
 
             TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText).
                 Replace("[MAXBONUS]", $"<color={TextColors.GreenSmallest}>500</color>");
+            if (isLow)
+                TextCreditBonus.text = $"<b>{TextCreditBonus.text}</b>";
         }
 
         TextCurrentMonsterCredits.text = $"•<indent=5%>You have <color={gainTextColorStr}>{Format64.FormatGrouped(MonsterCreditsAtStart)}</color> {creditTxt}</indent>";
