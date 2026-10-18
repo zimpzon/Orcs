@@ -15,7 +15,6 @@ public static class TextColors
     public const string GreenSmallest = "#AADC64";
     public const string OrangeSmallest = "#F5A05F";
 
-    public const string Yellow = "#F4C430";  // random yellow
-    
-    public static readonly Color GreenColor = new(0.553f, 0.745f, 0.298f); // Green as a Color
+    public const string Yellow = "#F4C430";
+    public const string Gold = "#FFD54A";
 }

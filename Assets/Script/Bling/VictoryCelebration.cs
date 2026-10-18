@@ -41,12 +41,18 @@ public class VictoryCelebration : MonoBehaviour
     [Range(0, 1)] public float ConfettiAlpha = 0.85f;
     public Color[] ConfettiColors =
     {
-        new(1f, 0.835f, 0.29f),       // gold  #FFD54A
-        TextColors.GreenColor,
+        GetColorFromHtmlString(TextColors.Gold),
+        GetColorFromHtmlString(TextColors.Green),
         Color.white,
     };
 
-    static readonly Color Gold = new(1f, 0.835f, 0.29f);
+    private static Color GetColorFromHtmlString(string htmlString)
+    {
+        ColorUtility.TryParseHtmlString(htmlString, out Color color);
+        return color;
+    }
+
+    static readonly Color Gold = GetColorFromHtmlString(TextColors.Gold);
 
     ProgressPopupScript _popup;
     TextMeshProUGUI _text;
