@@ -159,7 +159,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Mystery100)) return;
 
-            if (SaveGame.Members.MysteryCollected >= 100)
+            // Slug Earl. Was 100 (the enum name is from then).
+            if (SaveGame.Members.MysteryCollected >= 50)
             {
                 list.Add(Achieved.Mystery100);
                 NewAchieved(Achieved.Mystery100);
@@ -464,7 +465,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Mystery50)) return;
 
-            if (SaveGame.Members.MysteryCollected >= 50)
+            // Expressionist Earl. Was 50 (the enum name is from then).
+            if (SaveGame.Members.MysteryCollected >= 25)
             {
                 list.Add(Achieved.Mystery50);
                 NewAchieved(Achieved.Mystery50);

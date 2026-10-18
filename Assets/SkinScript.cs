@@ -83,7 +83,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Slug)
         {
-            return (list.Contains(Achieved.Mystery100), "Slug Earl: Get 100 mystery rewards");
+            return (list.Contains(Achieved.Mystery100), "Slug Earl: Get 50 mystery rewards");
         }
         else if (animationName == SkinAnimation.Zombie)
         {
@@ -207,7 +207,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.ExpressionistEarl)
         {
-            return (list.Contains(Achieved.Mystery50), "Expressionist Earl: Get 50 mystery rewards");
+            return (list.Contains(Achieved.Mystery50), "Expressionist Earl: Get 25 mystery rewards");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
@@ -262,8 +262,8 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.KaratEarl => (m.ArenaLevel, 75000),
 
             SkinAnimation.Pirate => (m.ChestsCollected, 30),
-            SkinAnimation.Slug => (m.MysteryCollected, 100),
-            SkinAnimation.ExpressionistEarl => (m.MysteryCollected, 50),
+            SkinAnimation.Slug => (m.MysteryCollected, 50),
+            SkinAnimation.ExpressionistEarl => (m.MysteryCollected, 25),
             SkinAnimation.SecretiveEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 150),
             SkinAnimation.SkaterEarl => (PlayerUpgrades.Data.NumberOfX2Bought, 250),
             SkinAnimation.ChickenEarl => (m.LevelPctBought, 50),
