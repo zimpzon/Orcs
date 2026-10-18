@@ -1892,7 +1892,7 @@ public class GameManager : MonoBehaviour
         GameTime += GameDeltaTime;
 
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && !Input.GetKey(KeyCode.RightShift)) // RightShift+F is a cheat
         {
             // Standalone: through WindowedAspect (16:9 / 16:10 monitors only). WebGL / Editor: plain toggle.
             if (WindowedAspect.IsActive)
@@ -2026,6 +2026,16 @@ public class GameManager : MonoBehaviour
 
         // Toggle the victory button's 100%-completion crown pulse, to preview it. (Not Ctrl+P: that's the Editor's
         // play/stop shortcut.)
+        // Secret bestiary tile: 100% preview on and the fog back, i.e. just before "Touch fog".
+        if (G.GetCheatKeyDown(KeyCode.F) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            CrownPulse.CheatForceShow = true;
+            SaveGame.Members.FogTouched = false;
+            if (SecretBeastTile.Instance != null)
+                SecretBeastTile.Instance.SyncState();
+            Debug.Log("Cheat: 100% preview on, bestiary fog back");
+        }
+
         if (G.GetCheatKeyDown(KeyCode.G) && G.GetCheatKey(KeyCode.RightShift))
         {
             CrownPulse.CheatForceShow = !CrownPulse.CheatForceShow;

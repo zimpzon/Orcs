@@ -80,7 +80,12 @@ public class G : MonoBehaviour
         => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
 
     // Cheats are off until RightShift is held while typing C H E A T (any other key restarts it). Not saved: per session.
+    // Always on in the Editor.
+#if UNITY_EDITOR
+    public static bool CheatsEnabled = true;
+#else
     public static bool CheatsEnabled;
+#endif
     static readonly KeyCode[] CheatUnlockCode = { KeyCode.C, KeyCode.H, KeyCode.E, KeyCode.A, KeyCode.T };
     static int _cheatUnlockIndex;
 

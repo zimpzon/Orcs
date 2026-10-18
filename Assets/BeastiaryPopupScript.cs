@@ -16,7 +16,9 @@ public class BeastiaryPopupScript : MonoBehaviour
     public GameObject BeastPrefab;
     public GameObject Layout;
     public TextMeshProUGUI Hovertext;
+    public GameObject ButtonTouchFog; // "Touch fog": after 100%, until Scary Earl is revealed (SecretBeastTile)
     private List<Beast> _beasts = new List<Beast>();
+    SecretBeastTile _secretTile;
     const float FinalBeastInset = 0f; // gap between the final enemy's icon and its frame edge (negative = past it)
     const float FinalBeastRaise = 3f; // moves it up: the sprite's feet sit low, the frame's bottom edge is thicker
 
@@ -51,7 +53,33 @@ public class BeastiaryPopupScript : MonoBehaviour
             finalIcon.gameObject.AddComponent<UiVoidSparks>().Active = true; // also on the locked silhouette
         }
 
+        CreateSecretTile();
         CreateProgressText();
+    }
+
+    // One more tile after the beasts, shown after 100% only: fog, then Scary Earl (not counted as a beast).
+    void CreateSecretTile()
+    {
+        var tile = Instantiate(BeastPrefab);
+        tile.name = "SecretBeast";
+        tile.transform.SetParent(Layout.transform, worldPositionStays: false);
+        if (tile.TryGetComponent<BeastiaryBeastScript>(out var beastScript))
+            Destroy(beastScript);
+        _secretTile = tile.AddComponent<SecretBeastTile>();
+        _secretTile.Init(tile.transform.Find("Icon").GetComponent<Image>(), Hovertext);
+        tile.SetActive(SecretBeastTile.Unlocked);
+    }
+
+    public void OnTouchFog()
+    {
+        if (SaveGame.Members.FogTouched)
+            return;
+        SaveGame.Members.FogTouched = true;
+        SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
+        if (ButtonTouchFog != null)
+            ButtonTouchFog.SetActive(false);
+        _secretTile.Reveal();
     }
 
     public void Show()
@@ -79,6 +107,13 @@ public class BeastiaryPopupScript : MonoBehaviour
 
         if (_progressText != null)
             _progressText.text = $"({unlocked}/{_beasts.Count})";
+
+        bool secret = SecretBeastTile.Unlocked;
+        if (_secretTile != null && _secretTile.gameObject.activeSelf != secret)
+            _secretTile.gameObject.SetActive(secret);
+        bool showFogButton = secret && !SaveGame.Members.FogTouched;
+        if (ButtonTouchFog != null && ButtonTouchFog.activeSelf != showFogButton)
+            ButtonTouchFog.SetActive(showFogButton);
     }
 
     // "(unlocked/total)" under the "Bestiary" header. Everything below the header (bonus lines and the beast grid) is

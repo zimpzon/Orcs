@@ -34,6 +34,7 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+K", "Unlock the White Earl skin"),
         ("RightCtrl+R", "Preview the X2 rank-up text at the cursor"),
         ("RightShift+G", "Toggle 100% victory effects preview (crown pulse, victory dialog)"),
+        ("RightShift+F", "Secret bestiary tile: 100% preview on + fog back (before 'Touch fog')"),
         ("RightShift+L", "Show save game load info"),
     };
 
