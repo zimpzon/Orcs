@@ -32,7 +32,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     const string DefaultHovertext = "Hover over a beast to see details";
     const string FogHovertext = "???\n<size=80%>Something hides in the fog</size>";
-    static readonly string RevealedHovertext = $"<size=120%><color={TextColors.OrangeSmallest}>Scary Earl</color> - THE MASTER MIND</size>";
+    static readonly string RevealedHovertext = $"<size=120%><color={TextColors.GreenSmallest}>Scary Earl</color> - THE MASTER MIND</size>";
 
     public static SecretBeastTile Instance;
     public static bool Unlocked => SaveGame.Members.Achieved.Contains(Achieved.Completion100) || CrownPulse.CheatForceShow;

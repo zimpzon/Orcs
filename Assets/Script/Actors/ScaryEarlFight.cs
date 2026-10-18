@@ -10,16 +10,16 @@ using UnityEngine;
 public static class ScaryEarlFight
 {
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
-    const double HpMul = 3.515625; // x one final enemy (The Night Creeper) at the current arena level (18.75 x 0.25 x 0.75)
+    const double HpMul = 5.4931640625; // x one final enemy (The Night Creeper) at the current arena level (18.75 x 0.25 x 0.75 x 1.25 x 1.25)
     const float Mass = 60f; // hit knockback is divided by mass (was 25: Earl pushed him around)
     const float SpeedMul = 1.5f; // faster than the plain chaser (was 1.35)
 
     public const string ArenaText = "SCARY EARL";
     public static readonly string StoryFighting =
-        $"<color={TextColors.OrangeSmallest}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
+        $"<color={TextColors.GreenSmallest}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
 
     public static readonly string StoryDefeated =
-        $"You defeated <color={TextColors.OrangeSmallest}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
+        $"You defeated <color={TextColors.GreenSmallest}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
 
     public static bool Active => SaveGame.Members.FogTouched && !SaveGame.Members.ScaryEarlDefeated;
 
