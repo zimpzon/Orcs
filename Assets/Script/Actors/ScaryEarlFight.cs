@@ -10,8 +10,8 @@ using UnityEngine;
 public static class ScaryEarlFight
 {
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
-    const double HpMul = 10; // x one final enemy (The Night Creeper) at the current arena level
-    const float Mass = 25f;
+    const double HpMul = 12.5; // x one final enemy (The Night Creeper) at the current arena level (was 10, +25%)
+    const float Mass = 60f; // hit knockback is divided by mass (was 25: Earl pushed him around)
     const float SpeedMul = 1.5f; // faster than the plain chaser (was 1.35)
 
     public const string ArenaText = "SCARY EARL";

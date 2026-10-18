@@ -561,8 +561,15 @@ public class ActorBase : MonoBehaviour
         }
     }
 
+    // Scary Earl barely budges: every push on him (hits, explosions, frost) is scaled down on top of his mass, which
+    // only hit knockback uses.
+    const float ScaryEarlPushMul = 0.25f;
+
     public void AddForce(Vector3 force)
     {
+        if (IsScaryEarl)
+            force *= ScaryEarlPushMul;
+
         if (IsBoss)
             return;
 
