@@ -14,6 +14,8 @@ public class AscendProgressScript : MonoBehaviour
     public GameObject AscendRoot;
     private float _nextCreditUpdate;
     private float _lastCreditCommitTime;
+    double _shownFill;        // credit bar fill as shown (Update)
+    long _shownLifetime = -1;
     private double _creditAllowance = 1.0; // credits allowed by the speed limit right now (MinSecondsPerCredit)
 
     [NonSerialized] public bool RebirthEnabled = true;
@@ -76,7 +78,9 @@ public class AscendProgressScript : MonoBehaviour
         // Last tiers: soft speed limit, so credits approach the tier limit instead of being cut off at it.
         creditXpPerSecond = unboosted * UpgradeProgression.CreditSoftLimitFactor(unboosted) * boost;
 
-        const float CreditUpdateRate = 1.0f;
+        // 4x per second (was 1): credits land at their exact time instead of on whole seconds (a 2.5 s limit gave 3, 2,
+        // 3, 2 s gaps and the bar sat at 100% up to a second). Same XP and allowance per second, so same balance.
+        const float CreditUpdateRate = 0.25f;
         const float MaxRealtimeDelta = 60 * 5; // 5 minutes
 
         // Commit actual XP/credit gain once per second (the display below updates every frame). Speed limit: at most one
@@ -131,15 +135,6 @@ public class AscendProgressScript : MonoBehaviour
         double projectedElapsed = G.D.RealTime - _lastCreditCommitTime;
         Decimal512 displayedXp = SaveGame.Members.MonsterCreditsXp_09_08_2025 + creditXpPerSecond * projectedElapsed;
 
-        double t = displayedXp.ToDouble() / xpForNextLevel.ToDouble();
-        if (t < 0) t = 0;
-        if (t > 1) t = 1;
-        ProgressBarImage.fillAmount = (float)t;
-
-        double pct = t * 100.0;
-        if (pct > 100) pct = 100;
-        TextCredits.text = $"Credits: {Assets.Script.Misc.Format64.FormatGrouped(SaveGame.Members.MonsterCredits_09_08_2025)}\n<size=-3><color=#cccccc>Next: {pct:#0}%";
-
         const double MaxSeconds = 60 * 60 * 12;
         // When the speed limit is what holds the next credit back, show that wait instead of the (shorter) XP wait.
         double limitWait = (1.0 - _creditAllowance) * minSecondsPerCredit - projectedElapsed;
@@ -147,6 +142,32 @@ public class AscendProgressScript : MonoBehaviour
         double xpWait = displayedXp >= xpForNextLevel ? 0.0
             : creditXpPerSecond > 0.01 ? ((xpForNextLevel - displayedXp) / creditXpPerSecond).ToDouble()
             : double.MaxValue;
+
+        // Bar = time progress toward the next credit (display only). XP-limited: exactly the XP fraction, as before.
+        // Speed-limited: an even sweep over the limit interval, so it starts at 0 after every credit (not at the XP
+        // left over while the limit held it back) and is full just as the credit lands.
+        double xpInterval = creditXpPerSecond > 0.01 ? (xpForNextLevel / creditXpPerSecond).ToDouble() : double.MaxValue;
+        double interval = Math.Max(minSecondsPerCredit, xpInterval);
+        double timeLeft = Math.Max(Math.Max(limitWait, 0.0), xpWait);
+        double t = interval < double.MaxValue && interval > 0 ? 1.0 - timeLeft / interval : 0.0;
+        if (double.IsNaN(t) || t < 0) t = 0;
+        if (t > 1) t = 1;
+
+        // Never step back within one credit (a boost ending or an income recalc changes the interval); a new credit
+        // starts it over. Big real drops (rebirth, save change) still follow.
+        long lifetime = SaveGame.Members.MonsterCreditsLifetime_09_08_2025;
+        if (lifetime != _shownLifetime || t < _shownFill - 0.25)
+            _shownFill = t;
+        else
+            _shownFill = Math.Max(_shownFill, t);
+        _shownLifetime = lifetime;
+        t = _shownFill;
+        ProgressBarImage.fillAmount = (float)t;
+
+        double pct = t * 100.0;
+        if (pct > 100) pct = 100;
+        TextCredits.text = $"Credits: {Assets.Script.Misc.Format64.FormatGrouped(SaveGame.Members.MonsterCredits_09_08_2025)}\n<size=-3><color=#cccccc>Next: {pct:#0}%";
+
         if (limitWait > 0 && limitWait > xpWait)
             TextTimeLeft.text = Assets.Script.Misc.Format.FormatTimeShort(TimeSpan.FromSeconds(Math.Ceiling(limitWait)));
         else
