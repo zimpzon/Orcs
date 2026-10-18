@@ -45,9 +45,9 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
             sb.AppendLine($"<color=#dddddd>A storm every <color=COLOR-ARENA>{StormInterval:0}</color> seconds.");
-            sb.AppendLine($"<color=#dddddd>Strikes: <color=COLOR-ARENA>{StrikesForLevel(level)}</color>, damage: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color> zap damage");
-            sb.AppendLine($"<color=#dddddd>Struck enemies take <color=COLOR-ARENA>x{DisplayNumberFormat.Format(WeakenMulForLevel(Math.Max(1, level)), "0.0")}</color> damage from everything.");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{StrikesForLevel(level + 1)}</color> strikes, <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>, weaken <color=COLOR-ARENA>x{DisplayNumberFormat.Format(WeakenMulForLevel(level + 1), "0.0")}</color>");
+            sb.AppendLine($"<color=#dddddd>Strikes: <color=COLOR-ARENA>{StrikesForLevel(level)}</color>, damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level), DamageMulForLevel(level + 1))}</color> zap damage");
+            sb.AppendLine($"<color=#dddddd>Struck enemies take <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(WeakenMulForLevel(Math.Max(1, level)), WeakenMulForLevel(level + 1))}</color> damage from everything.");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{StrikesForLevel(level + 1)}</color> strikes, <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level + 1), DamageMulForLevel(level))}</color>, weaken <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(WeakenMulForLevel(level + 1), WeakenMulForLevel(Math.Max(1, level)))}</color>");
 
             return sb.ToString();
         }

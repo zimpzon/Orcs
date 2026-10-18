@@ -14,8 +14,6 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeSmartFireballs;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentBonusPct = (long)Math.Round((ValueForLevel(level) - 1.0) * 100.0);
-            long nextBonusPct = (long)Math.Round((ValueForLevel(level + 1) - 1.0) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelSmartFireballs,
@@ -49,8 +47,8 @@ namespace Assets.Script.Upgrades
 
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
-            sb.AppendLine($"<color=#dddddd>Fireball bonus damage: +<color=COLOR-ARENA>{Format512.Format(currentBonusPct)}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: +<color=COLOR-ARENA>{Format512.Format(nextBonusPct)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Fireball damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(ValueForLevel(level), ValueForLevel(level + 1))}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(ValueForLevel(level + 1), ValueForLevel(level))}</color>");
 
             return sb.ToString();
         }

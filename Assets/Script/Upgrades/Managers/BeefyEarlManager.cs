@@ -47,8 +47,8 @@ namespace Assets.Script.Upgrades
 
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
-            sb.AppendLine($"<color=#dddddd>Dagger damage bonus: <color=COLOR-ARENA>+{level * DamagePerLevel * 100:0}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>+{(level + 1) * DamagePerLevel * 100:0}%</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(1.0 + level * DamagePerLevel, 1.0 + (level + 1) * DamagePerLevel)}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(1.0 + (level + 1) * DamagePerLevel, 1.0 + level * DamagePerLevel)}</color>");
 
             return sb.ToString();
         }

@@ -44,8 +44,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
-            sb.AppendLine($"<color=#dddddd>Damage to skulled enemies: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>");
+            sb.AppendLine($"<color=#dddddd>Damage to skulled enemies: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level), DamageMulForLevel(level + 1))}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level + 1), DamageMulForLevel(level))}</color>");
 
             return sb.ToString();
         }

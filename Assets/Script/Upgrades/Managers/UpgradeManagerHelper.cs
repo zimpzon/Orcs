@@ -103,6 +103,19 @@ namespace Assets.Script.Upgrades.Managers
             return x2LevelMet && x2PriceMet;
         }
 
+        // Damage bonuses as a factor everywhere ("x2,3", "x45", "x1.250"): percent got unreadable at high levels.
+        // compareTo is the other value shown next to it (current vs next level): enough decimals (up to 3) that the two
+        // don't look the same when one level adds only a little.
+        public static string FormatFactor(double f, double compareTo)
+        {
+            int decimals = f < 10 ? 1 : 0;
+            double step = Math.Abs(f - compareTo);
+            while (decimals < 3 && step > 0 && step < Math.Pow(10, -decimals) * 0.999)
+                decimals++;
+            string format = decimals == 0 ? "#,0" : "#,0." + new string('0', decimals);
+            return "x" + DisplayNumberFormat.Format(f, format);
+        }
+
         public static string GetColorLevelX2(bool x2LevelMet)
             => x2LevelMet ? TextColors.GreenSmall : TextColors.OrangeSmall;
 

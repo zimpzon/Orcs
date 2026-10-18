@@ -12,8 +12,6 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeSkullCrusher;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentIncrease = (long)Math.Round((ValueForLevel(level) - 1.0) * 100.0);
-            long nextIncrease = (long)Math.Round((ValueForLevel(level + 1) - 1.0) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelSkullCrusher,
@@ -45,8 +43,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine(UpgradeManagerHelper.FormatPrice(priceX2));
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
-            sb.AppendLine($"<color=#dddddd>Skull damage increase: <color=COLOR-ARENA>{Format512.Format(currentIncrease)}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{Format512.Format(nextIncrease)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Skull damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(ValueForLevel(level), ValueForLevel(level + 1))}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(ValueForLevel(level + 1), ValueForLevel(level))}</color>");
 
             return sb.ToString();
         }

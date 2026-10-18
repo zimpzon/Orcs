@@ -12,8 +12,6 @@ namespace Assets.Script.Upgrades
             Decimal512 earnedSoFar = SaveGame.Members.TotalIncomeSmartDaggers;
             Decimal512 baseIncome = BaseIncome();
             Decimal512 totalIncome = PassiveIncome();
-            long currentValue = (long)Math.Round((ValueForLevel(level)) * 100.0);
-            long nextValue = (long)Math.Round((ValueForLevel(level + 1)) * 100.0);
 
             UpgradeManagerHelper.GetX2Calculated(
                 SaveGame.Members.LevelSmartDaggers,
@@ -46,8 +44,8 @@ namespace Assets.Script.Upgrades
 
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
-            sb.AppendLine($"<color=#dddddd>Bonus Dagger damage: +<color=COLOR-ARENA>{Format512.Format(currentValue)}%</color>");
-            sb.AppendLine($"<color=#dddddd>Next: +<color=COLOR-ARENA>{Format512.Format(nextValue)}%</color>");
+            sb.AppendLine($"<color=#dddddd>Dagger damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(1.0 + ValueForLevel(level), 1.0 + ValueForLevel(level + 1))}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(1.0 + ValueForLevel(level + 1), 1.0 + ValueForLevel(level))}</color>");
 
             return sb.ToString();
         }

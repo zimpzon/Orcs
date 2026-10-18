@@ -45,8 +45,8 @@ namespace Assets.Script.Upgrades
             sb.AppendLine("<color=#aaaaaa>___________________________________</color>");
             sb.AppendLine("<size=+4><color=#aaaaff>Arena</color></size>");
             sb.AppendLine($"<color=#dddddd>Extra zap jumps: <color=COLOR-ARENA>+{ExtraJumpsForLevel(Math.Max(1, level))}</color>");
-            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level), "0.0")}</color>");
-            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>x{DisplayNumberFormat.Format(DamageMulForLevel(level + 1), "0.0")}</color>");
+            sb.AppendLine($"<color=#dddddd>Zap damage: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level), DamageMulForLevel(level + 1))}</color>");
+            sb.AppendLine($"<color=#dddddd>Next: <color=COLOR-ARENA>{UpgradeManagerHelper.FormatFactor(DamageMulForLevel(level + 1), DamageMulForLevel(level))}</color>");
 
             return sb.ToString();
         }
