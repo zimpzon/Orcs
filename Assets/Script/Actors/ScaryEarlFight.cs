@@ -12,7 +12,7 @@ public static class ScaryEarlFight
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
     const double HpMul = 10; // x one final enemy (The Night Creeper) at the current arena level
     const float Mass = 25f;
-    const float SpeedMul = 1.35f; // faster than the plain chaser
+    const float SpeedMul = 1.5f; // faster than the plain chaser (was 1.35)
 
     public const string ArenaText = "SCARY EARL";
     public const string StoryFighting =
