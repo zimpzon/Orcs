@@ -63,6 +63,8 @@ static class SaveGameAscend
 
         // Stats
         newSave.EstimatedOnlineSeconds2 = oldSave.EstimatedOnlineSeconds2;
+        newSave.CompletionSeconds = oldSave.CompletionSeconds;
+        newSave.CompletionRebirths = oldSave.CompletionRebirths;
         newSave.SaveKillSwitch_CanSave = true;
 
         newSave.Achieved = oldSave.Achieved;

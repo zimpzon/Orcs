@@ -111,7 +111,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.UndeadBeauty)
         {
-            return (list.Contains(Achieved.Rebirth8), "Undead Beauty Earl: Rebirth 8 times");
+            return (list.Contains(Achieved.Rebirth8), "Undead Beauty Earl: Rebirth 5 times");
         }
         else if (animationName == SkinAnimation.HonorableKnight)
         {
@@ -187,7 +187,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {
-            return (list.Contains(Achieved.Rebirth20), "Saturated Earl: Rebirth 20 times");
+            return (list.Contains(Achieved.Rebirth20), "Saturated Earl: Rebirth 10 times");
         }
         else if (animationName == SkinAnimation.WhiteEarl)
         {
@@ -247,8 +247,8 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
             SkinAnimation.WhiteWalkerEarl => (m.TimesAscended_09_08_2025, 1),
             SkinAnimation.Orc => (m.TimesAscended_09_08_2025, 2),
-            SkinAnimation.UndeadBeauty => (m.TimesAscended_09_08_2025, 8),
-            SkinAnimation.SaturatedEarl => (m.TimesAscended_09_08_2025, 20),
+            SkinAnimation.UndeadBeauty => (m.TimesAscended_09_08_2025, 5),
+            SkinAnimation.SaturatedEarl => (m.TimesAscended_09_08_2025, 10),
 
             SkinAnimation.Monster => (m.DiamondCount_09_08_2025, 10),
             SkinAnimation.NinjaEarl => (m.DiamondCount_09_08_2025, 50),

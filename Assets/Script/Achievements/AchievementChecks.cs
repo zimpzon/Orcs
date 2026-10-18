@@ -137,7 +137,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Rebirth8)) return;
 
-            if (SaveGame.Members.TimesAscended_09_08_2025 >= 8)
+            // Undead Beauty Earl. Was 8 (the enum name is from then).
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 5)
             {
                 list.Add(Achieved.Rebirth8);
                 NewAchieved(Achieved.Rebirth8);
@@ -148,7 +149,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Rebirth20)) return;
 
-            if (SaveGame.Members.TimesAscended_09_08_2025 >= 20)
+            // Saturated Earl. Was 20 (the enum name is from then).
+            if (SaveGame.Members.TimesAscended_09_08_2025 >= 10)
             {
                 list.Add(Achieved.Rebirth20);
                 NewAchieved(Achieved.Rebirth20);
@@ -261,6 +263,13 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Completion100);
                 NewAchieved(Achieved.Completion100);
+                // How long it took, frozen now (shown in the victory dialog).
+                var m = SaveGame.Members;
+                if (m.CompletionSeconds < 0)
+                {
+                    m.CompletionSeconds = m.EstimatedOnlineSeconds2;
+                    m.CompletionRebirths = m.TimesAscended_09_08_2025;
+                }
                 // Queued behind the unlock text that completed it (X2RankUpEffect's 1 s queue).
                 AchievementsScript.AnnounceAtCursorOrCenter("100% COMPLETE!\n<size=80%>Victory is yours!</size>");
             }

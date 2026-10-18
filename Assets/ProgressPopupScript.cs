@@ -132,6 +132,7 @@ public class ProgressPopupScript : MonoBehaviour
     // Shifted right so the table sits centered in the dialog (it spans about 62% of the width).
     const string LabelColumn = "16%";
     const string PctColumn = "74%";
+    const string StatColumn = "50%"; // completion time / rebirths: longer values than the percentages
 
     void Update()
     {
@@ -160,6 +161,20 @@ public class ProgressPopupScript : MonoBehaviour
             Row("Upgrade tier reached", tierPct, tiersBought, tiersTotal) + "\r\n" +
             "\r\n" +
             $"<pos={LabelColumn}><b>Total completion</b><pos={PctColumn}><b><color={GreenHex}>{totalPct:0}%</color></b>";
+
+        // How long 100% took (frozen when it was reached). The RightShift+G preview has nothing recorded, so it shows the
+        // current play time and rebirths instead, to check the layout.
+        var m = SaveGame.Members;
+        bool recorded = m.CompletionSeconds >= 0;
+        if ((won && recorded) || CrownPulse.CheatForceShow)
+        {
+            var took = System.TimeSpan.FromSeconds(recorded ? m.CompletionSeconds : m.EstimatedOnlineSeconds2);
+            long rebirths = recorded ? m.CompletionRebirths : m.TimesAscended_09_08_2025;
+            string time = Assets.Script.Misc.FormatTime.Format((int)took.TotalDays, took.Hours, took.Minutes, useShorthand: true);
+            text += "\r\n\r\n" +
+                $"<pos={LabelColumn}><color=#cccccc>Achieved in</color><pos={StatColumn}><color={GoldHex}>{time}</color>\r\n" +
+                $"<pos={LabelColumn}><color=#cccccc>Rebirths</color><pos={StatColumn}><color={GoldHex}>{rebirths}</color>";
+        }
 
         if (text == _lastText)
             return;

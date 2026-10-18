@@ -96,6 +96,9 @@ public class SaveGameMembers
     public List<Achieved> Achieved = new List<Achieved>();
 
     public double EstimatedOnlineSeconds2 = 0;
+    // Frozen when 100% completion was reached (victory dialog); -1 = not yet. Kept through rebirth.
+    public double CompletionSeconds = -1;
+    public long CompletionRebirths = -1;
 
     // Stats
     // HOW TO ALIGN left/right: https://discussions.unity.com/t/textmeshpro-right-and-left-align-on-same-line/672190/6
