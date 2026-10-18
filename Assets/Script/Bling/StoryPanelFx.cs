@@ -16,9 +16,9 @@ public class StoryPanelFx : MonoBehaviour
 
     static readonly Palette Fighting = new()
     {
-        Bg = new Color(0f, 0f, 0f, 0.35f),
-        Ball = new Color(0.25f, 0.05f, 0.35f, 0.55f),
-        Rim = new Color(0.75f, 0.3f, 1f, 0.6f),
+        Bg = new Color(0f, 0f, 0f, 0.4f),
+        Ball = new Color(0.1f, 0.05f, 0.3f, 0.50f),
+        Rim = new Color(0.2f, 0.12f, 0.6f, 0.45f),
         Speed = 0.35f,
         BallSize = 0.28f,
     };
@@ -31,10 +31,6 @@ public class StoryPanelFx : MonoBehaviour
         Speed = 0.18f,
         BallSize = 0.31f,
     };
-
-    //Bg = new Color(0.05f, 0.03f, 0.01f, 0.45f),
-    //    Ball = new Color(0.34f, 0.24f, 0.06f, 0.5f),
-    //    Rim = new Color(0.85f, 0.68f, 0.25f, 0.4f),
 
     static readonly int BgId = Shader.PropertyToID("_BgColor");
     static readonly int BallId = Shader.PropertyToID("_BallColor");

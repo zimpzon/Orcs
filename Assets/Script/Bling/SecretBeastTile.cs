@@ -32,7 +32,7 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     const string DefaultHovertext = "Hover over a beast to see details";
     const string FogHovertext = "???\n<size=80%>Something hides in the fog</size>";
-    static readonly string RevealedHovertext = $"<size=120%><color={TextColors.GreenSmallest}>Scary Earl</color> - THE MASTER MIND</size>";
+    static readonly string RevealedHovertext = $"<size=120%><color={TextColors.Gold}>Scary Earl</color> - THE MASTERMIND</size>";
 
     public static SecretBeastTile Instance;
     // After 100% (or the preview cheat); once the fog was touched he stays for good, even if the preview gets toggled off.

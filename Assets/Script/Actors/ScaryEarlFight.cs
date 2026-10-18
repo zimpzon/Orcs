@@ -16,10 +16,10 @@ public static class ScaryEarlFight
 
     public const string ArenaText = "SCARY EARL";
     public static readonly string StoryFighting =
-        $"<color={TextColors.GreenSmallest}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
+        $"<color={TextColors.Gold}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
 
     public static readonly string StoryDefeated =
-        $"You defeated <color={TextColors.GreenSmallest}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
+        $"You defeated <color={TextColors.Gold}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
 
     public static bool Active => SaveGame.Members.FogTouched && !SaveGame.Members.ScaryEarlDefeated;
 
