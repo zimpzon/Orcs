@@ -214,6 +214,17 @@ public static class EnemySpawner
                 }
             }
 
+            // PHASE 0: from the final enemy's level on, he is in EVERY round. Rounds that randomly left him out were easy
+            // wins, so players crept past his level without ever beating him. Counted against the budget like the rest.
+            var finalEnemy = EnemyTypes[0]; // strongest first: The Night Creeper
+            if (level >= finalEnemy.MinLevel)
+            {
+                long effectiveHp = finalEnemy.ScaledHp * hpMultiplier;
+                SpawnEnemies(enemies, finalEnemy.Type, 1, effectiveHp);
+                remainingHp -= Math.Min(remainingHp, effectiveHp);
+                totalEnemies += 1;
+            }
+
             // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (85% chance - increased from 60%)
             bool shouldSpawnStrongest = UnityEngine.Random.value < 0.85f;
             if (shouldSpawnStrongest)

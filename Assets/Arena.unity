@@ -48231,7 +48231,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Advance 50 or 250 arena levels!
+      value: Advance 50 or 500 arena levels!
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -48246,7 +48246,7 @@ PrefabInstance:
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: HoverText
-      value: Arena advances 50 per round, and 250 if cleared within 15 seconds.
+      value: Arena advances 50 per round, and 500 if cleared within 15 seconds.
       objectReference: {fileID: 0}
     - target: {fileID: 6515631739465309923, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
