@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 // Celebration on the victory dialog (PopupProgress) once the game is 100% complete (Completion100), or while the
 // RightShift+G preview is on (CrownPulse.CheatForceShow):
-// - slowly rotating golden light rays behind the "GLORIOUS VICTORY" header,
+// - slowly rotating golden light rays behind the victory dialog header ("LONG LIVE KING EARL"),
 // - a shine sweeping across the header, which also breathes slightly,
 // - crown fireworks: spark bursts with a popping crown, near the top,
 // - confetti drifting down over the dialog.

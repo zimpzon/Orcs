@@ -19,7 +19,7 @@ public class ProgressPopupScript : MonoBehaviour
     float _textBaseHeight;
     string _lastText;
 
-    // A crown on each side of the "GLORIOUS VICTORY" header line, gently bobbing up and down.
+    // A crown on each side of the header line ("THE CROWN AWAITS" / "LONG LIVE KING EARL"), gently bobbing up and down.
     const float CrownHeightMul = 0.7f;  // crown size relative to the header's drawn glyph height
     const float CrownGap = 8f;          // glyph edge of the header to the crown's edge
     const float BobAmount = 3f;
@@ -147,12 +147,16 @@ public class ProgressPopupScript : MonoBehaviour
         double enemyPct = p.EnemyPct, skinPct = p.SkinPct, tierPct = p.TierPct, totalPct = p.TotalPct;
         bool won = totalPct >= 99.999 || SaveGame.Members.Achieved.Contains(Achieved.Completion100);
 
-        string subtitle = won
-            ? $"<color={GoldHex}>is yours, champion!</color>"
-            : "<color=#cccccc>awaits those who reach 100%</color>";
+        // The crown Earl gets at 100% (PlayerCrown): promised before, so a crowned Earl reads as "completed". The
+        // RightShift+G preview shows the crowned version like the rest of the celebration.
+        bool crowned = won || CrownPulse.CheatForceShow;
+        string header = crowned ? "LONG LIVE KING EARL" : "THE CROWN AWAITS";
+        string subtitle = crowned
+            ? $"<color={GoldHex}>The crown is yours!</color>"
+            : "<color=#cccccc>Reach 100% and claim your rightful crown</color>";
 
         string text =
-            $"<align=center><size=170%><b><color={GoldHex}>GLORIOUS VICTORY</color></b></size>\r\n" +
+            $"<align=center><size=170%><b><color={GoldHex}>{header}</color></b></size>\r\n" +
             $"<size=90%>{subtitle}</size>\r\n" +
             "\r\n" +
             "<align=left>" +
