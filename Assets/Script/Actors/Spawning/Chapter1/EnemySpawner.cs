@@ -38,6 +38,8 @@ public static class EnemySpawner
         return Math.Pow(10.0, LateHpLog * Math.Pow((level - LateHpStart) / LateHpScale, LateHpPower));
     }
     public const long MaxEnemies = 50;
+    // Per-enemy HP cap: 64 of them still sum below long.MaxValue (round total HP, the HP bar). See SpawnEnemies.
+    public const long EnemyHpCap = long.MaxValue / 64;
 
     // Enemy type definitions with base HP (before HpScale) and the arena level at which the type
     // becomes eligible to spawn at all (independent of HP-budget affordability). MinLevel gaps
@@ -75,7 +77,7 @@ public static class EnemySpawner
         // demand a disproportionate number of extra upgrade levels beyond whatever it took to reach
         // TheDarkness - a wall, not "grind a bit more." 6x keeps this a real but reachable extension.
         new EnemyType(ActorTypeEnum.FromTheVoid,    530_000_000_000, 100_000, 20.0),
-        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 12.0),
+        new EnemyType(ActorTypeEnum.TheGrey,        403_810_000_000,  92_000, 4.0),
         new EnemyType(ActorTypeEnum.DarkWizard,     302_290_000_000,  85_000, 2.0),
         new EnemyType(ActorTypeEnum.Blueberry,       221_750_000_000,  78_000, 1.4),
         new EnemyType(ActorTypeEnum.ShirlieShaman,  153_430_000_000,  72_000, 1.3),
@@ -455,11 +457,16 @@ public static class EnemySpawner
 
         // Every enemy gets the level-scaled extra HP (EnemyHpMulForLevel) on top of what the spawn budget was planned
         // with: same enemy count, tougher enemies.
-        // Clamped: at extreme arena levels the multiplier could overflow a long.
+        // HP is a long, and the round's total (sum of all enemies) must fit one too: each enemy is capped at
+        // EnemyHpCap, and whatever is over the cap becomes damage resistance (DamageTakenMul), so the kill time is what
+        // the full HP would give. Late arenas (top enemies, raised toughness) get there; without this, more toughness
+        // there changed nothing.
         double scaledHp = hp * _hpMulForLevel * ToughnessOf(type);
-        hp = scaledHp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)scaledHp;
+        hp = scaledHp > EnemyHpCap ? EnemyHpCap : (long)scaledHp;
+        double damageTakenMul = scaledHp > EnemyHpCap ? EnemyHpCap / scaledHp : 1.0;
         foreach (var enemy in spawned)
         {
+            enemy.DamageTakenMul = damageTakenMul;
             enemy.BaseHp = hp;
             // Reset() (Hp = BaseHp) only runs when returning to the cache, i.e. with the previous BaseHp.
             enemy.Hp = hp;

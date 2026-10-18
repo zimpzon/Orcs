@@ -1221,7 +1221,7 @@ public class GameManager : MonoBehaviour
         // Storm Lord: an enemy struck by its lightning takes more damage from everything (StormLordManager).
         amount *= enemy.StormWeakenMul;
 
-        // Scary Earl: the part of his toughness that doesn't fit in his (capped) HP.
+        // Toughness that doesn't fit in the (capped) HP: late enemies and Scary Earl (EnemySpawner, ScaryEarlFight).
         amount *= enemy.DamageTakenMul;
 
         if (CheatOneShot)

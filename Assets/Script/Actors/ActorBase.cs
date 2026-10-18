@@ -171,6 +171,7 @@ public class ActorBase : MonoBehaviour
             transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             UseSpawnParticles = false;
             UndoScaryEarl();
+            DamageTakenMul = 1.0; // set per spawn (EnemySpawner HP cap); not in the init reset, which runs after spawn
         }
 
         Hp = BaseHp;
@@ -234,7 +235,7 @@ public class ActorBase : MonoBehaviour
     // Scary Earl fight (ScaryEarlFight): a cached chaser is dressed up as Scary Earl for one round - his run frames, the
     // player's size, heavy - and turned back into itself when it returns to the cache (Reset).
     [NonSerialized] public bool IsScaryEarl;
-    [NonSerialized] public double DamageTakenMul = 1.0; // Scary Earl: toughness past the HP cap (ScaryEarlFight)
+    [NonSerialized] public double DamageTakenMul = 1.0; // toughness past the HP cap (EnemySpawner, ScaryEarlFight)
     Sprite[] _plainAnimations;
     float _plainMass;
     float _plainSpeed;
