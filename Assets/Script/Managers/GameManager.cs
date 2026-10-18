@@ -657,15 +657,15 @@ public class GameManager : MonoBehaviour
                 continue;
             }
 
-            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 50 / 500 (either card alone works).
+            // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 250 / 1000 (either card alone works).
             bool fasterArena2 = SaveGame.Members.BoughtFasterArena2;
             bool fasterArena = SaveGame.Members.BoughtFasterArena || fasterArena2;
-            long arenaStep = fasterArena2 ? 50L : fasterArena ? 5L : 1L;
+            long arenaStep = fasterArena2 ? 250L : fasterArena ? 5L : 1L;
             int secondsLeftAtRoundEnd = (int)(roundEndTime - G.D.GameTime);
             // If faster Arena and >= 15 seconds left take a big jump.
             if (secondsLeftAtRoundEnd >= 15 && fasterArena && GameState == State.Idle_WonFight)
             {
-                arenaStep = fasterArena2 ? 500L : 25L;
+                arenaStep = fasterArena2 ? 1000L : 25L;
 
                 string text = fasterArena2 ?
                     "Super fast Arena clear! Making <color=#8DBE4C>GIGA</color> jump!" :
