@@ -8,8 +8,13 @@ public static class TextColors
 
     // Brighter versions for small body text (~10-12 px): anti-aliasing and the drop shadow make thin glyphs read much
     // darker than the hex value, so small text uses these. Green/Orange stay for big text (headers, titles).
-    public const string GreenSmall = "#AADC64";
-    public const string OrangeSmall = "#F5A05F";
+    // (currently small use same as default, while smallest uses brighter green/orange)
+    public const string GreenSmall = "#8EBE4D";
+    public const string OrangeSmall = "#DF874A";
+
+    public const string GreenSmallest = "#AADC64";
+    public const string OrangeSmallest = "#F5A05F";
+
     public const string Yellow = "#F4C430";  // random yellow
     
     public static readonly Color GreenColor = new(0.553f, 0.745f, 0.298f); // Green as a Color

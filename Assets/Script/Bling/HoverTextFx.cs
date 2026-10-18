@@ -1,11 +1,9 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 // Hover description texts (bestiary, skins, rebirth cards): a new item hovered (or tapped) pops the text in (small
 // scale + fade). Added on demand (Of), so the scene needs no wiring. Unscaled time.
-// Touchscreens: a tap is enter + exit right away, so callers ignore touch exits (IsTouch) - the tapped item's text
-// stays until another item is tapped.
+// Touchscreens: callers pin the text with a tap instead of hover (TouchPin).
 public class HoverTextFx : MonoBehaviour
 {
     const float PopTime = 0.15f;
@@ -26,9 +24,6 @@ public class HoverTextFx : MonoBehaviour
             fx = text.gameObject.AddComponent<HoverTextFx>();
         return fx;
     }
-
-    // A touch pointer (mouse ids are negative). Its exit comes as soon as the finger lifts, so it shouldn't clear the text.
-    public static bool IsTouch(PointerEventData eventData) => eventData != null && eventData.pointerId >= 0;
 
     void Awake()
     {

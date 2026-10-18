@@ -195,26 +195,26 @@ public class AscendDecisionScript : MonoBehaviour
 
     public void UpdateUi()
     {
-        string gainTextColorStr = DiamondsGainedAtRebirth == 0 ? TextColors.OrangeSmall : TextColors.GreenSmall;
+        string gainTextColorStr = DiamondsGainedAtRebirth == 0 ? TextColors.OrangeSmallest : TextColors.GreenSmallest;
 
         string diamondTxt = SaveGame.Members.DiamondCount_09_08_2025 == 1 ? "diamond" : "diamonds";
         string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "diamond" : "diamonds";
         string creditTxt = MonsterCreditsAtStart == 1 ? "credit" : "credits";
 
         long diamondIncomePct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
-        TextCurrentDiamonds.text = $"•<indent=5%>You have <color={TextColors.GreenSmall}>{Format64.FormatGrouped(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color={TextColors.GreenSmall}>{Format64.FormatGrouped(diamondIncomePct)}</color>% income)</indent>";
+        TextCurrentDiamonds.text = $"•<indent=5%>You have <color={TextColors.GreenSmallest}>{Format64.FormatGrouped(SaveGame.Members.DiamondCount_09_08_2025)}</color> {diamondTxt} <sprite=0> (+<color={TextColors.GreenSmallest}>{Format64.FormatGrouped(diamondIncomePct)}</color>% income)</indent>";
 
         // Scene text with a [PCT] placeholder: income bonus per diamond held (base + Shiny Diamonds cards).
         if (TextDiamondEach != null)
-            TextDiamondEach.text = _diamondEachTemplate.Replace("[PCT]", $"<color={TextColors.GreenSmall}>{Math.Round(UpgradeProgression.DiamondBonusPerDiamond() * 100)}</color>");
+            TextDiamondEach.text = _diamondEachTemplate.Replace("[PCT]", $"<color={TextColors.GreenSmallest}>{Math.Round(UpgradeProgression.DiamondBonusPerDiamond() * 100)}</color>");
 
         // Rebirth credit bonus (UpgradeProgression.CreditBonusMultiplier): 500% after a rebirth, falls to 0%.
         if (TextCreditBonus != null)
         {
             int bonusPct = UpgradeProgression.CreditBonusDisplayPct();
-            string color = bonusPct <= 100 ? TextColors.OrangeSmall : TextColors.GreenSmall; // orange in the last 1/8
+            string color = bonusPct <= 100 ? TextColors.OrangeSmallest : TextColors.GreenSmallest; // orange in the last 1/8
             string bonusText = $"<color={color}>{bonusPct}</color>";
-            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]", bonusText);
+            TextCreditBonus.text = _creditBonusTemplate.Replace("[BONUS]",$"<color={TextColors.GreenSmallest}>{bonusText}</color>");
         }
 
         TextCurrentMonsterCredits.text = $"•<indent=5%>You have <color={gainTextColorStr}>{Format64.FormatGrouped(MonsterCreditsAtStart)}</color> {creditTxt}</indent>";

@@ -45198,7 +45198,7 @@ PrefabInstance:
     - target: {fileID: 6799598996399911737, guid: 14e941e90bad1cf4dbd0309771f2f207,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6799598996399911737, guid: 14e941e90bad1cf4dbd0309771f2f207,
         type: 3}
@@ -62863,7 +62863,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Bonus: +<color=#8DBE4C>[BONUS]</color>% income'
+  m_text: 'Bonus: +[BONUS]% income'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,

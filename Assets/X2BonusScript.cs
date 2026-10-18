@@ -9,7 +9,7 @@ public class X2BonusScript : MonoBehaviour
     // "You get X% bonus income for every 5 of X2 bought." - was static text in the scene, but X2 Mastery cards
     // change the percentage, so it's filled in from code. Found by name to avoid a scene wiring change.
     TextMeshProUGUI _descriptionText;
-    const string GreenHex = TextColors.GreenSmall;
+    const string GreenHex = TextColors.GreenSmallest;
 
     // X2s bought per tier, listed for unlocked tiers only (level > 0) so the full roster stays a surprise.
     // Tier list is shared with the progress popup (UpgradeTierList).

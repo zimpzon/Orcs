@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public SkinAnimation AnimationName;
     public SkinsAnimationList SkinAnimations;
@@ -328,20 +328,30 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+    // Mouse: hover shows the details. Touch: a tap pins them (TouchPin: same skin again or anything else closes).
     public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (TouchPin.IsTouch(eventData))
+            TouchPin.Tap(this, ShowDetails, HideDetails);
+        else
+            ShowDetails();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!TouchPin.IsTouch(eventData))
+            HideDetails();
+    }
+
+    void ShowDetails()
     {
         _hoveredSkin = this;
         _nextHoverRefresh = Time.unscaledTime + 0.5f;
         HoverTextFx.Of(Hovertext).Hover(this, GetHoverText());
     }
 
-    // Touchscreens: the tapped skin's text stays (a touch exits right away) until another skin is tapped.
-    public void OnPointerClick(PointerEventData eventData) => OnPointerEnter(eventData);
-
-    public void OnPointerExit(PointerEventData eventData)
+    void HideDetails()
     {
-        if (HoverTextFx.IsTouch(eventData))
-            return;
         if (_hoveredSkin != this)
             return; // another skin already took over the text
         _hoveredSkin = null;

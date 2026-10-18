@@ -30,7 +30,7 @@ public enum AscendUpgradeCardId
     Completionist,  // +1% income per game completion %
 };
 
-public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public long Cost = 1;
     public Color CanAffordColor = Color.white;
@@ -55,16 +55,24 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
     }
 
     // Hovering a card shows its HoverText in the text below the cards (AscendDecisionScript.TextHover).
-    public void OnPointerEnter(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHover(this, HoverText);
-
-    // Touchscreens: the tapped card's text stays (a touch exits right away) until another card is tapped.
-    public void OnPointerClick(PointerEventData eventData) => AscendDecisionScript.Instance.SetCardHover(this, HoverText);
+    // Touch: a tap pins it (TouchPin: same card again or anything else closes); a tap on the buy button doesn't.
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!TouchPin.IsTouch(eventData))
+            ShowDetails();
+        else if (!TouchPin.HitChildButton(eventData, transform))
+            TouchPin.Tap(this, ShowDetails, HideDetails);
+    }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!HoverTextFx.IsTouch(eventData))
-            AscendDecisionScript.Instance.SetCardHover(this, null);
+        if (!TouchPin.IsTouch(eventData))
+            HideDetails();
     }
+
+    void ShowDetails() => AscendDecisionScript.Instance.SetCardHover(this, HoverText);
+
+    void HideDetails() => AscendDecisionScript.Instance.SetCardHover(this, null);
 
     void OnDisable()
     {

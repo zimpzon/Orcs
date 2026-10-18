@@ -99,11 +99,34 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _x2Label.text = text;
     }
 
+    // Mouse: hover highlights and shows the details popup. Touch: a tap on the tier (not on its buy / X2 buttons) pins
+    // the popup (TouchPin: same tier again or anything else closes).
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (TouchPin.IsTouch(eventData))
+        {
+            if (!TouchPin.HitChildButton(eventData, transform))
+                TouchPin.Tap(this, ShowDetails, HideDetails);
+            return;
+        }
+
         _isHovering = true;
         UpdateTargetColor();
+        ShowDetails();
+    }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (TouchPin.IsTouch(eventData))
+            return;
+
+        _isHovering = false;
+        UpdateTargetColor();
+        HideDetails();
+    }
+
+    void ShowDetails()
+    {
         if (!SaveGame.Members.ShowDetailsOnHover)
             return;
 
@@ -111,11 +134,8 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         PopupManagerScript.Instance.PlaceNextToTarget(GetComponent<RectTransform>());
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    void HideDetails()
     {
-        _isHovering = false;
-        UpdateTargetColor();
-
         if (!SaveGame.Members.ShowDetailsOnHover)
             return;
 
@@ -141,7 +161,7 @@ public class UpgradeItemScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _background.color = Color.Lerp(_background.color, _targetColor, ColorTransitionSpeed * Time.deltaTime);
         UpdateX2Label();
 
-        if (_isHovering && G.D.GameTime > _nextUpdate)
+        if ((_isHovering || TouchPin.IsPinned(this)) && G.D.GameTime > _nextUpdate)
         {
             SetPopupText();
             _nextUpdate = G.D.GameTime + 0.25f;
