@@ -158,7 +158,7 @@ public class X2BonusScript : MonoBehaviour
         if (_descriptionText != null)
         {
             double pctPerRank = UpgradeManager.X2BonusPerRank() * 100;
-            _descriptionText.text = $"You get <color={GreenHex}>{pctPerRank:0}%</color> bonus income for every <color={GreenHex}>5</color> of X2 bought.";
+            _descriptionText.text = $"You get <color={GreenHex}>{pctPerRank:0}</color>% bonus income for every <color={GreenHex}>5</color> of X2 bought.";
         }
     }
 }

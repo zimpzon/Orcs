@@ -47,7 +47,8 @@ public class SkinsPopupScript : MonoBehaviour
         if (TextBonus != null)
         {
             long pct = (long)Math.Round(unlocked * Assets.Script.Upgrades.UpgradeProgression.SkinCollectorPerSkin * 100);
-            string text = _bonusTemplate.Replace("[BONUS]", pct.ToString());
+            string strPct = $"<color={TextColors.GreenSmallest}>{pct}</color>";
+            string text = _bonusTemplate.Replace("[BONUS]", strPct);
             if (!bought)
                 text = System.Text.RegularExpressions.Regex.Replace(text, "</?color[^>]*>", "");
             TextBonus.text = text;
