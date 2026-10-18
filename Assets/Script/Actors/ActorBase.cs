@@ -234,6 +234,7 @@ public class ActorBase : MonoBehaviour
     // Scary Earl fight (ScaryEarlFight): a cached chaser is dressed up as Scary Earl for one round - his run frames, the
     // player's size, heavy - and turned back into itself when it returns to the cache (Reset).
     [NonSerialized] public bool IsScaryEarl;
+    [NonSerialized] public double DamageTakenMul = 1.0; // Scary Earl: toughness past the HP cap (ScaryEarlFight)
     Sprite[] _plainAnimations;
     float _plainMass;
     float _plainSpeed;
@@ -262,6 +263,7 @@ public class ActorBase : MonoBehaviour
         if (!IsScaryEarl)
             return;
         IsScaryEarl = false;
+        DamageTakenMul = 1.0;
         Animations = _plainAnimations;
         SetScale(_plainScale.x);
         Mass = _plainMass;

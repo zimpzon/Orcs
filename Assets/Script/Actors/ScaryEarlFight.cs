@@ -10,15 +10,16 @@ using UnityEngine;
 public static class ScaryEarlFight
 {
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
-    const double HpMul = 12.5; // x one final enemy (The Night Creeper) at the current arena level (was 10, +25%)
+    const double HpMul = 4.6875; // x one final enemy (The Night Creeper) at the current arena level (18.75 x 0.25, once the HP cap no longer clipped it)
     const float Mass = 60f; // hit knockback is divided by mass (was 25: Earl pushed him around)
     const float SpeedMul = 1.5f; // faster than the plain chaser (was 1.35)
 
     public const string ArenaText = "SCARY EARL";
-    public const string StoryFighting =
-        "<color=yellow>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
-    public const string StoryDefeated =
-        "You defeated <color=yellow>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
+    public static readonly string StoryFighting =
+        $"<color={TextColors.OrangeSmallest}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
+
+    public static readonly string StoryDefeated =
+        $"You defeated <color={TextColors.OrangeSmallest}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
 
     public static bool Active => SaveGame.Members.FogTouched && !SaveGame.Members.ScaryEarlDefeated;
 
@@ -36,10 +37,14 @@ public static class ScaryEarlFight
         float scale = Mathf.Abs(G.D.PlayerScript.transform.localScale.x);
         earl.MakeScaryEarl(RunSprites() ?? earl.Animations, scale, Mass, SpeedMul);
 
+        // HP is a long, capped like every enemy's (long.MaxValue / 4, ~2.3e18). Late arenas pass that, so the part over
+        // the cap becomes damage resistance instead: same kill time as the full HP would give.
+        const long HpCap = long.MaxValue / 4;
         double hpD = EnemySpawner.FinalEnemyHp(arenaLevel) * HpMul;
-        long hp = hpD > long.MaxValue / 4 ? long.MaxValue / 4 : (long)hpD;
+        long hp = hpD > HpCap ? HpCap : (long)hpD;
         earl.BaseHp = hp;
         earl.Hp = hp;
+        earl.DamageTakenMul = hpD > HpCap ? HpCap / hpD : 1.0;
         return new List<ActorBase> { earl };
     }
 
