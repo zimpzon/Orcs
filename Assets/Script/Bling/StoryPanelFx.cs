@@ -16,18 +16,23 @@ public class StoryPanelFx : MonoBehaviour
 
     static readonly Palette Fighting = new()
     {
-        Bg = new Color(0f, 0f, 0f, 0.4f),
-        Ball = new Color(0.1f, 0.05f, 0.3f, 0.50f),
-        Rim = new Color(0.2f, 0.12f, 0.6f, 0.45f),
+        // Cool indigo/violet: the complement of the gold name and the warm dusty arena, so the name pops and the panel
+        // reads as "not from here". A violet-tinted dark base instead of pure black (black over brown looks muddy);
+        // opaque enough behind the very light grey text. The rim is a soft lavender, kept thin so it never fights the text.
+        Bg = new Color(0.04f, 0.02f, 0.07f, 0.45f),
+        Ball = new Color(0.13f, 0.06f, 0.28f, 0.6f),
+        Rim = new Color(0.45f, 0.25f, 0.8f, 0.5f),
         Speed = 0.35f,
         BallSize = 0.28f,
     };
 
     static readonly Palette Defeated = new()
     {
-        Bg = new Color(0.05f, 0.03f, 0.01f, 0.65f),
-        Ball = new Color(0.14f, 0.08f, 0.06f, 0.65f),
-        Rim = new Color(0.6f, 0.2f, 0.1f, 0.55f),
+        // Warm and settled, in the arena's own dusty browns: deep umber blobs on a dark brown base, a muted copper rim
+        // (redder and darker than the gold name, so the name still stands out, and less blood-red than before).
+        Bg = new Color(0.07f, 0.04f, 0.02f, 0.6f),
+        Ball = new Color(0.16f, 0.09f, 0.05f, 0.65f),
+        Rim = new Color(0.55f, 0.28f, 0.1f, 0.45f),
         Speed = 0.18f,
         BallSize = 0.31f,
     };
