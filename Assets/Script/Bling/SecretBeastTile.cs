@@ -35,7 +35,9 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
     static readonly string RevealedHovertext = $"<size=120%><color={TextColors.GreenSmallest}>Scary Earl</color> - THE MASTER MIND</size>";
 
     public static SecretBeastTile Instance;
-    public static bool Unlocked => SaveGame.Members.Achieved.Contains(Achieved.Completion100) || CrownPulse.CheatForceShow;
+    // After 100% (or the preview cheat); once the fog was touched he stays for good, even if the preview gets toggled off.
+    public static bool Unlocked => SaveGame.Members.FogTouched
+        || SaveGame.Members.Achieved.Contains(Achieved.Completion100) || CrownPulse.CheatForceShow;
 
     class Blob
     {
