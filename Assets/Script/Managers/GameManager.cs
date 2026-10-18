@@ -2042,7 +2042,7 @@ public class GameManager : MonoBehaviour
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 10;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 10;
-            SaveGame.Members.DiamondCount_09_08_2025 += 100;
+            SaveGame.Members.DiamondCount_09_08_2025 += 1000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
@@ -2074,7 +2074,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.ArenaLevel += 500;
+            SaveGame.Members.ArenaLevel += 5000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightShift))
