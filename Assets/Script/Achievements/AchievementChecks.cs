@@ -260,6 +260,8 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.Completion100);
                 NewAchieved(Achieved.Completion100);
+                // Queued behind the unlock text that completed it (X2RankUpEffect's 1 s queue).
+                AchievementsScript.AnnounceAtCursorOrCenter("100% COMPLETE!\n<size=80%>Victory is yours!</size>");
             }
         }
 
