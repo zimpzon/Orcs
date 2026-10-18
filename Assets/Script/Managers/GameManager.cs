@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI TextGameInfo;
     public TextMeshProUGUI TextClock;
     public TextMeshProUGUI TextLevel;
+    public TextMeshPro TextStory; // under the HP bar: the Scary Earl story (ScaryEarlFight.StoryText)
     public TextMeshProUGUI TextMoney;
     public TextMeshProUGUI TextPassiveIncome;
     public TextMeshProUGUI TextVersion;
@@ -539,15 +540,21 @@ public class GameManager : MonoBehaviour
 
             UpdateMoneyText();
 
+            // Scary Earl (after "Touch fog", until beaten): he is the only enemy and the arena level is frozen.
+            bool scaryEarl = ScaryEarlFight.Active;
+
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
-            TextLevel.text = $"ARENA {SaveGame.Members.ArenaLevel}";
+            TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : $"ARENA {SaveGame.Members.ArenaLevel}";
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
             ShowSecondsLeft(RoundTimeSeconds);
 
-            var enemies = EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
-            UpdateBeastsSeen(enemies);
+            var enemies = scaryEarl
+                ? ScaryEarlFight.Spawn(SaveGame.Members.ArenaLevel)
+                : EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
+            if (!scaryEarl)
+                UpdateBeastsSeen(enemies);
 
             if (enemies.Distinct().Count() != enemies.Count)
                 Debug.LogError("Same enemy instance spawned twice in one round - ActorCache is handing out duplicates");
@@ -564,7 +571,10 @@ public class GameManager : MonoBehaviour
                 // Not activated yet, so DestroyAllEnemies won't find them. Return them or they leak from the cache.
                 // Straight to the cache, not ReturnToCache(): a never-activated actor hasn't run Awake, so Reset() would NRE.
                 foreach (var enemy in enemies)
+                {
+                    enemy.UndoScaryEarl(); // no Reset on this path
                     Assets.Script.Enemies.ActorCache.Instance.ReturnObject(enemy.gameObject);
+                }
                 continue;
             }
 
@@ -624,6 +634,28 @@ public class GameManager : MonoBehaviour
             PrepareForNewRound();
 
             SaveGame.Members.TotalArenas++;
+
+            if (scaryEarl)
+            {
+                // No arena step either way: win -> normal arenas resume from this level, timeout -> fight him again.
+                if (GameState == State.Idle_WonFight)
+                {
+                    SaveGame.Members.ScaryEarlDefeated = true;
+                    SaveGame.Members.TotalArenasWon++;
+                    SaveGame.Save();
+                    yield return ShowInfoTextFlashy("SCARY EARL DEFEATED!", delay: 2);
+                    yield return new WaitForSeconds(0.25f);
+                }
+                else if (GameState == State.Idle_OutOfTime)
+                {
+                    yield return ShowInfoTextFlashy("OUT OF TIME", delay: 1);
+                    yield return new WaitForSeconds(0.5f);
+                }
+
+                GameState = State.Idle_PresentLevel;
+                yield return null;
+                continue;
+            }
 
             // Faster Arena 1: 5 per round / 25 super jump. Faster Arena 2: 50 / 250 (either card alone works).
             bool fasterArena2 = SaveGame.Members.BoughtFasterArena2;
@@ -1879,8 +1911,50 @@ public class GameManager : MonoBehaviour
             : 0.0;
     }
 
+    string _storyShown;
+
+    // Text under the HP bar (constant strings, so only set when it changes).
+    void UpdateStoryText()
+    {
+        if (TextStory == null)
+            return;
+        string story = ScaryEarlFight.StoryText;
+        if (ReferenceEquals(story, _storyShown))
+            return;
+        _storyShown = story;
+        TextStory.text = story;
+    }
+
+    // Tier levels from 400 (first tier) down to 1 (Storm Lord, the last), linear in between. RightShift+T.
+    static readonly string[] TierLevelFields =
+    {
+        "LevelClickDamage", "LevelKnifeDamage", "LevelMoneyPerGold", "LevelKnifeCd", "LevelWitchDoctor",
+        "LevelGoldPerKnifeThrown", "LevelWizard", "LevelHoarder", "LevelZapDamage", "LevelMoneyMaker",
+        "LevelDaggerMaster", "LevelNecroNinja", "LevelSkullCrusher", "LevelChestMaster", "LevelVoidgazer",
+        "LevelSmartDaggers", "LevelFastFeet", "LevelCryptMaster", "LevelSmartFireballs", "LevelBeefyEarl",
+        "LevelCriticalStrike", "LevelPowerZap", "LevelSkullSlicer", "LevelStormLord",
+    };
+
+    void CheatSetTierLevels(long first, long last)
+    {
+        int n = TierLevelFields.Length;
+        for (int i = 0; i < n; ++i)
+        {
+            long level = (long)Math.Round(first + (last - first) * (i / (double)(n - 1)));
+            var field = typeof(SaveGameMembers).GetField(TierLevelFields[i]);
+            if (field == null)
+            {
+                Debug.LogError("CheatSetTierLevels: no field " + TierLevelFields[i]);
+                continue;
+            }
+            field.SetValue(SaveGame.Members, level);
+        }
+        UpgradeManager.Instance.UpdateAllUpgrades();
+    }
+
     void Update()
     {
+        UpdateStoryText();
         TrySaveGame();
         TrySendStats();
         UpdateSkinBonus();
@@ -2028,6 +2102,28 @@ public class GameManager : MonoBehaviour
 
         // Toggle the victory button's 100%-completion crown pulse, to preview it. (Not Ctrl+P: that's the Editor's
         // play/stop shortcut.)
+        // Beat Scary Earl: kills him if his round is running, otherwise just marks him defeated.
+        if (G.GetCheatKeyDown(KeyCode.E) && G.GetCheatKey(KeyCode.RightShift) && ScaryEarlFight.Active)
+        {
+            var earl = ScaryEarlFight.Current;
+            if (GameState == State.Idle_Fighting && earl != null && earl.IsScaryEarl && !earl.IsDead && earl.gameObject.activeInHierarchy)
+            {
+                HpBarScript.AddHp(-HpBarScript.CurrentHp);
+                earl.ApplyDamage2(earl.Hp, Vector3.up, 1f);
+            }
+            else
+            {
+                SaveGame.Members.ScaryEarlDefeated = true;
+            }
+            Debug.Log("Cheat: Scary Earl beaten");
+        }
+
+        if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            CheatSetTierLevels(400, 1);
+            Debug.Log("Cheat: tier levels 400 (first) .. 1 (Storm Lord)");
+        }
+
         // Secret bestiary tile: 100% preview on and the fog back, i.e. just before "Touch fog".
         if (G.GetCheatKeyDown(KeyCode.F) && G.GetCheatKey(KeyCode.RightShift))
         {

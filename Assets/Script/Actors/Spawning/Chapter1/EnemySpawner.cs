@@ -386,6 +386,14 @@ public static class EnemySpawner
     //    return (HpBase + ((level - 1) * HpBasePerLevel) + ((level - 1) * (level - 1) * 10)) * HpScale;
     //}
 
+    // Roughly a normal round's total enemy HP at this arena level: the round budget with the level's extra HP
+    // (toughness ignored). Used for Scary Earl (ScaryEarlFight). Clamped like SpawnEnemies.
+    public static long RoundHp(long level)
+    {
+        double hp = (double)CalculateHpTarget(level) * EnemyHpMulForLevel(level);
+        return hp > long.MaxValue / 4 ? long.MaxValue / 4 : (long)hp;
+    }
+
     private static long CalculateHpTarget(long level)
     {
         const long HpBase = 40;

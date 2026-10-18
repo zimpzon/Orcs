@@ -27,6 +27,7 @@ public class SaveGameMembers
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
     public bool ViewedTipsDialog = false; // opened the tips popup: stops the tips icon pulse
     public bool ViewedExpandedTiers = false; // opened the expanded tier view: stops the expand button pulse
+    public bool ScaryEarlDefeated = false; // the Scary Earl arena (after "Touch fog") was won: normal arenas again
     public bool FogTouched = false; // after 100%: "Touch fog" in the bestiary revealed Scary Earl (SecretBeastTile)
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these

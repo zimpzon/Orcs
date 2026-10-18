@@ -35,6 +35,8 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+R", "Preview the X2 rank-up text at the cursor"),
         ("RightShift+G", "Toggle 100% victory effects preview (crown pulse, victory dialog)"),
         ("RightShift+F", "Secret bestiary tile: 100% preview on + fog back (before 'Touch fog')"),
+        ("RightShift+E", "Beat Scary Earl (kills him mid-round, else marks him defeated)"),
+        ("RightShift+T", "Tier levels: 400 on the first tier down to 1 on Storm Lord, linear"),
         ("RightShift+L", "Show save game load info"),
     };
 

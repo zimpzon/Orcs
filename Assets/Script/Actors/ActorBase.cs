@@ -170,6 +170,7 @@ public class ActorBase : MonoBehaviour
             StopAllCoroutines();
             transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             UseSpawnParticles = false;
+            UndoScaryEarl();
         }
 
         Hp = BaseHp;
@@ -228,6 +229,55 @@ public class ActorBase : MonoBehaviour
     public void Start()
     {
         massInverse_ = 1.0f / Mass;
+    }
+
+    // Scary Earl fight (ScaryEarlFight): a cached chaser is dressed up as Scary Earl for one round - his run frames, the
+    // player's size, heavy - and turned back into itself when it returns to the cache (Reset).
+    [NonSerialized] public bool IsScaryEarl;
+    Sprite[] _plainAnimations;
+    float _plainMass;
+    Vector3 _plainScale;
+
+    public void MakeScaryEarl(Sprite[] animations, float scale, float mass)
+    {
+        if (!IsScaryEarl)
+        {
+            _plainAnimations = Animations;
+            _plainMass = Mass;
+            _plainScale = transform.localScale;
+        }
+        IsScaryEarl = true;
+        Animations = animations;
+        SetScale(scale);
+        Mass = mass;
+        massInverse_ = 1.0f / mass;
+    }
+
+    // Also for actors returned to the cache without Reset (never activated): safe before Awake.
+    public void UndoScaryEarl()
+    {
+        if (!IsScaryEarl)
+            return;
+        IsScaryEarl = false;
+        Animations = _plainAnimations;
+        SetScale(_plainScale.x);
+        Mass = _plainMass;
+        massInverse_ = 1.0f / Mass;
+    }
+
+    // Uniform scale, keeping the body radius/offset in step. Before Awake (fresh from the cache, never activated) only
+    // the transform changes: Awake scales the radius/offset by it then.
+    void SetScale(float scale)
+    {
+        var t = transform;
+        if (transform_ != null)
+        {
+            float ratio = scale / t.localScale.x;
+            RadiusBody *= ratio;
+            BodyOffset *= ratio;
+        }
+        t.localScale = new Vector3(scale, scale, t.localScale.z);
+        scale_ = t.localScale;
     }
 
     public void OnEnable()

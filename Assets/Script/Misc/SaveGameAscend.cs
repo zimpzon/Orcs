@@ -71,6 +71,7 @@ static class SaveGameAscend
         newSave.ViewedTipsDialog = oldSave.ViewedTipsDialog;
         newSave.ViewedExpandedTiers = oldSave.ViewedExpandedTiers;
         newSave.FogTouched = oldSave.FogTouched;
+        newSave.ScaryEarlDefeated = oldSave.ScaryEarlDefeated;
         newSave.BeastsSeen = oldSave.BeastsSeen;
 
         // Collectables
