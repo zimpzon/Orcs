@@ -238,6 +238,8 @@ public class ActorBase : MonoBehaviour
     Sprite[] _plainAnimations;
     float _plainMass;
     float _plainSpeed;
+    float _plainHitFlash;
+    bool _plainNoFlashFx;
     Vector3 _plainScale;
 
     public void MakeScaryEarl(Sprite[] animations, float scale, float mass, float speedMul)
@@ -247,6 +249,8 @@ public class ActorBase : MonoBehaviour
             _plainAnimations = Animations;
             _plainMass = Mass;
             _plainSpeed = Speed;
+            _plainHitFlash = HitFlashAmount;
+            _plainNoFlashFx = NoFlashFx;
             _plainScale = transform.localScale;
         }
         IsScaryEarl = true;
@@ -255,6 +259,9 @@ public class ActorBase : MonoBehaviour
         Mass = mass;
         massInverse_ = 1.0f / mass;
         Speed = _plainSpeed * speedMul;
+        // Like the final enemy (Awake): a lighter hit flash and no flash circles, so he stays visible under fire.
+        HitFlashAmount = 0.35f;
+        NoFlashFx = true;
     }
 
     // Also for actors returned to the cache without Reset (never activated): safe before Awake.
@@ -269,6 +276,8 @@ public class ActorBase : MonoBehaviour
         Mass = _plainMass;
         massInverse_ = 1.0f / Mass;
         Speed = _plainSpeed;
+        HitFlashAmount = _plainHitFlash;
+        NoFlashFx = _plainNoFlashFx;
     }
 
     // Uniform scale, keeping the body radius/offset in step. Before Awake (fresh from the cache, never activated) only
