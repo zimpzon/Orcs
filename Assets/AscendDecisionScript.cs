@@ -248,5 +248,14 @@ public class AscendDecisionScript : MonoBehaviour
 
         _clickCount = 0;
         TextButtonRebirth.text = "REBIRTH!";
+
+        // Low credit bonus: the line pops once when the dialog opens (CreditBonusPulse keeps pulsing behind it).
+        if (TextCreditBonus != null && UpgradeProgression.CreditBonusDisplayPct() <= 100)
+        {
+            var go = TextCreditBonus.gameObject;
+            LeanTween.cancel(go);
+            go.transform.localScale = Vector3.one * 1.05f;
+            LeanTween.scale(go, Vector3.one, 0.25f).setEaseOutBack().setIgnoreTimeScale(true);
+        }
     }
 }

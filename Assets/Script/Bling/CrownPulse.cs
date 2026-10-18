@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen, ExpandTiersUnseen }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen, ExpandTiersUnseen, CreditBonusLow }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -41,6 +41,8 @@ public class CrownPulse : MonoBehaviour
             PulseCondition.TipsUnseen => !m.ViewedTipsDialog,
             // Expand-tiers button: from the first Wizard bought until the expanded tier view has been opened.
             PulseCondition.ExpandTiersUnseen => m.LevelWizard > 0 && !m.ViewedExpandedTiers,
+            // Highlight behind the rebirth dialog's credit bonus line once it's low (same threshold as its orange text).
+            PulseCondition.CreditBonusLow => Assets.Script.Upgrades.UpgradeProgression.CreditBonusDisplayPct() <= 100,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             _ => m.Achieved.Contains(Achieved.Completion100),
         };
