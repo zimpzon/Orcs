@@ -193,7 +193,7 @@ public static class EnemySpawner
                 // First pass: find types that will have 5+ enemies
                 foreach (var enemyType in EnemyTypes)
                 {
-                    if (level < enemyType.MinLevel) continue;
+                    if (level < enemyType.MinLevel || IsFinal(enemyType)) continue;
 
                     long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                     if (remainingHp < effectiveHp) continue;
@@ -231,8 +231,8 @@ public static class EnemySpawner
             var seen = SaveGame.Members.BeastsSeen;
             foreach (var enemyType in EnemyTypes)
             {
-                if (level < enemyType.MinLevel || seen.Contains(enemyType.Type))
-                    continue;
+                if (level < enemyType.MinLevel || seen.Contains(enemyType.Type) || IsFinal(enemyType))
+                    continue; // the final enemy is already in (phase 0)
                 long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                 SpawnEnemies(enemies, enemyType.Type, 1, effectiveHp);
                 remainingHp -= Math.Min(remainingHp, effectiveHp);
@@ -248,7 +248,7 @@ public static class EnemySpawner
                 EnemyType? strongestAffordable = null;
                 foreach (var enemyType in EnemyTypes)
                 {
-                    if (level < enemyType.MinLevel) continue;
+                    if (level < enemyType.MinLevel || IsFinal(enemyType)) continue;
 
                     long effectiveHp = enemyType.ScaledHp * hpMultiplier;
                     if (remainingHp >= effectiveHp)
@@ -279,7 +279,7 @@ public static class EnemySpawner
             // PHASE 2: Fill remaining budget with heavily weighted selection toward strong enemies
             while (remainingHp > 0 && totalEnemies < MaxEnemies)
             {
-                var availableTypes = EnemyTypes.Where(e => level >= e.MinLevel && e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
+                var availableTypes = EnemyTypes.Where(e => level >= e.MinLevel && !IsFinal(e) && e.ScaledHp * hpMultiplier <= remainingHp).ToArray();
                 if (availableTypes.Length == 0) break;
 
                 // Create weights that extremely favor stronger enemies (much higher exponential bias)
@@ -343,6 +343,10 @@ public static class EnemySpawner
 
         return enemies;
     }
+
+    // The final enemy (The Night Creeper, first in EnemyTypes): exactly one per round from his level on (phase 0 in
+    // GetEnemies), never more - every other phase skips him.
+    static bool IsFinal(EnemyType e) => e.Type == EnemyTypes[0].Type;
 
     // Index into EnemyTypes (0 = strongest/TheDarkness, higher = weaker); -1 for non-tiered types.
     public static int GetTierRank(ActorTypeEnum type)

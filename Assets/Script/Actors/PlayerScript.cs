@@ -442,8 +442,9 @@ public class PlayerScript : MonoBehaviour
         bool isRunning = isMoving_;
 
         Sprite[] sprites;
-        // Saved skin, resolved even if the Skins popup was never opened.
-        var skin = SelectedSkinScript.Current;
+        // Saved skin, resolved even if the Skins popup was never opened. Against Scary Earl it's always plain Earl
+        // (the player's own default sprites): Earl vs. his evil twin, not a skin vs. Scary Earl.
+        var skin = ScaryEarlFight.Active ? null : SelectedSkinScript.Current;
         var idleSprites = skin?.IdleSprites ?? IdleSprites;
         var runSprites = skin?.RunSprites ?? RunSprites;
 
