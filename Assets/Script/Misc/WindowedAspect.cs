@@ -4,8 +4,10 @@ using UnityEngine;
 // anyway by AspectUtility + UiAspectFrame, but these two look best):
 // - Start: the window size from the previous run if it's 16:9 and fits, else (first run) 70% of the usable desktop
 //   width (taskbar excluded) at 16:9.
-// - Resizing / maximizing: once the size has settled, it snaps back to 16:9 (16:10 sizes are kept), following the
-//   dimension the player changed most, clamped to what fits on the monitor.
+// - Resizing: once the size has settled, it snaps back to 16:9 (16:10 sizes are kept), following the dimension the
+//   player changed most, clamped to what fits on the monitor.
+// - Maximize button: becomes the largest 16:9 window that fits, centered on the screen (a real maximized window has
+//   the screen's aspect, not 16:9).
 // - Fullscreen (settings checkbox / F key, SetFullscreen): only on a 16:9 or 16:10 monitor, borderless at the
 //   monitor's resolution; no snapping while in it. Remembered in PlayerPrefs.
 // Steam Deck: skipped - the game runs fullscreen at the native 1280x800 (16:10) and letterboxes itself.
@@ -169,10 +171,39 @@ public class WindowedAspect : MonoBehaviour
             GoFullscreen();
     }
 
+    // The window was maximized: its size is (about) the whole usable desktop, or Unity reports the maximized mode.
+    static bool LooksMaximized(int w, int h)
+    {
+        if (Screen.fullScreenMode == FullScreenMode.MaximizedWindow)
+            return true;
+        var work = Screen.mainWindowDisplayInfo.workArea;
+        return work.width > 0 && work.height > 0 && w >= work.width - 40 && h >= work.height - TitleBarMargin - 40;
+    }
+
+    // Centers the window in the usable desktop area, a moment after a resize (it applies at the end of the frame).
+    float _centerAt = -1f;
+
+    void CenterWindow()
+    {
+        var display = Screen.mainWindowDisplayInfo;
+        var work = display.workArea;
+        if (work.width <= 0 || work.height <= 0)
+            return;
+        int x = work.x + Mathf.Max(0, (work.width - Screen.width) / 2);
+        int y = work.y + Mathf.Max(0, (work.height - Screen.height - TitleBarMargin) / 2);
+        Screen.MoveMainWindowTo(display, new Vector2Int(x, y));
+    }
+
     void Update()
     {
         if (WantsFullscreen)
             return; // fullscreen: no snapping
+
+        if (_centerAt > 0f && Time.unscaledTime >= _centerAt)
+        {
+            _centerAt = -1f;
+            CenterWindow();
+        }
 
         int w = Screen.width, h = Screen.height;
         if (w != _seenW || h != _seenH)
@@ -216,6 +247,14 @@ public class WindowedAspect : MonoBehaviour
             _snapFromW = w;
             _snapFromH = h;
             _snapTries = 1;
+        }
+
+        // Maximize button: the largest 16:9 that fits, centered (SetSize goes back to a normal window).
+        if (LooksMaximized(w, h))
+        {
+            SetSize(maxH);
+            _centerAt = Time.unscaledTime + 0.15f;
+            return;
         }
 
         // Follow the dimension the player changed most.
