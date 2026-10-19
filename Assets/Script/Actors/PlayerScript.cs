@@ -199,8 +199,14 @@ public class PlayerScript : MonoBehaviour
                 Weapon.FireFromPoint(trans_.position, dir2, sideDamage, multiDaggerScale, GameManager.Instance.SortLayerTopEffects, out _);
             }
 
+            // Game time (G.D.GameTime), like the daggers' movement: WaitForSeconds used real time, so with time slowed
+            // (Ctrl+Left) the next dagger left before the previous one had moved, landing on top of it.
             if (i < daggersPerSalvo - 1)
-                yield return new WaitForSeconds(salvoInterval);
+            {
+                float next = G.D.GameTime + salvoInterval;
+                while (G.D.GameTime < next)
+                    yield return null;
+            }
         }
 
         isFiringSalvo = false;
