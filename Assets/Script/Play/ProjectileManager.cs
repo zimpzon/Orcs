@@ -324,6 +324,8 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         }
 
                         double damage = Basic.CalcDamage(p);
+                        bool hitThisFrame = false; // damaged this enemy now
+                        bool jumped = false;       // ...and turned toward a next enemy
                         if (p.CustomCollisionResponse != null)
                         {
                             p.CustomCollisionResponse(p, enemy, damage, p.Direction);
@@ -337,6 +339,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 {
                                     GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force, p.DamageSource);
                                     p.DamageTimeNext = GameManager.Instance.GameTime + p.DamageCd;
+                                    hitThisFrame = true;
                                 }
 
                                 if (offCd && p.JumpToNearbyTarget)
@@ -351,6 +354,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                         bool hasNearbyEnemy = closestEnemy != null;
                                         if (hasNearbyEnemy)
                                         {
+                                            jumped = true;
                                             p.Direction = (closestEnemy.transform.position - p.Position).normalized;
                                             float rot_z = Mathf.Atan2(p.Direction.y, p.Direction.x) * Mathf.Rad2Deg;
                                             p.SpriteInfo.Transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
@@ -362,6 +366,19 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
 
                         if (p.DieOnCollision)
                             removeListBasic_.Add(p);
+
+                        // Smart Daggers: stop at an enemy instead of flying through it, unless it just jumped on from it.
+                        // Stop when: it hit this enemy and found no next one; it touched an enemy it hit earlier (other
+                        // than the one it's just leaving - still overlapping it for a few frames); or it touched a new
+                        // enemy while its damage cooldown was running.
+                        if (p.JumpToNearbyTarget && p.DamageSource == ActorDamageSource.DaggerThrow && p.CustomCollisionResponse == null)
+                        {
+                            int last = p.PreviousJumpTargets.Count - 1;
+                            bool leavingLast = alreadyVisited && last >= 0 && p.PreviousJumpTargets[last].UniqueId == enemy.UniqueId;
+                            bool stop = hitThisFrame ? !jumped : !leavingLast;
+                            if (stop && !removeListBasic_.Contains(p))
+                                removeListBasic_.Add(p);
+                        }
 
                         if (p.ReflectOnCollision)
                         {
