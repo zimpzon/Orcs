@@ -1982,6 +1982,42 @@ public class GameManager : MonoBehaviour
         UpgradeManager.Instance.UpdateAllUpgrades();
     }
 
+    bool _takingScreenshot;
+
+    // Pictures/<product name>/IdleEarl_<date>_<time>.png; the save folder if there's no Pictures folder (some Linux
+    // setups). Captured at the end of this frame, the "saved" text only after, so it isn't in the picture.
+    IEnumerator TakeScreenshot()
+    {
+        _takingScreenshot = true;
+        yield return new WaitForEndOfFrame();
+
+        string message;
+        try
+        {
+            string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            string dir = string.IsNullOrEmpty(pictures)
+                ? System.IO.Path.Combine(Application.persistentDataPath, "Screenshots")
+                : System.IO.Path.Combine(pictures, Application.productName);
+            System.IO.Directory.CreateDirectory(dir);
+            string path = System.IO.Path.Combine(dir, $"IdleEarl_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png");
+
+            var tex = ScreenCapture.CaptureScreenshotAsTexture();
+            System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
+            Destroy(tex);
+            Debug.Log("Screenshot saved: " + path);
+            message = "Screenshot saved";
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Screenshot failed: " + e.Message);
+            message = "Screenshot failed";
+        }
+
+        yield return null;
+        AchievementsScript.AnnounceAtCursorOrCenter(message);
+        _takingScreenshot = false;
+    }
+
     void Update()
     {
         UpdateStoryText();
@@ -2006,6 +2042,11 @@ public class GameManager : MonoBehaviour
             else
                 Screen.fullScreen = !Screen.fullScreen;
         }
+
+        // F9: screenshot to the Pictures folder (not on WebGL: the browser can't save files this way). Not F12: that's
+        // Steam's own screenshot key.
+        if (Input.GetKeyDown(KeyCode.F9) && Application.platform != RuntimePlatform.WebGLPlayer && !_takingScreenshot)
+            StartCoroutine(TakeScreenshot());
 
         // Alt+Enter: same as the settings Fullscreen checkbox - standalone builds on a 16:9 / 16:10 monitor only.
         // (Unity's own Alt+Enter is off in Player Settings, so it can't bypass WindowedAspect.)
