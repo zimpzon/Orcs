@@ -225,6 +225,21 @@ public static class EnemySpawner
                 totalEnemies += 1;
             }
 
+            // PHASE 0b: an enemy type the arena level allows but the player has never seen (bestiary) is in the round too,
+            // the strongest such type. Big arena jumps can skip a type's levels, and from the top levels on the strongest
+            // enemies are so favored that a skipped one practically never spawned, blocking 100% completion.
+            var seen = SaveGame.Members.BeastsSeen;
+            foreach (var enemyType in EnemyTypes)
+            {
+                if (level < enemyType.MinLevel || seen.Contains(enemyType.Type))
+                    continue;
+                long effectiveHp = enemyType.ScaledHp * hpMultiplier;
+                SpawnEnemies(enemies, enemyType.Type, 1, effectiveHp);
+                remainingHp -= Math.Min(remainingHp, effectiveHp);
+                totalEnemies += 1;
+                break;
+            }
+
             // PHASE 1: Guarantee strongest AFFORDABLE enemy spawns first (85% chance - increased from 60%)
             bool shouldSpawnStrongest = UnityEngine.Random.value < 0.85f;
             if (shouldSpawnStrongest)

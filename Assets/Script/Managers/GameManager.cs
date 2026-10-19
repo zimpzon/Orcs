@@ -1236,6 +1236,13 @@ public class GameManager : MonoBehaviour
         if (amount < 1)
             amount = 1;
 
+        // A double past long.MaxValue casts to a huge NEGATIVE long: late hits (damage mul x Skull Slicer x Storm weaken
+        // x crit) got there and did no damage at all. Cap it: anything this big is overkill on any enemy (HP is capped
+        // far below, EnemySpawner.EnemyHpCap / ScaryEarlFight).
+        const double MaxHit = long.MaxValue / 4;
+        if (amount > MaxHit || double.IsNaN(amount))
+            amount = MaxHit;
+
         long intAmount = (long)amount;
         SaveGame.Members.DamageDone += intAmount;
 
