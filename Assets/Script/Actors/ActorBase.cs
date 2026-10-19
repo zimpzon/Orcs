@@ -239,6 +239,7 @@ public class ActorBase : MonoBehaviour
     Sprite[] _plainAnimations;
     float _plainMass;
     float _plainSpeed;
+    int _plainSortingLayer;
     float _plainHitFlash;
     bool _plainNoFlashFx;
     Vector3 _plainScale;
@@ -250,6 +251,7 @@ public class ActorBase : MonoBehaviour
             _plainAnimations = Animations;
             _plainMass = Mass;
             _plainSpeed = Speed;
+            _plainSortingLayer = GetComponent<SpriteRenderer>().sortingLayerID; // renderer_ may not be set yet (before Awake)
             _plainHitFlash = HitFlashAmount;
             _plainNoFlashFx = NoFlashFx;
             _plainScale = transform.localScale;
@@ -277,9 +279,12 @@ public class ActorBase : MonoBehaviour
         Mass = _plainMass;
         massInverse_ = 1.0f / Mass;
         Speed = _plainSpeed;
+        GetComponent<SpriteRenderer>().sortingLayerID = _plainSortingLayer;
         HitFlashAmount = _plainHitFlash;
         NoFlashFx = _plainNoFlashFx;
     }
+
+    const int ScaryEarlSortingOrder = 30000; // top of the TopEffects layer (still under the arena border/arches)
 
     // Uniform scale, keeping the body radius/offset in step. Before Awake (fresh from the cache, never activated) only
     // the transform changes: Awake scales the radius/offset by it then.
@@ -539,6 +544,21 @@ public class ActorBase : MonoBehaviour
         }
 
         renderer_.sortingOrder = (Mathf.RoundToInt(transform_.position.y * 100f) * -1) - (IsDead ? 10000 : 0);
+
+        // Scary Earl: drawn above every dagger, skull and effect in his fight (they all fly at him and hid him
+        // completely). Dead: back to the normal layer/order for the death animation.
+        if (IsScaryEarl)
+        {
+            if (!IsDead)
+            {
+                renderer_.sortingLayerID = GameManager.Instance.SortLayerTopEffects;
+                renderer_.sortingOrder = ScaryEarlSortingOrder;
+            }
+            else
+            {
+                renderer_.sortingLayerID = _plainSortingLayer;
+            }
+        }
 
         const float RegenTime = 1.0f;
         slowmotionModifier_ = Mathf.Clamp01(slowmotionModifier_ + GameManager.Instance.GameDeltaTime / RegenTime);
