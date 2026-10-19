@@ -17,7 +17,10 @@ public class WindowedAspect : MonoBehaviour
     const int TitleBarMargin = 60;         // title bar + borders, so a window of the max size still fits
     const int SideMargin = 20;
     const int MinHeight = 360;             // 640x360
-    const float SettleTime = 0.25f;        // snap only after the size stopped changing (don't fight a drag)
+    const float SettleTime = 0.6f;         // snap only after the size stopped changing (don't fight a drag; was 0.25 s,
+                                           // short enough to fire during a pause mid-drag)
+    const int MaxSnapTries = 3;            // a size the OS / window manager won't give us (maximized, DPI rounding): stop
+                                           // after this many tries and keep it - letterboxing handles any aspect
     const string FullscreenKey = "WindowedAspect.Fullscreen";
 
     static WindowedAspect _instance;
@@ -94,9 +97,14 @@ public class WindowedAspect : MonoBehaviour
     int _appliedW, _appliedH;   // last size we set (or accepted)
     int _seenW, _seenH;         // last size observed, for the settle timer
     float _sizeChangedAt;
+    int _snapTries;             // snaps in a row that didn't stick (reset when the player changes the size)
+    int _snapFromW, _snapFromH; // the size we last tried to snap away from
 
-    static bool Is16x9(int w, int h) => h > 0 && Mathf.Abs(w * 9 - h * 16) <= 16;
-    static bool Is16x10(int w, int h) => h > 0 && Mathf.Abs(w * 10 - h * 16) <= 16;
+    // Within ~0.5% of the aspect: DPI scaling and window frames round sizes by a few pixels, and a near miss shouldn't
+    // count as "wrong" (that kept re-snapping forever).
+    static bool NearAspect(int w, int h, float aspect) => h > 0 && Mathf.Abs(w / (float)h - aspect) <= aspect * 0.005f;
+    static bool Is16x9(int w, int h) => NearAspect(w, h, 16f / 9f);
+    static bool Is16x10(int w, int h) => NearAspect(w, h, 16f / 10f);
     static bool IsSupported(int w, int h) => Is16x9(w, h) || Is16x10(w, h);
 
     // Usable desktop area of the window's monitor, minus room for the window frame.
@@ -178,6 +186,9 @@ public class WindowedAspect : MonoBehaviour
         bool wrongMode = Screen.fullScreenMode != FullScreenMode.Windowed;
         if (!wrongMode && (w == _appliedW && h == _appliedH || Time.unscaledTime - _sizeChangedAt < SettleTime))
             return;
+        // Still a mouse button down: probably still dragging the frame (where Unity sees it) - wait.
+        if (!wrongMode && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+            return;
 
         var (availW, availH) = Available();
         int maxH = MaxHeight(availW, availH);
@@ -187,6 +198,24 @@ public class WindowedAspect : MonoBehaviour
             _appliedW = w;
             _appliedH = h;
             return;
+        }
+
+        // The same unwanted size again after our snap: it didn't stick. A few tries, then accept it as it is (the camera
+        // and UI letterbox to 16:9 anyway) instead of calling SetResolution forever, which made the window jump.
+        if (w == _snapFromW && h == _snapFromH)
+        {
+            if (++_snapTries >= MaxSnapTries)
+            {
+                _appliedW = w;
+                _appliedH = h;
+                return;
+            }
+        }
+        else
+        {
+            _snapFromW = w;
+            _snapFromH = h;
+            _snapTries = 1;
         }
 
         // Follow the dimension the player changed most.
