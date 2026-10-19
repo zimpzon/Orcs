@@ -258,6 +258,13 @@ namespace Assets.Script.Achievements
             AchievementsScript.AnnounceAtCursorOrCenter("100%");
             AchievementsScript.AnnounceAtCursorOrCenter("COMPLETION");
             AchievementsScript.AnnounceAtCursorOrCenter("WELL DONE HERO!");
+
+            // Confetti fountains and spark rings at the cursor (or the screen center when it's outside the game).
+            Vector2 pos = Input.mousePosition;
+            if (pos.x < 0 || pos.y < 0 || pos.x > Screen.width || pos.y > Screen.height)
+                pos = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+            if (UpgradeManager.Instance != null)
+                CompletionBurst.Play(UpgradeManager.Instance.ClickDamage, pos);
         }
 
         public static void CheckCompletion100(List<Achieved> list)
