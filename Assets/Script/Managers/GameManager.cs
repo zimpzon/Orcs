@@ -1985,13 +1985,13 @@ public class GameManager : MonoBehaviour
     bool _takingScreenshot;
 
     // Pictures/<product name>/IdleEarl_<date>_<time>.png; the save folder if there's no Pictures folder (some Linux
-    // setups). Captured at the end of this frame, the "saved" text only after, so it isn't in the picture.
+    // setups). Captured at the end of this frame. No on-screen message (it would end up in the next shot of a burst);
+    // the path goes to the log.
     IEnumerator TakeScreenshot()
     {
         _takingScreenshot = true;
         yield return new WaitForEndOfFrame();
 
-        string message;
         try
         {
             string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
@@ -1999,22 +1999,18 @@ public class GameManager : MonoBehaviour
                 ? System.IO.Path.Combine(Application.persistentDataPath, "Screenshots")
                 : System.IO.Path.Combine(pictures, Application.productName);
             System.IO.Directory.CreateDirectory(dir);
-            string path = System.IO.Path.Combine(dir, $"IdleEarl_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png");
+            string path = System.IO.Path.Combine(dir, $"IdleEarl_{DateTime.Now:yyyy-MM-dd_HH-mm-ss-fff}.png");
 
             var tex = ScreenCapture.CaptureScreenshotAsTexture();
             System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
             Destroy(tex);
             Debug.Log("Screenshot saved: " + path);
-            message = "Screenshot saved";
         }
         catch (Exception e)
         {
             Debug.LogError("Screenshot failed: " + e.Message);
-            message = "Screenshot failed";
         }
 
-        yield return null;
-        AchievementsScript.AnnounceAtCursorOrCenter(message);
         _takingScreenshot = false;
     }
 
