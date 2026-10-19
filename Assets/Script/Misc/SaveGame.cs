@@ -293,6 +293,11 @@ public static class SaveGame
 
     public static float LastSaveTime;
 
+    // A stored save existed but couldn't be read (damaged or edited), so a new game was started. GameManager shows a
+    // popup about it.
+    public static bool LoadFailed;
+    static bool _readFailed;
+
     public static event Action OnSave;
 
     public static void Save()
@@ -310,8 +315,8 @@ public static class SaveGame
         Members.SavedAtUtc = DateTime.UtcNow.ToString("o", System.Globalization.CultureInfo.InvariantCulture);
         Members.LastSeenUtcStr = Assets.Script.Misc.FormatTime.DateTimeToString(DateTime.UtcNow);
 
-        string json = Members.ToJson();
-        //Debug.Log("saving json: " + json);
+        // Everything stored is encoded (Obfuscation: scrambled + tamper checksum), so a save can't just be edited.
+        string json = Obfuscation.EncodeForSave(Members.ToJson());
 
         BackupIfDue(json);
 
@@ -358,7 +363,7 @@ public static class SaveGame
             // Desktop (Windows / Linux / Editor): a real file, so Steam Cloud can sync it later.
             try
             {
-                WriteFileAtomic(SaveFilePath, json);
+                WriteFileAtomic(SaveFilePath, json); // encoded, same format as export
             }
             catch (Exception e)
             {
@@ -369,19 +374,29 @@ public static class SaveGame
 
     const string SaveGameKey = "idle-earl-save-v2.json"; // WebGL PlayerPrefs key (and where desktop saves used to be)
 
-    // Desktop save: <persistentDataPath>/idle-earl-save.json, e.g. %USERPROFILE%/AppData/LocalLow/<company>/<product>
+    // Desktop save: <persistentDataPath>/idle-earl-save.sav, e.g. %USERPROFILE%/AppData/LocalLow/<company>/<product>
     // on Windows, ~/.config/unity3d/<company>/<product> on Linux. This is the file to give to Steam Cloud.
     // The Editor gets the same persistentDataPath as a Windows build of the project, so it uses its own file names:
     // otherwise playing in the Editor would overwrite the build's save (PlayerPrefs kept them apart via separate keys).
 #if UNITY_EDITOR
-    const string SaveFileName = "idle-earl-save-editor.json";
+    const string SaveFileName = "idle-earl-save-editor.sav";
     const string BackupDirName = "backups-editor";
 #else
-    const string SaveFileName = "idle-earl-save.json";
+    const string SaveFileName = "idle-earl-save.sav"; // encoded, not JSON (Obfuscation)
     const string BackupDirName = "backups";
 #endif
     public static string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
     static string BackupDir => Path.Combine(Application.persistentDataPath, BackupDirName);
+
+    // Stored saves are encoded (Obfuscation). Old versions aren't supported: plain JSON from before the encoding counts
+    // as no save at all (a fresh start, no "could not be loaded" popup). Throws on anything unreadable or edited.
+    static string DecodeSaveFile(string text)
+    {
+        text = text?.Trim();
+        if (string.IsNullOrEmpty(text) || text.StartsWith("{"))
+            return null;
+        return Obfuscation.Decode(text);
+    }
 
     // Write to a temp file next to it, then swap it in: a crash or power loss mid-write leaves the old save intact.
     static void WriteFileAtomic(string path, string text)
@@ -411,7 +426,7 @@ public static class SaveGame
 
     // Rolling backups: a copy of the save every BackupIntervalSeconds of play, cycling through BackupSlots slots so the
     // oldest gets overwritten. WebGL: localStorage keys super-knight-v1-backup-N (jslib), the next slot kept in
-    // PlayerPrefs (if that gets wiped it just restarts at 0). Desktop: files backups/backup-N.json next to the save,
+    // PlayerPrefs (if that gets wiped it just restarts at 0). Desktop: files backups/backup-N.sav next to the save,
     // overwriting the oldest one.
     const float BackupIntervalSeconds = 60 * 60;
     const int BackupSlots = 20;
@@ -436,7 +451,7 @@ public static class SaveGame
             }
             else
             {
-                WriteFileAtomic(Path.Combine(BackupDir, $"backup-{OldestBackupSlot()}.json"), json);
+                WriteFileAtomic(Path.Combine(BackupDir, $"backup-{OldestBackupSlot()}.sav"), json);
             }
         }
         catch (Exception e)
@@ -452,7 +467,7 @@ public static class SaveGame
         DateTime oldestTime = DateTime.MaxValue;
         for (int i = 0; i < BackupSlots; ++i)
         {
-            string f = Path.Combine(BackupDir, $"backup-{i}.json");
+            string f = Path.Combine(BackupDir, $"backup-{i}.sav");
             if (!File.Exists(f))
                 return i;
             var t = File.GetLastWriteTimeUtc(f);
@@ -482,7 +497,7 @@ public static class SaveGame
             {
                 if (PlayerPrefs.HasKey(SaveGameKey))
                 {
-                    playerPrefsData = PlayerPrefs.GetString(SaveGameKey);
+                    playerPrefsData = DecodeSaveFile(PlayerPrefs.GetString(SaveGameKey));
                     if (!string.IsNullOrEmpty(playerPrefsData))
                     {
                         playerPrefsAvailable = true;
@@ -493,12 +508,13 @@ public static class SaveGame
             catch (System.Exception e)
             {
                 GameManager.GameLoadInfo.Add("PlayerPrefs load failed: " + e.Message);
+                _readFailed = true;
             }
 
             // Check JsMappings
             try
             {
-                jsMappingsData = JsMappings.Load();
+                jsMappingsData = DecodeSaveFile(JsMappings.Load());
                 if (!string.IsNullOrEmpty(jsMappingsData))
                 {
                     jsMappingsAvailable = true;
@@ -508,6 +524,7 @@ public static class SaveGame
             catch (System.Exception e)
             {
                 GameManager.GameLoadInfo.Add("JsMappings load failed: " + e.Message);
+                _readFailed = true;
             }
 
             // Decide which data to use
@@ -542,36 +559,34 @@ public static class SaveGame
             }
 
             Debug.Log("json = " + dataToLoad);
+            LoadFailed = _readFailed && string.IsNullOrEmpty(dataToLoad);
             LoadJson(dataToLoad);
         }
         else
         {
-            // Desktop: the save file. A save from before the file existed (PlayerPrefs) is read once; the next save
-            // writes the file.
+            // Desktop: the save file only (older saves, PlayerPrefs or .json files, are not supported).
             string path = SaveFilePath;
             string json = null;
             try
             {
                 if (File.Exists(path))
                 {
-                    json = File.ReadAllText(path);
+                    json = DecodeSaveFile(File.ReadAllText(path));
                     GameManager.GameLoadInfo.Add("Loaded save file: " + path);
                 }
             }
             catch (Exception e)
             {
                 GameManager.GameLoadInfo.Add("Save file read failed: " + e.Message);
+                _readFailed = true;
                 Debug.LogError("Save file read failed: " + e.Message);
-            }
-
-            if (string.IsNullOrEmpty(json) && PlayerPrefs.HasKey(SaveGameKey))
-            {
-                json = PlayerPrefs.GetString(SaveGameKey);
-                GameManager.GameLoadInfo.Add("No save file, loaded the old PlayerPrefs save");
+                // Keep the unreadable file: the next autosave would overwrite it.
+                try { File.Copy(path, path + ".unreadable", overwrite: true); } catch (Exception) { }
             }
 
             if (string.IsNullOrEmpty(json))
                 Debug.Log("No save data found");
+            LoadFailed = _readFailed && string.IsNullOrEmpty(json);
             LoadJson(json ?? string.Empty);
         }
     }

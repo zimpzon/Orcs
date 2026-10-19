@@ -1421,6 +1421,9 @@ public class GameManager : MonoBehaviour
         UpgradeManager.Instance.UpdateAllUpgrades();
 
         ApplyVolume();
+
+        if (SaveGame.LoadFailed)
+            GameCanvasScript.Instance.ShowPopup("Save game could not be loaded.\nContact support for restoring a backup.\nStarting new game.");
         AudioManager.Instance.ApplySoundSettings();
         MusicManagerScript.Instance.StartPlaylist();
 
