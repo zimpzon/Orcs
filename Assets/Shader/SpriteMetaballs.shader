@@ -12,6 +12,10 @@ Shader "Custom/SpriteMetaballs" {
         _BallSize ("Ball size", Float) = 0.28
         _Aspect ("Aspect (width/height)", Float) = 8
         _EdgeFade ("Edge fade", Float) = 0.12
+        _BorderColor ("Border comets", Color) = (1,0.84,0.35,1)
+        _BorderStrength ("Border comets strength (0 = off)", Float) = 0
+        _BorderPhase ("Border comets position (animated from code)", Float) = 0
+        _BorderInset ("Border inset", Float) = 0.1
     }
     SubShader {
         Tags {
@@ -41,6 +45,41 @@ Shader "Custom/SpriteMetaballs" {
             float _BallSize;
             float _Aspect;
             float _EdgeFade;
+            fixed4 _BorderColor;
+            float _BorderStrength;
+            float _BorderPhase;
+            float _BorderInset;
+
+            // Two comets running around a rectangle inset from the panel edge, with fading tails and a faint glow line
+            // along the whole border (StoryPanelFx turns it on once Scary Earl is defeated). Returns the brightness.
+            float BorderComets(float2 p, float aspect)
+            {
+                float hw = max(aspect * 0.5 - _BorderInset, 0.05);
+                float hh = max(0.5 - _BorderInset, 0.05);
+                // Distance to the rectangle outline.
+                float2 q = abs(p) - float2(hw, hh);
+                float dist = abs(length(max(q, 0)) + min(max(q.x, q.y), 0));
+                float outline = exp(-dist * dist / 0.0006);
+
+                // Position along the outline, counter-clockwise from the bottom-left corner.
+                float W = hw * 2, H = hh * 2, L = 2 * (W + H);
+                float dx = hw - abs(p.x), dy = hh - abs(p.y);
+                float s;
+                if (dy <= dx)
+                    s = p.y < 0 ? (p.x + hw) : (W + H + (hw - p.x));        // bottom / top edge
+                else
+                    s = p.x > 0 ? (W + (p.y + hh)) : (2 * W + H + (hh - p.y)); // right / left edge
+
+                float comet = 0;
+                [unroll]
+                for (int c = 0; c < 2; c++) {
+                    float head = frac(_BorderPhase + c * 0.5) * L;
+                    float behind = fmod(head - s + L, L);                   // how far behind the head
+                    comet += exp(-behind / (L * 0.06)) * (behind < L * 0.5); // tail
+                    comet += exp(-(L - behind) * (L - behind) / 0.0004);     // a little bright tip just ahead
+                }
+                return outline * (0.15 + comet);
+            }
 
             struct appdata_t {
                 float4 vertex   : POSITION;
@@ -96,7 +135,14 @@ Shader "Custom/SpriteMetaballs" {
                 float edge = smoothstep(0, e.x, i.uv.x) * smoothstep(0, e.x, 1 - i.uv.x)
                            * smoothstep(0, e.y, i.uv.y) * smoothstep(0, e.y, 1 - i.uv.y);
 
-                col.a *= edge * i.col.a * tex2D(_MainTex, i.uv).a;
+                col.a *= edge;
+
+                // Border comets on top (not faded by the soft edges, they sit inside them).
+                float glow = BorderComets(p, _Aspect) * _BorderStrength;
+                col.rgb += _BorderColor.rgb * glow;
+                col.a = saturate(col.a + glow * _BorderColor.a);
+
+                col.a *= i.col.a * tex2D(_MainTex, i.uv).a;
                 col.rgb *= i.col.rgb;
                 return col;
             }
