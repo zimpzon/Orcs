@@ -21,6 +21,15 @@ public static class ScaryEarlFight
     public static readonly string StoryDefeated =
         $"You defeated <color={TextColors.Gold}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
 
+    // Marks him beaten and freezes the play time it took (shown in the victory dialog). Arena win and RightShift+E.
+    public static void MarkDefeated()
+    {
+        var m = SaveGame.Members;
+        m.ScaryEarlDefeated = true;
+        if (m.ScaryEarlSeconds < 0)
+            m.ScaryEarlSeconds = m.EstimatedOnlineSeconds2;
+    }
+
     public static bool Active => SaveGame.Members.FogTouched && !SaveGame.Members.ScaryEarlDefeated;
 
     // Text under the HP bar: nothing before the fog was touched, then the story (kept for good once he's beaten).

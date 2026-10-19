@@ -640,7 +640,7 @@ public class GameManager : MonoBehaviour
                 // No arena step either way: win -> normal arenas resume from this level, timeout -> fight him again.
                 if (GameState == State.Idle_WonFight)
                 {
-                    SaveGame.Members.ScaryEarlDefeated = true;
+                    ScaryEarlFight.MarkDefeated();
                     SaveGame.Members.TotalArenasWon++;
                     SaveGame.Save();
                     yield return ShowInfoTextFlashy("SCARY EARL DEFEATED!", delay: 2);
@@ -2143,7 +2143,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                SaveGame.Members.ScaryEarlDefeated = true;
+                ScaryEarlFight.MarkDefeated();
             }
             Debug.Log("Cheat: Scary Earl beaten");
         }

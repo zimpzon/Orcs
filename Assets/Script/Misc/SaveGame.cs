@@ -100,6 +100,7 @@ public class SaveGameMembers
     // Frozen when 100% completion was reached (victory dialog); -1 = not yet. Kept through rebirth.
     public double CompletionSeconds = -1;
     public long CompletionRebirths = -1;
+    public double ScaryEarlSeconds = -1; // play time when Scary Earl was defeated (victory dialog); -1 = not yet
 
     // Stats
     // HOW TO ALIGN left/right: https://discussions.unity.com/t/textmeshpro-right-and-left-align-on-same-line/672190/6

@@ -177,6 +177,14 @@ public class ProgressPopupScript : MonoBehaviour
             string time = Assets.Script.Misc.FormatTime.Format((int)took.TotalDays, took.Hours, took.Minutes, useShorthand: true);
             text += "\r\n\r\n" +
                 $"<pos={LabelColumn}><color=#cccccc>Achieved in</color><pos={StatColumn}><color={GoldHex}>{time}</color>\r\n";
+
+            // And the time to also beat Scary Earl (after 100%, through the bestiary fog), once he's defeated.
+            if (m.ScaryEarlDefeated && m.ScaryEarlSeconds >= 0)
+            {
+                var earlTook = System.TimeSpan.FromSeconds(m.ScaryEarlSeconds);
+                string earlTime = Assets.Script.Misc.FormatTime.Format((int)earlTook.TotalDays, earlTook.Hours, earlTook.Minutes, useShorthand: true);
+                text += $"<pos={LabelColumn}><color=#cccccc>Including Scary Earl</color><pos={StatColumn}><color={GoldHex}>{earlTime}</color>\r\n";
+            }
                 //$"<pos={LabelColumn}><color=#cccccc>Rebirths</color><pos={StatColumn}><color={GoldHex}>{rebirths}</color>";
         }
 
