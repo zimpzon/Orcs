@@ -6,9 +6,9 @@ namespace Assets.Script.Upgrades
 {
     public static class BeefyEarlManager
     {
-        // Dagger damage bonus per level (was 0.25 when it shared one additive sum with Smart Daggers; 0.5 until a
-        // playtest buff).
-        const double DamagePerLevel = 0.65;
+        // Dagger damage bonus per level (was 0.25 when it shared one additive sum with Smart Daggers; doubled from 0.5
+        // in a playtest buff).
+        const double DamagePerLevel = 0.7; // -30% from 1.0
 
         public static string GetText()
         {

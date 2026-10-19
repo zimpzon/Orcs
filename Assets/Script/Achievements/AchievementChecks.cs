@@ -184,8 +184,8 @@ namespace Assets.Script.Achievements
         {
             if (list.Contains(Achieved.Played5Days)) return;
 
-            // Name kept for saves (Played5Days); the requirement is now 4 days.
-            if (SaveGame.Members.EstimatedOnlineSeconds2 >= 4 * 24 * 60 * 60)
+            // Name kept for saves (Played5Days); the requirement is now 3 days.
+            if (SaveGame.Members.EstimatedOnlineSeconds2 >= 3 * 24 * 60 * 60)
             {
                 list.Add(Achieved.Played5Days);
                 NewAchieved(Achieved.Played5Days);
