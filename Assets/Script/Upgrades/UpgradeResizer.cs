@@ -80,6 +80,8 @@ public class UpgradeResizer : MonoBehaviour
             Expand();
     }
 
+    float _collapsedScroll = 1f; // collapsed list's scroll position (1 = top) when the view was expanded
+
     public void Collapse()
     {
         if (isAnimating) return;
@@ -116,11 +118,12 @@ public class UpgradeResizer : MonoBehaviour
             UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, itemPanelCollapsedSize.y);
         }
 
-        // Back at the top of the list: the scroll position from the expanded layout left the few items of an early run
-        // out of view (a blank area until scrolling). Next frame, once the collapsed layout has rebuilt.
-        var scrollToTop = ScrollToTopOnStart.Instance;
-        if (wasExpanded && scrollToTop != null && scrollToTop.isActiveAndEnabled)
-            scrollToTop.ScrollToTopNow();
+        // Back to where the collapsed list was scrolled before expanding: the expanded layout's scroll position left the
+        // few items of an early run out of view (a blank area until scrolling). Immediately, in this frame: a next-frame
+        // scroll flashed.
+        var scroll = ScrollToTopOnStart.Instance;
+        if (wasExpanded && scroll != null && scroll.isActiveAndEnabled)
+            scroll.ScrollToImmediate(_collapsedScroll);
     }
 
     void Expand()
@@ -128,7 +131,12 @@ public class UpgradeResizer : MonoBehaviour
         if (isAnimating) return;
 
         if (!isExpanded)
+        {
             AudioManager.Instance.PlayExpandTierList();
+            // Where the collapsed list was scrolled to, to go back there on collapse.
+            var scroll = ScrollToTopOnStart.Instance;
+            _collapsedScroll = scroll != null ? scroll.VerticalPosition : 1f;
+        }
         SetExpanded(true);
         SaveGame.Members.ViewedExpandedTiers = true; // stops the expand button pulse (CrownPulse)
         isAnimating = true;
