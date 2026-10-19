@@ -176,8 +176,8 @@ public class ProgressPopupScript : MonoBehaviour
             long rebirths = recorded ? m.CompletionRebirths : m.TimesAscended_09_08_2025;
             string time = Assets.Script.Misc.FormatTime.Format((int)took.TotalDays, took.Hours, took.Minutes, useShorthand: true);
             text += "\r\n\r\n" +
-                $"<pos={LabelColumn}><color=#cccccc>Achieved in</color><pos={StatColumn}><color={GoldHex}>{time}</color>\r\n" +
-                $"<pos={LabelColumn}><color=#cccccc>Rebirths</color><pos={StatColumn}><color={GoldHex}>{rebirths}</color>";
+                $"<pos={LabelColumn}><color=#cccccc>Achieved in</color><pos={StatColumn}><color={GoldHex}>{time}</color>\r\n";
+                //$"<pos={LabelColumn}><color=#cccccc>Rebirths</color><pos={StatColumn}><color={GoldHex}>{rebirths}</color>";
         }
 
         if (text == _lastText)
