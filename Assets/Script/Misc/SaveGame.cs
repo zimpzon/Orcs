@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class SaveGameMembers
@@ -77,7 +78,7 @@ public class SaveGameMembers
         $"{nameof(BoughtCompletionist)} = {SaveGame.Members.BoughtCompletionist}";
 
     // Settings
-    public int Version;
+    public int Version = 2; // save game version
     public float VolumeMaster = 1.0f;
     public float VolumeMusic = 0.6f;
     public float VolumeSfx = 1.0f;
@@ -354,16 +355,64 @@ public static class SaveGame
         }
         else
         {
-            //Debug.Log("saving prefs");
-            PlayerPrefs.SetString(SaveGameKey, json);
+            // Desktop (Windows / Linux / Editor): a real file, so Steam Cloud can sync it later.
+            try
+            {
+                WriteFileAtomic(SaveFilePath, json);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Save file write failed: " + e.Message);
+            }
         }
     }
 
-    const string SaveGameKey = "idle-earl-save-v2.json";
+    const string SaveGameKey = "idle-earl-save-v2.json"; // WebGL PlayerPrefs key (and where desktop saves used to be)
+
+    // Desktop save: <persistentDataPath>/idle-earl-save.json, e.g. %USERPROFILE%/AppData/LocalLow/<company>/<product>
+    // on Windows, ~/.config/unity3d/<company>/<product> on Linux. This is the file to give to Steam Cloud.
+    // The Editor gets the same persistentDataPath as a Windows build of the project, so it uses its own file names:
+    // otherwise playing in the Editor would overwrite the build's save (PlayerPrefs kept them apart via separate keys).
+#if UNITY_EDITOR
+    const string SaveFileName = "idle-earl-save-editor.json";
+    const string BackupDirName = "backups-editor";
+#else
+    const string SaveFileName = "idle-earl-save.json";
+    const string BackupDirName = "backups";
+#endif
+    public static string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+    static string BackupDir => Path.Combine(Application.persistentDataPath, BackupDirName);
+
+    // Write to a temp file next to it, then swap it in: a crash or power loss mid-write leaves the old save intact.
+    static void WriteFileAtomic(string path, string text)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        string tmp = path + ".tmp";
+        File.WriteAllText(tmp, text);
+        if (File.Exists(path))
+        {
+            try
+            {
+                File.Replace(tmp, path, null);
+                return;
+            }
+            catch (Exception)
+            {
+                // Some file systems don't support Replace: plain overwrite instead.
+            }
+            File.Copy(tmp, path, overwrite: true);
+            File.Delete(tmp);
+        }
+        else
+        {
+            File.Move(tmp, path);
+        }
+    }
 
     // Rolling backups: a copy of the save every BackupIntervalSeconds of play, cycling through BackupSlots slots so the
-    // oldest gets overwritten. WebGL: localStorage keys super-knight-v1-backup-N (jslib), else PlayerPrefs. The next slot
-    // is kept in PlayerPrefs; if that gets wiped it just restarts at 0.
+    // oldest gets overwritten. WebGL: localStorage keys super-knight-v1-backup-N (jslib), the next slot kept in
+    // PlayerPrefs (if that gets wiped it just restarts at 0). Desktop: files backups/backup-N.json next to the save,
+    // overwriting the oldest one.
     const float BackupIntervalSeconds = 60 * 60;
     const int BackupSlots = 20;
     const string BackupKeyPrefix = "idle-earl-backup-";
@@ -378,19 +427,42 @@ public static class SaveGame
 
         try
         {
-            int slot = Mathf.Clamp(PlayerPrefs.GetInt(BackupNextSlotKey, 0), 0, BackupSlots - 1);
             if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                int slot = Mathf.Clamp(PlayerPrefs.GetInt(BackupNextSlotKey, 0), 0, BackupSlots - 1);
                 JsMappings.SaveBackup(slot, json);
+                PlayerPrefs.SetInt(BackupNextSlotKey, (slot + 1) % BackupSlots);
+                PlayerPrefs.Save();
+            }
             else
-                PlayerPrefs.SetString(BackupKeyPrefix + slot, json);
-
-            PlayerPrefs.SetInt(BackupNextSlotKey, (slot + 1) % BackupSlots);
-            PlayerPrefs.Save();
+            {
+                WriteFileAtomic(Path.Combine(BackupDir, $"backup-{OldestBackupSlot()}.json"), json);
+            }
         }
         catch (Exception e)
         {
             Debug.LogError("Save backup failed: " + e.Message);
         }
+    }
+
+    // Desktop backups: the first missing slot, else the one written longest ago.
+    static int OldestBackupSlot()
+    {
+        int oldest = 0;
+        DateTime oldestTime = DateTime.MaxValue;
+        for (int i = 0; i < BackupSlots; ++i)
+        {
+            string f = Path.Combine(BackupDir, $"backup-{i}.json");
+            if (!File.Exists(f))
+                return i;
+            var t = File.GetLastWriteTimeUtc(f);
+            if (t < oldestTime)
+            {
+                oldestTime = t;
+                oldest = i;
+            }
+        }
+        return oldest;
     }
 
     public static void Load()
@@ -474,18 +546,33 @@ public static class SaveGame
         }
         else
         {
-            Debug.Log("loading from PREFS");
-            if (PlayerPrefs.HasKey(SaveGameKey))
+            // Desktop: the save file. A save from before the file existed (PlayerPrefs) is read once; the next save
+            // writes the file.
+            string path = SaveFilePath;
+            string json = null;
+            try
             {
-                string prefs = PlayerPrefs.GetString(SaveGameKey);
-                Debug.Log("json = " + prefs);
-                LoadJson(prefs);
+                if (File.Exists(path))
+                {
+                    json = File.ReadAllText(path);
+                    GameManager.GameLoadInfo.Add("Loaded save file: " + path);
+                }
             }
-            else
+            catch (Exception e)
             {
+                GameManager.GameLoadInfo.Add("Save file read failed: " + e.Message);
+                Debug.LogError("Save file read failed: " + e.Message);
+            }
+
+            if (string.IsNullOrEmpty(json) && PlayerPrefs.HasKey(SaveGameKey))
+            {
+                json = PlayerPrefs.GetString(SaveGameKey);
+                GameManager.GameLoadInfo.Add("No save file, loaded the old PlayerPrefs save");
+            }
+
+            if (string.IsNullOrEmpty(json))
                 Debug.Log("No save data found");
-                LoadJson(string.Empty);
-            }
+            LoadJson(json ?? string.Empty);
         }
     }
     // Gives the current save a SaveId if it has none (new save, or an old save from before SaveId existed).
