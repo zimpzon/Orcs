@@ -150,9 +150,9 @@ public class ProgressPopupScript : MonoBehaviour
         // The crown Earl gets at 100% (PlayerCrown): promised before, so a crowned Earl reads as "completed". The
         // RightShift+G preview shows the crowned version like the rest of the celebration.
         bool crowned = won || CrownPulse.CheatForceShow;
-        string header = crowned ? "LONG LIVE KING EARL" : "THE CROWN AWAITS";
+        string header = crowned ? "LONG LIVE KING EARL" : "King of the Monsters";
         string subtitle = crowned
-            ? $"<color={GoldHex}>The crown is yours!</color>"
+            ? $"<color={GoldHex}>Monsters cower in your presence!</color>"
             : "<color=#cccccc>Reach 100% and claim your rightful crown</color>";
 
         string text =
