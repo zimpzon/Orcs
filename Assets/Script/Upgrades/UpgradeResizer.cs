@@ -84,6 +84,7 @@ public class UpgradeResizer : MonoBehaviour
     {
         if (isAnimating) return;
 
+        bool wasExpanded = isExpanded;
         if (isExpanded)
             AudioManager.Instance.PlayCloseTierList();
         SetExpanded(false);
@@ -114,6 +115,12 @@ public class UpgradeResizer : MonoBehaviour
             UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, itemPanelCollapsedSize.x);
             UpgradeItemPanel.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, itemPanelCollapsedSize.y);
         }
+
+        // Back at the top of the list: the scroll position from the expanded layout left the few items of an early run
+        // out of view (a blank area until scrolling). Next frame, once the collapsed layout has rebuilt.
+        var scrollToTop = ScrollToTopOnStart.Instance;
+        if (wasExpanded && scrollToTop != null && scrollToTop.isActiveAndEnabled)
+            scrollToTop.ScrollToTopNow();
     }
 
     void Expand()
