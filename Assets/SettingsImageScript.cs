@@ -105,6 +105,8 @@ public class SettingsImageScript : MonoBehaviour
         if (!MusicToggle.TryGetComponent<CanvasGroup>(out var musicGroup))
             musicGroup = MusicToggle.gameObject.AddComponent<CanvasGroup>();
         musicGroup.alpha = musicSupported ? 1f : DisabledAlpha;
+        if (!musicSupported)
+            MarkMusicSteamOnly();
         UpdateMusicListButton();
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
 
@@ -155,6 +157,25 @@ public class SettingsImageScript : MonoBehaviour
     {
         SetPopupEnabled(false);
         CreditsPopup.Show();
+    }
+
+    // Web: the music files aren't in the build (StripMusicForWebGL), so say why the checkbox is off. The label is the
+    // "Music ..." text in the toggle (or next to it).
+    void MarkMusicSteamOnly()
+    {
+        var label = FindMusicLabel(MusicToggle.transform) ?? FindMusicLabel(MusicToggle.transform.parent);
+        if (label != null)
+            label.text = "Music <color=#BBBBBB>(Steam only)</color>";
+    }
+
+    static TMP_Text FindMusicLabel(Transform root)
+    {
+        if (root == null)
+            return null;
+        foreach (var text in root.GetComponentsInChildren<TMP_Text>(true))
+            if (text.text.StartsWith("Music"))
+                return text;
+        return null;
     }
 
     // ♪ button under the Music checkbox: settings closes, the music dialog (track list) opens on its own.
