@@ -105,6 +105,39 @@ public class MusicManagerScript : MonoBehaviour
 
     public AudioSource Source => audioSource_;
 
+    // ---- Music dialog (MusicPopupScript) ----
+
+    public int TrackCount => Tracks?.Length ?? 0;
+    public int CurrentTrack => _track;
+
+    // "8 Bit Love! Happy Fun Chiptune Game Music by HeatleyBros" -> "8 Bit Love!": up to the first '!', else the
+    // file name without " by ...".
+    public string TrackName(int index)
+    {
+        var clip = Tracks[index];
+        string name = clip != null ? clip.name : "?";
+        int bang = name.IndexOf('!');
+        if (bang > 0)
+            return name.Substring(0, bang + 1);
+        int by = name.IndexOf(" by ", System.StringComparison.OrdinalIgnoreCase);
+        return by > 0 ? name.Substring(0, by) : name;
+    }
+
+    // Picked in the music dialog: turns music on if it was off (the player clearly wants to hear it) and plays it now.
+    // The playlist goes on from there.
+    public void PlayFromList(int index)
+    {
+        if (index < 0 || index >= TrackCount)
+            return;
+        if (MusicOff)
+        {
+            SaveGame.Members.MusicEnabled = true;
+            SaveGame.Save();
+        }
+        _playlistStarted = true;
+        PlayTrack(index);
+    }
+
     public void SetVolume(float volume)
     {
         volume_ = volume;

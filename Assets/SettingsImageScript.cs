@@ -19,6 +19,8 @@ public class SettingsImageScript : MonoBehaviour
     public Slider MusicVolumeSlider;
     public Slider SfxVolumeSlider;
     public CreditsPopupScript CreditsPopup;
+    public MusicPopupScript MusicPopup;
+    public Button MusicListButton; // ♪ under the Music checkbox: only usable while music is on
 
     const float DisabledAlpha = 0.4f;
 
@@ -54,6 +56,7 @@ public class SettingsImageScript : MonoBehaviour
         {
             SaveGame.Members.MusicEnabled = on;
             MusicManagerScript.Instance.ApplyMusicEnabled();
+            UpdateMusicListButton();
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
         });
@@ -96,6 +99,7 @@ public class SettingsImageScript : MonoBehaviour
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
         MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
+        UpdateMusicListButton();
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
 
         // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
@@ -145,6 +149,34 @@ public class SettingsImageScript : MonoBehaviour
     {
         SetPopupEnabled(false);
         CreditsPopup.Show();
+    }
+
+    // ♪ button under the Music checkbox: settings closes, the music dialog (track list) opens on its own.
+    void UpdateMusicListButton()
+    {
+        if (MusicListButton != null)
+            MusicListButton.interactable = SaveGame.Members.MusicEnabled;
+    }
+
+    public void OnMusicListClick()
+    {
+        SetPopupEnabled(false);
+        MusicPopup.Show(this);
+    }
+
+    // The music dialog closed (OK, Escape or a click outside): back to settings, a frame later so the popup manager
+    // is done closing the music dialog first.
+    public void ReopenAfterMusic()
+    {
+        if (isActiveAndEnabled)
+            StartCoroutine(ReopenNextFrame());
+    }
+
+    System.Collections.IEnumerator ReopenNextFrame()
+    {
+        yield return null;
+        if (!Popup.activeSelf && !GlobalPopupManager.AnyDialogOpen)
+            SetPopupEnabled(true);
     }
 
     public void OnBackClick()
