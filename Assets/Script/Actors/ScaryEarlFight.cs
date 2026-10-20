@@ -10,7 +10,7 @@ using UnityEngine;
 public static class ScaryEarlFight
 {
     const ActorTypeEnum BaseType = ActorTypeEnum.HeroChaser; // human-sized chaser
-    const double HpMul = 5; // x one final enemy (The Night Creeper) at the current arena level
+    const double HpMul = 5; // x one final enemy (The Night Creeper) at the level it first appears (Spawn)
     const float Mass = 60f; // hit knockback is divided by mass (was 25: Earl pushed him around)
     const float SpeedMul = 1.5f; // faster than the plain chaser (was 1.35)
 
@@ -39,7 +39,9 @@ public static class ScaryEarlFight
     // The last spawned Scary Earl (may be stale between rounds: check IsScaryEarl before using it).
     public static ActorBase Current;
 
-    public static List<ActorBase> Spawn(long arenaLevel)
+    // HP from the final enemy at the level it first appears (100K), not the current level: playing on for many more
+    // levels before touching the fog doesn't make him much harder.
+    public static List<ActorBase> Spawn()
     {
         var earl = SpawnUtil.Random(BaseType, 1).First();
         Current = earl;
@@ -49,7 +51,7 @@ public static class ScaryEarlFight
         // HP is a long, capped like every enemy's (long.MaxValue / 4, ~2.3e18). Late arenas pass that, so the part over
         // the cap becomes damage resistance instead: same kill time as the full HP would give.
         const long HpCap = long.MaxValue / 4;
-        double hpD = EnemySpawner.FinalEnemyHp(arenaLevel) * HpMul;
+        double hpD = EnemySpawner.FinalEnemyHp(EnemySpawner.FinalEnemyFirstLevel) * HpMul;
         long hp = hpD > HpCap ? HpCap : (long)hpD;
         earl.BaseHp = hp;
         earl.Hp = hp;

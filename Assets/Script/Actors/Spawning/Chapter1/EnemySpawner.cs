@@ -420,6 +420,9 @@ public static class EnemySpawner
 
     // HP of one final enemy (The Night Creeper) at this arena level, as spawned: base HP x the level's extra HP x its
     // toughness. Scary Earl is a multiple of it (ScaryEarlFight). Clamped like SpawnEnemies.
+    // Arena level the final enemy (The Night Creeper) first shows up at.
+    public static long FinalEnemyFirstLevel => EnemyTypes.First(e => e.Type == ActorTypeEnum.FromTheVoid).MinLevel;
+
     public static double FinalEnemyHp(long level)
     {
         var finalEnemy = EnemyTypes.First(e => e.Type == ActorTypeEnum.FromTheVoid);

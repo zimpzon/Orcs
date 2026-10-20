@@ -558,7 +558,7 @@ public class GameManager : MonoBehaviour
             ShowSecondsLeft(RoundTimeSeconds);
 
             var enemies = scaryEarl
-                ? ScaryEarlFight.Spawn(SaveGame.Members.ArenaLevel)
+                ? ScaryEarlFight.Spawn()
                 : EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
             if (!scaryEarl)
                 UpdateBeastsSeen(enemies);
