@@ -19,8 +19,18 @@ public static class Playfab
 
     const string Version = "1.0";
 
+    // Web (WebGL) only: the Steam version sends its stats to Steam instead (SteamManager.SetStats).
+    public static bool Enabled => !SteamManager.IsSteamVersion;
+
     public static void Login()
     {
+        if (!Enabled)
+        {
+            DisplayStatus = "disabled (Steam version)";
+            Debug.Log("PlayFab disabled on the Steam version");
+            return;
+        }
+
         PlayFabSettings.TitleId = "4EE3"; // Haps
 
         string CreateNewId()
@@ -69,7 +79,6 @@ public static class Playfab
             { "counts|bestiary|skin", $"{SaveGame.Members.BeastsSeen.Count} | {SaveGame.Members.Achieved.Count}" },
             { "ascend_cards", SaveGame.Members.AscendCardDebug() },
             { "hosting_info", JsMappings.GetHostingInfo() },
-            { "steam", SteamManager.Active ? $"{SteamManager.PlatformName} | {SteamManager.SteamId}" : "none" },
         };
 
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest
@@ -83,6 +92,9 @@ public static class Playfab
 
     public static void PlayerEvent(string eventName, Dictionary<string, object> properties)
     {
+        if (!Enabled)
+            return;
+
         if (!LoginComplete)
         {
             Debug.Log("Cannot send event, login not complete.");
@@ -108,6 +120,9 @@ public static class Playfab
 
     public static void PlayerStat(Dictionary<string, int> stats)
     {
+        if (!Enabled)
+            return;
+
         if (!LoginComplete)
         {
             Debug.Log("Cannot send player stats, login not complete.");

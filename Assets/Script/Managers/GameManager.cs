@@ -1351,9 +1351,6 @@ public class GameManager : MonoBehaviour
         //bool showQuitButton = Application.platform != RuntimePlatform.WebGLPlayer;
         //ButtonQuit.gameObject.SetActive(showQuitButton);
 
-        if (GetPlayFabStats().Count > 25)
-            throw new InvalidOperationException($"Too many PlayFab stats! Max 25, actual: {GetPlayFabStats().Count}");
-
         TextVersion.text = $"V {MajorVersion}.{MinorVersion}";
         SaveGame.Load();
         _firstSaveGameLoadComplete = true;
@@ -1881,41 +1878,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Stats are int on PlayFab and Steam: bigger values stay at the max instead of wrapping to garbage.
+    static int ClampStat(double v) => v >= int.MaxValue ? int.MaxValue : v <= int.MinValue ? int.MinValue : (int)v;
+
     Dictionary<string, int> GetPlayFabStats()
     {
-        // NB NB NB: only 25 stats are allowed! GameManager Awake() will throw if more.
+        // NB NB NB: only 25 stats are allowed on PlayFab (checked in UpdatePlayFabStats). Same names on Steam.
+        var m = SaveGame.Members;
         var dic = new Dictionary<string, int>()
         {
-            { "level_pct_bought", (int)SaveGame.Members.LevelPctBought },
+            { "game_progression_pct", (int)GameCompletion.GetProgress().TotalPct },
+            { "level_pct_bought", ClampStat(m.LevelPctBought) },
 
-            { Playfab.ArenaLevel, (int)SaveGame.Members.ArenaLevel },
-            { "times_ascended_09_08_2025", (int)SaveGame.Members.TimesAscended_09_08_2025 },
-            { "diamond_count_09_08_2025", (int)SaveGame.Members.DiamondCount_09_08_2025 },
-            { "monster_credits_lifetime_09_08_2025", (int)SaveGame.Members.MonsterCreditsLifetime_09_08_2025 },
+            { Playfab.ArenaLevel, ClampStat(m.ArenaLevel) },
+            { "rebirths", ClampStat(m.TimesAscended_09_08_2025) },
+            { "diamonds", ClampStat(m.DiamondCount_09_08_2025) },
+            { "monster_credits_lifetime", ClampStat(m.MonsterCreditsLifetime_09_08_2025) },
 
-            { "chests_collected", (int)SaveGame.Members.ChestsCollected },
-            { "mystery_collected", (int)SaveGame.Members.MysteryCollected },
-            { "estimated_online_seconds_2", (int)SaveGame.Members.EstimatedOnlineSeconds2 },
+            { "chests_collected", ClampStat(m.ChestsCollected) },
+            { "mystery_collected", ClampStat(m.MysteryCollected) },
+            { "online_seconds", ClampStat(m.EstimatedOnlineSeconds2) },
 
-            { "current_skin", (int)SaveGame.Members.CurrentSkin },
-            // 15 below this
+            { "current_skin", (int)m.CurrentSkin },
 
-            { "level_zap", (int)SaveGame.Members.LevelClickDamage },
-            { "level_knife_damage", (int)SaveGame.Members.LevelKnifeDamage },
-            { "level_dagger_cd", (int)SaveGame.Members.LevelKnifeCd },
-            { "level_witchdoctor", (int)SaveGame.Members.LevelWitchDoctor },
-            { "level_wizard", (int)SaveGame.Members.LevelWizard },
-            { "level_hoarder", (int)SaveGame.Members.LevelHoarder },
-            { "level_zap_damage", (int)SaveGame.Members.LevelZapDamage },
-            { "level_dagger_master", (int)SaveGame.Members.LevelDaggerMaster },
-            { "level_necro_ninja", (int)SaveGame.Members.LevelNecroNinja },
-            { "level_skull_crusher", (int)SaveGame.Members.LevelSkullCrusher},
-            { "level_chest_master", (int)SaveGame.Members.LevelChestMaster},
-            { "level_voidgazer", (int)SaveGame.Members.LevelVoidgazer},
-            { "level_smart_daggers", (int)SaveGame.Members.LevelSmartDaggers},
-            { "level_fast_feet", (int)SaveGame.Members.LevelFastFeet},
-            { "level_crypt_master", (int)SaveGame.Members.LevelCryptMaster},
-            { "level_smart_fireballs", (int)SaveGame.Members.LevelSmartFireballs},
+            { "scary_earl_unlocked", m.FogTouched ? 1 : 0 },
+            { "scary_earl_defeated", m.ScaryEarlDefeated ? 1 : 0 },
+
+            // Only the five highest tiers (UpgradeTierList order).
+            { "level_beefy_earl", ClampStat(m.LevelBeefyEarl) },
+            { "level_critical_strike", ClampStat(m.LevelCriticalStrike) },
+            { "level_power_zap", ClampStat(m.LevelPowerZap) },
+            { "level_skull_slicer", ClampStat(m.LevelSkullSlicer) },
+            { "level_storm_lord", ClampStat(m.LevelStormLord) },
         };
         return dic;
     }
@@ -1923,7 +1917,17 @@ public class GameManager : MonoBehaviour
     public void UpdatePlayFabStats()
     {
         var dic = GetPlayFabStats();
-        Playfab.PlayerStat(dic);
+        if (Playfab.Enabled)
+        {
+            if (dic.Count > 25)
+            {
+                Debug.LogError($"Too many PlayFab stats! Max 25, actual: {dic.Count}");
+                return;
+            }
+            Playfab.PlayerStat(dic);
+        }
+        else
+            SteamManager.SetStats(dic);
     }
 
     void LateUpdate()

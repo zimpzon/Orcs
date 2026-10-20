@@ -14,6 +14,9 @@ public class SteamManager : MonoBehaviour
     static ISteamBackend _backend;
 
     public static bool Active => _backend != null;
+    // Desktop (incl. the Editor) is the Steam version, even when Steam failed to start; WebGL is the web version
+    // (PlayFab). PlayFab is off on the Steam version (Playfab.Enabled).
+    public static bool IsSteamVersion => Application.platform != RuntimePlatform.WebGLPlayer;
     // Steam should be there (desktop) but init failed: playing offline, achievements aren't sent to Steam.
     public static bool InitFailed { get; private set; }
     public static string PlatformName => Active ? _backend.Name : "web";
@@ -58,6 +61,16 @@ public class SteamManager : MonoBehaviour
     {
         if (Active && _backend.SetAchievement(achieved.ToString()))
             _backend.StoreStats();
+    }
+
+    // The player stats PlayFab gets on the web (GameManager.GetPlayFabStats), every SendStatsInterval.
+    public static void SetStats(Dictionary<string, int> stats)
+    {
+        if (!Active)
+            return;
+        foreach (var pair in stats)
+            _backend.SetStat(pair.Key, pair.Value);
+        _backend.StoreStats();
     }
 
     // At load: everything the save has already earned (offline, before Steam, on another machine via the cloud save).

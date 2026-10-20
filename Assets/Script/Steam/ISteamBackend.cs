@@ -17,6 +17,8 @@ public interface ISteamBackend
 
     // False if it was already set.
     bool SetAchievement(string apiName);
+    // Stat API names must exist on the Steamworks site (Stats & Achievements), type INT.
+    void SetStat(string apiName, int value);
     void StoreStats();
 
     event Action<bool> OverlayActivated;

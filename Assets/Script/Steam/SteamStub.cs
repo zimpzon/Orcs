@@ -60,12 +60,25 @@ public class SteamStub : ISteamBackend
         return true;
     }
 
+    readonly Dictionary<string, int> _stats = new Dictionary<string, int>();
+
+    public void SetStat(string apiName, int value)
+    {
+        if (_stats.TryGetValue(apiName, out int old) && old == value)
+            return;
+        _stats[apiName] = value;
+        _pendingStore = true;
+    }
+
     public void StoreStats()
     {
         if (!_pendingStore)
             return;
         _pendingStore = false;
-        SteamLog.Write($"StoreStats ({_achievements.Count} achievements set this run)");
+        var stats = new List<string>();
+        foreach (var pair in _stats)
+            stats.Add($"{pair.Key}={pair.Value}");
+        SteamLog.Write($"StoreStats ({_achievements.Count} achievements set this run; stats: {(stats.Count > 0 ? string.Join(", ", stats) : "none")})");
     }
 
 #pragma warning disable CS0067 // the stub has no overlay
