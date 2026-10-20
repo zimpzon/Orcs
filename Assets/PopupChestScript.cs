@@ -144,7 +144,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             string amount = Format512.FormatWithDecimals(reward, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true);
             string multiplier = PlayerUpgrades.Data.BetterChests ? "2 X " : "";
             GameCanvasScript.Instance.ShowPopup(
-                $"<color={TextColors.Yellow}><size=+1>CHEST COLLECTED</size>\n\n</color>" +
+                $"<color={TextColors.Yellow}><size=+1>CHEST LOOTED</size>\n\n</color>" +
                 $"{multiplier}{numberOfSeconds}X income\n<size=+2><color=#FFD54A>+${amount}</color></size>", celebrate: true);
             SaveGame.Save(); // don't lose a chest reward to a reload before the next auto-save
         }
