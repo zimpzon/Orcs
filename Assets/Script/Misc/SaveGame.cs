@@ -79,16 +79,16 @@ public class SaveGameMembers
 
     // Settings
     public int Version = 2; // save game version
-    public float VolumeMaster = 1.0f;
+    public float VolumeMaster = 0.8f;
     public float VolumeMusic = 0.6f;
-    public float VolumeSfx = 1.0f;
+    public float VolumeSfx = 0.4f;
 
     public bool ShowFloatingDamageNumbers = true;
     public bool ShowFloatingGoldNumbers = true;
     public bool ShowDetailsOnHover = true;
-    public bool CombatSoundEnabled = false; // all game sounds except UI ones (menu click, chime, money pickup) and music
+    public bool CombatSoundEnabled = true; // all game sounds except UI ones (menu click, chime, money pickup) and music
     public bool SoundInBackground = false; // keep sound and music playing while minimized / in another tab
-    public bool MusicEnabled = false; // music on/off (MusicManagerScript), separate from the music volume; off by default
+    public bool MusicEnabled = true; // music on/off (MusicManagerScript), separate from the music volume; off by default
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
     public SkinAnimation SelectedSkin = SkinAnimation.Default;
 
@@ -559,7 +559,6 @@ public static class SaveGame
                 GameManager.GameLoadInfo.Add("No save data found in either location");
             }
 
-            Debug.Log("json = " + dataToLoad);
             LoadFailed = _readFailed && string.IsNullOrEmpty(dataToLoad);
             LoadJson(dataToLoad);
         }
