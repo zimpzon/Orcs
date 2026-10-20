@@ -2182,9 +2182,9 @@ public class GameManager : MonoBehaviour
         }
 
         // Test: unlock the White Earl skin (normally 25000 upgrades bought).
-        if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightControl) && !SaveGame.Members.Achieved.Contains(Achieved.ArenasLost100))
+        if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightControl) && !SaveGame.Members.Achieved.Contains(Achieved.Upgrades25000))
         {
-            SaveGame.Members.Achieved.Add(Achieved.ArenasLost100);
+            SaveGame.Members.Achieved.Add(Achieved.Upgrades25000);
         }
 
         // Toggle the victory button's 100%-completion crown pulse, to preview it. (Not Ctrl+P: that's the Editor's

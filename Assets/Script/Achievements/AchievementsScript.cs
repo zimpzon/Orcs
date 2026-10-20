@@ -12,21 +12,21 @@ public enum Achieved
     Rebirth2,
     Arena35000,
     Rebirth3,
-    Mystery100,
+    Mystery50,
     Chest30,
     Diamonds10,
     StormLordTier,
     Arena75000,
     MasterWizardTier,
     Diamonds250,
-    Rebirth8,
+    Rebirth5,
     ChainZap200,
-    Played5Days,
-    X2_300,
+    Played3Days,
+    X2_250,
     X2_150,
     Diamonds50,
     Arena1000,
-    Skins20,
+    Achievements20,
     Rebirth1,
     Upgrades500,
     Upgrades2500,
@@ -37,14 +37,14 @@ public enum Achieved
     ChestMaster200,
     Have1Percent50,
     Buy1PercentTotal500,
-    Rebirth20,
+    Rebirth10,
     Diamonds10000,
     Completion100,
-    ArenasLost100,
-    SuperClears1000,
+    Upgrades25000,
+    SuperClears500,
     Credits1000,
     FinalEnemyDefeated, // was StormLord5; granted on killing The Night Creeper (GameManager.OnEnemyKill)
-    Mystery50,
+    Mystery25,
 };
 
 public class AchievementsScript : MonoBehaviour
@@ -116,24 +116,24 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckArena10000(list);
         AchievementChecks.CheckArena35000(list);
         AchievementChecks.CheckArena75000(list);
-        AchievementChecks.CheckMystery25(list);
+        AchievementChecks.CheckMystery50(list);
         AchievementChecks.CheckChest30(list);
         AchievementChecks.CheckVoidgazer(list);
         AchievementChecks.CheckMasterWizard(list);
         AchievementChecks.CheckChainZap200(list);
-        AchievementChecks.CheckPlayed5Days(list);
-        AchievementChecks.CheckArenasLost100(list);
-        AchievementChecks.CheckSuperClears1000(list);
+        AchievementChecks.CheckPlayed3Days(list);
+        AchievementChecks.CheckUpgrades25000(list);
+        AchievementChecks.CheckSuperClears500(list);
         AchievementChecks.CheckCredits1000(list);
-        AchievementChecks.CheckMystery50(list);
+        AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckRebirth1(list);
         AchievementChecks.CheckRebirth2(list);
         AchievementChecks.CheckRebirth3(list);
-        AchievementChecks.CheckRebirth8(list);
-        AchievementChecks.CheckRebirth50(list);
-        AchievementChecks.CheckX2_300(list);
+        AchievementChecks.CheckRebirth5(list);
+        AchievementChecks.CheckRebirth10(list);
+        AchievementChecks.CheckX2_250(list);
         AchievementChecks.CheckX2_150(list);
-        AchievementChecks.CheckSkins20(list);
+        AchievementChecks.CheckAchievements20(list);
         AchievementChecks.CheckUpgrades500(list);
         AchievementChecks.CheckUpgrades2500(list);
         AchievementChecks.CheckUpgrades10000(list);

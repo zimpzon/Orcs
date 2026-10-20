@@ -134,39 +134,39 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckRebirth8(List<Achieved> list)
+        public static void CheckRebirth5(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Rebirth8)) return;
+            if (list.Contains(Achieved.Rebirth5)) return;
 
-            // Undead Beauty Earl. Was 8 (the enum name is from then).
+            // Undead Beauty Earl.
             if (SaveGame.Members.TimesAscended_09_08_2025 >= 5)
             {
-                list.Add(Achieved.Rebirth8);
-                NewAchieved(Achieved.Rebirth8);
+                list.Add(Achieved.Rebirth5);
+                NewAchieved(Achieved.Rebirth5);
             }
         }
 
-        public static void CheckRebirth50(List<Achieved> list)
+        public static void CheckRebirth10(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Rebirth20)) return;
+            if (list.Contains(Achieved.Rebirth10)) return;
 
-            // Saturated Earl. Was 20 (the enum name is from then).
+            // Saturated Earl.
             if (SaveGame.Members.TimesAscended_09_08_2025 >= 10)
             {
-                list.Add(Achieved.Rebirth20);
-                NewAchieved(Achieved.Rebirth20);
+                list.Add(Achieved.Rebirth10);
+                NewAchieved(Achieved.Rebirth10);
             }
         }
 
-        public static void CheckMystery25(List<Achieved> list)
+        public static void CheckMystery50(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Mystery100)) return;
+            if (list.Contains(Achieved.Mystery50)) return;
 
-            // Slug Earl. Was 100 (the enum name is from then).
+            // Slug Earl.
             if (SaveGame.Members.MysteryCollected >= 50)
             {
-                list.Add(Achieved.Mystery100);
-                NewAchieved(Achieved.Mystery100);
+                list.Add(Achieved.Mystery50);
+                NewAchieved(Achieved.Mystery50);
             }
         }
 
@@ -181,15 +181,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckPlayed5Days(List<Achieved> list)
+        public static void CheckPlayed3Days(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Played5Days)) return;
+            if (list.Contains(Achieved.Played3Days)) return;
 
-            // Name kept for saves (Played5Days); the requirement is now 3 days.
             if (SaveGame.Members.EstimatedOnlineSeconds2 >= 3 * 24 * 60 * 60)
             {
-                list.Add(Achieved.Played5Days);
-                NewAchieved(Achieved.Played5Days);
+                list.Add(Achieved.Played3Days);
+                NewAchieved(Achieved.Played3Days);
             }
         }
 
@@ -313,15 +312,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckX2_300(List<Achieved> list)
+        public static void CheckX2_250(List<Achieved> list)
         {
-            if (list.Contains(Achieved.X2_300)) return;
+            if (list.Contains(Achieved.X2_250)) return;
 
-            // Name kept for saves; the requirement is now 250.
             if (PlayerUpgrades.Data.NumberOfX2Bought >= 250)
             {
-                list.Add(Achieved.X2_300);
-                NewAchieved(Achieved.X2_300);
+                list.Add(Achieved.X2_250);
+                NewAchieved(Achieved.X2_250);
             }
         }
 
@@ -336,14 +334,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckSkins20(List<Achieved> list)
+        public static void CheckAchievements20(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Skins20)) return;
+            if (list.Contains(Achieved.Achievements20)) return;
 
             if (SaveGame.Members.Achieved.Count >= 20)
             {
-                list.Add(Achieved.Skins20);
-                NewAchieved(Achieved.Skins20);
+                list.Add(Achieved.Achievements20);
+                NewAchieved(Achieved.Achievements20);
             }
         }
 
@@ -435,28 +433,26 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckArenasLost100(List<Achieved> list)
+        public static void CheckUpgrades25000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.ArenasLost100)) return;
+            if (list.Contains(Achieved.Upgrades25000)) return;
 
-            // White Earl skin. Was "run out of time in 100 arenas" - too rare once the game gets easy - now 25000
-            // upgrades bought. Enum name kept so existing saves keep the skin.
+            // White Earl skin.
             if (SaveGame.Members.TotalUpgradesBought >= 25000)
             {
-                list.Add(Achieved.ArenasLost100);
-                NewAchieved(Achieved.ArenasLost100);
+                list.Add(Achieved.Upgrades25000);
+                NewAchieved(Achieved.Upgrades25000);
             }
         }
 
-        public static void CheckSuperClears1000(List<Achieved> list)
+        public static void CheckSuperClears500(List<Achieved> list)
         {
-            if (list.Contains(Achieved.SuperClears1000)) return;
+            if (list.Contains(Achieved.SuperClears500)) return;
 
-            // Name kept for saves; the requirement is now 500.
             if (SaveGame.Members.SuperFastClears >= 500)
             {
-                list.Add(Achieved.SuperClears1000);
-                NewAchieved(Achieved.SuperClears1000);
+                list.Add(Achieved.SuperClears500);
+                NewAchieved(Achieved.SuperClears500);
             }
         }
 
@@ -486,15 +482,15 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckMystery50(List<Achieved> list)
+        public static void CheckMystery25(List<Achieved> list)
         {
-            if (list.Contains(Achieved.Mystery50)) return;
+            if (list.Contains(Achieved.Mystery25)) return;
 
-            // Expressionist Earl. Was 50 (the enum name is from then).
+            // Expressionist Earl.
             if (SaveGame.Members.MysteryCollected >= 25)
             {
-                list.Add(Achieved.Mystery50);
-                NewAchieved(Achieved.Mystery50);
+                list.Add(Achieved.Mystery25);
+                NewAchieved(Achieved.Mystery25);
             }
         }
     }

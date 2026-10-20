@@ -83,7 +83,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.Slug)
         {
-            return (list.Contains(Achieved.Mystery100), "Slug Earl: Get 50 mystery rewards");
+            return (list.Contains(Achieved.Mystery50), "Slug Earl: Get 50 mystery rewards");
         }
         else if (animationName == SkinAnimation.Zombie)
         {
@@ -111,7 +111,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.UndeadBeauty)
         {
-            return (list.Contains(Achieved.Rebirth8), "Undead Beauty Earl: Rebirth 5 times");
+            return (list.Contains(Achieved.Rebirth5), "Undead Beauty Earl: Rebirth 5 times");
         }
         else if (animationName == SkinAnimation.HonorableKnight)
         {
@@ -123,7 +123,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.WellDressedOrc)
         {
-            return (list.Contains(Achieved.Played5Days), "Well-dressed Orc Earl: Play for 3 days");
+            return (list.Contains(Achieved.Played3Days), "Well-dressed Orc Earl: Play for 3 days");
         }
         else if (animationName == SkinAnimation.Alien)
         {
@@ -139,11 +139,11 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SkaterEarl)
         {
-            return (list.Contains(Achieved.X2_300), "Skater Earl: Reach 250 X2 bonus");
+            return (list.Contains(Achieved.X2_250), "Skater Earl: Reach 250 X2 bonus");
         }
         else if (animationName == SkinAnimation.PrettyEarl)
         {
-            return (list.Contains(Achieved.Skins20), "Pretty Earl: Unlock 20 skins");
+            return (list.Contains(Achieved.Achievements20), "Pretty Earl: Unlock 20 skins");
         }
         else if (animationName == SkinAnimation.AttentivePigEarl)
         {
@@ -187,15 +187,15 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.SaturatedEarl)
         {
-            return (list.Contains(Achieved.Rebirth20), "Saturated Earl: Rebirth 10 times");
+            return (list.Contains(Achieved.Rebirth10), "Saturated Earl: Rebirth 10 times");
         }
         else if (animationName == SkinAnimation.WhiteEarl)
         {
-            return (list.Contains(Achieved.ArenasLost100), "White Earl: Buy 25000 upgrades");
+            return (list.Contains(Achieved.Upgrades25000), "White Earl: Buy 25000 upgrades");
         }
         else if (animationName == SkinAnimation.BlackEarl)
         {
-            return (list.Contains(Achieved.SuperClears1000), "Black Earl: Get 500 super fast arena clears");
+            return (list.Contains(Achieved.SuperClears500), "Black Earl: Get 500 super fast arena clears");
         }
         else if (animationName == SkinAnimation.InvertedEarl)
         {
@@ -207,7 +207,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.ExpressionistEarl)
         {
-            return (list.Contains(Achieved.Mystery50), "Expressionist Earl: Get 25 mystery rewards");
+            return (list.Contains(Achieved.Mystery25), "Expressionist Earl: Get 25 mystery rewards");
         }
         else
             throw new ArgumentException($"Unknown animation name: {animationName}");
