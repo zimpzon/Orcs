@@ -9,7 +9,6 @@ public class SettingsImageScript : MonoBehaviour
     public TextMeshProUGUI TextButtonDeleteSave;
     public TMP_InputField TextDiscordLink;
     public Toggle ShowFloatingDamageToggle;
-    public Toggle ShowFloatingGoldToggle;
     public Toggle ShowDetailsOnHoverToggle;
 
     public Toggle CombatSoundToggle;
@@ -94,7 +93,6 @@ public class SettingsImageScript : MonoBehaviour
 
         // Without notify: setting them must not run the handlers (they click and save).
         ShowFloatingDamageToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingDamageNumbers);
-        ShowFloatingGoldToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingGoldNumbers);
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
         MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
@@ -130,13 +128,6 @@ public class SettingsImageScript : MonoBehaviour
     public void ShowFloatingDamageNumbers(bool show)
     {
         SaveGame.Members.ShowFloatingDamageNumbers = ShowFloatingDamageToggle.isOn;
-        SaveGame.Save();
-        AudioManager.Instance.PlayMenuClick();
-    }
-
-    public void ShowFloatingGoldNumbers(bool show)
-    {
-        SaveGame.Members.ShowFloatingGoldNumbers = ShowFloatingGoldToggle.isOn;
         SaveGame.Save();
         AudioManager.Instance.PlayMenuClick();
     }
