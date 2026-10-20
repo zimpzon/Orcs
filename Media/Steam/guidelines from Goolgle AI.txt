@@ -1,0 +1,24 @@
+
+1. Essential Steam Capsule Sizes
+
+Design your artwork to fit these primary dimensions required by Steam:
+• Small Capsule: 462 × 174 px (Used in search results, top sellers, and lists; Steam also auto-scales it down to smaller thumbnails)
+• Header Capsule: 920 × 430 px (Appears at the top of your store page and in daily deals)
+• Main Capsule: 1232 × 706 px (Featured in the home page carousel)
+• Vertical Capsule: 748 × 896 px (Used during major seasonal sales)
+• Library Capsule: 600 × 900 px (Shown inside the player's local library after purchase)
+
+2. Core Design Rules
+
+• Start with the Small Capsule First: This is your highest-traffic asset. If your logo and main character are unreadable when scaled down to a tiny thumbnail (like 120 pixels wide), your composition needs to be simplified.
+• Keep Text Minimal: Valve generally allows only your game's logo/title on standard capsules. Avoid adding extra review quotes, marketing taglines, or clutter on the main art.
+• Focus on Key Elements: A strong capsule relies on three core components: a clear character/focal point, an evocative background, and a legible title treatment.
+• Communicate Genre & Mood: Look at 5 to 10 successful games in your specific genre on Steam to match player expectations regarding color contrast, tone, and art style.
+
+3. Step-by-Step Workflow
+
+1. Gather Assets: Export high-resolution character renders, key art, and your transparent logo directly from your game project.
+2. Open a Graphics Editor: Set up your canvas to match the exact dimensions of the target capsule (e.g., 462 × 174 for small or 920 × 430 for header).
+3. Build Visual Hierarchy: Place your primary character or focal point dead-center or following the rule of thirds, ensuring high contrast against the background.
+4. Overlay the Logo: Place your game title so it pops immediately at a small scale.
+5. Validate Your Work: Run your finished image through a free Steam Capsule Guide & Validator to check that your dimensions, safety margins, and text rules meet official requirements before uploading to Steamworks.
