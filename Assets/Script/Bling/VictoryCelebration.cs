@@ -7,7 +7,7 @@ using UnityEngine.UI;
 // RightShift+G preview is on (CrownPulse.CheatForceShow):
 // - slowly rotating golden light rays behind the victory dialog header ("LONG LIVE KING EARL"),
 // - a shine sweeping across the header, which also breathes slightly,
-// - crown fireworks: spark bursts with a popping crown, near the top,
+// - fireworks: spark bursts near the top,
 // - confetti drifting down over the dialog.
 // Everything is built in code on first use, ignores clicks, and runs on unscaled time. Tune in the Inspector.
 [RequireComponent(typeof(ProgressPopupScript))]
@@ -26,13 +26,12 @@ public class VictoryCelebration : MonoBehaviour
     public float ShimmerWidth = 0.18f;         // fraction of the header width
     public float BreatheAmount = 0.03f;
 
-    [Header("Crown fireworks")]
+    [Header("Fireworks")]
     public bool Fireworks = true;
     public float FireworkInterval = 2.2f;
     public int SparkCount = 16;
     public float SparkSpeed = 90f;
     public float SparkLife = 0.9f;
-    public float FireworkCrownSize = 22f;
 
     [Header("Confetti")]
     public bool Confetti = true;
@@ -68,8 +67,6 @@ public class VictoryCelebration : MonoBehaviour
 
     class Spark { public RectTransform Rt; public Image Img; public Vector2 Pos, Vel; public float Age = 999f; }
     readonly List<Spark> _sparks = new();
-    Image _fwCrown;
-    float _fwCrownAge = 999f;
 
     void Awake()
     {
@@ -166,9 +163,6 @@ public class VictoryCelebration : MonoBehaviour
             img.gameObject.SetActive(false);
             _sparks.Add(new Spark { Rt = img.rectTransform, Img = img });
         }
-        _fwCrown = NewImage(_front, "FireworkCrown", _popup.CrownSprite, Color.white, Vector2.one * FireworkCrownSize);
-        _fwCrown.preserveAspect = true;
-        _fwCrown.gameObject.SetActive(false);
         _nextFirework = Time.unscaledTime + 0.4f;
     }
 
@@ -296,9 +290,6 @@ public class VictoryCelebration : MonoBehaviour
                 s.Img.color = Random.value < 0.7f ? Gold : Color.white;
                 s.Rt.gameObject.SetActive(true);
             }
-            _fwCrown.rectTransform.localPosition = at;
-            _fwCrownAge = 0f;
-            _fwCrown.gameObject.SetActive(_fwCrown.sprite != null);
         }
 
         foreach (var s in _sparks)
@@ -317,25 +308,6 @@ public class VictoryCelebration : MonoBehaviour
             var c = s.Img.color;
             c.a = 1f - s.Age / SparkLife;
             s.Img.color = c;
-        }
-
-        if (_fwCrown.gameObject.activeSelf)
-        {
-            _fwCrownAge += dt;
-            const float CrownLife = 1.1f;
-            float k = _fwCrownAge / CrownLife;
-            if (k >= 1f)
-            {
-                _fwCrown.gameObject.SetActive(false);
-            }
-            else
-            {
-                float pop = _fwCrownAge < 0.15f ? Mathf.Lerp(0f, 1.2f, _fwCrownAge / 0.15f)
-                                                : Mathf.Lerp(1.2f, 1f, Mathf.Clamp01((_fwCrownAge - 0.15f) / 0.15f));
-                _fwCrown.rectTransform.localScale = Vector3.one * pop;
-                _fwCrown.rectTransform.sizeDelta = Vector2.one * FireworkCrownSize;
-                _fwCrown.color = new Color(1, 1, 1, k < 0.5f ? 1f : 1f - (k - 0.5f) / 0.5f);
-            }
         }
     }
 
