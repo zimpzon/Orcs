@@ -47,6 +47,7 @@ public class SteamManager : MonoBehaviour
 
         _backend = backend;
         _backend.OverlayActivated += active => SteamLog.Write($"Overlay {(active ? "opened" : "closed")}");
+        SteamItemDrops.Attach(_backend);
 
         var go = new GameObject("SteamManager");
         DontDestroyOnLoad(go);
@@ -76,7 +77,10 @@ public class SteamManager : MonoBehaviour
 
     void Update()
     {
-        _backend?.RunCallbacks();
+        if (_backend == null)
+            return;
+        _backend.RunCallbacks();
+        SteamItemDrops.Tick(_backend);
     }
 
     void OnApplicationQuit()

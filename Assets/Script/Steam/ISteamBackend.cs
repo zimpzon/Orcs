@@ -20,4 +20,11 @@ public interface ISteamBackend
     void StoreStats();
 
     event Action<bool> OverlayActivated;
+
+    // Inventory (item drops). Steam decides if a drop is due (playtime generator); a drop raises ItemsGranted with
+    // the new items, RequestInventory raises InventoryUpdated with everything the player owns.
+    void TriggerItemDrop(int generatorDefId);
+    void RequestInventory();
+    event Action<SteamItem[]> ItemsGranted;
+    event Action<SteamItem[]> InventoryUpdated;
 }
