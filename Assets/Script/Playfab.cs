@@ -69,6 +69,7 @@ public static class Playfab
             { "counts|bestiary|skin", $"{SaveGame.Members.BeastsSeen.Count} | {SaveGame.Members.Achieved.Count}" },
             { "ascend_cards", SaveGame.Members.AscendCardDebug() },
             { "hosting_info", JsMappings.GetHostingInfo() },
+            { "steam", SteamManager.Active ? $"{SteamManager.PlatformName} | {SteamManager.SteamId}" : "none" },
         };
 
         PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest

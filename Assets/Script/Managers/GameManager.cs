@@ -1357,6 +1357,7 @@ public class GameManager : MonoBehaviour
         TextVersion.text = $"V {MajorVersion}.{MinorVersion}";
         SaveGame.Load();
         _firstSaveGameLoadComplete = true;
+        SteamManager.SyncAchievements(SaveGame.Members.Achieved);
 
         TextGameInfo.text = "";
 
@@ -1429,8 +1430,16 @@ public class GameManager : MonoBehaviour
 
         ApplyVolume();
 
+        string startMessage = null;
         if (SaveGame.LoadFailed)
-            GameCanvasScript.Instance.ShowPopup("Save game could not be loaded.\nContact support for restoring a backup.\nStarting new game.");
+            startMessage = "Save game could not be loaded.\nContact support for restoring a backup.\nStarting new game.";
+        if (SteamManager.InitFailed)
+        {
+            const string Offline = "Could not connect to Steam.\nPlaying offline - your progress is saved.\nAchievements are sent to Steam next time it connects.";
+            startMessage = startMessage == null ? Offline : startMessage + "\n\n" + Offline;
+        }
+        if (startMessage != null)
+            GameCanvasScript.Instance.ShowPopup(startMessage);
         AudioManager.Instance.ApplySoundSettings();
         MusicManagerScript.Instance.StartPlaylist();
 

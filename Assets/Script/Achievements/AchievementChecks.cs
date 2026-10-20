@@ -10,6 +10,7 @@ namespace Assets.Script.Achievements
         public static void NewAchieved(Achieved achieved)
         {
             Debug.Log("New achievement: " + achieved);
+            SteamManager.UnlockAchievement(achieved);
         }
 
         public static void CheckWitchDoctor(List<Achieved> list)
