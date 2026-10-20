@@ -250,6 +250,13 @@ public class GameManager : MonoBehaviour
 
         ScrollToTopOnStart.Instance.ScrollToTopNow();
 
+        // The audio settings live in the save: a wiped save has the defaults (volumes, music, combat sound, sound in
+        // background), so put them into effect now instead of keeping the old ones until the next start.
+        ApplyVolume();
+        AudioManager.Instance.ApplySoundSettings();
+        AudioManager.Instance.ApplyBackgroundPause();
+        MusicManagerScript.Instance.ApplyMusicEnabled();
+
         SaveGame.Members.SaveKillSwitch_CanSave = true;
         SaveGame.Save();
 
