@@ -98,7 +98,13 @@ public class SettingsImageScript : MonoBehaviour
         ShowFloatingDamageToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingDamageNumbers);
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
         CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
-        MusicToggle.SetIsOnWithoutNotify(SaveGame.Members.MusicEnabled);
+        // No music on the web: the checkbox is shown off and disabled (faded like Fullscreen).
+        bool musicSupported = MusicManagerScript.Supported;
+        MusicToggle.SetIsOnWithoutNotify(musicSupported && SaveGame.Members.MusicEnabled);
+        MusicToggle.interactable = musicSupported;
+        if (!MusicToggle.TryGetComponent<CanvasGroup>(out var musicGroup))
+            musicGroup = MusicToggle.gameObject.AddComponent<CanvasGroup>();
+        musicGroup.alpha = musicSupported ? 1f : DisabledAlpha;
         UpdateMusicListButton();
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
 
@@ -155,7 +161,7 @@ public class SettingsImageScript : MonoBehaviour
     void UpdateMusicListButton()
     {
         if (MusicListButton != null)
-            MusicListButton.interactable = SaveGame.Members.MusicEnabled;
+            MusicListButton.interactable = MusicManagerScript.Supported && SaveGame.Members.MusicEnabled;
     }
 
     public void OnMusicListClick()

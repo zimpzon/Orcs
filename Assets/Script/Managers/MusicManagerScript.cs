@@ -49,7 +49,10 @@ public class MusicManagerScript : MonoBehaviour
         isPlaying_ = true;
     }
 
-    bool MusicOff => SaveGame.Members != null && !SaveGame.Members.MusicEnabled;
+    // No music on the web (WebGL): never plays there, whatever the saved setting says.
+    public static bool Supported => Application.platform != RuntimePlatform.WebGLPlayer;
+
+    bool MusicOff => !Supported || (SaveGame.Members != null && !SaveGame.Members.MusicEnabled);
 
     void Update()
     {
@@ -127,7 +130,7 @@ public class MusicManagerScript : MonoBehaviour
     // The playlist goes on from there.
     public void PlayFromList(int index)
     {
-        if (index < 0 || index >= TrackCount)
+        if (index < 0 || index >= TrackCount || !Supported)
             return;
         if (MusicOff)
         {
