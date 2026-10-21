@@ -473,9 +473,12 @@ namespace Assets.Script.Achievements
 
         public static void CheckFinalEnemyDefeated(List<Achieved> list)
         {
-            if (list.Contains(Achieved.FinalEnemyDefeated)) return;
+            // Consumed right away: a kill must only count once, or after a save wipe the stale flag granted Neon Earl
+            // again at once in the fresh save.
+            if (!FinalEnemyKilled) return;
+            FinalEnemyKilled = false;
 
-            if (FinalEnemyKilled)
+            if (!list.Contains(Achieved.FinalEnemyDefeated))
             {
                 list.Add(Achieved.FinalEnemyDefeated);
                 NewAchieved(Achieved.FinalEnemyDefeated);
