@@ -26,7 +26,6 @@ public class AscendDecisionScript : MonoBehaviour
     private string _whatYouLoseTemplate;
     private string _diamondEachTemplate;
     private string _creditBonusTemplate;
-    private int _clickCount;
 
     // Header: "◆ Rebirth ◆" with the two diamonds gently bobbing. Built from the scene's header text (was
     // "Rebirth<sprite=0>"), so no scene wiring is needed.
@@ -155,41 +154,34 @@ public class AscendDecisionScript : MonoBehaviour
         }
     }
 
+    // One click rebirths (no "YOU SURE?" step).
     public void OnAscendClick()
     {
-        if (_clickCount == 0)
+        if (AscendProgressScript.RebirthEnabled)
         {
-            _clickCount = 1;
-            TextButtonRebirth.text = "YOU SURE?";
+            RefreshCredits(); // every credit right now, not the count from when the dialog opened
+            SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
+            SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
+            SaveGame.Members.TimesAscended_09_08_2025++;
+            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
+            SaveGame.Members.TimeSinceLastAscend = 0;
+
+            GameManager.Instance.ResetAllProgress(ascend: true);
+
+            string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
+            string msg = $"<color={TextColors.Yellow}>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
+            if (SaveGame.Members.BoughtHeadStart)
+                msg += $"\n\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
+            GameCanvasScript.Instance.ShowPopup(msg);
+
+            // Stay on the rebirth screen so the new diamonds can be spent right away (0 credits now, so the
+            // Rebirth button disables itself).
+            ResetDialogState();
         }
-        else if (_clickCount == 1)
+        else
         {
-            if (AscendProgressScript.RebirthEnabled)
-            {
-                RefreshCredits(); // every credit right now, not the count from when the dialog opened
-                SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
-                SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
-                SaveGame.Members.TimesAscended_09_08_2025++;
-                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
-                SaveGame.Members.TimeSinceLastAscend = 0;
-
-                GameManager.Instance.ResetAllProgress(ascend: true);
-
-                string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
-                string msg = $"<color={TextColors.Yellow}>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
-                if (SaveGame.Members.BoughtHeadStart)
-                    msg += $"\n\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
-                GameCanvasScript.Instance.ShowPopup(msg);
-
-                // Stay on the rebirth screen so the new diamonds can be spent right away (0 credits now, so the
-                // Rebirth button disables itself).
-                ResetDialogState();
-            }
-            else
-            {
-                GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
-                AscendProgressScript.OnCloseClick();
-            }
+            GameCanvasScript.Instance.ShowPopup("Nothing happened. This feature is not implemented yet.");
+            AscendProgressScript.OnCloseClick();
         }
     }
 
@@ -246,7 +238,6 @@ public class AscendDecisionScript : MonoBehaviour
     {
         RefreshCredits();
 
-        _clickCount = 0;
         TextButtonRebirth.text = "REBIRTH!";
 
         // Low credit bonus: the line pops once when the dialog opens (CreditBonusPulse keeps pulsing behind it).

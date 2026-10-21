@@ -5,8 +5,8 @@ using UnityEngine.UI;
 // semi-transparent crown pops up over the icon, then shrinks toward the icon size while fading, and repeats.
 // Never fully opaque and never size zero, so the real icon always shows and it stays a gentle hint.
 // Also used as a button pulse: on the rebirth (diamond) button while the player has credits but never rebirthed
-// (big until the dialog was opened, small after), and on the Victory button after 100% until the victory dialog has
-// been opened once.
+// (the same big pulse as the other buttons, until the first rebirth), and on the Victory button after 100% until the
+// victory dialog has been opened once.
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
@@ -34,10 +34,10 @@ public class CrownPulse : MonoBehaviour
         var m = SaveGame.Members;
         bool conditionMet = Condition switch
         {
-            // Big pulse until the rebirth dialog has been opened with credits, then a small one until the first rebirth:
-            // the player may keep collecting credits, so the big one would get annoying.
-            PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && !m.ViewedRebirthDialog,
-            PulseCondition.FirstRebirthReadySeen => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 > 0 && m.ViewedRebirthDialog,
+            // Rebirth button: the big pulse from the first credit until the first rebirth, whether or not the dialog was
+            // opened. (FirstRebirthReadySeen was a smaller pulse after opening it - no longer used.)
+            PulseCondition.FirstRebirthReady => m.TimesAscended_09_08_2025 == 0 && m.MonsterCredits_09_08_2025 >= 1,
+            PulseCondition.FirstRebirthReadySeen => false,
             PulseCondition.TipsUnseen => !m.ViewedTipsDialog,
             // Expand-tiers button: from the first Wizard bought until the expanded tier view has been opened.
             PulseCondition.ExpandTiersUnseen => m.LevelWizard > 0 && !m.ViewedExpandedTiers,
