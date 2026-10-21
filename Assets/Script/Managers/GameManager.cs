@@ -2097,26 +2097,11 @@ public class GameManager : MonoBehaviour
             GameCanvasScript.Instance.ShowPopup(string.Join("\n", GameLoadInfo));
         }
 
-        if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightControl))
-        {
-            SaveGame.Members.DiamondCount_09_08_2025 = 0;
-            SaveGame.Members.MonsterCredits_09_08_2025 += 1;
-            SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 1;
-            SaveGame.Members.MonsterCreditsXp_09_08_2025 = 200000;
-        }
-
         if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.MonsterCredits_09_08_2025 += 10;
             SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 10;
             SaveGame.Members.DiamondCount_09_08_2025 += 1000;
-        }
-
-        if (G.GetCheatKeyDown(KeyCode.X) && G.GetCheatKey(KeyCode.RightControl))
-        {
-            //SaveGame.Members.MonsterCredits_09_08_2025 += 100;
-            SaveGame.Members.MonsterCreditsLifetime_09_08_2025 += 100;
-            //SaveGame.Members.DiamondCount_09_08_2025 += 100;
         }
 
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightControl))
@@ -2134,24 +2119,14 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.Money += new Decimal512(900_000_000_000_000_000) * 50_000_000_000;
         }
 
-        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            SaveGame.Members.Money = 0;
-        }
-
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
             SaveGame.Members.ArenaLevel += 5000;
         }
 
-        if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            SaveGame.Members.ArenaLevel -= 500;
-        }
-
         if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.ArenaLevel -= 25;
+            SaveGame.Members.ArenaLevel -= 500;
             if (SaveGame.Members.ArenaLevel <= 1)
                 SaveGame.Members.ArenaLevel = 1;
         }
@@ -2179,12 +2154,6 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.U) && G.GetCheatKey(KeyCode.RightShift))
         {
             CheatRelockLatestBeast();
-        }
-
-        // Test: unlock the White Earl skin (normally 25000 upgrades bought).
-        if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightControl) && !SaveGame.Members.Achieved.Contains(Achieved.Upgrades25000))
-        {
-            SaveGame.Members.Achieved.Add(Achieved.Upgrades25000);
         }
 
         // Toggle the victory button's 100%-completion crown pulse, to preview it. (Not Ctrl+P: that's the Editor's
@@ -2227,13 +2196,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Cheat: crown pulse preview " + (CrownPulse.CheatForceShow ? "ON" : "OFF"));
             if (CrownPulse.CheatForceShow)
                 Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
-        }
-
-        // Preview the X2 rank-up text at the cursor.
-        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightControl) && UpgradeManager.Instance.ClickDamage != null)
-        {
-            X2RankUpEffect.Spawn(UpgradeManager.Instance.ClickDamage, Input.mousePosition,
-                UpgradeManager.X2BonusPerRank() * 100, PlayerUpgrades.Data.NumberOfX2Bought / 5 + 1);
         }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))
