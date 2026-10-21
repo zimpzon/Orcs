@@ -551,7 +551,7 @@ public class GameManager : MonoBehaviour
             bool scaryEarl = ScaryEarlFight.Active;
 
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
-            TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : $"ARENA {SaveGame.Members.ArenaLevel}";
+            TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : ArenaLabel(SaveGame.Members.ArenaLevel);
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -709,7 +709,7 @@ public class GameManager : MonoBehaviour
                 SaveGame.Members.TotalArenasWon++;
                 SaveGame.Members.MaxArena = Math.Max(SaveGame.Members.ArenaLevel, SaveGame.Members.MaxArena);
 
-                yield return ShowInfoTextFlashy($"ARENA {SaveGame.Members.ArenaLevel}", delay: 1);
+                yield return ShowInfoTextFlashy(ArenaLabel(SaveGame.Members.ArenaLevel), delay: 1);
                 yield return new WaitForSeconds(0.25f);
                 yield return null;
             }
@@ -761,6 +761,14 @@ public class GameManager : MonoBehaviour
             killable.StartingGame();
         }
     }
+
+    // Easter eggs: arena 52 is "AREA 52", arena 1337 is "EARL IS 1337".
+    static string ArenaLabel(long level) => level switch
+    {
+        52 => "AREA 52",
+        1337 => "EARL IS 1337",
+        _ => $"ARENA {level}",
+    };
 
     public void ResetGame(bool autoStartGame = false)
     {
