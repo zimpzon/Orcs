@@ -5,7 +5,7 @@ public class AspectUtility : MonoBehaviour
 {
     public static float WantedAspectRatio = 16.0f / 9.0f;
     static float wantedAspectRatio;
-    float startAspectRatio_;
+    int _lastW, _lastH;
     static Camera cam;
     static Camera backgroundCam;
 
@@ -25,26 +25,33 @@ public class AspectUtility : MonoBehaviour
 
         wantedAspectRatio = WantedAspectRatio;
 
-        SetCamera();
-        startAspectRatio_ = (float)Screen.width / Screen.height;
+        Apply();
     }
 
-    private void Update()
+    // Any window size change (not only aspect): re-letterbox, so the arena always lines up with the UI (UiAspectFrame).
+    void Update()
     {
-        float currentAspectRatio = (float)Screen.width / Screen.height;
-        if (!Mathf.Approximately(currentAspectRatio, startAspectRatio_))
-        {
-            startAspectRatio_ = (float)Screen.width / Screen.height;
-            SetCamera();
-        }
+        if (cam != null && (Screen.width != _lastW || Screen.height != _lastH))
+            Apply();
+    }
+
+    void Apply()
+    {
+        _lastW = Screen.width;
+        _lastH = Screen.height;
+        SetCamera();
+        Debug.Log($"AspectUtility: screen {Screen.width}x{Screen.height}, camera rect {cam.rect}");
     }
 
     public static void SetCamera()
     {
+        if (Screen.height <= 0)
+            return;
         float currentAspectRatio = (float)Screen.width / Screen.height;
-        // If the current aspect ratio is already approximately equal to the desired aspect ratio,
-        // use a full-screen Rect (in case it was set to something else previously)
-        if ((int)(currentAspectRatio * 100) / 100.0f == (int)(wantedAspectRatio * 100) / 100.0f)
+        // Full viewport only when (practically) exactly 16:9. This used to compare two decimals (1.77..1.78 counted as
+        // 16:9), which stretched the arena while the UI (UiAspectFrame) letterboxed exactly: after a resize to a
+        // nearly-16:9 window the arena sat a little off from the UI.
+        if (Mathf.Abs(currentAspectRatio - wantedAspectRatio) < 0.0005f)
         {
             cam.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
             if (backgroundCam)
