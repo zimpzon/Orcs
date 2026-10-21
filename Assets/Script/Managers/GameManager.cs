@@ -762,11 +762,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Easter eggs: arena 42 is "ANSWER: 42", 52 is "AREA 52", 1337 is "EARL IS 1337".
+    // Easter eggs: arena 42 is "ANSWER: 42", 52 is "AREA 52", 404 is "404 NOT FOUND", 1337 is "EARL IS 1337".
     static string ArenaLabel(long level) => level switch
     {
         42 => "ANSWER: 42",
         52 => "AREA 52",
+        404 => "404 NOT FOUND",
         1337 => "EARL IS 1337",
         _ => $"ARENA {level}",
     };
