@@ -14,6 +14,7 @@ public class SettingsImageScript : MonoBehaviour
     public Toggle CombatSoundToggle;
     public Toggle MusicToggle;
     public Toggle SoundInBackgroundToggle;
+    public Toggle HideVictoryBannerToggle; // only shown once Scary Earl is defeated (his victory banner exists from then)
     public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
     public Slider MasterVolumeSlider;
     public Slider MusicVolumeSlider;
@@ -43,6 +44,14 @@ public class SettingsImageScript : MonoBehaviour
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
         });
+
+        if (HideVictoryBannerToggle != null)
+            HideVictoryBannerToggle.onValueChanged.AddListener(on =>
+            {
+                SaveGame.Members.HideVictoryBanner = on;
+                SaveGame.Save();
+                AudioManager.Instance.PlayMenuClick();
+            });
 
         SoundInBackgroundToggle.onValueChanged.AddListener(on =>
         {
@@ -109,6 +118,11 @@ public class SettingsImageScript : MonoBehaviour
             MarkMusicSteamOnly();
         UpdateMusicListButton();
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
+        if (HideVictoryBannerToggle != null)
+        {
+            HideVictoryBannerToggle.gameObject.SetActive(SaveGame.Members.ScaryEarlDefeated);
+            HideVictoryBannerToggle.SetIsOnWithoutNotify(SaveGame.Members.HideVictoryBanner);
+        }
 
         // Fullscreen works only where WindowedAspect runs (standalone builds; not WebGL / Editor / Steam Deck, which
         // is fullscreen already) and on a 16:9 / 16:10 monitor. Elsewhere it's shown disabled.

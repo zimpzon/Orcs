@@ -1974,7 +1974,9 @@ public class GameManager : MonoBehaviour
     {
         if (TextStory == null)
             return;
-        string story = ScaryEarlFight.StoryText;
+        // Settings "Hide victory banner": no text (so no metaball backdrop either) once Scary Earl is beaten.
+        var m = SaveGame.Members;
+        string story = m.ScaryEarlDefeated && m.HideVictoryBanner ? "" : ScaryEarlFight.StoryText;
         if (ReferenceEquals(story, _storyShown))
             return;
         _storyShown = story;
