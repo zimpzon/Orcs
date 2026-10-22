@@ -34,11 +34,13 @@ public static class ItemDropPopup
             $"<link=\"{WhatIsThisLink}\"><u><color={TextColors.GreenSmallest}>What is this?</color></u></link>";
 
         var popup = canvas.CreatePopup(text, celebrate: true);
+        if (popup.TryGetComponent<RewardPopupFx>(out var fx))
+            fx.Rays = false; // rays in the icon instead (AddIcon)
         var label = popup.GetComponentInChildren<TextMeshProUGUI>();
 
         var sprite = def != null ? canvas.FindItemDropIcon(def.IconName) : null;
         if (sprite != null && label != null)
-            AddIcon(label.transform, sprite);
+            AddIcon(label.transform, sprite, def);
 
         if (label != null)
         {
@@ -51,20 +53,61 @@ public static class ItemDropPopup
         }
     }
 
-    // Icon above the text, inside the popup's vertical layout (the text's parent).
-    static void AddIcon(Transform label, Sprite sprite)
+    // Icon above the text, inside the popup's vertical layout (the text's parent). Behind its transparent inside a
+    // darker square, like Steam shows items on - semi-transparent black, so it darkens whatever the popup color is
+    // instead of a solid dark block. Exactly the icon's size (the icon's frame runs to its edges).
+    static readonly Color IconBackground = new Color(0f, 0f, 0f, 0.4f);
+    const float IconPadding = 0f;
+    const float IconTopSpace = 10f; // a bit below the popup's top edge
+
+    // Rays inside the icon, in the rarity color: rarer = brighter and a little faster.
+    static readonly float[] RayAlpha = { 0.18f, 0.26f, 0.34f, 0.44f, 0.6f };
+    static readonly float[] RaySpeed = { 10f, 12f, 14f, 17f, 20f };
+
+    static void AddIcon(Transform label, Sprite sprite, SteamItemDefs.Def def)
     {
+        float size = IconSize + IconPadding * 2;
+
+        var space = new GameObject("ItemIconSpace", typeof(RectTransform));
+        space.transform.SetParent(label.parent, false);
+        space.transform.SetSiblingIndex(label.GetSiblingIndex());
+        var spaceLayout = space.AddComponent<LayoutElement>();
+        spaceLayout.preferredHeight = spaceLayout.minHeight = IconTopSpace;
+
+        var back = new GameObject("ItemIconBackground", typeof(RectTransform));
+        back.transform.SetParent(label.parent, false);
+        back.transform.SetSiblingIndex(label.GetSiblingIndex());
+        var backImage = back.AddComponent<Image>();
+        backImage.color = IconBackground;
+        backImage.raycastTarget = false;
+        ((RectTransform)back.transform).sizeDelta = new Vector2(size, size);
+        var layout = back.AddComponent<LayoutElement>();
+        layout.preferredWidth = layout.minWidth = size;
+        layout.preferredHeight = layout.minHeight = size;
+        back.AddComponent<RectMask2D>(); // clips the rays to the square
+
+        int r = (int)def.Rarity;
+        var rays = new GameObject("ItemIconRays", typeof(RectTransform));
+        rays.transform.SetParent(back.transform, false);
+        var raysImage = rays.AddComponent<Image>();
+        raysImage.sprite = VictoryCelebration.RaySprite();
+        Color c = def.Color;
+        raysImage.color = new Color(c.r, c.g, c.b, RayAlpha[r]);
+        raysImage.raycastTarget = false;
+        ((RectTransform)rays.transform).sizeDelta = Vector2.one * size * 1.6f;
+        rays.AddComponent<ItemIconRays>().Speed = RaySpeed[r];
+
         var go = new GameObject("ItemIcon", typeof(RectTransform));
-        go.transform.SetParent(label.parent, false);
-        go.transform.SetSiblingIndex(label.GetSiblingIndex());
+        go.transform.SetParent(back.transform, false);
         var image = go.AddComponent<Image>();
         image.sprite = sprite;
         image.preserveAspect = true;
         image.raycastTarget = false;
-        ((RectTransform)go.transform).sizeDelta = new Vector2(IconSize, IconSize);
-        var layout = go.AddComponent<LayoutElement>();
-        layout.preferredWidth = layout.minWidth = IconSize;
-        layout.preferredHeight = layout.minHeight = IconSize;
+        var rt = (RectTransform)go.transform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = new Vector2(IconPadding, IconPadding);
+        rt.offsetMax = new Vector2(-IconPadding, -IconPadding);
     }
 
     static void ShowExplanation(GameObject itemPopup)

@@ -17,6 +17,8 @@ public class RewardPopupFx : MonoBehaviour
     const float RaySizeMul = 1.3f;       // x header width
 
     static readonly Color Gold = new(1f, 0.835f, 0.29f);
+
+    public bool Rays = true; // false: only the spring-in (the item drop popup has its own rays, in the icon)
     static Sprite _raySprite;
 
     RectTransform _popup, _panel, _back, _rays;
@@ -34,6 +36,8 @@ public class RewardPopupFx : MonoBehaviour
     {
         _start = Time.unscaledTime;
         _text = GetComponentInChildren<TextMeshProUGUI>();
+        if (!Rays)
+            return;
 
         // The prefab root is a fixed box; the visible panel is "Background" (sized to the text).
         _panel = _popup;
