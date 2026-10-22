@@ -212,6 +212,7 @@ public class ActorBase : MonoBehaviour
         flashColorParamId_ = Shader.PropertyToID("_FlashColor");
 
         Reset(init: true);
+        EnemyHealthBar.Attach(this);
 
         // Assume uniform scale
         RadiusBody *= transform_.localScale.x;

@@ -103,6 +103,7 @@ public class SaveGameMembers
     public bool ShowDetailsOnHover = true;
     public bool CombatSoundEnabled = true; // all game sounds except UI ones (menu click, chime, money pickup) and music
     public bool SoundInBackground = true; // keep sound and music playing while minimized / in another tab (on by default)
+    public bool ShowHealthBars = true; // settings: small health bars over damaged enemies (EnemyHealthBar)
     public bool HideVictoryBanner = false; // settings, after Scary Earl is defeated: hide the gold victory banner under the HP bar
     public bool MusicEnabled = true; // music on/off (MusicManagerScript), separate from the music volume; off by default
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)

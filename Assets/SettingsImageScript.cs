@@ -14,7 +14,8 @@ public class SettingsImageScript : MonoBehaviour
     public Toggle CombatSoundToggle;
     public Toggle MusicToggle;
     public Toggle SoundInBackgroundToggle;
-    public Toggle HideVictoryBannerToggle; // only shown once Scary Earl is defeated (his victory banner exists from then)
+    public Toggle HideVictoryBannerToggle; // disabled until Scary Earl is defeated (his victory banner exists from then)
+    public Toggle ShowHealthBarsToggle;
     public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
     public Slider MasterVolumeSlider;
     public Slider MusicVolumeSlider;
@@ -44,6 +45,14 @@ public class SettingsImageScript : MonoBehaviour
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
         });
+
+        if (ShowHealthBarsToggle != null)
+            ShowHealthBarsToggle.onValueChanged.AddListener(on =>
+            {
+                SaveGame.Members.ShowHealthBars = on;
+                SaveGame.Save();
+                AudioManager.Instance.PlayMenuClick();
+            });
 
         if (HideVictoryBannerToggle != null)
             HideVictoryBannerToggle.onValueChanged.AddListener(on =>
@@ -118,9 +127,17 @@ public class SettingsImageScript : MonoBehaviour
             MarkMusicSteamOnly();
         UpdateMusicListButton();
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
+        if (ShowHealthBarsToggle != null)
+            ShowHealthBarsToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowHealthBars);
         if (HideVictoryBannerToggle != null)
         {
-            HideVictoryBannerToggle.gameObject.SetActive(SaveGame.Members.ScaryEarlDefeated);
+            // Shown always, but disabled (faded like Music on the web) until Scary Earl is defeated.
+            bool defeated = SaveGame.Members.ScaryEarlDefeated;
+            HideVictoryBannerToggle.gameObject.SetActive(true);
+            HideVictoryBannerToggle.interactable = defeated;
+            if (!HideVictoryBannerToggle.TryGetComponent<CanvasGroup>(out var bannerGroup))
+                bannerGroup = HideVictoryBannerToggle.gameObject.AddComponent<CanvasGroup>();
+            bannerGroup.alpha = defeated ? 1f : DisabledAlpha;
             HideVictoryBannerToggle.SetIsOnWithoutNotify(SaveGame.Members.HideVictoryBanner);
         }
 

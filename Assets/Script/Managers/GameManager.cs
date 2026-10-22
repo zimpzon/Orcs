@@ -2220,6 +2220,13 @@ public class GameManager : MonoBehaviour
                 Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
         }
 
+        // Health bars over the enemies' heads on / off (same as the Settings checkbox).
+        if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            SaveGame.Members.ShowHealthBars = !SaveGame.Members.ShowHealthBars;
+            Debug.Log("Cheat: enemy health bars " + (SaveGame.Members.ShowHealthBars ? "ON" : "OFF"));
+        }
+
         // Preview the item drop dialog: a random item, each press the next rarity (common -> ... -> legendary -> common).
         if (G.GetCheatKeyDown(KeyCode.D) && G.GetCheatKey(KeyCode.RightShift))
         {
