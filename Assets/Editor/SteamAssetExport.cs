@@ -11,8 +11,8 @@ using UnityEngine;
 //
 // Achievements: one icon pair per Achieved value, made from the skin that achievement unlocks (found by asking
 // SkinScript.GetUnlockStatus with only that achievement earned). Colored = achieved, black = not yet achieved.
-// Item drops: every bestiary beast (EnemyPrefabs order = arena order, later = rarer) plus Earl and Scary Earl
-// (legendary), in a rarity-colored frame. Item ids: Earl 1, Scary Earl 2, beasts 100 + ActorTypeEnum value.
+// Item drops: the items in SteamItemDefs (every bestiary beast, later in the arena = rarer, plus Earl and Scary Earl
+// as legendary), drawn from their sprites in a rarity-colored frame. Ids, names and rarities come from SteamItemDefs.
 public static class SteamAssetExport
 {
     const string OutRoot = @"c:\IdleEarlExtra";
@@ -106,28 +106,17 @@ public static class SteamAssetExport
 
     // ---------------- Item drops ----------------
 
-    enum Rarity { Common, Uncommon, Rare, Epic, Legendary }
-
-    static readonly Color32[] RarityColors =
-    {
-        new Color32(157, 165, 176, 255), // Common: steel grey
-        new Color32(79, 191, 90, 255),   // Uncommon: green
-        new Color32(61, 139, 255, 255),  // Rare: blue
-        new Color32(168, 85, 247, 255),  // Epic: purple
-        new Color32(245, 184, 46, 255),  // Legendary: gold
-    };
-
-    // Drop weight per item of that rarity (relative). Legendary = Earl and Scary Earl only.
-    static readonly int[] RarityWeights = { 100, 35, 12, 4, 1 };
-
-    public const int PlaytimeGeneratorId = 1000; // same as SteamItemDefs.PlaytimeGenerator
+    // Ids, names, rarities, weights and colors all come from SteamItemDefs (shared with the game); this only adds the art.
+    static Color32[] RarityColors => SteamItemDefs.RarityColors;
+    static int[] RarityWeights => SteamItemDefs.RarityWeights;
+    const int PlaytimeGeneratorId = SteamItemDefs.PlaytimeGenerator;
 
     class ItemDef
     {
         public int Id;
         public string Name;
         public string Description;
-        public Rarity Rarity;
+        public ItemRarity Rarity;
         public Sprite Sprite;
         public string File;
     }
@@ -148,50 +137,42 @@ public static class SteamAssetExport
     static List<ItemDef> BuildItemList()
     {
         var skins = LoadSkins();
-        var items = new List<ItemDef>
-        {
-            new ItemDef { Id = 1, Name = "Earl", Description = "Good ol' Earl. The hero himself - the rarest find of all.",
-                Rarity = Rarity.Legendary, Sprite = SkinSprite(skins, SkinAnimation.Default) },
-            new ItemDef { Id = 2, Name = "Scary Earl", Description = "What hides behind the fog. Almost nobody finds this one.",
-                Rarity = Rarity.Legendary, Sprite = SkinSprite(skins, SkinAnimation.ScaryEarl) },
-        };
-
         var enemies = AssetDatabase.LoadAssetAtPath<EnemyPrefabs>(EnemyPrefabsPath);
         if (enemies == null)
             throw new InvalidOperationException($"Not found: {EnemyPrefabsPath}");
 
-        // Beasts in arena order; split into rarity bands: first 40% common, 30% uncommon, 20% rare, last 10% epic.
-        var beasts = new List<(ActorTypeEnum type, Sprite sprite)>();
-        var seen = new HashSet<ActorTypeEnum>();
+        // Beast art: the first sprite of the enemy prefab with that ActorType.
+        var beastSprites = new Dictionary<ActorTypeEnum, Sprite>();
         foreach (var prefab in enemies.Enemies)
         {
             if (prefab == null)
                 continue;
             var actor = prefab.GetComponentInChildren<ActorBase>(true);
             var renderer = prefab.GetComponentInChildren<SpriteRenderer>(true);
-            if (actor == null || renderer == null || renderer.sprite == null || !seen.Add(actor.ActorType))
-                continue;
-            beasts.Add((actor.ActorType, renderer.sprite));
+            if (actor != null && renderer != null && renderer.sprite != null && !beastSprites.ContainsKey(actor.ActorType))
+                beastSprites[actor.ActorType] = renderer.sprite;
         }
 
-        for (int i = 0; i < beasts.Count; ++i)
+        var items = new List<ItemDef>();
+        foreach (var def in SteamItemDefs.All)
         {
-            float t = (i + 0.5f) / beasts.Count;
-            var rarity = t < 0.4f ? Rarity.Common : t < 0.7f ? Rarity.Uncommon : t < 0.9f ? Rarity.Rare : Rarity.Epic;
-            var (type, sprite) = beasts[i];
-            string name = ActorBase.Names.TryGetValue(type, out var n) ? n : type.ToString();
+            Sprite sprite = def.Skin != SkinAnimation.NotSet ? SkinSprite(skins, def.Skin)
+                : beastSprites.TryGetValue(def.Beast, out var s) ? s : null;
+            if (sprite == null)
+            {
+                Debug.LogWarning($"Steam items: no art for {def.Name} (id {def.Id}), skipped");
+                continue;
+            }
             items.Add(new ItemDef
             {
-                Id = 100 + (int)type,
-                Name = name,
-                Description = $"{name}, a beast from the arena.",
-                Rarity = rarity,
+                Id = def.Id,
+                Name = def.Name,
+                Description = def.Description,
+                Rarity = def.Rarity,
                 Sprite = sprite,
+                File = def.IconName + ".png",
             });
         }
-
-        foreach (var item in items)
-            item.File = $"item_{item.Id:000}_{FileSafe(item.Name)}.png";
         return items;
     }
 
@@ -238,14 +219,14 @@ public static class SteamAssetExport
         return sb.ToString();
     }
 
-    static Color32[] ItemIcon(Art art, Rarity rarity)
+    static Color32[] ItemIcon(Art art, ItemRarity rarity)
     {
         var canvas = new Color32[Size * Size];
         var rc = RarityColors[(int)rarity];
         const int Frame = 14;
         const float Center = (Size - 1) * 0.5f;
         const float GlowRadius = Size * 0.5f - Frame;
-        int glowAlpha = rarity switch { Rarity.Common => 34, Rarity.Uncommon => 44, Rarity.Rare => 54, Rarity.Epic => 66, _ => 80 };
+        int glowAlpha = rarity switch { ItemRarity.Common => 34, ItemRarity.Uncommon => 44, ItemRarity.Rare => 54, ItemRarity.Epic => 66, _ => 80 };
 
         for (int y = 0; y < Size; ++y)
         for (int x = 0; x < Size; ++x)
@@ -269,7 +250,7 @@ public static class SteamAssetExport
             float r = Mathf.Sqrt(dx * dx + dy * dy) / GlowRadius;
             float glow = Mathf.Clamp01(1f - r);
             float a = glowAlpha * glow * glow;
-            if (rarity == Rarity.Legendary)
+            if (rarity == ItemRarity.Legendary)
             {
                 // Twelve soft rays.
                 float angle = Mathf.Atan2(dy, dx);
@@ -472,8 +453,6 @@ public static class SteamAssetExport
             File.Delete(f);
         return dir;
     }
-
-    static string FileSafe(string s) => new string(s.Where(char.IsLetterOrDigit).ToArray());
 
     static string Q(string s)
     {

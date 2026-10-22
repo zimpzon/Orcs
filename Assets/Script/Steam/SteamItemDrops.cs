@@ -47,11 +47,6 @@ public static class SteamItemDrops
     static void Announce(SteamItem[] granted)
     {
         foreach (var item in granted)
-        {
-            var def = item.Def;
-            string text = def != null ? $"You found a {def.Rarity} item:\n{def.Name}!" : "You found a new item!";
-            if (GameCanvasScript.Instance != null)
-                GameCanvasScript.Instance.ShowPopup(text, celebrate: true);
-        }
+            ItemDropPopup.Show(item.Def);
     }
 }

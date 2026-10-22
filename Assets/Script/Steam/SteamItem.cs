@@ -9,5 +9,5 @@ public struct SteamItem
     public int DefId;
 
     public SteamItemDefs.Def Def => SteamItemDefs.Get(DefId);
-    public override string ToString() => $"#{InstanceId} {Def?.Name ?? "?"} ({Def?.Rarity ?? "?"}, def {DefId})";
+    public override string ToString() => $"#{InstanceId} {Def?.Name ?? "?"} ({(Def != null ? Def.Rarity.ToString() : "?")}, def {DefId})";
 }

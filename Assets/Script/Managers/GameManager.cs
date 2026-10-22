@@ -1779,6 +1779,7 @@ public class GameManager : MonoBehaviour
     static readonly long[] CheatArenaJumpSteps = { 0, 100, 1000, 5000 };
     [NonSerialized] public long CheatArenaJump;
     [NonSerialized] public bool CheatOneShot;
+    int _cheatItemDropRarity; // RightShift+D: next rarity to preview
 
     void ToggleCheatArenaJump()
     {
@@ -2211,6 +2212,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("Cheat: crown pulse preview " + (CrownPulse.CheatForceShow ? "ON" : "OFF"));
             if (CrownPulse.CheatForceShow)
                 Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
+        }
+
+        // Preview the item drop dialog: a random item, each press the next rarity (common -> ... -> legendary -> common).
+        if (G.GetCheatKeyDown(KeyCode.D) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            var rarity = (ItemRarity)(_cheatItemDropRarity++ % Enum.GetValues(typeof(ItemRarity)).Length);
+            var items = Array.FindAll(SteamItemDefs.All, d => d.Rarity == rarity);
+            if (items.Length > 0)
+                ItemDropPopup.Show(items[UnityEngine.Random.Range(0, items.Length)]);
         }
 
         if (G.GetCheatKeyDown(KeyCode.RightArrow) && G.GetCheatKey(KeyCode.RightControl))

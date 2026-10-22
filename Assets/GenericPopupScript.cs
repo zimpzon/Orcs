@@ -11,7 +11,14 @@ public class GenericPopupScript : MonoBehaviour
     // counted during the frame the popup is closed (Destroy happens at the end of the frame).
     public static int OpenCount;
 
-    private void OnEnable() => OpenCount++;
+    // Re-enabled (e.g. the item drop popup coming back after its "What is this?" popup): no input in that frame,
+    // so the click / Escape that closed the other popup doesn't close this one too.
+    private void OnEnable()
+    {
+        OpenCount++;
+        _openedFrame = Time.frameCount;
+    }
+
     private void OnDisable() => OpenCount--;
 
     private int _openedFrame;
@@ -24,7 +31,7 @@ public class GenericPopupScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.frameCount != _openedFrame)
             OnClose();
 
         if (Time.realtimeSinceStartup > _autoCloseTime)

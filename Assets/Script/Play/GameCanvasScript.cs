@@ -8,6 +8,19 @@ public class GameCanvasScript : MonoBehaviour
 
     public GameObject GenericPopupPrefab;
     public Transform GenericPopupUiParent;
+    // Steam item drop icons (Texture/ItemDrops, named SteamItemDefs.Def.IconName). Emptied in WebGL builds
+    // (StripItemIconsForWebGL): no Steam there.
+    public Sprite[] ItemDropIcons;
+
+    public Sprite FindItemDropIcon(string iconName)
+    {
+        if (ItemDropIcons == null)
+            return null;
+        foreach (var s in ItemDropIcons)
+            if (s != null && s.name == iconName)
+                return s;
+        return null;
+    }
 
     private void Awake()
     {
@@ -17,7 +30,10 @@ public class GameCanvasScript : MonoBehaviour
     const int MessageSortingOrder = 110; // above GlobalPopupManager's dialogs (100) and their dark overlay (99)
 
     // celebrate: reward effects (RewardPopupFx) for chest/mystery pickups.
-    public void ShowPopup(string message, bool celebrate = false)
+    public void ShowPopup(string message, bool celebrate = false) => CreatePopup(message, celebrate);
+
+    // Same, returning the popup so callers can add to it (ItemDropPopup).
+    public GameObject CreatePopup(string message, bool celebrate = false)
     {
         var popup = Instantiate(GenericPopupPrefab, GenericPopupUiParent);
         var text = popup.GetComponentInChildren<TextMeshProUGUI>();
@@ -45,5 +61,6 @@ public class GameCanvasScript : MonoBehaviour
 
         // Optionally force layout update (usually not needed unless immediate measurement required)
         //LayoutRebuilder.ForceRebuildLayoutImmediate(popup.GetComponent<RectTransform>());
+        return popup;
     }
 }
