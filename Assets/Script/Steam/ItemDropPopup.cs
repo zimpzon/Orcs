@@ -15,7 +15,7 @@ public static class ItemDropPopup
         "While you play, Steam now and then drops a collectible\n" +
         "into your Steam inventory. Items range from common to absolutely legendary.\n\n" +
         "Find them on your Steam profile under Inventory.\n" +
-        "Rarer ones drop less often - getting Earl is a legendary achievement!.";
+        "Rarer ones drop less often - getting Earl is a legendary achievement!";
 
     // The name + rarity sit on a darkened band across the popup's width, so the rarity color reads well on the blue.
     static readonly Color BandColor = new Color(0f, 0f, 0f, 0.35f);
