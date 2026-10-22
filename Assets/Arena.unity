@@ -34418,7 +34418,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283219597
+    rgba: 4282305166
   m_fontColor: {r: 0.5568628, g: 0.7921569, b: 0.24313726, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 0
@@ -118633,9 +118633,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
+    
 
     <color=#cccccc>By </color><b>PewGames</b>
 
+    
 
     <color=#cccccc>PixelDudes
     art by</color> <b>0x72</b> (<link="https://0x72.itch.io/pixeldudesmaker"><color=#8DBE4C><u>itch.io</u></color></link>)
@@ -118643,12 +118645,14 @@ MonoBehaviour:
     <color=#cccccc>Music
     by</color> <b>HeatleyBros</b> (<link="https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA"><color=#8DBE4C><u>YouTube</u></color></link>)
 
+    
 
     <color=#cccccc>Big
     thanks to (alphabetical)</color>
 
+    
 
-    462n, caiburn, Caliane, Edaw,
+    462n, caiburn, Caliane, Edaw, goldilocks,
 
     Hateyou,
     Haus, Intrinsic, Krismunich,
