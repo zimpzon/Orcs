@@ -26,6 +26,8 @@ public static class ScaryEarlFight
     {
         var m = SaveGame.Members;
         m.ScaryEarlDefeated = true;
+        if (m.ScaryEarlDefeatedLevel < 0)
+            m.ScaryEarlDefeatedLevel = m.ArenaLevel;
         if (m.ScaryEarlSeconds < 0)
             m.ScaryEarlSeconds = m.EstimatedOnlineSeconds2;
     }

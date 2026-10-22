@@ -37,6 +37,25 @@ public static class EnemySpawner
             return 1.0;
         return Math.Pow(10.0, LateHpLog * Math.Pow((level - LateHpStart) / LateHpScale, LateHpPower));
     }
+    // After Scary Earl is beaten the player is geared far beyond the normal arenas (his HP is ~4.7x a whole round at
+    // arena 100K). From then on, at arena 100K and up, all enemy HP gets PostGameHpJump (a round ~ half his HP, so
+    // ~half the round time at the strength he was beaten with), growing by PostGameHpGrowthPer10K every 10,000
+    // arenas past the level he was beaten at. Below 100K (after a rebirth) nothing changes.
+    const double PostGameHpJump = 2.5;
+    const double PostGameHpGrowthPer10K = 1.5;
+
+    public static double PostGameHpMul(long level)
+    {
+        var m = SaveGame.Members;
+        if (!m.ScaryEarlDefeated || level < FinalEnemyFirstLevel)
+            return 1.0;
+        if (m.ScaryEarlDefeatedLevel < 0)
+            m.ScaryEarlDefeatedLevel = m.ArenaLevel; // beaten before this was tracked: ramp from here
+        long rampFrom = Math.Max(FinalEnemyFirstLevel, m.ScaryEarlDefeatedLevel);
+        double steps = Math.Max(0, level - rampFrom) / 10_000.0;
+        return PostGameHpJump * Math.Pow(PostGameHpGrowthPer10K, steps);
+    }
+
     public const long MaxEnemies = 50;
     // Per-enemy HP cap: 64 of them still sum below long.MaxValue (round total HP, the HP bar). See SpawnEnemies.
     public const long EnemyHpCap = long.MaxValue / 64;
@@ -162,7 +181,7 @@ public static class EnemySpawner
     public static IEnumerable<ActorBase> GetEnemies(long level)
     {
         long hpTarget = CalculateHpTarget(level);
-        _hpMulForLevel = EnemyHpMulForLevel(level);
+        _hpMulForLevel = EnemyHpMulForLevel(level) * PostGameHpMul(level);
         var enemies = new List<ActorBase>();
 
 
