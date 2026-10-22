@@ -31419,6 +31419,7 @@ MonoBehaviour:
   ColorDamageNumbersZap: {r: 0.835, g: 0.32893938, b: 0, a: 1}
   ColorGoldCollect: {r: 0.9490196, g: 0.78431374, b: 0.33333334, a: 1}
   Floor: {fileID: 1771007547}
+  ScaryEarlFloorSprite: {fileID: 21300000, guid: 59973fc1e4a5fff409b6d3b2a1ece834, type: 3}
   ColorLocked: '#901010'
   ColorUnlocked: '#10ff10'
   HpBarScript: {fileID: 462164609116755589}

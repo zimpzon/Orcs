@@ -152,7 +152,9 @@ public class GameManager : MonoBehaviour
     public Color ColorGoldCollect = Color.yellow;
 
     public SpriteRenderer Floor;
+    public Sprite ScaryEarlFloorSprite; // arena floor while fighting Scary Earl (tinted like the normal floor)
     Color floorDefaultColor;
+    Sprite floorDefaultSprite;
     public string ColorLocked;
     public string ColorUnlocked;
     public HpBarScript HpBarScript;
@@ -552,6 +554,7 @@ public class GameManager : MonoBehaviour
 
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
             TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : ArenaLabel(SaveGame.Members.ArenaLevel);
+            Floor.sprite = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : floorDefaultSprite;
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -1374,6 +1377,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = 60;
         floorDefaultColor = Floor.color;
+        floorDefaultSprite = Floor.sprite;
         SortLayerTopEffects = SortingLayer.NameToID("TopEffects");
         LayerPlayer = LayerMask.NameToLayer("Player");
         LayerEnemyProjectile = LayerMask.NameToLayer("EnemyProjectile");
