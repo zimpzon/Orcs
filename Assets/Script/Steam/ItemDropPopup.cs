@@ -9,14 +9,19 @@ public static class ItemDropPopup
 {
     const float IconSize = 80f;
     const string WhatIsThisLink = "whatisthis";
-
+        
     const string Explanation =
         "<color=" + TextColors.Yellow + "><size=120%>ITEM DROPS</size></color>\n\n" +
         "While you play, Steam now and then drops a collectible\n" +
-        "into your Steam inventory: Earl, Scary Earl or one of the beasts\n" +
-        "from the arena, each with a rarity.\n\n" +
+        "into your Steam inventory. Items range from common to absolutely legendary.\n\n" +
         "Find them on your Steam profile under Inventory.\n" +
-        "Rarer ones drop less often - Earl and Scary Earl are the rarest of all.";
+        "Rarer ones drop less often - getting Earl is a legendary achievement!.";
+
+    // The name + rarity sit on a darkened band across the popup's width, so the rarity color reads well on the blue.
+    static readonly Color BandColor = new Color(0f, 0f, 0f, 0.35f);
+    const int BandPaddingX = 8, BandPaddingY = 1;
+    const float GapAroundBand = 8f; // between the header, the band and the text below
+    const float BodyBottomMargin = 40f; // room for the OK button below the last text (the prefab's is 50)
 
     public static void Show(SteamItemDefs.Def def)
     {
@@ -27,41 +32,92 @@ public static class ItemDropPopup
         string name = def != null ? def.Name : "Something";
         string rarity = def != null ? def.Rarity.ToString().ToUpperInvariant() : "";
         string color = def != null ? "#" + ColorUtility.ToHtmlStringRGB(def.Color) : TextColors.Gold;
-        string text =
-            $"<color={TextColors.Yellow}><size=130%>ITEM DROP!</size></color>\n\n" +
-            $"<color={color}><size=115%>{name}</size>\n<size=80%>{rarity}</size></color>\n\n" +
-            "A collectible was added to your Steam inventory.\n\n" +
-            $"<link=\"{WhatIsThisLink}\"><u><color={TextColors.GreenSmallest}>What is this?</color></u></link>";
 
-        var popup = canvas.CreatePopup(text, celebrate: true);
+        // Three texts in the popup's vertical layout: header, the name on its band, then the rest with the link.
+        var popup = canvas.CreatePopup($"<color={TextColors.Yellow}><size=130%>ITEM DROP!</size></color>", celebrate: true);
         if (popup.TryGetComponent<RewardPopupFx>(out var fx))
             fx.Rays = false; // rays in the icon instead (AddIcon)
-        var label = popup.GetComponentInChildren<TextMeshProUGUI>();
+        var header = popup.GetComponentInChildren<TextMeshProUGUI>();
+        if (header == null)
+            return;
+
+        var nameText = AddBand(header, $"<color={color}><size=115%>{name}</size>\n<size=80%>{rarity}</size></color>");
+        var body = CloneText(header, nameText.transform.parent.GetSiblingIndex() + 2, // after the band and its gap
+            "A collectible was added to your Steam inventory\n" +
+            $"<link=\"{WhatIsThisLink}\"><u><color={TextColors.GreenSmallest}>What is this?</color></u></link>");
+        // The prefab's text has a 50 px bottom margin to make room for the OK button below it: only the last text
+        // (body) keeps it, or the header would push the band away with empty space.
+        var m = header.margin;
+        header.margin = new Vector4(m.x, m.y, m.z, 0);
+        body.margin = new Vector4(m.x, 0, m.z, BodyBottomMargin);
+
+        body.raycastTarget = true;
+        body.gameObject.AddComponent<TmpLinkClick>().OnLink = id =>
+        {
+            if (id == WhatIsThisLink)
+                ShowExplanation(popup);
+        };
 
         var sprite = def != null ? canvas.FindItemDropIcon(def.IconName) : null;
-        if (sprite != null && label != null)
-            AddIcon(label.transform, sprite, def);
+        if (sprite != null)
+            AddIcon(header.transform, sprite, def);
+    }
 
-        if (label != null)
-        {
-            label.raycastTarget = true;
-            label.gameObject.AddComponent<TmpLinkClick>().OnLink = id =>
-            {
-                if (id == WhatIsThisLink)
-                    ShowExplanation(popup);
-            };
-        }
+    // Fixed vertical gap in the popup's layout.
+    static void AddSpace(Transform parent, int siblingIndex, float height)
+    {
+        var go = new GameObject("Space", typeof(RectTransform));
+        go.transform.SetParent(parent, false);
+        go.transform.SetSiblingIndex(siblingIndex);
+        var layout = go.AddComponent<LayoutElement>();
+        layout.preferredHeight = layout.minHeight = height;
+    }
+
+    // A copy of the popup's text (same font, size, layout settings) at a position in the layout.
+    static TextMeshProUGUI CloneText(TextMeshProUGUI source, int siblingIndex, string text)
+    {
+        var copy = Object.Instantiate(source, source.transform.parent);
+        copy.name = source.name;
+        copy.transform.SetSiblingIndex(siblingIndex);
+        copy.text = text;
+        return copy;
+    }
+
+    // Darkened band right after the header, stretched to the popup's width, with a text on it.
+    static TextMeshProUGUI AddBand(TextMeshProUGUI header, string text)
+    {
+        AddSpace(header.transform.parent, header.transform.GetSiblingIndex() + 1, GapAroundBand);
+        var band = new GameObject("ItemNameBand", typeof(RectTransform));
+        band.transform.SetParent(header.transform.parent, false);
+        band.transform.SetSiblingIndex(header.transform.GetSiblingIndex() + 2);
+        AddSpace(header.transform.parent, header.transform.GetSiblingIndex() + 3, GapAroundBand);
+        var image = band.AddComponent<Image>();
+        image.color = BandColor;
+        image.raycastTarget = false;
+        band.AddComponent<LayoutElement>().flexibleWidth = 1; // full width of the popup
+        var layout = band.AddComponent<VerticalLayoutGroup>();
+        layout.padding = new RectOffset(BandPaddingX, BandPaddingX, BandPaddingY, BandPaddingY);
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = layout.childControlHeight = true;
+        layout.childForceExpandWidth = layout.childForceExpandHeight = false;
+
+        var copy = Object.Instantiate(header, band.transform);
+        copy.name = header.name;
+        copy.text = text;
+        copy.margin = Vector4.zero;
+        return copy;
     }
 
     // Icon above the text, inside the popup's vertical layout (the text's parent). Behind its transparent inside a
     // darker square, like Steam shows items on - semi-transparent black, so it darkens whatever the popup color is
     // instead of a solid dark block. Exactly the icon's size (the icon's frame runs to its edges).
-    static readonly Color IconBackground = new Color(0f, 0f, 0f, 0.4f);
+    static readonly Color IconBackground = new Color32(90, 80, 65, 255);
+    //static readonly Color IconBackground = new Color32(112, 105, 90, 110);
     const float IconPadding = 0f;
     const float IconTopSpace = 10f; // a bit below the popup's top edge
 
     // Rays inside the icon, in the rarity color: rarer = brighter and a little faster.
-    static readonly float[] RayAlpha = { 0.18f, 0.26f, 0.34f, 0.44f, 0.6f };
+    static readonly float[] RayAlpha = { 0.20f, 0.5f, 0.65f, 0.6f, 0.6f };
     static readonly float[] RaySpeed = { 10f, 12f, 14f, 17f, 20f };
 
     static void AddIcon(Transform label, Sprite sprite, SteamItemDefs.Def def)
