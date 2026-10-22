@@ -79,7 +79,7 @@ public class SaveGameMembers
 
     // Settings
     public int Version = 2; // save game version
-    public float VolumeMaster = 0.8f;
+    public float VolumeMaster = 0.5f;
     public float VolumeMusic = 0.6f;
     public float VolumeSfx = 0.4f;
 
@@ -87,7 +87,7 @@ public class SaveGameMembers
     public bool ShowFloatingGoldNumbers = true;
     public bool ShowDetailsOnHover = true;
     public bool CombatSoundEnabled = true; // all game sounds except UI ones (menu click, chime, money pickup) and music
-    public bool SoundInBackground = false; // keep sound and music playing while minimized / in another tab
+    public bool SoundInBackground = true; // keep sound and music playing while minimized / in another tab (on by default)
     public bool HideVictoryBanner = false; // settings, after Scary Earl is defeated: hide the gold victory banner under the HP bar
     public bool MusicEnabled = true; // music on/off (MusicManagerScript), separate from the music volume; off by default
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
