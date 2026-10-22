@@ -44,12 +44,13 @@ public class CrownPulse : MonoBehaviour
             // Highlight behind the rebirth dialog's credit bonus line once it's low (same threshold as its orange text).
             PulseCondition.CreditBonusLow => Assets.Script.Upgrades.UpgradeProgression.CreditBonusDisplayPct() <= 100,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
-            _ => m.Achieved.Contains(Achieved.Completion100),
+            // The crown on the Victory button too: only until the victory dialog has been opened.
+            _ => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
         };
         // The preview cheat only fakes 100%: rebirth/tips pulses keep following their own conditions.
-        // The Victory button pulse still stops once the dialog has been opened.
-        bool cheat = CheatForceShow && (Condition == PulseCondition.Completion100
-            || Condition == PulseCondition.VictoryUnseen && !m.ViewedVictoryDialog && !ProgressPopupScript.OpenedDuringPreview);
+        // Both 100% pulses still stop once the victory dialog has been opened.
+        bool cheat = CheatForceShow && (Condition == PulseCondition.Completion100 || Condition == PulseCondition.VictoryUnseen)
+            && !m.ViewedVictoryDialog && !ProgressPopupScript.OpenedDuringPreview;
         bool show = ForceShow || cheat || conditionMet;
         if (_image.enabled != show)
             _image.enabled = show;

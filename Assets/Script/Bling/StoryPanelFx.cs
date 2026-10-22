@@ -27,8 +27,8 @@ public class StoryPanelFx : MonoBehaviour
         BallSize = 0.28f,
         // Discreet while fighting: dim lavender comets, slow.
         Border = new Color(0.55f, 0.4f, 0.95f, 1f),
-        BorderStrength = 0.8f,
-        BorderLapSeconds = 10f,
+        BorderStrength = 0.5f,
+        BorderLapSeconds = 12f,
     };
 
     static readonly Palette Defeated = new()
@@ -40,10 +40,10 @@ public class StoryPanelFx : MonoBehaviour
         Rim = new Color(0.55f, 0.28f, 0.1f, 0.45f),
         Speed = 0.18f,
         BallSize = 0.31f,
-        // Victory lap: bright gold comets.
+        // Victory lap: gold comets (toned down - they drew too much attention from the text).
         Border = new Color(1f, 0.84f, 0.35f, 1f),
-        BorderStrength = 1.2f,
-        BorderLapSeconds = 6f,
+        BorderStrength = 0.75f,
+        BorderLapSeconds = 8f,
     };
 
     static readonly int BgId = Shader.PropertyToID("_BgColor");
