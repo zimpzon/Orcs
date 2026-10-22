@@ -16,6 +16,7 @@ public class SettingsImageScript : MonoBehaviour
     public Toggle SoundInBackgroundToggle;
     public Toggle HideVictoryBannerToggle; // disabled until Scary Earl is defeated (his victory banner exists from then)
     public Toggle ShowHealthBarsToggle;
+    public Toggle MasterSoundToggle; // all sound on / off, music included
     public Toggle FullscreenToggle; // always shown; only clickable in standalone builds on a 16:9 / 16:10 monitor
     public Slider MasterVolumeSlider;
     public Slider MusicVolumeSlider;
@@ -45,6 +46,15 @@ public class SettingsImageScript : MonoBehaviour
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
         });
+
+        if (MasterSoundToggle != null)
+            MasterSoundToggle.onValueChanged.AddListener(on =>
+            {
+                SaveGame.Members.SoundEnabled = on;
+                AudioManager.Instance.ApplySoundSettings();
+                SaveGame.Save();
+                AudioManager.Instance.PlayMenuClick(); // heard only when turning sound on
+            });
 
         if (ShowHealthBarsToggle != null)
             ShowHealthBarsToggle.onValueChanged.AddListener(on =>
@@ -129,6 +139,8 @@ public class SettingsImageScript : MonoBehaviour
         SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
         if (ShowHealthBarsToggle != null)
             ShowHealthBarsToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowHealthBars);
+        if (MasterSoundToggle != null)
+            MasterSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
         if (HideVictoryBannerToggle != null)
         {
             // Shown always, but disabled (faded like Music on the web) until Scary Earl is defeated.

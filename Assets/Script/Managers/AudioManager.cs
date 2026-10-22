@@ -146,7 +146,7 @@ public class AudioManager : MonoBehaviour
         if (SaveGame.Members == null)
             return;
 
-        AudioListener.volume = 1f;
+        AudioListener.volume = SaveGame.Members.SoundEnabled ? 1f : 0f; // master sound switch (Settings): everything, music too
         bool mute = !CombatSoundEnabled;
         var music = MusicManagerScript.Instance != null ? MusicManagerScript.Instance.Source : null;
         foreach (var source in FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None))
