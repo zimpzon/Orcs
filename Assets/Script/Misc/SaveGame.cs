@@ -54,6 +54,20 @@ public class SaveGameMembers
     public bool BoughtBeastScholar = false;
     public bool BoughtCompletionist = false;
 
+    public void AddBeastKill(ActorTypeEnum type)
+    {
+        int i = (int)type;
+        while (BeastKills.Count <= i)
+            BeastKills.Add(0);
+        BeastKills[i]++;
+    }
+
+    public long GetBeastKills(ActorTypeEnum type)
+    {
+        int i = (int)type;
+        return i < BeastKills.Count ? BeastKills[i] : 0;
+    }
+
     public string AscendCardDebug() =>
         $"{nameof(BoughtPassiveX2_1)} = {SaveGame.Members.BoughtPassiveX2_1} | " +
         $"{nameof(BoughtPassiveX2_2)} = {SaveGame.Members.BoughtPassiveX2_2} | " +
@@ -95,6 +109,7 @@ public class SaveGameMembers
 
     // Progress
     public List<ActorTypeEnum> BeastsSeen = new List<ActorTypeEnum>();
+    public List<long> BeastKills = new List<long>(); // kills per beast, index = (int)ActorTypeEnum; lifetime (kept on rebirth)
     public List<Achieved> Achieved = new List<Achieved>();
 
     public double EstimatedOnlineSeconds2 = 0;

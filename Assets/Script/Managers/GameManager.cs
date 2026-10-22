@@ -1139,6 +1139,8 @@ public class GameManager : MonoBehaviour
         }
 
         SaveGame.Members.EnemiesKilled += 1;
+        if (!actor.IsScaryEarl) // he's a recolored beast: don't count him as that beast (bestiary "Slain")
+            SaveGame.Members.AddBeastKill(actor.ActorType);
 
         if (actor.ActorType == ActorTypeEnum.FromTheVoid)
         {

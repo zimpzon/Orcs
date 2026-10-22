@@ -77,6 +77,7 @@ static class SaveGameAscend
         newSave.FogTouched = oldSave.FogTouched;
         newSave.ScaryEarlDefeated = oldSave.ScaryEarlDefeated;
         newSave.BeastsSeen = oldSave.BeastsSeen;
+        newSave.BeastKills = oldSave.BeastKills;
 
         // Collectables
         newSave.ChestsCollected = oldSave.ChestsCollected;

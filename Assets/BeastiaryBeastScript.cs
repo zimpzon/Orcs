@@ -1,3 +1,4 @@
+using Assets.Script.Misc;
 using System;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,9 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
 
     void HideDetails() => HoverTextFx.Of(Hovertext).Unhover(this, DefaultHovertext);
 
+    // Full number with the player's thousands separator (1.345 / 1,345), never abbreviated.
+    static string Grouped(long n) => n.ToString("#,0", DisplayNumberFormat.Info);
+
     void ShowDetails()
     {
         // Always shows the beast's income %, locked or not (it applies once Beast Scholar is bought).
@@ -39,7 +43,11 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
 
         // Arena level where the beast starts to show up.
         long unlockLevel = EnemySpawner.UnlockLevelOf(ActorType);
-        string arena = unlockLevel > 0 ? $" <color=#AAAAAA>(arena {unlockLevel:#,0})</color>" : "";
-        HoverTextFx.Of(Hovertext).Hover(this, $"{name}{arena}\n+{bonus}% income");
+        string arena = unlockLevel > 0 ? $" <color=#AAAAAA>(arena {Grouped(unlockLevel)})</color>" : "";
+        // Lifetime kills of this beast (unlocked ones only).
+        string slain = isUnlocked
+            ? $"\n<color=#AAAAAA>Slain: {Grouped(SaveGame.Members.GetBeastKills(ActorType))}</color>"
+            : "";
+        HoverTextFx.Of(Hovertext).Hover(this, $"{name}{arena}\n+{bonus}% income{slain}");
     }
 }
