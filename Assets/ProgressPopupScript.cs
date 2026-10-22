@@ -116,7 +116,12 @@ public class ProgressPopupScript : MonoBehaviour
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
         if (SaveGame.Members.Achieved.Contains(Achieved.Completion100))
             SaveGame.Members.ViewedVictoryDialog = true; // stops the big Victory button pulse (CrownPulse)
+        else if (CrownPulse.CheatForceShow)
+            OpenedDuringPreview = true; // same, for the RightShift+G preview - not saved, so the real 100% still pulses
     }
+
+    // The victory dialog was opened while the 100% preview cheat was on (reset when the preview is turned on again).
+    public static bool OpenedDuringPreview;
 
     public void OnClose()
     {

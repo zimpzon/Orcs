@@ -2132,7 +2132,7 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.A) && G.GetCheatKey(KeyCode.RightControl))
         {
-            SaveGame.Members.ArenaLevel += 5000;
+            SaveGame.Members.ArenaLevel += 10000;
         }
 
         if (G.GetCheatKeyDown(KeyCode.S) && G.GetCheatKey(KeyCode.RightControl))
@@ -2195,6 +2195,7 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.F) && G.GetCheatKey(KeyCode.RightShift))
         {
             CrownPulse.CheatForceShow = true;
+            ProgressPopupScript.OpenedDuringPreview = false;
             SaveGame.Members.FogTouched = false;
             if (SecretBeastTile.Instance != null)
                 SecretBeastTile.Instance.SyncState();
@@ -2204,6 +2205,7 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.G) && G.GetCheatKey(KeyCode.RightShift))
         {
             CrownPulse.CheatForceShow = !CrownPulse.CheatForceShow;
+            ProgressPopupScript.OpenedDuringPreview = false; // a fresh preview pulses again until the dialog is opened
             Debug.Log("Cheat: crown pulse preview " + (CrownPulse.CheatForceShow ? "ON" : "OFF"));
             if (CrownPulse.CheatForceShow)
                 Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
@@ -2247,8 +2249,6 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.LevelSmartDaggers = 25;
             SaveGame.Members.LevelCryptMaster = 5;
             SaveGame.Members.LevelSmartFireballs = 3;
-
-            SaveGame.Members.ArenaLevel += 5000;
         }
 
         //if (Input.GetKeyDown(KeyCode.F4))

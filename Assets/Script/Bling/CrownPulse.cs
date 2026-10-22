@@ -47,7 +47,9 @@ public class CrownPulse : MonoBehaviour
             _ => m.Achieved.Contains(Achieved.Completion100),
         };
         // The preview cheat only fakes 100%: rebirth/tips pulses keep following their own conditions.
-        bool cheat = CheatForceShow && (Condition == PulseCondition.Completion100 || Condition == PulseCondition.VictoryUnseen);
+        // The Victory button pulse still stops once the dialog has been opened.
+        bool cheat = CheatForceShow && (Condition == PulseCondition.Completion100
+            || Condition == PulseCondition.VictoryUnseen && !m.ViewedVictoryDialog && !ProgressPopupScript.OpenedDuringPreview);
         bool show = ForceShow || cheat || conditionMet;
         if (_image.enabled != show)
             _image.enabled = show;
