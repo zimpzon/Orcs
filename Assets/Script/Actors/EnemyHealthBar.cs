@@ -1,9 +1,10 @@
 using UnityEngine;
 
-// Small health bar over an enemy's head, only while it's damaged and alive: dark background, red fill (gold for the
-// final enemy) and a short white chunk trailing behind the fill so hits read clearly. Not on Scary Earl (he has the
-// big bar at the top). Added in code to every enemy (ActorBase.Awake). The bar is its own root object, positioned in
-// world space each frame, so the enemy's flipping / death rotation never touches it. Settings "Show healthbars" (or RightShift+V) turns them off.
+// Small health bar over an enemy's head, only while it's damaged and alive: dark background, a fill going from green
+// (full) over yellow to red (almost dead), and a short white chunk trailing behind the fill so hits read clearly. Not
+// on Scary Earl (he has the big bar at the top). Added in code to every enemy (ActorBase.Awake). The bar is its own
+// root object, positioned in world space each frame, so the enemy's flipping / death rotation never touches it.
+// Settings "Show healthbars" (or RightShift+V) turns them off.
 public class EnemyHealthBar : MonoBehaviour
 {
     // Settings checkbox "Show healthbars" (saved; RightShift+V flips it too).
@@ -17,8 +18,17 @@ public class EnemyHealthBar : MonoBehaviour
     const float TrailSpeed = 3f;      // trail catches up this fraction of the bar per second
 
     static readonly Color BackColor = new(0f, 0f, 0f, 0.6f);
-    static readonly Color FillColor = new Color32(0xD9, 0x43, 0x3F, 255);
-    static readonly Color FinalEnemyFillColor = new Color32(0xF5, 0xB8, 0x2E, 255);
+    // true: the fill goes green -> yellow -> red with the health left. false: always plain red (LowColor).
+    const bool ColorByHealth = true;
+
+    // Fill color by health left: green at full, yellow at half, red near death.
+    static readonly Color FullColor = new Color32(0x6C, 0xC6, 0x4A, 255);
+    static readonly Color HalfColor = new Color32(0xF2, 0xC2, 0x3A, 255);
+    static readonly Color LowColor = new Color32(0xD9, 0x43, 0x3F, 255);
+
+    static Color FillColorFor(float value) => !ColorByHealth ? LowColor : value > 0.5f
+        ? Color.Lerp(HalfColor, FullColor, (value - 0.5f) * 2f)
+        : Color.Lerp(LowColor, HalfColor, value * 2f);
     static readonly Color TrailColor = new(1f, 1f, 1f, 0.85f);
 
     static Sprite _center, _left;
@@ -46,7 +56,7 @@ public class EnemyHealthBar : MonoBehaviour
         _root = new GameObject("EnemyHealthBar") { hideFlags = HideFlags.HideInHierarchy }; // one per pooled enemy
         _back = NewPart("Back", _center, BackColor);
         _trail = NewPart("Trail", _left, TrailColor);
-        _fill = NewPart("Fill", _left, FillColor);
+        _fill = NewPart("Fill", _left, FullColor);
         _root.SetActive(false);
     }
 
@@ -101,7 +111,7 @@ public class EnemyHealthBar : MonoBehaviour
         _trail.transform.localScale = new Vector3(inner * _trailValue, Height - Border * 2, 1f);
         _fill.transform.localPosition = left;
         _fill.transform.localScale = new Vector3(inner * value, Height - Border * 2, 1f);
-        _fill.color = _actor.ActorType == ActorTypeEnum.FromTheVoid ? FinalEnemyFillColor : FillColor;
+        _fill.color = FillColorFor(value);
 
         // Same layer as the body, just above it: an enemy standing in front still covers the bar.
         int layer = _body.sortingLayerID, order = _body.sortingOrder;
