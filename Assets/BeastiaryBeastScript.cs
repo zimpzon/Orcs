@@ -41,13 +41,20 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         if (isUnlocked)
             ActorBase.Names.TryGetValue(ActorType, out name);
 
-        // Arena level where the beast starts to show up.
+        // Three calm lines: the name, the income bonus, then the small grey facts - the arena it starts to show up
+        // in, and (once unlocked) how many have been slain.
         long unlockLevel = EnemySpawner.UnlockLevelOf(ActorType);
-        string arena = unlockLevel > 0 ? $" <color=#AAAAAA>(arena {Grouped(unlockLevel)})</color>" : "";
-        // Lifetime kills of this beast (unlocked ones only).
-        string slain = isUnlocked
-            ? $"\n<color=#AAAAAA>Slain: {Grouped(SaveGame.Members.GetBeastKills(ActorType))}</color>"
-            : "";
-        HoverTextFx.Of(Hovertext).Hover(this, $"{name}{arena}\n+{bonus}% income{slain}");
+        string facts = unlockLevel > 0 ? $"arena {Grouped(unlockLevel)}" : "";
+        if (isUnlocked)
+        {
+            string slain = $"{Grouped(SaveGame.Members.GetBeastKills(ActorType))} slain";
+            facts = facts.Length > 0 ? $"{facts}  •  {slain}" : slain;
+        }
+
+        string title = isUnlocked ? $"<b>{name}</b>" : $"<color=#999999>{name}</color>";
+        string text = $"{title}\n<color={TextColors.GreenSmallest}>+{bonus}% income</color>";
+        if (facts.Length > 0)
+            text += $"\n<size=85%><color=#A0A0A0>{facts}</color></size>";
+        HoverTextFx.Of(Hovertext).Hover(this, text);
     }
 }
