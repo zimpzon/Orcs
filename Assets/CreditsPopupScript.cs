@@ -7,14 +7,6 @@ public class CreditsPopupScript : MonoBehaviour
 {
     public TextMeshProUGUI ProgressText;
 
-    static readonly string[] Thanks =
-    {
-        "Name One",
-        "Name Two",
-    };
-
-    const string GoldHex = "#FFD54A";
-
     // Same layout as the victory popup it was cloned from: widen it (staying centered) and grow it downward to fit.
     const float ExtraWidth = 80f;
     RectTransform _popupRect;
