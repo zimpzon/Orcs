@@ -33,7 +33,8 @@ public class GameCanvasScript : MonoBehaviour
     public void ShowPopup(string message, bool celebrate = false) => CreatePopup(message, celebrate);
 
     // Same, returning the popup so callers can add to it (ItemDropPopup).
-    public GameObject CreatePopup(string message, bool celebrate = false)
+    // sound: false = the caller plays its own (ItemDropPopup: the pickup jingle).
+    public GameObject CreatePopup(string message, bool celebrate = false, bool sound = true)
     {
         var popup = Instantiate(GenericPopupPrefab, GenericPopupUiParent);
         var text = popup.GetComponentInChildren<TextMeshProUGUI>();
@@ -52,7 +53,8 @@ public class GameCanvasScript : MonoBehaviour
         if (celebrate)
         {
             popup.AddComponent<RewardPopupFx>();
-            AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true); // chest / mystery reward
+            if (sound)
+                AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true); // chest / mystery reward
         }
         else
         {

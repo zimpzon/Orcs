@@ -34,7 +34,9 @@ public static class ItemDropPopup
         string color = def != null ? "#" + ColorUtility.ToHtmlStringRGB(def.Color) : TextColors.Gold;
 
         // Three texts in the popup's vertical layout: header, the name on its band, then the rest with the link.
-        var popup = canvas.CreatePopup($"<color={TextColors.Yellow}><size=130%>ITEM DROP!</size></color>", celebrate: true);
+        var popup = canvas.CreatePopup($"<color={TextColors.Yellow}><size=130%>ITEM DROP!</size></color>", celebrate: true, sound: false);
+        // The jingle chests and the mystery bonus play when they appear.
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.PickupReady, volumeScale: 0.25f, fixedPitch: true);
         if (popup.TryGetComponent<RewardPopupFx>(out var fx))
             fx.Rays = false; // rays in the icon instead (AddIcon)
         var header = popup.GetComponentInChildren<TextMeshProUGUI>();
