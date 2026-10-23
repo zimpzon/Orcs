@@ -1247,7 +1247,7 @@ public class GameManager : MonoBehaviour
         };
     }
 
-    public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier, ActorDamageSource damageSource)
+    public void DamageEnemy(ActorBase enemy, double amount, Vector3 direction, float forceModifier, ActorDamageSource damageSource, bool blood = true)
     {
         if (enemy.Hp <= 0 || enemy.IsDead)
             return;
@@ -1302,7 +1302,7 @@ public class GameManager : MonoBehaviour
         // Count total without overkill
         AddToTotalDamage(damageSource, intAmount);
 
-        enemy.ApplyDamage2(intAmount, direction, forceModifier * 1.5f);
+        enemy.ApplyDamage2(intAmount, direction, forceModifier * 1.5f, blood);
 
         HpBarScript.AddHp(-intAmount);
 

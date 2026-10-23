@@ -44,6 +44,7 @@ public class WeaponMachinegun : WeaponBase
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
         basic.Force = 0.5f;
+        basic.NoBlood = scale <= 0.95f; // the extra (smaller) daggers of a salvo: blood from the main dagger only
         basic.ParticleSystem = Particles.I.KnifeTrail;
         basic.ParticleEmitCount = 1;
         basic.ParticleEmitDelay = 0.01f;

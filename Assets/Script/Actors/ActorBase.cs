@@ -652,12 +652,13 @@ public class ActorBase : MonoBehaviour
         throw new NotImplementedException("deprecacated, must always be called from GameManager.DamageEnemy.");
     }
 
-    public void ApplyDamage2(long amount, Vector3 direction, float forceModifier)
+    public void ApplyDamage2(long amount, Vector3 direction, float forceModifier, bool blood = true)
     {
         if (amount > 0)
         {
             Hp -= amount;
-            GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
+            if (blood)
+                GameManager.Instance.TriggerBlood(transform_.position, 1.0f + (amount * 0.25f) * forceModifier);
         }
 
         if (HasForcedDestination && forcedDestinationBreakAtDamage_)

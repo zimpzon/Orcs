@@ -32,6 +32,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
             Radius = 0.0f;
             Blink = false;
             Force = 0.25f;
+            NoBlood = false;
             DamageCd = 0.0f;
             DamageTimeNext = 0.0f;
             DamageSource = ActorDamageSource.Unkonwn;
@@ -83,6 +84,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
         public float DamageTimeNext;
         public ActorDamageSource DamageSource;
         public float Force;
+        public bool NoBlood; // hits don't splash blood (the extra daggers of a salvo: only the main one does)
         public bool Blink;
         public Vector3 Direction;
         public float MaxDistance;
@@ -277,7 +279,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                         if (GameManager.Instance.GameTime > p.StickyDamageTimeNext)
                         {
                             double damage = p.Damage;
-                            GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f, p.DamageSource);
+                            GameManager.Instance.DamageEnemy(p.CurrentTarget, damage, damageDirection, forceModifier: 0.25f, p.DamageSource, blood: !p.NoBlood);
                             p.StickyDamageDone += damage;
 
                             GameManager.Instance.TriggerBlood(p.Position + damageDirection * 0.2f, 8.0f, floorBloodRnd: 0.1f);
@@ -337,7 +339,7 @@ public class ProjectileManager : MonoBehaviour, IObjectFactory<ProjectileManager
                                 bool offCd = GameManager.Instance.GameTime > p.DamageTimeNext;
                                 if (offCd)
                                 {
-                                    GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force, p.DamageSource);
+                                    GameManager.Instance.DamageEnemy(enemy, damage, p.Direction, p.Force, p.DamageSource, blood: !p.NoBlood);
                                     p.DamageTimeNext = GameManager.Instance.GameTime + p.DamageCd;
                                     hitThisFrame = true;
                                 }
