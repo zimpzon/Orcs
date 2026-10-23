@@ -43,9 +43,11 @@ public class CrownPulse : MonoBehaviour
             PulseCondition.ExpandTiersUnseen => m.LevelWizard > 0 && !m.ViewedExpandedTiers,
             // Highlight behind the rebirth dialog's credit bonus line once it's low (same threshold as its orange text).
             PulseCondition.CreditBonusLow => Assets.Script.Upgrades.UpgradeProgression.CreditBonusDisplayPct() <= 100,
-            // Bestiary button: the secret tile's fog is there (after 100%) and "Touch fog" hasn't been clicked yet - and
+            // Bestiary button: the secret tile's fog is there (after 100%) and "Touch fog" hasn't been clicked yet - but
+            // only once the victory dialog has been opened (at 100% the crown pulses first, one thing at a time). And
             // again once Scary Earl is beaten, until the bestiary has been opened (the decimation goals are in there).
             PulseCondition.FogUnseen => SecretBeastTile.Unlocked && !m.FogTouched
+                                            && (m.ViewedVictoryDialog || ProgressPopupScript.OpenedDuringPreview)
                                         || m.ScaryEarlDefeated && !m.ViewedBestiaryAfterScaryEarl,
             // Crown (progress / victory) button: once the tips have been seen (their pulse stopped) until it's been
             // opened once; and after 100% until the victory dialog has been opened.
