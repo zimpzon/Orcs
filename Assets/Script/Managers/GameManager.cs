@@ -1377,6 +1377,7 @@ public class GameManager : MonoBehaviour
         TextVersion.text = $"V {MajorVersion}.{MinorVersion}";
         SaveGame.Load();
         _firstSaveGameLoadComplete = true;
+        CaptureOfflineTime();
         SteamManager.SyncAchievements(SaveGame.Members.Achieved);
 
         TextGameInfo.text = "";
@@ -1534,13 +1535,38 @@ public class GameManager : MonoBehaviour
         return wasAway;
     }
 
-    static void ShowWelcomeBackDialog(TimeSpan ts)
-    {
-        int d = ts.Days;
-        int h = ts.Hours;
-        int m = ts.Minutes;
+    // Offline income: OfflineIncomeShare of the passive income for every second the game was closed - or the PC slept
+    // with it open (past the full-income MaxRealtimeDelta) - with no time limit. The time comes from the save's
+    // SavedAtUtc at load; it's paid once the current income is known (first income recalc), with a welcome back popup.
+    // The mystery boost (a temporary multiplier) doesn't count. RightShift+O fakes 1:30 away.
+    const double OfflineIncomeShare = 0.01;
+    const double OfflinePopupMinSeconds = 60; // shorter: paid quietly
+    double _pendingOfflineSeconds;
 
-        GameCanvasScript.Instance.ShowPopup($"You were away for {FormatTime.Format(d, h, m)}\nWelcome back!");
+    void CaptureOfflineTime()
+    {
+        string savedAt = SaveGame.Members.SavedAtUtc;
+        if (string.IsNullOrEmpty(savedAt) || !DateTime.TryParse(savedAt, System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.RoundtripKind, out var t))
+            return; // new game
+        double seconds = (DateTime.UtcNow - t.ToUniversalTime()).TotalSeconds;
+        if (seconds > 0)
+            _pendingOfflineSeconds += seconds;
+    }
+
+    void PayOfflineIncome()
+    {
+        double seconds = _pendingOfflineSeconds;
+        _pendingOfflineSeconds = 0;
+
+        double temp = Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeTempMultiplier);
+        Decimal512 amount = TotalPassiveIncome / temp * (OfflineIncomeShare * seconds);
+        AddMoney(amount);
+        Debug.Log($"Offline income: {(long)seconds} s away, +{Format512.Format(amount)}");
+
+        if (seconds < OfflinePopupMinSeconds || !(amount > 0))
+            return;
+        WelcomeBackPopup.Show(TimeSpan.FromSeconds(seconds), amount, OfflineIncomeShare * 100);
     }
 
     float _nextPassiveIncomeUpdate;
@@ -1570,11 +1596,11 @@ public class GameManager : MonoBehaviour
         // income for all the time it was asleep. When throttled we should
         // handle at least 5-10 seconds, though, so set max delta time to
         // something reasonable.
-        const float MaxRealtimeDelta = 60 * 5;
+        const float MaxRealtimeDelta = 60; // full income up to 1 minute (tab throttling, hitches); beyond that it's offline income
         if (_deltaRealTime > MaxRealtimeDelta)
         {
             var ts = TimeSpan.FromSeconds(_deltaRealTime);
-            //ShowWelcomeBackDialog(ts);
+            _pendingOfflineSeconds += _deltaRealTime - MaxRealtimeDelta; // the rest is paid as offline income
             Debug.Log($"Realtime delta too high ({(int)_deltaRealTime} sec), was probably on sleep. Clamped to {(int)MaxRealtimeDelta}");
             _deltaRealTime = MaxRealtimeDelta;
         }
@@ -1596,6 +1622,9 @@ public class GameManager : MonoBehaviour
             if (TotalPassiveIncome > SaveGame.Members.MaxIncome)
                 SaveGame.Members.MaxIncome = TotalPassiveIncome;
         }
+
+        if (_pendingOfflineSeconds > 0)
+            PayOfflineIncome();
 
         // MoneyToAdd is the scaled by fps income.
         float incomeFactorPerFrame = GetIncomeFactorPerFrame();
@@ -2226,6 +2255,10 @@ public class GameManager : MonoBehaviour
             if (CrownPulse.CheatForceShow)
                 Assets.Script.Achievements.AchievementChecks.AnnounceCompletion();
         }
+
+        // Pretend the game was closed for 1 minute 30 seconds: offline income + welcome back popup.
+        if (G.GetCheatKeyDown(KeyCode.O) && G.GetCheatKey(KeyCode.RightShift))
+            _pendingOfflineSeconds += 90;
 
         // Health bars over the enemies' heads on / off (same as the Settings checkbox).
         if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightShift))

@@ -81,7 +81,7 @@ public class AscendProgressScript : MonoBehaviour
         // 4x per second (was 1): credits land at their exact time instead of on whole seconds (a 2.5 s limit gave 3, 2,
         // 3, 2 s gaps and the bar sat at 100% up to a second). Same XP and allowance per second, so same balance.
         const float CreditUpdateRate = 0.25f;
-        const float MaxRealtimeDelta = 60 * 5; // 5 minutes
+        const float MaxRealtimeDelta = 60; // 1 minute: a sleeping PC doesn't earn credit progress (offline income gives money only)
 
         // Commit actual XP/credit gain once per second (the display below updates every frame). Speed limit: at most one
         // credit per UpgradeProgression.MinSecondsPerCredit() (1 s at the last tier, +0.5 s per tier below); XP beyond the next

@@ -17,12 +17,6 @@ public static class ItemDropPopup
         "Find them on your Steam profile under Inventory.\n" +
         "Rarer ones drop less often - getting Earl is a legendary achievement!";
 
-    // The name + rarity sit on a darkened band across the popup's width, so the rarity color reads well on the blue.
-    static readonly Color BandColor = new Color(0f, 0f, 0f, 0.35f);
-    const int BandPaddingX = 8, BandPaddingY = 1;
-    const float GapAroundBand = 8f; // between the header, the band and the text below
-    const float BodyBottomMargin = 40f; // room for the OK button below the last text (the prefab's is 50)
-
     public static void Show(SteamItemDefs.Def def)
     {
         var canvas = GameCanvasScript.Instance;
@@ -43,15 +37,12 @@ public static class ItemDropPopup
         if (header == null)
             return;
 
-        var nameText = AddBand(header, $"<color={color}><size=115%>{name}</size>\n<size=80%>{rarity}</size></color>");
-        var body = CloneText(header, nameText.transform.parent.GetSiblingIndex() + 2, // after the band and its gap
+        // The name + rarity sit on a darkened band across the popup's width (PopupBuilder), so the rarity color reads well.
+        var nameText = PopupBuilder.AddBand(header, $"<color={color}><size=115%>{name}</size>\n<size=80%>{rarity}</size></color>");
+        var body = PopupBuilder.CloneText(header, PopupBuilder.AfterBand(nameText),
             "A collectible was added to your Steam inventory\n" +
             $"<link=\"{WhatIsThisLink}\"><u><color={TextColors.GreenSmallest}>What is this?</color></u></link>");
-        // The prefab's text has a 50 px bottom margin to make room for the OK button below it: only the last text
-        // (body) keeps it, or the header would push the band away with empty space.
-        var m = header.margin;
-        header.margin = new Vector4(m.x, m.y, m.z, 0);
-        body.margin = new Vector4(m.x, 0, m.z, BodyBottomMargin);
+        PopupBuilder.FixMargins(header, body);
 
         body.raycastTarget = true;
         body.gameObject.AddComponent<TmpLinkClick>().OnLink = id =>
@@ -63,51 +54,6 @@ public static class ItemDropPopup
         var sprite = def != null ? canvas.FindItemDropIcon(def.IconName) : null;
         if (sprite != null)
             AddIcon(header.transform, sprite, def);
-    }
-
-    // Fixed vertical gap in the popup's layout.
-    static void AddSpace(Transform parent, int siblingIndex, float height)
-    {
-        var go = new GameObject("Space", typeof(RectTransform));
-        go.transform.SetParent(parent, false);
-        go.transform.SetSiblingIndex(siblingIndex);
-        var layout = go.AddComponent<LayoutElement>();
-        layout.preferredHeight = layout.minHeight = height;
-    }
-
-    // A copy of the popup's text (same font, size, layout settings) at a position in the layout.
-    static TextMeshProUGUI CloneText(TextMeshProUGUI source, int siblingIndex, string text)
-    {
-        var copy = Object.Instantiate(source, source.transform.parent);
-        copy.name = source.name;
-        copy.transform.SetSiblingIndex(siblingIndex);
-        copy.text = text;
-        return copy;
-    }
-
-    // Darkened band right after the header, stretched to the popup's width, with a text on it.
-    static TextMeshProUGUI AddBand(TextMeshProUGUI header, string text)
-    {
-        AddSpace(header.transform.parent, header.transform.GetSiblingIndex() + 1, GapAroundBand);
-        var band = new GameObject("ItemNameBand", typeof(RectTransform));
-        band.transform.SetParent(header.transform.parent, false);
-        band.transform.SetSiblingIndex(header.transform.GetSiblingIndex() + 2);
-        AddSpace(header.transform.parent, header.transform.GetSiblingIndex() + 3, GapAroundBand);
-        var image = band.AddComponent<Image>();
-        image.color = BandColor;
-        image.raycastTarget = false;
-        band.AddComponent<LayoutElement>().flexibleWidth = 1; // full width of the popup
-        var layout = band.AddComponent<VerticalLayoutGroup>();
-        layout.padding = new RectOffset(BandPaddingX, BandPaddingX, BandPaddingY, BandPaddingY);
-        layout.childAlignment = TextAnchor.MiddleCenter;
-        layout.childControlWidth = layout.childControlHeight = true;
-        layout.childForceExpandWidth = layout.childForceExpandHeight = false;
-
-        var copy = Object.Instantiate(header, band.transform);
-        copy.name = header.name;
-        copy.text = text;
-        copy.margin = Vector4.zero;
-        return copy;
     }
 
     // Icon above the text, inside the popup's vertical layout (the text's parent). Behind its transparent inside a
