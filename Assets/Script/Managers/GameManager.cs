@@ -2311,11 +2311,11 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.O) && G.GetCheatKey(KeyCode.RightShift))
             _pendingOfflineSeconds += 90;
 
-        // Health bars over the enemies' heads on / off (same as the Settings checkbox).
-        if (G.GetCheatKeyDown(KeyCode.V) && G.GetCheatKey(KeyCode.RightShift))
+        // All skins unlocked (this session only, nothing saved: SkinScript.CheatAllUnlocked).
+        if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightShift))
         {
-            SaveGame.Members.ShowHealthBars = !SaveGame.Members.ShowHealthBars;
-            Debug.Log("Cheat: enemy health bars " + (SaveGame.Members.ShowHealthBars ? "ON" : "OFF"));
+            SkinScript.CheatAllUnlocked = !SkinScript.CheatAllUnlocked;
+            Debug.Log("Cheat: all skins unlocked " + (SkinScript.CheatAllUnlocked ? "ON" : "OFF"));
         }
 
         // Preview the item drop dialog: a random item, each press the next rarity (common -> ... -> legendary -> common).

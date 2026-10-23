@@ -45,7 +45,19 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //TitleTextScript.Instance?.SetName(beastDescription.Substring(0, beastDescription.IndexOf(':')));
     }
 
+    // Cheat (RightShift+K): every skin counts as unlocked - skins popup, wearing them and the completion % (so 100% can
+    // trigger, saved like a real completion). The flag itself isn't saved; achievements and "New skin unlocked!" use the
+    // real unlocks.
+    public static bool CheatAllUnlocked;
+
     public static (bool isUnlocked, string hoverText) GetUnlockStatus(SkinAnimation animationName)
+    {
+        var status = GetRealUnlockStatus(animationName);
+        return CheatAllUnlocked ? (true, status.hoverText) : status;
+    }
+
+    // Unlocked by the save's achievements, ignoring the cheat.
+    public static (bool isUnlocked, string hoverText) GetRealUnlockStatus(SkinAnimation animationName)
     {
         var list = SaveGame.Members.Achieved;
 
@@ -195,7 +207,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BlackEarl)
         {
-            return (list.Contains(Achieved.SuperClears1000), "Black Earl: Get 250 super fast arena clears");
+            return (list.Contains(Achieved.SuperClears1000), "Black Earl: Get 1000 super fast arena clears");
         }
         else if (animationName == SkinAnimation.InvertedEarl)
         {
@@ -224,7 +236,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         var allSkins = FindObjectsOfType<SkinScript>(true);
         int total = allSkins.Select(s => s.AnimationName).Distinct().Count();
         int unlocked = allSkins
-            .Where(s => GetUnlockStatus(s.AnimationName).isUnlocked)
+            .Where(s => GetUnlockStatus(s.AnimationName).isUnlocked) // the cheat counts here, so it can reach 100%
             .Select(s => s.AnimationName)
             .Distinct()
             .Count();

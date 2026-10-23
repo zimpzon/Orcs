@@ -113,9 +113,10 @@ public class BeastiaryPopupScript : MonoBehaviour
     static readonly Color MasteredTileColor = new Color32(0xB8, 0x92, 0x3E, 255);
     const float BadgeSize = 12f;
 
-    // Tiny decimation progress at the bottom of the tile, under the portrait. A copy of the hover text's look.
+    // Tiny gold decimation progress over the portrait's head: at the top of the tile, a little below the frame edge.
     const float ProgressFontSize = 6f;
-    static readonly Color ProgressColor = new Color(1f, 1f, 1f, 0.75f);
+    static readonly Color ProgressColor = new Color32(0xFF, 0xD5, 0x4A, 230); // gold
+    const float ProgressTopGap = 3f; // below the tile's top edge
 
     TextMeshProUGUI AddProgressText(Transform tile)
     {
@@ -128,14 +129,14 @@ public class BeastiaryPopupScript : MonoBehaviour
         text.fontSharedMaterial = Hovertext.fontSharedMaterial;
         text.fontSize = ProgressFontSize;
         text.color = ProgressColor;
-        text.alignment = TextAlignmentOptions.Bottom;
+        text.alignment = TextAlignmentOptions.Top;
         text.textWrappingMode = TextWrappingModes.NoWrap;
         text.raycastTarget = false;
         var rt = text.rectTransform;
-        rt.anchorMin = new Vector2(0f, 0f);
-        rt.anchorMax = new Vector2(1f, 0f);
-        rt.pivot = new Vector2(0.5f, 0f);
-        rt.anchoredPosition = new Vector2(0f, 1f);
+        rt.anchorMin = new Vector2(0f, 1f);
+        rt.anchorMax = new Vector2(1f, 1f);
+        rt.pivot = new Vector2(0.5f, 1f);
+        rt.anchoredPosition = new Vector2(0f, -ProgressTopGap);
         rt.sizeDelta = new Vector2(0f, ProgressFontSize + 2f);
         go.SetActive(false);
         return text;

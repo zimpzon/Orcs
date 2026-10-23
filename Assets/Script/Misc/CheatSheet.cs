@@ -34,7 +34,7 @@ public class CheatSheet : MonoBehaviour
         ("RightShift+L", "Show save game load info"),
         ("RightShift+M", "Decimate all beasts (kills past the goal; shown after Scary Earl)"),
         ("RightShift+O", "Pretend 1:30 offline (offline income popup)"),
-        ("RightShift+V", "Enemy health bars on / off"),
+        ("RightShift+K", "All skins unlocked on / off (this session; counts toward 100%)"),
         ("RightShift+D", "Item drop dialog: random item, next rarity each press"),
     };
 

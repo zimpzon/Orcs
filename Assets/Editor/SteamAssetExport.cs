@@ -78,7 +78,7 @@ public static class SteamAssetExport
                 if (skin == SkinAnimation.NotSet || skin == SkinAnimation.Default)
                     continue;
                 (bool unlocked, string hover) status;
-                try { status = SkinScript.GetUnlockStatus(skin); }
+                try { status = SkinScript.GetRealUnlockStatus(skin); }
                 catch (ArgumentException) { continue; } // no skin rule (GhostEarl)
                 if (!status.unlocked)
                     continue;

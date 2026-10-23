@@ -73,14 +73,14 @@ public class AchievementsScript : MonoBehaviour
         foreach (SkinAnimation skin in System.Enum.GetValues(typeof(SkinAnimation)))
         {
             (bool isUnlocked, string hoverText) status;
-            try { status = SkinScript.GetUnlockStatus(skin); }
+            try { status = SkinScript.GetRealUnlockStatus(skin); }
             catch (System.ArgumentException) { continue; } // enum entries with no skin (GhostEarl)
             if (!status.isUnlocked)
                 continue;
 
             // Unlocked now - was it unlocked without this frame's achievements?
             list.RemoveRange(countBefore, _newThisFrame.Count);
-            bool wasUnlocked = SkinScript.GetUnlockStatus(skin).isUnlocked;
+            bool wasUnlocked = SkinScript.GetRealUnlockStatus(skin).isUnlocked;
             list.AddRange(_newThisFrame);
             if (wasUnlocked)
                 continue;

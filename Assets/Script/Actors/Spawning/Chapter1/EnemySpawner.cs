@@ -191,6 +191,14 @@ public static class EnemySpawner
         //enemies.AddRange(SpawnUtil.Random(ActorTypeEnum.FromTheDeep, 1).ToList());
 
 
+        // After Scary Earl (decimation, BeastGoals): the final enemy is in every other round only, and every round mixes
+        // in a few of the last handful of beasts (phase 0c) - otherwise they barely showed up to be slain. The early
+        // beasts come back by themselves after a rebirth. Before his defeat nothing changes (tuned difficulty).
+        bool finalThisRound = true;
+        if (BeastGoals.Active)
+            finalThisRound = (++_postGameRound % 2) == 0;
+        ActorTypeEnum? decimateType = PickDecimateType(level);
+
         const int maxRetries = 10;
         long hpMultiplier = 1;
 
@@ -236,12 +244,27 @@ public static class EnemySpawner
             // PHASE 0: from the final enemy's level on, he is in EVERY round. Rounds that randomly left him out were easy
             // wins, so players crept past his level without ever beating him. Counted against the budget like the rest.
             var finalEnemy = EnemyTypes[0]; // strongest first: The Night Creeper
-            if (level >= finalEnemy.MinLevel)
+            if (level >= finalEnemy.MinLevel && finalThisRound)
             {
                 long effectiveHp = finalEnemy.ScaledHp * hpMultiplier;
                 SpawnEnemies(enemies, finalEnemy.Type, 1, effectiveHp);
                 remainingHp -= Math.Min(remainingHp, effectiveHp);
                 totalEnemies += 1;
+            }
+
+            // PHASE 0c: after Scary Earl - a few of one of the last handful of beasts (PickDecimateType), counted
+            // against the round's HP budget like the rest.
+            if (decimateType.HasValue)
+            {
+                var enemyType = EnemyTypes.First(e => e.Type == decimateType.Value);
+                long effectiveHp = enemyType.ScaledHp * hpMultiplier;
+                int count = (int)Math.Min(DecimateSpawnCount, MaxEnemies - totalEnemies);
+                if (count > 0)
+                {
+                    SpawnEnemies(enemies, enemyType.Type, count, effectiveHp);
+                    remainingHp -= Math.Min(remainingHp, effectiveHp * count);
+                    totalEnemies += count;
+                }
             }
 
             // PHASE 0b: an enemy type the arena level allows but the player has never seen (bestiary) is in the round too,
@@ -366,6 +389,28 @@ public static class EnemySpawner
     // The final enemy (The Night Creeper, first in EnemyTypes): exactly one per round from his level on (phase 0 in
     // GetEnemies), never more - every other phase skips him.
     static bool IsFinal(EnemyType e) => e.Type == EnemyTypes[0].Type;
+
+    static int _postGameRound;              // alternates the final enemy after Scary Earl
+    const int LastHandful = 5;              // phase 0c picks from the strongest this many beasts below the final enemy
+    const int DecimateSpawnCount = 5;       // phase 0c: how many of the picked beast
+
+    // After Scary Earl: one of the last handful of beasts the level allows, preferring ones not decimated yet; null
+    // before his defeat.
+    static ActorTypeEnum? PickDecimateType(long level)
+    {
+        if (!BeastGoals.Active)
+            return null;
+        var lastOnes = EnemyTypes
+            .Where(e => !IsFinal(e) && level >= e.MinLevel)
+            .Take(LastHandful) // EnemyTypes is strongest first
+            .Select(e => e.Type)
+            .ToList();
+        if (lastOnes.Count == 0)
+            return null;
+        var notDone = lastOnes.Where(t => !BeastGoals.IsMastered(t)).ToList();
+        var pool = notDone.Count > 0 ? notDone : lastOnes;
+        return pool[UnityEngine.Random.Range(0, pool.Count)];
+    }
 
     // Index into EnemyTypes (0 = strongest/TheDarkness, higher = weaker); -1 for non-tiered types.
     public static int GetTierRank(ActorTypeEnum type)

@@ -19,7 +19,7 @@ public static class ScaryEarlFight
         $"<color={TextColors.Gold}>Scary Earl</color> was the mastermind behind it all!\nHe looks unbeatable! Is Earl doomed to fight him forever?";
 
     public static readonly string StoryDefeated =
-        $"You defeated <color={TextColors.Gold}>Scary Earl!</color>\nEverything can go back to normal now! Well, except for the monsters.";
+        $"You defeated <color={TextColors.Gold}>Scary Earl!</color>\nBut it is not over. We must teach these monsters a lesson!";
 
     // The banners after his defeat, each with a small "hide this" link at the end (GameManager.UpdateStoryText /
     // HandleStoryLinkClick): his victory, then - once every beast is decimated (BeastGoals) - that one.
@@ -39,7 +39,7 @@ public static class ScaryEarlFight
     }
 
     public static readonly string DecimatedBanner =
-        $"Every beast <color={TextColors.Gold}>decimated!</color>\nEarl can finally idle in peace.\nThe journey has ended." + HideLink;
+        $"Every beast <color={TextColors.Gold}>decimated!</color>\nEarl can finally idle in peace.\n<color={TextColors.Green}><size=+3>The journey has ended.</size></color>" + HideLink;
 
     // Marks him beaten and freezes the play time it took (shown in the victory dialog). Arena win and RightShift+E.
     public static void MarkDefeated()

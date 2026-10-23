@@ -21,14 +21,16 @@ public class SelectedSkinScript : MonoBehaviour
     static SkinsAnimationList _list;
     static SkinAnimation _cachedFor = SkinAnimation.NotSet;
     static SkinAnimations _cached;
+    static bool _cachedCheat;
 
     public static SkinAnimations Current
     {
         get
         {
             var wanted = SaveGame.Members.SelectedSkin;
-            if (wanted == _cachedFor && _cached != null)
+            if (wanted == _cachedFor && _cached != null && _cachedCheat == SkinScript.CheatAllUnlocked)
                 return _cached;
+            _cachedCheat = SkinScript.CheatAllUnlocked;
 
             if (_list == null)
                 _list = Instance != null ? Instance.SkinAnimations : Resources.FindObjectsOfTypeAll<SkinsAnimationList>().FirstOrDefault();

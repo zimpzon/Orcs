@@ -4,10 +4,10 @@ using UnityEngine;
 // (full) over yellow to red (almost dead), and a short white chunk trailing behind the fill so hits read clearly. Not
 // on Scary Earl (he has the big bar at the top). Added in code to every enemy (ActorBase.Awake). The bar is its own
 // root object, positioned in world space each frame, so the enemy's flipping / death rotation never touches it.
-// Settings "Show healthbars" (or RightShift+V) turns them off.
+// Settings "Show healthbars" turns them off.
 public class EnemyHealthBar : MonoBehaviour
 {
-    // Settings checkbox "Show healthbars" (saved; RightShift+V flips it too).
+    // Settings checkbox "Show healthbars" (saved).
     static bool Enabled => SaveGame.Members.ShowHealthBars;
 
     const float WidthFactor = 0.7f;   // x the enemy sprite's width
