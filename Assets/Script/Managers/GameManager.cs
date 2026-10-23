@@ -1551,9 +1551,10 @@ public class GameManager : MonoBehaviour
     // with it open (past the full-income MaxRealtimeDelta) - with no time limit. The time comes from the save's
     // SavedAtUtc at load; it's paid once the current income is known (first income recalc), with a welcome back popup.
     // The mystery boost (a temporary multiplier) doesn't count. RightShift+O fakes 1:30 away.
-    const double OfflineIncomeShare = 0.01;
+    const double OfflineIncomeShare = 0.05;
     const double OfflinePopupMinSeconds = 60; // shorter: paid quietly
     double _pendingOfflineSeconds;
+    bool _cheatOfflinePopup; // RightShift+O: show the popup even without income (amount 0 -> a token $1,000)
 
     void CaptureOfflineTime()
     {
@@ -1573,12 +1574,26 @@ public class GameManager : MonoBehaviour
 
         double temp = Math.Max(1.0, PlayerUpgrades.Data.PassiveIncomeTempMultiplier);
         Decimal512 amount = TotalPassiveIncome / temp * (OfflineIncomeShare * seconds);
+        bool cheat = _cheatOfflinePopup;
+        _cheatOfflinePopup = false;
+        if (cheat && !(amount > 0))
+            amount = 1000;
         AddMoney(amount);
         Debug.Log($"Offline income: {(long)seconds} s away, +{Format512.Format(amount)}");
 
-        if (seconds < OfflinePopupMinSeconds || !(amount > 0))
+        if (!cheat && (seconds < OfflinePopupMinSeconds || !(amount > 0)))
+        {
+            Debug.Log($"Offline income: no popup ({(long)seconds} s, income {Format512.Format(TotalPassiveIncome)}/s)");
             return;
-        WelcomeBackPopup.Show(TimeSpan.FromSeconds(seconds), amount, OfflineIncomeShare * 100);
+        }
+        try
+        {
+            WelcomeBackPopup.Show(TimeSpan.FromSeconds(seconds), amount, OfflineIncomeShare * 100);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Offline income: welcome back popup failed: {e}");
+        }
     }
 
     float _nextPassiveIncomeUpdate;
@@ -2306,7 +2321,11 @@ public class GameManager : MonoBehaviour
 
         // Pretend the game was closed for 1 minute 30 seconds: offline income + welcome back popup.
         if (G.GetCheatKeyDown(KeyCode.O) && G.GetCheatKey(KeyCode.RightShift))
+        {
             _pendingOfflineSeconds += 90;
+            _cheatOfflinePopup = true;
+            Debug.Log("Cheat: 1:30 offline");
+        }
 
         // All skins unlocked (this session only, nothing saved: SkinScript.CheatAllUnlocked).
         if (G.GetCheatKeyDown(KeyCode.K) && G.GetCheatKey(KeyCode.RightShift))

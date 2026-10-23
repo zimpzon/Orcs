@@ -49,6 +49,8 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
 
     Image _background;
     TextMeshProUGUI _refundLabel;
+    [Tooltip("REFUND label: gap above the buy button's top edge (applied live, tweak it in play mode).")]
+    public float RefundLabelY = -0.3f;
 
     // Owned cards can be sold back for their full price (the buy button turns into "+cost" with REFUND above it),
     // except Head Start and the Scary Earl skin.
@@ -73,7 +75,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         {
             _refundLabel = Instantiate(ButtonBuyText, ButtonBuy.transform);
             _refundLabel.name = "RefundLabel";
-            _refundLabel.text = "REFUND";
+            _refundLabel.text = "refund";
             _refundLabel.fontSize = ButtonBuyText.fontSize * 0.75f;
             _refundLabel.raycastTarget = false;
             if (ColorUtility.TryParseHtmlString(TextColors.Gold, out var gold))
@@ -83,7 +85,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
             rt.anchorMax = new Vector2(1f, 1f);
             rt.pivot = new Vector2(0.5f, 0f);
             rt.sizeDelta = new Vector2(0f, 10f);
-            rt.anchoredPosition = new Vector2(0f, 1f);
+            rt.anchoredPosition = new Vector2(0f, RefundLabelY);
             _refundLabel.enabled = false;
         }
     }
@@ -175,7 +177,10 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
 
         bool refund = isOwned && Refundable;
         if (_refundLabel != null)
+        {
             _refundLabel.enabled = refund;
+            _refundLabel.rectTransform.anchoredPosition = new Vector2(0f, RefundLabelY);
+        }
 
         if (isOwned)
         {

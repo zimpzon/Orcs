@@ -381,6 +381,7 @@ MonoBehaviour:
   ButtonBuyText: {fileID: 4928851705164083944}
   OwnedText: {fileID: 8582473283915124599}
   CardId: 0
+  RefundLabelY: -1
 --- !u!114 &1907516038194212149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,8 +470,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3302815221
-  m_fontColor: {r: 0.9607843, g: 0.9607843, b: 0.8627451, a: 0.76862746}
+    rgba: 551351797
+  m_fontColor: {r: 0.9607843, g: 0.9607843, b: 0.8627451, a: 0.1254902}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -699,8 +700,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 8.7
+  m_fontSizeBase: 8.7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
