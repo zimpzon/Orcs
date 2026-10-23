@@ -12,6 +12,9 @@ class Beast
     public Image Tile;
     public Color TileColor;
     public GameObject Badge;
+    // While decimating (after Scary Earl, before the goal): tiny "10/100" under the portrait.
+    public TextMeshProUGUI Progress;
+    public long ShownKills = -1;
 }
 
 public class BeastiaryPopupScript : MonoBehaviour
@@ -46,6 +49,7 @@ public class BeastiaryPopupScript : MonoBehaviour
             {
                 Actor = actor, Icon = image, BeastiaryBeastScript = beastScript,
                 Tile = tile, TileColor = tile != null ? tile.color : Color.white, Badge = AddMasteredBadge(beast.transform),
+                Progress = AddProgressText(beast.transform),
             });
         }
 
@@ -109,6 +113,49 @@ public class BeastiaryPopupScript : MonoBehaviour
     static readonly Color MasteredTileColor = new Color32(0xB8, 0x92, 0x3E, 255);
     const float BadgeSize = 12f;
 
+    // Tiny decimation progress at the bottom of the tile, under the portrait. A copy of the hover text's look.
+    const float ProgressFontSize = 6f;
+    static readonly Color ProgressColor = new Color(1f, 1f, 1f, 0.75f);
+
+    TextMeshProUGUI AddProgressText(Transform tile)
+    {
+        if (Hovertext == null)
+            return null;
+        var go = new GameObject("DecimateProgress", typeof(RectTransform));
+        go.transform.SetParent(tile, false);
+        var text = go.AddComponent<TextMeshProUGUI>();
+        text.font = Hovertext.font;
+        text.fontSharedMaterial = Hovertext.fontSharedMaterial;
+        text.fontSize = ProgressFontSize;
+        text.color = ProgressColor;
+        text.alignment = TextAlignmentOptions.Bottom;
+        text.textWrappingMode = TextWrappingModes.NoWrap;
+        text.raycastTarget = false;
+        var rt = text.rectTransform;
+        rt.anchorMin = new Vector2(0f, 0f);
+        rt.anchorMax = new Vector2(1f, 0f);
+        rt.pivot = new Vector2(0.5f, 0f);
+        rt.anchoredPosition = new Vector2(0f, 1f);
+        rt.sizeDelta = new Vector2(0f, ProgressFontSize + 2f);
+        go.SetActive(false);
+        return text;
+    }
+
+    static void UpdateProgressText(Beast beast, bool show)
+    {
+        if (beast.Progress == null)
+            return;
+        if (beast.Progress.gameObject.activeSelf != show)
+            beast.Progress.gameObject.SetActive(show);
+        if (!show)
+            return;
+        long kills = SaveGame.Members.GetBeastKills(beast.Actor.ActorType);
+        if (kills == beast.ShownKills)
+            return;
+        beast.ShownKills = kills;
+        beast.Progress.text = $"{kills}/{BeastGoals.Goal}";
+    }
+
     GameObject AddMasteredBadge(Transform tile)
     {
         if (MasteredBadgeSprite == null)
@@ -143,6 +190,7 @@ public class BeastiaryPopupScript : MonoBehaviour
                 beast.Badge.SetActive(mastered);
             if (beast.Tile != null)
                 beast.Tile.color = mastered ? MasteredTileColor : beast.TileColor;
+            UpdateProgressText(beast, isUnlocked && BeastGoals.Active && !mastered);
         }
 
         if (_progressText != null)
