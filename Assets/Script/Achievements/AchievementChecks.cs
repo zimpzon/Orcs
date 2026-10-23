@@ -445,14 +445,14 @@ namespace Assets.Script.Achievements
             }
         }
 
-        public static void CheckSuperClears250(List<Achieved> list)
+        public static void CheckSuperClears1000(List<Achieved> list)
         {
-            if (list.Contains(Achieved.SuperClears250)) return;
+            if (list.Contains(Achieved.SuperClears1000)) return;
 
-            if (SaveGame.Members.SuperFastClears >= 250)
+            if (SaveGame.Members.SuperFastClears >= 1000)
             {
-                list.Add(Achieved.SuperClears250);
-                NewAchieved(Achieved.SuperClears250);
+                list.Add(Achieved.SuperClears1000);
+                NewAchieved(Achieved.SuperClears1000);
             }
         }
 
