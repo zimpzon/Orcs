@@ -47,7 +47,10 @@ public class CrownPulse : MonoBehaviour
             // again once Scary Earl is beaten, until the bestiary has been opened (the decimation goals are in there).
             PulseCondition.FogUnseen => SecretBeastTile.Unlocked && !m.FogTouched
                                         || m.ScaryEarlDefeated && !m.ViewedBestiaryAfterScaryEarl,
-            PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
+            // Crown (progress / victory) button: once the tips have been seen (their pulse stopped) until it's been
+            // opened once; and after 100% until the victory dialog has been opened.
+            PulseCondition.VictoryUnseen => m.ViewedTipsDialog && !m.ViewedProgressDialog
+                                            || m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             // The crown on the Victory button too: only until the victory dialog has been opened.
             _ => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
         };

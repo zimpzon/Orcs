@@ -78,6 +78,7 @@ static class SaveGameAscend
         newSave.ViewedExpandedTiers = oldSave.ViewedExpandedTiers;
         newSave.FogTouched = oldSave.FogTouched;
         newSave.ViewedBestiaryAfterScaryEarl = oldSave.ViewedBestiaryAfterScaryEarl;
+        newSave.ViewedProgressDialog = oldSave.ViewedProgressDialog;
         newSave.ScaryEarlDefeated = oldSave.ScaryEarlDefeated;
         newSave.ScaryEarlDefeatedLevel = oldSave.ScaryEarlDefeatedLevel;
         newSave.BeastsSeen = oldSave.BeastsSeen;

@@ -27,6 +27,7 @@ public class SaveGameMembers
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
     public bool ViewedTipsDialog = false; // opened the tips popup: stops the tips icon pulse
+    public bool ViewedProgressDialog = false; // opened the crown (progress/victory) dialog once: stops the pulse that follows the tips one
     public bool ViewedExpandedTiers = false; // opened the expanded tier view: stops the expand button pulse
     public bool ScaryEarlDefeated = false; // the Scary Earl arena (after "Touch fog") was won: normal arenas again
     public long ScaryEarlDefeatedLevel = -1; // arena level he was beaten at: the post-game HP ramp starts there (EnemySpawner.PostGameHpMul)
