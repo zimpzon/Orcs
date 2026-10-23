@@ -2025,13 +2025,40 @@ public class GameManager : MonoBehaviour
     string _storyShown;
 
     // Text under the HP bar (constant strings, so only set when it changes).
+    // "hide this" on the banner under the HP bar. It's a world-space text (not UI), so the click is checked here
+    // against the arena camera.
+    void HandleStoryLinkClick()
+    {
+        if (TextStory == null || string.IsNullOrEmpty(_storyShown) || !Input.GetMouseButtonDown(0) || Camera.main == null)
+            return;
+        int link = TMP_TextUtilities.FindIntersectingLink(TextStory, Input.mousePosition, Camera.main);
+        if (link < 0 || TextStory.textInfo.linkInfo[link].GetLinkID() != ScaryEarlFight.HideLinkId)
+            return;
+
+        if (ReferenceEquals(_storyShown, ScaryEarlFight.DecimatedBanner))
+            SaveGame.Members.HideDecimatedBanner = true;
+        else
+            SaveGame.Members.HideVictoryBanner = true;
+        SaveGame.Save();
+        AudioManager.Instance.PlayMenuClick();
+    }
+
     void UpdateStoryText()
     {
         if (TextStory == null)
             return;
-        // Settings "Hide victory banner": no text (so no metaball backdrop either) once Scary Earl is beaten.
+        // After Scary Earl: the every-beast-decimated banner (once earned), else his victory banner - each until hidden
+        // ("hide this" / settings "Hide victory banner"). No text = no metaball backdrop either.
         var m = SaveGame.Members;
-        string story = m.ScaryEarlDefeated && m.HideVictoryBanner ? "" : ScaryEarlFight.StoryText;
+        string story;
+        if (!m.ScaryEarlDefeated)
+            story = ScaryEarlFight.StoryText;
+        else if (ScaryEarlFight.ShowsDecimatedBanner)
+            story = ScaryEarlFight.DecimatedBanner;
+        else if (!m.HideVictoryBanner)
+            story = ScaryEarlFight.VictoryBanner;
+        else
+            story = "";
         if (ReferenceEquals(story, _storyShown))
             return;
         _storyShown = story;
@@ -2105,6 +2132,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateStoryText();
+        HandleStoryLinkClick();
         TrySaveGame();
         TrySendStats();
         UpdateSkinBonus();

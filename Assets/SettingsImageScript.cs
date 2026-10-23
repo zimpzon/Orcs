@@ -68,6 +68,7 @@ public class SettingsImageScript : MonoBehaviour
             HideVictoryBannerToggle.onValueChanged.AddListener(on =>
             {
                 SaveGame.Members.HideVictoryBanner = on;
+                SaveGame.Members.HideDecimatedBanner = on; // the every-beast-decimated banner goes with it
                 SaveGame.Save();
                 AudioManager.Instance.PlayMenuClick();
             });

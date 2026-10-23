@@ -1,8 +1,9 @@
 using UnityEngine;
 
 // Drives the metaball backdrop of the Scary Earl story text under the arena HP bar (Custom/SpriteMetaballs): sinister
-// violet ooze while he's undefeated, easing to calm warm gold once he's beaten; comets circle the border in both. Keeps the blobs round on the wide
-// panel (_Aspect from the scale). Its own material instance, unscaled time for the palette blend.
+// violet ooze while he's undefeated, calm warm brown with gold comets once he's beaten (victory banner), dark crimson
+// with red comets for the every-beast-decimated banner; it fades between them. Keeps the blobs round on the wide panel
+// (_Aspect from the scale). Its own material instance, unscaled time for the palette blend.
 [RequireComponent(typeof(SpriteRenderer))]
 public class StoryPanelFx : MonoBehaviour
 {
@@ -46,6 +47,20 @@ public class StoryPanelFx : MonoBehaviour
         BorderLapSeconds = 8f,
     };
 
+    static readonly Palette Decimated = new()
+    {
+        // Dark crimson: blood-red blobs and rim on a near-black maroon base, red-orange comets. The gold "decimated!"
+        // reads well on it and it's clearly not the victory banner.
+        Bg = new Color(0.08f, 0.01f, 0.02f, 0.6f),
+        Ball = new Color(0.24f, 0.03f, 0.05f, 0.65f),
+        Rim = new Color(0.8f, 0.14f, 0.14f, 0.45f),
+        Speed = 0.25f,
+        BallSize = 0.3f,
+        Border = new Color(1f, 0.38f, 0.25f, 1f),
+        BorderStrength = 0.75f,
+        BorderLapSeconds = 7f,
+    };
+
     static readonly int BgId = Shader.PropertyToID("_BgColor");
     static readonly int BallId = Shader.PropertyToID("_BallColor");
     static readonly int RimId = Shader.PropertyToID("_RimColor");
@@ -61,7 +76,8 @@ public class StoryPanelFx : MonoBehaviour
     float _borderLapSeconds = 10f;
 
     Material _mat;
-    float _blend;        // 0 = fighting, 1 = defeated
+    Palette _from, _to, _current; // fading from _from to _to (_blend 0..1); _current = what's applied now
+    float _blend = 1f;
     float _lastAspect = -1f;
     float _phase;        // blob animation time x speed, so changing the speed doesn't make them jump
     float _speed;
@@ -73,11 +89,19 @@ public class StoryPanelFx : MonoBehaviour
 
     void OnEnable()
     {
-        _blend = Target();
+        _from = _to = _current = Target();
+        _blend = 1f;
         Apply();
     }
 
-    static float Target() => SaveGame.Members != null && SaveGame.Members.ScaryEarlDefeated ? 1f : 0f;
+    static Palette Target()
+    {
+        if (SaveGame.Members == null || !SaveGame.Members.ScaryEarlDefeated)
+            return Fighting;
+        return ScaryEarlFight.ShowsDecimatedBanner ? Decimated : Defeated;
+    }
+
+    static bool Same(Palette a, Palette b) => a.Bg == b.Bg && a.Ball == b.Ball && a.Rim == b.Rim && a.Border == b.Border;
 
     void Update()
     {
@@ -86,10 +110,17 @@ public class StoryPanelFx : MonoBehaviour
         _borderPhase = Mathf.Repeat(_borderPhase + Time.unscaledDeltaTime / _borderLapSeconds, 1f);
         _mat.SetFloat(BorderPhaseId, _borderPhase);
 
-        float target = Target();
-        if (_blend != target)
+        var target = Target();
+        if (!Same(target, _to))
         {
-            _blend = Mathf.MoveTowards(_blend, target, Time.unscaledDeltaTime / BlendTime);
+            // New look: fade to it from wherever the colors are right now.
+            _from = _current;
+            _to = target;
+            _blend = 0f;
+        }
+        if (_blend < 1f)
+        {
+            _blend = Mathf.MoveTowards(_blend, 1f, Time.unscaledDeltaTime / BlendTime);
             Apply();
         }
 
@@ -105,13 +136,24 @@ public class StoryPanelFx : MonoBehaviour
     void Apply()
     {
         float t = Mathf.SmoothStep(0f, 1f, _blend);
-        _mat.SetColor(BgId, Color.Lerp(Fighting.Bg, Defeated.Bg, t));
-        _mat.SetColor(BallId, Color.Lerp(Fighting.Ball, Defeated.Ball, t));
-        _mat.SetColor(RimId, Color.Lerp(Fighting.Rim, Defeated.Rim, t));
-        _speed = Mathf.Lerp(Fighting.Speed, Defeated.Speed, t);
-        _mat.SetFloat(BorderStrengthId, Mathf.Lerp(Fighting.BorderStrength, Defeated.BorderStrength, t));
-        _mat.SetColor(BorderColorId, Color.Lerp(Fighting.Border, Defeated.Border, t));
-        _borderLapSeconds = Mathf.Lerp(Fighting.BorderLapSeconds, Defeated.BorderLapSeconds, t);
-        _mat.SetFloat(BallSizeId, Mathf.Lerp(Fighting.BallSize, Defeated.BallSize, t));
+        _current = new Palette
+        {
+            Bg = Color.Lerp(_from.Bg, _to.Bg, t),
+            Ball = Color.Lerp(_from.Ball, _to.Ball, t),
+            Rim = Color.Lerp(_from.Rim, _to.Rim, t),
+            Border = Color.Lerp(_from.Border, _to.Border, t),
+            Speed = Mathf.Lerp(_from.Speed, _to.Speed, t),
+            BallSize = Mathf.Lerp(_from.BallSize, _to.BallSize, t),
+            BorderStrength = Mathf.Lerp(_from.BorderStrength, _to.BorderStrength, t),
+            BorderLapSeconds = Mathf.Lerp(_from.BorderLapSeconds, _to.BorderLapSeconds, t),
+        };
+        _mat.SetColor(BgId, _current.Bg);
+        _mat.SetColor(BallId, _current.Ball);
+        _mat.SetColor(RimId, _current.Rim);
+        _speed = _current.Speed;
+        _mat.SetFloat(BorderStrengthId, _current.BorderStrength);
+        _mat.SetColor(BorderColorId, _current.Border);
+        _borderLapSeconds = _current.BorderLapSeconds;
+        _mat.SetFloat(BallSizeId, _current.BallSize);
     }
 }

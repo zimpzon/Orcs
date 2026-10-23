@@ -16,6 +16,21 @@ public static class BeastGoals
     public static bool IsMastered(ActorTypeEnum type)
         => Active && IsBeast(type) && (AlwaysDone(type) || SaveGame.Members.GetBeastKills(type) >= Goal);
 
+    // Every beast decimated (after Scary Earl): the "every beast decimated" banner under the HP bar.
+    static readonly ActorTypeEnum[] AllTypes = (ActorTypeEnum[])System.Enum.GetValues(typeof(ActorTypeEnum));
+
+    public static bool AllMastered()
+    {
+        if (!Active)
+            return false;
+        foreach (var type in AllTypes) // checked every frame: no enum array allocation
+        {
+            if (IsBeast(type) && !IsMastered(type))
+                return false;
+        }
+        return true;
+    }
+
     // The kill that reaches the goal right now (announce it once).
     public static bool JustMastered(ActorTypeEnum type)
         => Active && IsBeast(type) && !AlwaysDone(type) && SaveGame.Members.GetBeastKills(type) == Goal;

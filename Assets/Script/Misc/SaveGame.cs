@@ -114,6 +114,7 @@ public class SaveGameMembers
     public bool SoundEnabled = true; // settings master switch: off = no sound at all, music included (AudioListener.volume)
     public bool ShowHealthBars = true; // settings: small health bars over damaged enemies (EnemyHealthBar)
     public bool HideVictoryBanner = false; // settings, after Scary Earl is defeated: hide the gold victory banner under the HP bar
+    public bool HideDecimatedBanner = false; // "hide this" on the every-beast-decimated banner (settings' Hide victory banner sets both)
     public bool MusicEnabled = true; // music on/off (MusicManagerScript), separate from the music volume; off by default
     public int PctBonusBuyAmount = 0; // 1% bonus buy selection: PercentageBonusBuyAmount (0 = buy 1, 1 = buy 10)
     public SkinAnimation SelectedSkin = SkinAnimation.Default;
