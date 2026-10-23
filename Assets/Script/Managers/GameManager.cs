@@ -1554,6 +1554,8 @@ public class GameManager : MonoBehaviour
     const double OfflineIncomeShare = 0.05;
     const double OfflinePopupMinSeconds = 60; // shorter: paid quietly
     double _pendingOfflineSeconds;
+    DateTime _lastIncomeWallClock;      // UpdatePassiveIncome: catches sleep the realtime clock didn't count
+    const double SleepGapSeconds = 10;  // wall clock ahead of the realtime clock by more than this = slept
     bool _cheatOfflinePopup; // RightShift+O: show the popup even without income (amount 0 -> a token $1,000)
 
     void CaptureOfflineTime()
@@ -1615,6 +1617,22 @@ public class GameManager : MonoBehaviour
         }
 
         _deltaRealTime = currentTime - _timePrevPassiveIncomeUpdate;
+
+        // Sleep / hibernate: Unity's realtime clock can stop while the PC sleeps (Windows), so the frame after waking
+        // looks short. The wall clock doesn't stop: whatever it saw that the realtime clock missed is offline income.
+        // (With the speed cheat the realtime clock runs ahead of the wall clock: nothing missed then.)
+        var wallNow = DateTime.UtcNow;
+        if (_lastIncomeWallClock != default)
+        {
+            double missed = (wallNow - _lastIncomeWallClock).TotalSeconds - _deltaRealTime;
+            if (missed > SleepGapSeconds)
+            {
+                _pendingOfflineSeconds += missed;
+                Debug.Log($"Wall clock jumped {(long)missed} s past the realtime clock (PC slept?): offline income");
+            }
+        }
+        _lastIncomeWallClock = wallNow;
+
         if (_deltaRealTime <= 0f)
             return;
 
