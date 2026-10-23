@@ -61,6 +61,22 @@ public class AscendDecisionScript : MonoBehaviour
         if (TextHover != null)
             _hoverDefault = TextHover.text;
         SetupHeaderDiamonds();
+        MakeTextsClickThrough();
+    }
+
+    // Texts here only show things, but each one caught clicks over its whole box - e.g. over the bottom of the cards'
+    // buy buttons. Buttons and cards take clicks through their images, so texts can let them through (except link texts).
+    void MakeTextsClickThrough()
+    {
+        foreach (var text in GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (text.GetComponent<ClickableLinks>() == null && text.GetComponent<TmpLinkClick>() == null)
+                text.raycastTarget = false;
+        }
+        // Not under this object: the hover text under the cards (200x50, centered) - it covered the bottom of the
+        // middle cards' buy buttons.
+        if (TextHover != null)
+            TextHover.raycastTarget = false;
     }
 
     void SetupHeaderDiamonds()

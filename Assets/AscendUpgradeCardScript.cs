@@ -48,10 +48,44 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
     //public AscendUpgradeCardScript UpgradeCardPassiveX4_1;
 
     Image _background;
+    TextMeshProUGUI _refundLabel;
+
+    // Owned cards can be sold back for their full price (the buy button turns into "+cost" with REFUND above it),
+    // except Head Start and the Scary Earl skin.
+    bool Refundable => CardId != AscendUpgradeCardId.NotSet && CardId != AscendUpgradeCardId.HeadStart
+                       && CardId != AscendUpgradeCardId.SkinScaryEarl;
 
     private void Awake()
     {
         _background = GetComponent<Image>();
+
+        // The owned overlay darkens the card but must not swallow the refund click: the button goes above it, with the
+        // can't-afford overlay still above the button.
+        CardOverlay.raycastTarget = false;
+        // The card's texts (title, description, OWNED) reach past the card and caught clicks meant for buttons nearby;
+        // the card's hover comes from its own background image anyway.
+        foreach (var text in GetComponentsInChildren<TMP_Text>(true))
+            text.raycastTarget = false;
+        ButtonBuy.transform.SetAsLastSibling();
+        ButtonOverlay.transform.SetAsLastSibling();
+
+        if (Refundable)
+        {
+            _refundLabel = Instantiate(ButtonBuyText, ButtonBuy.transform);
+            _refundLabel.name = "RefundLabel";
+            _refundLabel.text = "REFUND";
+            _refundLabel.fontSize = ButtonBuyText.fontSize * 0.75f;
+            _refundLabel.raycastTarget = false;
+            if (ColorUtility.TryParseHtmlString(TextColors.Gold, out var gold))
+                _refundLabel.color = gold;
+            var rt = _refundLabel.rectTransform;
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(0.5f, 0f);
+            rt.sizeDelta = new Vector2(0f, 10f);
+            rt.anchoredPosition = new Vector2(0f, 1f);
+            _refundLabel.enabled = false;
+        }
     }
 
     // Hovering a card shows its HoverText in the text below the cards (AscendDecisionScript.TextHover).
@@ -102,7 +136,12 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
             return;
         }
 
-        bool isOwned = CardId switch
+        UpdateUiForSingleCard(IsOwned());
+    }
+
+    bool IsOwned()
+    {
+        return CardId switch
         {
             AscendUpgradeCardId.PassiveIncomeX2_1 => SaveGame.Members.BoughtPassiveX2_1,
             AscendUpgradeCardId.PassiveIncomeX2_2 => SaveGame.Members.BoughtPassiveX2_2,
@@ -127,8 +166,6 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
             AscendUpgradeCardId.Completionist => SaveGame.Members.BoughtCompletionist,
             _ => throw new NotImplementedException()
         };
-
-        UpdateUiForSingleCard(isOwned);
     }
 
     private void UpdateUiForSingleCard(bool isOwned)
@@ -136,11 +173,15 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         OwnedText.enabled = isOwned;
         CardOverlay.enabled = isOwned;
 
+        bool refund = isOwned && Refundable;
+        if (_refundLabel != null)
+            _refundLabel.enabled = refund;
+
         if (isOwned)
         {
             _background.color = OwnedColor;
             ButtonOverlay.enabled = false;
-            ButtonBuy.interactable = false;
+            ButtonBuy.interactable = refund;
         }
         else
         {
@@ -149,7 +190,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
             ButtonOverlay.enabled = !canAfford;
             ButtonBuy.interactable = canAfford;
         }
-        ButtonBuyText.text = $"{EffectiveCost()} <sprite=0>";
+        ButtonBuyText.text = refund ? $"+{EffectiveCost()} <sprite=0>" : $"{EffectiveCost()} <sprite=0>";
     }
 
     long EffectiveCost() => Cost;
@@ -159,98 +200,62 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         if (CardId == AscendUpgradeCardId.NotSet)
             return;
 
+        if (IsOwned())
+        {
+            if (Refundable)
+                Refund();
+            return;
+        }
+
         Debug.Log("Bought " + CardId);
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
-        if (CardId == AscendUpgradeCardId.PassiveIncomeX2_1)
-        {
-            SaveGame.Members.BoughtPassiveX2_1 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX2_2)
-        {
-            SaveGame.Members.BoughtPassiveX2_2 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_1)
-        {
-            SaveGame.Members.BoughtPassiveX4_1 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_2)
-        {
-            SaveGame.Members.BoughtPassiveX4_2 = true;
-        }
-        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX4_3)
-        //{
-        //    SaveGame.Members.BoughtPassiveX4_3 = true;
-        //}
-        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX6_1)
-        //{
-        //    SaveGame.Members.BoughtPassiveX6_1 = true;
-        //}
-        //else if (CardId == AscendUpgradeCardId.PassiveIncomeX7_1)
-        //{
-        //    SaveGame.Members.BoughtPassiveX7_1 = true;
-        //}
-        else if (CardId == AscendUpgradeCardId.FasterMystery)
-        {
-            SaveGame.Members.BoughtFasterMystery = true;
+        SetOwned(true);
+        if (CardId == AscendUpgradeCardId.FasterMystery)
             SaveGame.Members.QuestionMarkRealTimeLeft *= 0.5f;
-        }
-        else if (CardId == AscendUpgradeCardId.FasterArena)
-        {
-            SaveGame.Members.BoughtFasterArena = true;
-        }
-        else if (CardId == AscendUpgradeCardId.SkinScaryEarl)
-        {
-            SaveGame.Members.BoughtScaryEarlSkin = true;
-        }
-        else if (CardId == AscendUpgradeCardId.FasterArena2)
-        {
-            SaveGame.Members.BoughtFasterArena2 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds1)
-        {
-            SaveGame.Members.BoughtShinyDiamonds1 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds2)
-        {
-            SaveGame.Members.BoughtShinyDiamonds2 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds3)
-        {
-            SaveGame.Members.BoughtShinyDiamonds3 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds4)
-        {
-            SaveGame.Members.BoughtShinyDiamonds4 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.ShinyDiamonds5)
-        {
-            SaveGame.Members.BoughtShinyDiamonds5 = true;
-        }
-        else if (CardId == AscendUpgradeCardId.Haggler)
-        {
-            SaveGame.Members.BoughtHaggler = true;
-        }
-        else if (CardId == AscendUpgradeCardId.HeadStart)
-        {
-            SaveGame.Members.BoughtHeadStart = true;
-        }
-        else if (CardId == AscendUpgradeCardId.SkinCollector)
-        {
-            SaveGame.Members.BoughtSkinCollector = true;
-        }
-        else if (CardId == AscendUpgradeCardId.BeastScholar)
-        {
-            SaveGame.Members.BoughtBeastScholar = true;
-        }
-        else if (CardId == AscendUpgradeCardId.Completionist)
-        {
-            SaveGame.Members.BoughtCompletionist = true;
-        }
-        else
-            throw new NotImplementedException();
 
         SaveGame.Members.DiamondCount_09_08_2025 -= EffectiveCost();
         SaveGame.Save();
         AscendDecisionScript.Instance.UpdateUi();
+    }
+
+    // Sell an owned card back: full price returned, the effect is gone (all card effects read the Bought flags).
+    void Refund()
+    {
+        Debug.Log("Refunded " + CardId);
+        AudioManager.Instance.PlayMenuClick();
+        SetOwned(false);
+        if (CardId == AscendUpgradeCardId.FasterMystery && SaveGame.Members.QuestionMarkRealTimeLeft > 0)
+            SaveGame.Members.QuestionMarkRealTimeLeft *= 2f; // undo the halving from the purchase
+        SaveGame.Members.DiamondCount_09_08_2025 += EffectiveCost();
+        SaveGame.Save();
+        AscendDecisionScript.Instance.UpdateUi();
+    }
+
+    void SetOwned(bool owned)
+    {
+        var m = SaveGame.Members;
+        switch (CardId)
+        {
+            case AscendUpgradeCardId.PassiveIncomeX2_1: m.BoughtPassiveX2_1 = owned; break;
+            case AscendUpgradeCardId.PassiveIncomeX2_2: m.BoughtPassiveX2_2 = owned; break;
+            case AscendUpgradeCardId.PassiveIncomeX4_1: m.BoughtPassiveX4_1 = owned; break;
+            case AscendUpgradeCardId.PassiveIncomeX4_2: m.BoughtPassiveX4_2 = owned; break;
+            case AscendUpgradeCardId.FasterMystery: m.BoughtFasterMystery = owned; break;
+            case AscendUpgradeCardId.FasterArena: m.BoughtFasterArena = owned; break;
+            case AscendUpgradeCardId.SkinScaryEarl: m.BoughtScaryEarlSkin = owned; break;
+            case AscendUpgradeCardId.FasterArena2: m.BoughtFasterArena2 = owned; break;
+            case AscendUpgradeCardId.ShinyDiamonds1: m.BoughtShinyDiamonds1 = owned; break;
+            case AscendUpgradeCardId.ShinyDiamonds2: m.BoughtShinyDiamonds2 = owned; break;
+            case AscendUpgradeCardId.ShinyDiamonds3: m.BoughtShinyDiamonds3 = owned; break;
+            case AscendUpgradeCardId.ShinyDiamonds4: m.BoughtShinyDiamonds4 = owned; break;
+            case AscendUpgradeCardId.ShinyDiamonds5: m.BoughtShinyDiamonds5 = owned; break;
+            case AscendUpgradeCardId.Haggler: m.BoughtHaggler = owned; break;
+            case AscendUpgradeCardId.HeadStart: m.BoughtHeadStart = owned; break;
+            case AscendUpgradeCardId.SkinCollector: m.BoughtSkinCollector = owned; break;
+            case AscendUpgradeCardId.BeastScholar: m.BoughtBeastScholar = owned; break;
+            case AscendUpgradeCardId.Completionist: m.BoughtCompletionist = owned; break;
+            // PassiveIncomeX4_3 / X6_1 / X7_1: not in the game (no buy before either).
+            default: throw new NotImplementedException();
+        }
     }
 }
