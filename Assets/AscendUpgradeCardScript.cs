@@ -71,12 +71,18 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         ButtonBuy.transform.SetAsLastSibling();
         ButtonOverlay.transform.SetAsLastSibling();
 
+        // A clicked button stays "selected", and the prefab's selected color is a dull blue: right after buying, the
+        // (now refund) button looked disabled. Selected looks like normal instead.
+        var colors = ButtonBuy.colors;
+        colors.selectedColor = colors.normalColor;
+        ButtonBuy.colors = colors;
+
         if (Refundable)
         {
             _refundLabel = Instantiate(ButtonBuyText, ButtonBuy.transform);
             _refundLabel.name = "RefundLabel";
-            _refundLabel.text = "refund";
-            _refundLabel.fontSize = ButtonBuyText.fontSize * 0.75f;
+            _refundLabel.text = "REFUND";
+            _refundLabel.fontSize = ButtonBuyText.fontSize * 0.85f;
             _refundLabel.raycastTarget = false;
             if (ColorUtility.TryParseHtmlString(TextColors.Gold, out var gold))
                 _refundLabel.color = gold;
@@ -185,7 +191,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         if (isOwned)
         {
             _background.color = OwnedColor;
-            ButtonOverlay.enabled = false;
+            ButtonOverlay.enabled = !refund; // Head Start / Scary Earl skin: owned for good, the button looks disabled
             ButtonBuy.interactable = refund;
         }
         else
@@ -232,6 +238,8 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         if (CardId == AscendUpgradeCardId.FasterMystery && SaveGame.Members.QuestionMarkRealTimeLeft > 0)
             SaveGame.Members.QuestionMarkRealTimeLeft *= 2f; // undo the halving from the purchase
         SaveGame.Members.DiamondCount_09_08_2025 += EffectiveCost();
+        long cost = EffectiveCost();
+        X2RankUpEffect.SpawnSmall(ButtonBuy, Input.mousePosition, $"+{cost} {(cost == 1 ? "diamond" : "diamonds")}");
         SaveGame.Save();
         AscendDecisionScript.Instance.UpdateUi();
     }

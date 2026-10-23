@@ -106,6 +106,11 @@ public class X2RankUpEffect : MonoBehaviour
             _instance._rect.anchorMax = Vector2.one;
             _instance._rect.offsetMin = Vector2.zero;
             _instance._rect.offsetMax = Vector2.zero;
+            // Above the dialogs (GlobalPopupManager draws them at sorting order 100), e.g. "+5 diamonds" on a refund in
+            // the rebirth dialog. Only text: no raycaster, clicks go through.
+            var overlay = go.AddComponent<Canvas>();
+            overlay.overrideSorting = true;
+            overlay.sortingOrder = 120;
             // Use the game's Lato Black text style (its material has the drop shadow most UI text uses).
             TextMeshProUGUI source = null;
             foreach (var t in anyUiElement.GetComponentsInChildren<TextMeshProUGUI>(true))
