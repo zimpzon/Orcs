@@ -62358,7 +62358,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Huge Rebirth bonus!
+      value: Huge Rebirth bonus!\n<size=-3>(not refundable)</size>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
@@ -72185,36 +72185,36 @@ MonoBehaviour:
   m_text: '<color=yellow>Tip #1:</color> Rebirth to convert credits to diamonds.
     Diamonds are very valuable.
 
-    
+
 
     <color=yellow>Tip #2:</color> <color=#8EBE4D>HOLD
     ON TO YOUR DIAMONDS!</color> Well, not forever. Each diamond you hold gives you
     a great income bonus, and buying an upgrade will cost you diamonds, possibly
     lowering your income. Be careful!
 
-    
 
-    <color=yellow>Tip #3:</color>
-    The higher your income, the faster you earn credits. However, each credit costs
-    more than the previous one.
 
-    
+    <color=yellow>Tip #3:</color> The higher
+    your income, the faster you earn credits. However, each credit costs more than
+    the previous one.
 
-    <color=yellow>Tip #4:</color> You get
-    a large bonus to credit income after Rebirth. It will slowly decay over time.
-    Keep an eye on it and consider a Rebirth when it runs out.
 
-    
 
-    <color=yellow>Tip
-    #5:</color> Hold SHIFT while buying to buy the maximum affordable amount. Hold
-    CTRL while buying an X2 to buy ALL the X2 you can afford!
+    <color=yellow>Tip #4:</color> You get a large bonus
+    to credit income after Rebirth. It will slowly decay over time. Keep an eye on
+    it and consider a Rebirth when it runs out.
 
-    
 
-    <color=yellow>Tip
-    #6:</color> While offline, you continue to earn 1% of your income. FOREVER. See
-    you next year.'
+
+    <color=yellow>Tip #5:</color>
+    Hold SHIFT while buying to buy the maximum affordable amount. Hold CTRL while
+    buying an X2 to buy ALL the X2 you can afford!
+
+
+
+    <color=yellow>Tip #6:</color>
+    While offline, you continue to earn 1% of your income. FOREVER. See you next
+    year.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -88416,7 +88416,8 @@ MonoBehaviour:
     type: 3}
   Layout: {fileID: 455334205}
   Hovertext: {fileID: 293374239}
-  MasteredBadgeSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e, type: 3}
+  MasteredBadgeSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e,
+    type: 3}
   ButtonTouchFog: {fileID: 991300100}
 --- !u!114 &1261470294
 MonoBehaviour:
@@ -118640,11 +118641,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<align=center>
 
-    
+
 
     <color=#cccccc>By </color><b>PewGames</b>
 
-    
+
 
     <color=#cccccc>PixelDudes
     art by</color> <b>0x72</b> (<link="https://0x72.itch.io/pixeldudesmaker"><color=#8DBE4C><u>itch.io</u></color></link>)
@@ -118652,12 +118653,12 @@ MonoBehaviour:
     <color=#cccccc>Music
     by</color> <b>HeatleyBros</b> (<link="https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA"><color=#8DBE4C><u>YouTube</u></color></link>)
 
-    
+
 
     <color=#cccccc>Big
     thanks to (alphabetical)</color>
 
-    
+
 
     462n, caiburn, Caliane, Edaw, goldilocks,
 
@@ -125478,7 +125479,7 @@ PrefabInstance:
     - target: {fileID: 4286561194299410663, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
       propertyPath: m_text
-      value: Unlock skin Scary Earl!
+      value: Unlock skin Scary Earl!\n<size=-3>(not refundable)</size>
       objectReference: {fileID: 0}
     - target: {fileID: 4415232633401078585, guid: 91603a0b84878464696ea968efd188ac,
         type: 3}
