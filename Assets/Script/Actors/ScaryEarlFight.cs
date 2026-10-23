@@ -39,7 +39,7 @@ public static class ScaryEarlFight
     }
 
     public static readonly string DecimatedBanner =
-        $"Every beast <color={TextColors.Gold}>decimated!</color>\nEarl can finally idle in peace.\n<color={TextColors.Green}><size=+3>The journey has ended.</size></color>" + HideLink;
+        $"Every beast decimated! Earl can finally idle in peace.\n<color={TextColors.Gold}><size=+0.25>THE JOURNEY HAS ENDED</size></color>\n" + HideLink;
 
     // Marks him beaten and freezes the play time it took (shown in the victory dialog). Arena win and RightShift+E.
     public static void MarkDefeated()

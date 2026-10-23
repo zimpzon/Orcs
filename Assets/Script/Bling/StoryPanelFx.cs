@@ -1,8 +1,8 @@
 using UnityEngine;
 
 // Drives the metaball backdrop of the Scary Earl story text under the arena HP bar (Custom/SpriteMetaballs): sinister
-// violet ooze while he's undefeated, calm warm brown with gold comets once he's beaten (victory banner), dark crimson
-// with red comets for the every-beast-decimated banner; it fades between them. Keeps the blobs round on the wide panel
+// violet ooze while he's undefeated, calm warm brown with gold comets once he's beaten (victory banner), muted dark
+// green for the every-beast-decimated banner; it fades between them. Keeps the blobs round on the wide panel
 // (_Aspect from the scale). Its own material instance, unscaled time for the palette blend.
 [RequireComponent(typeof(SpriteRenderer))]
 public class StoryPanelFx : MonoBehaviour
@@ -49,14 +49,14 @@ public class StoryPanelFx : MonoBehaviour
 
     static readonly Palette Decimated = new()
     {
-        // Dark crimson: blood-red blobs and rim on a near-black maroon base, red-orange comets. The gold "decimated!"
-        // reads well on it and it's clearly not the victory banner.
-        Bg = new Color(0.08f, 0.01f, 0.02f, 0.6f),
-        Ball = new Color(0.24f, 0.03f, 0.05f, 0.65f),
-        Rim = new Color(0.8f, 0.14f, 0.14f, 0.45f),
+        // Muted dark green: moss-green blobs on a near-black green base, a soft green rim and light green comets. Calm
+        // and clearly different from the brown/gold victory banner; the gold "decimated!" reads well on it.
+        Bg = new Color(0.02f, 0.06f, 0.03f, 0.6f),
+        Ball = new Color(0.06f, 0.17f, 0.08f, 0.65f),
+        Rim = new Color(0.3f, 0.62f, 0.3f, 0.45f),
         Speed = 0.25f,
         BallSize = 0.3f,
-        Border = new Color(1f, 0.38f, 0.25f, 1f),
+        Border = new Color(0.55f, 0.95f, 0.45f, 1f),
         BorderStrength = 0.75f,
         BorderLapSeconds = 7f,
     };
