@@ -565,6 +565,12 @@ public class GameManager : MonoBehaviour
                 : EnemySpawner.GetEnemies(SaveGame.Members.ArenaLevel).ToList();
             if (!scaryEarl)
                 UpdateBeastsSeen(enemies);
+            if (Area52.Active)
+            {
+                var alien = Area52.EnemySprites;
+                foreach (var enemy in enemies)
+                    enemy.SetSkinOverride(alien);
+            }
 
             if (enemies.Distinct().Count() != enemies.Count)
                 Debug.LogError("Same enemy instance spawned twice in one round - ActorCache is handing out duplicates");
@@ -583,6 +589,7 @@ public class GameManager : MonoBehaviour
                 foreach (var enemy in enemies)
                 {
                     enemy.UndoScaryEarl(); // no Reset on this path
+                    enemy.UndoSkinOverride();
                     Assets.Script.Enemies.ActorCache.Instance.ReturnObject(enemy.gameObject);
                 }
                 continue;
@@ -770,7 +777,7 @@ public class GameManager : MonoBehaviour
     {
         7 => "007",
         42 => "ANSWER: 42",
-        52 => "AREA 52",
+        Area52.Level => "AREA 52",
         404 => "404 NOT FOUND",
         1337 => "EARL IS 1337",
         _ => $"ARENA {level}",

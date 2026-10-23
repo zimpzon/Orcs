@@ -171,6 +171,7 @@ public class ActorBase : MonoBehaviour
             transform_.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             UseSpawnParticles = false;
             UndoScaryEarl();
+            UndoSkinOverride();
             DamageTakenMul = 1.0; // set per spawn (EnemySpawner HP cap); not in the init reset, which runs after spawn
         }
 
@@ -283,6 +284,34 @@ public class ActorBase : MonoBehaviour
         GetComponent<SpriteRenderer>().sortingLayerID = _plainSortingLayer;
         HitFlashAmount = _plainHitFlash;
         NoFlashFx = _plainNoFlashFx;
+    }
+
+    // Different sprites for this round only (Area52: everyone as Alien Earl). Undone on Reset / return to the cache.
+    Sprite[] _skinOverrideRestore;
+    bool _skinOverridden;
+
+    public void SetSkinOverride(Sprite[] animations)
+    {
+        if (animations == null || animations.Length == 0)
+            return;
+        if (!_skinOverridden)
+        {
+            _skinOverrideRestore = Animations;
+            _skinOverridden = true;
+        }
+        Animations = animations;
+        GetComponent<SpriteRenderer>().sprite = animations[0]; // right away: the spawn animation doesn't tick frames
+    }
+
+    // Also for actors returned to the cache without Reset (never activated): safe before Awake.
+    public void UndoSkinOverride()
+    {
+        if (!_skinOverridden)
+            return;
+        _skinOverridden = false;
+        Animations = _skinOverrideRestore;
+        if (Animations != null && Animations.Length > 0)
+            GetComponent<SpriteRenderer>().sprite = Animations[0];
     }
 
     const int ScaryEarlSortingOrder = 30000; // top of the TopEffects layer (still under the arena border/arches)
