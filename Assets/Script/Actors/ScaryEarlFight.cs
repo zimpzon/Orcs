@@ -28,13 +28,13 @@ public static class ScaryEarlFight
 
     public static readonly string VictoryBanner = StoryDefeated + HideLink;
 
-    // The every-beast-decimated banner is the one showing (also picks its colors: StoryPanelFx).
+    // The every-beast-decimated banner is the one to show (the latest stage reached; also picks its colors: StoryPanelFx).
     public static bool ShowsDecimatedBanner
     {
         get
         {
             var m = SaveGame.Members;
-            return m != null && m.ScaryEarlDefeated && !m.HideDecimatedBanner && BeastGoals.AllMastered();
+            return m != null && m.ScaryEarlDefeated && BeastGoals.AllMastered();
         }
     }
 

@@ -2035,10 +2035,7 @@ public class GameManager : MonoBehaviour
         if (link < 0 || TextStory.textInfo.linkInfo[link].GetLinkID() != ScaryEarlFight.HideLinkId)
             return;
 
-        if (ReferenceEquals(_storyShown, ScaryEarlFight.DecimatedBanner))
-            SaveGame.Members.HideDecimatedBanner = true;
-        else
-            SaveGame.Members.HideVictoryBanner = true;
+        SaveGame.Members.HideVictoryBanner = true; // = settings "Hide victory banner": hides them all
         SaveGame.Save();
         AudioManager.Instance.PlayMenuClick();
     }
@@ -2047,18 +2044,18 @@ public class GameManager : MonoBehaviour
     {
         if (TextStory == null)
             return;
-        // After Scary Earl: the every-beast-decimated banner (once earned), else his victory banner - each until hidden
-        // ("hide this" / settings "Hide victory banner"). No text = no metaball backdrop either.
+        // Before his defeat: the fight story. After: the latest stage reached - every beast decimated, else his victory -
+        // unless settings "Hide victory banner" (or "hide this" on a banner) hides them all. No text = no backdrop.
         var m = SaveGame.Members;
         string story;
         if (!m.ScaryEarlDefeated)
             story = ScaryEarlFight.StoryText;
+        else if (m.HideVictoryBanner)
+            story = "";
         else if (ScaryEarlFight.ShowsDecimatedBanner)
             story = ScaryEarlFight.DecimatedBanner;
-        else if (!m.HideVictoryBanner)
-            story = ScaryEarlFight.VictoryBanner;
         else
-            story = "";
+            story = ScaryEarlFight.VictoryBanner;
         if (ReferenceEquals(story, _storyShown))
             return;
         _storyShown = story;

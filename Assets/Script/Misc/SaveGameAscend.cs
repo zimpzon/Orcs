@@ -59,7 +59,6 @@ static class SaveGameAscend
         newSave.MusicEnabled = oldSave.MusicEnabled;
         newSave.SoundInBackground = oldSave.SoundInBackground;
         newSave.HideVictoryBanner = oldSave.HideVictoryBanner;
-        newSave.HideDecimatedBanner = oldSave.HideDecimatedBanner;
         newSave.ShowHealthBars = oldSave.ShowHealthBars;
         newSave.SoundEnabled = oldSave.SoundEnabled;
         newSave.PctBonusBuyAmount = oldSave.PctBonusBuyAmount;
