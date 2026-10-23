@@ -108,7 +108,69 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
             };
         }
 
+        _skull = AddSkullBadge(transform);
         SyncState();
+    }
+
+    // Scary Earl beaten: a little pixel skull in the tile's top-right corner, like the crowns on decimated beasts.
+    // Drawn in code (there's no skull sprite in the pixel style). Inside the frame: the tile clips (RectMask2D).
+    Image _skull;
+    const float SkullSize = 11f;
+    static Sprite _skullSprite;
+
+    static Image AddSkullBadge(Transform tile)
+    {
+        var go = new GameObject("DefeatedSkull", typeof(RectTransform));
+        go.transform.SetParent(tile, false); // last child: above the fog and Scary Earl
+        var image = go.AddComponent<Image>();
+        image.sprite = SkullSprite();
+        image.preserveAspect = true;
+        image.raycastTarget = false;
+        var rt = image.rectTransform;
+        rt.anchorMin = rt.anchorMax = new Vector2(1f, 1f);
+        rt.pivot = new Vector2(1f, 1f);
+        rt.anchoredPosition = new Vector2(-2f, -2f);
+        rt.sizeDelta = new Vector2(SkullSize, SkullSize);
+        rt.localRotation = Quaternion.Euler(0, 0, -12f);
+        image.enabled = false;
+        return image;
+    }
+
+    // 9x9 skull (X bone, o dark eyes/nose/teeth gaps) with a 1 px dark outline: 11x11, point filtered.
+    static Sprite SkullSprite()
+    {
+        if (_skullSprite != null)
+            return _skullSprite;
+        string[] rows =
+        {
+            "..XXXXX..",
+            ".XXXXXXX.",
+            "XXXXXXXXX",
+            "XooXXXooX",
+            "XooXXXooX",
+            "XXXXoXXXX",
+            ".XXXXXXX.",
+            "..XoXoX..",
+            "..XXXXX..",
+        };
+        var bone = new Color32(0xEE, 0xE8, 0xD8, 255);
+        var dark = new Color32(0x26, 0x1C, 0x16, 255);
+        const int n = 11;
+        var px = new Color32[n * n];
+        bool Bone(int x, int y) => x >= 1 && y >= 1 && x <= 9 && y <= 9 && rows[9 - y][x - 1] != '.';
+        for (int y = 0; y < n; ++y)
+        for (int x = 0; x < n; ++x)
+        {
+            if (Bone(x, y))
+                px[y * n + x] = rows[9 - y][x - 1] == 'o' ? dark : bone;
+            else if (Bone(x - 1, y) || Bone(x + 1, y) || Bone(x, y - 1) || Bone(x, y + 1))
+                px[y * n + x] = dark; // outline
+        }
+        var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
+        tex.SetPixels32(px);
+        tex.Apply();
+        _skullSprite = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), 100f);
+        return _skullSprite;
     }
 
     // Shows the saved state right away: fog, or Scary Earl when the fog was already touched (also after the cheat).
@@ -137,6 +199,10 @@ public class SecretBeastTile : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     void Update()
     {
+        bool beaten = SaveGame.Members.ScaryEarlDefeated;
+        if (_skull != null && _skull.enabled != beaten)
+            _skull.enabled = beaten;
+
         float dt = Time.unscaledDeltaTime;
         UpdateRays();
 
