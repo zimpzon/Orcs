@@ -30,9 +30,32 @@ public class AscendProgressScript : MonoBehaviour
         _lastCreditCommitTime = G.D.RealTime;
     }
 
+    // The rebirth screen isn't a GlobalPopupManager popup, so it gets that manager's small slide-up here: the panel
+    // starts 20 lower and eases into place.
+    RectTransform _panel;
+    Vector3 _panelHome;
+
+    void SlideIn()
+    {
+        if (_panel == null)
+        {
+            _panel = AscendRoot.transform.Find("AscendPanel") as RectTransform;
+            if (_panel == null)
+                return;
+            _panelHome = _panel.localPosition;
+        }
+        LeanTween.cancel(_panel.gameObject);
+        _panel.localPosition = _panelHome;
+        // Same 20 (screen) units and timing as GlobalPopupManager.AfterShowPopup.
+        Vector3 home = _panel.position;
+        _panel.position = home + new Vector3(0, -20f, 0);
+        LeanTween.moveY(_panel.gameObject, home.y, 0.2f).setEaseOutCubic();
+    }
+
     public void OnShowClick()
     {
         AscendRoot.SetActive(true);
+        SlideIn();
         AudioManager.Instance.PlayDialogShow();
         if (SaveGame.Members.MonsterCredits_09_08_2025 > 0)
             SaveGame.Members.ViewedRebirthDialog = true; // big rebirth button pulse -> small (CrownPulse)
