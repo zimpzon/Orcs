@@ -63,6 +63,14 @@ public class SaveGameMembers
         BeastKills[i]++;
     }
 
+    public void SetBeastKills(ActorTypeEnum type, long kills)
+    {
+        int i = (int)type;
+        while (BeastKills.Count <= i)
+            BeastKills.Add(0);
+        BeastKills[i] = kills;
+    }
+
     public long GetBeastKills(ActorTypeEnum type)
     {
         int i = (int)type;

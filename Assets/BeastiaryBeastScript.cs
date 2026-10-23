@@ -41,14 +41,22 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         if (isUnlocked)
             ActorBase.Names.TryGetValue(ActorType, out name);
 
-        // Three calm lines: the name, the income bonus, then the small grey facts - the arena it starts to show up
-        // in, and (once unlocked) how many have been slain.
+        // Three calm lines: the name, the income bonus, then one small grey line - the slaying progress (unlocked
+        // beasts) and the arena the beast starts to show up in.
         long unlockLevel = EnemySpawner.UnlockLevelOf(ActorType);
-        string facts = unlockLevel > 0 ? $"arena {Grouped(unlockLevel)}" : "";
-        if (isUnlocked)
+        string arena = unlockLevel > 0 ? $"arena {Grouped(unlockLevel)}" : "";
+        string facts = arena;
+        if (isUnlocked && BeastGoals.Active)
         {
-            string slain = $"{Grouped(SaveGame.Members.GetBeastKills(ActorType))} slain";
-            facts = facts.Length > 0 ? $"{facts}  •  {slain}" : slain;
+            // Slaying goal after Scary Earl (BeastGoals): "12 / 100 slain" until reached, then "123 / 100 - DECIMATED"
+            // (gold). Flaps: "enough".
+            long kills = SaveGame.Members.GetBeastKills(ActorType);
+            const long goal = BeastGoals.Goal;
+            string decimated = $"<color={TextColors.Gold}>DECIMATED</color>";
+            string slain = BeastGoals.AlwaysDone(ActorType) ? $"enough  •  {decimated}"
+                : kills < goal ? $"{Grouped(kills)} / {Grouped(goal)} slain"
+                : $"{Grouped(kills)} / {Grouped(goal)}  •  {decimated}";
+            facts = arena.Length > 0 ? $"{slain}  •  {arena}" : slain;
         }
 
         string title = isUnlocked ? $"<b>{name}</b>" : $"<color=#999999>{name}</color>";

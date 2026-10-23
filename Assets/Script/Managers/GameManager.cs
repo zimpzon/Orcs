@@ -1150,7 +1150,12 @@ public class GameManager : MonoBehaviour
 
         SaveGame.Members.EnemiesKilled += 1;
         if (!actor.IsScaryEarl) // he's a recolored beast: don't count him as that beast (bestiary "Slain")
+        {
             SaveGame.Members.AddBeastKill(actor.ActorType);
+            // Slaying goal reached right now (BeastGoals): celebrate once.
+            if (BeastGoals.JustMastered(actor.ActorType))
+                AnnounceBeastMastered(actor.ActorType);
+        }
 
         if (actor.ActorType == ActorTypeEnum.FromTheVoid)
         {
@@ -1163,6 +1168,13 @@ public class GameManager : MonoBehaviour
         {
             OnLastEnemyKilled(actor);
         }
+    }
+
+    void AnnounceBeastMastered(ActorTypeEnum type)
+    {
+        string name = ActorBase.Names.TryGetValue(type, out var n) ? n : type.ToString();
+        AchievementsScript.AnnounceAtCursorOrCenter($"BEAST DECIMATED!\n<size=80%>{name}</size>");
+        AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
     }
 
     float _nextBossShake;
@@ -2168,6 +2180,17 @@ public class GameManager : MonoBehaviour
         if (G.GetCheatKeyDown(KeyCode.Q) && G.GetCheatKey(KeyCode.RightShift))
         {
             PopupChestScript.Instance.ShowNow();
+        }
+
+        // Master every beast: kill counts just past the slaying goal (BeastGoals; shows once Scary Earl is beaten).
+        if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
+        {
+            foreach (ActorTypeEnum type in Enum.GetValues(typeof(ActorTypeEnum)))
+            {
+                if (BeastGoals.IsBeast(type) && SaveGame.Members.GetBeastKills(type) < BeastGoals.Goal)
+                    SaveGame.Members.SetBeastKills(type, BeastGoals.Goal + 1);
+            }
+            Debug.Log("Cheat: all beasts mastered");
         }
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))

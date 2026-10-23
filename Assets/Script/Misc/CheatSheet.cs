@@ -32,6 +32,7 @@ public class CheatSheet : MonoBehaviour
         ("RightShift+E", "Beat Scary Earl (kills him mid-round, else marks him defeated)"),
         ("RightShift+T", "Tier levels: 400 on the first tier down to 1 on Storm Lord, linear"),
         ("RightShift+L", "Show save game load info"),
+        ("RightShift+M", "Decimate all beasts (kills past the goal; shown after Scary Earl)"),
         ("RightShift+O", "Pretend 1:30 offline (offline income popup)"),
         ("RightShift+V", "Enemy health bars on / off"),
         ("RightShift+D", "Item drop dialog: random item, next rarity each press"),

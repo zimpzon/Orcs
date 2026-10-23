@@ -8,6 +8,10 @@ class Beast
     public Image Icon;
     public ActorBase Actor;
     public BeastiaryBeastScript BeastiaryBeastScript;
+    // Slaying goal reached (BeastGoals): gold tile + crown badge.
+    public Image Tile;
+    public Color TileColor;
+    public GameObject Badge;
 }
 
 public class BeastiaryPopupScript : MonoBehaviour
@@ -16,6 +20,7 @@ public class BeastiaryPopupScript : MonoBehaviour
     public GameObject BeastPrefab;
     public GameObject Layout;
     public TextMeshProUGUI Hovertext;
+    public Sprite MasteredBadgeSprite; // small crown in the corner of a mastered beast's tile (BeastGoals)
     public GameObject ButtonTouchFog; // "Touch fog": after 100%, until Scary Earl is revealed (SecretBeastTile)
     private List<Beast> _beasts = new List<Beast>();
     SecretBeastTile _secretTile;
@@ -36,7 +41,12 @@ public class BeastiaryPopupScript : MonoBehaviour
             beastScript.Index = idx++;
             beastScript.ActorType = actor.ActorType;
             beastScript.Hovertext = Hovertext;
-            _beasts.Add(new Beast { Actor = actor, Icon = image, BeastiaryBeastScript = beastScript });
+            var tile = beast.GetComponent<Image>();
+            _beasts.Add(new Beast
+            {
+                Actor = actor, Icon = image, BeastiaryBeastScript = beastScript,
+                Tile = tile, TileColor = tile != null ? tile.color : Color.white, Badge = AddMasteredBadge(beast.transform),
+            });
         }
 
         // The final enemy (last in the list) fills its frame instead of the fixed 20x30 icon: stretched to the tile
@@ -95,6 +105,30 @@ public class BeastiaryPopupScript : MonoBehaviour
         GlobalPopupManager.Instance.AfterHidePopup();
     }
 
+    // Slaying goal reached (BeastGoals): the tile turns warm gold and a small crown sits in its top-right corner.
+    static readonly Color MasteredTileColor = new Color32(0xB8, 0x92, 0x3E, 255);
+    const float BadgeSize = 12f;
+
+    GameObject AddMasteredBadge(Transform tile)
+    {
+        if (MasteredBadgeSprite == null)
+            return null;
+        var go = new GameObject("MasteredBadge", typeof(RectTransform));
+        go.transform.SetParent(tile, false);
+        var image = go.AddComponent<Image>();
+        image.sprite = MasteredBadgeSprite;
+        image.preserveAspect = true;
+        image.raycastTarget = false;
+        var rt = image.rectTransform;
+        rt.anchorMin = rt.anchorMax = new Vector2(1f, 1f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = new Vector2(-3f, -3f); // straddling the corner a little
+        rt.sizeDelta = new Vector2(BadgeSize, BadgeSize);
+        rt.localRotation = Quaternion.Euler(0, 0, -15f);
+        go.SetActive(false);
+        return go;
+    }
+
     private void Update()
     {
         int unlocked = 0;
@@ -104,6 +138,11 @@ public class BeastiaryPopupScript : MonoBehaviour
             beast.Icon.color = isUnlocked ? Color.white : Color.black;
             if (isUnlocked)
                 unlocked++;
+            bool mastered = isUnlocked && BeastGoals.IsMastered(beast.Actor.ActorType);
+            if (beast.Badge != null && beast.Badge.activeSelf != mastered)
+                beast.Badge.SetActive(mastered);
+            if (beast.Tile != null)
+                beast.Tile.color = mastered ? MasteredTileColor : beast.TileColor;
         }
 
         if (_progressText != null)

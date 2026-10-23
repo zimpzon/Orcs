@@ -88416,6 +88416,7 @@ MonoBehaviour:
     type: 3}
   Layout: {fileID: 455334205}
   Hovertext: {fileID: 293374239}
+  MasteredBadgeSprite: {fileID: -8222406987496834216, guid: 6aed1481dd44b7b45a01d02e3cb2251e, type: 3}
   ButtonTouchFog: {fileID: 991300100}
 --- !u!114 &1261470294
 MonoBehaviour:
