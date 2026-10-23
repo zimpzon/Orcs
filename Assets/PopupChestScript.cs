@@ -140,12 +140,9 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             GameManager.Instance.AddMoney(reward);
             SaveGame.Members.ChestsCollected += 1;
 
-            // Same blue popup as a mystery bonus, with the full amount received (like the money display at the top).
-            string amount = Format512.FormatWithDecimals(reward, abbreviate: false, alwaysThreeDecimalsForLargeNumbers: true);
-            string multiplier = PlayerUpgrades.Data.BetterChests ? "2 X " : "";
-            GameCanvasScript.Instance.ShowPopup(
-                $"<color={TextColors.Yellow}><size=+1>CHEST LOOTED</size>\n\n</color>" +
-                $"{multiplier}{numberOfSeconds}X income\n<size=+2><color=#FFD54A>+${amount}</color></size>", celebrate: true);
+            // Reward popup like a mystery bonus: the money counting up on the band, how it was worked out below.
+            string multiplier = PlayerUpgrades.Data.BetterChests ? "2 x " : "";
+            RewardPopup.ShowMoney("CHEST LOOTED!", reward, $"{multiplier}{numberOfSeconds} seconds of income");
             SaveGame.Save(); // don't lose a chest reward to a reload before the next auto-save
         }
     }

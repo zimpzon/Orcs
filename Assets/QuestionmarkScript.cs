@@ -20,6 +20,8 @@ public class QuestionmarkScript : MonoBehaviour
     public TextMeshProUGUI MoneyMultiplierText;
     private Vector3 _pulseTextOriginalScale;
 
+    const string MysteryHeader = "MYSTERY BONUS!"; // reward popup header (RewardPopup)
+
     public Color TextColorEnabled;
     public Color TextColorDisabled;
 
@@ -219,7 +221,8 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             float endRealTime = startRealTime + (60 * 5);
 
-            ShowMessage($"Time runs {Highlight(25)}% faster and income is {Highlight("X2.5")} for {Highlight(5)} minutes!");
+            RewardPopup.Show(MysteryHeader, "X2.5 INCOME", "and time runs 25% faster, for 5 minutes!");
+            SaveGame.Save(); // don't lose a mystery reward to a reload before the next auto-save
 
             MoneyMultiplierText.text = "X2.5";
             MoneyMultiplierText.gameObject.SetActive(true);
@@ -249,7 +252,8 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             //float endRealTime = startRealTime + 5;
             float endRealTime = startRealTime + 60;
-            ShowMessage($"{Highlight("X10")} income for {Highlight(1)} minute!");
+            RewardPopup.Show(MysteryHeader, "X10 INCOME", "for 1 minute!");
+            SaveGame.Save();
 
             MoneyMultiplierText.text = "X10";
             MoneyMultiplierText.gameObject.SetActive(true);
@@ -275,10 +279,6 @@ public class QuestionmarkScript : MonoBehaviour
                 .setLoopPingPong();
         }
 
-        string Highlight(object s)
-            => s.ToString();
-            //=> Col.As(s, "yellow");
-
         IEnumerator FixedIncomeCo()
         {
             // Was 300s (~50% of FasterIncome's 10x-for-60s value); bumped to 450s (~75%) so this
@@ -287,8 +287,9 @@ public class QuestionmarkScript : MonoBehaviour
             Decimal512 reward = GameManager.Instance.TotalPassiveIncome * (Decimal512)numberOfSeconds;
             reward += 100;
 
-            GameManager.Instance.AddMoney(reward); // before ShowMessage, which saves
-            ShowMessage($"{Highlight(450)}X income = ${Highlight(Format512.Format(reward))}");
+            GameManager.Instance.AddMoney(reward);
+            RewardPopup.ShowMoney(MysteryHeader, reward, $"{numberOfSeconds} seconds of income");
+            SaveGame.Save();
             yield return null;
         }
 
