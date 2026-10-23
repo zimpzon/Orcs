@@ -12,7 +12,7 @@ class Beast
     public Image Tile;
     public Color TileColor;
     public GameObject Badge;
-    // While decimating (after Scary Earl, before the goal): tiny "10/100" under the portrait.
+    // While decimating (after Scary Earl, before the goal): tiny "10/50" over the portrait.
     public TextMeshProUGUI Progress;
     public long ShownKills = -1;
 }
@@ -101,6 +101,8 @@ public class BeastiaryPopupScript : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
+        if (SaveGame.Members.ScaryEarlDefeated)
+            SaveGame.Members.ViewedBestiaryAfterScaryEarl = true; // seen the decimation goals: stops the button pulse
     }
 
     public void OnClose()

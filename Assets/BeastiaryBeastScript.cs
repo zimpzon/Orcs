@@ -48,7 +48,7 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         string facts = arena;
         if (isUnlocked && BeastGoals.Active)
         {
-            // Slaying goal after Scary Earl (BeastGoals): "12 / 100 slain" until reached, then "123 / 100 - DECIMATED"
+            // Slaying goal after Scary Earl (BeastGoals): "12 / 50 slain" until reached, then "123 / 50 - DECIMATED"
             // (gold). Flaps: "enough".
             long kills = SaveGame.Members.GetBeastKills(ActorType);
             const long goal = BeastGoals.Goal;

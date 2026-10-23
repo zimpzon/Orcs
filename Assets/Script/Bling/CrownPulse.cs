@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class CrownPulse : MonoBehaviour
 {
-    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen, ExpandTiersUnseen, CreditBonusLow }
+    public enum PulseCondition { Completion100, FirstRebirthReady, VictoryUnseen, FirstRebirthReadySeen, TipsUnseen, ExpandTiersUnseen, CreditBonusLow, FogUnseen }
     public PulseCondition Condition = PulseCondition.Completion100;
 
     public float Period = 1.6f;      // seconds per pop + shrink/fade
@@ -43,6 +43,10 @@ public class CrownPulse : MonoBehaviour
             PulseCondition.ExpandTiersUnseen => m.LevelWizard > 0 && !m.ViewedExpandedTiers,
             // Highlight behind the rebirth dialog's credit bonus line once it's low (same threshold as its orange text).
             PulseCondition.CreditBonusLow => Assets.Script.Upgrades.UpgradeProgression.CreditBonusDisplayPct() <= 100,
+            // Bestiary button: the secret tile's fog is there (after 100%) and "Touch fog" hasn't been clicked yet - and
+            // again once Scary Earl is beaten, until the bestiary has been opened (the decimation goals are in there).
+            PulseCondition.FogUnseen => SecretBeastTile.Unlocked && !m.FogTouched
+                                        || m.ScaryEarlDefeated && !m.ViewedBestiaryAfterScaryEarl,
             PulseCondition.VictoryUnseen => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
             // The crown on the Victory button too: only until the victory dialog has been opened.
             _ => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,

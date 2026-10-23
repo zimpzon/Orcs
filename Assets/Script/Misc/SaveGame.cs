@@ -31,6 +31,7 @@ public class SaveGameMembers
     public bool ScaryEarlDefeated = false; // the Scary Earl arena (after "Touch fog") was won: normal arenas again
     public long ScaryEarlDefeatedLevel = -1; // arena level he was beaten at: the post-game HP ramp starts there (EnemySpawner.PostGameHpMul)
     public bool FogTouched = false; // after 100%: "Touch fog" in the bestiary revealed Scary Earl (SecretBeastTile)
+    public bool ViewedBestiaryAfterScaryEarl = false; // opened the bestiary after his defeat: stops its button pulse (decimation goals)
 
     // Permanent upgrades - SEE ApplyAscendPermanentBonuses for actual values of these
     public bool BoughtPassiveX2_1 = false;

@@ -4,7 +4,7 @@
 // none of this shows. Flaps (the very first beast) counts as decimated from the start - "enough".
 public static class BeastGoals
 {
-    public const long Goal = 100;
+    public const long Goal = 50;
 
     public static bool Active => SaveGame.Members.ScaryEarlDefeated;
 
