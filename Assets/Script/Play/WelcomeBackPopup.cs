@@ -22,7 +22,7 @@ public static class WelcomeBackPopup
             return;
 
         var awayText = PopupBuilder.CloneText(header, header.transform.GetSiblingIndex() + 1,
-            $"<color={Grey}>You were away for {FormatTime.Format(away.Days, away.Hours, away.Minutes)}</color>");
+            $"<color={Grey}>You were away for\n{FormatTime.Format(away.Days, away.Hours, away.Minutes)}\n</color>");
 
         // Sized for the final amount up front, so the popup doesn't grow while the number counts up.
         var amountText = PopupBuilder.AddBand(awayText, AmountText(amount), "OfflineIncomeBand");
