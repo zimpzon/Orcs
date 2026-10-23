@@ -85,6 +85,101 @@ public class StoryPanelFx : MonoBehaviour
     void Awake()
     {
         _mat = GetComponent<SpriteRenderer>().material; // instance
+        CreateFrame();
+    }
+
+    // ---- Pixel frame ----
+    // A thin pixel-art border around the panel, so it sits in the pixely arena like a little sign instead of floating
+    // over it. Its own sliced sprite made in code (the dialog / bestiary panel sprites have a filled center that would
+    // cover the metaballs): transparent inside, at the arena floor's 20 pixels per unit. A sibling of this backdrop
+    // (whose scale is stretched), fitted to its bounds every frame; shown and hidden with it.
+    const float FramePixelsPerUnit = 20f;
+    [Tooltip("Frame edge inside the backdrop's edges (world units): the backdrop fades out at its edges.")]
+    public float FrameInset = 0.06f;
+    [Tooltip("Room between the text and the frame, left/right and top/bottom (world units).")]
+    public Vector2 TextPadding = new(0.45f, 0.3f);
+    SpriteRenderer _body, _frame;
+    TMPro.TMP_Text _text; // the banner text (parent): the frame and backdrop are sized around it
+    static Sprite _frameSprite;
+
+    void CreateFrame()
+    {
+        _body = GetComponent<SpriteRenderer>();
+        _text = transform.parent != null ? transform.parent.GetComponent<TMPro.TMP_Text>() : null;
+        var go = new GameObject("PixelFrame");
+        go.transform.SetParent(transform.parent, false);
+        _frame = go.AddComponent<SpriteRenderer>();
+        _frame.sprite = FrameSprite();
+        _frame.drawMode = SpriteDrawMode.Sliced;
+        _frame.sortingLayerID = _body.sortingLayerID;
+        _frame.sortingOrder = _body.sortingOrder + 1; // over the metaballs, its center is see-through
+        go.SetActive(gameObject.activeInHierarchy);
+    }
+
+    void OnDisable()
+    {
+        if (_frame != null)
+            _frame.gameObject.SetActive(false);
+    }
+
+    void LateUpdate()
+    {
+        if (_frame == null)
+            return;
+        if (!_frame.gameObject.activeSelf)
+            _frame.gameObject.SetActive(true);
+        FitToText();
+        var b = _body.bounds;
+        var parentScale = _frame.transform.parent != null ? _frame.transform.parent.lossyScale : Vector3.one;
+        _frame.transform.position = new Vector3(b.center.x, b.center.y, transform.position.z);
+        _frame.size = new Vector2(
+            Mathf.Max(0.1f, (b.size.x - FrameInset * 2) / Mathf.Abs(parentScale.x)),
+            Mathf.Max(0.1f, (b.size.y - FrameInset * 2) / Mathf.Abs(parentScale.y)));
+    }
+
+    // The backdrop (this object, a stretched sprite) covers the text's drawn bounds + TextPadding + FrameInset, centered
+    // on the text; the frame then sits FrameInset inside it. Text space = the parent's local space.
+    void FitToText()
+    {
+        if (_text == null || _body.sprite == null || string.IsNullOrEmpty(_text.text))
+            return;
+        var tb = _text.textBounds;
+        if (tb.size.x <= 0f || tb.size.y <= 0f)
+            return;
+        Vector2 want = new Vector2(tb.size.x + (TextPadding.x + FrameInset) * 2, tb.size.y + (TextPadding.y + FrameInset) * 2);
+        Vector2 spriteSize = _body.sprite.bounds.size;
+        transform.localPosition = new Vector3(tb.center.x, tb.center.y, transform.localPosition.z);
+        transform.localScale = new Vector3(want.x / spriteSize.x, want.y / spriteSize.y, 1f);
+    }
+
+    // 12x12, 4 px border: a near-black outer line, two mid brown, one light inner line (the dialog panels' browns).
+    static Sprite FrameSprite()
+    {
+        if (_frameSprite != null)
+            return _frameSprite;
+        const int n = 12, border = 4;
+        Color32[] ring =
+        {
+            new Color32(0x1E, 0x19, 0x14, 255), // outer
+            new Color32(0x6E, 0x62, 0x53, 255),
+            new Color32(0x6E, 0x62, 0x53, 255),
+            new Color32(0xA3, 0x92, 0x7A, 255), // inner highlight
+        };
+        var px = new Color32[n * n];
+        for (int y = 0; y < n; ++y)
+        for (int x = 0; x < n; ++x)
+        {
+            int d = Mathf.Min(Mathf.Min(x, y), Mathf.Min(n - 1 - x, n - 1 - y)); // distance to the edge
+            // Cut the outermost corner pixel: a slightly rounded pixel corner.
+            bool corner = (x == 0 || x == n - 1) && (y == 0 || y == n - 1);
+            px[y * n + x] = d < border && !corner ? ring[d] : new Color32(0, 0, 0, 0);
+        }
+        var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
+        tex.SetPixels32(px);
+        tex.Apply();
+        _frameSprite = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), FramePixelsPerUnit, 0,
+            SpriteMeshType.FullRect, new Vector4(border, border, border, border));
+        return _frameSprite;
     }
 
     void OnEnable()

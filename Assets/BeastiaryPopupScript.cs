@@ -116,7 +116,7 @@ public class BeastiaryPopupScript : MonoBehaviour
     const float BadgeSize = 12f;
 
     // Tiny gold decimation progress over the portrait's head: at the top of the tile, a little below the frame edge.
-    const float ProgressFontSize = 6f;
+    const float ProgressFontSize = 7.5f;
     static readonly Color ProgressColor = new Color32(0xFF, 0xD5, 0x4A, 230); // gold
     const float ProgressTopGap = 3f; // below the tile's top edge
 

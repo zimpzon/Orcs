@@ -41,15 +41,14 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         if (isUnlocked)
             ActorBase.Names.TryGetValue(ActorType, out name);
 
-        // Three calm lines: the name, the income bonus, then one small grey line - the slaying progress (unlocked
-        // beasts) and the arena the beast starts to show up in.
+        // Three calm lines: the name, the income bonus, then one small light grey line - the slaying progress (after
+        // Scary Earl, unlocked beasts) and the arena the beast starts to show up in.
         long unlockLevel = EnemySpawner.UnlockLevelOf(ActorType);
         string arena = unlockLevel > 0 ? $"arena {Grouped(unlockLevel)}" : "";
         string facts = arena;
         if (isUnlocked && BeastGoals.Active)
         {
-            // Slaying goal after Scary Earl (BeastGoals): "12 / 50 slain" until reached, then "123 / 50 - DECIMATED"
-            // (gold). Flaps: "enough".
+            // Slaying goal (BeastGoals): "12 / 50 slain" until reached, then "57 / 50 - DECIMATED" (gold). Flaps: "enough".
             long kills = SaveGame.Members.GetBeastKills(ActorType);
             const long goal = BeastGoals.Goal;
             string decimated = $"<color={TextColors.Gold}>DECIMATED</color>";
@@ -62,7 +61,7 @@ public class BeastiaryBeastScript : MonoBehaviour, IPointerEnterHandler, IPointe
         string title = isUnlocked ? $"<b>{name}</b>" : $"<color=#999999>{name}</color>";
         string text = $"{title}\n<color={TextColors.GreenSmallest}>+{bonus}% income</color>";
         if (facts.Length > 0)
-            text += $"\n<size=85%><color=#A0A0A0>{facts}</color></size>";
+            text += $"\n<size=85%><color=#BEBEBE>{facts}</color></size>";
         HoverTextFx.Of(Hovertext).Hover(this, text);
     }
 }
