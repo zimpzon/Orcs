@@ -22,8 +22,8 @@ public class NextSteamDropLabel : MonoBehaviour
         if (seconds < 0)
             _text.text = "";
         else if (seconds == 0)
-            _text.text = "Next Steam item: any moment";
+            _text.text = "Next Steam drop: <color={TextColors.GreenSmallest}>any moment</color>";
         else
-            _text.text = $"Next Steam item: {seconds / 3600}:{seconds / 60 % 60:00}:{seconds % 60:00}";
+            _text.text = $"Next Steam drop: <color={TextColors.GreenSmallest}>{seconds / 3600:00}</color>:<color={TextColors.GreenSmallest}>{seconds / 60 % 60:00}</color>:<color={TextColors.GreenSmallest}>{seconds % 60:00}</color>";
     }
 }
