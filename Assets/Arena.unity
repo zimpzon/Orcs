@@ -47699,28 +47699,32 @@ MonoBehaviour:
   m_text: '<color=yellow>Tip:</color> Disable combat sound and music, enable run
     in background, and you can now easily hear when chest and mysteries are ready.</indent>
 
+    
 
     <color=yellow>Tip:</color>
     The order in which you buy things can make a very large difference to your income.</indent>
 
+    
 
     <color=yellow>Tip:</color>
     When you rebirth, you keep beast unlocks and skin unlocks.</indent>
 
+    
 
     <color=yellow>Tip:</color>
-    As long as you are online, you will every 3 hours get exciting Earl-flavored
-    Steam item drops.</indent>
+    As long as you are online, you will get exciting Earl-flavored Steam item drops
+    every 3 hours. You can see all your Steam drops in Tips/History. Enable ''Show
+    only Steam drops''.</indent>
 
+    
 
-    <color=yellow>Tip:</color> See the settings
-    page to learn how your income bonus is calculated.</indent>
+    <color=yellow>Tip:</color> Check the
+    settings page to learn how your income bonus is calculated.</indent>
 
+    
 
     <color=yellow>Tip:</color>
-    100% is not always the end.</indent>
-
-'
+    100% is not always the end.</indent>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
@@ -74177,7 +74181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1027350448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -74198,7 +74202,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 319.2, y: -142.97482}
-  m_SizeDelta: {x: 304.0529, y: 272.47}
+  m_SizeDelta: {x: 304.0529, y: 292.83}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1027350449
 MonoBehaviour:
@@ -104845,7 +104849,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Show Steam drops only
+  m_text: Show only Steam drops
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
