@@ -569,9 +569,10 @@ public class GameManager : MonoBehaviour
 
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
             TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : ArenaLabel(SaveGame.Members.ArenaLevel);
-            Floor.sprite = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : PickRoundFloor();
+            var roundFloor = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : PickRoundFloor();
             LeanTween.cancel(Floor.gameObject); // ResetGame's fade back to the default color would undo the pick
-            Floor.color = scaryEarl ? floorDefaultColor : PickRoundFloorColor();
+            var roundFloorColor = scaryEarl ? floorDefaultColor : PickRoundFloorColor();
+            FloorTransition.Change(Floor, roundFloor, roundFloorColor); // spreads out from the middle
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -1229,7 +1230,8 @@ public class GameManager : MonoBehaviour
         _cheatFloorColor = (_cheatFloorColor + 1) % count;
         var color = _cheatFloorColor == 0 ? floorDefaultColor : AltFloorColors[_cheatFloorColor - 1];
         LeanTween.cancel(Floor.gameObject);
-        Floor.color = color;
+        FloorTransition.Complete(); // keep a sprite still spreading in
+        FloorTransition.Change(Floor, Floor.sprite, color);
         Debug.Log($"Cheat: floor color {_cheatFloorColor}/{count - 1} (#{ColorUtility.ToHtmlStringRGB(color)})");
     }
 
@@ -1242,8 +1244,9 @@ public class GameManager : MonoBehaviour
         int count = 1 + (AltFloorSprites?.Length ?? 0);
         _cheatFloor = (_cheatFloor + 1) % count;
         var sprite = _cheatFloor == 0 ? floorDefaultSprite : AltFloorSprites[_cheatFloor - 1];
+        FloorTransition.Complete(); // keep a color still spreading in
         if (sprite != null)
-            Floor.sprite = sprite;
+            FloorTransition.Change(Floor, sprite, Floor.color);
         Debug.Log($"Cheat: floor {_cheatFloor}/{count - 1} ({(sprite != null ? sprite.name : "missing")})");
     }
 
