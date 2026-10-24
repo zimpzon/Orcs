@@ -97,7 +97,7 @@ public static class SteamItemDrops
         {
             ItemDropPopup.Show(item.Def);
             if (item.Def != null)
-                EventLog.Add($"Item drop! {item.Def.Name} ({item.Def.Rarity}) was added to your Steam inventory.");
+                EventLog.Add($"Item drop! <color=#{ColorUtility.ToHtmlStringRGB(item.Def.Color)}>{item.Def.Name} ({item.Def.Rarity})</color> was added to your Steam inventory.");
         }
     }
 }
