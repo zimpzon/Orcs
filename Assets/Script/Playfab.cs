@@ -17,7 +17,7 @@ public static class Playfab
     public const string RealTimeAccumulated = "real_time_accumulated";
     public const string ArenaLevel = "arena_level";
 
-    const string Version = "1.0";
+    const string Version = "2.0";
 
     // Web (WebGL) only: the Steam version sends its stats to Steam instead (SteamManager.SetStats).
     public static bool Enabled => !SteamManager.IsSteamVersion;
