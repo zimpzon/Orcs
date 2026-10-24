@@ -153,6 +153,10 @@ public class GameManager : MonoBehaviour
 
     public SpriteRenderer Floor;
     public Sprite ScaryEarlFloorSprite; // arena floor while fighting Scary Earl (tinted like the normal floor)
+    // Now and then a round gets a different floor (tinted like the normal one): AltFloorChance per round, then one of
+    // these at random. Otherwise the scene's floor (grass).
+    public Sprite[] AltFloorSprites;
+    [Range(0f, 1f)] public float AltFloorChance = 0.1f;
     Color floorDefaultColor;
     Sprite floorDefaultSprite;
     public string ColorLocked;
@@ -554,7 +558,7 @@ public class GameManager : MonoBehaviour
 
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
             TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : ArenaLabel(SaveGame.Members.ArenaLevel);
-            Floor.sprite = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : floorDefaultSprite;
+            Floor.sprite = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : PickRoundFloor();
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -1168,6 +1172,36 @@ public class GameManager : MonoBehaviour
         {
             OnLastEnemyKilled(actor);
         }
+    }
+
+    // The normal floor, or with AltFloorChance one of AltFloorSprites - never in the first AltFloorFromLevel arenas.
+    const long AltFloorFromLevel = 51;
+
+    Sprite PickRoundFloor()
+    {
+        if (_cheatFloor > 0 && _cheatFloor <= (AltFloorSprites?.Length ?? 0) && AltFloorSprites[_cheatFloor - 1] != null)
+            return AltFloorSprites[_cheatFloor - 1]; // RightShift+R picked one: keep it
+        if (SaveGame.Members.ArenaLevel >= AltFloorFromLevel && AltFloorSprites != null && AltFloorSprites.Length > 0 && UnityEngine.Random.value < AltFloorChance)
+        {
+            var alt = AltFloorSprites[UnityEngine.Random.Range(0, AltFloorSprites.Length)];
+            if (alt != null)
+                return alt;
+        }
+        return floorDefaultSprite;
+    }
+
+    // RightShift+R: the next floor right away (normal, then each alternative, then normal again). A picked alternative
+    // stays for the following rounds too; back on "normal" the rounds pick as usual again.
+    int _cheatFloor;
+
+    void CheatCycleFloor()
+    {
+        int count = 1 + (AltFloorSprites?.Length ?? 0);
+        _cheatFloor = (_cheatFloor + 1) % count;
+        var sprite = _cheatFloor == 0 ? floorDefaultSprite : AltFloorSprites[_cheatFloor - 1];
+        if (sprite != null)
+            Floor.sprite = sprite;
+        Debug.Log($"Cheat: floor {_cheatFloor}/{count - 1} ({(sprite != null ? sprite.name : "missing")})");
     }
 
     // ---- Endgame cheats (RightShift+B steps through them all) ----
@@ -2335,6 +2369,9 @@ public class GameManager : MonoBehaviour
         {
             ToggleCheatArenaJump();
         }
+
+        if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
+            CheatCycleFloor();
 
         // Endgame, one step per press: final enemy unlocked -> killed -> (100% + Touch fog yourself) -> Scary Earl beaten
         // -> every beast decimated.

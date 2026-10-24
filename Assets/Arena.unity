@@ -31650,6 +31650,10 @@ MonoBehaviour:
   Floor: {fileID: 1771007547}
   ScaryEarlFloorSprite: {fileID: 21300000, guid: 59973fc1e4a5fff409b6d3b2a1ece834,
     type: 3}
+  AltFloorSprites:
+  - {fileID: 21300000, guid: 27390fae41762c946a695e057de85f68, type: 3}
+  - {fileID: 21300000, guid: 643d31933349bfc48a7a1182e2bf5f84, type: 3}
+  AltFloorChance: 0.2
   ColorLocked: '#901010'
   ColorUnlocked: '#10ff10'
   HpBarScript: {fileID: 462164609116755589}
