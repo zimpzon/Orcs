@@ -287,6 +287,7 @@ namespace Assets.Script.Achievements
                     m.CompletionRebirths = m.TimesAscended_09_08_2025;
                 }
                 AnnounceCompletion();
+                EventLog.Add("100% game completion! Long live King Earl!");
             }
         }
 
@@ -482,6 +483,7 @@ namespace Assets.Script.Achievements
             {
                 list.Add(Achieved.FinalEnemyDefeated);
                 NewAchieved(Achieved.FinalEnemyDefeated);
+                EventLog.Add("Earl defeated The Night Creeper for the first time!");
             }
         }
 

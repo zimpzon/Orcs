@@ -88,6 +88,7 @@ public class AchievementsScript : MonoBehaviour
             int colon = status.hoverText.IndexOf(':');
             string skinName = colon > 0 ? status.hoverText.Substring(0, colon) : status.hoverText;
             AnnounceAtCursorOrCenter($"New skin unlocked!\n<size=80%>{skinName}</size>");
+            EventLog.Add($"New skin unlocked: {skinName}.");
         }
     }
 

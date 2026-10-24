@@ -89,6 +89,7 @@ public class BeastiaryPopupScript : MonoBehaviour
         if (SaveGame.Members.FogTouched)
             return;
         SaveGame.Members.FogTouched = true;
+        EventLog.Add("Earl touched the fog... and revealed Scary Earl!");
         SaveGame.Save();
         AudioManager.Instance.PlayMenuClick();
         if (ButtonTouchFog != null)

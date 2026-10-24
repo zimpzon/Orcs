@@ -206,6 +206,14 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
 
     long EffectiveCost() => Cost;
 
+    // The card's title as shown on it (for the event log).
+    string CardTitle()
+    {
+        var title = transform.Find("TextTitle");
+        string text = title != null && title.TryGetComponent<TMP_Text>(out var t) ? t.text : CardId.ToString();
+        return System.Text.RegularExpressions.Regex.Replace(text, "<.*?>", "").Replace('\n', ' ').Trim();
+    }
+
     public void OnBuy()
     {
         if (CardId == AscendUpgradeCardId.NotSet)
@@ -219,6 +227,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         }
 
         Debug.Log("Bought " + CardId);
+        EventLog.Add($"Bought the rebirth card {CardTitle()} for {EffectiveCost()} diamonds.");
         AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
         SetOwned(true);
         if (CardId == AscendUpgradeCardId.FasterMystery)
@@ -233,6 +242,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
     void Refund()
     {
         Debug.Log("Refunded " + CardId);
+        EventLog.Add($"Refunded the rebirth card {CardTitle()}: +{EffectiveCost()} diamonds.");
         AudioManager.Instance.PlayMenuClick();
         SetOwned(false);
         if (CardId == AscendUpgradeCardId.FasterMystery && SaveGame.Members.QuestionMarkRealTimeLeft > 0)

@@ -47,6 +47,10 @@ public static class SteamItemDrops
     static void Announce(SteamItem[] granted)
     {
         foreach (var item in granted)
+        {
             ItemDropPopup.Show(item.Def);
+            if (item.Def != null)
+                EventLog.Add($"Item drop! {item.Def.Name} ({item.Def.Rarity}) was added to your Steam inventory.");
+        }
     }
 }

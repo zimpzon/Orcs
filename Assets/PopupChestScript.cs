@@ -145,6 +145,7 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
                 ? $"<color={TextColors.GreyLight}>2 X {numberOfSeconds} seconds of your income.</color>"
                 : $"<color={TextColors.GreyLight}>{numberOfSeconds} seconds of your income.</color>";
             RewardPopup.ShowMoney("CHEST LOOTED!\n", reward, $"\nYou found an old treasure chest!\n{worth}");
+            EventLog.Add($"Looted a treasure chest: +${Format512.Format(reward)}.");
             SaveGame.Save(); // don't lose a chest reward to a reload before the next auto-save
         }
     }

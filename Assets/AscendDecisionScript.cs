@@ -191,6 +191,7 @@ public class AscendDecisionScript : MonoBehaviour
             if (SaveGame.Members.BoughtHeadStart)
                 details += $"\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
             RewardPopup.Show("REBIRTH!", $"+{Format64.FormatGrouped(DiamondsGainedAtRebirth)} {diamondGainTxt}", details);
+            EventLog.Add($"Earl was reborn and gained {Format64.FormatGrouped(DiamondsGainedAtRebirth)} {diamondGainTxt.ToLowerInvariant()}.");
 
             // Stay on the rebirth screen so the new diamonds can be spent right away (0 credits now, so the
             // Rebirth button disables itself).

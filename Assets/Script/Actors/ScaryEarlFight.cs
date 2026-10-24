@@ -46,7 +46,10 @@ public static class ScaryEarlFight
     {
         var m = SaveGame.Members;
         if (!m.ScaryEarlDefeated)
+        {
             m.BeastKills.Clear(); // the slaying goals (BeastGoals) count from his defeat
+            EventLog.Add("Earl defeated Scary Earl!");
+        }
         m.ScaryEarlDefeated = true;
         if (m.ScaryEarlDefeatedLevel < 0)
             m.ScaryEarlDefeatedLevel = m.ArenaLevel;

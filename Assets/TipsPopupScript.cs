@@ -12,12 +12,21 @@ public class TipsPopupScript : MonoBehaviour
 {
     public TextMeshProUGUI ProgressText; // the tips (authored in the scene)
     public TextMeshProUGUI NumbersText;  // filled by this script
+    public EventLogPopup EventsPopup;    // the "Events" button opens it (OnEventsClick, wired in the scene)
 
     const string HeaderHex = TextColors.Green; // the game's standard green header color (TIPS uses it too, in the scene text)
     const int MinPower = 6;   // million
     const int MaxPower = 45;  // quattuordecillion (powers come in steps of 3)
 
     void OnEnable() => FillNumbers();
+
+    public void OnEventsClick()
+    {
+        if (EventsPopup != null)
+            EventsPopup.Show(this);
+        else
+            Debug.LogWarning("Tips: no Events Popup set - run Tools > UI > Create Events Dialog and save the scene");
+    }
     void OnValidate() => FillNumbers();
 
     void FillNumbers()

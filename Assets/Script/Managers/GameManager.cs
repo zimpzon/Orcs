@@ -521,6 +521,7 @@ public class GameManager : MonoBehaviour
                     continue;
 
                 ActorBase.Names.TryGetValue(actor.ActorType, out string beastName);
+                EventLog.Add($"New beast discovered: {beastName ?? actor.ActorType.ToString()}.");
                 AchievementsScript.AnnounceAtCursorOrCenter(string.IsNullOrEmpty(beastName)
                     ? "New beast unlocked!"
                     : $"New beast unlocked!\n<size=80%>{beastName}</size>");
@@ -1170,7 +1171,12 @@ public class GameManager : MonoBehaviour
             SaveGame.Members.AddBeastKill(actor.ActorType);
             // Slaying goal reached right now (BeastGoals): celebrate once.
             if (BeastGoals.JustMastered(actor.ActorType))
+            {
                 AnnounceBeastMastered(actor.ActorType);
+                EventLog.Add($"{(ActorBase.Names.TryGetValue(actor.ActorType, out var decimatedName) ? decimatedName : actor.ActorType.ToString())} decimated!");
+                if (BeastGoals.AllMastered())
+                    EventLog.Add("Every beast decimated!");
+            }
         }
 
         if (actor.ActorType == ActorTypeEnum.FromTheVoid)
@@ -1617,11 +1623,13 @@ public class GameManager : MonoBehaviour
         ApplyBuyMultiple((int)BuyAmountSelection.Buy1);
 
         StartCoroutine(GameStateCo());
+        EventLog.Add("Earl entered the arena.");
     }
 
     private void OnApplicationQuit()
     {
         Debug.Log("OnApplicationQuit, saving...");
+        EventLog.Add("Earl left the arena.");
         TrySaveGame(forceSave: true);
     }
 
@@ -1718,6 +1726,11 @@ public class GameManager : MonoBehaviour
             amount = 1000;
         AddMoney(amount);
         Debug.Log($"Offline income: {(long)seconds} s away, +{Format512.Format(amount)}");
+        if (!cheat && seconds >= OfflinePopupMinSeconds && amount > 0)
+        {
+            var away = TimeSpan.FromSeconds(seconds);
+            EventLog.Add($"Earl was away for {FormatTime.Format(away.Days, away.Hours, away.Minutes, useShorthand: true)} and earned ${Format512.Format(amount)} offline.");
+        }
 
         if (!cheat && (seconds < OfflinePopupMinSeconds || !(amount > 0)))
         {

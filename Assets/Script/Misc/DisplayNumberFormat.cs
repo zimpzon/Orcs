@@ -10,6 +10,8 @@ namespace Assets.Script.Misc
     {
         public static NumberFormatInfo Info { get; private set; } = CultureInfo.InvariantCulture.NumberFormat;
         public static string DecimalSeparator => Info.NumberDecimalSeparator;
+        // The player's culture for dates and times ("g" = their short date + time), captured with the numbers.
+        public static CultureInfo DateCulture { get; private set; } = CultureInfo.InvariantCulture;
 
         // Runs before any Awake/Start, i.e. before GameManager forces the thread culture to en-US.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -22,6 +24,7 @@ namespace Assets.Script.Misc
             // Some cultures group with (narrow) no-break spaces which the game fonts may not have.
             info.NumberGroupSeparator = os.NumberGroupSeparator.Replace(' ', ' ').Replace(' ', ' ');
             Info = info;
+            DateCulture = CultureInfo.CurrentCulture;
 #endif
         }
 

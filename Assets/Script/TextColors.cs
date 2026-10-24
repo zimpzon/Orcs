@@ -19,5 +19,6 @@ public static class TextColors
     public const string Gold = "#FFD54A";
 
     public const string Grey = "#C8C8C8";
+    public const string GreyDark = "#9A9A9A";
     public const string GreyLight = "#F0F0F0";
 }
