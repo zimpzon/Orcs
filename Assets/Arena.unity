@@ -47699,12 +47699,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: '<color=yellow>Tip:</color> Disable combat sound and music, enable run
-    in background, and you can now easily hear when chest and mysteries are ready.</indent>
+    in background, and you can now easily hear when chests and mysteries are ready.</indent>
 
     
 
     <color=yellow>Tip:</color>
     The order in which you buy things can make a very large difference to your income.</indent>
+
+    
+
+    <color=yellow>Tip:</color>
+    Buying frequently greatly speeds up your progress.</indent>
 
     
 
@@ -47722,6 +47727,11 @@ MonoBehaviour:
 
     <color=yellow>Tip:</color> Check the
     settings page to learn how your income bonus is calculated.</indent>
+
+    
+
+    <color=yellow>Tip:</color>
+    Mystery X10 counts towards your maximum income, making Head Start a lot better.</indent>
 
     
 
@@ -74203,8 +74213,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 319.2, y: -142.97482}
-  m_SizeDelta: {x: 304.0529, y: 292.83}
+  m_AnchoredPosition: {x: 319.2, y: -84}
+  m_SizeDelta: {x: 304.0529, y: 360.83}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1027350449
 MonoBehaviour:
