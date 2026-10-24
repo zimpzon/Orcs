@@ -21,7 +21,6 @@ public class CheatSheet : MonoBehaviour
         ("RightCtrl+Z", "Set a mid-game upgrade loadout"),
         ("RightCtrl+T", "Cheat speed: cycles x1 -> x10 -> x50 (time)"),
         ("RightCtrl+J", "Arena jump per win / loss: cycles off -> 100 -> 1000 -> 5000"),
-        ("RightCtrl+B", "Boss test: arena to 100K (final enemy) + toggle one-shot kills"),
         ("RightShift+U", "Re-lock the latest unlocked enemy (to test its unlock again)"),
         ("RightCtrl+Right / Left", "Game time scale +0.1 / -0.1"),
         ("", ""),
@@ -35,6 +34,7 @@ public class CheatSheet : MonoBehaviour
         ("RightShift+M", "Decimate all beasts (kills past the goal; shown after Scary Earl)"),
         ("RightShift+O", "Pretend 1:30 offline (offline income popup)"),
         ("RightShift+K", "All skins unlocked on / off (this session; counts toward 100%)"),
+        ("RightShift+B", "Endgame step: final enemy -> killed -> (Touch fog) -> Scary Earl -> decimate all"),
         ("RightShift+D", "Item drop dialog: random item, next rarity each press"),
     };
 

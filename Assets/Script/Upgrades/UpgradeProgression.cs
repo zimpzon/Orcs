@@ -415,9 +415,9 @@ namespace Assets.Script.Upgrades
             {
                 return 100;
             }
-            else if (selection == GameManager.BuyAmountSelection.Buy50)
+            else if (selection == GameManager.BuyAmountSelection.Buy25)
             {
-                return 50;
+                return 25;
             }
             else
                 throw new NotImplementedException($"{selection}");

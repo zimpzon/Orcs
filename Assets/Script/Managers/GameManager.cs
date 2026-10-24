@@ -218,10 +218,10 @@ public class GameManager : MonoBehaviour
 
     public Button ButtonBuy1;
     public Button ButtonBuy10;
-    public Button ButtonBuy50;
+    public Button ButtonBuy25;
     public Button ButtonBuy100;
 
-    public enum BuyAmountSelection {  Buy1 = 0, Buy10 = 1, Buy100 = 2, Buy50 = 3, }
+    public enum BuyAmountSelection {  Buy1 = 0, Buy10 = 1, Buy100 = 2, Buy25 = 3, }
     [NonSerialized] public BuyAmountSelection SelectedBuyAmount = BuyAmountSelection.Buy1;
 
     [NonSerialized] public float UnlockedPct;
@@ -1170,6 +1170,71 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // ---- Endgame cheats (RightShift+B steps through them all) ----
+
+    void CheatBeatScaryEarl()
+    {
+        var earl = ScaryEarlFight.Current;
+        if (GameState == State.Idle_Fighting && earl != null && earl.IsScaryEarl && !earl.IsDead && earl.gameObject.activeInHierarchy)
+        {
+            HpBarScript.AddHp(-HpBarScript.CurrentHp);
+            earl.ApplyDamage2(earl.Hp, Vector3.up, 1f);
+        }
+        else
+        {
+            ScaryEarlFight.MarkDefeated();
+        }
+        Debug.Log("Cheat: Scary Earl beaten");
+    }
+
+    // Every beast's kill count just past the slaying goal (BeastGoals; shows once Scary Earl is beaten).
+    static void CheatDecimateAll()
+    {
+        foreach (ActorTypeEnum type in Enum.GetValues(typeof(ActorTypeEnum)))
+        {
+            if (BeastGoals.IsBeast(type) && SaveGame.Members.GetBeastKills(type) < BeastGoals.Goal)
+                SaveGame.Members.SetBeastKills(type, BeastGoals.Goal + 1);
+        }
+        Debug.Log("Cheat: all beasts decimated");
+    }
+
+    // The next endgame milestone not reached yet; what's done is shown at the cursor too.
+    void CheatEndgameStep()
+    {
+        var m = SaveGame.Members;
+        string step;
+        if (!m.BeastsSeen.Contains(ActorTypeEnum.FromTheVoid))
+        {
+            m.ArenaLevel = Math.Max(m.ArenaLevel, EnemySpawner.FinalEnemyFirstLevel); // he's in every round from there
+            step = $"Arena {m.ArenaLevel}: the final enemy shows up next round";
+        }
+        else if (!m.Achieved.Contains(Achieved.FinalEnemyDefeated))
+        {
+            Assets.Script.Achievements.AchievementChecks.FinalEnemyKilled = true; // granted by the next achievement check
+            step = "Final enemy killed";
+        }
+        else if (!m.FogTouched)
+        {
+            step = "Waiting for 100% and Touch fog (bestiary)";
+        }
+        else if (!m.ScaryEarlDefeated)
+        {
+            CheatBeatScaryEarl();
+            step = "Scary Earl beaten";
+        }
+        else if (!BeastGoals.AllMastered())
+        {
+            CheatDecimateAll();
+            step = "Every beast decimated";
+        }
+        else
+        {
+            step = "Endgame done - nothing left";
+        }
+        Debug.Log("Cheat endgame: " + step);
+        AchievementsScript.AnnounceAtCursorOrCenter($"<size=70%>{step}</size>");
+    }
+
     void AnnounceBeastMastered(ActorTypeEnum type)
     {
         string name = ActorBase.Names.TryGetValue(type, out var n) ? n : type.ToString();
@@ -1770,7 +1835,7 @@ public class GameManager : MonoBehaviour
 
         ButtonBuy1.interactable = true;
         ButtonBuy10.interactable = true;
-        ButtonBuy50.interactable = true;
+        ButtonBuy25.interactable = true;
         if (ButtonBuy100 != null)
             ButtonBuy100.interactable = true;
 
@@ -1787,9 +1852,9 @@ public class GameManager : MonoBehaviour
             if (ButtonBuy100 != null)
                 ButtonBuy100.interactable = false;
         }
-        else if (SelectedBuyAmount == BuyAmountSelection.Buy50)
+        else if (SelectedBuyAmount == BuyAmountSelection.Buy25)
         {
-            ButtonBuy50.interactable = false;
+            ButtonBuy25.interactable = false;
         }
         UpgradeManager.Instance.UpdateUpgradeUi();
     }
@@ -2242,14 +2307,7 @@ public class GameManager : MonoBehaviour
 
         // Master every beast: kill counts just past the slaying goal (BeastGoals; shows once Scary Earl is beaten).
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightShift))
-        {
-            foreach (ActorTypeEnum type in Enum.GetValues(typeof(ActorTypeEnum)))
-            {
-                if (BeastGoals.IsBeast(type) && SaveGame.Members.GetBeastKills(type) < BeastGoals.Goal)
-                    SaveGame.Members.SetBeastKills(type, BeastGoals.Goal + 1);
-            }
-            Debug.Log("Cheat: all beasts mastered");
-        }
+            CheatDecimateAll();
 
         if (G.GetCheatKeyDown(KeyCode.M) && G.GetCheatKey(KeyCode.RightControl))
         {
@@ -2278,14 +2336,10 @@ public class GameManager : MonoBehaviour
             ToggleCheatArenaJump();
         }
 
-        // Boss test: jump to the final enemy's arena (The Night Creeper, 100K) and one-shot everything.
-        if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightControl))
-        {
-            CheatOneShot = !CheatOneShot;
-            if (CheatOneShot)
-                SaveGame.Members.ArenaLevel = Math.Max(SaveGame.Members.ArenaLevel, 100_000);
-            UpdateCheatLabel();
-        }
+        // Endgame, one step per press: final enemy unlocked -> killed -> (100% + Touch fog yourself) -> Scary Earl beaten
+        // -> every beast decimated.
+        if (G.GetCheatKeyDown(KeyCode.B) && G.GetCheatKey(KeyCode.RightShift))
+            CheatEndgameStep();
 
         // Re-lock the latest unlocked enemy (bestiary order), to test its unlock again. (Not Ctrl+U: Unity editor uses it.)
         if (G.GetCheatKeyDown(KeyCode.U) && G.GetCheatKey(KeyCode.RightShift))
@@ -2297,19 +2351,7 @@ public class GameManager : MonoBehaviour
         // play/stop shortcut.)
         // Beat Scary Earl: kills him if his round is running, otherwise just marks him defeated.
         if (G.GetCheatKeyDown(KeyCode.E) && G.GetCheatKey(KeyCode.RightShift) && ScaryEarlFight.Active)
-        {
-            var earl = ScaryEarlFight.Current;
-            if (GameState == State.Idle_Fighting && earl != null && earl.IsScaryEarl && !earl.IsDead && earl.gameObject.activeInHierarchy)
-            {
-                HpBarScript.AddHp(-HpBarScript.CurrentHp);
-                earl.ApplyDamage2(earl.Hp, Vector3.up, 1f);
-            }
-            else
-            {
-                ScaryEarlFight.MarkDefeated();
-            }
-            Debug.Log("Cheat: Scary Earl beaten");
-        }
+            CheatBeatScaryEarl();
 
         if (G.GetCheatKeyDown(KeyCode.T) && G.GetCheatKey(KeyCode.RightShift))
         {
