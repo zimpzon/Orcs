@@ -13,8 +13,7 @@ using UnityEngine;
 public static class SteamItemDrops
 {
     // -steam-fastdrops: 1 minute (see SteamStub).
-    //public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 180f;
-    public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 2f;
+    public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 180f;
 
     const float FirstTriggerDelay = 10f;      // after start, so the arena (and any start popup) is up first
     // How often to ask while the countdown runs (in case it's off), and once it says a drop is due.
