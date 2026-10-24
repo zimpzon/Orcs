@@ -130,10 +130,10 @@ public class AudioManager : MonoBehaviour
         RepeatingSawblade.Update(G.D.GameDeltaTime);
     }
 
-    // Sound setup: UI sounds (menu click, chime, money pickup) and music always play, only the volume slider affects
-    // them. Everything else is combat sound, behind the Combat sound setting (off by default).
+    // Sound setup: UI sounds (menu click, chime, dialogs) and music always play, only the volume slider affects
+    // them. Everything else - coin pickups too - is combat sound, behind the Combat sound setting.
     bool IsUiClip(AudioClip clip)
-        => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup || clip == AudioData.DialogShow || clip == AudioData.DialogClose
+        => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.DialogShow || clip == AudioData.DialogClose
         || clip == AudioData.ExpandTierList || clip == AudioData.CloseTierList || clip == AudioData.PickupReady;
 
     bool CombatSoundEnabled => SoundSettings.CombatSoundEnabled;

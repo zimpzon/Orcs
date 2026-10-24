@@ -14,7 +14,7 @@ public static class SoundSettings
     public static bool SoundEnabled { get => GetBool("SoundEnabled", true); set => SetBool("SoundEnabled", value); }
     // Music on/off (MusicManagerScript), separate from the music volume.
     public static bool MusicEnabled { get => GetBool("MusicEnabled", true); set => SetBool("MusicEnabled", value); }
-    // All game sounds except UI ones (menu click, chime, money pickup) and music.
+    // All game sounds except UI ones (menu click, chime, dialogs) and music. Coin pickups count as game sounds.
     public static bool CombatSoundEnabled { get => GetBool("CombatSoundEnabled", true); set => SetBool("CombatSoundEnabled", value); }
     // Keep sound and music playing while minimized / in another tab.
     public static bool SoundInBackground { get => GetBool("SoundInBackground", true); set => SetBool("SoundInBackground", value); }
