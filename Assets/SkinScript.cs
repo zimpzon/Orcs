@@ -207,7 +207,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BlackEarl)
         {
-            return (list.Contains(Achieved.SuperClears500), "Black Earl: Get 500 super fast arena clears");
+            return (list.Contains(Achieved.SuperClears250), "Black Earl: Get 250 super fast arena clears");
         }
         else if (animationName == SkinAnimation.InvertedEarl)
         {
@@ -286,7 +286,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.PrettyEarl => (m.Achieved.Count, 20),
 
             SkinAnimation.WhiteEarl => (m.TotalUpgradesBought, 25000),
-            SkinAnimation.BlackEarl => (m.SuperFastClears, 500),
+            SkinAnimation.BlackEarl => (m.SuperFastClears, 250),
             SkinAnimation.InvertedEarl => (m.MonsterCreditsLifetime_09_08_2025, 1000),
             SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 3),
             SkinAnimation.MonochromeEarl => (GameCompletion.GetProgress().TotalPct, 100),
