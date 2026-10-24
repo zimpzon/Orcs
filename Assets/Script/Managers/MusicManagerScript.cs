@@ -24,7 +24,7 @@ public class MusicManagerScript : MonoBehaviour
         Instance = this;
         audioSource_ = GetComponent<AudioSource>();
         audioSource_.ignoreListenerPause = true;
-        GameEvents.OnSaveWiped += _ => ApplyMusicEnabled(); // a new save has its own music setting
+        GameEvents.OnSaveWiped += _ => ApplyMusicEnabled(); // (music on/off is per machine now: SoundSettings)
     }
 
     public void StartPlaylist()
@@ -52,7 +52,7 @@ public class MusicManagerScript : MonoBehaviour
     // No music on the web (WebGL): never plays there, whatever the saved setting says.
     public static bool Supported => Application.platform != RuntimePlatform.WebGLPlayer;
 
-    bool MusicOff => !Supported || (SaveGame.Members != null && !SaveGame.Members.MusicEnabled);
+    bool MusicOff => !Supported || !SoundSettings.MusicEnabled;
 
     void Update()
     {
@@ -134,7 +134,7 @@ public class MusicManagerScript : MonoBehaviour
             return;
         if (MusicOff)
         {
-            SaveGame.Members.MusicEnabled = true;
+            SoundSettings.MusicEnabled = true;
             SaveGame.Save();
         }
         _playlistStarted = true;

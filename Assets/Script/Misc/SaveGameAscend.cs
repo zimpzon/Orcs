@@ -48,19 +48,12 @@ static class SaveGameAscend
 
         // Settings
         newSave.Version = oldSave.Version;
-        newSave.VolumeMaster = oldSave.VolumeMaster;
-        newSave.VolumeMusic = oldSave.VolumeMusic;
-        newSave.VolumeSfx = oldSave.VolumeSfx;
 
         newSave.ShowFloatingDamageNumbers = oldSave.ShowFloatingDamageNumbers;
         newSave.ShowFloatingGoldNumbers = oldSave.ShowFloatingGoldNumbers;
         newSave.ShowDetailsOnHover = oldSave.ShowDetailsOnHover;
-        newSave.CombatSoundEnabled = oldSave.CombatSoundEnabled;
-        newSave.MusicEnabled = oldSave.MusicEnabled;
-        newSave.SoundInBackground = oldSave.SoundInBackground;
         newSave.HideVictoryBanner = oldSave.HideVictoryBanner;
         newSave.ShowHealthBars = oldSave.ShowHealthBars;
-        newSave.SoundEnabled = oldSave.SoundEnabled;
         newSave.PctBonusBuyAmount = oldSave.PctBonusBuyAmount;
         newSave.SelectedSkin = oldSave.SelectedSkin;
 

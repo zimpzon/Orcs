@@ -83,7 +83,7 @@ public class MusicPopupScript : MonoBehaviour
         var music = MusicManagerScript.Instance;
         if (music == null)
             return;
-        bool on = SaveGame.Members.MusicEnabled;
+        bool on = SoundSettings.MusicEnabled;
         if (music.CurrentTrack == _shownTrack && on == _shownOn)
             return;
         _shownTrack = music.CurrentTrack;

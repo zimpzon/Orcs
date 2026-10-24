@@ -115,7 +115,7 @@ public class AudioManager : MonoBehaviour
     // Paused while minimized, unless the "Sound in background" setting is on. Also called when that setting changes.
     public void ApplyBackgroundPause()
     {
-        bool pause = _minimized && !(SaveGame.Members != null && SaveGame.Members.SoundInBackground);
+        bool pause = _minimized && !SoundSettings.SoundInBackground;
         AudioListener.pause = pause;
         if (MusicManagerScript.Instance != null)
             MusicManagerScript.Instance.SetPaused(pause); // music ignores the listener pause
@@ -136,7 +136,7 @@ public class AudioManager : MonoBehaviour
         => clip == AudioData.Menu || clip == AudioData.Chime || clip == AudioData.MoneyPickup || clip == AudioData.DialogShow || clip == AudioData.DialogClose
         || clip == AudioData.ExpandTierList || clip == AudioData.CloseTierList || clip == AudioData.PickupReady;
 
-    bool CombatSoundEnabled => SaveGame.Members != null && SaveGame.Members.CombatSoundEnabled;
+    bool CombatSoundEnabled => SoundSettings.CombatSoundEnabled;
 
     // Sources that don't go through PlayClipForReal (sawblade loop, grenade fuse, ...) are muted per source. The sfx
     // pool is gated per clip in PlayClipForReal instead, since UI and combat sounds share it.
@@ -146,7 +146,7 @@ public class AudioManager : MonoBehaviour
         if (SaveGame.Members == null)
             return;
 
-        AudioListener.volume = SaveGame.Members.SoundEnabled ? 1f : 0f; // master sound switch (Settings): everything, music too
+        AudioListener.volume = SoundSettings.SoundEnabled ? 1f : 0f; // master sound switch (Settings): everything, music too
         bool mute = !CombatSoundEnabled;
         var music = MusicManagerScript.Instance != null ? MusicManagerScript.Instance.Source : null;
         foreach (var source in FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None))

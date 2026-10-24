@@ -41,7 +41,7 @@ public class SettingsImageScript : MonoBehaviour
 
         CombatSoundToggle.onValueChanged.AddListener(on =>
         {
-            SaveGame.Members.CombatSoundEnabled = on;
+            SoundSettings.CombatSoundEnabled = on;
             AudioManager.Instance.ApplySoundSettings();
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
@@ -50,7 +50,7 @@ public class SettingsImageScript : MonoBehaviour
         if (MasterSoundToggle != null)
             MasterSoundToggle.onValueChanged.AddListener(on =>
             {
-                SaveGame.Members.SoundEnabled = on;
+                SoundSettings.SoundEnabled = on;
                 AudioManager.Instance.ApplySoundSettings();
                 SaveGame.Save();
                 AudioManager.Instance.PlayMenuClick(); // heard only when turning sound on
@@ -74,7 +74,7 @@ public class SettingsImageScript : MonoBehaviour
 
         SoundInBackgroundToggle.onValueChanged.AddListener(on =>
         {
-            SaveGame.Members.SoundInBackground = on;
+            SoundSettings.SoundInBackground = on;
             AudioManager.Instance.ApplyBackgroundPause();
             SaveGame.Save();
             AudioManager.Instance.PlayMenuClick();
@@ -82,7 +82,7 @@ public class SettingsImageScript : MonoBehaviour
 
         MusicToggle.onValueChanged.AddListener(on =>
         {
-            SaveGame.Members.MusicEnabled = on;
+            SoundSettings.MusicEnabled = on;
             MusicManagerScript.Instance.ApplyMusicEnabled();
             UpdateMusicListButton();
             SaveGame.Save();
@@ -92,17 +92,17 @@ public class SettingsImageScript : MonoBehaviour
         // Volumes: saved by the regular auto-save (every 5 s), not on every drag step.
         MasterVolumeSlider.onValueChanged.AddListener(value =>
         {
-            SaveGame.Members.VolumeMaster = value;
+            SoundSettings.VolumeMaster = value;
             GameManager.Instance.ApplyVolume();
         });
         MusicVolumeSlider.onValueChanged.AddListener(value =>
         {
-            SaveGame.Members.VolumeMusic = value;
+            SoundSettings.VolumeMusic = value;
             GameManager.Instance.ApplyVolume();
         });
         SfxVolumeSlider.onValueChanged.AddListener(value =>
         {
-            SaveGame.Members.VolumeSfx = value;
+            SoundSettings.VolumeSfx = value;
             GameManager.Instance.ApplyVolume();
         });
     }
@@ -125,10 +125,10 @@ public class SettingsImageScript : MonoBehaviour
         // Without notify: setting them must not run the handlers (they click and save).
         ShowFloatingDamageToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowFloatingDamageNumbers);
         ShowDetailsOnHoverToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowDetailsOnHover);
-        CombatSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.CombatSoundEnabled);
+        CombatSoundToggle.SetIsOnWithoutNotify(SoundSettings.CombatSoundEnabled);
         // No music on the web: the checkbox is shown off and disabled (faded like Fullscreen).
         bool musicSupported = MusicManagerScript.Supported;
-        MusicToggle.SetIsOnWithoutNotify(musicSupported && SaveGame.Members.MusicEnabled);
+        MusicToggle.SetIsOnWithoutNotify(musicSupported && SoundSettings.MusicEnabled);
         MusicToggle.interactable = musicSupported;
         if (!MusicToggle.TryGetComponent<CanvasGroup>(out var musicGroup))
             musicGroup = MusicToggle.gameObject.AddComponent<CanvasGroup>();
@@ -136,11 +136,11 @@ public class SettingsImageScript : MonoBehaviour
         if (!musicSupported)
             MarkMusicSteamOnly();
         UpdateMusicListButton();
-        SoundInBackgroundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundInBackground);
+        SoundInBackgroundToggle.SetIsOnWithoutNotify(SoundSettings.SoundInBackground);
         if (ShowHealthBarsToggle != null)
             ShowHealthBarsToggle.SetIsOnWithoutNotify(SaveGame.Members.ShowHealthBars);
         if (MasterSoundToggle != null)
-            MasterSoundToggle.SetIsOnWithoutNotify(SaveGame.Members.SoundEnabled);
+            MasterSoundToggle.SetIsOnWithoutNotify(SoundSettings.SoundEnabled);
         if (HideVictoryBannerToggle != null)
         {
             // Shown always, but disabled (faded like Music on the web) until Scary Earl is defeated.
@@ -164,9 +164,9 @@ public class SettingsImageScript : MonoBehaviour
             if (FullscreenToggle.TryGetComponent<CanvasGroup>(out var group))
                 group.alpha = canFullscreen ? 1f : DisabledAlpha;
         }
-        MasterVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMaster);
-        MusicVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeMusic);
-        SfxVolumeSlider.SetValueWithoutNotify(SaveGame.Members.VolumeSfx);
+        MasterVolumeSlider.SetValueWithoutNotify(SoundSettings.VolumeMaster);
+        MusicVolumeSlider.SetValueWithoutNotify(SoundSettings.VolumeMusic);
+        SfxVolumeSlider.SetValueWithoutNotify(SoundSettings.VolumeSfx);
     }
 
     //public void OnExportSaveClick()
@@ -225,7 +225,7 @@ public class SettingsImageScript : MonoBehaviour
     void UpdateMusicListButton()
     {
         if (MusicListButton != null)
-            MusicListButton.interactable = MusicManagerScript.Supported && SaveGame.Members.MusicEnabled;
+            MusicListButton.interactable = MusicManagerScript.Supported && SoundSettings.MusicEnabled;
     }
 
     public void OnMusicListClick()

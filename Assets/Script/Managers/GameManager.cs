@@ -1450,8 +1450,8 @@ public class GameManager : MonoBehaviour
     // Settings sliders: Master scales both Music and Effects.
     public void ApplyVolume()
     {
-        MusicManagerScript.Instance.SetVolume(SaveGame.Members.VolumeMusic * SaveGame.Members.VolumeMaster * MusicVolumeScale);
-        AudioManager.Instance.SetVolume(SaveGame.Members.VolumeSfx * SaveGame.Members.VolumeMaster);
+        MusicManagerScript.Instance.SetVolume(SoundSettings.VolumeMusic * SoundSettings.VolumeMaster * MusicVolumeScale);
+        AudioManager.Instance.SetVolume(SoundSettings.VolumeSfx * SoundSettings.VolumeMaster);
     }
 
     private void Start()
