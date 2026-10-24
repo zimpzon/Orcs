@@ -88,7 +88,7 @@ public class SteamStub : ISteamBackend
     // ---- Inventory ----
 
     // Test faster: start the game with -steam-fastdrops (one drop per minute of play).
-    static float DropIntervalMinutes => Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 30f;
+    static float DropIntervalMinutes => SteamItemDrops.DropIntervalMinutes;
 
     [Serializable]
     class StubInventory
