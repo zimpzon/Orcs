@@ -119852,29 +119852,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<align=center>
-
-
-    <color=#cccccc>By </color><b>PewGames</b>
-
-
-    <color=#cccccc>PixelDudes
-    art by</color> <b>0x72</b> (<link="https://0x72.itch.io/pixeldudesmaker"><color=#8DBE4C><u>itch.io</u></color></link>)
-
-    <color=#cccccc>Music
-    by</color> <b>HeatleyBros</b> (<link="https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA"><color=#8DBE4C><u>YouTube</u></color></link>)
-
-
-    <color=#cccccc>Big
-    thanks to (alphabetical)</color>
-
-
-    462n, caiburn, Caliane, Edaw, goldilocks,
-
-    Hateyou,
-    Haus, Intrinsic, Krismunich,
-
-    Lanx, loophoc, Runnen, Void'
+  m_text: "<align=center>\r\n\r\n<color=#cccccc>By </color><b>PewGames</b>\r\n\r\n<color=#cccccc>PixelDudes
+    art by</color> <b>0x72</b> (<link=\"https://0x72.itch.io/pixeldudesmaker\"><color=#8DBE4C><u>itch.io</u></color></link>)\r\n<color=#cccccc>Music
+    by</color> <b>HeatleyBros</b> (<link=\"https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA\"><color=#8DBE4C><u>YouTube</u></color></link>)\r\n\r\n<color=#cccccc>Big
+    thanks to (alphabetical)</color>\r\n\r\n462n <color=#B0B0B0>\u2022</color> caiburn
+    <color=#B0B0B0>\u2022</color> Caliane <color=#B0B0B0>\u2022</color> Edaw <color=#B0B0B0>\u2022</color>
+    goldilocks\r\nHateyou <color=#B0B0B0>\u2022</color> Haus <color=#B0B0B0>\u2022</color>
+    Intrinsic <color=#B0B0B0>\u2022</color> Krismunich\r\nLanx <color=#B0B0B0>\u2022</color>
+    loophoc <color=#B0B0B0>\u2022</color> Runnen <color=#B0B0B0>\u2022</color> Void"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4eccd51250cfa3948a3ac1e21d15fe34, type: 2}
   m_sharedMaterial: {fileID: 7304186015023537574, guid: 4eccd51250cfa3948a3ac1e21d15fe34,
