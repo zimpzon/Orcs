@@ -12,7 +12,7 @@ public static class ItemDropPopup
         
     const string Explanation =
         "<color=" + TextColors.Yellow + "><size=120%>ITEM DROPS</size></color>\n\n" +
-        "While you play, Steam now and then drops a collectible\n" +
+        "While you play, every 3 hours you will get a Steam collectible item\n" +
         "into your Steam inventory. Items range from common to absolutely legendary.\n\n" +
         "Find them on your Steam profile under Inventory.\n" +
         "Rarer ones drop less often - getting Earl is a legendary achievement!";
