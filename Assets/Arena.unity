@@ -18298,6 +18298,7 @@ MonoBehaviour:
   Scroll: {fileID: 129783025}
   Content: {fileID: 1353956505}
   EntryTemplate: {fileID: 982705824}
+  ShowSteamDropsToggle: {fileID: 1138751233}
 --- !u!114 &143407209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81954,7 +81955,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1001 &1144100729
 PrefabInstance:
   m_ObjectHideFlags: 0

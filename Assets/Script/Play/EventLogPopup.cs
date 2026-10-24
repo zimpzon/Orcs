@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using Assets.Script.Misc;
 using TMPro;
@@ -12,11 +13,50 @@ public class EventLogPopup : MonoBehaviour
     public ScrollRect Scroll;
     public RectTransform Content;           // the entries go in here (vertical layout)
     public TextMeshProUGUI EntryTemplate;   // inactive: the look of the entries
+    public Toggle ShowSteamDropsToggle;     // on: only the Steam item drops, off: everything (default; remembered per machine)
 
     const int EntriesPerBlock = 50; // entries per text object: thousands of separate texts would be slow to lay out
     const string TimeColor = TextColors.GreyDark;
+    const string ShowSteamDropsKey = "EventsShowSteamDrops";
+    const string SteamDropPrefix = "Item drop"; // SteamItemDrops.Announce
 
     TipsPopupScript _returnTo;
+
+    static bool ShowSteamDrops
+    {
+        get => PlayerPrefs.GetInt(ShowSteamDropsKey, 0) == 1;
+        set
+        {
+            PlayerPrefs.SetInt(ShowSteamDropsKey, value ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
+
+    void Awake()
+    {
+        if (ShowSteamDropsToggle == null)
+        {
+            // By name, under this dialog; the Toggle component may sit on the object or a child of it.
+            foreach (var tr in GetComponentsInChildren<Transform>(true))
+            {
+                if (tr.name.Trim() != "ToggleShowSteamDrops")
+                    continue;
+                ShowSteamDropsToggle = tr.GetComponentInChildren<Toggle>(true);
+                break;
+            }
+        }
+        if (ShowSteamDropsToggle == null)
+            Debug.LogWarning("Events: no ToggleShowSteamDrops (with a Toggle) under " + name + " - set Show Steam Drops Toggle on it");
+        else
+        {
+            ShowSteamDropsToggle.SetIsOnWithoutNotify(ShowSteamDrops);
+            ShowSteamDropsToggle.onValueChanged.AddListener(on =>
+            {
+                ShowSteamDrops = on;
+                Fill();
+            });
+        }
+    }
 
     public void Show(TipsPopupScript returnTo)
     {
@@ -39,10 +79,11 @@ public class EventLogPopup : MonoBehaviour
                 Destroy(child.gameObject);
         }
 
-        var entries = EventLog.Entries;
+        bool onlyDrops = ShowSteamDrops;
+        var entries = EventLog.Entries.Where(e => !onlyDrops || e.Text.StartsWith(SteamDropPrefix)).ToList();
         if (entries.Count == 0)
         {
-            AddBlock("<color=" + TimeColor + ">Nothing has happened yet.</color>");
+            AddBlock("<color=" + TimeColor + ">" + (onlyDrops ? "No Steam item drops yet." : "Nothing has happened yet.") + "</color>");
             return;
         }
 
