@@ -207,7 +207,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else if (animationName == SkinAnimation.BlackEarl)
         {
-            return (list.Contains(Achieved.SuperClears1000), "Black Earl: Get 1000 super fast arena clears");
+            return (list.Contains(Achieved.SuperClears500), "Black Earl: Get 500 super fast arena clears");
         }
         else if (animationName == SkinAnimation.InvertedEarl)
         {

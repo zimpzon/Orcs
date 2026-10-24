@@ -41,7 +41,7 @@ public enum Achieved
     Diamonds10000,
     Completion100,
     Upgrades25000,
-    SuperClears1000,
+    SuperClears500,
     Credits1000,
     FinalEnemyDefeated, // was StormLord5; granted on killing The Night Creeper (GameManager.OnEnemyKill)
     Mystery25,
@@ -124,7 +124,7 @@ public class AchievementsScript : MonoBehaviour
         AchievementChecks.CheckChainZap200(list);
         AchievementChecks.CheckPlayed3Days(list);
         AchievementChecks.CheckUpgrades25000(list);
-        AchievementChecks.CheckSuperClears1000(list);
+        AchievementChecks.CheckSuperClears500(list);
         AchievementChecks.CheckCredits1000(list);
         AchievementChecks.CheckMystery25(list);
         AchievementChecks.CheckRebirth1(list);
