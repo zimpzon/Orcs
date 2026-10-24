@@ -35,6 +35,7 @@ public class CheatSheet : MonoBehaviour
         ("RightShift+O", "Pretend 1:30 offline (offline income popup)"),
         ("RightShift+K", "All skins unlocked on / off (this session; counts toward 100%)"),
         ("RightShift+R", "Arena floor: cycle normal -> alternatives (sticks until back on normal)"),
+        ("RightShift+C", "Arena floor color: cycle normal -> alternatives (sticks until back on normal)"),
         ("RightShift+B", "Endgame step: final enemy -> killed -> (Touch fog) -> Scary Earl -> decimate all"),
         ("RightShift+D", "Item drop dialog: random item, next rarity each press"),
     };

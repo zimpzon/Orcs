@@ -157,6 +157,16 @@ public class GameManager : MonoBehaviour
     // these at random. Otherwise the scene's floor (grass).
     public Sprite[] AltFloorSprites;
     [Range(0f, 1f)] public float AltFloorChance = 0.1f;
+    // Same for the floor's tint color, picked separately: AltFloorColorChance per round (from arena AltFloorFromLevel),
+    // then one of these. Otherwise the scene's floor color.
+    public Color[] AltFloorColors =
+    {
+        new(0.42f, 0.45f, 0.50f, 1f), // slate
+        new(0.42f, 0.50f, 0.32f, 1f), // moss
+        new(0.66f, 0.58f, 0.42f, 1f), // sand
+        new(0.60f, 0.38f, 0.30f, 1f), // clay
+    };
+    [Range(0f, 1f)] public float AltFloorColorChance = 0.1f;
     Color floorDefaultColor;
     Sprite floorDefaultSprite;
     public string ColorLocked;
@@ -559,6 +569,8 @@ public class GameManager : MonoBehaviour
             //TextLevel.text = $"<color={TextColors.Green}>ARENA {SaveGame.Members.ArenaLevel}</color>";
             TextLevel.text = scaryEarl ? ScaryEarlFight.ArenaText : ArenaLabel(SaveGame.Members.ArenaLevel);
             Floor.sprite = scaryEarl && ScaryEarlFloorSprite != null ? ScaryEarlFloorSprite : PickRoundFloor();
+            LeanTween.cancel(Floor.gameObject); // ResetGame's fade back to the default color would undo the pick
+            Floor.color = scaryEarl ? floorDefaultColor : PickRoundFloorColor();
             GameState = State.Idle_PresentLevel;
 
             G.D.PlayerScript.StartGame();
@@ -1188,6 +1200,31 @@ public class GameManager : MonoBehaviour
                 return alt;
         }
         return floorDefaultSprite;
+    }
+
+    // The normal floor color, or with AltFloorColorChance one of AltFloorColors (not in the first arenas either).
+    Color PickRoundFloorColor()
+    {
+        if (_cheatFloorColor > 0 && _cheatFloorColor <= (AltFloorColors?.Length ?? 0))
+            return AltFloorColors[_cheatFloorColor - 1]; // RightShift+C picked one: keep it
+        if (SaveGame.Members.ArenaLevel >= AltFloorFromLevel && AltFloorColors != null && AltFloorColors.Length > 0
+            && UnityEngine.Random.value < AltFloorColorChance)
+            return AltFloorColors[UnityEngine.Random.Range(0, AltFloorColors.Length)];
+        return floorDefaultColor;
+    }
+
+    // RightShift+C: the next floor color right away (normal, then each alternative, then normal again). A picked one
+    // stays for the following rounds too; back on "normal" the rounds pick as usual again.
+    int _cheatFloorColor;
+
+    void CheatCycleFloorColor()
+    {
+        int count = 1 + (AltFloorColors?.Length ?? 0);
+        _cheatFloorColor = (_cheatFloorColor + 1) % count;
+        var color = _cheatFloorColor == 0 ? floorDefaultColor : AltFloorColors[_cheatFloorColor - 1];
+        LeanTween.cancel(Floor.gameObject);
+        Floor.color = color;
+        Debug.Log($"Cheat: floor color {_cheatFloorColor}/{count - 1} (#{ColorUtility.ToHtmlStringRGB(color)})");
     }
 
     // RightShift+R: the next floor right away (normal, then each alternative, then normal again). A picked alternative
@@ -2372,6 +2409,9 @@ public class GameManager : MonoBehaviour
 
         if (G.GetCheatKeyDown(KeyCode.R) && G.GetCheatKey(KeyCode.RightShift))
             CheatCycleFloor();
+
+        if (G.GetCheatKeyDown(KeyCode.C) && G.GetCheatKey(KeyCode.RightShift))
+            CheatCycleFloorColor();
 
         // Endgame, one step per press: final enemy unlocked -> killed -> (100% + Touch fog yourself) -> Scary Earl beaten
         // -> every beast decimated.
