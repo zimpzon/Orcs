@@ -37,6 +37,23 @@ public static class SoundSettings
         PlayerPrefs.SetFloat(Prefix + key, value);
     }
 
+    // Every key above (keep in sync): ResetToDefaults deletes them.
+    static readonly string[] Keys =
+    {
+        "VolumeMaster", "VolumeMusic", "VolumeSfx",
+        "SoundEnabled", "MusicEnabled", "CombatSoundEnabled", "SoundInBackground",
+    };
+
+    // Back to the defaults (Tools > Clear Sound Settings, for testing them); nothing else in PlayerPrefs is touched.
+    public static void ResetToDefaults()
+    {
+        foreach (var key in Keys)
+            PlayerPrefs.DeleteKey(Prefix + key);
+        PlayerPrefs.Save();
+        _floats.Clear();
+        _bools.Clear();
+    }
+
     static bool GetBool(string key, bool def)
     {
         if (!_bools.TryGetValue(key, out var v))
