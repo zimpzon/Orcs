@@ -115,6 +115,7 @@ public class ProgressPopupScript : MonoBehaviour
         this.gameObject.SetActive(true);
         GlobalPopupManager.Instance.AfterShowPopup(gameObject);
         SaveGame.Members.ViewedProgressDialog = true; // stops the "visit me" pulse after the tips (CrownPulse)
+        CrownPulse.ProgressSeen(); // and the "progress since your last look" one
         if (SaveGame.Members.Achieved.Contains(Achieved.Completion100))
             SaveGame.Members.ViewedVictoryDialog = true; // stops the big Victory button pulse (CrownPulse)
         else if (CrownPulse.CheatForceShow)

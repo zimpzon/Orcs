@@ -23,6 +23,40 @@ public class CrownPulse : MonoBehaviour
 
     Image _image;
 
+    // Progress reminder on the crown (VictoryUnseen): players forget to check their completion late in the game. From
+    // ReminderFromPct on, every ReminderStepPct reached since the crown dialog was last opened makes it pulse, and so
+    // does a big moment (final enemy defeated, SaveGame.ProgressNewsUnseen). Opening the dialog stops it (ProgressSeen).
+    const double ReminderFromPct = 101; // 101 = disabled
+    const double ReminderStepPct = 5;
+    const float ReminderCheckInterval = 2f; // GetProgress scans the skins: not every frame
+    static float _nextReminderCheck;
+    static int _currentStep = -1;
+
+    static int CompletionStep(double pct) => pct >= ReminderFromPct ? (int)System.Math.Floor(pct / ReminderStepPct) : -1;
+
+    static bool ProgressReminderDue()
+    {
+        var m = SaveGame.Members;
+        if (m.ProgressNewsUnseen)
+            return true;
+        if (m.Achieved.Contains(Achieved.Completion100))
+            return false; // 100%: the victory pulse takes over
+        if (Time.unscaledTime >= _nextReminderCheck)
+        {
+            _nextReminderCheck = Time.unscaledTime + ReminderCheckInterval;
+            _currentStep = CompletionStep(GameCompletion.GetProgress().TotalPct);
+        }
+        return _currentStep >= 0 && _currentStep > m.ProgressSeenStep;
+    }
+
+    public static void ProgressSeen()
+    {
+        var m = SaveGame.Members;
+        m.ProgressNewsUnseen = false;
+        _currentStep = CompletionStep(GameCompletion.GetProgress().TotalPct);
+        m.ProgressSeenStep = System.Math.Max(m.ProgressSeenStep, _currentStep);
+    }
+
     void Awake()
     {
         _image = GetComponent<Image>();
@@ -52,7 +86,8 @@ public class CrownPulse : MonoBehaviour
             // Crown (progress / victory) button: once the tips have been seen (their pulse stopped) until it's been
             // opened once; and after 100% until the victory dialog has been opened.
             PulseCondition.VictoryUnseen => m.ViewedTipsDialog && !m.ViewedProgressDialog
-                                            || m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
+                                            || m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog
+                                            || ProgressReminderDue(),
             // The crown on the Victory button too: only until the victory dialog has been opened.
             _ => m.Achieved.Contains(Achieved.Completion100) && !m.ViewedVictoryDialog,
         };

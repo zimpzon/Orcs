@@ -35,6 +35,8 @@ public class SaveGameMembers
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
     public bool ViewedTipsDialog = false; // opened the tips popup: stops the tips icon pulse
+    public int ProgressSeenStep = -1;      // completion step (5% each, from 75%) when the crown dialog was last opened (CrownPulse reminder)
+    public bool ProgressNewsUnseen;        // a big moment (final enemy defeated) not yet followed by opening the crown dialog
     public bool ViewedProgressDialog = false; // opened the crown (progress/victory) dialog once: stops the pulse that follows the tips one
     public bool ViewedExpandedTiers = false; // opened the expanded tier view: stops the expand button pulse
     public bool ScaryEarlDefeated = false; // the Scary Earl arena (after "Touch fog") was won: normal arenas again

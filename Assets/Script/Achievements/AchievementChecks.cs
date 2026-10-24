@@ -484,6 +484,7 @@ namespace Assets.Script.Achievements
                 list.Add(Achieved.FinalEnemyDefeated);
                 NewAchieved(Achieved.FinalEnemyDefeated);
                 EventLog.Add("Earl defeated The Night Creeper for the first time!");
+                SaveGame.Members.ProgressNewsUnseen = true; // the crown pulses: go look at the completion (CrownPulse)
             }
         }
 
