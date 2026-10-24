@@ -35,15 +35,17 @@ public static class PopupBuilder
     }
 
     // Darkened band right after `after`, stretched to the popup's width, with gaps around it and a text on it.
-    public static TextMeshProUGUI AddBand(TextMeshProUGUI after, string text, string name = "Band")
+    // gapAbove / gapBelow: room to the texts around it (default GapAroundBand).
+    public static TextMeshProUGUI AddBand(TextMeshProUGUI after, string text, string name = "Band",
+        float gapAbove = GapAroundBand, float gapBelow = GapAroundBand)
     {
         var parent = after.transform.parent;
         int index = after.transform.GetSiblingIndex();
-        AddSpace(parent, index + 1, GapAroundBand);
+        AddSpace(parent, index + 1, gapAbove);
         var band = new GameObject(name, typeof(RectTransform));
         band.transform.SetParent(parent, false);
         band.transform.SetSiblingIndex(index + 2);
-        AddSpace(parent, index + 3, GapAroundBand);
+        AddSpace(parent, index + 3, gapBelow);
         var image = band.AddComponent<Image>();
         image.color = BandColor;
         image.raycastTarget = false;

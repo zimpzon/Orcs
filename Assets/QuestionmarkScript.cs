@@ -221,7 +221,8 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             float endRealTime = startRealTime + (60 * 5);
 
-            RewardPopup.Show(MysteryHeader, "X2.5 INCOME", "and time runs 25% faster, for 5 minutes!");
+            RewardPopup.Show(MysteryHeader, "X2.5 INCOME",
+                $"\n2.5 times your income, time runs 25% faster\nLasting for <color={TextColors.GreyLight}>5</color> minutes.");
             SaveGame.Save(); // don't lose a mystery reward to a reload before the next auto-save
 
             MoneyMultiplierText.text = "X2.5";
@@ -252,7 +253,8 @@ public class QuestionmarkScript : MonoBehaviour
             float startRealTime = G.D.RealTime;
             //float endRealTime = startRealTime + 5;
             float endRealTime = startRealTime + 60;
-            RewardPopup.Show(MysteryHeader, "X10 INCOME", "for 1 minute!");
+            RewardPopup.Show(MysteryHeader, "X10 INCOME",
+                "Ten times your income, lasting for 1 minute!");
             SaveGame.Save();
 
             MoneyMultiplierText.text = "X10";
@@ -288,7 +290,8 @@ public class QuestionmarkScript : MonoBehaviour
             reward += 100;
 
             GameManager.Instance.AddMoney(reward);
-            RewardPopup.ShowMoney(MysteryHeader, reward, $"{numberOfSeconds} seconds of income");
+            RewardPopup.ShowMoney(MysteryHeader, reward,
+                $"A mysterious pile of gold appears!\nWorth {numberOfSeconds} seconds of your income.");
             SaveGame.Save();
             yield return null;
         }

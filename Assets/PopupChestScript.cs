@@ -141,8 +141,10 @@ public class PopupChestScript : MonoBehaviour, IPointerClickHandler
             SaveGame.Members.ChestsCollected += 1;
 
             // Reward popup like a mystery bonus: the money counting up on the band, how it was worked out below.
-            string multiplier = PlayerUpgrades.Data.BetterChests ? "2 x " : "";
-            RewardPopup.ShowMoney("CHEST LOOTED!", reward, $"{multiplier}{numberOfSeconds} seconds of income");
+            string worth = PlayerUpgrades.Data.BetterChests
+                ? $"<color={TextColors.GreyLight}>2 X {numberOfSeconds} seconds of your income.</color>"
+                : $"<color={TextColors.GreyLight}>{numberOfSeconds} seconds of your income.</color>";
+            RewardPopup.ShowMoney("CHEST LOOTED!\n", reward, $"\nYou found an old treasure chest!\n{worth}");
             SaveGame.Save(); // don't lose a chest reward to a reload before the next auto-save
         }
     }

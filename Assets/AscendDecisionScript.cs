@@ -184,11 +184,13 @@ public class AscendDecisionScript : MonoBehaviour
 
             GameManager.Instance.ResetAllProgress(ascend: true);
 
+            // Reward popup like chests / mystery: the diamonds big and gold on the band, the rest below.
             string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
-            string msg = $"<color={TextColors.Yellow}>REBIRTH</color>\n\nWelcome back!\n\nYOU GAINED {DiamondsGainedAtRebirth} {diamondGainTxt}";
+            long diamondPct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
+            string details = $"Welcome back, stronger than before!\nYour diamonds now give +{Format64.FormatGrouped(diamondPct)}% income.";
             if (SaveGame.Members.BoughtHeadStart)
-                msg += $"\n\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
-            GameCanvasScript.Instance.ShowPopup(msg);
+                details += $"\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
+            RewardPopup.Show("REBIRTH!", $"+{Format64.FormatGrouped(DiamondsGainedAtRebirth)} {diamondGainTxt}", details);
 
             // Stay on the rebirth screen so the new diamonds can be spent right away (0 credits now, so the
             // Rebirth button disables itself).

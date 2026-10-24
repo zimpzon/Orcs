@@ -8,8 +8,6 @@ using UnityEngine;
 // from 0 and popping when it lands, and a small note on what it is.
 public static class WelcomeBackPopup
 {
-    const string Grey = "#C8C8C8";
-
     public static void Show(TimeSpan away, Decimal512 amount, double sharePercent)
     {
         var canvas = GameCanvasScript.Instance;
@@ -22,10 +20,11 @@ public static class WelcomeBackPopup
             return;
 
         var awayText = PopupBuilder.CloneText(header, header.transform.GetSiblingIndex() + 1,
-            $"<color={Grey}>You were away for\n{FormatTime.Format(away.Days, away.Hours, away.Minutes)}\n</color>");
+            $"\n<color={TextColors.Grey}>You were away for\n</color><color={TextColors.GreyLight}>{FormatTime.Format(away.Days, away.Hours, away.Minutes)}\n</color>");
 
         // Sized for the final amount up front, so the popup doesn't grow while the number counts up.
-        var amountText = PopupBuilder.AddBand(awayText, AmountText(amount), "OfflineIncomeBand");
+        var amountText = PopupBuilder.AddBand(awayText, AmountText(amount), "OfflineIncomeBand",
+            gapAbove: 14f, gapBelow: 14f); // more air than the default 8 around the big amount
         var size = amountText.GetPreferredValues();
         // (the copied prefab text already has a LayoutElement)
         if (!amountText.TryGetComponent<UnityEngine.UI.LayoutElement>(out var layout))
@@ -35,7 +34,7 @@ public static class WelcomeBackPopup
         amountText.gameObject.AddComponent<CountUpMoney>().Init(amount, AmountText);
 
         var note = PopupBuilder.CloneText(header, PopupBuilder.AfterBand(amountText),
-            $"<size=85%><color={Grey}>Offline income: {sharePercent:0}% of your income</color></size>");
+            $"<size=85%><color={TextColors.Grey}>Offline income: <color={TextColors.GreyLight}>{sharePercent:0}</color>% of your income</color></size>");
         PopupBuilder.FixMargins(header, note);
     }
 

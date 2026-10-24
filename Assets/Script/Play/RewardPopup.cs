@@ -8,8 +8,6 @@ using UnityEngine.UI;
 // grey line with the details. Chests and mystery bonuses.
 public static class RewardPopup
 {
-    const string Grey = "#C8C8C8";
-
     // Text on the band (e.g. "X10 INCOME").
     public static void Show(string header, string bandText, string details)
         => Build(header, Big(bandText), details, null);
@@ -29,7 +27,7 @@ public static class RewardPopup
         if (headerText == null)
             return;
 
-        var bandText = PopupBuilder.AddBand(headerText, band, "RewardBand");
+        var bandText = PopupBuilder.AddBand(headerText, band, "RewardBand", gapAbove: 14f); // a bit further from the header
         if (countUp.HasValue)
         {
             // Sized for the final amount up front, so the popup doesn't grow while the number counts up.
@@ -41,7 +39,7 @@ public static class RewardPopup
             bandText.gameObject.AddComponent<CountUpMoney>().Init(countUp.Value, MoneyText);
         }
 
-        var note = PopupBuilder.CloneText(headerText, PopupBuilder.AfterBand(bandText), $"<color={Grey}>{details}</color>");
+        var note = PopupBuilder.CloneText(headerText, PopupBuilder.AfterBand(bandText), $"<color={TextColors.Grey}>{details}</color>");
         PopupBuilder.FixMargins(headerText, note);
     }
 
