@@ -4,6 +4,10 @@ public class WeaponMachinegun : WeaponBase
 {
     public Sprite BulletSprite;
 
+    // PlayerScript.FireSalvo throws the main dagger at scale 1.5 and the side (multishot) daggers at 1.0. The old
+    // 0.95 threshold counted the side daggers as main ones: they all splashed blood and played the throw sound.
+    const float MainDaggerMinScale = 1.25f;
+
     public override void FireFromPoint(Vector3 point, Vector3 direction, double damage, float scale, int sortingLayer, out float recoil)
     {
         lastFire_ = G.D.GameTime;
@@ -11,7 +15,8 @@ public class WeaponMachinegun : WeaponBase
         IsPrimary = true;
         Color color = new (256 / 255.0f, 248 / 255.0f, 220 / 255.0f, 1.0f);
 
-        if (scale > 0.95f)
+        bool mainDagger = scale >= MainDaggerMinScale;
+        if (mainDagger)
         {
             // lol hack for multiple daggers so only main dagger plays sound
             //GameManager.Instance.MakeFlash(point);
@@ -44,7 +49,7 @@ public class WeaponMachinegun : WeaponBase
         basic.DieTime = 0.0f;
         basic.SpriteInfo.Transform.localScale = new Vector2(scale, scale);
         basic.Force = 0.5f;
-        basic.NoBlood = scale <= 0.95f; // the extra (smaller) daggers of a salvo: blood from the main dagger only
+        basic.NoBlood = !mainDagger; // the side daggers of a salvo: blood from the main dagger only
         basic.ParticleSystem = Particles.I.KnifeTrail;
         basic.ParticleEmitCount = 1;
         basic.ParticleEmitDelay = 0.01f;
