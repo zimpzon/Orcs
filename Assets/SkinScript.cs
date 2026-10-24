@@ -286,7 +286,7 @@ public class SkinScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SkinAnimation.PrettyEarl => (m.Achieved.Count, 20),
 
             SkinAnimation.WhiteEarl => (m.TotalUpgradesBought, 25000),
-            SkinAnimation.BlackEarl => (m.SuperFastClears, 1000),
+            SkinAnimation.BlackEarl => (m.SuperFastClears, 500),
             SkinAnimation.InvertedEarl => (m.MonsterCreditsLifetime_09_08_2025, 1000),
             SkinAnimation.WellDressedOrc => (m.EstimatedOnlineSeconds2 / (24 * 60 * 60), 3),
             SkinAnimation.MonochromeEarl => (GameCompletion.GetProgress().TotalPct, 100),
