@@ -187,10 +187,10 @@ public class AscendDecisionScript : MonoBehaviour
 
             // Reward popup like chests / mystery: the diamonds big and gold on the band, the rest below.
             string diamondGainTxt = DiamondsGainedAtRebirth == 1 ? "DIAMOND" : "DIAMONDS";
-            long diamondPct = (long)Math.Round(UpgradeProgression.DiamondIncomeBonus() * 100);
-            string details = $"Welcome back, stronger than before!\nYour diamonds now give +{Format64.FormatGrouped(diamondPct)}% income.";
+            // One line, or two with the head start - no blank lines (they left gaps under the band / at the bottom).
+            string details = "Welcome back!";
             if (SaveGame.Members.BoughtHeadStart)
-                details += $"\nHead start: +${Format512.Format(SaveGame.Members.Money)}";
+                details += $"\nHead start: <color={TextColors.GreyLight}>+${Format512.Format(SaveGame.Members.Money)}</color>";
             RewardPopup.Show("REBIRTH!", $"+{Format64.FormatGrouped(DiamondsGainedAtRebirth)} {diamondGainTxt}", details);
             EventLog.Add($"Earl was reborn and gained {Format64.FormatGrouped(DiamondsGainedAtRebirth)} {diamondGainTxt.ToLowerInvariant()}.");
 
