@@ -24,6 +24,13 @@ public class SaveGameMembers
     public long MonsterCreditsLifetime_09_08_2025;
     public double CreditBonusStartLifetime = -1; // credits earned incl. partial at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
+    public long MaxDiamonds; // most diamonds ever held (stats); NoteDiamonds() after a gain
+
+    public void NoteDiamonds()
+    {
+        if (DiamondCount_09_08_2025 > MaxDiamonds)
+            MaxDiamonds = DiamondCount_09_08_2025;
+    }
     public bool ViewedVictoryDialog = false; // opened the victory dialog after 100%: stops the big Victory button pulse
     public bool ViewedRebirthDialog = false; // opened the rebirth dialog with credits: big rebirth button pulse -> small
     public bool ViewedTipsDialog = false; // opened the tips popup: stops the tips icon pulse

@@ -178,6 +178,7 @@ public class AscendDecisionScript : MonoBehaviour
             RefreshCredits(); // every credit right now, not the count from when the dialog opened
             SaveGame.Members.MonsterCredits_09_08_2025 -= MonsterCreditsAtStart;
             SaveGame.Members.DiamondCount_09_08_2025 += MonsterCreditsAtStart;
+            SaveGame.Members.NoteDiamonds();
             SaveGame.Members.TimesAscended_09_08_2025++;
             AudioManager.Instance.PlayClipForReal(AudioManager.Instance.AudioData.Chime, minInterval: 0.3f, fixedPitch: true);
             SaveGame.Members.TimeSinceLastAscend = 0;

@@ -248,6 +248,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
         if (CardId == AscendUpgradeCardId.FasterMystery && SaveGame.Members.QuestionMarkRealTimeLeft > 0)
             SaveGame.Members.QuestionMarkRealTimeLeft *= 2f; // undo the halving from the purchase
         SaveGame.Members.DiamondCount_09_08_2025 += EffectiveCost();
+        SaveGame.Members.NoteDiamonds();
         long cost = EffectiveCost();
         X2RankUpEffect.SpawnSmall(ButtonBuy, Input.mousePosition, $"+{cost} {(cost == 1 ? "diamond" : "diamonds")}");
         SaveGame.Save();

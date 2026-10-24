@@ -2131,16 +2131,19 @@ public class GameManager : MonoBehaviour
 
     Dictionary<string, int> GetPlayFabStats()
     {
-        // NB NB NB: only 25 stats are allowed on PlayFab (checked in UpdatePlayFabStats). Same names on Steam.
+        // NB NB NB: only 25 stats are allowed on PlayFab (checked in UpdatePlayFabStats). Same names on Steam (create
+        // them there as INT stats). Plain names: no date suffixes / version numbers, even where the save field has one.
         var m = SaveGame.Members;
+        m.NoteDiamonds(); // also catches diamonds from cheats
         var dic = new Dictionary<string, int>()
         {
             { "game_progression_pct", (int)GameCompletion.GetProgress().TotalPct },
-            { "level_pct_bought", ClampStat(m.LevelPctBought) },
 
-            { Playfab.ArenaLevel, ClampStat(m.ArenaLevel) },
+            { "max_arena", ClampStat(Math.Max(m.MaxArena, m.ArenaLevel)) }, // best ever (the current one drops on rebirth)
+            { "arenas_completed", ClampStat(m.TotalArenasWon) },
+            { "monsters_killed", ClampStat(m.EnemiesKilled.ToDouble()) },
             { "rebirths", ClampStat(m.TimesAscended_09_08_2025) },
-            { "diamonds", ClampStat(m.DiamondCount_09_08_2025) },
+            { "max_diamonds", ClampStat(m.MaxDiamonds) }, // most ever held (spending them on cards doesn't lower it)
             { "monster_credits_lifetime", ClampStat(m.MonsterCreditsLifetime_09_08_2025) },
 
             { "chests_collected", ClampStat(m.ChestsCollected) },
@@ -2151,13 +2154,8 @@ public class GameManager : MonoBehaviour
 
             { "scary_earl_unlocked", m.FogTouched ? 1 : 0 },
             { "scary_earl_defeated", m.ScaryEarlDefeated ? 1 : 0 },
-
-            // Only the five highest tiers (UpgradeTierList order).
-            { "level_beefy_earl", ClampStat(m.LevelBeefyEarl) },
-            { "level_critical_strike", ClampStat(m.LevelCriticalStrike) },
-            { "level_power_zap", ClampStat(m.LevelPowerZap) },
-            { "level_skull_slicer", ClampStat(m.LevelSkullSlicer) },
-            { "level_storm_lord", ClampStat(m.LevelStormLord) },
+            { "decimation_complete", BeastGoals.AllMastered() ? 1 : 0 }, // every beast decimated (after Scary Earl)
+            // (No upgrade counts / tier levels any more: not needed.)
         };
         return dic;
     }

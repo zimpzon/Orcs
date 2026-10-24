@@ -76,7 +76,7 @@ public static class Playfab
             { "Platform|DeviceModel|OS", $"{Application.platform} | {SystemInfo.deviceModel} | {SystemInfo.operatingSystem}" },
             { "game_version", $"{GameManager.MajorVersion}.{GameManager.MinorVersion}" },
             { "per_sec_passive_income_at_login", GameManager.Instance.TextPassiveIncome.text },
-            { "counts|bestiary|skin", $"{SaveGame.Members.BeastsSeen.Count} | {SaveGame.Members.Achieved.Count}" },
+            { "beasts_seen|achievements", $"{SaveGame.Members.BeastsSeen.Count} | {SaveGame.Members.Achieved.Count}" },
             { "ascend_cards", SaveGame.Members.AscendCardDebug() },
             { "hosting_info", JsMappings.GetHostingInfo() },
         };
