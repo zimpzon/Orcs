@@ -76,7 +76,7 @@ public static class CreateEventsDialog
             Undo.DestroyObjectImmediate(d);
 
         if (header != null)
-            SetupHeader(header);
+            SetupHeader(header, "TextEventsHeader", "Events", "Create Events Dialog");
         if (close != null)
         {
             Undo.RecordObject(close, "Create Events Dialog");
@@ -168,13 +168,13 @@ public static class CreateEventsDialog
     }
 
     // The title top-left, like PopupMusic's (TextMusic) when it's there, else the same values by hand.
-    static void SetupHeader(TextMeshProUGUI header)
+    internal static void SetupHeader(TextMeshProUGUI header, string name, string title, string undoName)
     {
-        Undo.RecordObject(header, "Create Events Dialog");
-        Undo.RecordObject(header.rectTransform, "Create Events Dialog");
-        Undo.RecordObject(header.gameObject, "Create Events Dialog");
-        header.name = "TextEventsHeader";
-        header.text = "Events";
+        Undo.RecordObject(header, undoName);
+        Undo.RecordObject(header.rectTransform, undoName);
+        Undo.RecordObject(header.gameObject, undoName);
+        header.name = name;
+        header.text = title;
 
         var music = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None)
             .FirstOrDefault(t => t.name == "TextMusic");
