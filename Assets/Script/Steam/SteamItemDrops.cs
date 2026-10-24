@@ -13,12 +13,14 @@ using UnityEngine;
 public static class SteamItemDrops
 {
     // -steam-fastdrops: 1 minute (see SteamStub).
-    public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 180f;
+    //public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 180f;
+    public static readonly float DropIntervalMinutes = Environment.CommandLine.Contains("-steam-fastdrops") ? 1f : 2f;
 
     const float FirstTriggerDelay = 10f;      // after start, so the arena (and any start popup) is up first
     // How often to ask while the countdown runs (in case it's off), and once it says a drop is due.
     static readonly float TriggerIntervalSeconds = Environment.CommandLine.Contains("-steam-fastdrops") ? 20f : 300f;
     const float DueTriggerIntervalSeconds = 20f;
+    const float DueTriggerDelay = 2f;         // after the countdown hits 0: a little slack for Steam's own clock
     const float MaxPlayDeltaSeconds = 1f;     // per frame: hitches / sleep don't count, like the stub
     const float SavePlaytimeInterval = 10f;
 
@@ -30,6 +32,7 @@ public static class SteamItemDrops
 
     static float _nextTrigger = FirstTriggerDelay;
     static bool _inventoryRequested;
+    static bool _wasDue;
     static bool _playLoaded;
     static float _playSeconds;
     static float _nextPlaySave = SavePlaytimeInterval;
@@ -45,6 +48,8 @@ public static class SteamItemDrops
         backend.ItemsGranted += granted =>
         {
             _playSeconds = 0f;
+            _nextTrigger = TriggerIntervalSeconds; // drop the "due" retry scheduled before this ask
+            _wasDue = false;
             SavePlaytime();
             Announce(granted);
         };
@@ -75,6 +80,12 @@ public static class SteamItemDrops
             _inventoryRequested = true;
             backend.RequestInventory();
         }
+
+        // Countdown just hit 0: ask (almost) right away instead of at the next regular ask, up to minutes away.
+        bool due = SecondsToNextDrop == 0f;
+        if (due && !_wasDue)
+            _nextTrigger = Mathf.Min(_nextTrigger, DueTriggerDelay);
+        _wasDue = due;
 
         _nextTrigger -= Time.unscaledDeltaTime;
         if (_nextTrigger > 0f)

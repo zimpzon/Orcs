@@ -156,9 +156,7 @@ public class SteamStub : ISteamBackend
             return;
         }
 
-        inv.PlaySecondsSinceDrop -= needed;
-        if (inv.PlaySecondsSinceDrop > needed)
-            inv.PlaySecondsSinceDrop = needed; // like Steam's drop window: no backlog of many drops at once
+        inv.PlaySecondsSinceDrop = 0f; // no banked drops (like Steam's drop window); our countdown restarts at 0 too
 
         var item = new SteamItem { InstanceId = inv.NextInstanceId++, DefId = RollDef() };
         inv.Items.Add(item);
