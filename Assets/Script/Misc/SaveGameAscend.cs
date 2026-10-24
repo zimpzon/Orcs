@@ -85,6 +85,7 @@ static class SaveGameAscend
         newSave.MaxDps = oldSave.MaxDps;
         newSave.MaxArena = oldSave.MaxArena;
         newSave.MaxDiamonds = oldSave.MaxDiamonds;
+        newSave.CardRefunds = oldSave.CardRefunds;
         newSave.EnemiesKilled = oldSave.EnemiesKilled; // lifetime (stats, the stats panel)
         newSave.MaxUpgradeTiersBought = System.Math.Max(oldSave.MaxUpgradeTiersBought, UpgradeTierList.CountBought()); // SaveGame.Members is still the old run here
         newSave.TotalArenas = oldSave.TotalArenas;

@@ -25,6 +25,7 @@ public class SaveGameMembers
     public double CreditBonusStartLifetime = -1; // credits earned incl. partial at the last rebirth, drives the credit bonus (-1 = not set yet)
     public long DiamondCount_09_08_2025;
     public long MaxDiamonds; // most diamonds ever held (stats); NoteDiamonds() after a gain
+    public long CardRefunds; // rebirth cards sold back (stats)
 
     public void NoteDiamonds()
     {

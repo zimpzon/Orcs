@@ -249,6 +249,7 @@ public class AscendUpgradeCardScript : MonoBehaviour, IPointerEnterHandler, IPoi
             SaveGame.Members.QuestionMarkRealTimeLeft *= 2f; // undo the halving from the purchase
         SaveGame.Members.DiamondCount_09_08_2025 += EffectiveCost();
         SaveGame.Members.NoteDiamonds();
+        SaveGame.Members.CardRefunds++;
         long cost = EffectiveCost();
         X2RankUpEffect.SpawnSmall(ButtonBuy, Input.mousePosition, $"+{cost} {(cost == 1 ? "diamond" : "diamonds")}");
         SaveGame.Save();

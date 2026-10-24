@@ -2143,6 +2143,7 @@ public class GameManager : MonoBehaviour
             { "arenas_completed", ClampStat(m.TotalArenasWon) },
             { "monsters_killed", ClampStat(m.EnemiesKilled.ToDouble()) },
             { "rebirths", ClampStat(m.TimesAscended_09_08_2025) },
+            { "card_refunds", ClampStat(m.CardRefunds) }, // rebirth cards sold back
             { "max_diamonds", ClampStat(m.MaxDiamonds) }, // most ever held (spending them on cards doesn't lower it)
             { "monster_credits_lifetime", ClampStat(m.MonsterCreditsLifetime_09_08_2025) },
 
