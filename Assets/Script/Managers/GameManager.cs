@@ -366,11 +366,17 @@ public class GameManager : MonoBehaviour
     float _nextZap;
     public List<ActorBase> ZapTargetIgnoreList = new List<ActorBase>();
 
+    // The background's rest position, taken once: each shake used to take the current position as "original", so a
+    // shake starting during another one (zap + storm) left the background off by up to 0.1 - adding up over a session.
+    Vector3? _arenaBackgroundRestPos;
+
     void ShakeArenaBackground()
     {
         RectTransform rt = ArenaBoundsCollider.GetComponent<RectTransform>();
-        Vector3 originalPos = rt.anchoredPosition;
+        _arenaBackgroundRestPos ??= rt.anchoredPosition;
+        Vector3 originalPos = _arenaBackgroundRestPos.Value;
 
+        LeanTween.cancel(rt.gameObject); // a running shake: this one takes over (and ends at the rest position)
         LeanTween.value(rt.gameObject, 0f, 1f, time: 0.1f)
             .setOnUpdate((float val) =>
             {
